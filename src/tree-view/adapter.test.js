@@ -10,6 +10,7 @@ describe('PoE2-Baum-Darstellungsadapter', () => {
   it('übernimmt alle 6.067 Verbindungen', () => expect(adapt().connectionCount).toBe(6067))
   it('übernimmt alle 1.621 Gruppen', () => expect(adapt().groupCount).toBe(1621))
   it('erkennt sechs Klassenstarts', () => expect(adapt().classStartNodes).toHaveLength(6))
+  it('bietet alle zwölf offiziellen Klassen zur Orientierung an', () => expect(adapt().classes).toHaveLength(12))
   it('erkennt 36 Aszendenzstarts', () => expect(adapt().ascendancyStartNodes).toHaveLength(36))
   it('erkennt 19 Juwelsockel', () => expect(adapt().jewelSockets).toHaveLength(19))
   it('erzeugt keine Cluster-Sockel', () => expect(adapt().nodes.some(node => node.nodeType === 'cluster-socket')).toBe(false))
