@@ -202,6 +202,12 @@ Mapping- und Bossrotation werden Schritt für Schritt mit Reihenfolge, Aktion, S
 
 Der Generator besitzt keine KI-, LLM-, Netzwerk-, Zufalls-, Zeit- oder React-Abhängigkeit. Freie unkontrollierte Textgenerierung, echte PoE2-Daten, DPS-/Cooldown-/Zeitsimulation und UI-Anbindung bleiben ausgeschlossen. Elf synthetische Explanation-Szenarien und dedizierte Tests sichern Templates, Traces, Fallbacks, Priorisierung und Determinismus.
 
+## Isolierte Pfadsuch-Grundlage (Aufgabe 5E)
+
+`src/engine/passive-pathfinding/` ist ein eigenständiges Infrastrukturmodul neben der synthetischen Analyzer-Kette. Es übernimmt den normalisierten offiziellen Baum 0.5.2 in einen geprüften, wiederverwendbaren ungerichteten Graphen und berechnet deterministisch `shortest-path`, `lowest-cost-path` und schrittweise `connect-targets` für ausschließlich vorgegebene Ziele. Kosten, Budget, blockierte/belegte Knoten, erlaubte Typen, Aszendenz- und optionale Waffen-Set-Grenzen gehören zum Anfragevertrag.
+
+Der vorhandene Passive Analyzer importiert oder verwendet das Modul nicht. Ebenso bleiben Orchestrator, UI und Baumdarstellung unberührt. Die Mehrzielstrategie ist ausdrücklich `shortest-per-step` und keine globale Steiner- oder Buildoptimierung. Vollständiger Vertrag und Messwerte: [`POE2_PASSIVE_PATHFINDING.md`](POE2_PASSIVE_PATHFINDING.md).
+
 ## Nächste Module
 
-Die regelbasierte Engine-Kette aus Aufgabe 4A bis 4I ist vollständig vorbereitet. Als nächster abgegrenzter Schritt wird ein Aufgabe-5A-Integrations- und Datenfreigabe-Audit empfohlen; echte Daten, UI-Anbindung, Preise, DPS-Formeln und kombinatorische Optimierung benötigen weiterhin jeweils getrennte Aufträge, Datenquellen und Referenztests.
+Die regelbasierte Engine-Kette aus Aufgabe 4A bis 4I und die technische Pfadsuchgrundlage aus 5E sind getrennt vorbereitet. Als nächster abgegrenzter Schritt ist die fachliche Auswahl passiver Zielknoten gegen ein Buildprofil zu spezifizieren; eine produktive Kopplung mit Analyzer, Orchestrator oder UI darf erst in einem eigenen Auftrag folgen. Echte weitere Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen weiterhin jeweils getrennte Aufträge, Datenquellen und Referenztests.

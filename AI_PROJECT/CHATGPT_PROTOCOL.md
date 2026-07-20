@@ -1,5 +1,13 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Übergabe nach Aufgabe 5E
+
+Aufgabe 5E ergänzt `src/engine/passive-pathfinding/` als eigenständige, React- und netzwerkfreie Grundlage für den offiziellen Passivbaum 0.5.2. Der kontrollierte Graph enthält 5.150 Knoten und 6.067 kanonische ungerichtete Verbindungen, deterministische Nachbarlisten, Typen, Klassen-/Aszendenzzuordnung, Sockel-/Aktivstatus und zentral konfigurierte Traversierungskosten. Fehlerhafte Referenzen, doppelte oder echte selbstgerichtete Kanten und ungültige Kosten blockieren den Graphaufbau; die bekannte offizielle Selbstnachbarschaft wird kontrolliert ignoriert.
+
+Einzelziele verwenden deterministisches Dijkstra für `shortest-path` oder `lowest-cost-path`. Tie-Breaker sind zusätzliche Kosten, neu belegte Knoten, Pfadlänge und die lexikografische technische ID-Folge. Bereits belegte Knoten werden kostenfrei wiederverwendet, technische Starts kosten standardmäßig null, Zielknoten zählen, Budgets und Aszendenzgrenzen werden strukturiert geprüft. `connect-targets` verbindet nur explizit vorgegebene Ziele schrittweise mit dem vorhandenen Teilbaum, dedupliziert gemeinsame Knoten/Kanten und kennzeichnet die Aussage korrekt als `shortest-per-step`, nicht als globale Optimalität.
+
+Passive Analyzer, Orchestrator, UI und sichtbarer Baum blieben fachlich unverändert. Es gibt keine Zielauswahl, Buildoptimierung, automatische Punkteverteilung, Clusterpfade oder DPS-Berechnung. Neue Abhängigkeiten: keine. Dokumentation: `docs/POE2_PASSIVE_PATHFINDING.md`. Performancebeobachtung unter Windows x64/Node 24.14.0: Graphaufbau 329,84–336,35 ms, entferntes Einzelziel 316,35–318,77 ms, zehn Einzelziele 2.973,83–3.040,55 ms, Vierzielverbindung 2.230,54–2.293,60 ms; Heap-Momentaufnahme etwa 6,54–6,55 MiB für den Graphen und 28,34–62,77 MiB Gesamtdifferenz nach den Suchen. Unter paralleler Gesamtsuitenlast lagen Einzelwerte höher und sind ebenfalls in der Fachdokumentation festgehalten. Abschlussprüfung: 466 reguläre Tests in 18 Dateien, Fixture-Import 23/0, Lint, Typecheck, Produktions- und Pages-Build erfolgreich. Dies sind Beobachtungen ohne Produktgrenzwert oder stabile Speichergarantie.
+
 ## Übergabe nach Aufgabe 5D
 
 Aufgabe 5D ist technisch umgesetzt. `src/tree-view/adapter.ts` bildet den validierten offiziellen Baumstand 0.5.2 einmalig auf ein reines `PassiveTreeViewModel` ab; React erhält keine Import- oder GGG-Rohobjekte. Das ViewModel enthält 5.150 Knoten, 6.067 Verbindungen, 1.621 Gruppen, 6 Klassenstarts, 36 Aszendenzstarts und 19 Juwelsockel. Es werden keine Cluster-Sockel erzeugt. Offizielle Koordinaten bleiben relativ unverändert; Bounds erhalten nur einen einheitlichen Rand.

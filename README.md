@@ -11,6 +11,8 @@ npm run check:poe2-tree-update -- --release 0.5.2
 
 Importiert werden ausschließlich Baumstruktur und englische Originaltexte; keine Assets, Übersetzungen oder Daten von PoE2DB/RePoE. Seit Aufgabe 5D zeigt der Baumabschnitt diesen Datenbestand über einen getrennten ViewModel-Adapter technisch an; die Engine bleibt vollständig getrennt. `latest`, `main`, fehlende oder unbekannte Versionen werden blockiert. Details: [`docs/POE2_TREE_IMPORT.md`](docs/POE2_TREE_IMPORT.md), [`docs/POE2_TREE_UPDATE_PROCESS.md`](docs/POE2_TREE_UPDATE_PROCESS.md) und [`docs/POE2_TREE_VIEW_ADAPTER.md`](docs/POE2_TREE_VIEW_ADAPTER.md). Andere echte Datenkategorien bleiben blockiert.
 
+Seit Aufgabe 5E kann das isolierte Modul `src/engine/passive-pathfinding/` deterministische kürzeste und günstigste Pfade sowie eine schrittweise Verbindung explizit vorgegebener Ziele auf diesem offiziellen Graphen berechnen. Es trifft keine fachliche Zielauswahl, behauptet keine globale Mehrzieloptimalität und ist weder mit dem Passive Analyzer noch mit Orchestrator oder UI verbunden. Details: [`docs/POE2_PASSIVE_PATHFINDING.md`](docs/POE2_PASSIVE_PATHFINDING.md).
+
 Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile 2. Die App zeigt direkt eine einzige lange Planer-Seite und demonstriert den vollständigen Eingabe- und Ergebnisablauf.
 
 > **Prototyp:** Sämtliche Spieldaten und Berechnungsergebnisse sind lokale Platzhalter. Eine UI-unabhängige, deterministische Engine-Architektur mit künstlicher Testlogik ist vorhanden; es gibt keine echte Optimierungs- oder DPS-Engine und keine PoE2DB-Anbindung.
@@ -61,9 +63,11 @@ Der Befehl lädt ausschließlich das synthetische Fixture, validiert Manifest, R
 - `src/import/` – versioniertes Rohdatenformat, Offline-Importpipeline und künstliche Fixtures
 - `data-sources/source-approval.json` – maschinenlesbare Quellen-/Kategoriefreigaben und globale Importsperren
 - `src/engine/` – React-freie Analyzer-Schnittstellen, Bewertungsmodell, Orchestrator und künstliche Engine-Fixtures
+- `src/engine/passive-pathfinding/` – isolierter offizieller Graph, deterministische Einzel-/Mehrzielpfade und Vertragstests
 - `src/data.ts` – normalisierte lokale Definitionen, Konfigurationen und feste Testberechnung
 - `docs/DATA_SOURCES.md` – geprüfte Datenquellen, Bedingungen, Unsicherheiten und vorläufige Empfehlung
 - `docs/ENGINE_ARCHITECTURE.md` – Engine-Datenfluss, Regeln, Profile, Bewertungen und klare fachliche Grenzen
+- `docs/POE2_PASSIVE_PATHFINDING.md` – Graph-, Kosten-, Algorithmus-, Aszendenz- und Performancevertrag der realen Pfadsuchgrundlage
 - `docs/ENGINE_UI_INTEGRATION_AUDIT.md` – geprüfter späterer UI-/Engine-Vertrag, Adaptergrenze und Integrationsrisiken
 - `docs/DATA_SOURCE_RELEASE_AUDIT.md` – Datenbedarf, Quellenstatus und verbindliche Sperre vor echtem Datenimport
 - `docs/DATA_SOURCE_APPROVAL.md` – verbindliche Quellenentscheidung, Datenmatrix und Empfehlung für Aufgabe 5C
