@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Technische Baumansicht aus Aufgabe 5D
+
+Der offizielle Baumstand 0.5.2 wird nun ausschließlich zur technischen Darstellung über `ImportedPoe2Tree → PassiveTreeViewModel → PassiveTree` geführt. Dies ist keine Engine-UI-Integration: Der Adapter verarbeitet keine `PassiveAnalysis`, keine Scores, Pfade, Punkte oder Empfehlungen. Suche, Filter sowie Klassen-/Aszendenzzentrierung sind reine Ansichtsoperationen und verändern weder Charakter- noch Buildstate. Der bisherige synthetische Sieben-Knoten-Baum wird nicht mehr gerendert; die synthetischen Engine-Fixtures bleiben für Tests bestehen.
+
 Stand: 20. Juli 2026. Dieses Audit beschreibt den Quellcode nach Aufgabe 4I. Es implementiert keine Engine-UI-Anbindung. Bei Widersprüchen ist der Quellcode maßgeblich.
 
 ## Ergebnis

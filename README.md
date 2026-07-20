@@ -9,7 +9,7 @@ npm run import:poe2-tree -- --release 0.5.2
 npm run check:poe2-tree-update -- --release 0.5.2
 ```
 
-Importiert werden ausschließlich Baumstruktur und englische Originaltexte; keine Assets, Übersetzungen oder Daten von PoE2DB/RePoE. Der Datenbestand unter `generated/poe2-tree/` ist noch nicht mit Engine oder UI verbunden. `latest`, `main`, fehlende oder unbekannte Versionen werden blockiert. Details: [`docs/POE2_TREE_IMPORT.md`](docs/POE2_TREE_IMPORT.md) und [`docs/POE2_TREE_UPDATE_PROCESS.md`](docs/POE2_TREE_UPDATE_PROCESS.md). Andere echte Datenkategorien bleiben blockiert.
+Importiert werden ausschließlich Baumstruktur und englische Originaltexte; keine Assets, Übersetzungen oder Daten von PoE2DB/RePoE. Seit Aufgabe 5D zeigt der Baumabschnitt diesen Datenbestand über einen getrennten ViewModel-Adapter technisch an; die Engine bleibt vollständig getrennt. `latest`, `main`, fehlende oder unbekannte Versionen werden blockiert. Details: [`docs/POE2_TREE_IMPORT.md`](docs/POE2_TREE_IMPORT.md), [`docs/POE2_TREE_UPDATE_PROCESS.md`](docs/POE2_TREE_UPDATE_PROCESS.md) und [`docs/POE2_TREE_VIEW_ADAPTER.md`](docs/POE2_TREE_VIEW_ADAPTER.md). Andere echte Datenkategorien bleiben blockiert.
 
 Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile 2. Die App zeigt direkt eine einzige lange Planer-Seite und demonstriert den vollständigen Eingabe- und Ergebnisablauf.
 
