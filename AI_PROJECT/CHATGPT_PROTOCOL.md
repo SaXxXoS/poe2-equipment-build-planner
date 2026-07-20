@@ -57,8 +57,8 @@ PoE2DB ist als mögliche Hauptquelle deutschsprachiger Daten vorgesehen: Klassen
 
 ### Entwicklungsphasen
 
-1. **Klickbarer Prototyp:** Vite, React, TypeScript, mobile-first, lokale Platzhalterdaten, kompletter Ablauf; keine Engine oder DPS-Berechnung. (Aktueller Stand)
-2. **Normalisiertes Datenmodell:** Klassen, Aszendenzen, Slots, Affixe, Skills, Supports, Waffen-Sets, Juwelen/Cluster/Uniques, passive Knoten, Rotationen, Empfehlungen und Erklärungen.
+1. **Klickbarer Prototyp:** Vite, React, TypeScript, mobile-first, lokale Platzhalterdaten, kompletter Ablauf; keine Engine oder DPS-Berechnung. (Abgeschlossen)
+2. **Normalisiertes Datenmodell:** Klassen, Aszendenzen, Slots, Affixe, Skills, Supports, Waffen-Sets, Juwelen/Cluster/Uniques, passive Knoten, Rotationen, Empfehlungen und Erklärungen. (Abgeschlossen)
 3. **Spieldatenimport:** Quelle und Importformat prüfen, Importskripte erstellen, deutsche Daten normalisieren, validieren und versionieren; keine externe Laufzeitabhängigkeit.
 4. **Regelbasierte Ausrüstungsanalyse:** Waffen-/Schadensarten und Tags erkennen, Angriff/Zauber sowie Tempo, Krit, Attribute, Anforderungen und Defensive bewerten, Konflikte und schlecht genutzte Affixe erkennen.
 5. **Skill- und Support-Empfehlungen:** Haupt- und Zusatzfertigkeiten sowie Supportkombinationen bewerten; Mapping/Boss und Waffen-Sets berücksichtigen.
@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 ist implementiert. Die App besteht aus einer Vite-/React-/TypeScript-Einzelseite mit lokalem State und Platzhalterdaten. Es existieren weder Backend noch echte Engine oder externe Datenanbindung.
+Phase 1 und Phase 2 sind implementiert. Die Vite-/React-/TypeScript-Einzelseite verwendet ein normalisiertes Domänenmodell, lokalen State und ausschließlich versionierte Platzhalterdaten. Reine Validierungsfunktionen und sieben Vitest-Modelltests sichern IDs, Referenzen, Wertebereiche und den Platzhalterstatus. Es existieren weder Backend noch echte Engine oder externe Datenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -85,43 +85,52 @@ Phase 1 ist implementiert. Die App besteht aus einer Vite-/React-/TypeScript-Ein
 - SVG-Testbaum mit markiertem Pfad, Knotentypen, Button-/Rad-Zoom, Pointer-/Touch-Pan und Vollbildmodus
 - Deutlich markierte feste Testberechnung mit allen geforderten Ergebnisbereichen und Rotationen
 - Dunkles responsives mobile-first Design
+- Normalisierte Definitionen und Konfigurationen mit stabilen technischen IDs
+- Gemeinsame Quellen-, Versions-, Status- und Tag-Metadaten
+- Strukturierte Modifier-, Equipment-, Skill-, Juwel-, Passivbaum-, BuildInput- und BuildResult-Typen
+- Reine lokale Datenvalidierung und automatische Vitest-Modelltests
 
 ## 6. Teilweise fertige Funktionen
 
-- Datenmodelle sind als Ausgangspunkt vorhanden, aber noch nicht vollständig normalisiert.
 - Baum und Empfehlungen demonstrieren nur spätere Interaktionen; sie nutzen keine echten Spieldaten.
 - Skills zeigen feste Support-Testdaten; freie Skill-/Supportbearbeitung ist noch nicht vorgesehen.
+- `BuildInput` ist vollständig typisiert, wird von der Platzhalterberechnung aber noch nicht verarbeitet.
 
 ## 7. Noch offene Aufgaben
 
-- Alle Phasen 2 bis 10 des langfristigen Plans
+- Alle Phasen 3 bis 10 des langfristigen Plans
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
 
 ## 8. Bekannte Bugs
 
-Zum dokumentierten Stand sind nach Desktop- und Mobilprüfung keine reproduzierbaren Bugs bekannt. Einschränkungen der Platzhalterlogik sind keine fertigen Produktfunktionen.
+Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilprüfung keine reproduzierbaren Bugs bekannt. Einschränkungen der Platzhalterlogik sind keine fertigen Produktfunktionen.
 
 ## 9. Letzte Änderungen
 
 - Erstes Vite-/React-/TypeScript-Projekt erstellt
 - Vollständigen klickbaren Phase-1-Ablauf und responsive Gestaltung implementiert
 - README und offizielles Projektgedächtnis angelegt
+- Einzelne Modelldatei durch `src/domain/` mit normalisierten Definitionen und Konfigurationen ersetzt
+- Sämtliche Platzhalterdaten auf stabile IDs, gemeinsame Metadaten und kontrollierte Tags migriert
+- Datenvalidierung und sieben Vitest-Tests ergänzt; UI auf ID-basierte Auflösung umgestellt
 
 ## 10. Zuletzt getestete Bereiche
 
-Am 20. Juli 2026 erfolgreich geprüft:
+Am 20. Juli 2026 nach Abschluss von Aufgabe 2 erfolgreich geprüft:
 
-- Saubere npm-Installation: 149 Pakete, 0 gemeldete Schwachstellen
-- `npm run lint`, `npm run typecheck` und `npm run build`
+- `npm install`: 41 zusätzliche Pakete für Vitest, insgesamt 191 geprüft, 0 gemeldete Schwachstellen
+- `npm run test`: eine Testdatei, sieben Tests erfolgreich
+- `npm run lint`, `npm run typecheck` und `npm run build` erfolgreich
 - Entwicklungsserver startet fehlerfrei und liefert die Planer-Seite direkt aus
-- Charakter: Klassenwechsel auf Zauberin aktualisiert die Aszendenz; Level 82 und Ziel Boss wurden eingegeben
+- Charakter: Klassenwechsel auf Zauberin aktualisiert die technische Aszendenzreferenz auf `ascendancy-2-primary`; Ziel Boss wurde gewählt
 - Affixdialog: Suche nach „Widerstand“, Feuer- und Kältewiderstand mit unterschiedlichen Werten hinzugefügt, Feuerwiderstand entfernt und Kältewiderstand gespeichert
-- Auswahl von normalem Juwel, Cluster-Juwel und Unique-Cluster-Juwel; normale Juwelauswahl wieder entfernt
-- Testberechnung zeigt alle 14 geforderten Ergebnisgruppen einschließlich Mapping- und Boss-Rotation
+- Auswahl von normalem Juwel, Cluster-Juwel und Unique-Cluster-Juwel
+- Sechs Skills und 30 Supportplätze sichtbar
+- Testberechnung löst alle normalisierten IDs zu Anzeigenamen auf und zeigt alle 14 geforderten Ergebnisgruppen einschließlich Mapping- und Boss-Rotation
 - Skilltree: Button-Zoom von 100 auf 120 Prozent, Maus-/Pointer-Pan auf 150/80 Pixel, Vergrößerungsmodus und Rückkehr
-- Desktopdarstellung bei 1280 × 800 und Mobilansicht bei 390 × 844; zwölf Equipment- und sechs Skill-Slots vorhanden, kein horizontaler Überlauf und minimale Buttonhöhe über 46 Pixel
+- Desktopdarstellung bei 1280 × 800 und Mobilansicht bei 390 × 844; zwölf Equipment- und sechs Skill-Slots vorhanden, kein horizontaler Überlauf
 - Browserkonsole ohne Warnungen oder Fehler
 
 Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile Layoutprüfung abgedeckt, jedoch nicht auf einem physischen Touchgerät ausgeführt.
@@ -129,18 +138,22 @@ Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile La
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
-- Lokaler React-State; Testdaten zentral in `src/data.ts`
-- Erweiterbare Domänentypen in `src/models.ts`
+- Lokaler React-State; normalisierte Platzhalterdaten zentral in `src/data.ts`
+- Flache Domänenstruktur in `src/domain/` mit Barrel-Export; Definitionen sind von konkreten Konfigurationen getrennt
+- Anzeigenamen sind keine Primärschlüssel; Beziehungen speichern stabile String-IDs
+- Gemeinsame `GameDataMetadata` modellieren Quelle, Version, Status und kontrollierte Mechanik-Tags
+- Keine Laufzeit-Validierungsbibliothek; reine TypeScript-Funktionen liefern verständliche Fehlerlisten
+- Vitest ist die einzige für Aufgabe 2 neu hinzugefügte Testabhängigkeit
 - Reines CSS ohne UI-Bibliothek; SVG für den Demonstrationsbaum
 - Keine externen APIs oder geschützten Spielgrafiken
 
 ## 12. Nächste empfohlene Aufgabe
 
-Phase 2 beginnen: das Datenmodell anhand konkreter Engine-Anwendungsfälle normalisieren, IDs/Tags/Quellenmetadaten definieren und mit Unit-Tests absichern – noch ohne externe Spieldaten zu importieren.
+Phase 3 vorbereiten: Datenquellen und Nutzungsbedingungen prüfen, ein versioniertes Importformat und Fixtures festlegen und Import-/Validierungstests entwerfen, ohne eine Laufzeitabhängigkeit von externen Seiten einzuführen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run build`, `npm run lint` und `npm run typecheck` ausführen. Der aktuelle Prototyp darf nicht als echte Berechnung interpretiert werden. Änderungen klein und phasenbezogen halten und dieses Protokoll nach jeder Aufgabe faktisch aktualisieren.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Domänentypen liegen in `src/domain/`; Definitionen und konkrete Konfigurationen dürfen nicht wieder vermischt werden. Der aktuelle Prototyp darf nicht als echte Berechnung interpretiert werden. Änderungen klein und phasenbezogen halten und dieses Protokoll nach jeder Aufgabe faktisch aktualisieren.
 
 ## 14. Arbeitsregeln des Projekts
 
