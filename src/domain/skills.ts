@@ -30,6 +30,28 @@ export interface SupportGemDefinition extends GameDataMetadata {
   requiredTags: MechanicTag[]
   excludedTags: MechanicTag[]
   ownTags: MechanicTag[]
+  supportedDamageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]
+  supportedMechanics?: MechanicTag[]
+  excludedDamageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]
+  requiredWeaponTypes?: SyntheticWeaponType[]
+  excludedWeaponTypes?: SyntheticWeaponType[]
+  allowedSkillRoles?: SkillRole[]
+  excludedSkillRoles?: SkillRole[]
+  excludedClassIds?: EntityId[]
+  excludedAscendancyIds?: EntityId[]
+  preferredAscendancyIds?: EntityId[]
+  mappingBase?: number
+  bossBase?: number
+  utilityBase?: number
+  resourceCost?: number
+  reducedSpeed?: number
+  reducedDefence?: number
+  mappingPenalty?: number
+  bossPenalty?: number
+  preferredWeaponSet?: SkillWeaponSet
+  requiredWeaponSet?: SkillWeaponSet
+  enabled?: boolean
+  experimental?: boolean
 }
 
 export interface SkillSetup {

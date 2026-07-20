@@ -92,8 +92,28 @@ Set 1, Set 2 und das kombinierte Profil werden separat bewertet. Die Empfehlung 
 
 `profileClarity` beeinflusst ausschließlich `confidence`, nicht die fachliche Punktzahl. Hohe Klarheit mit Profiltreffern ergibt `high`, mittlere Klarheit `medium`, geringe Klarheit `low`; hoher `conflictLevel` und geringe Klarheit erzeugen Warnungen. `SkillAnalysis` enthält alle, gültige und blockierte Kandidaten, Top-Main-, Utility- und Movement-Gruppen sowie getrennte Mapping- und Bossranglisten. Gleichstände werden über stabile Skill-IDs aufgelöst; sofern verfügbar werden drei Main-Kandidaten bereitgestellt.
 
-Der Analyzer verwendet keine echten PoE2-Skills, Werte oder DPS-Formeln. Der Support Analyzer bleibt eine unveränderte 4A-Schnittstelle und ist ausdrücklich nicht Bestandteil der Skillbewertung.
+Der Analyzer verwendet keine echten PoE2-Skills, Werte oder DPS-Formeln. Die Skillbewertung selbst bleibt vom nachgelagerten Support Analyzer getrennt.
+
+## Support Analyzer (Aufgabe 4D)
+
+Der Support Analyzer bewertet jeden übergebenen synthetischen Support einzeln gegen einen bereits ausgewählten `SkillRecommendation`, dessen Definition, das kombinierte und die beiden Waffen-Set-Profile, Klasse, Aszendenz, Zielprofil und `AnalyzerContext`. Ausgabe ist eine `SupportAnalysis` mit allen, gültigen und blockierten Kandidaten sowie Damage-, Mapping-, Boss-, Utility- und Defensive-Ranglisten. Er wählt weder einen anderen Skill noch eine Support-Kombination.
+
+### Regeln, Kompatibilität und Bewertung
+
+`src/engine/supports/rules.ts` enthält das zentrale Regelmodell mit IDs, Description-Keys, benötigten und ausgeschlossenen Skill-/Support-Tags, Profilfeldern, Kategorien, Gewichten, Schwellen, Contribution-Limits und Aktivstatus. Scoregrenzen, Zielgewichte, Trade-off-Abzüge, Profil- und Confidence-Schwellen liegen ausschließlich in `config.ts`.
+
+Harte Prüfungen blockieren fehlende oder ungültige Skill-/Supportreferenzen, deaktivierte Supports, fehlende Pflicht-Tags, vorhandene Ausschluss-Tags oder Schadensarten, unpassende Schadensarten und Mechaniken, Waffen- oder Rollenwidersprüche, ausgeschlossene Klasse/Aszendenz sowie ein nicht verfügbares Pflicht-Waffen-Set. Blockierte Supports bleiben mit mindestens einer `ConstraintViolation` sichtbar, sind nicht auswählbar und werden hinter gültigen Supports sortiert.
+
+Gültige Supports erhalten nachvollziehbare `ScoreReason`-Beiträge in `damage`, `defence`, `mapping`, `boss`, `speed`, `utility`, `resource`, `ascendancy-synergy` und `equipment-synergy`; `path-efficiency` ist ausgeschlossen. Attack, Spell, Projectile, Melee, Area, Critical, DoT, Minion, Movement, Buff, Debuff und fünf Schadensarten werden nur bei direkter Skill- oder Profilrelevanz belohnt. Eine Schadensumwandlung oder reale Multiplikatoren existieren nicht. Mapping, Bossing und Balanced verwenden zentral konfigurierte synthetische Gewichte.
+
+### Trade-offs, Waffen-Sets und Confidence
+
+Geschwindigkeits-, Ressourcen-, Defensive-, Mapping- und Bossnachteile sowie eingeschränkte Skill- oder Waffen-Set-Nutzung werden als strukturierte `SupportTradeOff`-Einträge und negative Gründe ausgegeben. Nur eine zugehörige harte Anforderung blockiert. Matched, schwach genutzte, ungenutzte und konfliktbehaftete Tags beziehungsweise Profilfelder bleiben getrennt nachvollziehbar.
+
+Set 1 und Set 2 werden unabhängig bewertet; die Empfehlung enthält beide Scores, Differenz, Set-Gründe und `set-1`, `set-2`, `both` oder `none`. Gleichstand ergibt `both`; eine Waffenwechselrotation wird nicht erzeugt. `confidence` wird getrennt vom Score aus Skillgültigkeit und -Confidence, Profilklarheit, direkten Treffern, Konflikten und experimentellem Status ermittelt. Gleichstände in allen Ranglisten werden nach technischer Support-ID aufgelöst; bei ausreichender Kandidatenzahl werden mindestens fünf gültige Top-Kandidaten ausgegeben.
+
+Der Analyzer arbeitet rein, deterministisch, React- und netzwerkfrei mit synthetischen Fixtures. Er optimiert keine mehreren Supports, berücksichtigt keine Sockel oder Links und berechnet weder Schaden noch DPS. Diese Grenzen bleiben späteren, ausdrücklich freizugebenden Aufgaben vorbehalten.
 
 ## Nächste Module
 
-Folgeaufgaben können zunächst Regeln der Equipment-Analyse und danach Skill-/Supportregeln erweitern. Echte Daten, DPS-Formeln, passive Graphsuche und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Nächster abgegrenzter Schritt ist Aufgabe 4E. Echte Daten, DPS-Formeln, passive Graphsuche und kombinatorische Supportoptimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.

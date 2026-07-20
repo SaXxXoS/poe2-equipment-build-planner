@@ -30,7 +30,7 @@ export const engineModifierFixtures: ModifierDefinition[] = [
   modifier('fixture-projectile-damage', ['projectile']), modifier('fixture-melee-damage', ['melee']), modifier('fixture-area-damage', ['area']), modifier('fixture-minion-damage', ['minion']), modifier('fixture-damage-over-time', ['damage-over-time']), modifier('fixture-buff-effect', ['buff'], 'utility'), modifier('fixture-debuff-effect', ['debuff'], 'utility'),
 ]
 const skill = (id: string, tags: MechanicTag[], values: Partial<SkillGemDefinition> = {}): SkillGemDefinition => ({ ...placeholderMetadata(id, id, tags), damageTypes: tags.filter(tag => ['physical', 'fire', 'cold', 'lightning', 'chaos'].includes(tag)) as SkillGemDefinition['damageTypes'], possibleRoles: tags.includes('movement') ? ['movement'] : tags.includes('buff') || tags.includes('debuff') ? ['utility'] : ['main', 'secondary'], mappingBase: 50, bossBase: 50, resourceAffinity: 20, enabled: true, ...values })
-const support = (id: string, requiredTags: MechanicTag[], excludedTags: MechanicTag[] = []): SupportGemDefinition => ({ ...placeholderMetadata(id, id), requiredTags, excludedTags, ownTags: requiredTags })
+const support = (id: string, requiredTags: MechanicTag[], values: Partial<SupportGemDefinition> = {}): SupportGemDefinition => ({ ...placeholderMetadata(id, id), requiredTags, excludedTags: [], ownTags: requiredTags, mappingBase: 50, bossBase: 50, utilityBase: 10, enabled: true, ...values })
 const jewel = (id: string, jewelType: 'normal' | 'cluster' | 'unique-cluster', tags: Parameters<typeof placeholderMetadata>[2]) => jewelType === 'cluster' ? ({ ...placeholderMetadata(id, id, tags), jewelType, description: 'synthetic fixture', modifiers: [], clusterSize: 'medium' as const, possiblePassiveNodeIds: [], additionalPathCost: 2 }) : ({ ...placeholderMetadata(id, id, tags), jewelType, description: 'synthetic fixture', modifiers: [] })
 const unique = (id: string, tags: Parameters<typeof placeholderMetadata>[2], ascendancyIds: string[]): UniqueCandidate => ({ ...placeholderMetadata(id, id, tags), itemType: 'synthetic-fixture', modifiers: [], ascendancyIds, buildEnabler: true })
 export const syntheticSkillFixtures: SkillGemDefinition[] = [
@@ -45,7 +45,19 @@ export const syntheticSkillFixtures: SkillGemDefinition[] = [
   skill('fixture-dot', ['spell', 'damage-over-time', 'chaos'], { mappingBase: 58, bossBase: 64 }),
   skill('fixture-minion', ['minion', 'physical'], { mappingBase: 60, bossBase: 60 }),
 ]
-export const engineCandidatesFixture: EngineCandidates = { skills: syntheticSkillFixtures, supports: [support('fixture-support-compatible', ['attack']), support('fixture-support-incompatible', ['spell'])], passives: [{ id: 'fixture-passive-cheap', tags: ['lightning'], utilityScore: 12, pathCost: 2, reachable: true }, { id: 'fixture-passive-expensive', tags: ['lightning'], utilityScore: 12, pathCost: 6, reachable: true }], jewels: [jewel('fixture-jewel-normal', 'normal', ['lightning']), jewel('fixture-jewel-cluster', 'cluster', ['lightning']), jewel('fixture-jewel-unique', 'unique-cluster', ['defensive'])], uniques: [unique('fixture-unique-synergy', ['lightning'], ['fixture-ascendancy-storm']), unique('fixture-unique-neutral', ['cold'], [])] }
+export const syntheticSupportFixtures: SupportGemDefinition[] = [
+  support('fixture-support-compatible', ['attack', 'projectile'], { ownTags: ['attack', 'projectile'], supportedMechanics: ['attack', 'projectile'], mappingBase: 72 }),
+  support('fixture-support-lightning', ['lightning'], { ownTags: ['lightning'], supportedDamageTypes: ['lightning'] }),
+  support('fixture-support-cold-spell', ['spell', 'cold'], { ownTags: ['spell', 'cold'], supportedDamageTypes: ['cold'], supportedMechanics: ['spell'] }),
+  support('fixture-support-critical', ['critical'], { ownTags: ['critical'], supportedMechanics: ['critical'], bossBase: 70 }),
+  support('fixture-support-area', ['area'], { ownTags: ['area'], mappingBase: 85, bossBase: 30 }),
+  support('fixture-support-boss', [], { ownTags: ['debuff'], bossBase: 88, reducedSpeed: 15 }),
+  support('fixture-support-resource', [], { ownTags: ['attack'], resourceCost: 30 }),
+  support('fixture-support-utility', [], { ownTags: ['buff'], utilityBase: 75 }),
+  support('fixture-support-incompatible', [], { ownTags: ['melee'], excludedTags: ['attack'], requiredWeaponTypes: ['melee-weapon'], allowedSkillRoles: ['secondary'] }),
+  support('fixture-support-experimental', [], { ownTags: ['lightning'], experimental: true, preferredAscendancyIds: ['fixture-ascendancy-storm'] }),
+]
+export const engineCandidatesFixture: EngineCandidates = { skills: syntheticSkillFixtures, supports: syntheticSupportFixtures, passives: [{ id: 'fixture-passive-cheap', tags: ['lightning'], utilityScore: 12, pathCost: 2, reachable: true }, { id: 'fixture-passive-expensive', tags: ['lightning'], utilityScore: 12, pathCost: 6, reachable: true }], jewels: [jewel('fixture-jewel-normal', 'normal', ['lightning']), jewel('fixture-jewel-cluster', 'cluster', ['lightning']), jewel('fixture-jewel-unique', 'unique-cluster', ['defensive'])], uniques: [unique('fixture-unique-synergy', ['lightning'], ['fixture-ascendancy-storm']), unique('fixture-unique-neutral', ['cold'], [])] }
 
 export const fixtureA: EngineRequest = { input: syntheticInput([{ modifierId: 'fixture-lightning-damage', value: 60 }, { modifierId: 'fixture-attack-speed', value: 60 }, { modifierId: 'fixture-projectile-damage', value: 60 }, { modifierId: 'fixture-critical-chance', value: 40 }, { modifierId: 'fixture-critical-multiplier', value: 40 }], 'mapping'), candidates: engineCandidatesFixture }
 export const fixtureB: EngineRequest = { input: syntheticInput([{ modifierId: 'fixture-cold-damage', value: 60 }, { modifierId: 'fixture-cast-speed', value: 60 }, { modifierId: 'fixture-energy-shield', value: 60 }], 'boss'), candidates: engineCandidatesFixture }

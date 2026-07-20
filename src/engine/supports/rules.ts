@@ -1,0 +1,5 @@
+import type { MechanicTag } from '../../domain'
+import type { ScoreCategory } from '../common/types'
+export interface SupportRule { ruleId: string; descriptionKey: string; requiredSkillTags?: MechanicTag[]; excludedSkillTags?: MechanicTag[]; requiredSupportTags?: MechanicTag[]; excludedSupportTags?: MechanicTag[]; requiredProfileFields?: string[]; affectedScoreCategory: Exclude<ScoreCategory, 'path-efficiency'>; weight: number; threshold?: number; maximumContribution?: number; reasonCode: string; enabled: boolean }
+const tagRule = (tag: MechanicTag): SupportRule => ({ ruleId: `support-rule-${tag}`, descriptionKey: `engine.support.rule.${tag}`, requiredSkillTags: [tag], requiredSupportTags: [tag], requiredProfileFields: [`mechanics.${tag}`], affectedScoreCategory: ['buff', 'debuff', 'movement'].includes(tag) ? 'utility' : 'equipment-synergy', weight: 0.3, maximumContribution: 30, reasonCode: `support-${tag}`, enabled: true })
+export const SUPPORT_RULES = ['attack', 'spell', 'projectile', 'melee', 'area', 'critical', 'damage-over-time', 'minion', 'movement', 'buff', 'debuff'].map(tag => tagRule(tag as MechanicTag))

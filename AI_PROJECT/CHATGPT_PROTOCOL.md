@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A und 4B lieferten Engine-Architektur und Equipment Analyzer. Aufgabe 4C implementiert den eigenständigen synthetischen Skill Analyzer mit harten Ausschlüssen, kategorisierter Bewertung, Rollen, Waffen-Set-Eignung, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. 113 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4D lieferten Engine-Architektur sowie eigenständige Equipment-, Skill- und Support-Analyzer. Der synthetische Support Analyzer bewertet einzelne Kandidaten mit harten Ausschlüssen, kategorisierten Scores, Trade-offs, Waffen-Set-Eignung, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und ist weder eine kombinatorische Support- noch eine DPS-Engine. 146 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -105,6 +105,9 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 - Zentral konfigurierte Skill-Regeln, harte Kompatibilitätsprüfung und weiche Bewertung für Schadensarten, Mechaniken, Geschwindigkeit, Klasse, Aszendenz und Ziele
 - Skillrollen, getrennte Waffen-Set-Scores, Profilnutzung, Confidence sowie gültige/blockierte, Main-, Utility-, Movement-, Mapping- und Bossranglisten
 - Zehn künstliche Skill-Kandidaten und 38 dedizierte Skill-Analyzer-Tests
+- Zentral konfigurierte Support-Regeln für Tags, Schadensarten, Mechaniken, Rollen, Waffen, Ziele, Profile und Trade-offs
+- Einzelne Support-Empfehlungen mit Set-Scores, Confidence sowie gültigen/blockierten und fünf kategorisierten Ranglisten
+- Zehn künstliche Support-Kandidaten und 33 dedizierte Support-Analyzer-Tests
 
 ## 6. Teilweise fertige Funktionen
 
@@ -117,7 +120,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Aufgaben 4D bis 4I der Reihe nach umsetzen; 4A bis 4C sind abgeschlossen
+- Aufgaben 4E bis 4I der Reihe nach umsetzen; 4A bis 4D sind abgeschlossen
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -144,6 +147,8 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Equipment-Fixtures auf fünf Szenarien erweitert und 36 dedizierte Equipment-Tests ergänzt; Architektur und README abgeglichen
 - Aufgabe 4C umgesetzt: Skill-Domäne gezielt optional erweitert, zentrale Regeln/Konfiguration, harte Ausschlüsse, weiche Kategorien, Zielgewichtung, Rollen, Set-Eignung, Confidence und Ranglisten ergänzt
 - Zehn künstliche Skill-Kandidaten und 38 Skill-Analyzer-Tests ergänzt; Support Analyzer fachlich unverändert gelassen
+- Aufgabe 4D umgesetzt: Support-Domäne gezielt optional erweitert, zentrale Regeln/Konfiguration, harte Kompatibilität, weiche Kategorien, Zielgewichtung, Trade-offs, Set-Eignung, Confidence und Ranglisten ergänzt
+- Zehn künstliche Support-Kandidaten und 33 Support-Analyzer-Tests ergänzt; Skill und Passive Analyzer fachlich unverändert gelassen
 
 ## 10. Zuletzt getestete Bereiche
 
@@ -198,6 +203,16 @@ Am 20. Juli 2026 nach Aufgabe 4C zusätzlich erfolgreich geprüft:
 - Support Analyzer gegenüber Aufgabe 4A fachlich und dateiseitig unverändert
 - Nicht auf physischem Touchgerät geprüft; keine automatisierten Browser-Regressionstests vorhanden
 
+Am 20. Juli 2026 nach Aufgabe 4D zusätzlich erfolgreich geprüft:
+
+- 146 reguläre Tests in sechs Dateien erfolgreich, davon 33 dedizierte Support-Analyzer-Tests; bestehende 113 Tests bleiben erfolgreich
+- Installation mit unverändertem Lockfile, Import-Fixture (23 importiert, 0 verworfen), Lint, Typecheck und Produktions-Build mit 37 Modulen erfolgreich
+- Support Engine ohne React-Import, Netzwerkzugriff, echte PoE2-Daten, kombinatorische Supportauswahl oder DPS-/Schadensformeln
+- Skill und Passive Analyzer fachlich und dateiseitig unverändert
+- Charakterwechsel auf Zauberin, Affixdialog, Rubinjuwel-Auswahl, Skilltree-Zoom auf 120 Prozent und Platzhalterberechnung funktionieren
+- Desktop bei 1280 × 800 und Mobil bei 390 × 844 ohne horizontalen Überlauf; Browserkonsole ohne Warnungen oder Fehler
+- Nicht auf physischem Touchgerät geprüft; Touch-Verhalten bleibt durch Pointer-Events und mobile Layoutprüfung abgedeckt
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -230,15 +245,18 @@ Am 20. Juli 2026 nach Aufgabe 4C zusätzlich erfolgreich geprüft:
 - Blockierte Skills bleiben erklärbar sichtbar, werden jedoch stets hinter gültigen Kandidaten sortiert
 - `profileClarity` beeinflusst Confidence getrennt vom Score; Zielprofile beeinflussen Mapping-/Bossranglisten über synthetische Gewichte
 - Skill-Set-Scores erzeugen nur Eignungshinweise und nehmen keine Rotationslogik vorweg
-- Der Support Analyzer bleibt bis Aufgabe 4D fachlich unverändert
+- Support-Regeln, Schwellen, Trade-off-Gewichte und Normalisierung liegen zentral in `src/engine/supports/rules.ts` und `config.ts`
+- Jeder Support wird unabhängig gegen den bereits ausgewählten Skill bewertet; es gibt bewusst keine kombinatorische Suche
+- Blockierte Supports bleiben erklärbar sichtbar, sind aber nicht auswählbar und stehen hinter gültigen Kandidaten
+- Set-Eignung und Confidence sind vom Gesamtscore getrennte Ausgaben; technische IDs entscheiden jeden Ranglisten-Gleichstand
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4D als klar abgegrenzten regelbasierten Support Analyzer umsetzen. Nur synthetische Support-Kandidaten gegen einen ausgewählten Skill und das BuildProfile bewerten; keine Skillkombination, Passive, Juwele, Uniques, Rotationen oder UI-Anbindung vorwegnehmen.
+Aufgabe 4E als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den dafür verbindlichen Auftrag einholen; Support-Kombinationen, Passive, Juwele, Uniques, Rotationen, echte Daten, DPS und UI-Anbindung nicht ohne ausdrückliche Freigabe vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-Regeln liegen in `src/engine/equipment/`, Skill-Regeln in `src/engine/skills/`; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert beide Analyzer. Nächster Schritt ist ausschließlich 4D. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, DPS-Berechnung oder fachliche Empfehlung.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-, Skill- und Support-Regeln liegen jeweils in getrennten Engine-Modulen; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert alle drei Analyzer. Nächster Schritt ist ausschließlich 4E nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, DPS-Berechnung oder fachliche Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 
