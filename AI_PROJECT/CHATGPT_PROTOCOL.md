@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4E lieferten Engine-Architektur sowie eigenständige Equipment-, Skill-, Support- und Passive-Analyzer. Der synthetische Passive Analyzer bewertet einzelne Knoten und vorgegebene kleine Cluster mit Graphprüfung, Pfadkosten, Effizienz, Trade-offs, Waffen-Sets, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und erzeugt weder einen vollständigen Baum noch DPS. 182 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4F lieferten Engine-Architektur sowie eigenständige Equipment-, Skill-, Support-, Passive- und Jewel-Analyzer. Der synthetische Jewel Analyzer bewertet einzelne normale, Cluster- und Unique-Cluster-Juwele mit Sockeln, Kosten, Effizienz, Enablern, Trade-offs, Waffen-Sets, Confidence und Ranglisten. Die Engine ist nicht mit der UI verbunden, belegt keine Sockel automatisch und berechnet keine DPS. 229 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine.
 
 ## 5. Fertige Funktionen
 
@@ -111,6 +111,8 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 - Dreizehn synthetische Passive-Kandidaten für Einzelknoten, Keystones, Ascendancy und kleine Cluster
 - Vereinfachte Graphprüfung, Pfadkosten, scorePerPoint, Path-Efficiency, Set-Scores, Redundanz, Konflikte, Confidence und acht Ranglisten
 - 36 dedizierte Passive-Analyzer-Tests
+- Vierzehn synthetische Juwelkandidaten und 47 dedizierte Jewel-Analyzer-Tests
+- Getrennte Normal-/Cluster-/Unique-Cluster-Bewertung mit Sockeln, Kosten, Effizienz, Enablern, Trade-offs und dreizehn Ranglisten
 
 ## 6. Teilweise fertige Funktionen
 
@@ -123,7 +125,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Aufgaben 4F bis 4I der Reihe nach umsetzen; 4A bis 4E sind abgeschlossen
+- Aufgaben 4G bis 4I der Reihe nach umsetzen; 4A bis 4F sind abgeschlossen
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -228,6 +230,13 @@ Am 20. Juli 2026 nach Aufgabe 4E zusätzlich erfolgreich geprüft:
 - Desktop bei 1280 × 800 und Mobil bei 390 × 844 ohne horizontalen Überlauf; Browserkonsole ohne Warnungen oder Fehler
 - Nicht auf physischem Touchgerät geprüft; Pointer-Events und mobile Layoutprüfung decken das Touch-Verhalten indirekt ab
 
+Am 20. Juli 2026 nach Aufgabe 4F zusätzlich erfolgreich geprüft:
+
+- 229 reguläre Tests in acht Dateien erfolgreich, davon 47 dedizierte Jewel-Analyzer-Tests; bestehende 182 Tests bleiben erfolgreich
+- Fixture-Import (23/0), Lint, Typecheck und Build mit 37 Modulen erfolgreich
+- Keine kombinierte Sockelbelegung, echten Daten, DPS oder Änderungen an normalen Unique-, Rotation- und Explanation-Modulen
+- Charakterwechsel, Affixdialog, Rubinjuwel-Auswahl, Skilltree-Zoom und Platzhalterberechnung funktionieren; Desktop 1280 × 800 und Mobil 390 × 844 ohne horizontalen Überlauf, Konsole fehlerfrei
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -271,11 +280,11 @@ Am 20. Juli 2026 nach Aufgabe 4E zusätzlich erfolgreich geprüft:
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4F als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den verbindlichen Auftrag einholen; Juwel-, Unique-, Rotations-, echte Daten-, DPS- oder UI-Funktionen nicht vorwegnehmen.
+Aufgabe 4G als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den verbindlichen Auftrag einholen; normale Unique-, Rotations-, Erklärungs-, echte Daten-, DPS- oder UI-Funktionen nicht vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-, Skill-, Support- und Passive-Regeln liegen in getrennten Engine-Modulen; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert alle vier Analyzer. Nächster Schritt ist ausschließlich 4F nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, globale Baumoptimierung, DPS-Berechnung oder fachliche Empfehlung.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-, Skill-, Support-, Passive- und Jewel-Regeln liegen in getrennten Engine-Modulen; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert alle fünf Analyzer. Nächster Schritt ist ausschließlich 4G nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, kombinierte Optimierung, DPS-Berechnung oder fachliche Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 

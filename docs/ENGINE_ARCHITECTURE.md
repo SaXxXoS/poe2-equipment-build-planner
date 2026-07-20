@@ -126,6 +126,16 @@ Ziel- und Pfadpunktkosten ergeben `totalPointCost`; `scorePerPoint` teilt den sy
 
 Es wird kein vollständiger Baum zusammengestellt, kein alternativer Pfad gesucht, kein Jewel oder Unique bewertet und keine Rotation erzeugt. Der Analyzer verwendet keinen echten PoE2-Skilltree, keine echten Daten und keine Schadens- oder DPS-Formeln; die Engine bleibt von der UI getrennt.
 
+## Jewel Analyzer (Aufgabe 4F)
+
+Der Jewel Analyzer bewertet einzelne synthetische normale, Cluster- und Unique-Cluster-Juwele gegen BuildProfile, Equipment-, Skill-, Support- und PassiveAnalysis. Zentrale Regeln und Schwellen liegen in `src/engine/jewels/rules.ts` und `config.ts`. Harte Regeln prüfen Referenzen, Aktivstatus, Sockeltyp und -verfügbarkeit, Klasse, Aszendenz, Level, Clustergröße, Pfadkosten, Punktbudget, passive Referenzen, erforderliche Mechaniken und Skillrestriktionen.
+
+Normale Juwele erhalten Modifier-, Profil-, Sockel- und optionale Knotennutzenwerte. Cluster-Juwele unterscheiden Eintritts-, interne und Sockelpunktkosten, passive und Notable-Nutzen, begrenzten Zusatzsockelwert, `scorePerPoint` und Path-Efficiency. Unique-Cluster ergänzen Mechanik- und Build-Enabler-Scores sowie strukturierte Restriktionen und Trade-offs; Enabler erzeugen Warnungen und reduzierte Confidence und gewinnen nicht automatisch.
+
+Schadensarten, Mechaniken, Defensive, Widerstände, Attribute und Ressourcen werden nur bei passender Profil-/Skill-Evidenz belohnt. Empfehlungen enthalten getrennte Waffen-Set-Scores, Redundanz und Konflikte sowie vom Score unabhängige Confidence. `JewelAnalysis` liefert alle, gültige und blockierte Kandidaten sowie Kategorie-, Damage-, Defensive-, Mapping-, Boss-, Effizienz-, Ascendancy- und Enabler-Ranglisten.
+
+PassiveAnalysis wird nur gelesen: Es werden weder Sockel automatisch belegt noch Pfade oder der Baum verändert. Es gibt keine kombinierte Juweloptimierung, keine Bewertung normaler Unique-Gegenstände, keine Rotation, keine echten Daten, keine DPS-Berechnung und keine UI-Anbindung.
+
 ## Nächste Module
 
-Nächster abgegrenzter Schritt ist Aufgabe 4F. Echte Daten, DPS-Formeln, globale passive Graphsuche und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Nächster abgegrenzter Schritt ist Aufgabe 4G. Echte Daten, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.

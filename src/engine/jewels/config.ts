@@ -1,0 +1,2 @@
+export const SYNTHETIC_JEWEL_CONFIG = { min: 0, max: 100, profileWeight: 0.4, tagBonus: 10, typeBase: { normal: 8, cluster: 12, 'unique-cluster': 15 }, defenceWeight: 0.45, needWeight: 0.4, pathCostWeight: 6, socketValue: 8, maximumAddedSocketValue: 16, notableValue: 10, passiveValue: 4, uniqueMechanicValue: 12, buildEnablerValue: 25, restrictionPenalty: 12, defaultBudget: 20, minimumCost: 1, strongMatch: 35, confidenceHigh: 70, confidenceMedium: 40, topCount: 5 } as const
+export type JewelAnalyzerConfig = typeof SYNTHETIC_JEWEL_CONFIG
