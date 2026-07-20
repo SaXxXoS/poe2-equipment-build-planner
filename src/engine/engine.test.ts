@@ -15,7 +15,7 @@ describe('deterministische Platzhalter-Build-Engine', () => {
   it('inkompatibler Support wird blockiert', () => expect(resultA().supportRecommendations.find(item => item.supportId === 'fixture-support-incompatible')?.valid).toBe(false))
   it('Passive Score berücksichtigt pathCost', () => { const result = resultA().passiveRecommendations; expect(result.find(item => item.recommendationId === 'fixture-passive-cheap')!.totalScore).toBeGreaterThan(result.find(item => item.recommendationId === 'fixture-passive-expensive')!.totalScore) })
   it('Jewel Analyzer unterscheidet Juweltypen', () => expect(new Set(resultA().jewelRecommendations.map(item => item.jewelType)).size).toBe(3))
-  it('Unique Analyzer berücksichtigt Aszendenz-Synergie', () => expect(resultA().uniqueRecommendations[0].ascendancySynergyScore).toBe(20))
+  it('Unique Analyzer berücksichtigt Aszendenz-Synergie', () => expect(resultA().uniqueRecommendations.find(item => item.uniqueId === 'fixture-unique-synergy')!.ascendancySynergyScore).toBe(20))
   it('Rotation Generator erzeugt korrekte Reihenfolge', () => expect(rotationGenerator.generate(context()).mappingRotation.steps.map(item => item.order)).toEqual([1, 2, 3, 4]))
   it('Waffenwechsel wird als eigener Schritt ausgegeben', () => expect(resultA().mappingRotation.steps[2]).toMatchObject({ actionType: 'weapon-swap', reasonCodes: ['rotation-switch-to-main-weapon'] }))
   it('Explanation Generator übernimmt ReasonCodes', () => { const entry = explanationGenerator.generate([{ code: 'fixture-code', category: 'damage', messageKey: 'fixture', impact: 1, polarity: 'positive', sourceType: 'skill', affectedTags: [] }], [], context()); expect(entry[0].reasonCodes).toEqual(['fixture-code']) })

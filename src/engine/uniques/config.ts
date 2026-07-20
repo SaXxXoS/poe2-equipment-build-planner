@@ -1,0 +1,2 @@
+export const SYNTHETIC_UNIQUE_CONFIG={min:0,max:100,profileWeight:.4,tagBonus:10,classBonus:12,ascendancyBonus:20,skillBonus:12,crossModuleWeight:.2,defenceWeight:.45,needWeight:.4,mechanicValue:10,enablerValue:25,tradeOffPenalty:10,replacementClear:15,replacementSituational:5,replacementSidegrade:4,defaultSlotUtility:30,topCount:5,confidenceHigh:70,confidenceMedium:40} as const
+export type UniqueAnalyzerConfig=typeof SYNTHETIC_UNIQUE_CONFIG

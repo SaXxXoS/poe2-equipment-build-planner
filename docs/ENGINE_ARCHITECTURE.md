@@ -136,6 +136,16 @@ Schadensarten, Mechaniken, Defensive, Widerstände, Attribute und Ressourcen wer
 
 PassiveAnalysis wird nur gelesen: Es werden weder Sockel automatisch belegt noch Pfade oder der Baum verändert. Es gibt keine kombinierte Juweloptimierung, keine Bewertung normaler Unique-Gegenstände, keine Rotation, keine echten Daten, keine DPS-Berechnung und keine UI-Anbindung.
 
+## Unique Analyzer (Aufgabe 4G)
+
+Der Unique Analyzer bewertet einzelne synthetische Gegenstände der Waffen-, Rüstungs-, Accessoire- und Sonderkategorien gegen BuildProfile sowie Equipment-, Skill-, Support-, Passive- und JewelAnalysis. Regeln und Schwellen liegen zentral in `src/engine/uniques/rules.ts` und `config.ts`. Harte Regeln prüfen Referenz, Status, Slot, Klasse, Aszendenz, Skill-Tags, Waffenart, Level, Kernmechaniken und nicht ersetzbare Slots.
+
+Profil-, Skill- und Cross-Module-Treffer erzeugen getrennte Damage-, Defensive-, Ressourcen-, Equipment-, Skill-, Support-, Passive-, Jewel-, Klassen- und Aszendenzwerte. Die synthetische Slotbewertung vergleicht aktuelle und Unique-Utility, berechnet `replacementDelta` und klassifiziert Clear-/Situational-Upgrade, Sidegrade, Downgrade oder Unknown. Sie ersetzt keine Ausrüstung und verwendet keine realen Item- oder DPS-Werte.
+
+Build-Enabler, gewonnene und verlorene Mechaniken, Folgeänderungen, betroffene Module, alternative Build-Tags und `requiresReoptimization` werden nur strukturiert gekennzeichnet. Trade-offs erzeugen negative Gründe; Kernmechanikverlust kann blockieren. Waffen-Sets, Redundanz, Konflikte und Confidence bleiben getrennte Ausgaben. `UniqueAnalysis` liefert alle, gültige und blockierte Kandidaten sowie Current-Build-, Ascendancy-, Equipment-, Damage-, Defensive-, Mapping-, Boss-, Slot-, Upgrade-, Enabler- und Alternativranglisten.
+
+Es gibt keine kombinierte Unique-Ausrüstung, automatische Neuoptimierung, Markt-/Trade-Daten, Preis- oder DPS-Berechnung, Rotationserweiterung oder UI-Anbindung.
+
 ## Nächste Module
 
-Nächster abgegrenzter Schritt ist Aufgabe 4G. Echte Daten, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Nächster abgegrenzter Schritt ist Aufgabe 4H. Echte Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
