@@ -1,0 +1,12 @@
+import type { ModifierDefinition } from '../../domain'
+import { equipmentAnalyzer } from '../equipment/analyzer'
+import { skillAnalyzer } from '../skills/analyzer'
+import { supportAnalyzer } from '../supports/analyzer'
+import { passiveAnalyzer } from '../passives/analyzer'
+import { jewelAnalyzer } from '../jewels/analyzer'
+import { uniqueAnalyzer } from '../uniques/analyzer'
+import { rotationGenerator } from '../rotations/generator'
+import { explanationGenerator } from '../explanations/generator'
+import type { AnalyzerContext, BuildAnalysis, EngineRequest } from '../common/types'
+export const ENGINE_VERSION = '0.1.0-placeholder'
+export function analyzeBuild(request: EngineRequest, context: AnalyzerContext = { engineVersion: ENGINE_VERSION, fixtureMode: true }, modifiers: ModifierDefinition[] = []): BuildAnalysis { const moduleTrace: string[] = []; const runtime = { ...context, trace: moduleTrace }; const equipment = equipmentAnalyzer.analyze(request, runtime, modifiers); const skills = skillAnalyzer.analyze(equipment.value.buildProfile, request.candidates.skills, runtime); const selectedSkill = request.candidates.skills.find(item => item.id === skills.find(item => item.valid)?.skillId) ?? request.candidates.skills[0]; const supports = selectedSkill ? supportAnalyzer.analyze(selectedSkill, equipment.value.buildProfile, request.candidates.supports, runtime) : []; const passives = passiveAnalyzer.analyze(equipment.value.buildProfile, request.candidates.passives, runtime); const jewels = jewelAnalyzer.analyze(equipment.value.buildProfile, request.candidates.jewels, runtime); const uniques = uniqueAnalyzer.analyze(equipment.value.buildProfile, request.input, request.candidates.uniques, runtime); const rotations = rotationGenerator.generate(runtime); const allRecommendations = [...skills, ...supports, ...passives, ...jewels, ...uniques]; const warnings = [...equipment.violations, ...allRecommendations.flatMap(item => item.violations)]; const explanations = explanationGenerator.generate([...equipment.reasons, ...allRecommendations.flatMap(item => item.reasons)], warnings, runtime); return { equipmentAnalysis: equipment.value.equipmentAnalysis, buildProfile: equipment.value.buildProfile, skillRecommendations: skills, supportRecommendations: supports, passiveRecommendations: passives, jewelRecommendations: jewels, uniqueRecommendations: uniques, ...rotations, explanations, warnings, status: 'placeholder', engineVersion: context.engineVersion, moduleTrace } }

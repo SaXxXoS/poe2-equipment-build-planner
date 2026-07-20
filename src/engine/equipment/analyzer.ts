@@ -1,0 +1,16 @@
+import type { MechanicTag, ModifierDefinition } from '../../domain'
+import type { AnalyzerContext, AnalyzerResult, BuildProfile, ConstraintViolation, EngineRequest, EquipmentAnalysis, ScoreReason } from '../common/types'
+import { blankProfile, clamp, reason, scored } from '../common/scoring'
+
+export interface EquipmentAnalyzer { analyze(request: EngineRequest, context: AnalyzerContext, modifiers: ModifierDefinition[]): AnalyzerResult<{ equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile }> }
+export const equipmentAnalyzer: EquipmentAnalyzer = { analyze({ input }, context, modifiers) {
+  context.trace?.push('equipment'); const profile = blankProfile(); const reasons: ScoreReason[] = []; const recognized = new Set<MechanicTag>(); const used = new Set<string>()
+  profile.goals = input.goalProfile === 'mapping' ? { mappingWeight: 80, bossWeight: 30, defenceWeight: 40, damageWeight: 70 } : input.goalProfile === 'boss' ? { mappingWeight: 30, bossWeight: 80, defenceWeight: 60, damageWeight: 70 } : profile.goals
+  for (const applied of input.equipment.flatMap(item => item.modifierValues)) { const definition = modifiers.find(item => item.id === applied.modifierId); if (!definition) continue; used.add(definition.id); definition.relevantTags.forEach(tag => recognized.add(tag)); const amount = 20
+    for (const tag of definition.relevantTags) { if (tag in profile.damageTypes) profile.damageTypes[tag as keyof typeof profile.damageTypes] = clamp(profile.damageTypes[tag as keyof typeof profile.damageTypes] + amount); if (tag in profile.mechanics) profile.mechanics[tag as keyof typeof profile.mechanics] = clamp(profile.mechanics[tag as keyof typeof profile.mechanics] + amount) }
+    if (definition.id.includes('attack-speed')) { profile.speed.attackSpeedAffinity += 25; profile.mechanics.attack += 25 } if (definition.id.includes('cast-speed')) { profile.speed.castSpeedAffinity += 25; profile.mechanics.spell += 25 } if (definition.id.includes('life')) profile.defence.lifeAffinity += 25; if (definition.id.includes('energy-shield')) profile.defence.energyShieldAffinity += 25; if (definition.category === 'resistance') profile.defence.resistanceNeed = clamp(profile.defence.resistanceNeed - 15); reasons.push(reason('equipment-affinity', amount, 'equipment', definition.id, definition.relevantTags)) }
+  const unusedModifierIds = input.equipment.flatMap(item => item.modifierValues).map(item => item.modifierId).filter(id => !used.has(id)); const violations: ConstraintViolation[] = unusedModifierIds.map(id => ({ code: 'unknown-modifier', severity: 'error', messageKey: 'engine.constraint.unknownModifier', sourceId: id, relatedIds: [id], blocking: true }))
+  if (profile.mechanics.attack > 0 && profile.mechanics.spell > 0) violations.push({ code: 'mixed-attack-spell', severity: 'warning', messageKey: 'engine.constraint.mixedAttackSpell', relatedIds: [], blocking: false })
+  const equipmentAnalysis: EquipmentAnalysis = { recognizedTags: [...recognized].sort(), recognizedWeaponSets: [...new Set(input.equipment.map(item => item.slotId.includes('set-2') ? 'set-2' : item.slotId.includes('set-1') ? 'set-1' : 'not-applicable'))].sort(), recognizedRequirements: [], unusedModifierIds, score: scored(reasons, violations) }
+  return { value: { equipmentAnalysis, buildProfile: profile }, reasons, violations }
+} }

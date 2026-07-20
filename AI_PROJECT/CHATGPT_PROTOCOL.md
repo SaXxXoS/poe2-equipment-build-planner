@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Die Vite-/React-/TypeScript-Einzelseite verwendet weiterhin lokalen State und ausschließlich Platzhalterdaten. 19 reguläre Vitest-Tests sichern Domänenmodell und Importpipeline. Es existieren weder Backend noch echte Engine oder externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Aufgabe 4A hat die React-freie Architektur der künftigen Build-Engine mit strukturierten Regeln, Bewertungsmodellen, Analyzer-Schnittstellen, Orchestrator und ausschließlich künstlicher deterministischer Testlogik vorbereitet. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. Die Vite-/React-/TypeScript-Einzelseite verwendet weiterhin lokalen State und ausschließlich Platzhalterdaten. 39 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine-Architektur. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -93,6 +93,11 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 - Versioniertes Importmanifest und kanonisches Rohdatenformat für elf Kategorien
 - Reine Offline-Pipeline mit deterministischen IDs/Hashes, strukturiertem Bericht und Domänenabbildung
 - Künstliche gültige und fehlerhafte Fixtures sowie `npm run import:fixture`
+- React-freie Engine-Struktur unter `src/engine/` mit Equipment-first-Datenfluss und zentralem `analyzeBuild`
+- Strukturierte Scores, Gründe, harte Verstöße, kontrollierte weiche Kategorien und normiertes `BuildProfile`
+- Schnittstellen und künstliche Testlogik für Equipment, Skills, Supports, Passive, Juwele, Uniques, Rotationen und Erklärungen
+- Drei eindeutig synthetische Engine-Fixtures und 20 deterministische Engine-Architekturtests
+- Vollständige Architekturdokumentation unter `docs/ENGINE_ARCHITECTURE.md`
 
 ## 6. Teilweise fertige Funktionen
 
@@ -105,7 +110,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Alle Phasen 4 bis 10 des langfristigen Plans
+- Fachliche Umsetzung der Phasen 4 bis 10; Aufgabe 4A stellt dafür nur Architektur und synthetische Testlogik bereit
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -126,6 +131,8 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Datenherkunftsmetadaten, Importmanifest, kanonisches Rohdatenformat und reine Importpipeline ergänzt
 - Künstliche Fixtures, strukturierte Fehler-/Importberichte, deterministische Hashes/IDs und zwölf Pipeline-Tests ergänzt
 - Remote-Synchronisation nach einer widersprüchlichen GitHub-Webcache-Anzeige erneut geprüft: `git fetch origin` bestätigte Aufgabe-3-Commit `01dc66e61f77271a4fb884b37ae7144951ada3ac` auf `origin/main`; GitHub-API und unveränderliche Raw-SHA-URLs bestätigten die öffentlichen Pflichtdateien. Es war kein History-Eingriff und kein Force-Push erforderlich.
+- Aufgabe 4A umgesetzt: eigenständige Engine-Ordnerstruktur, zentrale Typen, getrennte harte/weiche Regeln, normiertes BuildProfile, alle geforderten Analyzer-Schnittstellen, strukturierte Rotation/Erklärung und Orchestrator in verbindlicher Reihenfolge ergänzt
+- Drei künstliche Engine-Fixtures, 20 Engine-Tests und `docs/ENGINE_ARCHITECTURE.md` ergänzt; README auf den Platzhalterstatus aktualisiert
 
 ## 10. Zuletzt getestete Bereiche
 
@@ -149,6 +156,18 @@ Am 20. Juli 2026 nach Abschluss von Aufgabe 3 erfolgreich geprüft:
 
 Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile Layoutprüfung abgedeckt, jedoch nicht auf einem physischen Touchgerät ausgeführt.
 
+Am 20. Juli 2026 nach Aufgabe 4A zusätzlich erfolgreich geprüft:
+
+- lokaler Abhängigkeitsbestand wiederhergestellt; keine neue Abhängigkeit in `package.json` oder `package-lock.json`
+- `npm run import:fixture`-äquivalenter lokaler Skriptlauf: 23 künstliche Datensätze, 0 verworfen, keine Fehler
+- `npm run test`: drei Testdateien und 39 Tests erfolgreich, einschließlich 20 neuer Engine-Tests
+- `npm run lint`, `npm run typecheck` und `npm run build` erfolgreich; 37 Module gebaut
+- App startet unverändert direkt mit dem Planer; Charakterwechsel, Affixdialog, normale Juwelauswahl, Skilltree-Zoom und Platzhalterberechnung funktionieren
+- Desktop bei 1280 Pixeln und Mobil bei 390 × 844 geprüft; 14 Ergebnisgruppen, sechs Skills und sieben Testbaumknoten sichtbar, kein horizontaler Überlauf
+- Browserkonsole ohne Warnungen oder Fehler
+- `src/engine/` enthält keine React-Imports, Netzwerkzugriffe, echten PoE2-Daten oder DPS-Formeln
+- Nicht auf physischem Touchgerät geprüft; Touch-Pan bleibt durch Pointer-Events und mobile Layoutprüfung abgedeckt
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -166,14 +185,20 @@ Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile La
 - Der offizielle GGG-Passivbaumexport ist der bevorzugte technische Kandidat für einen späteren eng begrenzten Import; Rechte und Assets bleiben vorab zu klären
 - Reines CSS ohne UI-Bibliothek; SVG für den Demonstrationsbaum
 - Keine externen APIs oder geschützten Spielgrafiken
+- Engine und UI sind strikt getrennt; `src/engine/` importiert ausschließlich Domänentypen und besitzt keine React-Abhängigkeit
+- Verbindlicher Engine-Datenfluss: Equipment, BuildProfile, Skills, Supports, Passive, Juwele, Uniques, Rotationen, Erklärungen, BuildAnalysis
+- Harte Regeln sind blockierende `ConstraintViolation`; weiche Regeln verwenden ausschließlich zentral definierte Bewertungskategorien
+- `BuildProfile` nutzt normierte Affinitäten im dokumentierten Bereich 0 bis 100 und enthält keine realen Spiel- oder DPS-Werte
+- Empfehlungen werden deterministisch nach Score und bei Gleichstand nach technischer ID sortiert
+- Orchestrator und Analyzer verwenden in Aufgabe 4A ausschließlich übergebene synthetische Kandidaten und keine Datei-, Zeit-, Zufalls- oder Netzwerkabhängigkeit
 
 ## 12. Nächste empfohlene Aufgabe
 
-Quellenfreigabe-Gate bearbeiten: GGG und gegebenenfalls PoE2DB zu zulässigem Abruf, Speicherung, Attribution und Weiterverteilung klären. Erst danach einen eng begrenzten, versionsgebundenen Adapter für den offiziellen PoE2-Passivbaumexport planen; Bild-Assets zunächst ausschließen.
+Aufgabe 4B als eng begrenzte fachliche Erweiterung der regelbasierten Equipment-Analyse planen: zunächst mehr strukturierte künstliche Regeln und Referenztests für erkannte Affinitäten, Anforderungen, Konflikte und ungenutzte Modifier. Weiterhin keine echten Daten, DPS-Formeln, UI-Anbindung oder Optimierung vorwegnehmen. Das Quellenfreigabe-Gate bleibt parallel offen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run import:fixture`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Importtypen und Pipeline liegen in `src/import/`; externe Strukturen dürfen diese Grenze nicht umgehen. `docs/DATA_SOURCES.md` ist vor jeder echten Quellenentscheidung zu aktualisieren. Der aktuelle Prototyp und alle importierten Fixtures sind künstlich und dürfen nicht als echte Spieldaten oder Berechnung interpretiert werden.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run import:fixture`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Importtypen und Pipeline liegen in `src/import/`; externe Strukturen dürfen diese Grenze nicht umgehen. Die React-freie Platzhalter-Engine liegt in `src/engine/`, ihre Grenzen und Modulreihenfolge in `docs/ENGINE_ARCHITECTURE.md`. Sie ist nicht mit der UI verbunden. `docs/DATA_SOURCES.md` ist vor jeder echten Quellenentscheidung zu aktualisieren. Prototyp, Import- und Engine-Fixtures sind künstlich und dürfen nicht als echte Spieldaten, DPS-Berechnung oder Optimierung interpretiert werden.
 
 ## 14. Arbeitsregeln des Projekts
 
