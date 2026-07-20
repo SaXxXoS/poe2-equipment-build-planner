@@ -10,6 +10,11 @@ const request = { sourceId: 'test-source', categoryId: 'test-category' }
 
 describe('Import-Freigabesperre', () => {
   it('validiert die eingecheckte Approval-Datei', () => { expect(parseSourceApproval(approvalJson)).toEqual({ ok: true, approval: approvalJson, issues: [] }) })
+  it('erlaubt den eng begrenzten offiziellen Passivbaumimport', () => {
+    const result = evaluateImportApproval(base, { sourceId: 'ggg-poe2-skilltree-export', categoryId: 'passive-nodes', satisfiedConditions: { attributionRequired: true, rawRedistributionAllowed: true, derivedRedistributionAllowed: true, localStorageAllowed: true, repositoryStorageAllowed: true, patchVersionRequired: true, manualApprovalRequired: true } })
+    expect(result.allowed).toBe(true)
+  })
+  it('lässt andere echte Datenkategorien blockiert', () => { expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'skills' }).allowed).toBe(false) })
   it('blockiert eine fehlende Approval-Datei', () => { expect(evaluateImportApproval(undefined, request).code).toBe('approval-missing') })
   it('blockiert eine ungültige Approval-Datei', () => { expect(evaluateImportApproval('{', request).code).toBe('approval-invalid') })
   it('blockiert eine unbekannte Quelle', () => { expect(evaluateImportApproval(base, { ...request, sourceId: 'unknown' }).code).toBe('source-unknown') })

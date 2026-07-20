@@ -1,5 +1,9 @@
 # Architektur der Build-Engine
 
+## Datenimportgrenze aus Aufgabe 5C
+
+`scripts/poe2-tree-import.mjs` erzeugt einen separaten, validierten offiziellen Passivbaum-Datenbestand unter `generated/poe2-tree/`. Die Adaptertypen liegen in `src/import/poe2-tree/types.ts`. Weder Engine-Orchestrator noch Passive Analyzer noch React-Komponenten importieren ihn. Aufgabe 5C ändert keine Scores, Regeln, Pfadsuche oder Empfehlungen. Eine spätere Integration benötigt einen getrennten Auftrag; GGG-Rohobjekte dürfen nicht direkt in die Engine gelangen.
+
 ## Ziel und Abgrenzung
 
 Die Engine bereitet eine erklärbare, Equipment-first ausgerichtete Build-Analyse vor. Aufgabe 4A enthält ausschließlich deterministische Architektur- und Testlogik mit synthetischen Fixtures. Sie enthält keine echten PoE2-Daten, keine DPS- oder Schadensformeln, keine echte Optimierung, keine Graphsuche und keine Verbindung zur Benutzeroberfläche. Der dokumentierte Profilwertebereich ist 0 bis 100; Werte sind normierte Affinitäten, keine Spielwerte.

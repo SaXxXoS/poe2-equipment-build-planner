@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## Freigabeänderung und Importstand 5C
+
+Der frühere Status `blocked` des offiziellen PoE2-Passivbaumexports wurde eng begrenzt auf `conditionally-approved` korrigiert. Release 0.5.2/Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` liefert 5.150 importierte Knoten, 6.067 Verbindungen, 1.621 Gruppen, 6 Klassenstarts, 36 Aszendenzstarts und 19 explizite Juwelsockel. Es werden 0 Cluster-Sockel behauptet. 13 Einträge werden kontrolliert übersprungen; drei Warnungen, null Fehler und null unbekannte Felder stehen im Bericht. Andere echte Quellen/Kategorien bleiben blockiert. Saisonupdates folgen `docs/POE2_TREE_UPDATE_PROCESS.md` und benötigen Vergleich, Tests und dokumentierte manuelle Freigabe.
+
 Stand: 20. Juli 2026. Dieses Audit bewertet ausschließlich den im Repository dokumentierten technischen und freigabebezogenen Stand. Es erfolgten kein Scraping, kein Datenabruf, kein API-Aufruf und kein Import echter PoE2-Daten. Dies ist keine Rechtsberatung und keine rechtliche Freigabe.
 
 ## Kontrollierte Freigabestatus
@@ -100,7 +104,7 @@ Die belegbasierte Prüfung ist in `docs/DATA_SOURCE_APPROVAL.md` und `docs/DATA_
 
 - Nur lokale synthetische Fixtures sind `approved`.
 - Die offizielle GGG-API ist ausschließlich für dokumentierte Endpunkte und unter ihren Bedingungen `conditionally-approved`, deckt aber keine vollständige benötigte statische Datenkategorie ab.
-- Offizieller PoE2-Passivbaumexport, RePoE und PoE2DB bleiben für echten Repository-Import `blocked`.
+- Der offizielle PoE2-Passivbaumexport ist nur im dokumentierten 5C-Umfang `conditionally-approved`; RePoE, PoE2DB und alle anderen echten Kategorien bleiben `blocked`.
 - Nicht dokumentierte Endpunkte und Spieldateiextraktion sind `rejected`; manuelle Übertragung bleibt `pending`.
 - Bilder und Icons sind separat `blocked`.
 - Eine zentrale, netzwerkfreie Freigabesperre unter `src/import/approval.ts` verhindert echte Importe ohne passende Quellen-/Kategoriefreigabe und erfüllte Bedingungen; Fixtures bleiben möglich.

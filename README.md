@@ -1,5 +1,16 @@
 # PoE2 Equipment Build Planner
 
+## Offizieller Passivbaum-Datenbestand (Aufgabe 5C)
+
+Die in Aufgabe 5B zu strenge Sperre wurde ausschließlich für den offiziellen GGG-Passivbaumexport korrigiert. Release `0.5.2` („Runes of Aldur“) ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` und SHA-256 `f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe` festgelegt.
+
+```bash
+npm run import:poe2-tree -- --release 0.5.2
+npm run check:poe2-tree-update -- --release 0.5.2
+```
+
+Importiert werden ausschließlich Baumstruktur und englische Originaltexte; keine Assets, Übersetzungen oder Daten von PoE2DB/RePoE. Der Datenbestand unter `generated/poe2-tree/` ist noch nicht mit Engine oder UI verbunden. `latest`, `main`, fehlende oder unbekannte Versionen werden blockiert. Details: [`docs/POE2_TREE_IMPORT.md`](docs/POE2_TREE_IMPORT.md) und [`docs/POE2_TREE_UPDATE_PROCESS.md`](docs/POE2_TREE_UPDATE_PROCESS.md). Andere echte Datenkategorien bleiben blockiert.
+
 Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile 2. Die App zeigt direkt eine einzige lange Planer-Seite und demonstriert den vollständigen Eingabe- und Ergebnisablauf.
 
 > **Prototyp:** Sämtliche Spieldaten und Berechnungsergebnisse sind lokale Platzhalter. Eine UI-unabhängige, deterministische Engine-Architektur mit künstlicher Testlogik ist vorhanden; es gibt keine echte Optimierungs- oder DPS-Engine und keine PoE2DB-Anbindung.
@@ -66,15 +77,15 @@ Die Anwendung verwendet Vite, React, TypeScript, CSS und lokalen React-State. Si
 
 Technische IDs sind von deutschen Anzeigenamen getrennt. Dadurch können Beziehungen zwischen Klassen, Aszendenzen, Modifiern, Equipment, Skills, Supports, Juwelen und passiven Knoten stabil referenziert und später kontrolliert auf importierte Daten abgebildet werden. Konkrete Charakter-, Equipment- und Skill-Konfigurationen speichern ausschließlich diese IDs und ihre veränderlichen Werte.
 
-Jede Spieldatendefinition führt gemeinsame Metadaten: deutsche Anzeige, optionaler englischer Name, Datenversion, Quelle, optionaler Quellverweis, Status und zentral typisierte Mechanik-Tags. Alle aktuellen Datensätze tragen die Quelle `local-placeholder` und den Status `placeholder`; es werden weiterhin keine echten PoE2-Daten oder externen APIs verwendet.
+Die bestehenden UI-/Engine-Definitionen führen gemeinsame Metadaten und bleiben `local-placeholder`. Der getrennte offizielle Passivbaum-Datenbestand besitzt eigene Quell-/Versionsmetadaten und wird von UI und Engine noch nicht verwendet; externe Laufzeit-APIs gibt es weiterhin nicht.
 
 ## Importgrundlage
 
 Das kanonische Rohdatenformat bildet eine feste Grenze zwischen externen Quellen und dem Domänenmodell. Die reine Pipeline arbeitet ausschließlich auf übergebenen Daten, erzeugt deterministische interne IDs und Inhalts-Hashes, prüft Schema, Manifest, Kategorien, Tags, Werte, Zählungen, Duplikate und Referenzen und erzeugt erst danach Domänenobjekte. Sie führt keine Netzwerkzugriffe aus und schreibt keine Dateien.
 
-Es wurden noch keine echten PoE2-Spieldaten importiert. Die enthaltenen Fixtures sind ausdrücklich künstlich. Die rechtliche und technische Bewertung möglicher späterer Quellen steht in [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md); ein breiter PoE2DB-Import bleibt bis zur ausdrücklichen Klärung blockiert.
+Als einzige echte PoE2-Daten sind die kontrolliert gepinnte offizielle Passivbaumstruktur und ihre englischen Quelltexte importiert. Die Fixtures bleiben ausdrücklich künstlich. Ein breiter PoE2DB-Import bleibt blockiert.
 
-Die verbindliche Nachprüfung aus Aufgabe 5B gibt weiterhin keine echte Datenkategorie frei. Nur synthetische Fixtures sind `approved`; die offizielle GGG-API ist ausschließlich für ihre dokumentierten Endpunkte unter Bedingungen `conditionally-approved`, deckt aber den benötigten statischen Datenbestand nicht ab. Offizieller Passivbaumexport, RePoE und PoE2DB bleiben für einen Repository-Import `blocked`, Bilder und Icons ebenfalls. `src/import/approval.ts` validiert die maschinenlesbare Entscheidung und blockiert fehlende, ungültige, unbekannte oder nicht freigegebene Quellen/Kategorien deterministisch. Vor Aufgabe 5C ist eine schriftliche, kategorienbezogene Erlaubnis zu Abruf, Speicherung, Ableitungen, öffentlicher Weiterverteilung und Attribution erforderlich.
+Aufgabe 5C gibt ausschließlich sechs Kategorien des offiziellen Passivbaumexports unter den dokumentierten Bedingungen frei. RePoE, PoE2DB, Bilder, Icons und alle anderen echten Kategorien bleiben blockiert. `src/import/approval.ts` und der Baumimport prüfen die maschinenlesbare Entscheidung deterministisch.
 
 ## Engine-Architektur
 

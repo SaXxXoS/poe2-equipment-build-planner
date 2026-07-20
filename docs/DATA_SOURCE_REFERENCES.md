@@ -1,5 +1,14 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Ergänzung Aufgabe 5C
+
+- Offizielles Repository: <https://github.com/grindinggear/poe2-skilltree-export>
+- Release 0.5.2 „Path of Exile 2: Runes of Aldur“: <https://github.com/grindinggear/poe2-skilltree-export/releases/tag/0.5.2>
+- Geprüfter Commit: <https://github.com/grindinggear/poe2-skilltree-export/commit/1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6>
+- Offizielle GGG-Datendokumentation: <https://www.pathofexile.com/developer/docs/data>
+
+Am 20. Juli 2026 wurden Tag und Commit über die GitHub-API verifiziert und nur die commit-gepinnte `data.json` abgerufen. SHA-256: `f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe`. Das Schema enthält englische Texte und Grafikreferenzen, aber keine Locale-Auswahl oder eindeutig markierten Cluster-Sockel. Grafikreferenzen werden nicht exportiert.
+
 Prüfdatum: 20. Juli 2026. Kurzzusammenfassungen, keine Vollkopien. Abruf diente ausschließlich der Dokumentationsprüfung; es wurden keine Spieldatensätze, Medien oder API-Nutzdaten geladen. Dies ist keine Rechtsberatung.
 
 | Quelle | Betreiber | Dokument/URL | Geprüfte Frage | Ergebnis und Grenze |

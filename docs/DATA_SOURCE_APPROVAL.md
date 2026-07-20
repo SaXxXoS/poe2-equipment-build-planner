@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Korrektur aus Aufgabe 5C (20. Juli 2026)
+
+Der offizielle Export `ggg-poe2-skilltree-export` ist nicht mehr pauschal blockiert, sondern ausschließlich für die gepinnte `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Release 0.5.2 ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` festgelegt. Attribution, Hash, Offline-Reproduzierbarkeit, manuelle Saisonfreigabe und Asset-Ausschluss sind Pflichtbedingungen. Es folgt keine Freigabe für Medien, andere Dateien oder andere GGG-Daten. PoE2DB, RePoE und alle übrigen blockierten Kategorien bleiben blockiert. `data-sources/source-approval.json` ist maßgeblich.
+
 Stand: 20. Juli 2026. Maßgeblich für technische Entscheidungen ist `data-sources/source-approval.json`. Dieses Dokument erklärt die Entscheidung; es ist keine Rechtsberatung.
 
 ## Entscheidung
@@ -12,7 +16,7 @@ Freigegeben sind nur `local-synthetic-fixtures` für Tests. Die offizielle GGG-E
 |---|---|---|---|---|
 | `local-synthetic-fixtures` | Projektintern | TypeScript/In-Memory | `approved` | künstlich, keine echten Spieldaten |
 | `ggg-developer-api` | GGG, offiziell | HTTPS/JSON, meist OAuth, dynamische Rate Limits | `conditionally-approved` | nur dokumentierte Endpunkte; Notice, User-Agent, Limits und manuelle Prüfung erforderlich; Speicherung/Weiterverteilung statischer Daten ungeklärt |
-| `ggg-poe2-skilltree-export` | GGG, offiziell | GitHub, `data.json`, Assets, Releases | `blocked` | technisch stabilster Kandidat, aber keine separate Lizenz/Weiterverteilungsfreigabe |
+| `ggg-poe2-skilltree-export` | GGG, offiziell | ausschließlich gepinnte `data.json` | `conditionally-approved` | nur dokumentierte Baumstruktur/-texte; Attribution, Hash, Offlineimport, manuelle Freigabe und Asset-Ausschluss |
 | `repoe-poe2` | Community, inoffiziell | GitHub/hosted JSON, extrahiert aus Spieldateien | `blocked` | Werkzeuglizenz deckt GGG-Daten nicht; Formate instabil; Rechte offen |
 | `poe2db` | Community, inoffiziell | lokalisierte HTML-Seiten | `blocked` | keine allgemeine Daten-API/Abrufregeln; Wiki-Lizenzumfang für extrahierte Spieltabellen und Medien unklar |
 | `ggg-game-files-undocumented-endpoints` | GGG-Inhalte, nicht unterstützt | Clientdateien/interne Endpunkte | `rejected` | offizielle Richtlinien und Terms schließen diese Methode aus |

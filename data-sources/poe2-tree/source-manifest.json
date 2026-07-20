@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceId": "ggg-poe2-skilltree-export",
+  "repositoryUrl": "https://github.com/grindinggear/poe2-skilltree-export",
+  "releases": [
+    {
+      "sourceId": "ggg-poe2-skilltree-export",
+      "repositoryUrl": "https://github.com/grindinggear/poe2-skilltree-export",
+      "releaseTag": "0.5.2",
+      "commitHash": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6",
+      "retrievedAt": "2026-07-20T21:28:08.000Z",
+      "gameVersion": "0.5.2",
+      "seasonName": "Runes of Aldur",
+      "sourceFile": "data.json",
+      "rawFile": "data-sources/poe2-tree/raw/0.5.2/data.json",
+      "sourceFileHash": "f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe",
+      "importerVersion": "1.0.0",
+      "schemaVersion": "1.0.0"
+    }
+  ]
+}

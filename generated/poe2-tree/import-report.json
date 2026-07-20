@@ -1,0 +1,43 @@
+{
+  "ascendancyNodeCount": 667,
+  "ascendancyStartNodeCount": 36,
+  "classStartNodeCount": 6,
+  "clusterSocketCount": 0,
+  "errorCount": 0,
+  "errors": [],
+  "generatedFiles": [
+    "generated/poe2-tree/tree.json",
+    "generated/poe2-tree/import-report.json",
+    "generated/poe2-tree/version-diff.json"
+  ],
+  "importedConnectionCount": 6067,
+  "importedGroupCount": 1621,
+  "importedNodeCount": 5150,
+  "importerVersion": "1.0.0",
+  "jewelSocketCount": 19,
+  "skippedRecordCount": 13,
+  "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6",
+  "sourceHash": "f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe",
+  "sourceVersion": "0.5.2",
+  "status": "validated",
+  "unknownFieldCount": 0,
+  "unknownFields": [],
+  "warningCount": 3,
+  "warnings": [
+    {
+      "code": "official-self-edge",
+      "message": "Offiziell enthaltene Selbstverbindung 35653 wird kontrolliert ignoriert",
+      "path": "edges.3440"
+    },
+    {
+      "code": "ambiguous-jewel-slots",
+      "message": "12 Einträge sind keine explizit markierten Sockelknoten und werden ignoriert",
+      "path": "jewelSlots"
+    },
+    {
+      "code": "official-orphan-nodes",
+      "message": "22 im offiziellen Export isolierte Knoten bleiben erhalten und werden gemeldet",
+      "path": "nodes"
+    }
+  ]
+}

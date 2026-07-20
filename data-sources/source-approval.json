@@ -23,11 +23,11 @@
     {
       "sourceId": "ggg-poe2-skilltree-export",
       "name": "Offizieller PoE2-Passivbaumexport",
-      "status": "blocked",
-      "conditions": { "attributionRequired": "unknown", "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": "unknown", "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": "unknown", "manualApprovalRequired": true },
-      "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
+      "status": "conditionally-approved",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": true, "derivedRedistributionAllowed": true, "automatedAccessAllowed": true, "localStorageAllowed": true, "repositoryStorageAllowed": true, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
+      "requiredConditions": ["attributionRequired", "rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "patchVersionRequired", "manualApprovalRequired"],
       "evidenceUrls": ["https://www.pathofexile.com/developer/docs/data", "https://github.com/grindinggear/poe2-skilltree-export", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
-      "reason": "Offiziell bereitgestelltes, versioniertes JSON mit Assets, aber ohne separate Lizenz oder ausdrückliche Speicher-/Weiterverteilungsfreigabe."
+      "reason": "Begrenzte Projektfreigabe nur für die von GGG offiziell veröffentlichte, fest gepinnte data.json des PoE2-Passivbaums. Sie umfasst ausschließlich Struktur, Quelltexte und erforderliche Metadaten; Medien, andere Dateien und andere GGG-Daten bleiben ausgeschlossen."
     },
     {
       "sourceId": "repoe-poe2",
@@ -67,8 +67,8 @@
     }
   ],
   "approvedSources": ["local-synthetic-fixtures"],
-  "conditionallyApprovedSources": ["ggg-developer-api"],
-  "blockedSources": ["ggg-poe2-skilltree-export", "repoe-poe2", "poe2db"],
+  "conditionallyApprovedSources": ["ggg-developer-api", "ggg-poe2-skilltree-export"],
+  "blockedSources": ["repoe-poe2", "poe2db"],
   "rejectedSources": ["ggg-game-files-undocumented-endpoints"],
   "pendingSources": ["manual-transcription"],
   "categoryAssignments": [
@@ -86,9 +86,12 @@
     { "categoryId": "affix-tiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Tier-/Patchschema und Rechte offen." },
     { "categoryId": "modifiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Komplexe Stats/Übersetzungen und Rechte offen." },
     { "categoryId": "requirements", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Quellenübergreifende Normalisierung und Rechte offen." },
-    { "categoryId": "passive-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Offizielles JSON, aber Weiterverteilung nicht freigegeben." },
-    { "categoryId": "passive-connections", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Offizielles JSON, aber Weiterverteilung nicht freigegeben." },
-    { "categoryId": "jewel-sockets", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Teil des Baumexports; Rechte offen." },
+    { "categoryId": "passive-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur aus fest gepinnter offizieller data.json, ohne Assets und mit Attribution." },
+    { "categoryId": "passive-connections", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur aus fest gepinnter offizieller data.json, ohne Assets und mit Attribution." },
+    { "categoryId": "passive-groups", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Gruppen, Orbits und Positionen sind explizite Strukturfelder des Exports." },
+    { "categoryId": "class-start-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "classStartIndex ist im Export eindeutig vorhanden." },
+    { "categoryId": "ascendancy-start-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "isAscendancyStart und ascendancyId sind im Export eindeutig vorhanden." },
+    { "categoryId": "jewel-sockets", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur explizit als isJewelSocket markierte Baumknoten; keine Juwelgegenstände." },
     { "categoryId": "normal-jewels", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Generierungs-/Modifierdaten und Rechte offen." },
     { "categoryId": "cluster-jewels", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "PoE2-Vollständigkeit und Rechte offen." },
     { "categoryId": "unique-cluster-jewels", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Vollständigkeit, Semantik und Rechte offen." },
@@ -100,7 +103,7 @@
   "globalRestrictions": [
     "Kein echter Datenimport, solange die Kategorie nicht approved oder conditionally-approved ist.",
     "Conditionally-approved erfordert alle requiredConditions als explizit erfüllt.",
-    "Keine Roh- oder abgeleiteten GGG-Daten im Repository ohne schriftlich belegte Weiterverteilungsfreigabe.",
+    "GGG-Roh- oder abgeleitete Daten im Repository nur innerhalb einer dokumentierten, kategorienbezogenen Freigabe; derzeit ausschließlich gepinnte PoE2-Passivbaum-data.json ohne Assets.",
     "Keine Bilder, Icons oder sonstigen Medien herunterladen, hotlinken oder speichern.",
     "Keine nicht dokumentierten Endpunkte, Spieldateiextraktion, Scraper oder Crawler verwenden.",
     "Fixture-Importe bleiben erlaubt und müssen eindeutig synthetisch markiert sein."
