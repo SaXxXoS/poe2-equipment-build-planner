@@ -13,6 +13,22 @@ export type MechanicTag = (typeof MECHANIC_TAGS)[number]
 
 export type EntityId = string
 
+export type SourceLanguage = 'de' | 'en' | 'unknown'
+export type VerificationStatus = 'unverified' | 'structure-validated' | 'source-verified'
+
+export interface DataProvenance {
+  sourceId: string
+  sourceUrl?: string
+  sourceRecordId?: string
+  sourceLanguage?: SourceLanguage
+  sourceVersion?: string
+  gameVersion?: string
+  importedAt?: string
+  importerVersion?: string
+  contentHash?: string
+  verificationStatus?: VerificationStatus
+}
+
 export interface GameDataMetadata {
   id: EntityId
   displayNameDe: string
@@ -22,6 +38,7 @@ export interface GameDataMetadata {
   sourceReference?: string
   status: DataStatus
   tags: MechanicTag[]
+  provenance?: DataProvenance
 }
 
 export const PLACEHOLDER_VERSION = 'prototype-2'

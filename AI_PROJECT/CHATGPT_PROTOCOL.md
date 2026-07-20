@@ -59,7 +59,7 @@ PoE2DB ist als mögliche Hauptquelle deutschsprachiger Daten vorgesehen: Klassen
 
 1. **Klickbarer Prototyp:** Vite, React, TypeScript, mobile-first, lokale Platzhalterdaten, kompletter Ablauf; keine Engine oder DPS-Berechnung. (Abgeschlossen)
 2. **Normalisiertes Datenmodell:** Klassen, Aszendenzen, Slots, Affixe, Skills, Supports, Waffen-Sets, Juwelen/Cluster/Uniques, passive Knoten, Rotationen, Empfehlungen und Erklärungen. (Abgeschlossen)
-3. **Spieldatenimport:** Quelle und Importformat prüfen, Importskripte erstellen, deutsche Daten normalisieren, validieren und versionieren; keine externe Laufzeitabhängigkeit.
+3. **Spieldatenimport:** Quelle und Importformat prüfen, Importskripte erstellen, deutsche Daten normalisieren, validieren und versionieren; keine externe Laufzeitabhängigkeit. (Importgrundlage und Quellenprüfung abgeschlossen; echter Datenimport bis zur Quellenfreigabe blockiert)
 4. **Regelbasierte Ausrüstungsanalyse:** Waffen-/Schadensarten und Tags erkennen, Angriff/Zauber sowie Tempo, Krit, Attribute, Anforderungen und Defensive bewerten, Konflikte und schlecht genutzte Affixe erkennen.
 5. **Skill- und Support-Empfehlungen:** Haupt- und Zusatzfertigkeiten sowie Supportkombinationen bewerten; Mapping/Boss und Waffen-Sets berücksichtigen.
 6. **Passiver Skilltree:** echten Baum importieren, Knoten/Verbindungen darstellen, Knoten und Pfade inklusive Kosten, Cluster-Effizienz und Waffen-Set-Punkte bewerten; Varianten vergleichen.
@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Die Vite-/React-/TypeScript-Einzelseite verwendet ein normalisiertes Domänenmodell, lokalen State und ausschließlich versionierte Platzhalterdaten. Reine Validierungsfunktionen und sieben Vitest-Modelltests sichern IDs, Referenzen, Wertebereiche und den Platzhalterstatus. Es existieren weder Backend noch echte Engine oder externe Datenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Die Vite-/React-/TypeScript-Einzelseite verwendet weiterhin lokalen State und ausschließlich Platzhalterdaten. 19 reguläre Vitest-Tests sichern Domänenmodell und Importpipeline. Es existieren weder Backend noch echte Engine oder externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -89,23 +89,30 @@ Phase 1 und Phase 2 sind implementiert. Die Vite-/React-/TypeScript-Einzelseite 
 - Gemeinsame Quellen-, Versions-, Status- und Tag-Metadaten
 - Strukturierte Modifier-, Equipment-, Skill-, Juwel-, Passivbaum-, BuildInput- und BuildResult-Typen
 - Reine lokale Datenvalidierung und automatische Vitest-Modelltests
+- Quellenbericht unter `docs/DATA_SOURCES.md` mit Primärlinks, Unsicherheiten und ausgeschlossenen Verfahren
+- Versioniertes Importmanifest und kanonisches Rohdatenformat für elf Kategorien
+- Reine Offline-Pipeline mit deterministischen IDs/Hashes, strukturiertem Bericht und Domänenabbildung
+- Künstliche gültige und fehlerhafte Fixtures sowie `npm run import:fixture`
 
 ## 6. Teilweise fertige Funktionen
 
 - Baum und Empfehlungen demonstrieren nur spätere Interaktionen; sie nutzen keine echten Spieldaten.
 - Skills zeigen feste Support-Testdaten; freie Skill-/Supportbearbeitung ist noch nicht vorgesehen.
 - `BuildInput` ist vollständig typisiert, wird von der Platzhalterberechnung aber noch nicht verarbeitet.
+- Der offizielle PoE2-Passivbaumexport ist technisch geeignet, aber Lizenz-/Asset- und Weiterverteilungsfragen sind vor echtem Import noch zu klären.
 
 ## 7. Noch offene Aufgaben
 
-- Alle Phasen 3 bis 10 des langfristigen Plans
+- Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
+- Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
+- Alle Phasen 4 bis 10 des langfristigen Plans
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
 
 ## 8. Bekannte Bugs
 
-Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilprüfung keine reproduzierbaren Bugs bekannt. Einschränkungen der Platzhalterlogik sind keine fertigen Produktfunktionen.
+Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilprüfung keine reproduzierbaren Bugs bekannt. Einschränkungen der Platzhalter- und Fixture-Logik sind keine fertigen Produktfunktionen.
 
 ## 9. Letzte Änderungen
 
@@ -115,23 +122,28 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Einzelne Modelldatei durch `src/domain/` mit normalisierten Definitionen und Konfigurationen ersetzt
 - Sämtliche Platzhalterdaten auf stabile IDs, gemeinsame Metadaten und kontrollierte Tags migriert
 - Datenvalidierung und sieben Vitest-Tests ergänzt; UI auf ID-basierte Auflösung umgestellt
+- PoE2DB, offizielle GGG-API, GGG-Nutzungsbedingungen und offiziellen PoE2-Passivbaumexport anhand von Primärseiten geprüft
+- Datenherkunftsmetadaten, Importmanifest, kanonisches Rohdatenformat und reine Importpipeline ergänzt
+- Künstliche Fixtures, strukturierte Fehler-/Importberichte, deterministische Hashes/IDs und zwölf Pipeline-Tests ergänzt
 
 ## 10. Zuletzt getestete Bereiche
 
-Am 20. Juli 2026 nach Abschluss von Aufgabe 2 erfolgreich geprüft:
+Am 20. Juli 2026 nach Abschluss von Aufgabe 3 erfolgreich geprüft:
 
-- `npm install`: 41 zusätzliche Pakete für Vitest, insgesamt 191 geprüft, 0 gemeldete Schwachstellen
-- `npm run test`: eine Testdatei, sieben Tests erfolgreich
+- `npm install`: Bestand aktuell, 191 Pakete geprüft, 0 gemeldete Schwachstellen; keine neue Abhängigkeit
+- `npm run import:fixture`: 23 künstliche Datensätze, 0 verworfen, Status `fixture`, keine Fehler
+- `npm run test`: zwei Testdateien, 19 Tests erfolgreich; die bestehenden sieben Domänentests bleiben enthalten
 - `npm run lint`, `npm run typecheck` und `npm run build` erfolgreich
 - Entwicklungsserver startet fehlerfrei und liefert die Planer-Seite direkt aus
-- Charakter: Klassenwechsel auf Zauberin aktualisiert die technische Aszendenzreferenz auf `ascendancy-2-primary`; Ziel Boss wurde gewählt
-- Affixdialog: Suche nach „Widerstand“, Feuer- und Kältewiderstand mit unterschiedlichen Werten hinzugefügt, Feuerwiderstand entfernt und Kältewiderstand gespeichert
-- Auswahl von normalem Juwel, Cluster-Juwel und Unique-Cluster-Juwel
+- Charakter: Klassenwechsel auf Zauberin aktualisiert die sichtbaren Aszendenzoptionen
+- Affixdialog: Suche nach „Widerstand“, Feuerwiderstand hinzugefügt und wieder entfernt
+- Normale Juwelauswahl weiterhin bedienbar
 - Sechs Skills und 30 Supportplätze sichtbar
-- Testberechnung löst alle normalisierten IDs zu Anzeigenamen auf und zeigt alle 14 geforderten Ergebnisgruppen einschließlich Mapping- und Boss-Rotation
-- Skilltree: Button-Zoom von 100 auf 120 Prozent, Maus-/Pointer-Pan auf 150/80 Pixel, Vergrößerungsmodus und Rückkehr
+- Testberechnung zeigt weiterhin alle 14 geforderten Ergebnisgruppen
+- Skilltree: sieben Testknoten sichtbar, Button-Zoom von 100 auf 120 Prozent
 - Desktopdarstellung bei 1280 × 800 und Mobilansicht bei 390 × 844; zwölf Equipment- und sechs Skill-Slots vorhanden, kein horizontaler Überlauf
 - Browserkonsole ohne Warnungen oder Fehler
+- Repository-Dateiliste auf versehentliche HTML-Dumps, fremde Assets und echte Datenbestände geprüft; keine gefunden
 
 Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile Layoutprüfung abgedeckt, jedoch nicht auf einem physischen Touchgerät ausgeführt.
 
@@ -144,16 +156,22 @@ Touch-Pan wurde durch die gemeinsame Pointer-Event-Implementierung und mobile La
 - Gemeinsame `GameDataMetadata` modellieren Quelle, Version, Status und kontrollierte Mechanik-Tags
 - Keine Laufzeit-Validierungsbibliothek; reine TypeScript-Funktionen liefern verständliche Fehlerlisten
 - Vitest ist die einzige für Aufgabe 2 neu hinzugefügte Testabhängigkeit
+- Importformat ist eine Entkopplungsgrenze: externe Strukturen dürfen weder UI noch Engine direkt erreichen
+- Importpipeline ist rein, netzwerkfrei und dateisystemfrei; der CLI-Testlauf nutzt die vorhandene Vitest-Toolchain, daher keine neue Abhängigkeit
+- FNV-1a-32 dient als reproduzierbare Integritätskennung, nicht als kryptografischer Sicherheitsnachweis
+- Importfehler sind strukturierte `ImportIssue`-Objekte und werden niemals stillschweigend ignoriert
+- Echte PoE2DB-Daten bleiben blockiert, bis Abruf, Speicherung, Attribution und Weiterverteilung ausdrücklich geklärt sind
+- Der offizielle GGG-Passivbaumexport ist der bevorzugte technische Kandidat für einen späteren eng begrenzten Import; Rechte und Assets bleiben vorab zu klären
 - Reines CSS ohne UI-Bibliothek; SVG für den Demonstrationsbaum
 - Keine externen APIs oder geschützten Spielgrafiken
 
 ## 12. Nächste empfohlene Aufgabe
 
-Phase 3 vorbereiten: Datenquellen und Nutzungsbedingungen prüfen, ein versioniertes Importformat und Fixtures festlegen und Import-/Validierungstests entwerfen, ohne eine Laufzeitabhängigkeit von externen Seiten einzuführen.
+Quellenfreigabe-Gate bearbeiten: GGG und gegebenenfalls PoE2DB zu zulässigem Abruf, Speicherung, Attribution und Weiterverteilung klären. Erst danach einen eng begrenzten, versionsgebundenen Adapter für den offiziellen PoE2-Passivbaumexport planen; Bild-Assets zunächst ausschließen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Domänentypen liegen in `src/domain/`; Definitionen und konkrete Konfigurationen dürfen nicht wieder vermischt werden. Der aktuelle Prototyp darf nicht als echte Berechnung interpretiert werden. Änderungen klein und phasenbezogen halten und dieses Protokoll nach jeder Aufgabe faktisch aktualisieren.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run import:fixture`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Importtypen und Pipeline liegen in `src/import/`; externe Strukturen dürfen diese Grenze nicht umgehen. `docs/DATA_SOURCES.md` ist vor jeder echten Quellenentscheidung zu aktualisieren. Der aktuelle Prototyp und alle importierten Fixtures sind künstlich und dürfen nicht als echte Spieldaten oder Berechnung interpretiert werden.
 
 ## 14. Arbeitsregeln des Projekts
 
