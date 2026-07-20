@@ -36,7 +36,7 @@ Laden, Fehler und validierter Zustand sind getrennt sichtbar. Bei Datei-, JSON-,
 
 Der Produktionsbuild liefert das lokale JSON als 7.580,63-kB-Datei aus (596,81 kB gzip). Das SVG enthält 5.150 Knoten, 6.067 Linien und zwei Layergruppen, also 11.219 Elemente unterhalb des SVG. Knoten-/Verbindungslayer sowie Suchergebnisse sind memoisiert beziehungsweise vorberechnet; Texte werden nur im Detailbereich dargestellt.
 
-Automatische Adaptertests auf dem Entwicklungsrechner beobachteten für vollständige Einzeladaptionen in der Testsuite etwa 336 bis 545 ms. Navigations-, Lade-, Adapter- und erste Renderzeit sowie Desktop-/Mobilverhalten werden nach dem Pages-Deployment mit Browser-Performance-Marken verifiziert und im Projektprotokoll mit den tatsächlich gemessenen Werten festgehalten.
+Automatische Adaptertests auf dem Entwicklungsrechner beobachteten für vollständige Einzeladaptionen in der Testsuite etwa 336 bis 590 ms. Auf der öffentlichen Pages-Version wurden im eingebauten Browser bei einer kalten Navigation 5.157 ms bis zur sichtbaren Baumansicht gemessen (lokales Datenladen und JSON-Parsing 313,8 ms, Adapter 129,7 ms, erste Render-Markierung 653,2 ms). Eine warme Navigation benötigte 726 ms (58,2 ms / 131,9 ms / 347,6 ms). Diese Einzelmessungen dokumentieren die Größenordnung und sind keine garantierten Grenzwerte. Der Browser stellte keine verlässliche Arbeitsspeichermessung bereit. Desktop (1280 × 800) und Mobil (390 × 844) wurden ohne Dokumentüberlauf geprüft.
 
 ## Fachliche Grenzen
 
