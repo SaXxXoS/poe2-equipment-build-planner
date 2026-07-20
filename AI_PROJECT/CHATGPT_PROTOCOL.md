@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4I lieferten die vollständige synthetische Engine-Kette: Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer, Rotation Generator und templatebasierten Explanation Generator. Dieser erzeugt deutsche Erklärungen und maschinenlesbare Traces ausschließlich aus vorhandenen strukturierten Ergebnissen. Die Engine optimiert nicht neu und berechnet weder Zeiten noch DPS. 358 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4I und damit Aufgabe 4 insgesamt sind abgeschlossen. Sie lieferten die vollständige synthetische Engine-Kette: Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer, Rotation Generator und templatebasierten Explanation Generator. Dieser erzeugt deutsche Erklärungen und maschinenlesbare Traces ausschließlich aus vorhandenen strukturierten Ergebnissen. Die Engine optimiert nicht neu und berechnet weder Zeiten noch DPS. 358 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Aufgabe 5A ergänzt die reproduzierbare GitHub-Pages-Konfiguration sowie ein codebasiertes Engine-UI- und Datenfreigabeaudit; UI und Engine bleiben getrennt und echte PoE2-Daten bleiben blockiert.
 
 ## 5. Fertige Funktionen
 
@@ -127,7 +127,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Aufgaben 4H und 4I der Reihe nach umsetzen; 4A bis 4G sind abgeschlossen
+- Nach der Pages-Veröffentlichung die öffentliche Version gemeinsam mobil prüfen und gezielt überarbeiten
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -272,6 +272,18 @@ Am 20. Juli 2026 nach Aufgabe 4I zusätzlich erfolgreich geprüft:
 
 ## 11. Wichtige Architekturentscheidungen
 
+### Aufgabe 5A – Deployment- und Auditstand
+
+- GitHub Pages wird aus `main` über `.github/workflows/deploy-pages.yml` mit ausschließlich offiziellen GitHub-Actions gebaut und veröffentlicht. Der Workflow nutzt minimale Berechtigungen (`contents: read`, `pages: write`, `id-token: write`), das Environment `github-pages` und eine Concurrency-Gruppe mit Abbruch veralteter Läufe.
+- Maßgeblicher Paketmanager ist npm wegen `package-lock.json`; CI verwendet Node 22 und `npm ci`. Es wurde kein weiteres Lockfile und keine Abhängigkeit ergänzt.
+- Vite verwendet im Produktions-Build zentral `/poe2-equipment-build-planner/`, lokal weiterhin `/`. Das Build-Skript benennt `vite.config.ts` explizit, damit eine veraltete ignorierte JavaScript-Ausgabe die Pages-Konfiguration nicht übersteuern kann.
+- Die vorgesehene öffentliche URL lautet `https://saxxxos.github.io/poe2-equipment-build-planner/`. Sie darf erst nach erfolgreichem Actions-/Pages-Lauf und Browser-Smoke-Test als erreichbar bestätigt werden.
+- `docs/ENGINE_UI_INTEGRATION_AUDIT.md` dokumentiert den tatsächlichen React-State, den `analyzeBuild`-Vertrag, Datenherkunft, Validierungs- und Fehlergrenzen, die geplante Adapterkette, Ergebniszuordnung sowie bewertete Integrationsrisiken. Empfohlen ist nach dem UI-Redesign nur ein kleiner vertikaler Adapter-Schnitt; Engine-Typen bleiben außerhalb der React-Komponenten.
+- `docs/DATA_SOURCE_RELEASE_AUDIT.md` dokumentiert Pipeline, vollständige Datenbedarfsmatrix, mögliche Quellen, offene Lizenz-/Zugriffs-/Attributionsfragen und die verbindliche Freigabecheckliste. Der Gesamtstatus echter PoE2-Daten ist `blocked`; PoE2DB wurde nicht aufgerufen, es wurden keine externen Daten heruntergeladen oder importiert.
+- Die sichtbare Berechnung bleibt ein Platzhalter und ruft `analyzeBuild` nicht auf. Es wurden weder Analyzer, Preise, DPS, Cooldowns, Zeitmodelle noch fachliche Regeln verändert.
+- Lokale 5A-Prüfung: 358 reguläre Tests in elf Dateien, Lint, Typecheck und Produktions-Build erfolgreich. Der gebaute HTML-Einstieg referenziert JavaScript und CSS unter `/poe2-equipment-build-planner/assets/`. Fixture-Import, CI-Installation, öffentliches Deployment und öffentliche Browser-Smoke-Tests werden im abschließenden 5A-Status ergänzt.
+- Bekannte Risiken: Pages muss im Repository gegebenenfalls einmalig auf „GitHub Actions“ als Quelle aktiviert werden; umfangreiche Engine-Ergebnisse benötigen später ViewModels; UI- und Engine-IDs sowie nicht im App-State gehaltene Juweldaten müssen vor einer Integration normalisiert werden; echte Daten bleiben bis zur dokumentierten Freigabe gesperrt.
+
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
 - Lokaler React-State; normalisierte Platzhalterdaten zentral in `src/data.ts`
 - Flache Domänenstruktur in `src/domain/` mit Barrel-Export; Definitionen sind von konkreten Konfigurationen getrennt
@@ -319,11 +331,11 @@ Am 20. Juli 2026 nach Aufgabe 4I zusätzlich erfolgreich geprüft:
 
 ## 12. Nächste empfohlene Aufgabe
 
-Als nächsten abgegrenzten Schritt Aufgabe 5A als Integrations- und Datenfreigabe-Audit definieren. Vorher einen verbindlichen Auftrag einholen; echte Daten, UI-Anbindung, Preise, DPS oder kombinatorische Optimierung nicht vorwegnehmen.
+Nach dem verifizierten Pages-Deployment folgt keine Engine-Erweiterung, sondern eine gemeinsam priorisierte mobile UI-/Designüberarbeitung der öffentlichen Testversion. Echte Daten, produktive UI-Anbindung, Preise, DPS oder kombinatorische Optimierung nicht vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Alle Analyzer, Rotation und Explanation besitzen getrennte Regel-/Template-Module und zentrale Konfigurationen. `docs/ENGINE_ARCHITECTURE.md` dokumentiert die vollständige synthetische Engine-Kette bis Explanation. Nächster Schritt ist ausschließlich ein neu zu beauftragendes Aufgabe-5A-Audit. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, Zeit-/DPS-Simulation, kombinierte Optimierung, Preise oder fachlich verifizierte Empfehlung.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Alle Analyzer, Rotation und Explanation besitzen getrennte Regel-/Template-Module und zentrale Konfigurationen. `docs/ENGINE_ARCHITECTURE.md` dokumentiert die vollständige synthetische Engine-Kette bis Explanation; `docs/ENGINE_UI_INTEGRATION_AUDIT.md` und `docs/DATA_SOURCE_RELEASE_AUDIT.md` halten die spätere Adaptergrenze und die blockierte Echtdatenfreigabe fest. Nach Aufgabe 5A ist der nächste Schritt die mobile Prüfung und gezielte UI-/Designüberarbeitung der Pages-Version. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, Zeit-/DPS-Simulation, kombinierte Optimierung, Preise oder fachlich verifizierte Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 

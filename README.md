@@ -4,6 +4,12 @@ Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile
 
 > **Prototyp:** Sämtliche Spieldaten und Berechnungsergebnisse sind lokale Platzhalter. Eine UI-unabhängige, deterministische Engine-Architektur mit künstlicher Testlogik ist vorhanden; es gibt keine echte Optimierungs- oder DPS-Engine und keine PoE2DB-Anbindung.
 
+## Öffentliche Testversion
+
+Deployment-Ziel ist [https://saxxxos.github.io/poe2-equipment-build-planner/](https://saxxxos.github.io/poe2-equipment-build-planner/). Die Erreichbarkeit wird nach dem ersten erfolgreichen GitHub-Pages-Lauf bestätigt; bis dahin ist die Adresse nicht als veröffentlicht freigegeben.
+
+Das Deployment baut bei jedem Push auf `main` automatisch mit GitHub Actions und veröffentlicht ausschließlich das erzeugte `dist`-Artefakt. Die Testversion verwendet synthetische Daten und feste UI-Platzhalter; die vorhandene Engine ist noch nicht produktiv mit der React-Oberfläche verbunden.
+
 ## Installation und Start
 
 ```bash
@@ -16,6 +22,8 @@ Produktions-Build:
 ```bash
 npm run build
 ```
+
+Maßgeblich sind npm und das eingecheckte `package-lock.json`; der CI-Build installiert reproduzierbar mit `npm ci`. Der Produktions-Build verwendet zentral den Pages-Basispfad `/poe2-equipment-build-planner/`, während der lokale Entwicklungsserver unter `/` arbeitet.
 
 Weitere Prüfungen:
 
@@ -44,6 +52,8 @@ Der Befehl lädt ausschließlich das synthetische Fixture, validiert Manifest, R
 - `src/data.ts` – normalisierte lokale Definitionen, Konfigurationen und feste Testberechnung
 - `docs/DATA_SOURCES.md` – geprüfte Datenquellen, Bedingungen, Unsicherheiten und vorläufige Empfehlung
 - `docs/ENGINE_ARCHITECTURE.md` – Engine-Datenfluss, Regeln, Profile, Bewertungen und klare fachliche Grenzen
+- `docs/ENGINE_UI_INTEGRATION_AUDIT.md` – geprüfter späterer UI-/Engine-Vertrag, Adaptergrenze und Integrationsrisiken
+- `docs/DATA_SOURCE_RELEASE_AUDIT.md` – Datenbedarf, Quellenstatus und verbindliche Sperre vor echtem Datenimport
 - `src/styles.css` – mobile-first Oberflächengestaltung
 - `AI_PROJECT/CHATGPT_PROTOCOL.md` – offizielles Projektgedächtnis und langfristiger Plan
 
