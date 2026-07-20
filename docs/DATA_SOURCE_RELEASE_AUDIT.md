@@ -94,6 +94,15 @@ Vor einem echten Import müssen alle zwingenden Punkte mit Nachweis, Datum, vera
 
 Solange ein zwingender Punkt offen ist, bleibt der reale Import `blocked`. Eine technische Abrufmöglichkeit ist keine Nutzungsfreigabe.
 
-## Freigabeentscheidung
+## Verbindliche Nachprüfung in Aufgabe 5B
 
-Für Aufgabe 5A werden ausschließlich synthetische Fixtures und lokale Platzhalter freigegeben. Kein echter Datenadapter, Datensatz oder Abruf darf folgen. Die nächste Arbeit ist die mobile Prüfung und gezielte UI-/Designüberarbeitung der Pages-Version; Datenfreigabe wird erst in einem gesonderten, nachweisgestützten Auftrag erneut bewertet.
+Die belegbasierte Prüfung ist in `docs/DATA_SOURCE_APPROVAL.md` und `docs/DATA_SOURCE_REFERENCES.md` dokumentiert; `data-sources/source-approval.json` ist die maschinenlesbare Entscheidung. Ergebnis:
+
+- Nur lokale synthetische Fixtures sind `approved`.
+- Die offizielle GGG-API ist ausschließlich für dokumentierte Endpunkte und unter ihren Bedingungen `conditionally-approved`, deckt aber keine vollständige benötigte statische Datenkategorie ab.
+- Offizieller PoE2-Passivbaumexport, RePoE und PoE2DB bleiben für echten Repository-Import `blocked`.
+- Nicht dokumentierte Endpunkte und Spieldateiextraktion sind `rejected`; manuelle Übertragung bleibt `pending`.
+- Bilder und Icons sind separat `blocked`.
+- Eine zentrale, netzwerkfreie Freigabesperre unter `src/import/approval.ts` verhindert echte Importe ohne passende Quellen-/Kategoriefreigabe und erfüllte Bedingungen; Fixtures bleiben möglich.
+
+**Gesamtstatus echter PoE2-Daten bleibt `blocked`.** Für Aufgabe 5C wird noch kein Import empfohlen. Benötigt wird zuerst eine schriftliche, kategorienbezogene Freigabe, idealerweise für den offiziellen Passivbaumexport ohne Assets, einschließlich Abruf, Speicherung, Ableitungen, öffentlicher Weiterverteilung und Attribution.

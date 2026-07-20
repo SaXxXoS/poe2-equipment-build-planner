@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1.0.0",
+  "reviewedAt": "2026-07-20",
+  "reviewedSources": [
+    {
+      "sourceId": "local-synthetic-fixtures",
+      "name": "Lokale synthetische Fixtures",
+      "status": "approved",
+      "conditions": { "attributionRequired": false, "rawRedistributionAllowed": true, "derivedRedistributionAllowed": true, "automatedAccessAllowed": false, "localStorageAllowed": true, "repositoryStorageAllowed": true, "commercialUseClarified": true, "patchVersionRequired": false, "rateLimitKnown": true, "manualApprovalRequired": false },
+      "requiredConditions": [],
+      "evidenceUrls": [],
+      "reason": "Projektintern erzeugte Testdaten; keine echten PoE2-Daten."
+    },
+    {
+      "sourceId": "ggg-developer-api",
+      "name": "Offizielle Path-of-Exile-Entwickler-API",
+      "status": "conditionally-approved",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": true, "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
+      "requiredConditions": ["attributionRequired", "patchVersionRequired", "rateLimitKnown", "manualApprovalRequired"],
+      "evidenceUrls": ["https://www.pathofexile.com/developer/docs", "https://www.pathofexile.com/developer/docs/reference", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Nur dokumentierte Endpunkte unter OAuth-, User-Agent-, Rate-Limit- und Notice-Bedingungen; kein vollständiger statischer PoE2-Datensatz und keine Repository-Weiterverteilungsfreigabe."
+    },
+    {
+      "sourceId": "ggg-poe2-skilltree-export",
+      "name": "Offizieller PoE2-Passivbaumexport",
+      "status": "blocked",
+      "conditions": { "attributionRequired": "unknown", "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": "unknown", "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": "unknown", "manualApprovalRequired": true },
+      "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
+      "evidenceUrls": ["https://www.pathofexile.com/developer/docs/data", "https://github.com/grindinggear/poe2-skilltree-export", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Offiziell bereitgestelltes, versioniertes JSON mit Assets, aber ohne separate Lizenz oder ausdrückliche Speicher-/Weiterverteilungsfreigabe."
+    },
+    {
+      "sourceId": "repoe-poe2",
+      "name": "RePoE PoE2-Export",
+      "status": "blocked",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": "unknown", "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": "unknown", "manualApprovalRequired": true },
+      "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
+      "evidenceUrls": ["https://github.com/repoe-fork/repoe", "https://repoe-fork.github.io/", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Maschinenlesbar und breit, aber aus Spieldateien extrahiert; die Werkzeuglizenz überträgt keine Rechte an GGG-Daten."
+    },
+    {
+      "sourceId": "poe2db",
+      "name": "PoE2DB",
+      "status": "blocked",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": "unknown", "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": "unknown", "manualApprovalRequired": true },
+      "requiredConditions": ["automatedAccessAllowed", "rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "rateLimitKnown", "manualApprovalRequired"],
+      "evidenceUrls": ["https://poe2db.tw/", "https://poe2db.tw/pt/General_disclaimer", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Breite lokalisierte HTML-Daten; Wiki-Lizenz ist nicht eindeutig auf extrahierte Spieldaten/Medien übertragbar, allgemeine API und Abrufregeln fehlen."
+    },
+    {
+      "sourceId": "ggg-game-files-undocumented-endpoints",
+      "name": "Spieldateien und nicht dokumentierte Endpunkte",
+      "status": "rejected",
+      "conditions": { "attributionRequired": "unknown", "rawRedistributionAllowed": false, "derivedRedistributionAllowed": false, "automatedAccessAllowed": false, "localStorageAllowed": false, "repositoryStorageAllowed": false, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": false, "manualApprovalRequired": true },
+      "requiredConditions": [],
+      "evidenceUrls": ["https://www.pathofexile.com/developer/docs", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "GGG unterstützt nur dokumentierte APIs/Exporte; Reverse Engineering, automatisierte Extraktion und Eingriffe in Spieldateien sind ausgeschlossen."
+    },
+    {
+      "sourceId": "manual-transcription",
+      "name": "Manuelle Erfassung aus öffentlich sichtbaren Spielinhalten",
+      "status": "pending",
+      "conditions": { "attributionRequired": "unknown", "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": false, "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
+      "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
+      "evidenceUrls": ["https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Manuelle Erfassung beseitigt weder Urheber-/Datenrechte noch Herkunfts-, Versions- und Weiterverteilungsfragen."
+    }
+  ],
+  "approvedSources": ["local-synthetic-fixtures"],
+  "conditionallyApprovedSources": ["ggg-developer-api"],
+  "blockedSources": ["ggg-poe2-skilltree-export", "repoe-poe2", "poe2db"],
+  "rejectedSources": ["ggg-game-files-undocumented-endpoints"],
+  "pendingSources": ["manual-transcription"],
+  "categoryAssignments": [
+    { "categoryId": "classes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener statischer Export." },
+    { "categoryId": "ascendancies", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Schema und Rechte nicht vollständig belegt." },
+    { "categoryId": "skills", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Extrahierte Datenrechte und vollständige Semantik offen." },
+    { "categoryId": "support-gems", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Extrahierte Datenrechte und Kompatibilitätsfelder offen." },
+    { "categoryId": "skill-tags", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Taxonomie und Rechte offen." },
+    { "categoryId": "support-tags", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Taxonomie und Rechte offen." },
+    { "categoryId": "damage-types", "primarySourceId": "manual-transcription", "fallbackSourceId": "repoe-poe2", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kleine kontrollierte Taxonomie, aber Freigabeentscheidung fehlt." },
+    { "categoryId": "weapon-types", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener Basistyp-Export." },
+    { "categoryId": "item-classes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener Basistyp-Export." },
+    { "categoryId": "equipment-slots", "primarySourceId": "manual-transcription", "fallbackSourceId": "repoe-poe2", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Domänentyp vorhanden, Herkunftsfreigabe offen." },
+    { "categoryId": "affixes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Spawnregeln und Rechte offen." },
+    { "categoryId": "affix-tiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Tier-/Patchschema und Rechte offen." },
+    { "categoryId": "modifiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Komplexe Stats/Übersetzungen und Rechte offen." },
+    { "categoryId": "requirements", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Quellenübergreifende Normalisierung und Rechte offen." },
+    { "categoryId": "passive-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Offizielles JSON, aber Weiterverteilung nicht freigegeben." },
+    { "categoryId": "passive-connections", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Offizielles JSON, aber Weiterverteilung nicht freigegeben." },
+    { "categoryId": "jewel-sockets", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Teil des Baumexports; Rechte offen." },
+    { "categoryId": "normal-jewels", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Generierungs-/Modifierdaten und Rechte offen." },
+    { "categoryId": "cluster-jewels", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "PoE2-Vollständigkeit und Rechte offen." },
+    { "categoryId": "unique-cluster-jewels", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Vollständigkeit, Semantik und Rechte offen." },
+    { "categoryId": "normal-uniques", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "RePoE nennt nur Namen/Artpfade; vollständige Daten und Rechte offen." },
+    { "categoryId": "display-names", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Deutsche Vollständigkeit und Lizenzumfang nicht belegt." },
+    { "categoryId": "icons-images", "primarySourceId": null, "fallbackSourceId": null, "status": "blocked", "repositoryStorage": false, "offlineOnly": true, "reason": "GGG-Medienrechte, Hotlinking, lokale Speicherung und Weiterverteilung nicht freigegeben." },
+    { "categoryId": "patch-version-information", "primarySourceId": "ggg-developer-api", "fallbackSourceId": "ggg-poe2-skilltree-export", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Als Referenz nutzbar; maschinenlesbare, kategorienübergreifende Versionsbindung fehlt." }
+  ],
+  "globalRestrictions": [
+    "Kein echter Datenimport, solange die Kategorie nicht approved oder conditionally-approved ist.",
+    "Conditionally-approved erfordert alle requiredConditions als explizit erfüllt.",
+    "Keine Roh- oder abgeleiteten GGG-Daten im Repository ohne schriftlich belegte Weiterverteilungsfreigabe.",
+    "Keine Bilder, Icons oder sonstigen Medien herunterladen, hotlinken oder speichern.",
+    "Keine nicht dokumentierten Endpunkte, Spieldateiextraktion, Scraper oder Crawler verwenden.",
+    "Fixture-Importe bleiben erlaubt und müssen eindeutig synthetisch markiert sein."
+  ],
+  "nextReviewTrigger": "Schriftliche GGG-/Quellenfreigabe oder neue offizielle Lizenz-/API-Dokumentation mit Aussagen zu Abruf, Speicherung, Ableitungen, Weiterverteilung und Attribution."
+}

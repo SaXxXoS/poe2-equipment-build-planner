@@ -6,9 +6,7 @@ Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile
 
 ## Öffentliche Testversion
 
-Deployment-Ziel ist [https://saxxxos.github.io/poe2-equipment-build-planner/](https://saxxxos.github.io/poe2-equipment-build-planner/). Die Adresse ist derzeit noch nicht als erreichbar bestätigt: Der erste Actions-Lauf hat Installation und Build erfolgreich ausgeführt, wurde aber bei der Pages-Konfiguration gestoppt, weil Pages im Repository noch nicht aktiviert ist.
-
-Einmaliger externer Aktivierungsschritt mit Repository-Administratorrechten: **Settings → Pages → Build and deployment → Source → GitHub Actions**. Danach den Workflow **Deploy GitHub Pages** erneut ausführen (oder einen neuen Push auf `main` auslösen). Erst nach erfolgreichem Deployment und Browser-Smoke-Test gilt die URL als veröffentlicht.
+Die öffentliche Testversion ist unter [https://saxxxos.github.io/poe2-equipment-build-planner/](https://saxxxos.github.io/poe2-equipment-build-planner/) erreichbar. GitHub Pages verwendet GitHub Actions als Quelle; Abruf, Assets, Reload und Kerninteraktionen wurden am 20. Juli 2026 auf Mobil- und Desktopbreite geprüft.
 
 Das Deployment baut bei jedem Push auf `main` automatisch mit GitHub Actions und veröffentlicht ausschließlich das erzeugte `dist`-Artefakt. Die Testversion verwendet synthetische Daten und feste UI-Platzhalter; die vorhandene Engine ist noch nicht produktiv mit der React-Oberfläche verbunden.
 
@@ -50,12 +48,15 @@ Der Befehl lädt ausschließlich das synthetische Fixture, validiert Manifest, R
 - `src/components/` – UI-Bereiche und Dialoge
 - `src/domain/` – normalisierte Domänentypen, zentrale Tags und reine Validierungsfunktionen
 - `src/import/` – versioniertes Rohdatenformat, Offline-Importpipeline und künstliche Fixtures
+- `data-sources/source-approval.json` – maschinenlesbare Quellen-/Kategoriefreigaben und globale Importsperren
 - `src/engine/` – React-freie Analyzer-Schnittstellen, Bewertungsmodell, Orchestrator und künstliche Engine-Fixtures
 - `src/data.ts` – normalisierte lokale Definitionen, Konfigurationen und feste Testberechnung
 - `docs/DATA_SOURCES.md` – geprüfte Datenquellen, Bedingungen, Unsicherheiten und vorläufige Empfehlung
 - `docs/ENGINE_ARCHITECTURE.md` – Engine-Datenfluss, Regeln, Profile, Bewertungen und klare fachliche Grenzen
 - `docs/ENGINE_UI_INTEGRATION_AUDIT.md` – geprüfter späterer UI-/Engine-Vertrag, Adaptergrenze und Integrationsrisiken
 - `docs/DATA_SOURCE_RELEASE_AUDIT.md` – Datenbedarf, Quellenstatus und verbindliche Sperre vor echtem Datenimport
+- `docs/DATA_SOURCE_APPROVAL.md` – verbindliche Quellenentscheidung, Datenmatrix und Empfehlung für Aufgabe 5C
+- `docs/DATA_SOURCE_REFERENCES.md` – geprüfte Primärbelege mit Abrufdatum und Interpretationsgrenzen
 - `src/styles.css` – mobile-first Oberflächengestaltung
 - `AI_PROJECT/CHATGPT_PROTOCOL.md` – offizielles Projektgedächtnis und langfristiger Plan
 
@@ -72,6 +73,8 @@ Jede Spieldatendefinition führt gemeinsame Metadaten: deutsche Anzeige, optiona
 Das kanonische Rohdatenformat bildet eine feste Grenze zwischen externen Quellen und dem Domänenmodell. Die reine Pipeline arbeitet ausschließlich auf übergebenen Daten, erzeugt deterministische interne IDs und Inhalts-Hashes, prüft Schema, Manifest, Kategorien, Tags, Werte, Zählungen, Duplikate und Referenzen und erzeugt erst danach Domänenobjekte. Sie führt keine Netzwerkzugriffe aus und schreibt keine Dateien.
 
 Es wurden noch keine echten PoE2-Spieldaten importiert. Die enthaltenen Fixtures sind ausdrücklich künstlich. Die rechtliche und technische Bewertung möglicher späterer Quellen steht in [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md); ein breiter PoE2DB-Import bleibt bis zur ausdrücklichen Klärung blockiert.
+
+Die verbindliche Nachprüfung aus Aufgabe 5B gibt weiterhin keine echte Datenkategorie frei. Nur synthetische Fixtures sind `approved`; die offizielle GGG-API ist ausschließlich für ihre dokumentierten Endpunkte unter Bedingungen `conditionally-approved`, deckt aber den benötigten statischen Datenbestand nicht ab. Offizieller Passivbaumexport, RePoE und PoE2DB bleiben für einen Repository-Import `blocked`, Bilder und Icons ebenfalls. `src/import/approval.ts` validiert die maschinenlesbare Entscheidung und blockiert fehlende, ungültige, unbekannte oder nicht freigegebene Quellen/Kategorien deterministisch. Vor Aufgabe 5C ist eine schriftliche, kategorienbezogene Erlaubnis zu Abruf, Speicherung, Ableitungen, öffentlicher Weiterverteilung und Attribution erforderlich.
 
 ## Engine-Architektur
 
