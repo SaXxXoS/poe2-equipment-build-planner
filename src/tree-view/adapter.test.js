@@ -22,6 +22,7 @@ describe('PoE2-Baum-Darstellungsadapter', () => {
   it('sortiert Verbindungen deterministisch', () => expect(adapt().connections).toEqual(adapt().connections.slice().sort((a, b) => a.fromNodeId.localeCompare(b.fromNodeId, 'en', { numeric: true }) || a.toNodeId.localeCompare(b.toNodeId, 'en', { numeric: true }))))
   it('enthält keine Assetpfade oder Asset-URLs', () => expect(JSON.stringify(adapt())).not.toMatch(/Art\/|\.png|\.webp|sprite/i))
   it('behält den englischen Sprachstatus', () => expect(adapt()).toMatchObject({ sourceLocale: 'en', sourceVersion: '0.5.2' }))
+  it('verwendet bei leerem Quellnamen die technische ID', () => expect(adapt().nodes.filter(node => node.sourceText === '').every(node => node.displayName === node.id)).toBe(true))
   it('erzeugt für gleichen Input dasselbe ViewModel', () => expect(adapt()).toEqual(adapt()))
   it('blockiert ungültige Positionen', () => { const value = JSON.parse(JSON.stringify(importedTree)); value.nodes[0].position.x = Number.NaN; expect(() => adaptImportedPoe2Tree(value, report)).toThrow(/Baumkoordinate/) })
 })
