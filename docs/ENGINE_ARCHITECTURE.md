@@ -114,6 +114,18 @@ Set 1 und Set 2 werden unabhängig bewertet; die Empfehlung enthält beide Score
 
 Der Analyzer arbeitet rein, deterministisch, React- und netzwerkfrei mit synthetischen Fixtures. Er optimiert keine mehreren Supports, berücksichtigt keine Sockel oder Links und berechnet weder Schaden noch DPS. Diese Grenzen bleiben späteren, ausdrücklich freizugebenden Aufgaben vorbehalten.
 
+## Passive Analyzer (Aufgabe 4E)
+
+Der Passive Analyzer bewertet ausschließlich übergebene synthetische Einzelknoten und kleine, bereits definierte Cluster. Eingaben sind Build- und Waffen-Set-Profile, EquipmentAnalysis, der ausgewählte Skill, ausgewählte einzelne Supportempfehlungen, Charakter, Zielprofil, Knoten, Verbindungen und `AnalyzerContext`. `PassiveAnalysis` trennt alle, gültige und blockierte Kandidaten und liefert Damage-, Defensive-, Mapping-, Boss-, Path-Efficiency-, Ascendancy-, Keystone- und Cluster-Ranglisten.
+
+`src/engine/passives/rules.ts` definiert Tags, Profilfelder, Kategorien, Gewichte, Schwellen und Contributions zentral; `config.ts` enthält Scoregrenzen, Knotentyp-Boni, Pfadkosten, Bedarfs-, Trade-off-, Set- und Confidence-Schwellen. Harte Regeln blockieren unbekannte oder deaktivierte Knoten, ungültige Verbindungen, Selbstverbindungen, doppelte oder nicht zusammenhängende Pfade, unerreichbare Cluster, falsche Klasse/Aszendenz, fehlende Eingangsknoten und überschrittene Punktbudgets. Der Analyzer validiert nur den angegebenen Pfad und sucht weder Alternativen noch kürzeste Wege.
+
+Schadensarten und Attack-, Spell-, Projectile-, Melee-, Area-, Critical-, DoT- und Minion-Tags erhalten nur bei passender Profil- und Skill-Evidenz positive `ScoreReason`s. Defensive, Widerstands-, Ressourcen- und Attributknoten reagieren auf synthetische Bedarfe. Normal, Notable, Keystone, Ascendancy sowie Jewel-/Cluster-Socket werden unterschieden; Sockel bleiben reine Anschlusswerte ohne Juwelbewertung. Keystone-Nachteile werden als strukturierte Trade-offs und negative Gründe ausgegeben, nicht pauschal blockiert.
+
+Ziel- und Pfadpunktkosten ergeben `totalPointCost`; `scorePerPoint` teilt den synthetischen Nutzen durch mindestens einen Punkt, während `pathEfficiencyScore` Pfadkosten und nützliche beziehungsweise wertlose Durchgangsknoten berücksichtigt. Beide Waffen-Sets werden getrennt bewertet. Redundanzen, Profilkonflikte und schwache Pfadknoten erzeugen strukturierte Listen und Warnungen. Confidence bleibt vom Score getrennt und berücksichtigt Profilklarheit, Pfadgültigkeit, direkte Treffer, Konflikte, schwache Durchgangsknoten und experimentellen Status.
+
+Es wird kein vollständiger Baum zusammengestellt, kein alternativer Pfad gesucht, kein Jewel oder Unique bewertet und keine Rotation erzeugt. Der Analyzer verwendet keinen echten PoE2-Skilltree, keine echten Daten und keine Schadens- oder DPS-Formeln; die Engine bleibt von der UI getrennt.
+
 ## Nächste Module
 
-Nächster abgegrenzter Schritt ist Aufgabe 4E. Echte Daten, DPS-Formeln, passive Graphsuche und kombinatorische Supportoptimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Nächster abgegrenzter Schritt ist Aufgabe 4F. Echte Daten, DPS-Formeln, globale passive Graphsuche und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.

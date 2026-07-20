@@ -13,7 +13,20 @@ export interface PassiveNodeDefinition extends GameDataMetadata {
   connectedNodeIds: EntityId[]
   requiredClassId?: EntityId
   requiredAscendancyId?: EntityId
+  allowedAscendancyIds?: EntityId[]
+  excludedAscendancyIds?: EntityId[]
   weaponSet?: SkillWeaponSet
+  pointCost?: number
+  enabled?: boolean
+  startNode?: boolean
+  minimumLevel?: number
+  gainedMechanics?: string[]
+  lostMechanics?: string[]
+  positiveProfileFields?: string[]
+  negativeProfileFields?: string[]
+  restrictions?: string[]
+  tradeOffs?: string[]
+  experimental?: boolean
   selected: boolean
 }
 

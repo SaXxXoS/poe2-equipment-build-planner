@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4D lieferten Engine-Architektur sowie eigenständige Equipment-, Skill- und Support-Analyzer. Der synthetische Support Analyzer bewertet einzelne Kandidaten mit harten Ausschlüssen, kategorisierten Scores, Trade-offs, Waffen-Set-Eignung, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und ist weder eine kombinatorische Support- noch eine DPS-Engine. 146 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4E lieferten Engine-Architektur sowie eigenständige Equipment-, Skill-, Support- und Passive-Analyzer. Der synthetische Passive Analyzer bewertet einzelne Knoten und vorgegebene kleine Cluster mit Graphprüfung, Pfadkosten, Effizienz, Trade-offs, Waffen-Sets, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und erzeugt weder einen vollständigen Baum noch DPS. 182 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -108,6 +108,9 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 - Zentral konfigurierte Support-Regeln für Tags, Schadensarten, Mechaniken, Rollen, Waffen, Ziele, Profile und Trade-offs
 - Einzelne Support-Empfehlungen mit Set-Scores, Confidence sowie gültigen/blockierten und fünf kategorisierten Ranglisten
 - Zehn künstliche Support-Kandidaten und 33 dedizierte Support-Analyzer-Tests
+- Dreizehn synthetische Passive-Kandidaten für Einzelknoten, Keystones, Ascendancy und kleine Cluster
+- Vereinfachte Graphprüfung, Pfadkosten, scorePerPoint, Path-Efficiency, Set-Scores, Redundanz, Konflikte, Confidence und acht Ranglisten
+- 36 dedizierte Passive-Analyzer-Tests
 
 ## 6. Teilweise fertige Funktionen
 
@@ -120,7 +123,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Aufgaben 4E bis 4I der Reihe nach umsetzen; 4A bis 4D sind abgeschlossen
+- Aufgaben 4F bis 4I der Reihe nach umsetzen; 4A bis 4E sind abgeschlossen
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -149,6 +152,8 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Zehn künstliche Skill-Kandidaten und 38 Skill-Analyzer-Tests ergänzt; Support Analyzer fachlich unverändert gelassen
 - Aufgabe 4D umgesetzt: Support-Domäne gezielt optional erweitert, zentrale Regeln/Konfiguration, harte Kompatibilität, weiche Kategorien, Zielgewichtung, Trade-offs, Set-Eignung, Confidence und Ranglisten ergänzt
 - Zehn künstliche Support-Kandidaten und 33 Support-Analyzer-Tests ergänzt; Skill und Passive Analyzer fachlich unverändert gelassen
+- Aufgabe 4E umgesetzt: Passive-Domäne, zentrale Regeln/Konfiguration, Einzelknoten-/Clusterbewertung, Graphvalidierung, Pfadkosten, Trade-offs, Set-Eignung, Redundanz, Konflikte, Confidence und Ranglisten ergänzt
+- Dreizehn synthetische Passive-Kandidaten und 36 Passive-Analyzer-Tests ergänzt; Jewel-, Unique- und Rotationsmodule unverändert gelassen
 
 ## 10. Zuletzt getestete Bereiche
 
@@ -213,6 +218,16 @@ Am 20. Juli 2026 nach Aufgabe 4D zusätzlich erfolgreich geprüft:
 - Desktop bei 1280 × 800 und Mobil bei 390 × 844 ohne horizontalen Überlauf; Browserkonsole ohne Warnungen oder Fehler
 - Nicht auf physischem Touchgerät geprüft; Touch-Verhalten bleibt durch Pointer-Events und mobile Layoutprüfung abgedeckt
 
+Am 20. Juli 2026 nach Aufgabe 4E zusätzlich erfolgreich geprüft:
+
+- 182 reguläre Tests in sieben Dateien erfolgreich, davon 36 dedizierte Passive-Analyzer-Tests; bestehende 146 Tests bleiben erfolgreich
+- Installation unverändert; Fixture-Import (23 importiert, 0 verworfen), Lint, Typecheck und Produktions-Build mit 37 Modulen erfolgreich
+- Passive Engine ohne React, Netzwerk, echte PoE2-Daten, globale Baum-/Pfadsuche oder DPS-Formeln
+- Skill-, Support-, Jewel-, Unique- und Rotationsmodule fachlich unverändert
+- Charakterwechsel, Affixdialog, Rubinjuwel-Auswahl, Skilltree-Zoom auf 120 Prozent und Platzhalterberechnung funktionieren
+- Desktop bei 1280 × 800 und Mobil bei 390 × 844 ohne horizontalen Überlauf; Browserkonsole ohne Warnungen oder Fehler
+- Nicht auf physischem Touchgerät geprüft; Pointer-Events und mobile Layoutprüfung decken das Touch-Verhalten indirekt ab
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -249,14 +264,18 @@ Am 20. Juli 2026 nach Aufgabe 4D zusätzlich erfolgreich geprüft:
 - Jeder Support wird unabhängig gegen den bereits ausgewählten Skill bewertet; es gibt bewusst keine kombinatorische Suche
 - Blockierte Supports bleiben erklärbar sichtbar, sind aber nicht auswählbar und stehen hinter gültigen Kandidaten
 - Set-Eignung und Confidence sind vom Gesamtscore getrennte Ausgaben; technische IDs entscheiden jeden Ranglisten-Gleichstand
+- Passive-Regeln und Schwellen liegen zentral in `src/engine/passives/rules.ts` und `config.ts`
+- Die Graphprüfung validiert ausschließlich den übergebenen Kandidatenpfad; es gibt keine alternative, kürzeste oder globale Pfadsuche
+- `scorePerPoint` und `pathEfficiencyScore` sind getrennte synthetische Effizienzsignale; Pfadknoten bleiben explizite Kosten und können eigenen Nutzen beitragen
+- Jewel- und Cluster-Sockel sind nur Anschlusswerte und lösen keine Juwelbewertung aus
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4E als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den dafür verbindlichen Auftrag einholen; Support-Kombinationen, Passive, Juwele, Uniques, Rotationen, echte Daten, DPS und UI-Anbindung nicht ohne ausdrückliche Freigabe vorwegnehmen.
+Aufgabe 4F als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den verbindlichen Auftrag einholen; Juwel-, Unique-, Rotations-, echte Daten-, DPS- oder UI-Funktionen nicht vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-, Skill- und Support-Regeln liegen jeweils in getrennten Engine-Modulen; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert alle drei Analyzer. Nächster Schritt ist ausschließlich 4E nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, DPS-Berechnung oder fachliche Empfehlung.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-, Skill-, Support- und Passive-Regeln liegen in getrennten Engine-Modulen; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert alle vier Analyzer. Nächster Schritt ist ausschließlich 4F nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, globale Baumoptimierung, DPS-Berechnung oder fachliche Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 

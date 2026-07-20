@@ -7,7 +7,7 @@ export type DataStatus = (typeof DATA_STATUSES)[number]
 export const MECHANIC_TAGS = [
   'attack', 'spell', 'projectile', 'melee', 'area', 'physical', 'fire', 'cold',
   'lightning', 'chaos', 'critical', 'damage-over-time', 'minion', 'movement',
-  'buff', 'debuff', 'defensive',
+  'buff', 'debuff', 'defensive', 'resistance', 'resource', 'strength', 'dexterity', 'intelligence',
 ] as const
 export type MechanicTag = (typeof MECHANIC_TAGS)[number]
 
