@@ -10,7 +10,7 @@ Die Engine bereitet eine erklärbare, Equipment-first ausgerichtete Build-Analys
 
 - `common`: zentrale Typen, kontrollierte Bewertungskategorien, Score-Helfer und stabile Sortierung.
 - `equipment`: wendet zentral definierte synthetische Regeln auf strukturierte Modifier an, analysiert beide Waffen-Sets getrennt und erzeugt den kombinierten Profil- und Konfliktbericht.
-- `skills`: bewertet Kandidatentags gegen das Profil und weist Rollen sowie Mapping-/Bosswerte aus.
+- `skills`: bewertet synthetische Kandidaten regelbasiert gegen Equipment-Profil, Charakter und Ziel, prüft harte Ausschlüsse und erzeugt Rollen-, Set- und Ranglistenberichte.
 - `supports`: prüft erforderliche und ausgeschlossene Tags und blockiert inkompatible Kandidaten.
 - `passives`: bewertet künstliche Nutzwerte abzüglich vorgegebener Pfadkosten; keine Pfadsuche.
 - `jewels`: gemeinsame Bewertung normaler, Cluster- und Unique-Cluster-Juwele.
@@ -67,6 +67,32 @@ Nicht blockierende Warnungen erkennen starke Attack-/Spell- und Melee-/Projectil
 Ein bekannter Modifier ist ungenutzt, wenn seine Contribution höchstens der zentralen Unused-Schwelle entspricht und er keine separat ausgewertete Attribut- oder Widerstandsfunktion besitzt. Eine Contribution unterhalb des konfigurierten Anteils am stärksten Modifier gilt als schwach genutzt. Konfliktbehaftete Modifier werden getrennt ausgewiesen. `conflictLevel` ist die normalisierte Summe der konfigurierten Konfliktstärken; `profileClarity` ist deren Gegenwert im Bereich 0–100. Gleichstände bei Dominanzen werden nach technischer ID stabil aufgelöst.
 
 Der gesamte Analyzer arbeitet ausschließlich mit künstlichen Fixture-Definitionen. Er enthält keine echten Spieldaten, Schadens- oder DPS-Formeln und keine fachlich verbindlichen PoE2-Empfehlungen.
+
+## Skill Analyzer (Aufgabe 4C)
+
+Der Skill Analyzer bewertet ausschließlich übergebene künstliche Skill-Kandidaten. Eingaben sind `BuildProfile`, beide Waffen-Set-Profile, `profileClarity`/`conflictLevel`, Klasse, Aszendenz, Zielprofil, synthetische Waffenverfügbarkeit und `AnalyzerContext`. Er wählt keine Support-Gems, bildet keine Skillkombination und erzeugt weder passive Pfade noch Rotationen.
+
+### Regeln und harte Kompatibilität
+
+`src/engine/skills/rules.ts` enthält zentral die kontrollierten Skill-Regeln mit ID, Description-Key, benötigten/ausgeschlossenen Tags, Profilfeldern, Kategorie, Gewicht, Schwelle, Contribution-Limit, Reason-Code und Aktivstatus. Sämtliche Gewichte, Scoregrenzen, Klarheits- und Ausschlussschwellen liegen in `config.ts`.
+
+Blockierend sind deaktivierte oder ungültige Kandidaten, technisch exklusive Attack-/Spell-Widersprüche, falsche beziehungsweise ausgeschlossene künstliche Waffenarten, nicht passende oder ausgeschlossene Klassen/Aszendenzen, fehlende Pflicht-Tags, vorhandene Ausschluss-Tags und künstliche Attributdefizite. Gemischte Equipment-Profile blockieren nicht automatisch. Blockierte Kandidaten bleiben mit technischem Score sichtbar, werden aber hinter gültigen Kandidaten sortiert.
+
+### Weiche Bewertung und Zielprofile
+
+Schadensarten, Mechanik-Tags und ausschließlich passende Geschwindigkeiten werden gegen normalisierte Profilfelder bewertet. Critical-, DoT- oder Minion-Affinität wirkt nur bei entsprechendem Skill-Tag. Klassen- und Aszendenzpräferenzen, Resource-/Defence-Hinweise sowie Mapping-/Boss-Basiswerte erzeugen strukturierte Gründe. `mapping`, `boss` und `balanced` verwenden zentral konfigurierte Gewichtungen; Mapping belohnt zusätzlich Area, Projectile und Movement, Boss synthetische Debuff-Eignung. Jede Kategorie wird auf 0–100 begrenzt; negative Konflikt- und Unused-Gründe reduzieren den ebenfalls auf 0–100 begrenzten Gesamtwert.
+
+### Rollen, Waffen-Sets und Profilnutzung
+
+Mögliche und empfohlene Rollen sind `main`, `secondary`, `utility`, `movement` und `defensive`. Movement, Buff/Debuff und Defensive haben eindeutige Rollenprioritäten; schadensbezogene Kandidaten können Main oder Secondary sein. Jede Rollenwahl besitzt einen Reason-Code.
+
+Set 1, Set 2 und das kombinierte Profil werden separat bewertet. Die Empfehlung enthält beide Scores, Differenz und `set-1`, `set-2`, `both` oder `none`; Gleichstand und setunabhängige Utility-/Movement-Skills ergeben `both`. Es wird keine Waffenwechselrotation erzeugt. Zusätzlich werden stark und schwach passende Profilfelder, ungenutzte dominante Felder und Konfliktfelder ausgewiesen.
+
+### Confidence und Ranglisten
+
+`profileClarity` beeinflusst ausschließlich `confidence`, nicht die fachliche Punktzahl. Hohe Klarheit mit Profiltreffern ergibt `high`, mittlere Klarheit `medium`, geringe Klarheit `low`; hoher `conflictLevel` und geringe Klarheit erzeugen Warnungen. `SkillAnalysis` enthält alle, gültige und blockierte Kandidaten, Top-Main-, Utility- und Movement-Gruppen sowie getrennte Mapping- und Bossranglisten. Gleichstände werden über stabile Skill-IDs aufgelöst; sofern verfügbar werden drei Main-Kandidaten bereitgestellt.
+
+Der Analyzer verwendet keine echten PoE2-Skills, Werte oder DPS-Formeln. Der Support Analyzer bleibt eine unveränderte 4A-Schnittstelle und ist ausdrücklich nicht Bestandteil der Skillbewertung.
 
 ## Nächste Module
 

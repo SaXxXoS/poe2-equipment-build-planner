@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Aufgabe 4A hat die React-freie Engine-Architektur vorbereitet. Aufgabe 4B implementiert den eigenständigen regelbasierten Equipment Analyzer mit ausschließlich synthetischen Regeln: normalisierte Profile, getrennte Waffen-Sets, dominante Ausrichtungen, künstliche Anforderungen, Konflikte und Modifier-Nutzung. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. 75 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A und 4B lieferten Engine-Architektur und Equipment Analyzer. Aufgabe 4C implementiert den eigenständigen synthetischen Skill Analyzer mit harten Ausschlüssen, kategorisierter Bewertung, Rollen, Waffen-Set-Eignung, Confidence und stabilen Ranglisten. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. 113 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -102,6 +102,9 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 - Getrennte Profile für beide Waffen-Sets, kombiniertes Profil, stabile Dominanzen, Set-Differenzen und Spezialisierungen
 - Strukturierte Equipment-Konflikte sowie Klassifikation ungenutzter, schwach genutzter und konfliktbehafteter Modifier
 - Fünf synthetische Equipment-Fixtures und 36 dedizierte Equipment-Analyzer-Tests
+- Zentral konfigurierte Skill-Regeln, harte Kompatibilitätsprüfung und weiche Bewertung für Schadensarten, Mechaniken, Geschwindigkeit, Klasse, Aszendenz und Ziele
+- Skillrollen, getrennte Waffen-Set-Scores, Profilnutzung, Confidence sowie gültige/blockierte, Main-, Utility-, Movement-, Mapping- und Bossranglisten
+- Zehn künstliche Skill-Kandidaten und 38 dedizierte Skill-Analyzer-Tests
 
 ## 6. Teilweise fertige Funktionen
 
@@ -114,7 +117,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Aufgaben 4C bis 4I der Reihe nach umsetzen; 4A und 4B sind abgeschlossen
+- Aufgaben 4D bis 4I der Reihe nach umsetzen; 4A bis 4C sind abgeschlossen
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -139,6 +142,8 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Drei künstliche Engine-Fixtures, 20 Engine-Tests und `docs/ENGINE_ARCHITECTURE.md` ergänzt; README auf den Platzhalterstatus aktualisiert
 - Aufgabe 4B umgesetzt: zentrales Regel-/Konfigurationsmodell, nachvollziehbare Normalisierung, vollständiger synthetischer Equipment-Bericht, Waffen-Set-Analyse, Konflikte und Modifier-Nutzung ergänzt
 - Equipment-Fixtures auf fünf Szenarien erweitert und 36 dedizierte Equipment-Tests ergänzt; Architektur und README abgeglichen
+- Aufgabe 4C umgesetzt: Skill-Domäne gezielt optional erweitert, zentrale Regeln/Konfiguration, harte Ausschlüsse, weiche Kategorien, Zielgewichtung, Rollen, Set-Eignung, Confidence und Ranglisten ergänzt
+- Zehn künstliche Skill-Kandidaten und 38 Skill-Analyzer-Tests ergänzt; Support Analyzer fachlich unverändert gelassen
 
 ## 10. Zuletzt getestete Bereiche
 
@@ -183,6 +188,16 @@ Am 20. Juli 2026 nach Aufgabe 4B zusätzlich erfolgreich geprüft:
 - Equipment-Engine ohne React-Import, Netzwerkzugriff, echte PoE2-Daten oder DPS-/Schadensformeln
 - Nicht auf physischem Touchgerät geprüft; keine automatisierten Browser-Regressionstests vorhanden
 
+Am 20. Juli 2026 nach Aufgabe 4C zusätzlich erfolgreich geprüft:
+
+- 113 reguläre Tests in fünf Dateien erfolgreich, davon 38 dedizierte Skill-Analyzer-Tests; bestehende 75 Tests bleiben erfolgreich
+- Import-Fixture, Lint, Typecheck und Produktions-Build erfolgreich
+- Charakterauswahl, Affixdialog, normale Juwelauswahl, Test-Skilltree und Platzhalterberechnung auf Desktop und 390 × 844 weiterhin funktionsfähig
+- Kein horizontaler Überlauf und keine neuen Browserkonsolenfehler
+- Skill Engine ohne React-Import, Netzwerkzugriff, echte PoE2-Daten oder DPS-/Schadensformeln
+- Support Analyzer gegenüber Aufgabe 4A fachlich und dateiseitig unverändert
+- Nicht auf physischem Touchgerät geprüft; keine automatisierten Browser-Regressionstests vorhanden
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -211,14 +226,19 @@ Am 20. Juli 2026 nach Aufgabe 4B zusätzlich erfolgreich geprüft:
 - Waffen-Sets werden separat und kombiniert analysiert, ohne Rotationslogik aus Aufgabe 4H vorwegzunehmen
 - Equipment-Konflikte sind weiche Warnungen; nur technisch unbekannte Modifier-Referenzen blockieren als harte Verstöße
 - Dominanz-Gleichstände werden deterministisch nach technischer ID beziehungsweise bei Waffen-Sets als `balanced` aufgelöst
+- Skill-Regeln und Schwellen liegen zentral in `src/engine/skills/rules.ts` und `config.ts`; Skill-Metadaten wurden nur optional erweitert
+- Blockierte Skills bleiben erklärbar sichtbar, werden jedoch stets hinter gültigen Kandidaten sortiert
+- `profileClarity` beeinflusst Confidence getrennt vom Score; Zielprofile beeinflussen Mapping-/Bossranglisten über synthetische Gewichte
+- Skill-Set-Scores erzeugen nur Eignungshinweise und nehmen keine Rotationslogik vorweg
+- Der Support Analyzer bleibt bis Aufgabe 4D fachlich unverändert
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4C als klar abgegrenzten Skill Analyzer auf Basis des von 4B erzeugten `BuildProfile` umsetzen. Nur synthetische Kandidaten und Regeln verwenden; Supports, Passive, Juwele, Uniques, Rotationen und UI-Anbindung nicht vorwegnehmen.
+Aufgabe 4D als klar abgegrenzten regelbasierten Support Analyzer umsetzen. Nur synthetische Support-Kandidaten gegen einen ausgewählten Skill und das BuildProfile bewerten; keine Skillkombination, Passive, Juwele, Uniques, Rotationen oder UI-Anbindung vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach Abhängigkeiten sowie Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Aufgabe 4B liegt in `src/engine/equipment/`; Regeln und Schwellen müssen zentral bleiben. `docs/ENGINE_ARCHITECTURE.md` dokumentiert Umrechnung und Grenzen. Nächster Schritt ist ausschließlich 4C. Engine und UI bleiben getrennt. Sämtliche Fixtures und Regeln sind künstlich und dürfen nicht als echte Spieldaten, DPS-Berechnung oder fachliche Empfehlung interpretiert werden.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Equipment-Regeln liegen in `src/engine/equipment/`, Skill-Regeln in `src/engine/skills/`; Schwellen bleiben zentral. `docs/ENGINE_ARCHITECTURE.md` dokumentiert beide Analyzer. Nächster Schritt ist ausschließlich 4D. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, DPS-Berechnung oder fachliche Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 

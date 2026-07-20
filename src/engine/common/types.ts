@@ -56,7 +56,43 @@ export interface EquipmentAnalysis {
   score: Score
 }
 export type RecommendationBase = Score & { targetId: EntityId }
-export interface SkillRecommendation extends RecommendationBase { skillId: EntityId; suitability: 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'; mappingScore: number; bossScore: number; valid: boolean }
+export type SkillEligibility = 'eligible' | 'blocked'
+export interface SkillRecommendation extends RecommendationBase {
+  skillId: EntityId
+  suitability: 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'
+  eligibility: SkillEligibility
+  recommendedRole: 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'
+  possibleRoles: ('main' | 'secondary' | 'utility' | 'movement' | 'defensive')[]
+  mappingScore: number
+  bossScore: number
+  damageScore: number
+  utilityScore: number
+  equipmentSynergyScore: number
+  ascendancySynergyScore: number
+  scoreSet1: number
+  scoreSet2: number
+  preferredWeaponSet: 'set-1' | 'set-2' | 'both' | 'none'
+  setDifference: number
+  matchedProfileFields: string[]
+  weaklyMatchedProfileFields: string[]
+  unusedDominantProfileFields: string[]
+  conflictingProfileFields: string[]
+  warnings: ConstraintViolation[]
+  valid: boolean
+  analyzerVersion: string
+}
+export interface SkillAnalysis {
+  allCandidates: SkillRecommendation[]
+  eligibleCandidates: SkillRecommendation[]
+  blockedCandidates: SkillRecommendation[]
+  topMainCandidates: SkillRecommendation[]
+  topUtilityCandidates: SkillRecommendation[]
+  topMovementCandidates: SkillRecommendation[]
+  mappingRanking: SkillRecommendation[]
+  bossRanking: SkillRecommendation[]
+  status: EngineStatus
+  analyzerVersion: string
+}
 export interface SupportRecommendation extends RecommendationBase { supportId: EntityId; skillId: EntityId; valid: boolean }
 export interface PassiveRecommendation extends RecommendationBase { nodeId?: EntityId; clusterId?: EntityId; utilityScore: number; pathCost: number; scorePerPoint: number }
 export interface JewelRecommendation extends RecommendationBase { jewelId: EntityId; jewelType: 'normal' | 'cluster' | 'unique-cluster'; pathCost?: number; recognizedSynergies: MechanicTag[] }
@@ -70,5 +106,5 @@ export interface ExplanationEntry { section: string; priority: number; titleKey:
 export interface PassiveCandidate { id: EntityId; tags: MechanicTag[]; utilityScore: number; pathCost: number; reachable: boolean }
 export interface UniqueCandidate extends UniqueItemDefinition { ascendancyIds: EntityId[]; buildEnabler?: boolean }
 export interface EngineCandidates { skills: SkillGemDefinition[]; supports: SupportGemDefinition[]; passives: PassiveCandidate[]; jewels: AnyJewelDefinition[]; uniques: UniqueCandidate[] }
-export interface BuildAnalysis { equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile; skillRecommendations: SkillRecommendation[]; supportRecommendations: SupportRecommendation[]; passiveRecommendations: PassiveRecommendation[]; jewelRecommendations: JewelRecommendation[]; uniqueRecommendations: UniqueRecommendation[]; mappingRotation: MappingRotation; bossRotation: BossRotation; explanations: ExplanationEntry[]; warnings: ConstraintViolation[]; status: EngineStatus; engineVersion: string; moduleTrace: string[] }
+export interface BuildAnalysis { equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile; skillAnalysis: SkillAnalysis; skillRecommendations: SkillRecommendation[]; supportRecommendations: SupportRecommendation[]; passiveRecommendations: PassiveRecommendation[]; jewelRecommendations: JewelRecommendation[]; uniqueRecommendations: UniqueRecommendation[]; mappingRotation: MappingRotation; bossRotation: BossRotation; explanations: ExplanationEntry[]; warnings: ConstraintViolation[]; status: EngineStatus; engineVersion: string; moduleTrace: string[] }
 export interface EngineRequest { input: BuildInput; candidates: EngineCandidates }
