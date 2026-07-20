@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4G lieferten Engine-Architektur sowie eigenständige Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer. Der synthetische Unique Analyzer bewertet einzelne Gegenstände mit Aszendenz-/Equipment-Synergie, Slotersatz, Enablern, Alternativrichtungen, Trade-offs, Waffen-Sets, Confidence und Ranglisten. Die Engine kombiniert keine Uniques, optimiert nicht neu und berechnet weder Preise noch DPS. 279 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage; echter Datenimport ist nicht freigegeben. Aufgaben 4A bis 4H lieferten Engine-Architektur sowie eigenständige Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer und einen regelbasierten Rotation Generator. Dieser erzeugt getrennte Mapping- und Bosspläne mit Rollen, kontrollierten Aktionen, expliziten Waffenwechseln, Effekten, Maintenance, Wiederholung, Complexity und Confidence. Die Engine optimiert nicht neu und berechnet weder Zeiten noch DPS. 318 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine.
 
 ## 5. Fertige Funktionen
 
@@ -96,6 +96,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-I
 - React-freie Engine-Struktur unter `src/engine/` mit Equipment-first-Datenfluss und zentralem `analyzeBuild`
 - Strukturierte Scores, Gründe, harte Verstöße, kontrollierte weiche Kategorien und normiertes `BuildProfile`
 - Schnittstellen und künstliche Testlogik für Equipment, Skills, Supports, Passive, Juwele, Uniques, Rotationen und Erklärungen
+- Regelbasierter synthetischer Rotation Generator mit Mapping-/Bossplan, zentralen Regeln, expliziten Waffenwechseln, anhaltenden Effekten, strukturierten Bedingungen, Complexity und Confidence
 - Drei eindeutig synthetische Engine-Fixtures und 20 deterministische Engine-Architekturtests
 - Vollständige Architekturdokumentation unter `docs/ENGINE_ARCHITECTURE.md`
 - Zentral konfigurierte Equipment-Regeln und Normalisierung für fünf Schadensarten, Mechaniken, Geschwindigkeit, Defensive und künstliche Attribute
@@ -244,6 +245,17 @@ Am 20. Juli 2026 nach Aufgabe 4G zusätzlich erfolgreich geprüft:
 - Keine kombinierte Unique-Optimierung, Neuoptimierung, echten Daten, Preise, Trade-API oder DPS
 - Charakterwechsel, Affixdialog, Rubinjuwel-Auswahl, Skilltree-Zoom und Platzhalterberechnung funktionieren; Desktop 1280 × 800 und Mobil 390 × 844 ohne horizontalen Überlauf, Konsole fehlerfrei
 
+Am 20. Juli 2026 nach Aufgabe 4H zusätzlich erfolgreich geprüft:
+
+- 318 reguläre Tests in zehn Dateien erfolgreich, davon 39 dedizierte Rotation-Generator-Tests; bestehende 279 Tests bleiben erfolgreich
+- Zwölf synthetische Rotations-Fixtures für Mapping, Boss, Waffenwechsel, Effekte, fehlende Rollen, Complexity, `both` und Build-Enabler
+- Installation unverändert; Fixture-Import (23/0), Lint, Typecheck und Produktions-Build mit 37 Modulen erfolgreich
+- Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer sowie Explanation Generator fachlich unverändert
+- Keine freie Textgenerierung, echten Daten, Netzwerkzugriffe, DPS-, Cooldown- oder Zeitsimulation und keine UI-Anbindung
+- Charakterwechsel auf Zauberin, Helm-Affixdialog, Rubinjuwel-Auswahl, Skilltree-Zoom auf 120 Prozent und Platzhalterberechnung funktionieren
+- Desktop 1280 × 800 und Mobil 390 × 844 ohne horizontalen Überlauf; Browserkonsole ohne Warnungen oder Fehler
+- Nicht auf einem physischen Touchgerät geprüft; mobile Breite und Pointer-basierte bestehende Bedienung wurden indirekt abgedeckt
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -284,14 +296,17 @@ Am 20. Juli 2026 nach Aufgabe 4G zusätzlich erfolgreich geprüft:
 - Die Graphprüfung validiert ausschließlich den übergebenen Kandidatenpfad; es gibt keine alternative, kürzeste oder globale Pfadsuche
 - `scorePerPoint` und `pathEfficiencyScore` sind getrennte synthetische Effizienzsignale; Pfadknoten bleiben explizite Kosten und können eigenen Nutzen beitragen
 - Jewel- und Cluster-Sockel sind nur Anschlusswerte und lösen keine Juwelbewertung aus
+- Rotationsregeln und sämtliche Schwellen liegen zentral in `src/engine/rotations/rules.ts` und `config.ts`; der Generator liest vorgelagerte Ergebnisse ausschließlich
+- Waffenwechsel sind explizite Schritte und entstehen nur zwischen unterschiedlichen konkreten Sets; `both` löst keinen Wechsel aus
+- Maintenance, Wiederholung, Complexity und Confidence sind strukturierte, voneinander getrennte Ausgaben ohne echte Zeitwerte oder Qualitätsbehauptung
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4H als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den verbindlichen Auftrag einholen; Rotation, Erklärungen, echte Daten, Preise, DPS oder UI-Funktionen nicht vorwegnehmen.
+Aufgabe 4I als nächstes klar abgegrenztes Engine-Modul umsetzen. Zuvor den verbindlichen Auftrag einholen; den Explanation Generator, echte Daten, Preise, DPS oder UI-Funktionen nicht ohne diesen Auftrag erweitern.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Alle Analyzer besitzen getrennte Regelmodule und zentrale Schwellen. `docs/ENGINE_ARCHITECTURE.md` dokumentiert Equipment bis Unique. Nächster Schritt ist ausschließlich 4H nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, kombinierte Optimierung, Preise, DPS oder fachliche Empfehlung.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach Abhängigkeiten, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Alle Analyzer und der Rotation Generator besitzen getrennte Regelmodule und zentrale Schwellen. `docs/ENGINE_ARCHITECTURE.md` dokumentiert Equipment bis Rotation. Nächster Schritt ist ausschließlich 4I nach Vorlage des verbindlichen Auftrags. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, Zeit-/DPS-Simulation, kombinierte Optimierung, Preise oder fachliche Empfehlung.
 
 ## 14. Arbeitsregeln des Projekts
 

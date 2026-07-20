@@ -146,6 +146,30 @@ Build-Enabler, gewonnene und verlorene Mechaniken, Folgeänderungen, betroffene 
 
 Es gibt keine kombinierte Unique-Ausrüstung, automatische Neuoptimierung, Markt-/Trade-Daten, Preis- oder DPS-Berechnung, Rotationserweiterung oder UI-Anbindung.
 
+## Rotation Generator (Aufgabe 4H)
+
+Der Rotation Generator liest ausschließlich bereits vorhandene Analyseergebnisse und ausgewählte Skill-Empfehlungen. Er bewertet oder ersetzt keine Skills, Supports, Passives, Juwele oder Uniques. Zentrale Regeln stehen in `src/engine/rotations/rules.ts`, alle Schwellen in `config.ts`; `generator.ts` bleibt rein, deterministisch, React- und netzwerkfrei.
+
+### Pläne, Rollen und Aktionen
+
+`RotationAnalysis` enthält getrennte Mapping- und Bosspläne, alle gültigen und blockierten Pläne sowie bevorzugte Pläne. Aktive Skillrollen sind `setup`, `debuff`, `buff`, `main-damage`, `secondary-damage`, `movement` und `defensive`. Jeder Schritt besitzt genau eine aktive Rolle. Kontrollierte Aktionstypen sind `use-skill`, `switch-weapon-set`, `move`, `wait-for-condition`, `repeat`, `maintain-buff`, `refresh-debuff` und `defensive-response`.
+
+Mapping bevorzugt Movement, eine kurze optionale Vorbereitung, Hauptschaden und schnelle Wiederholung. Buff, Defensive und sekundärer Schaden werden aus der kurzen Mapping-Eröffnung ausgeschlossen. Boss ordnet Setup, Debuff und Buff vor Hauptschaden ein und kann sekundären Schaden und defensive Reaktionen ergänzen. Nur `main-damage` ist zwingend; fehlende optionale Rollen erzeugen szenarioabhängige Warnungen.
+
+### Waffenwechsel und anhaltende Effekte
+
+Ein Wechsel ist immer ein eigener `switch-weapon-set`-Schritt mit vorherigem und nächstem Set, Reason-Code und den auslösenden Empfehlungsreferenzen. Er entsteht nur zwischen aufeinanderfolgenden Fertigkeiten auf verschiedenen konkreten Sets; `both` verursacht keinen Wechsel. Häufige Wechsel werden anhand zentraler Schwellen gewarnt.
+
+Optionale Skill-Metadaten modellieren `persistsAfterWeaponSwap`, `expiresOnWeaponSwap`, `affectsNextSkill`, `durationCategory`, `refreshRequired`, `canBeMaintained` sowie Ziel- und Spielerbezug. Ein beim Wechsel verfallender Setup-Effekt warnt vor einer setfremden Hauptfertigkeit. `affectsNextSkill` wird innerhalb derselben Rolle unmittelbar zuletzt vor dem nachfolgenden Rollenblock sortiert. Aufrechtzuerhaltende Buffs und zu erneuernde Debuffs stehen separat in `maintenanceSequence`.
+
+### Bedingungen, Validierung, Complexity und Confidence
+
+Wiederholungs- und Aktivierungsbedingungen sind kontrollierte Werte wie `on-enemy-group`, `on-boss-phase`, `on-buff-expired`, `on-debuff-expired`, `on-danger`, `continuous` und `once`; echte Sekunden- oder Cooldownwerte existieren nicht. Harte Prüfungen erkennen insbesondere fehlenden Hauptschaden, unbekannte oder blockierte Skills, nicht verfügbare Waffen-Sets, doppelte Schritt-IDs, nicht eindeutige Reihenfolgen, Setup nach Hauptschaden und Wiederholungszyklen ohne Bedingung.
+
+`estimatedComplexity` wird getrennt von Qualität aus Schritt-, Wechsel-, Maintenance-, Setup- und Skillanzahl bestimmt. Confidence berücksichtigt Profilklarheit, Skill-Confidence, Warnungen und Build-Enabler mit erforderlicher Neuoptimierung; eine gültige Rotation kann daher niedrige Confidence besitzen. Gleichstände werden nach Skill-ID und anschließend durch deterministische Step-IDs aufgelöst.
+
+Der Generator führt keine freie Erklärung, Zeit-, Cooldown- oder DPS-Simulation durch. Der nachgelagerte Explanation Generator bleibt fachlich unverändert und verarbeitet weiterhin nur strukturierte Reason- und Constraint-Codes. Zwölf ausdrücklich synthetische Fixture-Gruppen decken Mapping, Boss, Waffenwechsel, Effekte, fehlende Rollen, Complexity, `both` und Build-Enabler ab.
+
 ## Nächste Module
 
-Nächster abgegrenzter Schritt ist Aufgabe 4H. Echte Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Nächster abgegrenzter Schritt ist Aufgabe 4I. Echte Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.

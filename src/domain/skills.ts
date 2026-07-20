@@ -2,6 +2,7 @@ import type { EntityId, GameDataMetadata, MechanicTag } from './common'
 
 export type SkillRole = 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'
 export type SkillWeaponSet = 'set-1' | 'set-2' | 'both'
+export type RotationDurationCategory = 'short' | 'medium' | 'long' | 'persistent'
 
 export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'any'
 export interface SkillAttributeRequirements { strength?: number; dexterity?: number; intelligence?: number }
@@ -24,6 +25,16 @@ export interface SkillGemDefinition extends GameDataMetadata {
   requiredMechanics?: MechanicTag[]
   excludedMechanics?: MechanicTag[]
   enabled?: boolean
+  rotationRoles?: ('setup' | 'debuff' | 'buff' | 'main-damage' | 'secondary-damage' | 'movement' | 'defensive')[]
+  persistsAfterWeaponSwap?: boolean
+  durationCategory?: RotationDurationCategory
+  refreshRequired?: boolean
+  canBeMaintained?: boolean
+  expiresOnWeaponSwap?: boolean
+  affectsNextSkill?: boolean
+  affectsTarget?: boolean
+  affectsPlayer?: boolean
+  blockedForRotation?: boolean
 }
 
 export interface SupportGemDefinition extends GameDataMetadata {
