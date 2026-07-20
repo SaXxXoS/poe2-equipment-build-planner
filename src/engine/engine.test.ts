@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { analyzeBuild, equipmentAnalyzer, explanationGenerator, jewelAnalyzer, passiveAnalyzer, skillAnalyzer, supportAnalyzer, uniqueAnalyzer, type AnalyzerContext } from '.'
+import { analyzeBuild, equipmentAnalyzer, jewelAnalyzer, passiveAnalyzer, skillAnalyzer, supportAnalyzer, uniqueAnalyzer, type AnalyzerContext } from '.'
 import { engineCandidatesFixture, engineModifierFixtures, fixtureA, fixtureB, fixtureC } from './fixtures'
 const context = (): AnalyzerContext => ({ engineVersion: 'test', fixtureMode: true })
 const resultA = () => analyzeBuild(fixtureA, context(), engineModifierFixtures)
@@ -18,7 +18,7 @@ describe('deterministische Platzhalter-Build-Engine', () => {
   it('Unique Analyzer berücksichtigt Aszendenz-Synergie', () => expect(resultA().uniqueRecommendations.find(item => item.uniqueId === 'fixture-unique-synergy')!.ascendancySynergyScore).toBe(20))
   it('Rotation Generator erzeugt eine eindeutige Reihenfolge', () => expect(resultA().mappingRotation.steps.map(item => item.order)).toEqual(resultA().mappingRotation.steps.map((_, index) => index + 1)))
   it('RotationAnalysis wird strukturell vom Orchestrator verwendet', () => expect(resultA().rotationAnalysis.mappingRotation).toEqual(resultA().mappingRotation))
-  it('Explanation Generator übernimmt ReasonCodes', () => { const entry = explanationGenerator.generate([{ code: 'fixture-code', category: 'damage', messageKey: 'fixture', impact: 1, polarity: 'positive', sourceType: 'skill', affectedTags: [] }], [], context()); expect(entry[0].reasonCodes).toEqual(['fixture-code']) })
+  it('Explanation Generator wird strukturell vom Orchestrator verwendet', () => { const result = resultA().explanations; expect(result.allEntries.length).toBeGreaterThan(0); expect(result.traces).toHaveLength(result.allEntries.length) })
   it('Orchestrator ruft Module in korrekter Reihenfolge auf', () => expect(resultA().moduleTrace).toEqual(['equipment', 'skills', 'supports', 'passives', 'jewels', 'uniques', 'rotations', 'explanations']))
   it('gleiche Eingaben liefern gleiche Ausgabe', () => expect(resultA()).toEqual(resultA()))
   it('gleiche Scores werden stabil nach ID sortiert', () => { const profile = resultA().buildProfile; const candidates = [engineCandidatesFixture.skills[1], { ...engineCandidatesFixture.skills[1], id: 'fixture-a' }]; expect(skillAnalyzer.analyze(profile, candidates, context()).map(item => item.skillId)).toEqual(['fixture-a', 'fixture-spell']) })

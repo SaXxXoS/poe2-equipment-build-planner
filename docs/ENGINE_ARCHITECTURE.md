@@ -168,8 +168,34 @@ Wiederholungs- und Aktivierungsbedingungen sind kontrollierte Werte wie `on-enem
 
 `estimatedComplexity` wird getrennt von Qualität aus Schritt-, Wechsel-, Maintenance-, Setup- und Skillanzahl bestimmt. Confidence berücksichtigt Profilklarheit, Skill-Confidence, Warnungen und Build-Enabler mit erforderlicher Neuoptimierung; eine gültige Rotation kann daher niedrige Confidence besitzen. Gleichstände werden nach Skill-ID und anschließend durch deterministische Step-IDs aufgelöst.
 
-Der Generator führt keine freie Erklärung, Zeit-, Cooldown- oder DPS-Simulation durch. Der nachgelagerte Explanation Generator bleibt fachlich unverändert und verarbeitet weiterhin nur strukturierte Reason- und Constraint-Codes. Zwölf ausdrücklich synthetische Fixture-Gruppen decken Mapping, Boss, Waffenwechsel, Effekte, fehlende Rollen, Complexity, `both` und Build-Enabler ab.
+Der Rotation Generator führt keine freie Erklärung, Zeit-, Cooldown- oder DPS-Simulation durch. Er liefert ausschließlich strukturierte Reason- und Constraint-Codes an den nachgelagerten, in Aufgabe 4I ausgebauten Explanation Generator. Zwölf ausdrücklich synthetische Fixture-Gruppen decken Mapping, Boss, Waffenwechsel, Effekte, fehlende Rollen, Complexity, `both` und Build-Enabler ab.
+
+## Explanation Generator (Aufgabe 4I)
+
+Der Explanation Generator liest ausschließlich die bereits erzeugten Equipment-, Skill-, Support-, Passive-, Jewel-, Unique- und Rotationsergebnisse. Er führt keinen Analyzer erneut aus, verändert keine Scores oder Empfehlungen und erzeugt keine neuen fachlichen Bewertungen. Der Orchestrator übergibt außerdem vorhandene deutsche Anzeigenamen; technische IDs dienen ausschließlich als transparenter Fallback.
+
+### Templates und ExplanationEntry
+
+Alle deutschen Texte stehen zentral in `src/engine/explanations/templates.ts`. Jedes `ExplanationTemplate` definiert Template-ID, Sektion, unterstützte ReasonCodes, Pflichtplatzhalter, zentrale Priorität, Schweregrad, deutschen Titel und Text sowie Aktivstatus. `config.ts` enthält Generatorversion, Prioritätsgruppen, Sektionsprioritäten und die kontrollierten Confidence-Texte. Analyzer-Dateien enthalten keine Erklärungstemplates.
+
+Ein `ExplanationEntry` besitzt ID, Sektion, Priorität, Titel, Body, optionalen Kurztext, kontrollierten Ton, Quell-ReasonCodes und -IDs, Empfehlungsreferenzen, optionalen Impact, Confidence, Warnstufe, Status und Template-ID. Sektionen decken Zusammenfassung, Equipment, Haupt- und Zusatzskills, Supports, Passive, Juwele, Uniques, Mapping-/Bossrotation, Waffenwechsel, Affixverbesserungen, Konflikte, Warnungen, Confidence und Grenzen ab.
+
+### Trace, Auflösung und Priorisierung
+
+Zu jedem Eintrag existiert genau ein `ExplainabilityTrace` mit Erklärung und Template, Eingabe-ReasonCodes, Quell-IDs, aufgelösten Platzhaltern, ausgelassenen Gründen und Generatorversion. Vergleichsdaten enthalten keinen Zeitstempel. Unbekannte ReasonCodes werden nicht generisch erklärt, sondern deterministisch in `unresolvedReasonCodes` geführt. Fehlt ein deutscher Anzeigename, wird die technische ID verwendet und zusätzlich in `missingDisplayNames` gemeldet; Namen werden nicht erfunden.
+
+Die zentrale Reihenfolge lautet: Blockierungen, Warnungen, Hauptskill, Rotation/Waffenwechsel, Equipment, Supports, Passive, Juwele/Uniques, Verbesserungen und allgemeine Hinweise. Gleichstände werden über Sektion, technische Quell-ID und Explanation-ID stabil aufgelöst. Rotationsschritte erhalten innerhalb ihrer Prioritätsgruppe eine aus der vorhandenen Schrittreihenfolge abgeleitete stabile Ordnung.
+
+### Fachliche Erklärungsbereiche
+
+Equipment-Texte erklären vorhandene Synergie-, Affix-, Konflikt- und Profilgründe. Skill-, Support-, Passive-, Jewel- und Unique-Texte verwenden ausschließlich deren ReasonCodes, Violations, Trade-offs und strukturierte Felder wie Pfadkosten, Set-Zuordnung, Replacement-Verdict oder Neuoptimierungsmarkierung. Confidence wird getrennt als hohe, mittlere oder niedrige Sicherheit erklärt.
+
+Mapping- und Bossrotation werden Schritt für Schritt mit Reihenfolge, Aktion, Skillname, Set, Grund und kontrollierter Bedingung erklärt. Jeder tatsächlich vorhandene `switch-weapon-set`-Schritt erhält eine eigene Erklärung mit vorherigem/nächstem Set sowie benachbarten Skills. Persistenz, fehlende Persistenzangabe oder Verfall eines vorbereitenden Effekts werden nur anhand der Rotationsmetadaten genannt. Es werden keine nicht vorhandenen Wechsel, Sekunden oder Cooldowns ergänzt.
+
+`ExplanationResult` bündelt Summary, Sektionen, alle sowie blockierende, warnende, positive und rotationsbezogene Einträge, sämtliche Traces, unaufgelöste ReasonCodes, fehlende Anzeigenamen, Confidence-Zusammenfassung, Grenzen, Status und Version. Ein nicht ausblendbarer Template-Hinweis erklärt stets, dass die Regeln und Daten synthetisch sind, keine DPS-Berechnung stattfindet und das Ergebnis keine fachlich verifizierte Buildempfehlung ist.
+
+Der Generator besitzt keine KI-, LLM-, Netzwerk-, Zufalls-, Zeit- oder React-Abhängigkeit. Freie unkontrollierte Textgenerierung, echte PoE2-Daten, DPS-/Cooldown-/Zeitsimulation und UI-Anbindung bleiben ausgeschlossen. Elf synthetische Explanation-Szenarien und dedizierte Tests sichern Templates, Traces, Fallbacks, Priorisierung und Determinismus.
 
 ## Nächste Module
 
-Nächster abgegrenzter Schritt ist Aufgabe 4I. Echte Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen jeweils getrennte Freigaben, Datenquellen und Referenztests.
+Die regelbasierte Engine-Kette aus Aufgabe 4A bis 4I ist vollständig vorbereitet. Als nächster abgegrenzter Schritt wird ein Aufgabe-5A-Integrations- und Datenfreigabe-Audit empfohlen; echte Daten, UI-Anbindung, Preise, DPS-Formeln und kombinatorische Optimierung benötigen weiterhin jeweils getrennte Aufträge, Datenquellen und Referenztests.
