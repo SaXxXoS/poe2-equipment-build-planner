@@ -63,4 +63,6 @@ Es wurden noch keine echten PoE2-Spieldaten importiert. Die enthaltenen Fixtures
 
 ## Engine-Architektur
 
-Die Platzhalter-Engine folgt dem Equipment-first-Datenfluss und liefert neben Scores immer strukturierte Gründe und Regelverstöße. Sie ist nicht mit der sichtbaren UI verbunden. Architektur, Modulreihenfolge, Wertebereich und Grenzen sind in [`docs/ENGINE_ARCHITECTURE.md`](docs/ENGINE_ARCHITECTURE.md) beschrieben. `npm run test` prüft Domäne, Importpipeline und Engine deterministisch und ohne Netzwerkzugriff.
+Die Platzhalter-Engine folgt dem Equipment-first-Datenfluss und liefert neben Scores immer strukturierte Gründe und Regelverstöße. Der Equipment Analyzer verarbeitet zentral definierte synthetische Regeln, erstellt getrennte Profile beider Waffen-Sets, erkennt künstliche Affinitäten, Bedarfe, Konflikte sowie ungenutzte oder schwach genutzte Modifier und erzeugt daraus ein kombiniertes `BuildProfile`. Er ist nicht mit der sichtbaren UI verbunden.
+
+Sämtliche Regeln und Schwellen sind Testkonfigurationen und keine fachlich verbindlichen PoE2-Empfehlungen. Architektur, Normalisierung, Modulreihenfolge und Grenzen sind in [`docs/ENGINE_ARCHITECTURE.md`](docs/ENGINE_ARCHITECTURE.md) beschrieben. `npm run test` prüft Domäne, Importpipeline und Engine deterministisch und ohne Netzwerkzugriff.

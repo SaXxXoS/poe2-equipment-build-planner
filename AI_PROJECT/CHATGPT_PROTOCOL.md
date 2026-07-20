@@ -74,7 +74,7 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
-Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Aufgabe 4A hat die React-freie Architektur der künftigen Build-Engine mit strukturierten Regeln, Bewertungsmodellen, Analyzer-Schnittstellen, Orchestrator und ausschließlich künstlicher deterministischer Testlogik vorbereitet. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. Die Vite-/React-/TypeScript-Einzelseite verwendet weiterhin lokalen State und ausschließlich Platzhalterdaten. 39 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine-Architektur. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
+Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenentscheidung und eine versionierte, vollständig offline arbeitende Importgrundlage mit künstlichen Fixtures; ein echter Datenimport ist nicht freigegeben. Aufgabe 4A hat die React-freie Engine-Architektur vorbereitet. Aufgabe 4B implementiert den eigenständigen regelbasierten Equipment Analyzer mit ausschließlich synthetischen Regeln: normalisierte Profile, getrennte Waffen-Sets, dominante Ausrichtungen, künstliche Anforderungen, Konflikte und Modifier-Nutzung. Die Engine ist nicht mit der UI verbunden und ist keine echte Optimierungs- oder DPS-Engine. 75 reguläre Vitest-Tests sichern Domäne, Importpipeline und Engine. Es existieren weder Backend noch externe Laufzeitdatenanbindung.
 
 ## 5. Fertige Funktionen
 
@@ -98,6 +98,10 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 - Schnittstellen und künstliche Testlogik für Equipment, Skills, Supports, Passive, Juwele, Uniques, Rotationen und Erklärungen
 - Drei eindeutig synthetische Engine-Fixtures und 20 deterministische Engine-Architekturtests
 - Vollständige Architekturdokumentation unter `docs/ENGINE_ARCHITECTURE.md`
+- Zentral konfigurierte Equipment-Regeln und Normalisierung für fünf Schadensarten, Mechaniken, Geschwindigkeit, Defensive und künstliche Attribute
+- Getrennte Profile für beide Waffen-Sets, kombiniertes Profil, stabile Dominanzen, Set-Differenzen und Spezialisierungen
+- Strukturierte Equipment-Konflikte sowie Klassifikation ungenutzter, schwach genutzter und konfliktbehafteter Modifier
+- Fünf synthetische Equipment-Fixtures und 36 dedizierte Equipment-Analyzer-Tests
 
 ## 6. Teilweise fertige Funktionen
 
@@ -110,7 +114,7 @@ Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Quellenen
 
 - Freigabe, Attribution und zulässigen Importumfang für echte Quellen klären
 - Einen echten, eng begrenzten Importadapter erst nach Quellenfreigabe implementieren
-- Fachliche Umsetzung der Phasen 4 bis 10; Aufgabe 4A stellt dafür nur Architektur und synthetische Testlogik bereit
+- Aufgaben 4C bis 4I der Reihe nach umsetzen; 4A und 4B sind abgeschlossen
 - Referenztests und automatisierte UI-Tests ausbauen
 - Barrierefreiheit mit spezialisiertem Audit prüfen
 - Echte PoE2-Daten erst nach Quellen-/Lizenzprüfung importieren
@@ -133,6 +137,8 @@ Zum dokumentierten Stand sind nach automatischen Tests sowie Desktop- und Mobilp
 - Remote-Synchronisation nach einer widersprüchlichen GitHub-Webcache-Anzeige erneut geprüft: `git fetch origin` bestätigte Aufgabe-3-Commit `01dc66e61f77271a4fb884b37ae7144951ada3ac` auf `origin/main`; GitHub-API und unveränderliche Raw-SHA-URLs bestätigten die öffentlichen Pflichtdateien. Es war kein History-Eingriff und kein Force-Push erforderlich.
 - Aufgabe 4A umgesetzt: eigenständige Engine-Ordnerstruktur, zentrale Typen, getrennte harte/weiche Regeln, normiertes BuildProfile, alle geforderten Analyzer-Schnittstellen, strukturierte Rotation/Erklärung und Orchestrator in verbindlicher Reihenfolge ergänzt
 - Drei künstliche Engine-Fixtures, 20 Engine-Tests und `docs/ENGINE_ARCHITECTURE.md` ergänzt; README auf den Platzhalterstatus aktualisiert
+- Aufgabe 4B umgesetzt: zentrales Regel-/Konfigurationsmodell, nachvollziehbare Normalisierung, vollständiger synthetischer Equipment-Bericht, Waffen-Set-Analyse, Konflikte und Modifier-Nutzung ergänzt
+- Equipment-Fixtures auf fünf Szenarien erweitert und 36 dedizierte Equipment-Tests ergänzt; Architektur und README abgeglichen
 
 ## 10. Zuletzt getestete Bereiche
 
@@ -168,6 +174,15 @@ Am 20. Juli 2026 nach Aufgabe 4A zusätzlich erfolgreich geprüft:
 - `src/engine/` enthält keine React-Imports, Netzwerkzugriffe, echten PoE2-Daten oder DPS-Formeln
 - Nicht auf physischem Touchgerät geprüft; Touch-Pan bleibt durch Pointer-Events und mobile Layoutprüfung abgedeckt
 
+Am 20. Juli 2026 nach Aufgabe 4B zusätzlich erfolgreich geprüft:
+
+- 75 reguläre Tests in vier Dateien erfolgreich, davon 36 dedizierte Equipment-Analyzer-Tests; bestehende 39 Tests bleiben erfolgreich
+- Import-Fixture, Lint, Typecheck und Produktions-Build erfolgreich
+- Charakterauswahl, Affixdialog, normale Juwelauswahl, Test-Skilltree und Platzhalterberechnung auf Desktop und 390 × 844 weiterhin funktionsfähig
+- Kein horizontaler Überlauf und keine neuen Browserkonsolenfehler
+- Equipment-Engine ohne React-Import, Netzwerkzugriff, echte PoE2-Daten oder DPS-/Schadensformeln
+- Nicht auf physischem Touchgerät geprüft; keine automatisierten Browser-Regressionstests vorhanden
+
 ## 11. Wichtige Architekturentscheidungen
 
 - Eine React-Einzelseite ohne Router, Backend, Datenbank oder Authentifizierung
@@ -191,14 +206,19 @@ Am 20. Juli 2026 nach Aufgabe 4A zusätzlich erfolgreich geprüft:
 - `BuildProfile` nutzt normierte Affinitäten im dokumentierten Bereich 0 bis 100 und enthält keine realen Spiel- oder DPS-Werte
 - Empfehlungen werden deterministisch nach Score und bei Gleichstand nach technischer ID sortiert
 - Orchestrator und Analyzer verwenden in Aufgabe 4A ausschließlich übergebene synthetische Kandidaten und keine Datei-, Zeit-, Zufalls- oder Netzwerkabhängigkeit
+- Equipment-Regeln und sämtliche fachlichen Schwellen sind zentral in `rules.ts` und `config.ts`; die Normalisierung liegt in einer reinen Funktion
+- Direkte Equipment-Hinweise werden stärker gewichtet als indirekte; jede Contribution bleibt über strukturierte Reason-Details nachvollziehbar
+- Waffen-Sets werden separat und kombiniert analysiert, ohne Rotationslogik aus Aufgabe 4H vorwegzunehmen
+- Equipment-Konflikte sind weiche Warnungen; nur technisch unbekannte Modifier-Referenzen blockieren als harte Verstöße
+- Dominanz-Gleichstände werden deterministisch nach technischer ID beziehungsweise bei Waffen-Sets als `balanced` aufgelöst
 
 ## 12. Nächste empfohlene Aufgabe
 
-Aufgabe 4B als eng begrenzte fachliche Erweiterung der regelbasierten Equipment-Analyse planen: zunächst mehr strukturierte künstliche Regeln und Referenztests für erkannte Affinitäten, Anforderungen, Konflikte und ungenutzte Modifier. Weiterhin keine echten Daten, DPS-Formeln, UI-Anbindung oder Optimierung vorwegnehmen. Das Quellenfreigabe-Gate bleibt parallel offen.
+Aufgabe 4C als klar abgegrenzten Skill Analyzer auf Basis des von 4B erzeugten `BuildProfile` umsetzen. Nur synthetische Kandidaten und Regeln verwenden; Supports, Passive, Juwele, Uniques, Rotationen und UI-Anbindung nicht vorwegnehmen.
 
 ## 13. Übergabe für einen neuen Chat
 
-Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach `npm install`, `npm run import:fixture`, `npm run test`, `npm run lint`, `npm run typecheck` und `npm run build` ausführen. Importtypen und Pipeline liegen in `src/import/`; externe Strukturen dürfen diese Grenze nicht umgehen. Die React-freie Platzhalter-Engine liegt in `src/engine/`, ihre Grenzen und Modulreihenfolge in `docs/ENGINE_ARCHITECTURE.md`. Sie ist nicht mit der UI verbunden. `docs/DATA_SOURCES.md` ist vor jeder echten Quellenentscheidung zu aktualisieren. Prototyp, Import- und Engine-Fixtures sind künstlich und dürfen nicht als echte Spieldaten, DPS-Berechnung oder Optimierung interpretiert werden.
+Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt bei Widersprüchen. Danach Abhängigkeiten sowie Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Aufgabe 4B liegt in `src/engine/equipment/`; Regeln und Schwellen müssen zentral bleiben. `docs/ENGINE_ARCHITECTURE.md` dokumentiert Umrechnung und Grenzen. Nächster Schritt ist ausschließlich 4C. Engine und UI bleiben getrennt. Sämtliche Fixtures und Regeln sind künstlich und dürfen nicht als echte Spieldaten, DPS-Berechnung oder fachliche Empfehlung interpretiert werden.
 
 ## 14. Arbeitsregeln des Projekts
 

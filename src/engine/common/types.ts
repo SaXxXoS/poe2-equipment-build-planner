@@ -21,7 +21,40 @@ export interface BuildProfile {
   requirements: { strengthNeed: number; dexterityNeed: number; intelligenceNeed: number; resourceNeed: number }
   goals: { mappingWeight: number; bossWeight: number; defenceWeight: number; damageWeight: number }
 }
-export interface EquipmentAnalysis { recognizedTags: MechanicTag[]; recognizedWeaponSets: string[]; recognizedRequirements: string[]; unusedModifierIds: EntityId[]; score: Score }
+export type DamageType = keyof BuildProfile['damageTypes']
+export type MechanicType = keyof BuildProfile['mechanics']
+export type DefenceType = 'life' | 'armour' | 'evasion' | 'energy-shield'
+export type SpeedType = 'attack-speed' | 'cast-speed' | 'movement'
+export interface WeaponSetDifference { field: string; set1Value: number; set2Value: number; delta: number }
+export interface EquipmentAnalysis {
+  combinedProfile: BuildProfile
+  profileSet1: BuildProfile
+  profileSet2: BuildProfile
+  detectedTags: MechanicTag[]
+  recognizedTags: MechanicTag[]
+  recognizedWeaponSets: string[]
+  recognizedRequirements: string[]
+  dominantDamageType?: DamageType
+  secondaryDamageType?: DamageType
+  dominantMechanic?: MechanicType
+  secondaryMechanic?: MechanicType
+  dominantDefence?: DefenceType
+  dominantSpeed?: SpeedType
+  dominantWeaponSet: 'set-1' | 'set-2' | 'balanced'
+  weaponSetDifferences: WeaponSetDifference[]
+  weaponSetSpecializations: Record<'set-1' | 'set-2', string[]>
+  profileClarity: number
+  conflictLevel: number
+  unusedModifierIds: EntityId[]
+  weaklyUsedModifierIds: EntityId[]
+  conflictingModifierIds: EntityId[]
+  reasons: ScoreReason[]
+  violations: ConstraintViolation[]
+  warnings: ConstraintViolation[]
+  status: EngineStatus
+  analyzerVersion: string
+  score: Score
+}
 export type RecommendationBase = Score & { targetId: EntityId }
 export interface SkillRecommendation extends RecommendationBase { skillId: EntityId; suitability: 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'; mappingScore: number; bossScore: number; valid: boolean }
 export interface SupportRecommendation extends RecommendationBase { supportId: EntityId; skillId: EntityId; valid: boolean }

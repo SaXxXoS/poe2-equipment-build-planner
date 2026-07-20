@@ -9,7 +9,7 @@ Die Engine bereitet eine erklärbare, Equipment-first ausgerichtete Build-Analys
 `BuildInput → Equipment Analyzer → BuildProfile → Skill Analyzer → Support Analyzer → Passive Analyzer → Jewel Analyzer → Unique Analyzer → Rotation Generator → Explanation Generator → BuildAnalysis`
 
 - `common`: zentrale Typen, kontrollierte Bewertungskategorien, Score-Helfer und stabile Sortierung.
-- `equipment`: erkennt künstliche Modifier-Tags, Waffen-Sets, Anforderungen und ungenutzte Modifier; erzeugt das Profil.
+- `equipment`: wendet zentral definierte synthetische Regeln auf strukturierte Modifier an, analysiert beide Waffen-Sets getrennt und erzeugt den kombinierten Profil- und Konfliktbericht.
 - `skills`: bewertet Kandidatentags gegen das Profil und weist Rollen sowie Mapping-/Bosswerte aus.
 - `supports`: prüft erforderliche und ausgeschlossene Tags und blockiert inkompatible Kandidaten.
 - `passives`: bewertet künstliche Nutzwerte abzüglich vorgegebener Pfadkosten; keine Pfadsuche.
@@ -37,6 +37,36 @@ Rotationsschritte speichern Reihenfolge, Skill-ID, Waffen-Set, Aktionstyp, Reaso
 ## Determinismus
 
 Alle Funktionen sind rein bezogen auf ihre Eingaben, verwenden keine Zeit, Zufallswerte, Dateien oder Netzwerkzugriffe. Empfehlungen werden nach Score und bei Gleichstand nach stabiler technischer ID sortiert. Gleiche Eingaben erzeugen dieselbe Struktur, Gründe und Rotationen.
+
+## Equipment Analyzer (Aufgabe 4B)
+
+Der Equipment Analyzer ist ausschließlich für Ausrüstung zuständig. Er wählt keine Skills oder Supports, berechnet keine passiven Pfade, bewertet keine Juwele oder Uniques und erzeugt keine Rotation. Seine Ausgabe ist das Eingabeprofil für spätere Module, keine endgültige Buildentscheidung.
+
+### Regelmodell und Konfiguration
+
+Alle Affinitätsregeln stehen zentral in `src/engine/equipment/rules.ts`. Jede Regel besitzt technische ID, Description-Key, anwendbare synthetische Modifier-IDs beziehungsweise Tags, genau ein Profilfeld, Gewicht, optionalen Mindestwert, maximale Contribution, optionalen Waffen-Set-Scope, Reason-Code, Evidenzart und Aktivstatus. Direkte Hinweise wie Projektilschaden sind höher gewichtet als indirekte Hinweise wie Angriffsgeschwindigkeit als Attack-Indiz.
+
+`src/engine/equipment/config.ts` enthält sämtliche künstlichen Grenzwerte: Normalisierungsbereich, Rohwertdivisor, Widerstands- und Defensivziel, Konfliktstärken, Klarheits-, Unused- und Weak-Use-Schwellen sowie Fixture-Attributziele. Diese Werte sind ausdrücklich keine PoE2-Grenzwerte.
+
+### Normalisierung
+
+`normalizeContribution(raw, weight, maximum)` berechnet `raw × weight ÷ rawValueDivisor`, begrenzt zunächst auf die maximale Regel-Contribution und anschließend zentral auf 0–100. Negative und nicht endliche Werte werden zu 0. Mehrere Contributions addieren sich am Profilfeld und werden erneut auf 0–100 begrenzt. Jeder Grund enthält Regel-ID, Rohwert, Contribution, Evidenzart und resultierenden Profilwert.
+
+### Schadens-, Mechanik- und Defensivanalyse
+
+Getrennt bewertet werden Physical, Fire, Cold, Lightning und Chaos sowie Attack, Spell, Projectile, Melee, Area, Critical, Damage-over-Time, Minion, Movement, Buff und Debuff. Geschwindigkeit, Leben, Rüstung, Ausweichen und Energieschild besitzen eigene Affinitäten. Widerstands- und allgemeiner Defensivbedarf ergeben sich relativ zu konfigurierbaren synthetischen Zielwerten. Stärke, Geschick und Intelligenz werden nur gegen künstliche Fixture-Anforderungen geprüft.
+
+### Waffen-Sets
+
+Waffen-Set 1 und 2 erhalten eigene Profile. `combinedProfile` analysiert die gesamte Ausrüstung. Der Bericht nennt Differenzen, Spezialisierungen und das dominante Set; bei identischen Scores lautet das Ergebnis stabil `balanced`. Es wird daraus keine Rotation abgeleitet.
+
+### Konflikte, Modifier-Nutzung und Klarheit
+
+Nicht blockierende Warnungen erkennen starke Attack-/Spell- und Melee-/Projectile-Mischungen, konkurrierende Schadensarten, isoliertes Critical oder Minion sowie unpassendes Angriffs- beziehungsweise Zaubertempo. Warnungen erzeugen negative `ScoreReason`-Einträge und referenzieren betroffene Modifier-IDs. Unbekannte Modifier bleiben dagegen blockierende harte Referenzverstöße.
+
+Ein bekannter Modifier ist ungenutzt, wenn seine Contribution höchstens der zentralen Unused-Schwelle entspricht und er keine separat ausgewertete Attribut- oder Widerstandsfunktion besitzt. Eine Contribution unterhalb des konfigurierten Anteils am stärksten Modifier gilt als schwach genutzt. Konfliktbehaftete Modifier werden getrennt ausgewiesen. `conflictLevel` ist die normalisierte Summe der konfigurierten Konfliktstärken; `profileClarity` ist deren Gegenwert im Bereich 0–100. Gleichstände bei Dominanzen werden nach technischer ID stabil aufgelöst.
+
+Der gesamte Analyzer arbeitet ausschließlich mit künstlichen Fixture-Definitionen. Er enthält keine echten Spieldaten, Schadens- oder DPS-Formeln und keine fachlich verbindlichen PoE2-Empfehlungen.
 
 ## Nächste Module
 
