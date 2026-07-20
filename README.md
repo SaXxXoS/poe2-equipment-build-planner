@@ -6,7 +6,9 @@ Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile
 
 ## Öffentliche Testversion
 
-Deployment-Ziel ist [https://saxxxos.github.io/poe2-equipment-build-planner/](https://saxxxos.github.io/poe2-equipment-build-planner/). Die Erreichbarkeit wird nach dem ersten erfolgreichen GitHub-Pages-Lauf bestätigt; bis dahin ist die Adresse nicht als veröffentlicht freigegeben.
+Deployment-Ziel ist [https://saxxxos.github.io/poe2-equipment-build-planner/](https://saxxxos.github.io/poe2-equipment-build-planner/). Die Adresse ist derzeit noch nicht als erreichbar bestätigt: Der erste Actions-Lauf hat Installation und Build erfolgreich ausgeführt, wurde aber bei der Pages-Konfiguration gestoppt, weil Pages im Repository noch nicht aktiviert ist.
+
+Einmaliger externer Aktivierungsschritt mit Repository-Administratorrechten: **Settings → Pages → Build and deployment → Source → GitHub Actions**. Danach den Workflow **Deploy GitHub Pages** erneut ausführen (oder einen neuen Push auf `main` auslösen). Erst nach erfolgreichem Deployment und Browser-Smoke-Test gilt die URL als veröffentlicht.
 
 Das Deployment baut bei jedem Push auf `main` automatisch mit GitHub Actions und veröffentlicht ausschließlich das erzeugte `dist`-Artefakt. Die Testversion verwendet synthetische Daten und feste UI-Platzhalter; die vorhandene Engine ist noch nicht produktiv mit der React-Oberfläche verbunden.
 
