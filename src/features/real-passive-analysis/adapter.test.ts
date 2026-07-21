@@ -7,4 +7,5 @@ describe('UI-zu-Passive-Worker-Adapter',()=>{
  it('rät keinen Klassenstart',()=>{const source=input();source.character.classId='class-official-0';expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('class-start-unavailable')})
  it('erzwingt ganzzahliges technisches Budget',()=>{const source=input();source.pointBudget=1.5;expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('invalid-point-budget')})
  it('erzeugt deterministische fachliche Signaturen',()=>{const first=input(),second=input();expect(createPassiveAnalysisInputSignature(first)).toBe(createPassiveAnalysisInputSignature(second));second.pointBudget++;expect(createPassiveAnalysisInputSignature(first)).not.toBe(createPassiveAnalysisInputSignature(second))})
+ it('überträgt weder Baum, Graph noch Prepared Context',()=>{const payload=buildRealPassiveWorkerRequest(input(),'request').payload!,serialized=JSON.stringify(payload);expect(serialized).not.toContain('passiveTree');expect(serialized).not.toContain('passiveGraph');expect(serialized).not.toContain('preparedTargetingContext');expect(new TextEncoder().encode(serialized).length).toBeLessThan(25000)})
 })

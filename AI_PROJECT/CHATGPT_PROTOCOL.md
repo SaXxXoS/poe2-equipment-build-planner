@@ -1,5 +1,13 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Nachbesserung 5K.1 – Browserlaufzeit
+
+- Die 8,9–9,7 Sekunden stammen nach Messung nicht aus React, doppelten Requests, Graph- oder Context-Neuaufbau, sondern aus der unveränderten 5K-Planning-Anfrage mit Pool 50 und bis zu 20 Zielen. Reproduziert: 11.511,25 ms Worker, davon 11.211,82 ms Planning und 193,05 ms Targeting; Graph-/Context-Aufbauten null.
+- Genau ein workerlokaler Eintrag beantwortet nur ein exakt identisches validiertes Analyze-Payload mit dem unveränderten letzten Compact-Ergebnis. Eingabeänderung, Reinitialisierung, Dispose oder harter Abbruch verhindern beziehungsweise löschen den Treffer. Kein globaler Cache, Storage oder externer Zugriff.
+- UI-Request 16.882 B ohne Baum/Graph/Context; Compact 804.888 B. Sechs identische Läufe behielten `fnv1a32-5d6ef45a`; fünf Dispatcher-Treffer lagen bei 0,04–0,09 ms. Pro Klick genau eine Workeranfrage; Cache-Miss genau ein, Cache-Treffer null Orchestratoraufrufe.
+- Targeting, Scores, Pathfinder, Planner, Budget, Required-Ziele, Pipelineplan, Ergebnisansicht, Baum und Gesten bleiben unverändert. Geänderte Eingaben bleiben wegen der vollständigen 50/20-Planung langsam. Physische iPhone-Abnahme offen; Aufgabe 5L nicht begonnen.
+- Lokaler Pages-Produktionsbrowser: geänderte Anfrage 9.439 ms gesamt/9.032,80 ms Worker; fünf identische Wiederholungen konservativ 619–661 ms bis UI-fertig, Median 630 ms einschließlich 250-ms-Wartezeit und Teststeuerung, Worker 0,00–0,20 ms. Harter Abbruch nach Eingabeänderung zeigte Neuinitialisierung nach 514 ms; keine Browserwarnungen/-fehler. Die 390×844-Übersteuerung blieb wirkungslos, daher mobile Automation und physisches iPhone ausdrücklich offen.
+
 ## Aufgabe 5K – kontrollierte UI-Integration
 
 - `src/features/real-passive-analysis/` bildet genau eine React-nahe Grenze: reiner Adapter, sitzungsweiter Controller und textliche Compact-Ansicht. React verwendet ausschließlich den öffentlichen 5J-Client.

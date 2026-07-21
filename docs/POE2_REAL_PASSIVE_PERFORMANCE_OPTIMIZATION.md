@@ -70,3 +70,9 @@ Context-Treffer und -Miss erzeugen identische Targeting-Ergebnisse. Compact und 
 Verworfen wurden Kandidatenreduktion, Distanzvorfilter, geänderte Reasons, Score-/Tie-Breaker-Anpassung, globaler Cache und fachliche Lazy-Auswertung. Diese könnten Semantik oder Release-/Testisolation verändern.
 
 Die synchrone Pipeline ist trotz Verbesserung nicht als ruckelfrei, mobil speichersicher oder sofort UI-tauglich bestätigt. Der einmalige Context-Aufbau bleibt teuer. Voraussetzung für 5J ist eine ausdrückliche UI-/Laufzeitarchitekturentscheidung samt späterer physischer Mobilprüfung.
+
+## Ergänzende 5K.1-Forensik
+
+Die 5I.1-Zahl von rund 414 ms galt für Pool 10 und ein Ziel. Die 5K-UI erzeugt fachlich unverändert Pool 50 und bis zu 20 Ziele. Mit exakt diesem Payload ergab die instrumentierte Messung 11.510,58 ms Orchestrator, 11.491,02 ms reale Pipeline, 193,05 ms Targeting und 11.211,82 ms Planning. Graph und Prepared Context wurden nicht aufgebaut; Projection und JSON-Größenmessung lagen bei 0,62 bzw. 3,79 ms. Die vorherige Schlussfolgerung, ein vorbereiteter Context müsse dieselbe Gesamtlaufzeit wie die kleinere 5I.1-Anfrage erzeugen, war daher nicht belastbar.
+
+5K.1 ändert keine Fachstufe. Ein einzelner Exact-Payload-Cache an der Workergrenze vermeidet nur die erneute Berechnung einer vollständig identischen Anfrage. Sechs Läufe lieferten denselben Hash; fünf Treffer lagen im Dispatcher bei höchstens 0,09 ms. Jede Eingabeänderung führt weiterhin zur vollständigen Pipeline. Der Cache erhöht den Worker-Speicher um die Referenz auf das letzte ungefähr 805-kB-Compact-Ergebnis und hat keine Persistenz.
