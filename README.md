@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+Aufgabe 5J ergänzt einen versionierten lokalen Module-Worker für die reale Passive-Analyse. Graph und Prepared Context bleiben wiederverwendbar im Worker, Compact ist Transportstandard. Die bestehende App startet ihn noch nicht; Pfade werden nicht visualisiert. Siehe [`docs/POE2_REAL_PASSIVE_BROWSER_RUNTIME.md`](docs/POE2_REAL_PASSIVE_BROWSER_RUNTIME.md).
+
 Aufgabe 5I.1 ergänzt eine semantikerhaltende Performancegrenze: Compact ist der Orchestratorstandard, Full bleibt explizit verfügbar, und ein geprüfter Prepared Targeting Context kann mehrere Profile desselben Baums beschleunigen. Es gibt weiterhin keine UI-Anbindung oder Pfadvisualisierung; Aufgabe 5J wurde nicht begonnen. Messdetails: [`docs/POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md`](docs/POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).
 
 ## Reale Passive-Orchestratorintegration (Aufgabe 5I)

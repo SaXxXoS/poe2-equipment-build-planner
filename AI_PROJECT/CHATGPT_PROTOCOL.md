@@ -1,5 +1,15 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5J – Browser-Laufzeitarchitektur
+
+- `src/runtime/real-passive-worker/` kapselt genau einen versionierten Module-Worker-Client und Dispatcher außerhalb der Engine. Der Dispatcher ruft ausschließlich `analyzeBuild` über die 5I-Grenze auf.
+- Gewählt ist Architektur C: lokaler gepinnter Baum wird im Worker gebündelt; Graph und Prepared Context werden dort einmal aufgebaut und bis Dispose wiederverwendet. Keine Übertragung dieser Maps/Sets, kein globaler Cache, Storage oder externer Fetch.
+- Protokoll 1.0.0, eindeutige Request-IDs, strukturierte Fortschritts-/Fehler-/Cancelnachrichten, eine aktive Analyse, keine Queue. Compact wird erzwungen; Full verlässt den Worker nicht.
+- Aktiver Abbruch terminiert den synchron rechnenden Worker ehrlich hart. Resultat wird verworfen, Graph/Context gehen verloren, Neuinitialisierung ist erforderlich; kein kooperativer In-Run-Abbruch wird behauptet.
+- Vite baut `realPassiveWorker-<hash>.js` lokal unter dem Pages-Basispfad. Die API wird von React noch nicht gestartet; keine Pfadvisualisierung, Budgetableitung oder Knotenaktivierung. Physisches iPhone nicht geprüft. Aufgabe 5K nicht begonnen.
+- Desktop-Browser-Smoke: Module-Worker bereit nach 1.893,60 ms, fünf echte Initialisierungsstufen, 5.150/6.067 Graphbestand, maximale beobachtete 10-ms-Timerdrift 1,30 ms, keine Konsolenfehler. Dies ist keine mobile Ruckelfreiheitsgarantie.
+- Dokumentation: `docs/POE2_REAL_PASSIVE_BROWSER_RUNTIME.md`.
+
 ## Nachbesserung 5I.1 – Laufzeit und Ergebnisgröße
 
 - Ausschließlich die technische 5I-Grenze wurde optimiert. Targeting-Regeln, Scores, Tie-Breaker, Coverage, Budget, Required-Ziele, Start/Version, Pathfinder, Planner, synthetischer Analyzer, UI und Baumrenderer sind fachlich unverändert.

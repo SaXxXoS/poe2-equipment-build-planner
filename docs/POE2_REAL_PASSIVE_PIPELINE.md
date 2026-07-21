@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline (Aufgabe 5H)
 
+## Browserlaufzeit 5J
+
+Ein äußerer Module-Worker hält Baum, Graph und Prepared Context und ruft ausschließlich den bestehenden Orchestrator auf. Die Pipeline selbst bleibt browserneutral. Compact ist Workertransport; Details: [POE2_REAL_PASSIVE_BROWSER_RUNTIME.md](POE2_REAL_PASSIVE_BROWSER_RUNTIME.md).
+
 ## Performancegrenze 5I.1
 
 Der direkte Pipelinevertrag bleibt Full. Optional liefert `preparedTargetingContext` ausschließlich vorab klassifizierte baumabhängige Fakten; Format, Source-Version und Baumidentität werden geprüft. Der Orchestrator projiziert zentral auf Compact, ohne Fachlogik oder Hash neu zu berechnen. Details: [POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md](POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).

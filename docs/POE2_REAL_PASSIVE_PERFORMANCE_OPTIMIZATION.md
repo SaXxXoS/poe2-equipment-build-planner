@@ -1,5 +1,9 @@
 # Reale Passive-Integration: Performanceoptimierung 5I.1
 
+## Nutzung durch 5J
+
+5J baut Graph und Prepared Context einmal im Module-Worker und hält beide dort. Dadurch verschiebt sich die bekannte synchrone Rechenlast vom UI-Hauptthread; Compact bleibt mit ungefähr 718 KB der einzige normale Workertransport. Fachliche Laufzeiten werden nicht als schneller behauptet.
+
 ## Umfang und Baseline
 
 5I.1 optimiert ausschließlich Laufzeit, Speicherbindung und Transportgröße der 5I-Adaptergrenze. Targeting-Regeln, Gewichte, Scores, Tie-Breaker, Coverage, Required-Ziele, Budget, Startauflösung, Pathfinder, Planner, Graphgeometrie, UI und Baumrenderer bleiben fachlich unverändert. Aufgabe 5J wurde nicht begonnen.

@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Stand nach 5J
+
+Die UI-neutrale Worker-API ist vorbereitet, wird aber weder beim Laden noch durch React gestartet. Es gibt noch keine fachliche UI-Anbindung, Ladeanzeige oder Pfadvisualisierung. Aufgabe 5K wurde nicht begonnen.
+
 ## Stand nach 5I.1
 
 Die reale Passive-Integration bleibt ohne React-/UI-Aufruf. Ihr Adapterstandard ist Compact (gemessen 717.622 Byte statt 34.896.120 Byte Full), doch die synchrone mobile Eignung wurde nicht geprüft. Full bleibt expliziter Auditmodus. Aufgabe 5J und Pfadvisualisierung wurden nicht begonnen.

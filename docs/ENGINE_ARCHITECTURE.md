@@ -1,5 +1,9 @@
 # Architektur der Build-Engine
 
+## 5J: Browser-Laufzeitadapter
+
+`src/runtime/real-passive-worker/` liegt außerhalb der Engine. Genau ein Client und Dispatcher kapseln Module Worker, Protokoll, Lebenszyklus, Abbruch und Fehler. Der Dispatcher ruft ausschließlich `analyzeBuild`; Engine und Orchestrator importieren keine Browser-API.
+
 ## 5I.1: technische Passive-Optimierungsgrenze
 
 `analyzeBuild` ruft weiterhin ausschließlich `runRealPassivePlanningIntegration` auf. Der Adapter ist die einzige Compact-/Full-Projektionsgrenze. Die direkte Pipeline bleibt Full; Targeting kann einen expliziten, versions- und baumidentitätsgeprüften Prepared Context lesen. Es existiert kein globaler Cache. Fachregeln, Pathfinder und Planner sind unverändert.

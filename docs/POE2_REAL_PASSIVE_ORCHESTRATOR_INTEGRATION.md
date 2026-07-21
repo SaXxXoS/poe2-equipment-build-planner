@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline im Haupt-Orchestrator (Aufgabe 5I)
 
+## Browseradapter 5J
+
+Der Workerdispatcher ruft weiterhin ausschließlich `analyzeBuild` mit der 5I-Adaptergrenze auf. Workeranalysen erzwingen Compact und verwenden den im Worker gehaltenen Graph/Context. Keine UI-Anbindung oder Pfadvisualisierung.
+
 ## Vertragsentwicklung 5I.1
 
 Der Adapter verwendet standardmäßig `resultDetailMode: compact`; `full` bleibt für Audit und Entwicklung verfügbar. Genau eine Projektionsfunktion entfernt redundante Transportdaten und erhält Plan, Pfade, Budget, Required-Diagnosen, Issues, Status und fachlichen Hash. Ein optionaler Prepared Targeting Context beschleunigt wiederholte Profile desselben geprüften Baums. Details: [POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md](POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).
