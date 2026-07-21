@@ -431,3 +431,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Bestehende Funktionen nicht unnötig umschreiben, keine unnötigen Abhängigkeiten/Refactorings und keine Dateien ohne Notwendigkeit löschen.
 - Mobile und Desktop prüfen; neue Funktionalität angemessen testen.
 - README und dieses Projektgedächtnis nach relevanten Änderungen aktualisieren.
+## Nachbesserung 5D – offizielle Baumgeometrie (21. Juli 2026)
+
+- Ursache: 40 layoutübergreifende Aszendenzreferenzen wurden als lange Linien gezeichnet; nicht skalierende 14-/16-Pixel-Striche verdichteten die Gesamtansicht optisch zur Kugel.
+- Der Import war korrekt. Offizielle `node.x/y` sind bereits absolute Weltkoordinaten; Gruppe und Orbit werden nicht erneut addiert. `resolvePassiveNodeWorldPosition` ist die einzige Auflösung.
+- Hauptbaum-Bounds verwenden sichtbare Nicht-Aszendenzknoten plus einmalig 420 Padding; `worldBounds` hält alle Layoutpositionen vor.
+- 6.027 von 6.067 Referenzen werden innerhalb desselben Layouts gezeichnet; 40 `layout-transition`-Referenzen bleiben fachlich erhalten. Eine SVG-ViewBox transformiert Knoten und Linien gemeinsam.
+- Diagnose: 5.150 Knoten, 1.621 Gruppen, 19 Juwelsockel, sechs getrennte Klassenstarts und null 0/0-Fallbacks, fehlende Gruppen, nicht endliche Positionen oder Ausreißer.
+- Pathfinder, Targeting, Planner, reale Pipeline, Passive Analyzer und `analyzeBuild` sind unverändert. Keine anderen Datenquellen oder Assets.
+- Aufgabe 5I ist gestoppt und nicht begonnen. Erst nach Abnahme darf sie neu beauftragt werden.

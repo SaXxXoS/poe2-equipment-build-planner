@@ -41,3 +41,16 @@ Automatische Adaptertests auf dem Entwicklungsrechner beobachteten für vollstä
 ## Fachliche Grenzen
 
 Keine Engine-Anbindung, Pfadsuche, Dijkstra/A*, Optimierung, automatische Belegung, Punktbudgets, Juwelbelegung, Clusterlogik oder Buildempfehlung. Die Ansicht ist ein technischer Browser für den offiziellen Baumstand 0.5.2.
+## Geometrienachbesserung 5D (21. Juli 2026)
+
+Der offizielle Export enthält absolute Gruppenmittelpunkte (`groups.*.x/y`) und bereits fertige absolute Knotenweltpositionen (`nodes.*.x/y`). `orbit` und `orbitIndex` beschreiben die Gruppenlage; `node.position - group.position` ist der schon eingerechnete Orbitversatz. Eine globale Orbit-Radientabelle ist nicht enthalten. Deshalb werden weder Radius noch Winkel angenähert. Aszendenz- und Klassenstartknoten nutzen dasselbe Format.
+
+`resolvePassiveNodeWorldPosition(node, group)` ist die einzige Auflösung. Sie validiert Referenz und endliche Werte und liefert die offizielle Position unverändert: `world = officialNodePosition`. Knoten, Linien, Bounds, Suche, Auswahl und Navigation verwenden ausschließlich diese Koordinaten. Genau eine SVG-ViewBox führt Zoom und Pan aus.
+
+Nachgewiesene Ursachen: 40 Übergänge zwischen Hauptbaum und separat positionierten Aszendenzlayouts wurden als lange SVG-Linien gezeichnet. Außerdem hielt `vector-effect: non-scaling-stroke` 14-/16-Pixel-Striche beim Herauszoomen konstant breit, wodurch 5.150 Knoten optisch zur Kugel verschmolzen. Die Übergänge bleiben als `layout-transition` im ViewModel, gezeichnet werden 6.027 Kanten innerhalb desselben Layouts. Alle 6.067 logischen Referenzen bleiben erhalten.
+
+Die Hauptbaum-Bounds entstehen aus sichtbaren Nicht-Aszendenzknoten plus einmalig 420 Padding (`26047,9 × 25843,4`, Seitenverhältnis `1,0079`). `worldBounds` umfasst alle Layouts. `generated/poe2-tree/geometry-diagnostics.json` bestätigt 5.150 Knoten, 1.621 Gruppen, 19 Juwelsockel, null 0/0-Fallbacks, fehlende Gruppen, nicht endliche Positionen oder Ausreißer und 26 echte Positionsduplikate.
+
+Messung: Koordinaten 2,50 ms, Bounds 1,54 ms, Adapter 219,49 ms, Diagnose 9,24 ms und 11.179 SVG-Fachelemente. Lokal bei 1280 × 800: Adapter 150,4 ms, erste Render-Markierung 903,5 ms; Pan einschließlich Automation 494 ms. Frühere öffentliche Einzelwerte: Adapter 129,7/131,9 ms und erste Render-Markierung 653,2/347,6 ms (kalt/warm), nicht direkt vergleichbar.
+
+Desktop 1280 × 800 und emuliertes Mobil 390 × 844 verwendeten denselben ViewBox-Ausschnitt ohne horizontalen Überlauf. Gesamtansicht, Zoom, Pan, drei Klassen, zwei Aszendenzen, mehrere Suchen und alle geforderten Knotentypen wurden geprüft. Ein physisches iPhone stand nicht zur Verfügung. Aufgabe 5I ist nicht begonnen.

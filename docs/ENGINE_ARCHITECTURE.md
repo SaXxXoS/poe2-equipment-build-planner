@@ -229,3 +229,6 @@ Alle Teilresultate bleiben vollständig erhalten. Acht kontrollierte Stufen, Req
 ## Nächste Module
 
 Die geschlossene reale Passive-Pipeline ist technisch vorbereitet, aber nicht produktiv angebunden. Ein Adapter zum Haupt-Orchestrator erfordert eine ausdrückliche Entscheidung über Profilquelle, Budgeteingabe, Fehlerdarstellung und Laufzeitstrategie. UI-Anzeige, getrennte Aszendenzplanung, Juwelbelegung, Levelpfade, Targeting-Klassifikationscache, globale Baumoptimalität, weitere echte Daten und DPS bleiben getrennte Aufgaben.
+## Geometriegrenze der Baumansicht (Nachbesserung 5D)
+
+`src/tree-view/geometry.ts` ist die einzige Quelle finaler Weltkoordinaten für die technische Baumansicht. Release 0.5.2 liefert bereits absolute Knotenpositionen; der View-Adapter übernimmt sie validiert und unverändert. Hauptbaum-Bounds, Gesamtwelt-Bounds und layoutübergreifende Aszendenzreferenzen bleiben außerhalb von `src/engine/`. Pfadsuche, Targeting, Planner, reale Pipeline, Passive Analyzer und Haupt-Orchestrator sind unverändert. Aufgabe 5I ist nicht begonnen.

@@ -1,0 +1,9 @@
+{
+  "sourceVersion":"0.5.2","nodeCount":5150,"groupCount":1621,"connectionCount":6067,"drawableConnectionCount":6027,
+  "bounds":{"minX":-12990,"minY":-12773.7,"maxX":13057.9,"maxY":13069.7,"width":26047.9,"height":25843.4,"padding":420},
+  "worldBounds":{"minX":-23516,"minY":-19433.2,"maxX":22234.3,"maxY":20616.5,"width":45750.3,"height":40049.7,"padding":420},
+  "classStartPositions":[{"nodeId":"44683","x":1270.43,"y":-728.835},{"nodeId":"47175","x":-1271.19,"y":733.095},{"nodeId":"50459","x":1274.68,"y":735.845},{"nodeId":"50986","x":1.945,"y":1469.82},{"nodeId":"54447","x":0.005,"y":-1490.58},{"nodeId":"61525","x":-1245.18,"y":-728.895}],
+  "ascendancyBounds":{"minX":-23096,"minY":-19013.2,"maxX":21814.3,"maxY":20196.5,"width":44910.3,"height":39209.7,"padding":0},
+  "jewelSocketPositions":[{"nodeId":"2491","x":-5470.55,"y":9492.46},{"nodeId":"3367","x":-1941.19,"y":-330.325},{"nodeId":"7960","x":-5526.84,"y":-9525.56},{"nodeId":"11184","x":-2697.32,"y":-12038.7},{"nodeId":"17788","x":5253.69,"y":-18532.2},{"nodeId":"21984","x":5516.3,"y":-9521.99},{"nodeId":"23960","x":-1938.69,"y":-17.005},{"nodeId":"26178","x":-1938.53,"y":141.445},{"nodeId":"26196","x":-7344.38,"y":-4246.42},{"nodeId":"26725","x":-6934.34,"y":4002.72},{"nodeId":"32763","x":10978.5,"y":-0.244995},{"nodeId":"39087","x":-1940.44,"y":-177.335},{"nodeId":"46882","x":5500.68,"y":9527.45},{"nodeId":"54127","x":8.305,"y":8229.42},{"nodeId":"55190","x":-10939.4,"y":6.395},{"nodeId":"60735","x":6729.48,"y":3890.84},{"nodeId":"61419","x":0.005,"y":-7995.13},{"nodeId":"61834","x":6172.4,"y":-3563.57},{"nodeId":"62152","x":-1936.2,"y":295.595}],
+  "nodesAtZeroZero":[],"missingGroupReferences":[],"nonFinitePositions":[],"extremeOutlierNodeIds":[],"duplicatePositionCount":26,"geometryVersion":"5D-fix-1.0.0","status":"validated"
+}
