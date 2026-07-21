@@ -1,7 +1,7 @@
 import type { PassiveTreeViewModel, TreeDisplayFilter, TreeNodeViewModel } from './types'
 import { clampTreeZoom } from './gestures'
 
-export const TREE_NODE_RADIUS = { normal: 48, notable: 72, keystone: 100, 'class-start': 118, 'ascendancy-start': 108, ascendancy: 76, 'jewel-socket': 88, unknown: 52 } as const
+export const TREE_NODE_RADIUS = { normal: 48, notable: 72, keystone: 100, mastery: 0, 'class-start': 118, 'ascendancy-start': 108, ascendancy: 76, 'jewel-socket': 88, unknown: 52 } as const
 export const SEARCH_RESULT_LIMIT = 20
 
 export function nodeMatchesFilter(node: TreeNodeViewModel, filter: TreeDisplayFilter) {

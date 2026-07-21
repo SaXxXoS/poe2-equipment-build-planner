@@ -1,5 +1,11 @@
 # Offizielle PoE2-Passivbaumassets
 
+## Renderaudit 5D.4.2
+
+Die Korrektur verwendet keine neuen Assets. Normale Passiven nutzen nun den bereits importierten offiziellen `frame:PSSkillFrame` beziehungsweise aktiv `frame:PSSkillFrameActive`. Die 365 `isMastery`-Datensätze werden im Ruhezustand nicht mehr als graue Fallbackkreise dargestellt: Ihre offiziellen `activeEffectImage`-Referenzen beschreiben Aktivierungseffekte und werden nicht als gewöhnliche Node-Motive umgedeutet. Die getrennten Mastery-Atlanten bleiben lokal, gehasht und für eine spätere echte Aktivdarstellung verfügbar.
+
+Der visuelle Vergleich umfasste Klassenstart, große Außen- und kleine Orbitgruppen, Notables, Keystone, Juwelsockel, Mastery-Bereiche, Gruppenübergänge, zentrale Titan-Aszendenz, Smith’s Masterwork und mehrere sichtbare Kurven. Beobachtet wurden dünne gedämpfte Grundlinien, kreisförmige Orbitabschnitte, keine grauen Mastery-Platzhalter und runde normale Rahmen. Die technische Umsetzung stammt ausschließlich aus `data.json` (`edges.orbit`, `orbitX`, `orbitY`, `nodes.isMastery`, `nodes.activeEffectImage`) und den gepinnten GGG-Atlanten.
+
 Stand: 21. Juli 2026. Maßgeblich sind Importer, Manifest und Quellcode.
 
 ## Quelle, Pinning und Approval

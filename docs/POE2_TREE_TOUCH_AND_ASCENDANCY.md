@@ -1,5 +1,9 @@
 # Touch-, Aszendenz- und Assetdarstellung des PoE2-Baums
 
+## Regression 5D.4.2
+
+Die Renderkorrektur ändert ausschließlich Verbindungssichtbarkeit, Verbindungspfad/-stil sowie die Ruheansicht von Mastery-Zentren und den vorhandenen Normalrahmen. Pointer-Map, Pinch-Mittelpunkt, Zoomgrenzen, Pan, Pinch→Pan, Kamera und zentrale Aszendenztransformation wurden nicht geändert. Automatische Gestentests bleiben maßgeblich; Desktop und emuliertes 390×844 werden erneut geprüft. Die endgültige physische iPhone-Abnahme dieses Stands bleibt ausdrücklich beim Nutzer.
+
 ## Nachbesserung 5D.3
 
 Der Nutzer hat den 5D.2-Pinch auf einem physischen iPhone bestätigt. Der neue Assetstand ist noch nicht erneut physisch geprüft. Das Inset ist entfernt: genau eine gewählte Aszendenz wird über `resolveAscendancyDisplayTransform` zentral hinter einem offiziellen Exporthintergrund dargestellt. Keine Auswahl zeigt weder Layout noch Ersatzporträt; manuelles Pan/Zoom wird nicht überschrieben.

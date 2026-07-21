@@ -471,3 +471,10 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Aktivierung verlangt explizit beide aktiven Endpunkte. Die aktuelle reine Baumansicht besitzt keine Punktebelegung; Auswahl wird nicht als Aktivierung interpretiert. Dadurch bleiben die zwölf Effektverbindungen im Ruhezustand unsichtbar.
 - `orbit/orbitX/orbitY` bleiben Geometrieangaben. Mastery- und Jewel-Verbindungen werden ohne Exportflag nicht pauschal ausgeblendet.
 - Knotenmotive, Spriteatlanten, Assetimport, Geometrie, Gesten, Klassenregister, Aszendenzplatzierung, Engine, Orchestrator, Pathfinder, Planner und Targeting bleiben unverändert. Aufgabe 5I bleibt nicht begonnen.
+# Nachbesserung 5D.4.2 – forensische Baumdarstellung
+
+- Der öffentliche Vorzustand und Mobalytics wurden in mehreren Baumregionen direkt visuell verglichen. Mobalytics war ausschließlich sichtbare Referenz; kein Code, CSS, HTML, Netzwerkdatensatz, Asset oder proprietäre Konfiguration wurde übernommen.
+- Offizielle Ursache: 1.733 Kanten besitzen `orbitX/orbitY`; der alte Renderer verwarf diese Felder und zeichnete Sehnen. Der Import bewahrt sie, `resolveTreeConnectionGeometry` zeichnet deterministische kurze Kreisbögen. Knoten- und Gruppenkoordinaten bleiben unverändert.
+- 365 offizielle Mastery-Zentren und ihre 644 Effektkanten sind im Ruhezustand verborgen. Damit entfallen erfundene graue Fallbackkreise und dauerhafte Mastery-Speichen; `activeEffectImage` wird nicht als gewöhnliches Knotenmotiv missbraucht.
+- Verbindungssichtbarkeit, Geometrie und Stil sind zentral. Normale Grundlinien sind dünner und warmgrau; normale Passiven nutzen den bereits importierten offiziellen `PSSkillFrame`.
+- Klassenregister, zentrale Aszendenzplatzierung, Pinch/Pan, Engine, Orchestrator, Pathfinder, Targeting und Planner bleiben unverändert. Aufgabe 5I wurde nicht begonnen. Die physische iPhone-Abnahme des neuen Stands bleibt offen.

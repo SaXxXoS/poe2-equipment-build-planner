@@ -24,6 +24,7 @@ const frameKey=(node:TreeNodeViewModel,active:boolean)=>{
   if(node.isAscendancyNode)return active?'frame:AscendancyFrameNormalAllocated':'frame:AscendancyFrameNormalUnallocated'
   if(node.nodeType==='keystone')return active?'frame:KeystoneFrameAllocated':'frame:KeystoneFrameUnallocated'
   if(node.nodeType==='notable')return active?'frame:NotableFrameAllocated':'frame:NotableFrameUnallocated'
+  if(node.nodeType==='normal')return active?'frame:PSSkillFrameActive':'frame:PSSkillFrame'
   return null
 }
 const renderLayer=(frame:AtlasFrame|undefined,key:string,layer:SpriteLayer,node:TreeNodeViewModel,size:number):SpriteRenderData|null=>frame&&urls[frame.atlas]?{assetUrl:urls[frame.atlas],atlasName:frame.atlas,atlasWidth:frame.atlasWidth,atlasHeight:frame.atlasHeight,sourceX:frame.x,sourceY:frame.y,sourceWidth:frame.w,sourceHeight:frame.h,targetX:node.x-size/2,targetY:node.y-size/2,targetWidth:size,targetHeight:size,layer,spriteKey:key}:null

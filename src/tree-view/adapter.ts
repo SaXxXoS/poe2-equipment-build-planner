@@ -10,6 +10,7 @@ export function deriveTreeNodeType(node: ImportedPoe2Tree['nodes'][number]): Tre
   if (node.isJewelSocket) return 'jewel-socket'
   if (node.nodeType === 'keystone') return 'keystone'
   if (node.nodeType === 'notable') return 'notable'
+  if (node.nodeType === 'mastery') return 'mastery'
   if (node.ascendancyId) return 'ascendancy'
   if (node.nodeType === 'normal') return 'normal'
   return 'unknown'

@@ -1,5 +1,17 @@
 # Darstellungsadapter des offiziellen PoE2-Passivbaums
 
+Der regionsweise Vergleich ist in [`POE2_TREE_VISUAL_AUDIT.md`](POE2_TREE_VISUAL_AUDIT.md) protokolliert.
+
+## Forensische Renderkorrektur 5D.4.2
+
+Der direkte visuelle Vergleich der öffentlichen App mit Mobalytics zeigte die systemische Abweichung in Außen-, Kleinorbit-, Notable-, Keystone-, Jewel- und Mastery-Gruppen: Kreisbögen wurden als Sehnen gezeichnet, Linien waren zu breit/blau, Mastery-Zentren erschienen als graue Fallbackkreise und normale Passiven ohne den vorhandenen offiziellen Rahmen. Mobalytics wurde ausschließlich als sichtbare Vergleichsansicht verwendet; Code, Netzwerkdaten, Konfiguration und Assets wurden nicht übernommen.
+
+Der gepinnte GGG-Export belegt die Korrektur: 1.733 der 6.067 normalisierten Kanten tragen `orbitX/orbitY`; beide Endpunkte liegen jeweils auf demselben Kreis (größte beobachtete Radiusabweichung 0,109 Weltkoordinaten). Der Import bewahrt diese Mittelpunktdaten als `orbitCenter`. `resolveTreeConnectionGeometry` erzeugt daraus deterministisch den kurzen SVG-Kreisbogen; Kanten ohne Mittelpunkt bleiben gerade. Node- und Gruppenpositionen ändern sich nicht.
+
+644 Kanten berühren einen ausdrücklich `isMastery` markierten Knoten. Die zugehörigen 365 Mastery-Zentren besitzen `activeEffectImage`, aber keine normale Node-Iconauflösung. Sie werden deshalb im unbelegten Browserzustand zusammen mit ihren Effektkanten verborgen, statt als graue erfundene Knoten und dauerhafte Speichen zu erscheinen. Die zwölf Smith-`hideConnection`-Kanten bleiben zusätzlich verborgen. `resolveTreeConnectionRenderDecision`, `resolveTreeConnectionGeometry` und `resolveTreeConnectionStyle` bilden Sichtbarkeit, Geometrie und Look zentral ab.
+
+Der Basisstrich ist 8 Weltkoordinaten breit, warmgrau (`#756f5f`) und 72 % deckend; Auswahl ist 18 Einheiten breit und gold. Normale Passiven erhalten in Mittel-/Nahansicht `frame:PSSkillFrame`. Fernansicht bleibt der kontrollierte maßhaltige Fallback. Aszendenzlayer, Gesten und Kamera sind unverändert.
+
 ## Nachbesserung 5D.3
 
 Die alte manuelle Sechserzuordnung und das Rand-Inset sind ersetzt. `class-registry.json` liefert den vollständigen 0.5.2-Bestand; `assets.tsx` löst zentral offizielle Spriteausschnitte und Zustandsrahmen auf. `resolveAscendancyDisplayTransform` transformiert das ausgewählte Aszendenzlayout als starre Einheit in den Hauptbaummittelpunkt. Relative Positionen, Kanten und Hauptbaumkoordinaten bleiben unverändert; layoutübergreifende Kanten bleiben ausgeblendet.
