@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Abgrenzung 5I
+
+Die reale Passive-Pipeline ist auf Engine-/Orchestratorebene optional integriert. Es gibt weiterhin keinen UI-Aufruf von `analyzeBuild`, keine Punktebudgeteingabe, keine Pfad-/Node-Darstellung und keinen Ergebnisadapter für React. `BuildAnalysis.realPassivePlanning` darf erst in einer späteren ausdrücklich beauftragten Stufe über ein kompaktes ViewModel in die UI gelangen; die vollständige Pipelineausgabe ist in der Messung rund 34,9 MB groß und nicht für direkte Komponentenübergabe geeignet.
+
 ## Abgrenzung 5D.3
 
 Assetrenderer, Klassenregister und zentrale Aszendenzplatzierung sind reine Darstellungsadapter. Sie binden weder die reale Passive-Pipeline noch Empfehlungen, Punkte, Targeting oder den Haupt-Orchestrator an die UI. Aufgabe 5I bleibt nicht begonnen.

@@ -1,5 +1,15 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5I – reale Passive-Pipeline im Haupt-Orchestrator
+
+- `EngineRequest.realPassivePlanning` aktiviert die reale Pipeline ausschließlich explizit; alte Aufrufe erzeugen weder Graph noch Pipelinefeld oder zusätzliche Modulstufe.
+- Genau `runRealPassivePlanningIntegration` sitzt nach Equipment/BuildProfile. Sie ergänzt nur Profil und Context und ruft den öffentlichen 5H-Vertrag auf; Targeting, Pathfinder, Planner, Hash und Required-Diagnosen werden nicht dupliziert.
+- Budget, Baum, Quellversion, technischer Charakterkontext, Planungs- und Zielmodus sind bei Aktivierung erforderlich. Budget wird nie aus Level, Quests oder Aszendenzpunkten abgeleitet. Startauflösung bleibt explizite Node-ID oder eindeutiges `classStartIndex`.
+- Synthetische `passiveAnalysis` und `realPassivePlanning.pipelineResult` bleiben getrennt. Kontrollierte Fehler/Teilresultate erhalten Codes, Stufen und Node-IDs; unabhängige Analyzer laufen weiter. Unerwartete Throws bleiben fatal.
+- Graphwiederverwendung ist explizit und versionsgeprüft. Kein globaler Cache und kein Targeting-Cache; mehrere Profile teilen nur den unveränderlichen Graphen.
+- Offizielle Einzelmessung: 47,50 ms ohne Pipeline; 3.272,16 ms mit neuem und 2.697,38 ms mit vorbereitetem Graph; Targeting 1.976,99 ms, Planning 202,32 ms, drei Profile 7.901,55 ms, Ergebnis 34.896.050 Bytes, beobachtete Harness-Heap-Differenz 234,07 MiB.
+- Keine React-/UI-Anbindung, Baumhervorhebung oder Pfaddarstellung. Aufgabe 5J wurde nicht begonnen.
+
 ## Nachbesserung 5D.3 – Exportassets, zentrale Aszendenz und Klassenregister
 
 Der gepinnte Export 0.5.2/`1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` liefert 36 lokal importierte Atlasdateien mit Hashinventar. `official-poe2-passive-tree-export-assets` ist eng `conditionally-approved`, ohne allgemeine Medien- oder Rechtsfreigabe. Mittel-/Nahansicht verwenden offizielle Motive und Rahmen; Aszendenzen erscheinen als unveränderte Einheit zentral mit Exportbild. Das Register erkennt zwölf Klassen; Witch, Ranger, Warrior, Sorceress, Huntress, Mercenary, Monk und Druid sind unterstützt. Marauder, Duelist, Shadow und Templar bleiben teilunterstützt; Ranger2 und Druid3 mangels Name/Bild nicht verfügbar. Neue Releases aktivieren Klassen nie ungeprüft. Der Nutzer bestätigte den bisherigen Pinch auf physischem iPhone; 5D.3 ist dort noch nicht erneut geprüft. Aufgabe 5I bleibt gestoppt. Engine und Haupt-Orchestrator bleiben unverändert.

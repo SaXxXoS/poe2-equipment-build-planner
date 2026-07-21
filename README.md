@@ -1,5 +1,9 @@
 # PoE2 Equipment Build Planner
 
+## Reale Passive-Orchestratorintegration (Aufgabe 5I)
+
+Der Haupt-Orchestrator kann die bestehende reale Passive-Pipeline jetzt über `EngineRequest.realPassivePlanning` ausdrücklich aktivieren. Ein explizites Punktebudget, Quellversion und technischer Charakterkontext bleiben Pflicht; vorbereitete Graphen können versioniert wiederverwendet werden. Der synthetische Passive Analyzer bleibt separat bestehen. Ohne Konfiguration ändert sich der bisherige Orchestratorlauf nicht. Es gibt weiterhin keine UI-Anbindung oder Pfaddarstellung. Details: [`docs/POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md`](docs/POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md).
+
 ## Asset- und Klassenstand 5D.3
 
 Der sichtbare Passivbaum verwendet lokale offizielle Spriteatlanten aus GGGs gepinntem Export 0.5.2. Gewählte Aszendenzen erscheinen zentral; ein generiertes Register verwaltet alle Exportklassen ohne feste Sechsergrenze. Details: `docs/POE2_TREE_ASSETS.md` und `docs/POE2_CLASS_AND_ASCENDANCY_REGISTRY.md`. Aufgabe 5I ist weiterhin nicht begonnen.

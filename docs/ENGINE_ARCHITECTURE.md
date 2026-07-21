@@ -1,5 +1,9 @@
 # Architektur der Build-Engine
 
+## Orchestratorintegration 5I
+
+`analyzeBuild` besitzt nun den optionalen Vertrag `EngineRequest.realPassivePlanning`. Genau `runRealPassivePlanningIntegration` verzweigt nach der Equipment-Profilnormalisierung in die bestehende reale Pipeline. Ohne explizite Aktivierung bleiben alter Ablauf, Modultrace und fachliche Ausgabe unverändert; es wird kein Graph aufgebaut. Der synthetische Passive Analyzer läuft weiterhin an seiner bisherigen Stelle und sein Ergebnis bleibt getrennt vom realen Plan. Vollständiger Vertrag und Messwerte: [`POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md`](POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md).
+
 ## Abgrenzung 5D.3
 
 Die Nachbesserung verändert keine Engine- oder Orchestratorverträge. Offizielle Baumassets und Klassen-/Aszendenzregister liegen ausschließlich an der Import-/View-Grenze; sie erzeugen keine Buildentscheidung.

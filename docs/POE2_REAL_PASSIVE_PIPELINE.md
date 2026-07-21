@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline (Aufgabe 5H)
 
+## Integration durch Aufgabe 5I
+
+Der öffentliche Pipelinevertrag wird nun ausschließlich von `runRealPassivePlanningIntegration` im Haupt-Orchestrator verwendet. Die Pipeline bleibt fachlich eigenständig; Targeting, Pathfinder und Planner werden nicht dupliziert. Stufen messen reale Laufzeiten, während der deterministische Resultathash diese weiterhin ausschließt. Graphwiederverwendung erfolgt explizit über Eingabe plus geprüfte Quellversion; ein globaler Cache wurde nicht eingeführt. Details: [`POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md`](POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md).
+
 ## Verantwortung und Abgrenzung
 
 `src/engine/real-passive-pipeline/` verbindet die bestehenden Module in der Richtung `BuildProfile → passive-targeting → passive-pathfinding → passive-planning`. Sie validiert Kontext und Quelle, löst einen Klassenstart auf, baut oder übernimmt genau einen Graph, führt das unveränderte Targeting aus, übergibt dessen vollständiges Resultat an den unveränderten Planner und prüft den resultierenden Teilbaum.
@@ -19,6 +23,8 @@ Eine explizite ID hat Vorrang, muss aber ein offizieller Klassenstart sein und `
 `StartNodeResolution` enthält aufgelöste ID, `explicit` oder `official-class-mapping`, Klasse, Warnungen und Violations. Für Release 0.5.2 wird Klasse `0` eindeutig zu `47175` aufgelöst.
 
 ## Quelle, Graph und Stufenmodell
+
+Korrektur 5I: Die acht Stufen erfassen nun reale `durationMs`. Diese Laufzeiten bleiben vollständig außerhalb des deterministischen Resultathashs; die weiter unten stehende historische 5H-Aussage zu kontrollierten Nullwerten ist damit ersetzt.
 
 Die Pipeline prüft vorhandene Quellversion, Gleichheit mit `metadata.releaseTag`, Knoten/Verbindungen, Profil, Level, Budget und kontrollierte Modi. Sie aktualisiert keine Daten. Ein bereitgestellter Graph wird anhand von Knoten-/Verbindungszahl und Startreferenz geprüft und ohne Neubau verwendet. Sonst ruft die Pipeline einmal `buildPassiveGraph` auf. Diagnosewerte sind `provided`/`built`, Wiederverwendung, Buildanzahl und Bestandsgrößen.
 
