@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+Der vorhandene reale Compact-Passivplan kann nach einer manuellen Workeranalyse direkt im offiziellen Baum ein- und ausgeblendet sowie auf Nutzerwunsch zentriert werden. Start, Wege, Ziele und eindeutige Required-Probleme sind rein visuelle Overlays auf unveränderter offizieller Geometrie und unveränderten Assets; die UI berechnet keine Pfade oder Punkte neu. Physische iPhone-Abnahme offen, Aufgabe 5M nicht begonnen.
+
 Der offizielle Passivbaum kann jetzt über einen ausdrücklich vorbereiteten Browser-Worker textlich analysiert werden. Budget und Planungsmodus setzt der Nutzer; Ergebnisse sind Compact und heuristisch. Es gibt keine Pfadmarkierung, automatische Punkteableitung oder physische iPhone-Abnahme dieses Stands. Siehe [`docs/POE2_REAL_PASSIVE_UI_INTEGRATION.md`](docs/POE2_REAL_PASSIVE_UI_INTEGRATION.md).
 
 Aufgabe 5J ergänzt einen versionierten lokalen Module-Worker für die reale Passive-Analyse. Graph und Prepared Context bleiben wiederverwendbar im Worker, Compact ist Transportstandard. Die bestehende App startet ihn noch nicht; Pfade werden nicht visualisiert. Siehe [`docs/POE2_REAL_PASSIVE_BROWSER_RUNTIME.md`](docs/POE2_REAL_PASSIVE_BROWSER_RUNTIME.md).

@@ -1,5 +1,14 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5L – reale Pfade im Baum
+
+- `buildPassivePlanVisualization` ist die einzige Grenze vom Compact-Ergebnis zur Baumdarstellung. Sie validiert Source/Hash, Node-/Connection-IDs, Zusammenhang, Layout-/Effekt- und Aszendenzgrenzen; es gibt keine UI-Pfadsuche, Zielsortierung oder Budgetberechnung.
+- Der vorhandene Baum rendert zusätzliche nicht interaktive Pfad-/Knotenoverlays mit derselben geraden beziehungsweise Orbitgeometrie. Offizielle Motive, Rahmen, Positionen, zentrale Aszendenz, Pinch/Pan, Suche, Filter und Inspektion bleiben erhalten.
+- Plan ein/aus und „Plan im Baum anzeigen“ sind bewusste Nutzeraktionen. Completed/partielle Fachresultate erscheinen; stale bleibt gestrichelt, gedimmt und textlich veraltet; laufend, abgebrochen, fehlgeschlagen oder ungültig wird nicht als aktueller Plan gezeigt.
+- Targeting, Scores, Tie-Breaker, Pathfinder, Planner, Pipeline, Haupt-Orchestrator, Budgetregeln und Workerprotokoll sind fachlich unverändert. Keine Affix-, Skill- oder Supportdatenänderung. Physische iPhone-Abnahme offen; Aufgabe 5M nicht begonnen.
+- Weiter offene Daten-/Produktaufgaben: vollständige reale Affixdaten; deutsche sichtbare Affixnamen/-beschreibungen; vollständige Skilldaten mit deutschen sichtbaren Namen/Beschreibungen; vollständige Supportdaten mit deutschen sichtbaren Namen/Beschreibungen; PoE2DB ausschließlich als deutsche Referenz prüfen, nicht automatisch als technische Wahrheit; Buildvergleich vorher/nachher; Fotoerkennung für Ausrüstung; Designoptimierung für bessere Bedienbarkeit.
+- Lokaler Produktionsbrowser: `partial` mit 8 Knoten, 7 Kanten und 2 Zielen erzeugte exakt 8/7/2 Zusatzoverlays bei 17.974 SVG-Nachfahren; Planfokus nur per Button, Zoom danach stabil, stale 8 gedimmte Ringe/7 gestrichelte Kanten, Suche/Filter erhalten den Plan, null Console-Warnungen/-Fehler. Die 390×844-Viewportvorgabe wurde technisch nicht übernommen; mobile Automation und physisches iPhone bleiben offen.
+
 ## Nachbesserung 5K.1 – Browserlaufzeit
 
 - Die 8,9–9,7 Sekunden stammen nach Messung nicht aus React, doppelten Requests, Graph- oder Context-Neuaufbau, sondern aus der unveränderten 5K-Planning-Anfrage mit Pool 50 und bis zu 20 Zielen. Reproduziert: 11.511,25 ms Worker, davon 11.211,82 ms Planning und 193,05 ms Targeting; Graph-/Context-Aufbauten null.

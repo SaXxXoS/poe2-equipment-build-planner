@@ -1,5 +1,9 @@
 # Browser-Laufzeitarchitektur der realen Passive-Analyse (5J)
 
+## Nutzung durch 5L
+
+5L ändert weder Workerprotokoll noch Workerlebenszyklus. Das Compact-Ergebnis wird erst nach Empfang im Hauptthread rein visuell adaptiert; Ein-/Ausblenden, Inspektion und Kamerazentrierung senden keine Nachricht an den Worker. Request-ID-, stale-, Cancel- und Generationsschutz bleiben unverändert. Keine Baum-, Graph- oder Contextkopie wird übertragen. Physische iPhone-Abnahme offen; 5M nicht begonnen.
+
 ## React-Anbindung nach 5K
 
 Die App nutzt den öffentlichen Client nun ausschließlich über `createPassiveAnalysisController`. Erzeugung und Initialisierung erfolgen erst durch „Analyse vorbereiten“, Analysen nur durch „Build analysieren“. Compact, harter Abbruch, Versionsprüfung und Worker-Wiederverwendung bleiben unverändert. Keine Pfadvisualisierung und keine Aufgabe 5L; Details in `POE2_REAL_PASSIVE_UI_INTEGRATION.md`.

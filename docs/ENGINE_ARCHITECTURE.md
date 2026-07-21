@@ -255,3 +255,6 @@ Die geschlossene reale Passive-Pipeline ist technisch vorbereitet, aber nicht pr
 ## Touch- und Aszendenzdarstellung 5D.2
 
 Touchkamera, visuelle Charakterzuordnung und Aszendenz-Inset liegen vollständig unter `src/components/` und `src/tree-view/`. Die gerichtete Abhängigkeit endet beim vorhandenen UI-State; Engine, Analyzer, Pathfinder, Targeting, Planner, reale Pipeline und Haupt-Orchestrator bleiben unberührt. Aufgabe 5I ist nicht begonnen.
+# UI-Darstellungsgrenze 5L
+
+Der reale Compact-Plan fließt nach dem Worker ausschließlich durch `buildPassivePlanVisualization` in den Baumrenderer. Diese Grenze validiert und klassifiziert IDs, bewertet aber nichts neu. Targeting, Pathfinder, Planner, Pipeline und Haupt-Orchestrator importieren keine React- oder Baumdarstellungsmodule. Kamera, Rollen und Overlays sind Viewzustand und kein Engineinput. Keine automatische Budgetableitung; keine Affix-, Skill- oder Supportdatenänderung. Aufgabe 5M nicht begonnen.

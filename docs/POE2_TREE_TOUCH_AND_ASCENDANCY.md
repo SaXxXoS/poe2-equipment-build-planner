@@ -1,5 +1,9 @@
 # Touch-, Aszendenz- und Assetdarstellung des PoE2-Baums
 
+## Planoverlay-Regression 5L
+
+Planlinien und -ringe sind reine SVG-Zusatzebenen mit `pointer-events:none`. Pointer-Map, Ein-Finger-Pan, Zwei-Finger-Pinch, Wheel, Zoomgrenzen, Gesamtansicht und Aszendenztransform bleiben unverändert. Normale Pläne dürfen keine Aszendenzknoten enthalten; der Visualisierungsadapter meldet und verwirft solche Referenzen. „Plan im Baum anzeigen“ zentriert genau einmal auf Darstellungsbounds, danach bleibt manuelle Kameraeingabe maßgeblich. Physische iPhone-Abnahme offen; 5M nicht begonnen.
+
 ## Regression 5D.4.2
 
 Die Renderkorrektur ändert ausschließlich Verbindungssichtbarkeit, Verbindungspfad/-stil sowie die Ruheansicht von Mastery-Zentren und den vorhandenen Normalrahmen. Pointer-Map, Pinch-Mittelpunkt, Zoomgrenzen, Pan, Pinch→Pan, Kamera und zentrale Aszendenztransformation wurden nicht geändert. Automatische Gestentests bleiben maßgeblich; Desktop und emuliertes 390×844 werden erneut geprüft. Die endgültige physische iPhone-Abnahme dieses Stands bleibt ausdrücklich beim Nutzer.

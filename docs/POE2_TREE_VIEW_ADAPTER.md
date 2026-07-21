@@ -1,5 +1,9 @@
 # Darstellungsadapter des offiziellen PoE2-Passivbaums
 
+## Reales Planoverlay 5L
+
+Der bestehende Baumadapter und seine Geometrie bleiben unverändert. Ein getrennter zentraler Adapter `buildPassivePlanVisualization` validiert ausschließlich IDs aus dem Compact-Plan gegen das vorhandene ViewModel. Planlinien verwenden dasselbe Ergebnis von `resolveTreeConnectionGeometry`; Orbitbögen werden nicht als Sehnen neu erzeugt. Layoutübergänge und verborgene Effektkanten bleiben unsichtbar. Offizielle Motive/Rahmen bleiben erhalten, Zusatzringe blockieren keine Taps. Die Kamera bewegt sich nur nach dem Nutzerbutton. Keine Pfadberechnung, Punktableitung oder Baumkopie.
+
 Der regionsweise Vergleich ist in [`POE2_TREE_VISUAL_AUDIT.md`](POE2_TREE_VISUAL_AUDIT.md) protokolliert.
 
 ## Forensische Renderkorrektur 5D.4.2

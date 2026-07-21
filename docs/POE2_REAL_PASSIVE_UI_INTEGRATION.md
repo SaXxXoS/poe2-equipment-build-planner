@@ -1,5 +1,9 @@
 # Reale Passive-Analyse in der React-UI (5K)
 
+## Baumvisualisierung 5L
+
+Das bereits empfangene Compact-Ergebnis wird über genau `buildPassivePlanVisualization` in ID-Sets, Rollen und Issues überführt und im vorhandenen offiziellen Baum als nicht interaktives Overlay gezeigt. Es gibt keine UI-Pfadsuche, Budgetberechnung oder neue Workeranalyse. Plan ein/aus, deutsche Legende und die bewusste Kameraaktion „Plan im Baum anzeigen“ ergänzen den Ergebnisbereich. `stale` bleibt sichtbar, aber gestrichelt, gedimmt und textlich veraltet; während eines neuen Laufs wird der alte Plan ausgeblendet. Details: `POE2_REAL_PASSIVE_TREE_VISUALIZATION.md`. Physisches iPhone offen; 5M nicht begonnen.
+
 ## Ziel, Audit und Eingaben
 
 5K bindet ausschließlich den öffentlichen 5J-Worker-Client an React. `App` hält Charakter, Klasse, Aszendenz, Level, Ziel, Equipment/Affixe und Skillsetups. Der Juwel-Picker bleibt lokaler Komponentenstate; Required-Ziele und fachliche Passive-Filter besitzen keine eindeutige UI-Auswahl und werden deshalb nicht erfunden.

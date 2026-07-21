@@ -154,6 +154,10 @@ Zuerst sichtbar werden sollten Datenstatus, blockierende Fehler, Equipmentprofil
 
 Die React-Grenze sendet je Klick weiterhin genau eine Analyseanfrage. Ihre stabile ID stammt aus der vollständigen UI-Eingabesignatur; React-Effects starten keine Analyse. Der Worker beantwortet ausschließlich ein exakt identisches validiertes Payload aus einem einzelnen sitzungsweiten Compact-Cache. Fachlich geänderte Eingaben durchlaufen den unveränderten Haupt-Orchestrator, Targeting, Pathfinder und Planner vollständig. Dadurch werden weder Kandidaten noch Ziele oder Diagnosen reduziert. Cache, Graph und Context bleiben Worker-intern und werden nie an React übertragen. Die geänderte Eingabe bleibt wegen der vorhandenen 50/20-Planung ein dokumentiertes Laufzeitrisiko. Aufgabe 5L ist nicht begonnen.
 
+## Aufgabe 5L
+
+React hebt den Compact-Plan über einen reinen View-Adapter in den bestehenden Baum. Die Engine bleibt alleinige Wahrheit für Start, Reihenfolge, Pfade, belegte IDs, Budget und Required-Status. Der Baum rendert nur validierte ID-Rollen mit vorhandener Geometrie; keine UI-Pfadsuche oder Punktebelegung. Eingabeänderungen markieren den Plan stale, laufende/abgebrochene/fehlerhafte Analysen liefern keinen neuen Overlaystand. 5M ist nicht begonnen.
+
 ## Reiner Tree-Display-Context aus 5D.2
 
 `App` reicht nur vorhandene Charakter- und Aszendenz-IDs an `PassiveTree`. Eine kontrollierte UI-Tabelle löst diese in offizielle Klassenindizes und Aszendenz-IDs auf. Dieser Pfad importiert keine Engine, startet keine Analyse und verändert weder `BuildInput` noch `CharacterConfiguration`. Das Aszendenz-Inset ist daher keine Umsetzung von Aufgabe 5I.
