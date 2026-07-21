@@ -1,5 +1,15 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Übergabe nach Aufgabe 5F
+
+Aufgabe 5F ergänzt `src/engine/passive-targeting/` als eigenständige, deterministische, React- und netzwerkfreie Bewertung echter passiver Einzelknoten. Zentrale Regeln klassifizieren unveränderte englische Namen und einzelne Statzeilen nach Schadensarten, Attack/Spell- und weiteren Mechaniken, Defensive, Ressourcen, Attributen und Utility. Die kontrollierte Normalisierung löst GGG-Markup auf sichtbaren englischen Text auf, extrahiert eindeutige Zahlen und erhält jeden Originaltext. Unbekannte Zeilen bleiben `unresolved`.
+
+Der Evaluator liest ausschließlich ein übergebenes synthetisches `BuildProfile`, Charakter-/Aszendenzkontext, Zielprofil und echte Knoten. ScoreReasons dokumentieren Profiltreffer und Konflikte; Score und Confidence sind getrennt. Startknoten sind keine Ziele, fremde Aszendenzen werden blockiert, Juwelsockel nur als `socket-target` geführt und Keystones verlangen Trade-off-/Unsicherheitsreview. Ranglisten wählen keine kombinierte Zielmenge.
+
+Gemessene Coverage auf Release 0.5.2: 5.150 Knoten, 5.962 Statzeilen, 4.850 klassifiziert, 1.112 unresolved, 81,35 %. Beim Lightning-Projectile-Profil waren 1.355 Knoten blockiert. Windows-x64/Node-24.14.0-Einzelmessung: Laden/JSON 56,72 ms, Klassifikation 1.651,62 ms, ein Profil 1.701,13 ms, zehn Profile 16.048,51 ms; Heap-Momentaufnahmen 36,14 MiB nach Klassifikation und 256,50 MiB nach zehn vollständigen Resultaten. Keine Produktgrenzwerte oder stabile Speichergarantie werden behauptet.
+
+Pfadsuchmodul, Passive Analyzer, Orchestrator und UI bleiben per Hash-Vertrag unverändert. Es gibt keine Pfadsuche, Pfadkosten, Zielmengenauswahl, Baumoptimierung, Punkteverteilung, DPS oder deutschen Knotentext. Neue Abhängigkeiten: keine. Vollständige Dokumentation: `docs/POE2_PASSIVE_TARGETING.md`. Abschlussprüfung: 517 reguläre Tests in 21 Dateien, darunter 51 neue Targeting-/Grenz-/Performancetests; Fixture-Import 23/0, Lint, Typecheck, Produktions- und Pages-Build erfolgreich. Unter paralleler Gesamtsuitenlast wurden die höheren Targeting-Einzelwerte 66,53 ms / 3.918,15 ms / 2.248,45 ms / 16.064,89 ms und eine Heap-Gesamtdifferenz von 242,87 MiB beobachtet und dokumentiert.
+
 ## Übergabe nach Aufgabe 5E
 
 Aufgabe 5E ergänzt `src/engine/passive-pathfinding/` als eigenständige, React- und netzwerkfreie Grundlage für den offiziellen Passivbaum 0.5.2. Der kontrollierte Graph enthält 5.150 Knoten und 6.067 kanonische ungerichtete Verbindungen, deterministische Nachbarlisten, Typen, Klassen-/Aszendenzzuordnung, Sockel-/Aktivstatus und zentral konfigurierte Traversierungskosten. Fehlerhafte Referenzen, doppelte oder echte selbstgerichtete Kanten und ungültige Kosten blockieren den Graphaufbau; die bekannte offizielle Selbstnachbarschaft wird kontrolliert ignoriert.

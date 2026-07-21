@@ -208,6 +208,12 @@ Der Generator besitzt keine KI-, LLM-, Netzwerk-, Zufalls-, Zeit- oder React-Abh
 
 Der vorhandene Passive Analyzer importiert oder verwendet das Modul nicht. Ebenso bleiben Orchestrator, UI und Baumdarstellung unberührt. Die Mehrzielstrategie ist ausdrücklich `shortest-per-step` und keine globale Steiner- oder Buildoptimierung. Vollständiger Vertrag und Messwerte: [`POE2_PASSIVE_PATHFINDING.md`](POE2_PASSIVE_PATHFINDING.md).
 
+## Isolierte Zielknotenbewertung (Aufgabe 5F)
+
+`src/engine/passive-targeting/` liegt als zweites echtes Baum-Infrastrukturmodul neben der synthetischen Analyzer-Kette. Es klassifiziert ausschließlich die normalisierten englischen Namen und Statzeilen des offiziellen Releases 0.5.2 über zentrale Regeln, gleicht erkannte Kategorien mit einem unveränderten `BuildProfile` ab und erzeugt strukturierte Einzelknotenbewertungen, Confidence, Ranglisten und einen gemessenen Coverage-Bericht.
+
+Das Modul importiert weder `passive-pathfinding` noch den synthetischen Passive Analyzer. Pfadkosten, automatische Zielmengen, Baumbelegung, Orchestrator und UI bleiben ausgeschlossen. Node-IDs bilden nur eine dokumentierte spätere Adaptergrenze. Details und reale Messwerte stehen in [`POE2_PASSIVE_TARGETING.md`](POE2_PASSIVE_TARGETING.md).
+
 ## Nächste Module
 
-Die regelbasierte Engine-Kette aus Aufgabe 4A bis 4I und die technische Pfadsuchgrundlage aus 5E sind getrennt vorbereitet. Als nächster abgegrenzter Schritt ist die fachliche Auswahl passiver Zielknoten gegen ein Buildprofil zu spezifizieren; eine produktive Kopplung mit Analyzer, Orchestrator oder UI darf erst in einem eigenen Auftrag folgen. Echte weitere Daten, Preise, DPS-Formeln und kombinatorische Optimierung benötigen weiterhin jeweils getrennte Aufträge, Datenquellen und Referenztests.
+Die technische Pfadsuche aus 5E und die fachliche Einzelzielbewertung aus 5F sind getrennt vorbereitet. Als nächster abgegrenzter Schritt kann ein eigener Planer vorgegebene Targeting-Ergebnisse kontrolliert mit Pfadkosten vergleichen und eine begrenzte Zielmenge verbinden. Produktive Passive-Analyzer-, Orchestrator- oder UI-Anbindung, globale Baumoptimalität, echte weitere Daten und DPS benötigen weiterhin getrennte Aufträge und Referenztests.
