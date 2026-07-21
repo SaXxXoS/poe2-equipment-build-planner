@@ -1,5 +1,9 @@
 # Offizieller PoE2-Passivbaumimport
 
+## Ergänzung 5D.3
+
+Der getrennte, eng freigegebene Assetimport ist in `POE2_TREE_ASSETS.md` dokumentiert. Die frühere Aussage „keine Assets“ gilt für den Strukturimport 5C; der Baum verwendet nun ausschließlich lokal importierte Atlanten aus demselben gepinnten Export.
+
 Stand: 20. Juli 2026. Diese Dokumentation beschreibt ausschließlich den kontrollierten Import des offiziellen Passivbaums; der Quellcode und das eingecheckte Manifest sind maßgeblich.
 
 ## Quelle und Freigabe

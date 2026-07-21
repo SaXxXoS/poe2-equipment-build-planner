@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Abgrenzung 5D.3
+
+Assetrenderer, Klassenregister und zentrale Aszendenzplatzierung sind reine Darstellungsadapter. Sie binden weder die reale Passive-Pipeline noch Empfehlungen, Punkte, Targeting oder den Haupt-Orchestrator an die UI. Aufgabe 5I bleibt nicht begonnen.
+
 ## Technische Baumansicht aus Aufgabe 5D
 
 Der offizielle Baumstand 0.5.2 wird nun ausschließlich zur technischen Darstellung über `ImportedPoe2Tree → PassiveTreeViewModel → PassiveTree` geführt. Dies ist keine Engine-UI-Integration: Der Adapter verarbeitet keine `PassiveAnalysis`, keine Scores, Pfade, Punkte oder Empfehlungen. Suche, Filter sowie Klassen-/Aszendenzzentrierung sind reine Ansichtsoperationen und verändern weder Charakter- noch Buildstate. Der bisherige synthetische Sieben-Knoten-Baum wird nicht mehr gerendert; die synthetischen Engine-Fixtures bleiben für Tests bestehen.

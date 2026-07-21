@@ -1,5 +1,9 @@
 # Architektur der Build-Engine
 
+## Abgrenzung 5D.3
+
+Die Nachbesserung verändert keine Engine- oder Orchestratorverträge. Offizielle Baumassets und Klassen-/Aszendenzregister liegen ausschließlich an der Import-/View-Grenze; sie erzeugen keine Buildentscheidung.
+
 ## Datenimportgrenze aus Aufgabe 5C
 
 `scripts/poe2-tree-import.mjs` erzeugt einen separaten, validierten offiziellen Passivbaum-Datenbestand unter `generated/poe2-tree/`. Die Adaptertypen liegen in `src/import/poe2-tree/types.ts`. Weder Engine-Orchestrator noch Passive Analyzer noch React-Komponenten importieren ihn. Aufgabe 5C ändert keine Scores, Regeln, Pfadsuche oder Empfehlungen. Eine spätere Integration benötigt einen getrennten Auftrag; GGG-Rohobjekte dürfen nicht direkt in die Engine gelangen.

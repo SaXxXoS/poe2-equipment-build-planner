@@ -1,5 +1,9 @@
 # Touch-, Aszendenz- und Assetdarstellung des PoE2-Baums
 
+## Nachbesserung 5D.3
+
+Der Nutzer hat den 5D.2-Pinch auf einem physischen iPhone bestätigt. Der neue Assetstand ist noch nicht erneut physisch geprüft. Das Inset ist entfernt: genau eine gewählte Aszendenz wird über `resolveAscendancyDisplayTransform` zentral hinter einem offiziellen Exporthintergrund dargestellt. Keine Auswahl zeigt weder Layout noch Ersatzporträt; manuelles Pan/Zoom wird nicht überschrieben.
+
 Stand: 21. Juli 2026. Aufgabe 5I ist nicht begonnen.
 
 ## Pointer- und Pinch-Modell

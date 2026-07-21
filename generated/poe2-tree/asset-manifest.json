@@ -1,0 +1,672 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": "https://github.com/grindinggear/poe2-skilltree-export",
+  "release": "0.5.2",
+  "commit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6",
+  "dataSha256": "41b232650474d880523cdc8c79a62bfefe80ee5db69c2734e82a3cf911eedba2",
+  "approvalCategory": "official-poe2-passive-tree-export-assets",
+  "files": [
+    {
+      "relativePath": "assets/background-druid.json",
+      "fileName": "background-druid.json",
+      "fileType": "json",
+      "fileSize": 959,
+      "sha256": "03f240eebd024f7d5d78b5919e87224273649ba297928068b6ecd568be57e524",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-druid.webp",
+      "fileName": "background-druid.webp",
+      "fileType": "webp",
+      "fileSize": 567414,
+      "sha256": "c5ca72d61154b1502bf09ccdd09fac3098f876098ed5b3a59a2f783c3f803557",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-huntress.json",
+      "fileName": "background-huntress.json",
+      "fileType": "json",
+      "fileSize": 974,
+      "sha256": "63cfcdc9864e1055eb886b074f72e5c2a9a9988c778ba43d4f1c687ad015c29e",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-huntress.webp",
+      "fileName": "background-huntress.webp",
+      "fileType": "webp",
+      "fileSize": 564864,
+      "sha256": "411b230bf639b4f3d4639a81b89f1f8ca79571508ccc8a7e57f6820639649314",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-mercenary.json",
+      "fileName": "background-mercenary.json",
+      "fileType": "json",
+      "fileSize": 979,
+      "sha256": "a0f8d261e72b1ace2edc5c785f9dd6830f814f3a26ff0ede985042f49a9e7319",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-mercenary.webp",
+      "fileName": "background-mercenary.webp",
+      "fileType": "webp",
+      "fileSize": 361630,
+      "sha256": "b7bf229ba6a2c30cb522c2967799f48ed6bc6d834fca26b3acfcf8c893dce113",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-monk.json",
+      "fileName": "background-monk.json",
+      "fileType": "json",
+      "fileSize": 954,
+      "sha256": "65004fe57053798ddfe569ccbfa928ef1cb2fde0cc097f9a61ca6646066cac27",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-monk.webp",
+      "fileName": "background-monk.webp",
+      "fileType": "webp",
+      "fileSize": 447658,
+      "sha256": "634d7d3b07ab3067c9b8096336f23ac88c9c4dc05e566515706583c41b88c48c",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-ranger.json",
+      "fileName": "background-ranger.json",
+      "fileType": "json",
+      "fileSize": 964,
+      "sha256": "19779d914d1f821c8232966da76073bffbc2ef9f2a073a1b724fecb9ccd8459a",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-ranger.webp",
+      "fileName": "background-ranger.webp",
+      "fileType": "webp",
+      "fileSize": 397150,
+      "sha256": "53978d611dd6b2b312e78460c13f04b2e89d7e2a93959595d5626495a24eb53b",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-sorceress.json",
+      "fileName": "background-sorceress.json",
+      "fileType": "json",
+      "fileSize": 979,
+      "sha256": "b8b37739c06281de4c08748f09aa566ac8def767aa491b270776187242339ad1",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-sorceress.webp",
+      "fileName": "background-sorceress.webp",
+      "fileType": "webp",
+      "fileSize": 466184,
+      "sha256": "fe1e80be86fcea8d44ec3e9b84901cd8ae8731c1abe0d40286499ecf9e2e37d4",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-warrior.json",
+      "fileName": "background-warrior.json",
+      "fileType": "json",
+      "fileSize": 969,
+      "sha256": "6eecfb99dce24f8e0096d6ad79fe283c1bdc19e64c9a8c966a1e20f52e6f2d7b",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-warrior.webp",
+      "fileName": "background-warrior.webp",
+      "fileType": "webp",
+      "fileSize": 324394,
+      "sha256": "6022abc8613650de6b576fec5e1315fbf2b1c1e587f561076bdfc5ad5663cce5",
+      "pixelWidth": 3000,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-witch.json",
+      "fileName": "background-witch.json",
+      "fileType": "json",
+      "fileSize": 1150,
+      "sha256": "09c2de615d5221be7782f4ed931baf698cf90fc3bfe8b5adf7057630294d6926",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background-witch.webp",
+      "fileName": "background-witch.webp",
+      "fileType": "webp",
+      "fileSize": 533532,
+      "sha256": "65f72d5c6a3baf94281c3874770b70a7c55013f63be4169e31ccf3c4881d5a86",
+      "pixelWidth": 4500,
+      "pixelHeight": 3000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "classes.image",
+        "classes.ascendancies.image"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background.json",
+      "fileName": "background.json",
+      "fileType": "json",
+      "fileSize": 378,
+      "sha256": "20d7c610fabf5b24176f7728288b50c00087e7e17a262377cc0adbfee9e16abc",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": null,
+      "referencingFields": [],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/background.webp",
+      "fileName": "background.webp",
+      "fileType": "webp",
+      "fileSize": 106,
+      "sha256": "97a2fc6f454cc1628f2ba109e3d2adf1c281dd260a592f39d7dba09218f6797b",
+      "pixelWidth": 128,
+      "pixelHeight": 128,
+      "function": null,
+      "referencingFields": [],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/frame.json",
+      "fileName": "frame.json",
+      "fileType": "json",
+      "fileSize": 8127,
+      "sha256": "a9a3c0adb795420a729dda379e68b73edd89f51d7b63e0fe78305efbcf7d6858",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.isNotable",
+        "nodes.isKeystone",
+        "nodes.isAscendancyStart",
+        "nodes.ascendancyId"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/frame.webp",
+      "fileName": "frame.webp",
+      "fileType": "webp",
+      "fileSize": 87612,
+      "sha256": "a87c8460ec7b5ef46f2741c3314fdd5bb6183ca03d9b9eec6ef545bd1b177b60",
+      "pixelWidth": 583,
+      "pixelHeight": 542,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.isNotable",
+        "nodes.isKeystone",
+        "nodes.isAscendancyStart",
+        "nodes.ascendancyId"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/group-background.json",
+      "fileName": "group-background.json",
+      "fileType": "json",
+      "fileSize": 586,
+      "sha256": "289bf0c47e872e68c04a572c52069518075f6865d03f9568df55877d8a071853",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "groups"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/group-background.webp",
+      "fileName": "group-background.webp",
+      "fileType": "webp",
+      "fileSize": 473612,
+      "sha256": "9ab11bf6007372991727257a1e576f78872a782d048d21a382d4748ca4828a69",
+      "pixelWidth": 4000,
+      "pixelHeight": 2000,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "groups"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/jewel-radius.json",
+      "fileName": "jewel-radius.json",
+      "fileType": "json",
+      "fileSize": 3657,
+      "sha256": "a209ea7dd42fe379f9d0b70f1240751205d010f9d778a439c0ee6711d8d14dd9",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": null,
+      "referencingFields": [],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/jewel-radius.webp",
+      "fileName": "jewel-radius.webp",
+      "fileType": "webp",
+      "fileSize": 294154,
+      "sha256": "56c978dfae04027627010668de5b4c88dbc80e8a2c1a42799212cdc09d571b68",
+      "pixelWidth": 1586,
+      "pixelHeight": 1330,
+      "function": null,
+      "referencingFields": [],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/jewel.json",
+      "fileName": "jewel.json",
+      "fileType": "json",
+      "fileSize": 3196,
+      "sha256": "98eea913e3039c1c689f7cf9c0a4b95dcb6d1cf7e558bbf26291cd5d4447dca1",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.isJewelSocket"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/jewel.webp",
+      "fileName": "jewel.webp",
+      "fileType": "webp",
+      "fileSize": 17052,
+      "sha256": "373482aa2a4bbaddc5dd6e0cd0c589c6db8b86347c947587f59f0f8b3ea1d736",
+      "pixelWidth": 376,
+      "pixelHeight": 376,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.isJewelSocket"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/line.json",
+      "fileName": "line.json",
+      "fileType": "json",
+      "fileSize": 6335,
+      "sha256": "44628ff0b7453c247cc39cdf6c71e17cf13807cca03c3faf481a0c9ec92762c7",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "edges"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/line.webp",
+      "fileName": "line.webp",
+      "fileType": "webp",
+      "fileSize": 138180,
+      "sha256": "dc772c84d29d4b1affc7fb35b2e9165ccdeb7331b63de550722e3c2e28db6ab5",
+      "pixelWidth": 717,
+      "pixelHeight": 2215,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "edges"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/mastery-effect-active.json",
+      "fileName": "mastery-effect-active.json",
+      "fileType": "json",
+      "fileSize": 16143,
+      "sha256": "50b1154f720adc73009dd1a1e0824d2fcf79a484f2b2a746cc9ae00dbbf09118",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.activeEffectImage"
+      ],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/mastery-effect-active.webp",
+      "fileName": "mastery-effect-active.webp",
+      "fileType": "webp",
+      "fileSize": 643792,
+      "sha256": "6f008ef9bd7cd100dd89a4edbecc37e3c04ca9dac5dc672bf56c3e8899f2064e",
+      "pixelWidth": 1952,
+      "pixelHeight": 1687,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.activeEffectImage"
+      ],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/mastery-effect-disabled.json",
+      "fileName": "mastery-effect-disabled.json",
+      "fileType": "json",
+      "fileSize": 16257,
+      "sha256": "221fab4d2b480f6d91ae684f03a0cf329afdea5fa3833612cbaad0eaf0c5d0f4",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.activeEffectImage"
+      ],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/mastery-effect-disabled.webp",
+      "fileName": "mastery-effect-disabled.webp",
+      "fileType": "webp",
+      "fileSize": 548330,
+      "sha256": "1106007acc03751bee4f9e8d69ebe241ebde1e994021f3c3f867f566fc74f88a",
+      "pixelWidth": 1952,
+      "pixelHeight": 1687,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.activeEffectImage"
+      ],
+      "usable": true,
+      "used": false,
+      "reason": "Im aktuellen reinen Knotenbrowser nicht benötigt; vollständig inventarisiert.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/skills-disabled.json",
+      "fileName": "skills-disabled.json",
+      "fileType": "json",
+      "fileSize": 165403,
+      "sha256": "b0d56b3bab7faebf524d1c5fccb1330ae4fe7eba71457cd037093bf7915c4380",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.icon"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/skills-disabled.webp",
+      "fileName": "skills-disabled.webp",
+      "fileType": "webp",
+      "fileSize": 286866,
+      "sha256": "f28eb8d14e43c358c1187e3a54243951a8781e69aa21684cb6fa7d0c76897cbd",
+      "pixelWidth": 1029,
+      "pixelHeight": 1508,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.icon"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/skills.json",
+      "fileName": "skills.json",
+      "fileType": "json",
+      "fileSize": 164042,
+      "sha256": "188a0a29489170a04bb1518b9671577c5a660da8de6f1f696c95aa20710978c1",
+      "pixelWidth": null,
+      "pixelHeight": null,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.icon"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    },
+    {
+      "relativePath": "assets/skills.webp",
+      "fileName": "skills.webp",
+      "fileType": "webp",
+      "fileSize": 435894,
+      "sha256": "e8c35e33b61573a5ce04f27ad4e6532aa8d6f2b61f8488dd617eaf87a461319c",
+      "pixelWidth": 1029,
+      "pixelHeight": 1508,
+      "function": "official-passive-tree-atlas",
+      "referencingFields": [
+        "nodes.icon"
+      ],
+      "usable": true,
+      "used": true,
+      "reason": "Direkt referenzierter offizieller Passivbaum-Atlas.",
+      "sourceRelease": "0.5.2",
+      "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6"
+    }
+  ]
+}

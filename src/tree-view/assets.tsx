@@ -1,0 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
+import renderData from '../../generated/poe2-tree/tree-render-data.json'
+import type { TreeNodeViewModel } from './types'
+type Frame={atlas:string;atlasWidth:number;atlasHeight:number;x:number;y:number;w:number;h:number}
+const modules=import.meta.glob('../../generated/poe2-tree/assets/*.webp',{eager:true,query:'?url',import:'default'}) as Record<string,string>
+const urls=Object.fromEntries(Object.entries(modules).map(([key,url])=>[key.split('/').pop()!,url]))
+const frames=renderData.atlases as Record<string,Frame>,icons=renderData.nodeIcons as Record<string,string>
+export type TreeNodeDisplayState='inactive'|'active'|'selected'|'highlighted'|'dimmed'|'unavailable'
+export const TREE_NODE_RENDER_DEFINITION={normal:{iconType:'normal',inactiveFrame:null,activeFrame:null},notable:{iconType:'notable',inactiveFrame:'frame:NotableFrameUnallocated',activeFrame:'frame:NotableFrameAllocated'},keystone:{iconType:'keystone',inactiveFrame:'frame:KeystoneFrameUnallocated',activeFrame:'frame:KeystoneFrameAllocated'},'jewel-socket':{iconType:null,inactiveFrame:'frame:JewelSocketAltNormal',activeFrame:'frame:JewelSocketAltActive'},'class-start':{iconType:'normal',inactiveFrame:'frame:PSSkillFrame',activeFrame:'frame:PSSkillFrameActive'},'ascendancy-start':{iconType:'normal',inactiveFrame:'frame:AscendancyStartNode',activeFrame:'frame:AscendancyStartNode'},ascendancy:{iconType:'normal',inactiveFrame:'frame:AscendancyFrameNormalUnallocated',activeFrame:'frame:AscendancyFrameNormalAllocated'},unknown:{iconType:null,inactiveFrame:null,activeFrame:null}} as const
+export function resolveNodeSprite(node:TreeNodeViewModel,state:TreeNodeDisplayState){const def=TREE_NODE_RENDER_DEFINITION[node.nodeType],icon=icons[node.id],type=node.nodeType==='ascendancy'&&node.stats.length>1?'notable':def.iconType,active=!['inactive','dimmed','unavailable'].includes(state);return{icon:type&&icon?frames[`${type}${active?'Active':'Inactive'}:${icon}`]:undefined,frame:frames[active?def.activeFrame??'':def.inactiveFrame??'']}}
+export function Sprite({frame,x,y,width,height,className}:{frame?:Frame;x:number;y:number;width:number;height:number;className?:string}){if(!frame||!urls[frame.atlas])return null;return <svg x={x-width/2} y={y-height/2} width={width} height={height} viewBox={`${frame.x} ${frame.y} ${frame.w} ${frame.h}`} preserveAspectRatio="xMidYMid meet" className={className} aria-hidden="true"><image href={urls[frame.atlas]} x="0" y="0" width={frame.atlasWidth} height={frame.atlasHeight}/></svg>}
+export function resolveBackgroundFrame(key:string|null|undefined){return key?frames[key]:undefined}
+export const officialClassRegistry=renderData.classes

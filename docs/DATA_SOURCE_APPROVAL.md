@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Ergänzung 5D.3 – eng begrenzte Exportassets
+
+`official-poe2-passive-tree-export-assets` ist `conditionally-approved`, ausschließlich für Release 0.5.2/Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` und nur zur Darstellung des zugehörigen offiziellen Passivbaums. Dies ist keine allgemeine Medienlizenz oder rechtliche Garantie. Alle anderen Bilder bleiben blockiert; jeder Releasewechsel verlangt neue Prüfung und Attribution.
+
 ## Korrektur aus Aufgabe 5C (20. Juli 2026)
 
 Der offizielle Export `ggg-poe2-skilltree-export` ist nicht mehr pauschal blockiert, sondern ausschließlich für die gepinnte `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Release 0.5.2 ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` festgelegt. Attribution, Hash, Offline-Reproduzierbarkeit, manuelle Saisonfreigabe und Asset-Ausschluss sind Pflichtbedingungen. Es folgt keine Freigabe für Medien, andere Dateien oder andere GGG-Daten. PoE2DB, RePoE und alle übrigen blockierten Kategorien bleiben blockiert. `data-sources/source-approval.json` ist maßgeblich.

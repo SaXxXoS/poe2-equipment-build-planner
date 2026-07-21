@@ -11,7 +11,7 @@ import { PassiveTree } from './components/PassiveTree'
 import { BuildResultSection } from './components/BuildResultSection'
 
 export default function App() {
-  const [character, setCharacter] = useState<CharacterConfiguration>({ classId: 'class-warrior', ascendancyId: ascendancyDefinitions[0].id, level: 70, goalProfile: 'balanced' })
+  const [character, setCharacter] = useState<CharacterConfiguration>({ classId: 'class-official-6', ascendancyId: ascendancyDefinitions.find(value => value.classId === 'class-official-6')?.id ?? '', level: 70, goalProfile: 'balanced' })
   const [equipment, setEquipment] = useState(initialEquipment)
   const [setups, setSetups] = useState(initialSkillSetups)
   const [calculated, setCalculated] = useState(false)

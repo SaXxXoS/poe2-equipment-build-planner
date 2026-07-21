@@ -27,7 +27,7 @@
       "conditions": { "attributionRequired": true, "rawRedistributionAllowed": true, "derivedRedistributionAllowed": true, "automatedAccessAllowed": true, "localStorageAllowed": true, "repositoryStorageAllowed": true, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
       "requiredConditions": ["attributionRequired", "rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "patchVersionRequired", "manualApprovalRequired"],
       "evidenceUrls": ["https://www.pathofexile.com/developer/docs/data", "https://github.com/grindinggear/poe2-skilltree-export", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
-      "reason": "Begrenzte Projektfreigabe nur für die von GGG offiziell veröffentlichte, fest gepinnte data.json des PoE2-Passivbaums. Sie umfasst ausschließlich Struktur, Quelltexte und erforderliche Metadaten; Medien, andere Dateien und andere GGG-Daten bleiben ausgeschlossen."
+      "reason": "Eng begrenzte technische Projektfreigabe für den von GGG offiziell veröffentlichten PoE2-Passivbaumexport, ausschließlich Release 0.5.2/Commit 1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6. Sie umfasst data.json und direkt im Repository enthaltene Baumassets nur zur Darstellung dieses Passivbaums. Keine allgemeine Medien- oder Rechtsfreigabe; jeder Releasewechsel erfordert erneute Prüfung."
     },
     {
       "sourceId": "repoe-poe2",
@@ -72,8 +72,8 @@
   "rejectedSources": ["ggg-game-files-undocumented-endpoints"],
   "pendingSources": ["manual-transcription"],
   "categoryAssignments": [
-    { "categoryId": "classes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener statischer Export." },
-    { "categoryId": "ascendancies", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Schema und Rechte nicht vollständig belegt." },
+    { "categoryId": "classes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur die im gepinnten offiziellen Baumexport enthaltenen Klassenmetadaten; keine allgemeine Klassendatenfreigabe." },
+    { "categoryId": "ascendancies", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur die im gepinnten offiziellen Baumexport enthaltenen Aszendenzmetadaten; keine allgemeine Aszendenzdatenfreigabe." },
     { "categoryId": "skills", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Extrahierte Datenrechte und vollständige Semantik offen." },
     { "categoryId": "support-gems", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Extrahierte Datenrechte und Kompatibilitätsfelder offen." },
     { "categoryId": "skill-tags", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Taxonomie und Rechte offen." },
@@ -97,16 +97,17 @@
     { "categoryId": "unique-cluster-jewels", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Vollständigkeit, Semantik und Rechte offen." },
     { "categoryId": "normal-uniques", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "RePoE nennt nur Namen/Artpfade; vollständige Daten und Rechte offen." },
     { "categoryId": "display-names", "primarySourceId": "poe2db", "fallbackSourceId": "repoe-poe2", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Deutsche Vollständigkeit und Lizenzumfang nicht belegt." },
-    { "categoryId": "icons-images", "primarySourceId": null, "fallbackSourceId": null, "status": "blocked", "repositoryStorage": false, "offlineOnly": true, "reason": "GGG-Medienrechte, Hotlinking, lokale Speicherung und Weiterverteilung nicht freigegeben." },
+    { "categoryId": "official-poe2-passive-tree-export-assets", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Ausschließlich direkt enthaltene Assets aus Release 0.5.2/Commit 1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6 zur lokalen Darstellung des zugehörigen offiziellen Passivbaums; keine Hotlinks, keine Bedeutungsänderung, Attribution und erneute Prüfung bei jedem Releasewechsel. Keine rechtliche Garantie." },
+    { "categoryId": "icons-images", "primarySourceId": null, "fallbackSourceId": null, "status": "blocked", "repositoryStorage": false, "offlineOnly": true, "reason": "Alle sonstigen GGG- oder Drittanbieterbilder außerhalb der eng begrenzten Kategorie official-poe2-passive-tree-export-assets bleiben gesperrt." },
     { "categoryId": "patch-version-information", "primarySourceId": "ggg-developer-api", "fallbackSourceId": "ggg-poe2-skilltree-export", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Als Referenz nutzbar; maschinenlesbare, kategorienübergreifende Versionsbindung fehlt." }
   ],
   "globalRestrictions": [
     "Kein echter Datenimport, solange die Kategorie nicht approved oder conditionally-approved ist.",
     "Conditionally-approved erfordert alle requiredConditions als explizit erfüllt.",
-    "GGG-Roh- oder abgeleitete Daten im Repository nur innerhalb einer dokumentierten, kategorienbezogenen Freigabe; derzeit ausschließlich gepinnte PoE2-Passivbaum-data.json ohne Assets.",
-    "Keine Bilder, Icons oder sonstigen Medien herunterladen, hotlinken oder speichern.",
+    "GGG-Roh- oder abgeleitete Daten im Repository nur innerhalb einer dokumentierten, kategorienbezogenen Freigabe; für Baumassets ausschließlich Release 0.5.2/Commit 1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6.",
+    "Keine Bilder, Icons oder sonstigen Medien außerhalb official-poe2-passive-tree-export-assets herunterladen, hotlinken oder speichern.",
     "Keine nicht dokumentierten Endpunkte, Spieldateiextraktion, Scraper oder Crawler verwenden.",
     "Fixture-Importe bleiben erlaubt und müssen eindeutig synthetisch markiert sein."
   ],
-  "nextReviewTrigger": "Schriftliche GGG-/Quellenfreigabe oder neue offizielle Lizenz-/API-Dokumentation mit Aussagen zu Abruf, Speicherung, Ableitungen, Weiterverteilung und Attribution."
+  "nextReviewTrigger": "Jeder Release- oder Commitwechsel des offiziellen Baumexports, geänderte Assetreferenzen, neue offizielle Lizenz-/API-Dokumentation oder eine Nutzung außerhalb der Darstellung des offiziellen Passivbaums."
 }

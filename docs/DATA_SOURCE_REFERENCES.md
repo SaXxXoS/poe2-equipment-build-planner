@@ -1,5 +1,9 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Ergänzung 5D.3
+
+Assetquelle: offizielles GGG-Repository <https://github.com/grindinggear/poe2-skilltree-export>, Release 0.5.2, Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6`. Visuelle Referenz: <https://pathofexile2.com/game/passive-skill-tree>. Approval-Umfang und rechtliche Begrenzung stehen in `POE2_TREE_ASSETS.md`.
+
 ## Ergänzung Aufgabe 5C
 
 - Offizielles Repository: <https://github.com/grindinggear/poe2-skilltree-export>

@@ -14,6 +14,7 @@ describe('Import-Freigabesperre', () => {
     const result = evaluateImportApproval(base, { sourceId: 'ggg-poe2-skilltree-export', categoryId: 'passive-nodes', satisfiedConditions: { attributionRequired: true, rawRedistributionAllowed: true, derivedRedistributionAllowed: true, localStorageAllowed: true, repositoryStorageAllowed: true, patchVersionRequired: true, manualApprovalRequired: true } })
     expect(result.allowed).toBe(true)
   })
+  it('erlaubt ausschließlich die eng begrenzte gepinnte Export-Assetkategorie',()=>{const result=evaluateImportApproval(base,{sourceId:'ggg-poe2-skilltree-export',categoryId:'official-poe2-passive-tree-export-assets',satisfiedConditions:{attributionRequired:true,rawRedistributionAllowed:true,derivedRedistributionAllowed:true,localStorageAllowed:true,repositoryStorageAllowed:true,patchVersionRequired:true,manualApprovalRequired:true}});expect(result.allowed).toBe(true);expect(evaluateImportApproval(base,{sourceId:'ggg-poe2-skilltree-export',categoryId:'icons-images'}).allowed).toBe(false)})
   it('lässt andere echte Datenkategorien blockiert', () => { expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'skills' }).allowed).toBe(false) })
   it('blockiert eine fehlende Approval-Datei', () => { expect(evaluateImportApproval(undefined, request).code).toBe('approval-missing') })
   it('blockiert eine ungültige Approval-Datei', () => { expect(evaluateImportApproval('{', request).code).toBe('approval-invalid') })

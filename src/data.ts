@@ -17,18 +17,15 @@ import {
   type SupportGemDefinition,
   type UniqueClusterJewelDefinition,
 } from './domain'
+import classRegistry from '../generated/poe2-tree/class-registry.json'
 
-const classSeed = [
-  ['class-warrior', 'Krieger', 'Titan'], ['class-ranger', 'Waldläuferin', 'Pfadfinderin'],
-  ['class-sorceress', 'Zauberin', 'Sturmweberin'], ['class-monk', 'Mönch', 'Beschwörer'],
-  ['class-mercenary', 'Söldner', 'Hexenjäger'], ['class-witch', 'Hexe', 'Infernalistin'],
-] as const
+export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
+export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; ascendancies:TreeAscendancyRegistryEntry[] }
 
-export const classDefinitions: ClassDefinition[] = classSeed.map(([id, name]) => placeholderMetadata(id, name))
-export const ascendancyDefinitions: AscendancyDefinition[] = classSeed.flatMap(([classId, className, ascendancy], index) => [
-  { ...placeholderMetadata(`ascendancy-${index}-primary`, ascendancy), classId },
-  { ...placeholderMetadata(`ascendancy-${index}-secondary`, `${className}-Testaszendenz`), classId },
-])
+export const treeClassRegistry = classRegistry.classes as unknown as TreeClassRegistryEntry[]
+export const findTreeAscendancy=(id:string)=>{for(const item of treeClassRegistry){const found=item.ascendancies.find(value=>value.ascendancyId===id);if(found)return found}return undefined}
+export const classDefinitions: ClassDefinition[] = treeClassRegistry.map(item => placeholderMetadata(item.classId, item.displayName))
+export const ascendancyDefinitions: AscendancyDefinition[] = treeClassRegistry.flatMap(item => item.ascendancies.map(ascendancy => ({ ...placeholderMetadata(ascendancy.ascendancyId, ascendancy.displayName), classId: item.classId })))
 
 const slotSeed = [
   ['slot-helmet', 'Helm', 'not-applicable', 'not-applicable'], ['slot-body-armour', 'Brust', 'not-applicable', 'not-applicable'],

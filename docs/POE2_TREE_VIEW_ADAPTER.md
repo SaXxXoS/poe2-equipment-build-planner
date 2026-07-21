@@ -1,5 +1,9 @@
 # Darstellungsadapter des offiziellen PoE2-Passivbaums
 
+## Nachbesserung 5D.3
+
+Die alte manuelle Sechserzuordnung und das Rand-Inset sind ersetzt. `class-registry.json` liefert den vollständigen 0.5.2-Bestand; `assets.tsx` löst zentral offizielle Spriteausschnitte und Zustandsrahmen auf. `resolveAscendancyDisplayTransform` transformiert das ausgewählte Aszendenzlayout als starre Einheit in den Hauptbaummittelpunkt. Relative Positionen, Kanten und Hauptbaumkoordinaten bleiben unverändert; layoutübergreifende Kanten bleiben ausgeblendet.
+
 Stand: 20. Juli 2026. Maßgeblich sind `src/tree-view/adapter.ts`, `types.ts`, `data.ts` und die Baumkomponente.
 
 ## Verantwortung und Eingabe

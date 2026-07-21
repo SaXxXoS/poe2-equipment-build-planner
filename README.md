@@ -1,5 +1,9 @@
 # PoE2 Equipment Build Planner
 
+## Asset- und Klassenstand 5D.3
+
+Der sichtbare Passivbaum verwendet lokale offizielle Spriteatlanten aus GGGs gepinntem Export 0.5.2. Gewählte Aszendenzen erscheinen zentral; ein generiertes Register verwaltet alle Exportklassen ohne feste Sechsergrenze. Details: `docs/POE2_TREE_ASSETS.md` und `docs/POE2_CLASS_AND_ASCENDANCY_REGISTRY.md`. Aufgabe 5I ist weiterhin nicht begonnen.
+
 ## Offizieller Passivbaum-Datenbestand (Aufgabe 5C)
 
 Die in Aufgabe 5B zu strenge Sperre wurde ausschließlich für den offiziellen GGG-Passivbaumexport korrigiert. Release `0.5.2` („Runes of Aldur“) ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` und SHA-256 `f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe` festgelegt.
