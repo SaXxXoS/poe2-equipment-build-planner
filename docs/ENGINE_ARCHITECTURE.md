@@ -220,6 +220,12 @@ Das Modul importiert weder `passive-pathfinding` noch den synthetischen Passive 
 
 Die Schicht besitzt Validierung, zentrale Nutzen-/Konflikt-/Redundanzabzüge, exakten Pfadrequest-Cache, Budget- und Sicherheitsgrenzen sowie einen reichen deterministischen Ergebnisvertrag. Aszendenzknoten sind vollständig ausgeschlossen, weil kein getrenntes Budget existiert. `optimalityClaim: heuristic` ist verbindlich. Targeting-Regeln und Pathfinder bleiben unverändert; Passive Analyzer, Orchestrator und UI importieren den Planer nicht. Details: [`POE2_PASSIVE_PLANNING.md`](POE2_PASSIVE_PLANNING.md).
 
+## Isolierte reale Passive-Pipeline (Aufgabe 5H)
+
+`src/engine/real-passive-pipeline/` ist ein neuer Entry Point außerhalb des Haupt-Orchestrators. Die gerichtete Abhängigkeit lautet `BuildProfile → evaluatePassiveTargets → planPassiveTargets`; der Planner nutzt seinerseits unverändert `findPassivePath`. Die Pipeline validiert Quelle und explizites Budget, löst den Klassenstart ausschließlich über offizielle `classStartIndex`-Zuordnung auf, baut genau einen Graph oder übernimmt einen vorbereiteten Graph und validiert anschließend Existenz, Eindeutigkeit, Zusammenhang, Budget, Quellversion und Aszendenzgrenze des Resultats.
+
+Alle Teilresultate bleiben vollständig erhalten. Acht kontrollierte Stufen, Required-Target-Diagnosen, Issues mit Quellmodul/Stufe, Graph-/Targeting-/Planning-Diagnosen und ein laufzeitfreier kanonischer Resultathash bilden die Integrationsdiagnose. Die Pipeline führt keine Fachlogik der drei Module erneut aus und besitzt keine Abhängigkeit zu synthetischem Passive Analyzer, `analyzeBuild`, React oder Tree-ViewModel. Vollständiger Vertrag: [`POE2_REAL_PASSIVE_PIPELINE.md`](POE2_REAL_PASSIVE_PIPELINE.md).
+
 ## Nächste Module
 
-Die begrenzte Planung ist technisch vorbereitet, aber nicht produktiv angebunden. Passive-Analyzer-, Orchestrator- oder UI-Adapter, getrennte Aszendenzplanung, Juwelbelegung, Levelpfade, globale Baumoptimalität, weitere echte Daten und DPS benötigen getrennte Aufträge und Referenztests.
+Die geschlossene reale Passive-Pipeline ist technisch vorbereitet, aber nicht produktiv angebunden. Ein Adapter zum Haupt-Orchestrator erfordert eine ausdrückliche Entscheidung über Profilquelle, Budgeteingabe, Fehlerdarstellung und Laufzeitstrategie. UI-Anzeige, getrennte Aszendenzplanung, Juwelbelegung, Levelpfade, Targeting-Klassifikationscache, globale Baumoptimalität, weitere echte Daten und DPS bleiben getrennte Aufgaben.

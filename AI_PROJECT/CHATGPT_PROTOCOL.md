@@ -116,6 +116,22 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
+### Aufgabe 5H – isolierte reale Passive-Pipeline abgeschlossen (21. Juli 2026)
+
+- Neues Modul `src/engine/real-passive-pipeline/` verbindet `BuildProfile → passive-targeting → passive-pathfinding → passive-planning`, ohne den bestehenden Haupt-Orchestrator oder die UI anzubinden.
+- `pointBudget` ist zwingend und wird nie aus Level, Quest- oder Aszendenzpunkten erfunden.
+- Ein expliziter Klassenstart wird gegen `classStartIndex` geprüft; andernfalls muss genau eine offizielle Klassenzuordnung existieren. Namen und Geometrie werden nicht ausgewertet.
+- Quellversion und Baumdaten werden vor Ausführung geprüft. Ein vorbereiteter Graph wird wiederverwendet; andernfalls wird der bestehende Graphbuilder genau einmal aufgerufen.
+- Acht Stufen protokollieren Status, Codes und Summaries. Targeting- und Planning-Resultate bleiben vollständig erhalten.
+- Required-Ziele werden von Baum über Targeting bis Planung einzeln mit ursprünglichen Codes diagnostiziert.
+- Die Ausgabeprüfung sichert Referenzen, Eindeutigkeit, Zusammenhang, Budget, Versionsgleichheit und vollständigen Ausschluss von Aszendenzknoten aus normalen Punkten.
+- Der kanonische `fnv1a32`-Resultathash enthält keine Laufzeiten, Zeitstempel, Speicher- oder Plattformwerte.
+- `optimalityClaim: heuristic` wird unverändert übernommen; globale Optimalität wird nicht behauptet.
+- Targeting-Regeln, Pathfinder, Planner, synthetischer Passive Analyzer, Haupt-Orchestrator und UI sind per SHA-256-Grenztest unverändert.
+- Isolierte offizielle Messung: vollständiger Lauf mit neuem Graph 2.482,74 ms, mit wiederverwendetem Graph 1.845,79 ms, Targeting 1.558,52 ms, Planning 191,07 ms, zwei Läufe 3.623,40 ms, drei Profile 5.528,99 ms, Heap-Differenz der Gesamtmessung 174,34 MiB.
+- Targeting klassifiziert aktuell je Profil erneut. 5H führt bewusst keinen profilübergreifenden Klassifikationscache ein.
+- Vollständiger Vertrag: `docs/POE2_REAL_PASSIVE_PIPELINE.md`.
+
 ### Aufgabe 5G – begrenzte Passive-Planung abgeschlossen (21. Juli 2026)
 
 - `src/engine/passive-planning/` enthält Typen, Konfiguration, Kandidatenaufbau, Validator, Planner, Fixtures, Exporte sowie Unit-, Boundary- und Performanceprüfungen.

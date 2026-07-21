@@ -1,0 +1,17 @@
+import { buildPassiveGraph } from '../passive-pathfinding/graph'
+import type { PassivePathSource } from '../passive-pathfinding/types'
+import { PASSIVE_TARGET_TEST_PROFILES } from '../passive-targeting/fixtures'
+import type { PassiveTargetNode } from '../passive-targeting/types'
+import type { RealPassivePipelineInput,RealPassiveTree } from './types'
+const raw:PassivePathSource={nodes:[
+ {id:'S',nodeType:'class-start',neighbourNodeIds:['L1','C1','D1'],isClassStart:true,classStartIndex:1,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},
+ {id:'L1',nodeType:'normal',neighbourNodeIds:['S','L'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},{id:'L',nodeType:'notable',neighbourNodeIds:['L1'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},
+ {id:'C1',nodeType:'normal',neighbourNodeIds:['S','C'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},{id:'C',nodeType:'notable',neighbourNodeIds:['C1'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},
+ {id:'D1',nodeType:'normal',neighbourNodeIds:['S','D'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},{id:'D',nodeType:'notable',neighbourNodeIds:['D1'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:null,isJewelSocket:false},
+ {id:'AS',nodeType:'ascendancy-start',neighbourNodeIds:['AX'],isClassStart:false,classStartIndex:null,isAscendancyStart:true,ascendancyId:'foreign',isJewelSocket:false},{id:'AX',nodeType:'ascendancy',neighbourNodeIds:['AS'],isClassStart:false,classStartIndex:null,isAscendancyStart:false,ascendancyId:'foreign',isJewelSocket:false}],connections:[
+ {id:'S-L1',fromNodeId:'S',toNodeId:'L1'},{id:'L1-L',fromNodeId:'L1',toNodeId:'L'},{id:'S-C1',fromNodeId:'S',toNodeId:'C1'},{id:'C1-C',fromNodeId:'C1',toNodeId:'C'},{id:'S-D1',fromNodeId:'S',toNodeId:'D1'},{id:'D1-D',fromNodeId:'D1',toNodeId:'D'},{id:'AS-AX',fromNodeId:'AS',toNodeId:'AX'}]}
+const texts:Record<string,string>={S:'',L1:'10% increased Lightning Damage',L:'25% increased Projectile Attack Damage',C1:'10% increased Cold Damage',C:'25% increased Spell Damage',D1:'3% increased maximum Life',D:'20% increased Armour'}
+export const REAL_PASSIVE_FIXTURE_TREE:RealPassiveTree={metadata:{releaseTag:'fixture'},nodes:raw.nodes.map(value=>({...value,name:{sourceText:value.id,sourceLocale:'en'},stats:texts[value.id]?[{sourceText:texts[value.id],sourceLocale:'en'}]:[]}) as PassiveTargetNode),connections:raw.connections}
+export const REAL_PASSIVE_FIXTURE_GRAPH=buildPassiveGraph(raw)
+export const realPassivePipelineInput=(values:Partial<RealPassivePipelineInput>={}):RealPassivePipelineInput=>({requestId:'pipeline-fixture',sourceVersion:'fixture',buildProfile:PASSIVE_TARGET_TEST_PROFILES.lightningProjectileAttack,characterClassId:'1',characterLevel:90,pointBudget:4,targetProfile:'balanced',planningMode:'balanced',passiveTree:REAL_PASSIVE_FIXTURE_TREE,candidatePoolLimit:10,maximumSelectedTargets:2,minimumTargetScore:0,minimumConfidence:'low',allowKeystoneReoptimization:false,analyzerContext:{engineVersion:'pipeline-fixture',fixtureMode:true},...values})
+export const REAL_PASSIVE_PIPELINE_PROFILES={lightningProjectileBalanced:PASSIVE_TARGET_TEST_PROFILES.lightningProjectileAttack,coldSpellMapping:PASSIVE_TARGET_TEST_PROFILES.coldSpell,defensiveLifeArmour:PASSIVE_TARGET_TEST_PROFILES.defensiveLifeArmour}

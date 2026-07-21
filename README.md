@@ -17,6 +17,8 @@ Aufgabe 5F ergänzt davon getrennt `src/engine/passive-targeting/`: Das Modul kl
 
 Aufgabe 5G führt vorbereitete Targeting-Ergebnisse und den vorhandenen Pathfinder in `src/engine/passive-planning/` kontrolliert zusammen. Required-Ziele werden zuerst verbunden; danach wählt der deterministische Planer unter festem Budget aus einem früh begrenzten Pool schrittweise nach `value-first`, `efficiency-first` oder `balanced`. Pfadteile werden wiederverwendet und identische Requests gecacht. Das Ergebnis bleibt heuristisch; Analyzer, Orchestrator und UI sind nicht angebunden. Details: [`docs/POE2_PASSIVE_PLANNING.md`](docs/POE2_PASSIVE_PLANNING.md).
 
+Aufgabe 5H ergänzt den isolierten Entry Point `src/engine/real-passive-pipeline/`. Er verbindet ein normalisiertes `BuildProfile` mit dem unveränderten echten Targeting und Planner, löst den offiziellen Klassenstart auf, baut oder übernimmt genau einen Graph und validiert den budgetierten Teilbaum. Laufzeitfreie Stufendiagnosen, Required-Target-Tracking und ein deterministischer Resultathash machen den Durchlauf nachvollziehbar. Haupt-Orchestrator und UI bleiben getrennt. Details: [`docs/POE2_REAL_PASSIVE_PIPELINE.md`](docs/POE2_REAL_PASSIVE_PIPELINE.md).
+
 Mobiler, Equipment-first ausgerichteter Build-Planer-Prototyp für Path of Exile 2. Die App zeigt direkt eine einzige lange Planer-Seite und demonstriert den vollständigen Eingabe- und Ergebnisablauf.
 
 > **Prototyp:** Sämtliche Spieldaten und Berechnungsergebnisse sind lokale Platzhalter. Eine UI-unabhängige, deterministische Engine-Architektur mit künstlicher Testlogik ist vorhanden; es gibt keine echte Optimierungs- oder DPS-Engine und keine PoE2DB-Anbindung.
@@ -70,12 +72,14 @@ Der Befehl lädt ausschließlich das synthetische Fixture, validiert Manifest, R
 - `src/engine/passive-pathfinding/` – isolierter offizieller Graph, deterministische Einzel-/Mehrzielpfade und Vertragstests
 - `src/engine/passive-targeting/` – isolierte Regelklassifikation und fachliche Einzelzielranglisten für echte Baumknoten
 - `src/engine/passive-planning/` – isolierte budgetbegrenzte Heuristik aus vorbereiteten Zielwerten und vorhandenen Pfadkosten
+- `src/engine/real-passive-pipeline/` – isolierter realer Ablauf von BuildProfile über Targeting und Pfadsuche zum validierten PassivePlan
 - `src/data.ts` – normalisierte lokale Definitionen, Konfigurationen und feste Testberechnung
 - `docs/DATA_SOURCES.md` – geprüfte Datenquellen, Bedingungen, Unsicherheiten und vorläufige Empfehlung
 - `docs/ENGINE_ARCHITECTURE.md` – Engine-Datenfluss, Regeln, Profile, Bewertungen und klare fachliche Grenzen
 - `docs/POE2_PASSIVE_PATHFINDING.md` – Graph-, Kosten-, Algorithmus-, Aszendenz- und Performancevertrag der realen Pfadsuchgrundlage
 - `docs/POE2_PASSIVE_TARGETING.md` – Textregeln, Profilabgleich, Ranglisten, Coverage und Grenzen der echten Zielknotenbewertung
 - `docs/POE2_PASSIVE_PLANNING.md` – Kandidatenpool, Nutzen-/Kostenmodell, Required-Ziele, Modi, Cache, Budget und Optimalitätsgrenze
+- `docs/POE2_REAL_PASSIVE_PIPELINE.md` – Pipelinevertrag, Klassenstart, Stufen, Diagnosen, Ausgabeprüfung, Hash und Performance
 - `docs/ENGINE_UI_INTEGRATION_AUDIT.md` – geprüfter späterer UI-/Engine-Vertrag, Adaptergrenze und Integrationsrisiken
 - `docs/DATA_SOURCE_RELEASE_AUDIT.md` – Datenbedarf, Quellenstatus und verbindliche Sperre vor echtem Datenimport
 - `docs/DATA_SOURCE_APPROVAL.md` – verbindliche Quellenentscheidung, Datenmatrix und Empfehlung für Aufgabe 5C
