@@ -116,6 +116,21 @@ Anmeldung, Benutzerkonten, klassische Homepage, Community-Funktionen, öffentlic
 
 ## 4. Aktueller Entwicklungsstand
 
+### Aufgabe 5G – begrenzte Passive-Planung abgeschlossen (21. Juli 2026)
+
+- `src/engine/passive-planning/` enthält Typen, Konfiguration, Kandidatenaufbau, Validator, Planner, Fixtures, Exporte sowie Unit-, Boundary- und Performanceprüfungen.
+- Der Planer liest nur vorbereitete `PassiveTargetAnalysis`-Ergebnisse und ruft nur `findPassivePath` auf. Targeting, Pathfinder, Passive Analyzer, Orchestrator und UI sind per SHA-256-Vertrag unverändert abgesichert.
+- Der Pool wird vor Suchen deterministisch gefiltert und auf 50 begrenzt. Starts, alle Aszendenzknoten, unbekannte Typen, reguläre Juwelsockel, blockierte, ausgeschlossene, zu schwache oder nicht freigegebene Reoptimierungsziele sind ausgeschlossen.
+- Required-Ziele werden zuerst validiert und verbunden; Unerreichbarkeit oder Budgetüberschreitung blockiert ausdrücklich.
+- Zentrale Werte kombinieren nur vorhandenen Targeting-Score, Profilsynergie, Mapping-/Bosswerte und Confidence. Vorhandene Konflikt-, Unresolved-, Reoptimierungs- und Redundanzfelder erzeugen kontrollierte Abzüge.
+- `value-first`, `efficiency-first` und `balanced` verwenden zentrale Gewichte und bewerten nach jeder Auswahl am erweiterten Teilbaum neu.
+- Belegte Pfade werden wiederverwendet. Ein exakter Request-Cache verhindert identische Pathfinder-Aufrufe; Ergebniszähler weisen echte Suchen und Treffer aus.
+- Aszendenzen bleiben mangels getrenntem Aszendenzbudget außerhalb des Normalplans.
+- Die Strategie ist heuristisch und behauptet keine globale Build-, Steiner-Tree- oder kombinatorische Optimalität.
+- Sicherheitsgrenzen: 50 Kandidaten, 12 Ziele, 123 normale Punkte, 4.000 Pfadsuchen, 12 optionale Iterationen.
+- Messung mit 5.150 Knoten und vorbereitetem Targeting: 10/25/50 Kandidaten in 208,48/415,05/811,32 ms; warmer 25er-Cache 77,58 ms, 0 echte Suchen, 25 Treffer; Heap-Differenz 85,43 MiB.
+- Vollständiger Vertrag: `docs/POE2_PASSIVE_PLANNING.md`.
+
 Phase 1 und Phase 2 sind implementiert. Phase 3 besitzt eine geprüfte Offline-Importgrundlage und seit Aufgabe 5C den getrennten offiziellen Passivbaum-Datenbestand; andere echte Daten sind nicht freigegeben. Aufgaben 4A bis 4I und damit Aufgabe 4 insgesamt sind abgeschlossen. Sie lieferten die vollständige synthetische Engine-Kette: Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer, Rotation Generator und templatebasierten Explanation Generator. Dieser erzeugt deutsche Erklärungen und maschinenlesbare Traces ausschließlich aus vorhandenen strukturierten Ergebnissen. Die Engine optimiert nicht neu und berechnet weder Zeiten noch DPS. Aufgabe 5A ergänzt die GitHub-Pages-Konfiguration sowie Engine-UI- und Datenfreigabeaudits. Aufgabe 5B ergänzte das Import-Gate; Aufgabe 5C korrigierte dessen Passivbaumfreigabe eng begrenzt. UI und Engine bleiben getrennt.
 
 ## 5. Fertige Funktionen

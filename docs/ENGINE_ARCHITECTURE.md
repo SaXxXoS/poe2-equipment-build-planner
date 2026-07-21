@@ -214,6 +214,12 @@ Der vorhandene Passive Analyzer importiert oder verwendet das Modul nicht. Ebens
 
 Das Modul importiert weder `passive-pathfinding` noch den synthetischen Passive Analyzer. Pfadkosten, automatische Zielmengen, Baumbelegung, Orchestrator und UI bleiben ausgeschlossen. Node-IDs bilden nur eine dokumentierte spätere Adaptergrenze. Details und reale Messwerte stehen in [`POE2_PASSIVE_TARGETING.md`](POE2_PASSIVE_TARGETING.md).
 
+## Isolierte begrenzte Passive-Planung (Aufgabe 5G)
+
+`src/engine/passive-planning/` ist die einzige neue gerichtete Verbindung von 5F zu 5E: vorbereitete Empfehlungen fließen in einen früh auf 50 begrenzten Pool; inkrementelle Kosten kommen ausschließlich aus `findPassivePath`. Required-Ziele werden zuerst verbunden. Danach wird der beste positive Kandidat schrittweise anhand zentraler `value-first`-, `efficiency-first`- oder `balanced`-Gewichte an den Teilbaum angeschlossen. Nach jeder Auswahl erfolgt eine Neubewertung, damit gemeinsam belegte Pfadteile wiederverwendet werden.
+
+Die Schicht besitzt Validierung, zentrale Nutzen-/Konflikt-/Redundanzabzüge, exakten Pfadrequest-Cache, Budget- und Sicherheitsgrenzen sowie einen reichen deterministischen Ergebnisvertrag. Aszendenzknoten sind vollständig ausgeschlossen, weil kein getrenntes Budget existiert. `optimalityClaim: heuristic` ist verbindlich. Targeting-Regeln und Pathfinder bleiben unverändert; Passive Analyzer, Orchestrator und UI importieren den Planer nicht. Details: [`POE2_PASSIVE_PLANNING.md`](POE2_PASSIVE_PLANNING.md).
+
 ## Nächste Module
 
-Die technische Pfadsuche aus 5E und die fachliche Einzelzielbewertung aus 5F sind getrennt vorbereitet. Als nächster abgegrenzter Schritt kann ein eigener Planer vorgegebene Targeting-Ergebnisse kontrolliert mit Pfadkosten vergleichen und eine begrenzte Zielmenge verbinden. Produktive Passive-Analyzer-, Orchestrator- oder UI-Anbindung, globale Baumoptimalität, echte weitere Daten und DPS benötigen weiterhin getrennte Aufträge und Referenztests.
+Die begrenzte Planung ist technisch vorbereitet, aber nicht produktiv angebunden. Passive-Analyzer-, Orchestrator- oder UI-Adapter, getrennte Aszendenzplanung, Juwelbelegung, Levelpfade, globale Baumoptimalität, weitere echte Daten und DPS benötigen getrennte Aufträge und Referenztests.
