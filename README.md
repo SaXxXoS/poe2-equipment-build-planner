@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+Aufgabe 5I.1 ergänzt eine semantikerhaltende Performancegrenze: Compact ist der Orchestratorstandard, Full bleibt explizit verfügbar, und ein geprüfter Prepared Targeting Context kann mehrere Profile desselben Baums beschleunigen. Es gibt weiterhin keine UI-Anbindung oder Pfadvisualisierung; Aufgabe 5J wurde nicht begonnen. Messdetails: [`docs/POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md`](docs/POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).
+
 ## Reale Passive-Orchestratorintegration (Aufgabe 5I)
 
 Der Haupt-Orchestrator kann die bestehende reale Passive-Pipeline jetzt über `EngineRequest.realPassivePlanning` ausdrücklich aktivieren. Ein explizites Punktebudget, Quellversion und technischer Charakterkontext bleiben Pflicht; vorbereitete Graphen können versioniert wiederverwendet werden. Der synthetische Passive Analyzer bleibt separat bestehen. Ohne Konfiguration ändert sich der bisherige Orchestratorlauf nicht. Es gibt weiterhin keine UI-Anbindung oder Pfaddarstellung. Details: [`docs/POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md`](docs/POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md).

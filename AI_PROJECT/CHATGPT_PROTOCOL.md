@@ -1,5 +1,14 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Nachbesserung 5I.1 – Laufzeit und Ergebnisgröße
+
+- Ausschließlich die technische 5I-Grenze wurde optimiert. Targeting-Regeln, Scores, Tie-Breaker, Coverage, Budget, Required-Ziele, Start/Version, Pathfinder, Planner, synthetischer Analyzer, UI und Baumrenderer sind fachlich unverändert.
+- `compact` ist Standard von `EngineRequest.realPassivePlanning`; `full` bleibt explizit verfügbar und der direkte `runRealPassivePipeline`-Vertrag bleibt vollständig.
+- Genau `projectRealPassivePipelineResult` projiziert auf Plan, IDs, Pfade, Teilbaum, Budget, Required-Diagnosen, Issues, Stufensummaries und unveränderten fachlichen Hash. Keine 5.150er-Rangliste oder Graphkopie in Compact.
+- `preparePassiveTargetingContext` hält ausschließlich baumabhängige Klassifikationen. Format, Source-Version und Baumidentität werden geprüft; Profile, Scores und Pläne sind ausgeschlossen. Explizite Wiederverwendung statt globalem Cache.
+- 0.5.2-Mehrlaufmessung, Node 24.14.0/Windows x64: Pipeline-Median 2.039,53 ms ohne Context und 428,37 ms mit Context; Compact 717.625 B gegenüber Full 34.896.112 B (−97,94 %). Context-Aufbau 1.941,77 ms; drei Profile mit Graph/Context 1.307,59 ms. Heapwerte sind GC-bedingt keine Garantie.
+- Keine UI-Anbindung oder Pfadvisualisierung; mobile Eignung nicht behauptet. Aufgabe 5J wurde nicht begonnen. Bericht: `docs/POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md`.
+
 ## Aufgabe 5I – reale Passive-Pipeline im Haupt-Orchestrator
 
 - `EngineRequest.realPassivePlanning` aktiviert die reale Pipeline ausschließlich explizit; alte Aufrufe erzeugen weder Graph noch Pipelinefeld oder zusätzliche Modulstufe.

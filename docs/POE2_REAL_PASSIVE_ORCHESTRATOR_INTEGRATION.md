@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline im Haupt-Orchestrator (Aufgabe 5I)
 
+## Vertragsentwicklung 5I.1
+
+Der Adapter verwendet standardmäßig `resultDetailMode: compact`; `full` bleibt für Audit und Entwicklung verfügbar. Genau eine Projektionsfunktion entfernt redundante Transportdaten und erhält Plan, Pfade, Budget, Required-Diagnosen, Issues, Status und fachlichen Hash. Ein optionaler Prepared Targeting Context beschleunigt wiederholte Profile desselben geprüften Baums. Details: [POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md](POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).
+
 ## Ziel und Ausgangsstand
 
 5I bindet den vorhandenen öffentlichen Vertrag `runRealPassivePipeline` über genau eine Grenze, `runRealPassivePlanningIntegration`, in `analyzeBuild` ein. Targeting, Pathfinder, Planner und deren Validierung werden weder dupliziert noch direkt vom Orchestrator aufgerufen. React, Baumrenderer und UI-State bleiben unberührt.

@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline (Aufgabe 5H)
 
+## Performancegrenze 5I.1
+
+Der direkte Pipelinevertrag bleibt Full. Optional liefert `preparedTargetingContext` ausschließlich vorab klassifizierte baumabhängige Fakten; Format, Source-Version und Baumidentität werden geprüft. Der Orchestrator projiziert zentral auf Compact, ohne Fachlogik oder Hash neu zu berechnen. Details: [POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md](POE2_REAL_PASSIVE_PERFORMANCE_OPTIMIZATION.md).
+
 ## Integration durch Aufgabe 5I
 
 Der öffentliche Pipelinevertrag wird nun ausschließlich von `runRealPassivePlanningIntegration` im Haupt-Orchestrator verwendet. Die Pipeline bleibt fachlich eigenständig; Targeting, Pathfinder und Planner werden nicht dupliziert. Stufen messen reale Laufzeiten, während der deterministische Resultathash diese weiterhin ausschließt. Graphwiederverwendung erfolgt explizit über Eingabe plus geprüfte Quellversion; ein globaler Cache wurde nicht eingeführt. Details: [`POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md`](POE2_REAL_PASSIVE_ORCHESTRATOR_INTEGRATION.md).

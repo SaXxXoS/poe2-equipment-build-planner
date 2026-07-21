@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Stand nach 5I.1
+
+Die reale Passive-Integration bleibt ohne React-/UI-Aufruf. Ihr Adapterstandard ist Compact (gemessen 717.625 Byte statt 34.896.112 Byte Full), doch die synchrone mobile Eignung wurde nicht geprüft. Full bleibt expliziter Auditmodus. Aufgabe 5J und Pfadvisualisierung wurden nicht begonnen.
+
 ## Abgrenzung 5I
 
 Die reale Passive-Pipeline ist auf Engine-/Orchestratorebene optional integriert. Es gibt weiterhin keinen UI-Aufruf von `analyzeBuild`, keine Punktebudgeteingabe, keine Pfad-/Node-Darstellung und keinen Ergebnisadapter für React. `BuildAnalysis.realPassivePlanning` darf erst in einer späteren ausdrücklich beauftragten Stufe über ein kompaktes ViewModel in die UI gelangen; die vollständige Pipelineausgabe ist in der Messung rund 34,9 MB groß und nicht für direkte Komponentenübergabe geeignet.
