@@ -125,3 +125,6 @@ Der regelbasierte Explanation Generator wandelt die vorhandenen Analyse-, Trade-
 ## Nachbesserung 5D: korrekte Baumgeometrie
 
 Die Baumansicht übernimmt die bereits absoluten offiziellen Knotenkoordinaten unverändert über `src/tree-view/geometry.ts`. 40 Referenzen zu separat positionierten Aszendenzlayouts werden nicht mehr als lange SVG-Linien gezeichnet; 6.027 echte Kanten innerhalb desselben Layouts bleiben sichtbar. Knoten und Linien skalieren gemeinsam über eine SVG-ViewBox. `generated/poe2-tree/geometry-diagnostics.json` dokumentiert Release 0.5.2. Importer und Baumdaten blieben unverändert; Aufgabe 5I ist nicht begonnen. Details: [`docs/POE2_TREE_VIEW_ADAPTER.md`](docs/POE2_TREE_VIEW_ADAPTER.md).
+## Touch und ausgewählte Aszendenz
+
+Der offizielle Baum unterstützt Pointer-basierten Zwei-Finger-Pinch um den Finger-Mittelpunkt, Ein-Finger-/Maus-Pan und Wheel-Zoom. Der Charakter-State steuert rein visuell den hervorgehobenen Klassenstart und genau ein offizielles Aszendenz-Inset. Offizielle GGG-Medien bleiben mangels belastbarer Weiterverteilungsfreigabe blockiert; die näher am Spiel liegende Hierarchie entsteht ohne Assets aus skalierenden SVG-Rahmen und drei Detailstufen. Siehe [`docs/POE2_TREE_TOUCH_AND_ASCENDANCY.md`](docs/POE2_TREE_TOUCH_AND_ASCENDANCY.md). Aufgabe 5I ist nicht begonnen.

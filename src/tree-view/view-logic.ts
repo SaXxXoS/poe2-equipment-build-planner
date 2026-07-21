@@ -1,4 +1,5 @@
 import type { PassiveTreeViewModel, TreeDisplayFilter, TreeNodeViewModel } from './types'
+import { clampTreeZoom } from './gestures'
 
 export const TREE_NODE_RADIUS = { normal: 48, notable: 72, keystone: 100, 'class-start': 118, 'ascendancy-start': 108, ascendancy: 76, 'jewel-socket': 88, unknown: 52 } as const
 export const SEARCH_RESULT_LIMIT = 20
@@ -16,4 +17,4 @@ export function searchTreeNodes(nodes: TreeNodeViewModel[], query: string) {
 }
 
 export function initialTreeCamera(tree: PassiveTreeViewModel) { return { centerX: tree.bounds.minX + tree.bounds.width / 2, centerY: tree.bounds.minY + tree.bounds.height / 2, zoom: 1 } }
-export function centeredTreeCamera(tree: PassiveTreeViewModel, node: TreeNodeViewModel, zoom = 6) { return { centerX: node.x, centerY: node.y, zoom: Math.max(1, Math.min(12, zoom)) } }
+export function centeredTreeCamera(tree: PassiveTreeViewModel, node: TreeNodeViewModel, zoom = 6) { return { centerX: node.x, centerY: node.y, zoom: clampTreeZoom(zoom) } }

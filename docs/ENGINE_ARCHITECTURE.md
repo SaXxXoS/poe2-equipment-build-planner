@@ -232,3 +232,6 @@ Die geschlossene reale Passive-Pipeline ist technisch vorbereitet, aber nicht pr
 ## Geometriegrenze der Baumansicht (Nachbesserung 5D)
 
 `src/tree-view/geometry.ts` ist die einzige Quelle finaler Weltkoordinaten für die technische Baumansicht. Release 0.5.2 liefert bereits absolute Knotenpositionen; der View-Adapter übernimmt sie validiert und unverändert. Hauptbaum-Bounds, Gesamtwelt-Bounds und layoutübergreifende Aszendenzreferenzen bleiben außerhalb von `src/engine/`. Pfadsuche, Targeting, Planner, reale Pipeline, Passive Analyzer und Haupt-Orchestrator sind unverändert. Aufgabe 5I ist nicht begonnen.
+## Touch- und Aszendenzdarstellung 5D.2
+
+Touchkamera, visuelle Charakterzuordnung und Aszendenz-Inset liegen vollständig unter `src/components/` und `src/tree-view/`. Die gerichtete Abhängigkeit endet beim vorhandenen UI-State; Engine, Analyzer, Pathfinder, Targeting, Planner, reale Pipeline und Haupt-Orchestrator bleiben unberührt. Aufgabe 5I ist nicht begonnen.

@@ -440,3 +440,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Diagnose: 5.150 Knoten, 1.621 Gruppen, 19 Juwelsockel, sechs getrennte Klassenstarts und null 0/0-Fallbacks, fehlende Gruppen, nicht endliche Positionen oder Ausreißer.
 - Pathfinder, Targeting, Planner, reale Pipeline, Passive Analyzer und `analyzeBuild` sind unverändert. Keine anderen Datenquellen oder Assets.
 - Aufgabe 5I ist gestoppt und nicht begonnen. Erst nach Abnahme darf sie neu beauftragt werden.
+## Nachbesserung 5D.2 – Touch und ausgewählte Aszendenz
+
+- Pointer-Map mit Ein-Pointer-Pan, Zwei-Pointer-Pinch, Mittelpunktanker, sauberem Up/Cancel und sprungfreiem Pinch-zu-Pan-Wechsel.
+- Zentrale Zoomgrenzen und Faktoren in `src/tree-view/gestures.ts`; Wheel verwendet den Mauspunkt.
+- Explizite UI-ID-Zuordnung verbindet vorhandenen Charakter-State ohne Engine mit offiziellen Klassenindizes und Aszendenz-IDs.
+- Hauptbaum bleibt geometrisch unverändert; genau die gewählte Aszendenz erscheint mit offizieller relativer Geometrie als Inset. Keine langen Layoutübergänge.
+- Der offizielle 0.5.2-Commit enthält einen Assetordner und `data.json` enthält Bild-/Iconpfade. Mangels ausdrücklicher Medienlizenz beziehungsweise belastbarer Repository-/Pages-Weiterverteilungsfreigabe bleibt `icons-images` blockiert. Keine Assets heruntergeladen, kopiert oder hotgelinkt.
+- SVG-Rahmen und zoomabhängige Detailstufen verbessern die Hierarchie ohne fremde Bilddaten.
+- Aufgabe 5I ist weiterhin gestoppt und nicht begonnen; Engine und Orchestrator bleiben unverändert.
