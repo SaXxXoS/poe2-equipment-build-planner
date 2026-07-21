@@ -14,4 +14,6 @@ export interface EquipmentEntry {
   slotId: EntityId
   modifierValues: AppliedModifier[]
   itemDefinitionId?: EntityId
+  itemClassId?: EntityId
+  itemLevel?: number
 }

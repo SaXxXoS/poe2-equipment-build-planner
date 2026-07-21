@@ -22,4 +22,14 @@ export interface AppliedModifier {
   id: EntityId
   modifierId: EntityId
   value: number | NumericRange
+  sourceModId?: EntityId
+  statValues?: { statId: EntityId; value: number }[]
+  itemClassId?: EntityId
+  affixSide?: 'prefix' | 'suffix' | 'implicit' | 'special' | 'unknown'
+  tierId?: EntityId
+  requiredItemLevel?: number | null
+  isLocal?: boolean | null
+  isHybrid?: boolean
+  sourceVersion?: string
+  dataStatus?: string
 }

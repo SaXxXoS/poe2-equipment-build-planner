@@ -1,0 +1,90 @@
+{
+  "approvalScope": "poe2-technical-affix-data-for-build-planner",
+  "approvalStatus": "conditionally-approved",
+  "exportRepository": "repoe-fork/poe2",
+  "exportVersion": "4.5.4.4.4",
+  "exportCommit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+  "parserRepository": "repoe-fork/repoe",
+  "parserCommit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+  "importFormatVersion": 1,
+  "sourceFiles": [
+    {
+      "relativePath": "version.txt",
+      "sha256": "ec563ae02051174b61a31ae1a0aa84329cd1025cc5ce2ecde19fae85b446ba28",
+      "sizeBytes": 9
+    },
+    {
+      "relativePath": "data/mods.json",
+      "sha256": "e4cfac6ebb1f1a86ea3e6465bab79b6e8a2bb39a317bd9ffe8ba5cc99befa2b1",
+      "sizeBytes": 12890776
+    },
+    {
+      "relativePath": "data/mods_by_base.json",
+      "sha256": "ace135478e09098090754204f7507a5708d0bcd6a1e44ff3f51052aec3bf7e18",
+      "sizeBytes": 5100679
+    },
+    {
+      "relativePath": "data/base_items.json",
+      "sha256": "acb63728684a57d61e99ac2e919833fcf3199e9ca185770d57a0df568e60266c",
+      "sizeBytes": 7842214
+    },
+    {
+      "relativePath": "data/item_classes.json",
+      "sha256": "eec6f2a4c3b53a26f6979a26e57c9ab7644f26b914e57c4d3a9f9768a1aed723",
+      "sizeBytes": 15850
+    },
+    {
+      "relativePath": "data/tags.json",
+      "sha256": "cce86f80f13a46abb584085712b637a6ea73c39136a4a6497a9b3a1cbcd6271d",
+      "sizeBytes": 28649
+    }
+  ],
+  "generatedFiles": [
+    {
+      "relativePath": "technical-affixes.json",
+      "sha256": "e84f14b83df013105f6f198ad94411d3dc3c594b4a6dc7a51d12f1c54864926c"
+    },
+    {
+      "relativePath": "affix-families.json",
+      "sha256": "fbb3eedf63e195c14b24c13e3f44dc0cd7f821f4ddaa48fb5b6204404b5a791e"
+    },
+    {
+      "relativePath": "affix-tiers.json",
+      "sha256": "34a436328e25f398ccb1e0973c0c417c2ea7c10dbbc004bce1e4f3bd65632de8"
+    },
+    {
+      "relativePath": "item-classes.json",
+      "sha256": "6f1ef192291594a40c6b86dce9b49866f5a80cbf0e091a9d472d3538b8d39ece"
+    },
+    {
+      "relativePath": "item-class-affix-index.json",
+      "sha256": "35e1d6523488d296107c5d9026a86bb9b3226fd856b447f67b6350644dd71da5"
+    },
+    {
+      "relativePath": "affix-conflicts.json",
+      "sha256": "926d2b76ea14266cb65aa58946509ca9ddf3c0e6ba31e3ddccfc00b61751f386"
+    },
+    {
+      "relativePath": "affix-coverage-report.json",
+      "sha256": "790ad5771f8ba6c1a2a40eb1c951204368ded203847bd4edbaeb7f46c8fd5dca"
+    },
+    {
+      "relativePath": "affix-import-report.json",
+      "sha256": "60442282150a02534a8ca7edc4aa57c21410ffb7aa761c592d69ee1f3cdba757"
+    }
+  ],
+  "excludedCategories": [
+    "raw-export-mirror",
+    "images",
+    "audio",
+    "media",
+    "skills",
+    "supports",
+    "uniques",
+    "display-names",
+    "PoE2DB"
+  ],
+  "attribution": "Technical data derived from RePoE; game data and content are property of Grinding Gear Games.",
+  "upstreamLicenseNotice": "RePoE parser code is MIT; generated data is not granted under that software license.",
+  "gggRightsNotice": "No general GGG data license or legal guarantee is asserted."
+}

@@ -1,0 +1,2835 @@
+[
+  {
+    "conflictGroupId": "AbyssalWasting",
+    "affixIds": [
+      "AbyssalWastingOnHit"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalAmmo",
+    "affixIds": [
+      "AdditionalAmmo1",
+      "AdditionalAmmo2",
+      "CorruptionAdditionalAmmo1",
+      "CorruptionUpgradeAdditionalAmmo1",
+      "CrossbowImplicitAdditionalAmmo1"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalArrows",
+    "affixIds": [
+      "AdditionalArrowChance1",
+      "AdditionalArrowChance2",
+      "AdditionalArrowChance3",
+      "AdditionalArrowChance4",
+      "AdditionalArrowChanceQuiver1",
+      "AdditionalArrowChanceQuiver2",
+      "BowImplicitAdditionalArrows1",
+      "CorruptionAdditionalArrows1",
+      "CorruptionUpgradeAdditionalArrows1"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalBallistaTotem",
+    "affixIds": [
+      "CrossbowImplicitAdditionalBallistaTotem1"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalBlock",
+    "affixIds": [
+      "QuarterstaffImplicitAdditionalBlock1",
+      "TalismanImplicitAdditionalBlock1"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalCharm",
+    "affixIds": [
+      "BeltImplicitCharmSlots1"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalProjectiles",
+    "affixIds": [
+      "CrossbowImplicitGrenadeProjectiles1",
+      "GrenadeSkillAdditionalProjectile1",
+      "GrenadeSkillAdditionalProjectile2"
+    ]
+  },
+  {
+    "conflictGroupId": "AdditionalSkillSlots",
+    "affixIds": [
+      "RingImplicitAdditionalSkillSlots1"
+    ]
+  },
+  {
+    "conflictGroupId": "AilmentThreshold",
+    "affixIds": [
+      "BodyArmourImplicitIncreasedAilmentThreshold1"
+    ]
+  },
+  {
+    "conflictGroupId": "AllAttributes",
+    "affixIds": [
+      "AllAttributes1",
+      "AllAttributes2",
+      "AllAttributes3",
+      "AllAttributes4",
+      "AllAttributes5",
+      "AllAttributes6",
+      "AllAttributes7",
+      "AllAttributes8",
+      "AllAttributes9_",
+      "AllAttributesImplicitDemigodOneHandSword1",
+      "AllAttributesImplicitDemigodRing1",
+      "AllAttributesImplicitWreath1",
+      "AmuletImplicitAllAttributes1"
+    ]
+  },
+  {
+    "conflictGroupId": "AllDamage",
+    "affixIds": [
+      "CorruptionAllDamage1",
+      "CorruptionAlliesInPresenceAllDamage1",
+      "CorruptionUpgradeAllDamage1",
+      "CorruptionUpgradeAlliesInPresenceAllDamage1",
+      "NearbyAlliesAllDamage1",
+      "NearbyAlliesAllDamage2",
+      "NearbyAlliesAllDamage3",
+      "NearbyAlliesAllDamage4",
+      "NearbyAlliesAllDamage5",
+      "NearbyAlliesAllDamage6",
+      "NearbyAlliesAllDamage7",
+      "NearbyAlliesAllDamage8"
+    ]
+  },
+  {
+    "conflictGroupId": "AllResistances",
+    "affixIds": [
+      "AllResistances1",
+      "AllResistances2",
+      "AllResistances3",
+      "AllResistances4",
+      "AllResistances5",
+      "AllResistances6",
+      "AllResistancesDemigodsImplicit",
+      "AllResistancesImplictBootsDemigods1",
+      "AllResistancesImplictHelmetDemigods1",
+      "AmuletImplicitAllElementalResistances",
+      "CorruptionAllResistances1",
+      "CorruptionUpgradeAllResistances1",
+      "NearbyAlliesAllResistances1",
+      "NearbyAlliesAllResistances2",
+      "NearbyAlliesAllResistances3",
+      "NearbyAlliesAllResistances4",
+      "NearbyAlliesAllResistances5",
+      "NearbyAlliesAllResistances6",
+      "RingImplicitAllResistances1",
+      "VerisiumSacrificialGarbImplicitAllResistancePerCorruptedItem1"
+    ]
+  },
+  {
+    "conflictGroupId": "AlwaysHits",
+    "affixIds": [
+      "MaceImplicitAlwaysHit1"
+    ]
+  },
+  {
+    "conflictGroupId": "ArcaneSurgeEffect",
+    "affixIds": [
+      "TheUnleashedVerisiumImplicitArcaneSurgeEffect1"
+    ]
+  },
+  {
+    "conflictGroupId": "ArmourAppliesToElementalDamage",
+    "affixIds": [
+      "ArmourAppliesToElementalDamage1",
+      "ArmourAppliesToElementalDamage2",
+      "ArmourAppliesToElementalDamage3",
+      "ArmourAppliesToElementalDamage4",
+      "ArmourAppliesToElementalDamage5",
+      "ArmourAppliesToElementalDamage6",
+      "BodyArmourImplicitArmourAppliesToElementalDamage1"
+    ]
+  },
+  {
+    "conflictGroupId": "ArmourBreak",
+    "affixIds": [
+      "CorruptionArmourBreak1",
+      "CorruptionUpgradeArmourBreak1"
+    ]
+  },
+  {
+    "conflictGroupId": "ArmourBreakEffect",
+    "affixIds": [
+      "SculptedSufferingVerisiumImplicitArmourBreakEffect1"
+    ]
+  },
+  {
+    "conflictGroupId": "ArrowSpeed",
+    "affixIds": [
+      "QuiverImplicitArrowSpeed1"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseLocalDefences",
+    "affixIds": [
+      "LocalBaseArmourAndEnergyShield1",
+      "LocalBaseArmourAndEnergyShield2_",
+      "LocalBaseArmourAndEnergyShield3",
+      "LocalBaseArmourAndEnergyShield4",
+      "LocalBaseArmourAndEnergyShield5",
+      "LocalBaseArmourAndEnergyShield6",
+      "LocalBaseArmourAndEnergyShield7",
+      "LocalBaseArmourAndEnergyShield8",
+      "LocalBaseArmourAndEvasionRating1",
+      "LocalBaseArmourAndEvasionRating2",
+      "LocalBaseArmourAndEvasionRating3",
+      "LocalBaseArmourAndEvasionRating4",
+      "LocalBaseArmourAndEvasionRating5",
+      "LocalBaseArmourAndEvasionRating6_",
+      "LocalBaseArmourAndEvasionRating7",
+      "LocalBaseArmourAndEvasionRating8",
+      "LocalBaseEvasionRatingAndEnergyShield1",
+      "LocalBaseEvasionRatingAndEnergyShield2",
+      "LocalBaseEvasionRatingAndEnergyShield3",
+      "LocalBaseEvasionRatingAndEnergyShield4",
+      "LocalBaseEvasionRatingAndEnergyShield5_",
+      "LocalBaseEvasionRatingAndEnergyShield6",
+      "LocalBaseEvasionRatingAndEnergyShield7___",
+      "LocalBaseEvasionRatingAndEnergyShield8___",
+      "LocalIncreasedEnergyShield1",
+      "LocalIncreasedEnergyShield10",
+      "LocalIncreasedEnergyShield11",
+      "LocalIncreasedEnergyShield2",
+      "LocalIncreasedEnergyShield3",
+      "LocalIncreasedEnergyShield4",
+      "LocalIncreasedEnergyShield5",
+      "LocalIncreasedEnergyShield6",
+      "LocalIncreasedEnergyShield7",
+      "LocalIncreasedEnergyShield8",
+      "LocalIncreasedEnergyShield9",
+      "LocalIncreasedEvasionRating1",
+      "LocalIncreasedEvasionRating10",
+      "LocalIncreasedEvasionRating11",
+      "LocalIncreasedEvasionRating2",
+      "LocalIncreasedEvasionRating3",
+      "LocalIncreasedEvasionRating4",
+      "LocalIncreasedEvasionRating5",
+      "LocalIncreasedEvasionRating6",
+      "LocalIncreasedEvasionRating7_",
+      "LocalIncreasedEvasionRating8",
+      "LocalIncreasedEvasionRating9___",
+      "LocalIncreasedPhysicalDamageReductionRating1",
+      "LocalIncreasedPhysicalDamageReductionRating10",
+      "LocalIncreasedPhysicalDamageReductionRating11",
+      "LocalIncreasedPhysicalDamageReductionRating2",
+      "LocalIncreasedPhysicalDamageReductionRating3",
+      "LocalIncreasedPhysicalDamageReductionRating4",
+      "LocalIncreasedPhysicalDamageReductionRating5",
+      "LocalIncreasedPhysicalDamageReductionRating6",
+      "LocalIncreasedPhysicalDamageReductionRating7__",
+      "LocalIncreasedPhysicalDamageReductionRating8",
+      "LocalIncreasedPhysicalDamageReductionRating9_"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseLocalDefencesAndDefencePercent",
+    "affixIds": [
+      "LocalIncreasedArmourAndBase1",
+      "LocalIncreasedArmourAndBase2",
+      "LocalIncreasedArmourAndBase3",
+      "LocalIncreasedArmourAndBase4",
+      "LocalIncreasedArmourAndBase5",
+      "LocalIncreasedArmourAndBase6",
+      "LocalIncreasedArmourAndEnergyShieldAndBase1",
+      "LocalIncreasedArmourAndEnergyShieldAndBase2",
+      "LocalIncreasedArmourAndEnergyShieldAndBase3",
+      "LocalIncreasedArmourAndEnergyShieldAndBase4",
+      "LocalIncreasedArmourAndEnergyShieldAndBase5",
+      "LocalIncreasedArmourAndEnergyShieldAndBase6",
+      "LocalIncreasedArmourAndEvasionAndBase1",
+      "LocalIncreasedArmourAndEvasionAndBase2",
+      "LocalIncreasedArmourAndEvasionAndBase3",
+      "LocalIncreasedArmourAndEvasionAndBase4",
+      "LocalIncreasedArmourAndEvasionAndBase5",
+      "LocalIncreasedArmourAndEvasionAndBase6",
+      "LocalIncreasedEnergyShieldAndBase1",
+      "LocalIncreasedEnergyShieldAndBase2",
+      "LocalIncreasedEnergyShieldAndBase3",
+      "LocalIncreasedEnergyShieldAndBase4",
+      "LocalIncreasedEnergyShieldAndBase5",
+      "LocalIncreasedEnergyShieldAndBase6",
+      "LocalIncreasedEvasionAndBase1",
+      "LocalIncreasedEvasionAndBase2",
+      "LocalIncreasedEvasionAndBase3",
+      "LocalIncreasedEvasionAndBase4",
+      "LocalIncreasedEvasionAndBase5",
+      "LocalIncreasedEvasionAndBase6",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase1",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase2",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase3",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase4",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase5",
+      "LocalIncreasedEvasionAndEnergyShieldAndBase6"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseLocalDefencesAndLife",
+    "affixIds": [
+      "LocalIncreasedArmourAndEnergyShieldAndLife1",
+      "LocalIncreasedArmourAndEnergyShieldAndLife2",
+      "LocalIncreasedArmourAndEnergyShieldAndLife3",
+      "LocalIncreasedArmourAndEnergyShieldAndLife4",
+      "LocalIncreasedArmourAndEnergyShieldAndLife5",
+      "LocalIncreasedArmourAndEnergyShieldAndLife6",
+      "LocalIncreasedArmourAndEvasionAndLife1",
+      "LocalIncreasedArmourAndEvasionAndLife2",
+      "LocalIncreasedArmourAndEvasionAndLife3",
+      "LocalIncreasedArmourAndEvasionAndLife4",
+      "LocalIncreasedArmourAndEvasionAndLife5",
+      "LocalIncreasedArmourAndEvasionAndLife6",
+      "LocalIncreasedArmourAndLife1",
+      "LocalIncreasedArmourAndLife2",
+      "LocalIncreasedArmourAndLife3",
+      "LocalIncreasedArmourAndLife4",
+      "LocalIncreasedArmourAndLife5",
+      "LocalIncreasedArmourAndLife6",
+      "LocalIncreasedEnergyShieldAndLife1",
+      "LocalIncreasedEnergyShieldAndLife2",
+      "LocalIncreasedEnergyShieldAndLife3",
+      "LocalIncreasedEnergyShieldAndLife4",
+      "LocalIncreasedEnergyShieldAndLife5",
+      "LocalIncreasedEnergyShieldAndLife6",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife1",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife2",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife3",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife4",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife5",
+      "LocalIncreasedEvasionAndEnergyShieldAndLife6",
+      "LocalIncreasedEvasionAndLife1",
+      "LocalIncreasedEvasionAndLife2",
+      "LocalIncreasedEvasionAndLife3",
+      "LocalIncreasedEvasionAndLife4",
+      "LocalIncreasedEvasionAndLife5",
+      "LocalIncreasedEvasionAndLife6"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseLocalDefencesAndMana",
+    "affixIds": [
+      "LocalIncreasedArmourAndEnergyShieldAndMana1",
+      "LocalIncreasedArmourAndEnergyShieldAndMana2",
+      "LocalIncreasedArmourAndEnergyShieldAndMana3",
+      "LocalIncreasedArmourAndEnergyShieldAndMana4",
+      "LocalIncreasedArmourAndEnergyShieldAndMana5",
+      "LocalIncreasedArmourAndEnergyShieldAndMana6",
+      "LocalIncreasedArmourAndEvasionAndMana1",
+      "LocalIncreasedArmourAndEvasionAndMana2",
+      "LocalIncreasedArmourAndEvasionAndMana3",
+      "LocalIncreasedArmourAndEvasionAndMana4",
+      "LocalIncreasedArmourAndEvasionAndMana5",
+      "LocalIncreasedArmourAndEvasionAndMana6",
+      "LocalIncreasedArmourAndMana1",
+      "LocalIncreasedArmourAndMana2",
+      "LocalIncreasedArmourAndMana3",
+      "LocalIncreasedArmourAndMana4",
+      "LocalIncreasedArmourAndMana5",
+      "LocalIncreasedArmourAndMana6",
+      "LocalIncreasedEnergyShieldAndMana1",
+      "LocalIncreasedEnergyShieldAndMana2",
+      "LocalIncreasedEnergyShieldAndMana3",
+      "LocalIncreasedEnergyShieldAndMana4",
+      "LocalIncreasedEnergyShieldAndMana5",
+      "LocalIncreasedEnergyShieldAndMana6",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana1",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana2",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana3",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana4",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana5",
+      "LocalIncreasedEvasionAndEnergyShieldAndMana6",
+      "LocalIncreasedEvasionAndMana1",
+      "LocalIncreasedEvasionAndMana2",
+      "LocalIncreasedEvasionAndMana3",
+      "LocalIncreasedEvasionAndMana4",
+      "LocalIncreasedEvasionAndMana5",
+      "LocalIncreasedEvasionAndMana6"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseRunicWard",
+    "affixIds": [
+      "AmuletImplicitRunicWard1",
+      "MaceImplicitWardUnique1",
+      "QuarterstaffImplicitRunicWard1",
+      "RuneseekersCallVerisiumImplicitMaximumRunicWard"
+    ]
+  },
+  {
+    "conflictGroupId": "BaseSpirit",
+    "affixIds": [
+      "AmuletImplicitBaseSpirit1",
+      "BodyArmourImplicitIncreasedSpirit1",
+      "CorruptionIncreasedSpirit1",
+      "CorruptionUpgradeIncreasedSpirit1",
+      "IncreasedSpirit1",
+      "IncreasedSpirit2",
+      "IncreasedSpirit3",
+      "IncreasedSpirit4",
+      "IncreasedSpirit5",
+      "IncreasedSpirit6",
+      "IncreasedSpirit7",
+      "IncreasedSpirit8"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltCharmChargesGained",
+    "affixIds": [
+      "BeltImplicitIncreasedCharmChargesGained1",
+      "BeltIncreasedCharmChargesGained1",
+      "BeltIncreasedCharmChargesGained2",
+      "BeltIncreasedCharmChargesGained3",
+      "BeltIncreasedCharmChargesGained4",
+      "BeltIncreasedCharmChargesGained5",
+      "BeltIncreasedCharmChargesGained6"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltCharmChargesUsed",
+    "affixIds": [
+      "BeltImplicitReducedCharmChargesUsed1",
+      "BeltReducedCharmChargesUsed1",
+      "BeltReducedCharmChargesUsed2",
+      "BeltReducedCharmChargesUsed3",
+      "BeltReducedCharmChargesUsed4",
+      "BeltReducedCharmChargesUsed5",
+      "BeltReducedCharmChargesUsed6"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltCharmDuration",
+    "affixIds": [
+      "BeltImplicitIncreasedCharmDuration1",
+      "BeltIncreasedCharmDuration1",
+      "BeltIncreasedCharmDuration2",
+      "BeltIncreasedCharmDuration3",
+      "BeltIncreasedCharmDuration4",
+      "BeltIncreasedCharmDuration5"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltFlaskChargesGained",
+    "affixIds": [
+      "BeltImplicitIncreasedFlaskChargesGained1",
+      "BeltIncreasedFlaskChargesGained1",
+      "BeltIncreasedFlaskChargesGained2",
+      "BeltIncreasedFlaskChargesGained3_____",
+      "BeltIncreasedFlaskChargesGained4",
+      "BeltIncreasedFlaskChargesGained5_",
+      "BeltIncreasedFlaskChargesGained6"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltFlaskChargesUsed",
+    "affixIds": [
+      "BeltImplicitReducedFlaskChargesUsed1",
+      "BeltReducedFlaskChargesUsed1",
+      "BeltReducedFlaskChargesUsed2",
+      "BeltReducedFlaskChargesUsed3",
+      "BeltReducedFlaskChargesUsed4",
+      "BeltReducedFlaskChargesUsed5",
+      "BeltReducedFlaskChargesUsed6"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltFlaskRecovery",
+    "affixIds": [
+      "BeltImplicitFlaskLifeRecovery1",
+      "BeltImplicitFlaskManaRecovery1"
+    ]
+  },
+  {
+    "conflictGroupId": "BeltFlaskRecoveryRate",
+    "affixIds": [
+      "BeltFlaskLifeRecoveryRate1",
+      "BeltFlaskLifeRecoveryRate2",
+      "BeltFlaskLifeRecoveryRate3_",
+      "BeltFlaskLifeRecoveryRate4",
+      "BeltFlaskLifeRecoveryRate5",
+      "BeltFlaskLifeRecoveryRate6",
+      "BeltFlaskManaRecoveryRate1_",
+      "BeltFlaskManaRecoveryRate2",
+      "BeltFlaskManaRecoveryRate3_",
+      "BeltFlaskManaRecoveryRate4__",
+      "BeltFlaskManaRecoveryRate5",
+      "BeltFlaskManaRecoveryRate6"
+    ]
+  },
+  {
+    "conflictGroupId": "BleedDuration",
+    "affixIds": [
+      "EmptyRoarVerisiumBleedDuration1"
+    ]
+  },
+  {
+    "conflictGroupId": "BleedingDamage",
+    "affixIds": [
+      "BloodThornVerisiumImplicitBleedMagnitude1"
+    ]
+  },
+  {
+    "conflictGroupId": "BlindingHit",
+    "affixIds": [
+      "ClawImplicitLocalChanceToBlind1",
+      "CorruptionLocalChanceToBlind1",
+      "CorruptionUpgradeLocalChanceToBlind1"
+    ]
+  },
+  {
+    "conflictGroupId": "BreakArmour",
+    "affixIds": [
+      "DaggerImplicitBreakArmour1"
+    ]
+  },
+  {
+    "conflictGroupId": "CannotBeThrown",
+    "affixIds": [
+      "AxeImplicitCannotBeThrown1"
+    ]
+  },
+  {
+    "conflictGroupId": "Chain",
+    "affixIds": [
+      "BowImplicitLocalChanceToChain1",
+      "MjolnerVerisiumImplicitLightningChain1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChainFromTerrain",
+    "affixIds": [
+      "CorruptionChainFromTerrain1",
+      "CorruptionUpgradeChainFromTerrain1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChanceToBleed",
+    "affixIds": [
+      "QuiverImplicitChanceToBleed1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChanceToPierce",
+    "affixIds": [
+      "ArrowPierceChance1",
+      "ArrowPierceChance2",
+      "ArrowPierceChance3",
+      "ArrowPierceChance4",
+      "ArrowPierceChance5",
+      "CorruptionChanceToPierce1",
+      "CorruptionUpgradeChanceToPierce1",
+      "CrossbowImplicitChanceToPierce1",
+      "QuiverImplicitArrowAdditionalPierce1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChanceToPoisonWithAttacks",
+    "affixIds": [
+      "QuiverImplicitChanceToPoison1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChaosDamagePerCorruptedItem",
+    "affixIds": [
+      "VerisiumSacrificialGarbImplicitChaosDamagePerCorruptedItem1"
+    ]
+  },
+  {
+    "conflictGroupId": "ChaosResistance",
+    "affixIds": [
+      "BodyArmourImplicitChaosResistance1",
+      "ChaosResist1",
+      "ChaosResist2",
+      "ChaosResist3",
+      "ChaosResist4",
+      "ChaosResist5",
+      "ChaosResist6",
+      "ChaosResistDemigodsTorchImplicit",
+      "CorruptionChaosResistance1",
+      "CorruptionUpgradeChaosResistance1",
+      "CorruptionUpgradeJewelChaosResist1",
+      "RingImplicitChaosResistance1"
+    ]
+  },
+  {
+    "conflictGroupId": "ColdAndLightningResistance",
+    "affixIds": [
+      "RingImplicitColdLightningResistance"
+    ]
+  },
+  {
+    "conflictGroupId": "ColdDamage",
+    "affixIds": [
+      "AddedColdDamage1",
+      "AddedColdDamage2",
+      "AddedColdDamage3",
+      "AddedColdDamage4",
+      "AddedColdDamage5",
+      "AddedColdDamage6",
+      "AddedColdDamage7",
+      "AddedColdDamage8",
+      "AddedColdDamage9",
+      "CorruptionLocalAddedColdDamage1",
+      "CorruptionLocalAddedColdDamageTwoHand1",
+      "CorruptionUpgradeLocalAddedColdDamage1",
+      "CorruptionUpgradeLocalAddedColdDamageTwoHand1",
+      "LocalAddedColdDamage1",
+      "LocalAddedColdDamage10__",
+      "LocalAddedColdDamage2",
+      "LocalAddedColdDamage3",
+      "LocalAddedColdDamage4",
+      "LocalAddedColdDamage5",
+      "LocalAddedColdDamage6",
+      "LocalAddedColdDamage7",
+      "LocalAddedColdDamage8",
+      "LocalAddedColdDamage9",
+      "LocalAddedColdDamageTwoHand1",
+      "LocalAddedColdDamageTwoHand10",
+      "LocalAddedColdDamageTwoHand2",
+      "LocalAddedColdDamageTwoHand3",
+      "LocalAddedColdDamageTwoHand4",
+      "LocalAddedColdDamageTwoHand5",
+      "LocalAddedColdDamageTwoHand6",
+      "LocalAddedColdDamageTwoHand7",
+      "LocalAddedColdDamageTwoHand8",
+      "LocalAddedColdDamageTwoHand9",
+      "NearbyAlliesAddedColdDamage1",
+      "NearbyAlliesAddedColdDamage2",
+      "NearbyAlliesAddedColdDamage3",
+      "NearbyAlliesAddedColdDamage4",
+      "NearbyAlliesAddedColdDamage5",
+      "NearbyAlliesAddedColdDamage6",
+      "NearbyAlliesAddedColdDamage7",
+      "NearbyAlliesAddedColdDamage8",
+      "NearbyAlliesAddedColdDamage9",
+      "SpellDamageGainedAsCold1",
+      "SpellDamageGainedAsCold2",
+      "SpellDamageGainedAsCold3",
+      "SpellDamageGainedAsCold4",
+      "SpellDamageGainedAsCold5",
+      "SpellDamageGainedAsCold6",
+      "SpellDamageGainedAsColdTwoHand1",
+      "SpellDamageGainedAsColdTwoHand2",
+      "SpellDamageGainedAsColdTwoHand3",
+      "SpellDamageGainedAsColdTwoHand4",
+      "SpellDamageGainedAsColdTwoHand5",
+      "SpellDamageGainedAsColdTwoHand6"
+    ]
+  },
+  {
+    "conflictGroupId": "ColdDamagePercentage",
+    "affixIds": [
+      "ColdDamagePercent1",
+      "ColdDamagePercent2",
+      "ColdDamagePercent3",
+      "ColdDamagePercent4",
+      "ColdDamagePercent5",
+      "ColdDamagePercent6"
+    ]
+  },
+  {
+    "conflictGroupId": "ColdResistance",
+    "affixIds": [
+      "BodyArmourImplicitColdResistance1",
+      "ColdResist1",
+      "ColdResist2",
+      "ColdResist3",
+      "ColdResist4",
+      "ColdResist5",
+      "ColdResist6",
+      "ColdResist7",
+      "ColdResist8",
+      "CorruptionColdResistance1",
+      "CorruptionUpgradeColdResistance1",
+      "CorruptionUpgradeJewelColdResist1",
+      "RingImplicitColdResistance1"
+    ]
+  },
+  {
+    "conflictGroupId": "ColdResistancePenetration",
+    "affixIds": [
+      "CorruptionColdPenetration1",
+      "CorruptionUpgradeColdPenetration1"
+    ]
+  },
+  {
+    "conflictGroupId": "ConvertLightningToCold",
+    "affixIds": [
+      "OlrovasaraVerisiumImplicitLightningToCold1"
+    ]
+  },
+  {
+    "conflictGroupId": "CooldownRecovery",
+    "affixIds": [
+      "GrenadeSkillCooldownRecovery1",
+      "GrenadeSkillCooldownRecovery2",
+      "GrenadeSkillCooldownRecovery3",
+      "GrenadeSkillCooldownRecovery4",
+      "GrenadeSkillCooldownRecovery5",
+      "GrenadeSkillCooldownRecovery6"
+    ]
+  },
+  {
+    "conflictGroupId": "CriticalStrikeChanceIncrease",
+    "affixIds": [
+      "AttackCriticalStrikeChance1",
+      "AttackCriticalStrikeChance2",
+      "AttackCriticalStrikeChance3",
+      "AttackCriticalStrikeChance4",
+      "AttackCriticalStrikeChance5",
+      "AttackCriticalStrikeChance6",
+      "CriticalStrikeChance1",
+      "CriticalStrikeChance2",
+      "CriticalStrikeChance3",
+      "CriticalStrikeChance4",
+      "CriticalStrikeChance5",
+      "CriticalStrikeChance6",
+      "FlailImplicitRollCritTwice1",
+      "LocalCriticalStrikeChance1",
+      "LocalCriticalStrikeChance2",
+      "LocalCriticalStrikeChance3",
+      "LocalCriticalStrikeChance4",
+      "LocalCriticalStrikeChance5",
+      "LocalCriticalStrikeChance6",
+      "NearbyAlliesCriticalStrikeChance1",
+      "NearbyAlliesCriticalStrikeChance2",
+      "NearbyAlliesCriticalStrikeChance3",
+      "NearbyAlliesCriticalStrikeChance4",
+      "NearbyAlliesCriticalStrikeChance5",
+      "NearbyAlliesCriticalStrikeChance6",
+      "QuiverImplicitCriticalStrikeChance1",
+      "TrapCriticalStrikeChance1",
+      "TrapCriticalStrikeChance2",
+      "TrapCriticalStrikeChance3",
+      "TrapCriticalStrikeChance4",
+      "TrapCriticalStrikeChance5",
+      "TrapCriticalStrikeChance6"
+    ]
+  },
+  {
+    "conflictGroupId": "CriticalStrikeMultiplier",
+    "affixIds": [
+      "AttackCriticalStrikeMultiplier1",
+      "AttackCriticalStrikeMultiplier2",
+      "AttackCriticalStrikeMultiplier3",
+      "AttackCriticalStrikeMultiplier4",
+      "AttackCriticalStrikeMultiplier5",
+      "AttackCriticalStrikeMultiplier6",
+      "CorruptionAlliesInPresenceCriticalStrikeMultiplier1",
+      "CorruptionCriticalStrikeMultiplier1",
+      "CorruptionLocalCriticalStrikeMultiplier1",
+      "CorruptionUpgradeAlliesInPresenceCriticalStrikeMultiplier1",
+      "CorruptionUpgradeCriticalStrikeMultiplier1",
+      "CorruptionUpgradeLocalCriticalStrikeMultiplier1",
+      "CriticalMultiplier1",
+      "CriticalMultiplier2",
+      "CriticalMultiplier3",
+      "CriticalMultiplier4",
+      "CriticalMultiplier5",
+      "CriticalMultiplier6",
+      "LocalCriticalMultiplier1",
+      "LocalCriticalMultiplier2",
+      "LocalCriticalMultiplier3",
+      "LocalCriticalMultiplier4",
+      "LocalCriticalMultiplier5",
+      "LocalCriticalMultiplier6",
+      "MaceImplicitCriticalMultiplier1",
+      "NearbyAlliesCriticalMultiplier1",
+      "NearbyAlliesCriticalMultiplier2",
+      "NearbyAlliesCriticalMultiplier3",
+      "NearbyAlliesCriticalMultiplier4",
+      "NearbyAlliesCriticalMultiplier5",
+      "NearbyAlliesCriticalMultiplier6",
+      "SpellCriticalStrikeMultiplier1",
+      "SpellCriticalStrikeMultiplier2",
+      "SpellCriticalStrikeMultiplier3",
+      "SpellCriticalStrikeMultiplier4",
+      "SpellCriticalStrikeMultiplier5",
+      "SpellCriticalStrikeMultiplier6",
+      "SpellCriticalStrikeMultiplierTwoHand1",
+      "SpellCriticalStrikeMultiplierTwoHand2",
+      "SpellCriticalStrikeMultiplierTwoHand3",
+      "SpellCriticalStrikeMultiplierTwoHand4",
+      "SpellCriticalStrikeMultiplierTwoHand5",
+      "SpellCriticalStrikeMultiplierTwoHand6",
+      "TrapCriticalStrikeMultiplier1",
+      "TrapCriticalStrikeMultiplier2",
+      "TrapCriticalStrikeMultiplier3",
+      "TrapCriticalStrikeMultiplier4",
+      "TrapCriticalStrikeMultiplier5",
+      "TrapCriticalStrikeMultiplier6"
+    ]
+  },
+  {
+    "conflictGroupId": "CrushOnHitChance",
+    "affixIds": [
+      "MaceImplicitLocalCrushOnHit1"
+    ]
+  },
+  {
+    "conflictGroupId": "CullingStrike",
+    "affixIds": [
+      "AxeImplicitCullingStrike1"
+    ]
+  },
+  {
+    "conflictGroupId": "DamagePerWardSpentOnSkill",
+    "affixIds": [
+      "OlrovasaraVerisiumImplicitDamageAsExtraLightningPerRunicWard1"
+    ]
+  },
+  {
+    "conflictGroupId": "DamageRemovedFromManaBeforeLife",
+    "affixIds": [
+      "BodyArmourImplicitDamageRemovedFromManaBeforeLife1",
+      "SvalinnVerisiumImplicitManaBeforeLife1"
+    ]
+  },
+  {
+    "conflictGroupId": "DamageTaken",
+    "affixIds": [
+      "AxeImplicitDamageTaken1"
+    ]
+  },
+  {
+    "conflictGroupId": "DamageTakenGainedAsLife",
+    "affixIds": [
+      "BodyArmourImplicitLifeRecoupForJewel1",
+      "CorruptionDamageTakenGainedAsLife1",
+      "CorruptionUpgradeDamageTakenGainedAsLife1",
+      "DamageTakenGainedAsLife1___",
+      "DamageTakenGainedAsLife2",
+      "DamageTakenGainedAsLife3",
+      "DamageTakenGainedAsLife4_",
+      "DamageTakenGainedAsLife5"
+    ]
+  },
+  {
+    "conflictGroupId": "DamageWithWeaponTypeSkill",
+    "affixIds": [
+      "DamageWithBows1",
+      "DamageWithBows2",
+      "DamageWithBows3",
+      "DamageWithBows4",
+      "DamageWithBows5",
+      "DamageWithBows6"
+    ]
+  },
+  {
+    "conflictGroupId": "DazeBuildup",
+    "affixIds": [
+      "MaceImplicitLocalDazeBuildup1",
+      "QuarterstaffImplicitDazeChance1"
+    ]
+  },
+  {
+    "conflictGroupId": "DefencesPercent",
+    "affixIds": [
+      "CorruptionLocalIncreasedArmourAndEnergyShield1",
+      "CorruptionLocalIncreasedArmourAndEvasion1",
+      "CorruptionLocalIncreasedEnergyShieldPercent1",
+      "CorruptionLocalIncreasedEvasionAndEnergyShield1",
+      "CorruptionLocalIncreasedEvasionRatingPercent1",
+      "CorruptionLocalIncreasedPhysicalDamageReductionRatingPercent1",
+      "CorruptionUpgradeLocalIncreasedArmourAndEnergyShield1",
+      "CorruptionUpgradeLocalIncreasedArmourAndEvasion1",
+      "CorruptionUpgradeLocalIncreasedEnergyShieldPercent1",
+      "CorruptionUpgradeLocalIncreasedEvasionAndEnergyShield1",
+      "CorruptionUpgradeLocalIncreasedEvasionRatingPercent1",
+      "CorruptionUpgradeLocalIncreasedPhysicalDamageReductionRatingPercent1",
+      "LocalIncreasedArmourAndEnergyShield1",
+      "LocalIncreasedArmourAndEnergyShield2",
+      "LocalIncreasedArmourAndEnergyShield3",
+      "LocalIncreasedArmourAndEnergyShield4",
+      "LocalIncreasedArmourAndEnergyShield5",
+      "LocalIncreasedArmourAndEnergyShield6",
+      "LocalIncreasedArmourAndEnergyShield7",
+      "LocalIncreasedArmourAndEnergyShield8",
+      "LocalIncreasedArmourAndEvasion1",
+      "LocalIncreasedArmourAndEvasion2",
+      "LocalIncreasedArmourAndEvasion3",
+      "LocalIncreasedArmourAndEvasion4",
+      "LocalIncreasedArmourAndEvasion5",
+      "LocalIncreasedArmourAndEvasion6",
+      "LocalIncreasedArmourAndEvasion7",
+      "LocalIncreasedArmourAndEvasion8",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield1",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield2",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield3",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield4",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield5",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield6",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield7",
+      "LocalIncreasedArmourAndEvasionAndEnergyShield8",
+      "LocalIncreasedEnergyShieldPercent1",
+      "LocalIncreasedEnergyShieldPercent2",
+      "LocalIncreasedEnergyShieldPercent3",
+      "LocalIncreasedEnergyShieldPercent4",
+      "LocalIncreasedEnergyShieldPercent5",
+      "LocalIncreasedEnergyShieldPercent6",
+      "LocalIncreasedEnergyShieldPercent7_",
+      "LocalIncreasedEnergyShieldPercent8",
+      "LocalIncreasedEvasionAndEnergyShield1",
+      "LocalIncreasedEvasionAndEnergyShield2",
+      "LocalIncreasedEvasionAndEnergyShield3",
+      "LocalIncreasedEvasionAndEnergyShield4",
+      "LocalIncreasedEvasionAndEnergyShield5_",
+      "LocalIncreasedEvasionAndEnergyShield6",
+      "LocalIncreasedEvasionAndEnergyShield7",
+      "LocalIncreasedEvasionAndEnergyShield8",
+      "LocalIncreasedEvasionRatingPercent1",
+      "LocalIncreasedEvasionRatingPercent2",
+      "LocalIncreasedEvasionRatingPercent3",
+      "LocalIncreasedEvasionRatingPercent4",
+      "LocalIncreasedEvasionRatingPercent5",
+      "LocalIncreasedEvasionRatingPercent6",
+      "LocalIncreasedEvasionRatingPercent7",
+      "LocalIncreasedEvasionRatingPercent8",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent1",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent2",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent3",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent4",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent5",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent6",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent7",
+      "LocalIncreasedPhysicalDamageReductionRatingPercent8_"
+    ]
+  },
+  {
+    "conflictGroupId": "DefencesPercentAndStunThreshold",
+    "affixIds": [
+      "LocalArmourAndEnergyShieldAndStunThreshold1",
+      "LocalArmourAndEnergyShieldAndStunThreshold2",
+      "LocalArmourAndEnergyShieldAndStunThreshold3",
+      "LocalArmourAndEnergyShieldAndStunThreshold4",
+      "LocalArmourAndEnergyShieldAndStunThreshold5",
+      "LocalArmourAndEnergyShieldAndStunThreshold6",
+      "LocalArmourAndEvasionAndStunThreshold1",
+      "LocalArmourAndEvasionAndStunThreshold2",
+      "LocalArmourAndEvasionAndStunThreshold3",
+      "LocalArmourAndEvasionAndStunThreshold4",
+      "LocalArmourAndEvasionAndStunThreshold5",
+      "LocalArmourAndEvasionAndStunThreshold6",
+      "LocalArmourAndStunThreshold1",
+      "LocalArmourAndStunThreshold2",
+      "LocalArmourAndStunThreshold3",
+      "LocalArmourAndStunThreshold4",
+      "LocalArmourAndStunThreshold5",
+      "LocalArmourAndStunThreshold6",
+      "LocalEnergyShieldAndStunThreshold1",
+      "LocalEnergyShieldAndStunThreshold2",
+      "LocalEnergyShieldAndStunThreshold3",
+      "LocalEnergyShieldAndStunThreshold4",
+      "LocalEnergyShieldAndStunThreshold5",
+      "LocalEnergyShieldAndStunThreshold6",
+      "LocalEvasionAndEnergyShieldAndStunThreshold1",
+      "LocalEvasionAndEnergyShieldAndStunThreshold2",
+      "LocalEvasionAndEnergyShieldAndStunThreshold3",
+      "LocalEvasionAndEnergyShieldAndStunThreshold4",
+      "LocalEvasionAndEnergyShieldAndStunThreshold5",
+      "LocalEvasionAndEnergyShieldAndStunThreshold6",
+      "LocalEvasionAndStunThreshold1",
+      "LocalEvasionAndStunThreshold2",
+      "LocalEvasionAndStunThreshold3",
+      "LocalEvasionAndStunThreshold4",
+      "LocalEvasionAndStunThreshold5",
+      "LocalEvasionAndStunThreshold6"
+    ]
+  },
+  {
+    "conflictGroupId": "DeflectDamageTaken",
+    "affixIds": [
+      "SpearImplicitDeflectDamagePrevented1"
+    ]
+  },
+  {
+    "conflictGroupId": "Dexterity",
+    "affixIds": [
+      "AmuletImplicitDexterity1",
+      "CorruptionDexterity1",
+      "CorruptionUpgradeDexterity1",
+      "CorruptionUpgradeJewelDexterity1",
+      "Dexterity1",
+      "Dexterity2",
+      "Dexterity3",
+      "Dexterity4",
+      "Dexterity5",
+      "Dexterity6",
+      "Dexterity7",
+      "Dexterity8",
+      "Dexterity9"
+    ]
+  },
+  {
+    "conflictGroupId": "DisplaySpearThrow",
+    "affixIds": [
+      "SpearImplicitDisplaySpearThrow1"
+    ]
+  },
+  {
+    "conflictGroupId": "EnemiesExplodeOnDeath",
+    "affixIds": [
+      "MaceImplicitEnemiesExplodeOnCrit1"
+    ]
+  },
+  {
+    "conflictGroupId": "EnergyShieldPercent",
+    "affixIds": [
+      "CorruptionIncreasedEnergyShieldPercent1",
+      "CorruptionUpgradeIncreasedEnergyShieldPercent1",
+      "IncreasedEnergyShieldPercent1",
+      "IncreasedEnergyShieldPercent2",
+      "IncreasedEnergyShieldPercent3",
+      "IncreasedEnergyShieldPercent4",
+      "IncreasedEnergyShieldPercent5",
+      "IncreasedEnergyShieldPercent6",
+      "IncreasedEnergyShieldPercent7"
+    ]
+  },
+  {
+    "conflictGroupId": "EnergyShieldRegeneration",
+    "affixIds": [
+      "BodyArmourImplicitEnergyShieldRate1",
+      "EnergyShieldRechargeRate4",
+      "EnergyShieldRechargeRate5______",
+      "EnergyShieldRechargeRate6",
+      "TheUnleashedVerisiumImplicitBypassEnergyShield1"
+    ]
+  },
+  {
+    "conflictGroupId": "EvasionAppliesToDeflection",
+    "affixIds": [
+      "EvasionGrantsDeflection1",
+      "EvasionGrantsDeflection2",
+      "EvasionGrantsDeflection3",
+      "EvasionGrantsDeflection4",
+      "EvasionGrantsDeflection5",
+      "EvasionGrantsDeflection6"
+    ]
+  },
+  {
+    "conflictGroupId": "EvasionRatingPercent",
+    "affixIds": [
+      "CorruptionIncreasedEvasionRatingPercent1",
+      "CorruptionUpgradeIncreasedEvasionRatingPercent1",
+      "IncreasedEvasionRatingPercent1",
+      "IncreasedEvasionRatingPercent2",
+      "IncreasedEvasionRatingPercent3",
+      "IncreasedEvasionRatingPercent4",
+      "IncreasedEvasionRatingPercent5",
+      "IncreasedEvasionRatingPercent6",
+      "IncreasedEvasionRatingPercent7"
+    ]
+  },
+  {
+    "conflictGroupId": "FasterBurnFromAttacks",
+    "affixIds": [
+      "SentryFasterVerisiumImplicitFasterIgnite1"
+    ]
+  },
+  {
+    "conflictGroupId": "FasterDamageAilments",
+    "affixIds": [
+      "SpearImplicitFasterBleed1"
+    ]
+  },
+  {
+    "conflictGroupId": "FireAndColdResistance",
+    "affixIds": [
+      "RingImplicitFireColdResistance"
+    ]
+  },
+  {
+    "conflictGroupId": "FireAndLightningResistance",
+    "affixIds": [
+      "RingImplicitFireLightningResistance"
+    ]
+  },
+  {
+    "conflictGroupId": "FireDamage",
+    "affixIds": [
+      "AddedFireDamage1",
+      "AddedFireDamage2",
+      "AddedFireDamage3",
+      "AddedFireDamage4",
+      "AddedFireDamage5",
+      "AddedFireDamage6",
+      "AddedFireDamage7",
+      "AddedFireDamage8",
+      "AddedFireDamage9",
+      "CorruptionLocalAddedFireDamage1",
+      "CorruptionLocalAddedFireDamageTwoHand1",
+      "CorruptionUpgradeLocalAddedFireDamage1",
+      "CorruptionUpgradeLocalAddedFireDamageTwoHand1",
+      "LocalAddedFireDamage1",
+      "LocalAddedFireDamage10_",
+      "LocalAddedFireDamage2",
+      "LocalAddedFireDamage3",
+      "LocalAddedFireDamage4",
+      "LocalAddedFireDamage5",
+      "LocalAddedFireDamage6",
+      "LocalAddedFireDamage7",
+      "LocalAddedFireDamage8",
+      "LocalAddedFireDamage9",
+      "LocalAddedFireDamageTwoHand1",
+      "LocalAddedFireDamageTwoHand10",
+      "LocalAddedFireDamageTwoHand2",
+      "LocalAddedFireDamageTwoHand3",
+      "LocalAddedFireDamageTwoHand4",
+      "LocalAddedFireDamageTwoHand5",
+      "LocalAddedFireDamageTwoHand6",
+      "LocalAddedFireDamageTwoHand7",
+      "LocalAddedFireDamageTwoHand8_",
+      "LocalAddedFireDamageTwoHand9",
+      "NearbyAlliesAddedFireDamage1",
+      "NearbyAlliesAddedFireDamage2",
+      "NearbyAlliesAddedFireDamage3",
+      "NearbyAlliesAddedFireDamage4",
+      "NearbyAlliesAddedFireDamage5",
+      "NearbyAlliesAddedFireDamage6",
+      "NearbyAlliesAddedFireDamage7",
+      "NearbyAlliesAddedFireDamage8",
+      "NearbyAlliesAddedFireDamage9",
+      "QuiverImplicitFireDamage1",
+      "SpellDamageGainedAsFire1",
+      "SpellDamageGainedAsFire2",
+      "SpellDamageGainedAsFire3",
+      "SpellDamageGainedAsFire4",
+      "SpellDamageGainedAsFire5",
+      "SpellDamageGainedAsFire6",
+      "SpellDamageGainedAsFireTwoHand1",
+      "SpellDamageGainedAsFireTwoHand2",
+      "SpellDamageGainedAsFireTwoHand3",
+      "SpellDamageGainedAsFireTwoHand4",
+      "SpellDamageGainedAsFireTwoHand5",
+      "SpellDamageGainedAsFireTwoHand6"
+    ]
+  },
+  {
+    "conflictGroupId": "FireDamagePercentage",
+    "affixIds": [
+      "FireDamagePercent1",
+      "FireDamagePercent2",
+      "FireDamagePercent3",
+      "FireDamagePercent4",
+      "FireDamagePercent5",
+      "FireDamagePercent6"
+    ]
+  },
+  {
+    "conflictGroupId": "FireResistance",
+    "affixIds": [
+      "BodyArmourImplicitFireResistance1",
+      "CorruptionFireResistance1",
+      "CorruptionUpgradeFireResistance1",
+      "CorruptionUpgradeJewelFireResist1",
+      "FireResist1",
+      "FireResist2",
+      "FireResist3",
+      "FireResist4",
+      "FireResist5",
+      "FireResist6",
+      "FireResist7",
+      "FireResist8",
+      "RingImplicitFireResistance1"
+    ]
+  },
+  {
+    "conflictGroupId": "FireResistancePenetration",
+    "affixIds": [
+      "CorruptionFirePenetration1",
+      "CorruptionUpgradeFirePenetration1"
+    ]
+  },
+  {
+    "conflictGroupId": "FissureChance",
+    "affixIds": [
+      "TwistedEmpyreanVerisiumImplicitAdditionalFissures1"
+    ]
+  },
+  {
+    "conflictGroupId": "FlaskChargeGeneration",
+    "affixIds": [
+      "BeltImplicitFlaskPassiveChargeGain1",
+      "CorruptionCharmChargeGeneration1",
+      "CorruptionLifeFlaskChargeGeneration1",
+      "CorruptionManaFlaskChargeGeneration1",
+      "CorruptionUpgradeCharmChargeGeneration1",
+      "CorruptionUpgradeLifeFlaskChargeGeneration1",
+      "CorruptionUpgradeManaFlaskChargeGeneration1",
+      "WaistgateVerisiumImplicitFlaskChargeGeneration1"
+    ]
+  },
+  {
+    "conflictGroupId": "ForkingProjectiles",
+    "affixIds": [
+      "QuillRainVerisiumImplicitForkExtraProjectile"
+    ]
+  },
+  {
+    "conflictGroupId": "FreezeDamageIncrease",
+    "affixIds": [
+      "CorruptionFreezeDamageIncrease1",
+      "CorruptionUpgradeFreezeDamageIncrease1",
+      "FreezeDamageIncrease1",
+      "FreezeDamageIncrease2",
+      "FreezeDamageIncrease3",
+      "FreezeDamageIncrease4",
+      "FreezeDamageIncrease5",
+      "TwistedEmpyreanVerisiumImplicitFreezeBuildup1"
+    ]
+  },
+  {
+    "conflictGroupId": "FreezeThreshold",
+    "affixIds": [
+      "CorruptionIncreasedFreezeThreshold1",
+      "CorruptionUpgradeIncreasedFreezeThreshold1"
+    ]
+  },
+  {
+    "conflictGroupId": "GainFlatLifeOnBlock",
+    "affixIds": [
+      "SvalinnVerisiumImplicitRunicWardOnBlock1"
+    ]
+  },
+  {
+    "conflictGroupId": "GainLifeOnBlock",
+    "affixIds": [
+      "CorruptionGainLifeOnBlock1",
+      "CorruptionUpgradeGainLifeOnBlock1"
+    ]
+  },
+  {
+    "conflictGroupId": "GainManaOnBlock",
+    "affixIds": [
+      "CorruptionGainManaOnBlock1",
+      "CorruptionUpgradeGainManaOnBlock1"
+    ]
+  },
+  {
+    "conflictGroupId": "GlobalDamageTypeGemLevel",
+    "affixIds": [
+      "EventidePetalsVerisiumImplicitColdSkills1"
+    ]
+  },
+  {
+    "conflictGroupId": "GrantedSkill",
+    "affixIds": [
+      "CannonBowImplicitCannotUseAmmoSkills1"
+    ]
+  },
+  {
+    "conflictGroupId": "GrenadeCooldownUse",
+    "affixIds": [
+      "GrenadeSkillAdditionalCooldownUse1",
+      "GrenadeSkillAdditionalCooldownUse2"
+    ]
+  },
+  {
+    "conflictGroupId": "HandWrapsImplicitLocalBaseEvasionAndEnergyShield",
+    "affixIds": [
+      "HandWrapsImplicitLocalBaseEvasionAndEnergyShieldPerLevel",
+      "HandWrapsImplicitLocalBaseEvasionEnergyShieldAndWardPerLevel",
+      "HandWrapsImplicitLocalCopyPlayerLevelValue"
+    ]
+  },
+  {
+    "conflictGroupId": "IgniteChanceIncrease",
+    "affixIds": [
+      "CorruptionIgniteChanceIncrease1",
+      "IgniteChanceIncrease1",
+      "IgniteChanceIncrease2",
+      "IgniteChanceIncrease3",
+      "IgniteChanceIncrease4",
+      "IgniteChanceIncrease5"
+    ]
+  },
+  {
+    "conflictGroupId": "IgniteEffect",
+    "affixIds": [
+      "CorruptionUpgradeIgniteChanceIncrease1",
+      "VerisiumHelmetImplicitIgniteMagnitudeUnique1"
+    ]
+  },
+  {
+    "conflictGroupId": "IgnoreBlock",
+    "affixIds": [
+      "FlailImplicitIgnoreBlock1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreaseCorruptedSkillGemLevel",
+    "affixIds": [
+      "BodyArmourImplicitLevelOfAllCorruptedSkillGems1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedAccuracy",
+    "affixIds": [
+      "AxeImplicitAccuracyUnaffectedByDistance1",
+      "CorruptionIncreasedAccuracy1",
+      "CorruptionUpgradeIncreasedAccuracy1",
+      "IncreasedAccuracy1",
+      "IncreasedAccuracy2",
+      "IncreasedAccuracy3",
+      "IncreasedAccuracy4",
+      "IncreasedAccuracy5",
+      "IncreasedAccuracy6",
+      "IncreasedAccuracy7",
+      "IncreasedAccuracy8",
+      "IncreasedAccuracy9",
+      "LocalIncreasedAccuracy1",
+      "LocalIncreasedAccuracy10",
+      "LocalIncreasedAccuracy2",
+      "LocalIncreasedAccuracy3",
+      "LocalIncreasedAccuracy4",
+      "LocalIncreasedAccuracy5",
+      "LocalIncreasedAccuracy6",
+      "LocalIncreasedAccuracy7",
+      "LocalIncreasedAccuracy8",
+      "LocalIncreasedAccuracy9_",
+      "RingImplicitIncreasedAccuracy1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedAccuracyPercent",
+    "affixIds": [
+      "QuiverImplicitIncreasedAccuracy1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedAttackAreaOfEffect",
+    "affixIds": [
+      "BrynhandsMarkVerisiumImplicitAreaOfEffect"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedAttackSpeed",
+    "affixIds": [
+      "CorruptionAlliesInPresenceIncreasedAttackSpeed1",
+      "CorruptionLocalIncreasedAttackSpeed1",
+      "CorruptionUpgradeAlliesInPresenceIncreasedAttackSpeed1",
+      "CorruptionUpgradeLocalIncreasedAttackSpeed1",
+      "IncreasedAttackSpeed1",
+      "IncreasedAttackSpeed2",
+      "IncreasedAttackSpeed3",
+      "IncreasedAttackSpeed4",
+      "LocalIncreasedAttackSpeed1",
+      "LocalIncreasedAttackSpeed2",
+      "LocalIncreasedAttackSpeed3",
+      "LocalIncreasedAttackSpeed4",
+      "LocalIncreasedAttackSpeed5",
+      "LocalIncreasedAttackSpeed6",
+      "LocalIncreasedAttackSpeed7",
+      "LocalIncreasedAttackSpeed8",
+      "NearbyAlliesIncreasedAttackSpeed1",
+      "NearbyAlliesIncreasedAttackSpeed2",
+      "NearbyAlliesIncreasedAttackSpeed3",
+      "NearbyAlliesIncreasedAttackSpeed4",
+      "QuiverImplicitIncreasedAttackSpeed1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedCastSpeed",
+    "affixIds": [
+      "BeltImplicitCastSpeed1",
+      "CastSpeedJewellery1",
+      "CastSpeedJewellery2",
+      "CastSpeedJewellery3",
+      "CastSpeedJewellery4",
+      "CastSpeedJewellery5",
+      "CastSpeedJewellery6",
+      "CorruptionAlliesInPresenceIncreasedCastSpeed1",
+      "CorruptionIncreasedCastSpeed1",
+      "CorruptionUpgradeAlliesInPresenceIncreasedCastSpeed1",
+      "CorruptionUpgradeIncreasedCastSpeed1",
+      "IncreasedCastSpeed1",
+      "IncreasedCastSpeed2",
+      "IncreasedCastSpeed3",
+      "IncreasedCastSpeed4",
+      "IncreasedCastSpeed5",
+      "IncreasedCastSpeed6",
+      "IncreasedCastSpeed7",
+      "IncreasedCastSpeedTwoHand1_",
+      "IncreasedCastSpeedTwoHand2",
+      "IncreasedCastSpeedTwoHand3",
+      "IncreasedCastSpeedTwoHand4",
+      "IncreasedCastSpeedTwoHand5",
+      "IncreasedCastSpeedTwoHand6",
+      "IncreasedCastSpeedTwoHand7",
+      "NearbyAlliesIncreasedCastSpeed1",
+      "NearbyAlliesIncreasedCastSpeed2",
+      "NearbyAlliesIncreasedCastSpeed3",
+      "NearbyAlliesIncreasedCastSpeed4",
+      "RingImplicitIncreasedCastSpeed1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedChaosDamage",
+    "affixIds": [
+      "ChaosDamagePercent1",
+      "ChaosDamagePercent2",
+      "ChaosDamagePercent3",
+      "ChaosDamagePercent4",
+      "ChaosDamagePercent5",
+      "ChaosDamagePercent6",
+      "RingImplicitChaosDamage"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedEnergyShield",
+    "affixIds": [
+      "AmuletImplicitEnergyShield1",
+      "IncreasedEnergyShield1",
+      "IncreasedEnergyShield10",
+      "IncreasedEnergyShield2",
+      "IncreasedEnergyShield3",
+      "IncreasedEnergyShield4",
+      "IncreasedEnergyShield5",
+      "IncreasedEnergyShield6",
+      "IncreasedEnergyShield7",
+      "IncreasedEnergyShield8",
+      "IncreasedEnergyShield9"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedEvasionRating",
+    "affixIds": [
+      "IncreasedEvasionRating1",
+      "IncreasedEvasionRating2",
+      "IncreasedEvasionRating3",
+      "IncreasedEvasionRating4",
+      "IncreasedEvasionRating5",
+      "IncreasedEvasionRating6",
+      "IncreasedEvasionRating7",
+      "IncreasedEvasionRating8",
+      "IncreasedEvasionRating9"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedLife",
+    "affixIds": [
+      "AmuletImplicitIncreasedLife1",
+      "BodyArmourImplicitIncreasedLife1",
+      "CorruptionIncreasedLife1",
+      "CorruptionUpgradeIncreasedLife1",
+      "IncreasedLife1",
+      "IncreasedLife10",
+      "IncreasedLife11",
+      "IncreasedLife12",
+      "IncreasedLife13",
+      "IncreasedLife2",
+      "IncreasedLife3",
+      "IncreasedLife4",
+      "IncreasedLife5",
+      "IncreasedLife6",
+      "IncreasedLife7",
+      "IncreasedLife8",
+      "IncreasedLife9",
+      "IncreasedLifeImplicitGlovesDemigods1",
+      "RingImplicitPercentLife"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedMana",
+    "affixIds": [
+      "CorruptionIncreasedMana1",
+      "CorruptionUpgradeIncreasedMana1",
+      "IncreasedMana1",
+      "IncreasedMana10",
+      "IncreasedMana11",
+      "IncreasedMana12",
+      "IncreasedMana13",
+      "IncreasedMana2",
+      "IncreasedMana3",
+      "IncreasedMana4",
+      "IncreasedMana5",
+      "IncreasedMana6",
+      "IncreasedMana7",
+      "IncreasedMana8",
+      "IncreasedMana9",
+      "IncreasedManaTwoHandWeapon1",
+      "IncreasedManaTwoHandWeapon10",
+      "IncreasedManaTwoHandWeapon11",
+      "IncreasedManaTwoHandWeapon2_",
+      "IncreasedManaTwoHandWeapon3_",
+      "IncreasedManaTwoHandWeapon4",
+      "IncreasedManaTwoHandWeapon5",
+      "IncreasedManaTwoHandWeapon6",
+      "IncreasedManaTwoHandWeapon7",
+      "IncreasedManaTwoHandWeapon8_",
+      "IncreasedManaTwoHandWeapon9",
+      "RingImplicitIncreasedMana1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedMaximumPowerCharges",
+    "affixIds": [
+      "CorruptionMaximumPowerCharges1",
+      "CorruptionUpgradeMaximumPowerCharges1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedPhysicalDamageReductionRating",
+    "affixIds": [
+      "BeltImplicitPhysicalDamageReductionRating1",
+      "IncreasedPhysicalDamageReductionRating1",
+      "IncreasedPhysicalDamageReductionRating10",
+      "IncreasedPhysicalDamageReductionRating2",
+      "IncreasedPhysicalDamageReductionRating3",
+      "IncreasedPhysicalDamageReductionRating4",
+      "IncreasedPhysicalDamageReductionRating5",
+      "IncreasedPhysicalDamageReductionRating6",
+      "IncreasedPhysicalDamageReductionRating7",
+      "IncreasedPhysicalDamageReductionRating8_",
+      "IncreasedPhysicalDamageReductionRating9"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedPhysicalDamageReductionRatingPercent",
+    "affixIds": [
+      "CorruptionIncreasedPhysicalDamageReductionRatingPercent1",
+      "CorruptionUpgradeIncreasedPhysicalDamageReductionRatingPercent1",
+      "IncreasedPhysicalDamageReductionRatingPercent1",
+      "IncreasedPhysicalDamageReductionRatingPercent2",
+      "IncreasedPhysicalDamageReductionRatingPercent3",
+      "IncreasedPhysicalDamageReductionRatingPercent4",
+      "IncreasedPhysicalDamageReductionRatingPercent5",
+      "IncreasedPhysicalDamageReductionRatingPercent6",
+      "IncreasedPhysicalDamageReductionRatingPercent7"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedShieldBlockPercentage",
+    "affixIds": [
+      "CorruptionLocalBlockChance1",
+      "CorruptionUpgradeLocalBlockChance1",
+      "LocalBlockChance1",
+      "LocalBlockChance2",
+      "LocalBlockChance3"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedSpeed",
+    "affixIds": [
+      "CorruptionIncreasedSkillSpeed1",
+      "CorruptionUpgradeIncreasedSkillSpeed1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedStunThreshold",
+    "affixIds": [
+      "BeltImplicitIncreasedStunThreshold1",
+      "BodyArmourImplicitIncreasedStunThreshold1",
+      "CorruptionIncreasedStunThreshold1",
+      "CorruptionUpgradeIncreasedStunThreshold1"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreasedWeaponElementalDamagePercent",
+    "affixIds": [
+      "CorruptionUpgradeWeaponElementalDamage1",
+      "CorruptionUpgradeWeaponElementalDamageTwoHand1",
+      "CorruptionWeaponElementalDamage1",
+      "CorruptionWeaponElementalDamageTwoHand1",
+      "WeaponElementalDamage1",
+      "WeaponElementalDamage2",
+      "WeaponElementalDamage3",
+      "WeaponElementalDamage4",
+      "WeaponElementalDamage5",
+      "WeaponElementalDamage6_",
+      "WeaponElementalDamageOnTwohandWeapon1",
+      "WeaponElementalDamageOnTwohandWeapon2____",
+      "WeaponElementalDamageOnTwohandWeapon3",
+      "WeaponElementalDamageOnTwohandWeapon4",
+      "WeaponElementalDamageOnTwohandWeapon5",
+      "WeaponElementalDamageOnTwohandWeapon6"
+    ]
+  },
+  {
+    "conflictGroupId": "IncreaseSocketedGemLevel",
+    "affixIds": [
+      "CorruptionGlobalChaosSpellGemsLevel1",
+      "CorruptionGlobalColdSpellGemsLevel1",
+      "CorruptionGlobalFireSpellGemsLevel1",
+      "CorruptionGlobalLightningSpellGemsLevel1",
+      "CorruptionGlobalMeleeSkillGemsLevel1",
+      "CorruptionGlobalMinionSkillGemsLevel1",
+      "CorruptionGlobalPhysicalSpellGemsLevel1",
+      "CorruptionGlobalSkillGemLevel1",
+      "CorruptionUpgradeGlobalChaosSpellGemsLevel1",
+      "CorruptionUpgradeGlobalColdSpellGemsLevel1",
+      "CorruptionUpgradeGlobalFireSpellGemsLevel1",
+      "CorruptionUpgradeGlobalLightningSpellGemsLevel1",
+      "CorruptionUpgradeGlobalMeleeSkillGemsLevel1",
+      "CorruptionUpgradeGlobalMinionSkillGemsLevel1",
+      "CorruptionUpgradeGlobalPhysicalSpellGemsLevel1",
+      "CorruptionUpgradeGlobalSkillGemLevel1",
+      "GlobalChaosSpellGemsLevelTwoHandWeapon1",
+      "GlobalChaosSpellGemsLevelTwoHandWeapon2",
+      "GlobalChaosSpellGemsLevelTwoHandWeapon3",
+      "GlobalChaosSpellGemsLevelTwoHandWeapon4",
+      "GlobalChaosSpellGemsLevelTwoHandWeapon5",
+      "GlobalChaosSpellGemsLevelWeapon1",
+      "GlobalChaosSpellGemsLevelWeapon2",
+      "GlobalChaosSpellGemsLevelWeapon3",
+      "GlobalChaosSpellGemsLevelWeapon4",
+      "GlobalChaosSpellGemsLevelWeapon5",
+      "GlobalColdSpellGemsLevelTwoHandWeapon1",
+      "GlobalColdSpellGemsLevelTwoHandWeapon2",
+      "GlobalColdSpellGemsLevelTwoHandWeapon3",
+      "GlobalColdSpellGemsLevelTwoHandWeapon4",
+      "GlobalColdSpellGemsLevelTwoHandWeapon5",
+      "GlobalColdSpellGemsLevelWeapon1",
+      "GlobalColdSpellGemsLevelWeapon2",
+      "GlobalColdSpellGemsLevelWeapon3",
+      "GlobalColdSpellGemsLevelWeapon4",
+      "GlobalColdSpellGemsLevelWeapon5",
+      "GlobalFireSpellGemsLevelTwoHandWeapon1",
+      "GlobalFireSpellGemsLevelTwoHandWeapon2",
+      "GlobalFireSpellGemsLevelTwoHandWeapon3",
+      "GlobalFireSpellGemsLevelTwoHandWeapon4",
+      "GlobalFireSpellGemsLevelTwoHandWeapon5",
+      "GlobalFireSpellGemsLevelWeapon1",
+      "GlobalFireSpellGemsLevelWeapon2",
+      "GlobalFireSpellGemsLevelWeapon3",
+      "GlobalFireSpellGemsLevelWeapon4",
+      "GlobalFireSpellGemsLevelWeapon5",
+      "GlobalLightningSpellGemsLevelTwoHandWeapon1",
+      "GlobalLightningSpellGemsLevelTwoHandWeapon2",
+      "GlobalLightningSpellGemsLevelTwoHandWeapon3",
+      "GlobalLightningSpellGemsLevelTwoHandWeapon4",
+      "GlobalLightningSpellGemsLevelTwoHandWeapon5",
+      "GlobalLightningSpellGemsLevelWeapon1",
+      "GlobalLightningSpellGemsLevelWeapon2",
+      "GlobalLightningSpellGemsLevelWeapon3",
+      "GlobalLightningSpellGemsLevelWeapon4",
+      "GlobalLightningSpellGemsLevelWeapon5",
+      "GlobalMeleeSkillGemLevel1",
+      "GlobalMeleeSkillGemLevel2",
+      "GlobalMeleeSkillGemLevel3",
+      "GlobalMeleeSkillGemLevelTwoHandWeapon2",
+      "GlobalMeleeSkillGemLevelTwoHandWeapon3",
+      "GlobalMeleeSkillGemLevelTwoHandWeapon4",
+      "GlobalMeleeSkillGemLevelTwoHandWeapon5",
+      "GlobalMeleeSkillGemLevelWeapon2",
+      "GlobalMeleeSkillGemLevelWeapon3",
+      "GlobalMeleeSkillGemLevelWeapon4",
+      "GlobalMeleeSkillGemLevelWeapon5",
+      "GlobalMinionSpellSkillGemLevel1",
+      "GlobalMinionSpellSkillGemLevel2",
+      "GlobalMinionSpellSkillGemLevel3",
+      "GlobalMinionSpellSkillGemLevelWeapon1",
+      "GlobalMinionSpellSkillGemLevelWeapon2",
+      "GlobalMinionSpellSkillGemLevelWeapon3",
+      "GlobalMinionSpellSkillGemLevelWeapon4",
+      "GlobalPhysicalSpellGemsLevelTwoHandWeapon1",
+      "GlobalPhysicalSpellGemsLevelTwoHandWeapon2",
+      "GlobalPhysicalSpellGemsLevelTwoHandWeapon3",
+      "GlobalPhysicalSpellGemsLevelTwoHandWeapon4",
+      "GlobalPhysicalSpellGemsLevelTwoHandWeapon5",
+      "GlobalPhysicalSpellGemsLevelWeapon1",
+      "GlobalPhysicalSpellGemsLevelWeapon2",
+      "GlobalPhysicalSpellGemsLevelWeapon3",
+      "GlobalPhysicalSpellGemsLevelWeapon4",
+      "GlobalPhysicalSpellGemsLevelWeapon5",
+      "GlobalProjectileSkillGemLevel1",
+      "GlobalProjectileSkillGemLevel2",
+      "GlobalProjectileSkillGemLevel3",
+      "GlobalProjectileSkillGemLevelTwoHandWeapon2",
+      "GlobalProjectileSkillGemLevelTwoHandWeapon3",
+      "GlobalProjectileSkillGemLevelTwoHandWeapon4",
+      "GlobalProjectileSkillGemLevelTwoHandWeapon5",
+      "GlobalProjectileSkillGemLevelWeapon2",
+      "GlobalProjectileSkillGemLevelWeapon3",
+      "GlobalProjectileSkillGemLevelWeapon4",
+      "GlobalProjectileSkillGemLevelWeapon5",
+      "GlobalSpellGemsLevel1",
+      "GlobalSpellGemsLevel2",
+      "GlobalSpellGemsLevel3",
+      "GlobalSpellGemsLevelTwoHandWeapon1",
+      "GlobalSpellGemsLevelTwoHandWeapon2",
+      "GlobalSpellGemsLevelTwoHandWeapon3",
+      "GlobalSpellGemsLevelTwoHandWeapon4",
+      "GlobalSpellGemsLevelWeapon1",
+      "GlobalSpellGemsLevelWeapon2",
+      "GlobalSpellGemsLevelWeapon3",
+      "GlobalSpellGemsLevelWeapon4",
+      "GlobalTrapSkillGemLevelWeapon1",
+      "GlobalTrapSkillGemLevelWeapon2",
+      "GlobalTrapSkillGemLevelWeapon3",
+      "GlobalTrapSkillGemLevelWeapon4",
+      "GlobalTrapSkillGemLevelWeapon5"
+    ]
+  },
+  {
+    "conflictGroupId": "InstantFlaskRecovery",
+    "affixIds": [
+      "BeltImplicitInstantFlaskRecoveryPercent1"
+    ]
+  },
+  {
+    "conflictGroupId": "Intelligence",
+    "affixIds": [
+      "AmuletImplicitIntelligence1",
+      "CorruptionIntelligence1",
+      "CorruptionUpgradeIntelligence1",
+      "CorruptionUpgradeJewelIntelligence1",
+      "Intelligence1",
+      "Intelligence2",
+      "Intelligence3",
+      "Intelligence4",
+      "Intelligence5",
+      "Intelligence6",
+      "Intelligence7",
+      "Intelligence8",
+      "Intelligence9"
+    ]
+  },
+  {
+    "conflictGroupId": "IntelligenceRequirements",
+    "affixIds": [
+      "KeeperOfTheArcVerisiumImplicitIntelligenceRequirement1"
+    ]
+  },
+  {
+    "conflictGroupId": "ItemFoundRarityIncrease",
+    "affixIds": [
+      "AmuletImplicitItemFoundRarityIncrease1",
+      "CorruptionGoldFoundIncrease1",
+      "CorruptionItemFoundRarityIncrease1",
+      "CorruptionUpgradeGoldFoundIncrease1",
+      "CorruptionUpgradeItemFoundRarityIncrease1",
+      "ItemFoundRarityIncrease1",
+      "ItemFoundRarityIncrease2",
+      "ItemFoundRarityIncrease3",
+      "ItemFoundRarityIncreaseImplicitDemigodsBelt1",
+      "RingImplicitItemFoundRarityIncrease1"
+    ]
+  },
+  {
+    "conflictGroupId": "ItemFoundRarityIncreasePrefix",
+    "affixIds": [
+      "ItemFoundRarityIncreasePrefix1",
+      "ItemFoundRarityIncreasePrefix2",
+      "ItemFoundRarityIncreasePrefix3"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeFlaskAppliesToRunicWard",
+    "affixIds": [
+      "WaistgateVerisiumImplicitLifeFlaskToRunicWard1"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeGainedFromEnemyDeath",
+    "affixIds": [
+      "AxeImplicitLifeGainedFromEnemyDeath1",
+      "CorruptionLifeGainedFromEnemyDeath1",
+      "CorruptionUpgradeLifeGainedFromEnemyDeath1",
+      "LifeGainedFromEnemyDeath1",
+      "LifeGainedFromEnemyDeath2",
+      "LifeGainedFromEnemyDeath3",
+      "LifeGainedFromEnemyDeath4",
+      "LifeGainedFromEnemyDeath5",
+      "LifeGainedFromEnemyDeath6",
+      "LifeGainedFromEnemyDeath7",
+      "LifeGainedFromEnemyDeath8"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeGainPerTarget",
+    "affixIds": [
+      "ClawImplicitLifeGainPerTargetLocal1",
+      "LifeGainPerTarget1",
+      "LifeGainPerTarget2",
+      "LifeGainPerTarget3",
+      "LifeGainPerTarget4",
+      "LifeGainPerTargetLocal1",
+      "LifeGainPerTargetLocal2",
+      "LifeGainPerTargetLocal3",
+      "LifeGainPerTargetLocal4",
+      "QuiverImplicitLifeGainPerTarget1"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeLeech",
+    "affixIds": [
+      "CorruptionLifeLeech1",
+      "CorruptionUpgradeLifeLeech1",
+      "LifeLeech2",
+      "LifeLeech3",
+      "LifeLeech4",
+      "LifeLeech5",
+      "LifeLeechLocal2",
+      "LifeLeechLocal3",
+      "LifeLeechLocal4",
+      "LifeLeechLocal5"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeRegeneration",
+    "affixIds": [
+      "AmuletImplicitLifeRegeneration1",
+      "LifeRegeneration1",
+      "LifeRegeneration10__",
+      "LifeRegeneration11____",
+      "LifeRegeneration2",
+      "LifeRegeneration3",
+      "LifeRegeneration4",
+      "LifeRegeneration5",
+      "LifeRegeneration6",
+      "LifeRegeneration7",
+      "LifeRegeneration8_",
+      "LifeRegeneration9",
+      "NearbyAlliesLifeRegeneration1",
+      "NearbyAlliesLifeRegeneration10",
+      "NearbyAlliesLifeRegeneration2",
+      "NearbyAlliesLifeRegeneration3",
+      "NearbyAlliesLifeRegeneration4",
+      "NearbyAlliesLifeRegeneration5",
+      "NearbyAlliesLifeRegeneration6",
+      "NearbyAlliesLifeRegeneration7",
+      "NearbyAlliesLifeRegeneration8",
+      "NearbyAlliesLifeRegeneration9"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeRegenerationRate",
+    "affixIds": [
+      "CorruptionLifeRegenerationRate1",
+      "CorruptionUpgradeLifeRegenerationRate1"
+    ]
+  },
+  {
+    "conflictGroupId": "LifeRegenerationRatePercentage",
+    "affixIds": [
+      "BodyArmourImplicitLifeRegenerationPercent1"
+    ]
+  },
+  {
+    "conflictGroupId": "LightningDamage",
+    "affixIds": [
+      "AddedLightningDamage1",
+      "AddedLightningDamage2",
+      "AddedLightningDamage3",
+      "AddedLightningDamage4",
+      "AddedLightningDamage5",
+      "AddedLightningDamage6",
+      "AddedLightningDamage7",
+      "AddedLightningDamage8",
+      "AddedLightningDamage9",
+      "BeltImplicitLightningDamage1",
+      "CorruptionLocalAddedLightningDamage1",
+      "CorruptionLocalAddedLightningDamageTwoHand1",
+      "CorruptionUpgradeLocalAddedLightningDamage1",
+      "CorruptionUpgradeLocalAddedLightningDamageTwoHand1",
+      "LocalAddedLightningDamage1",
+      "LocalAddedLightningDamage10",
+      "LocalAddedLightningDamage2",
+      "LocalAddedLightningDamage3",
+      "LocalAddedLightningDamage4",
+      "LocalAddedLightningDamage5",
+      "LocalAddedLightningDamage6",
+      "LocalAddedLightningDamage7",
+      "LocalAddedLightningDamage8",
+      "LocalAddedLightningDamage9",
+      "LocalAddedLightningDamageTwoHand10",
+      "LocalAddedLightningDamageTwoHand1_",
+      "LocalAddedLightningDamageTwoHand2",
+      "LocalAddedLightningDamageTwoHand3",
+      "LocalAddedLightningDamageTwoHand4",
+      "LocalAddedLightningDamageTwoHand5",
+      "LocalAddedLightningDamageTwoHand6",
+      "LocalAddedLightningDamageTwoHand7",
+      "LocalAddedLightningDamageTwoHand8",
+      "LocalAddedLightningDamageTwoHand9",
+      "NearbyAlliesAddedLightningDamage1",
+      "NearbyAlliesAddedLightningDamage2",
+      "NearbyAlliesAddedLightningDamage3",
+      "NearbyAlliesAddedLightningDamage4",
+      "NearbyAlliesAddedLightningDamage5",
+      "NearbyAlliesAddedLightningDamage6",
+      "NearbyAlliesAddedLightningDamage7",
+      "NearbyAlliesAddedLightningDamage8",
+      "NearbyAlliesAddedLightningDamage9",
+      "SpellDamageGainedAsLightning1",
+      "SpellDamageGainedAsLightning2",
+      "SpellDamageGainedAsLightning3",
+      "SpellDamageGainedAsLightning4",
+      "SpellDamageGainedAsLightning5",
+      "SpellDamageGainedAsLightning6",
+      "SpellDamageGainedAsLightningTwoHand1",
+      "SpellDamageGainedAsLightningTwoHand2",
+      "SpellDamageGainedAsLightningTwoHand3",
+      "SpellDamageGainedAsLightningTwoHand4",
+      "SpellDamageGainedAsLightningTwoHand5",
+      "SpellDamageGainedAsLightningTwoHand6"
+    ]
+  },
+  {
+    "conflictGroupId": "LightningDamagePercentage",
+    "affixIds": [
+      "LightningDamagePercent1",
+      "LightningDamagePercent2",
+      "LightningDamagePercent3",
+      "LightningDamagePercent4",
+      "LightningDamagePercent5",
+      "LightningDamagePercent6",
+      "MjolnerVerisiumImplicitLightningDamage1"
+    ]
+  },
+  {
+    "conflictGroupId": "LightningResistance",
+    "affixIds": [
+      "BodyArmourImplicitLightningResistance1",
+      "CorruptionLightningResistance1",
+      "CorruptionUpgradeJewelLightningResist1",
+      "CorruptionUpgradeLightningResistance1",
+      "LightningResist1",
+      "LightningResist2",
+      "LightningResist3",
+      "LightningResist4",
+      "LightningResist5",
+      "LightningResist6",
+      "LightningResist7",
+      "LightningResist8",
+      "RingImplicitLightningResistance1"
+    ]
+  },
+  {
+    "conflictGroupId": "LightningResistancePenetration",
+    "affixIds": [
+      "CorruptionLightningPenetration1",
+      "CorruptionUpgradeLightningPenetration1"
+    ]
+  },
+  {
+    "conflictGroupId": "LightRadiusAndAccuracy",
+    "affixIds": [
+      "LightRadiusAndAccuracy1",
+      "LightRadiusAndAccuracy2",
+      "LightRadiusAndAccuracy3",
+      "LocalLightRadiusAndAccuracy1",
+      "LocalLightRadiusAndAccuracy2",
+      "LocalLightRadiusAndAccuracy3"
+    ]
+  },
+  {
+    "conflictGroupId": "LightRadiusAndManaRegeneration",
+    "affixIds": [
+      "LightRadiusAndManaRegeneration1",
+      "LightRadiusAndManaRegeneration2",
+      "LightRadiusAndManaRegeneration3"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalAttributeRequirements",
+    "affixIds": [
+      "CorruptionReducedLocalAttributeRequirements1",
+      "CorruptionUpgradeReducedLocalAttributeRequirements1",
+      "ReducedLocalAttributeRequirements1",
+      "ReducedLocalAttributeRequirements2",
+      "ReducedLocalAttributeRequirements3",
+      "ReducedLocalAttributeRequirements4",
+      "ReducedLocalAttributeRequirements5"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalChanceToBleed",
+    "affixIds": [
+      "AxeImplicitLocalChanceToBleed1",
+      "CorruptionLocalChanceToBleed1",
+      "CorruptionUpgradeLocalChanceToBleed1"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalChanceToPoisonOnHit",
+    "affixIds": [
+      "CorruptionLocalChanceToPoison1",
+      "CorruptionUpgradeLocalChanceToPoison1"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalChaosDamage",
+    "affixIds": [
+      "CorruptionLocalAddedChaosDamage1",
+      "CorruptionLocalAddedChaosDamageTwoHand1",
+      "CorruptionUpgradeLocalAddedChaosDamage1",
+      "CorruptionUpgradeLocalAddedChaosDamageTwoHand1"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalIncreasedPhysicalDamagePercentAndAccuracyRating",
+    "affixIds": [
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating1",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating2",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating3",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating4",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating5",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating6",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating7",
+      "LocalIncreasedPhysicalDamagePercentAndAccuracyRating8"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalIncreasedSpiritAndMana",
+    "affixIds": [
+      "LocalIncreasedSpiritAndMana1",
+      "LocalIncreasedSpiritAndMana2",
+      "LocalIncreasedSpiritAndMana3",
+      "LocalIncreasedSpiritAndMana4",
+      "LocalIncreasedSpiritAndMana5",
+      "LocalIncreasedSpiritAndMana6",
+      "LocalIncreasedSpiritAndMana7"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalIncreasedSpiritPercent",
+    "affixIds": [
+      "CorruptionLocalIncreasedSpiritPercent1",
+      "CorruptionUpgradeLocalIncreasedSpiritPercent1",
+      "LocalIncreasedSpiritPercent1",
+      "LocalIncreasedSpiritPercent2",
+      "LocalIncreasedSpiritPercent3",
+      "LocalIncreasedSpiritPercent4",
+      "LocalIncreasedSpiritPercent5",
+      "LocalIncreasedSpiritPercent6",
+      "LocalIncreasedSpiritPercent7",
+      "LocalIncreasedSpiritPercent8"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalItemBenefitSocketableAsIf",
+    "affixIds": [
+      "AmuletImplicitHelmetSocket1",
+      "BeltImplicitBootsSocket1",
+      "RingImplicitGloveSocket"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalMaimOnHit",
+    "affixIds": [
+      "CorruptionLocalChanceToMaim1",
+      "CorruptionUpgradeLocalChanceToMaim1",
+      "SpearImplicitLocalChanceToMaim1"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalMaximumQuality",
+    "affixIds": [
+      "RingImplicitMaximumQualityAdditional1",
+      "RingImplicitMaximumQualityAdditional2"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalPhysicalDamagePercent",
+    "affixIds": [
+      "CorruptionLocalIncreasedPhysicalDamagePercent1",
+      "CorruptionUpgradeLocalIncreasedPhysicalDamagePercent1",
+      "LocalIncreasedPhysicalDamagePercent1",
+      "LocalIncreasedPhysicalDamagePercent2",
+      "LocalIncreasedPhysicalDamagePercent3",
+      "LocalIncreasedPhysicalDamagePercent4",
+      "LocalIncreasedPhysicalDamagePercent5",
+      "LocalIncreasedPhysicalDamagePercent6",
+      "LocalIncreasedPhysicalDamagePercent7",
+      "LocalIncreasedPhysicalDamagePercent8"
+    ]
+  },
+  {
+    "conflictGroupId": "LocalRunicWard",
+    "affixIds": [
+      "BodyArmourImplicitLocalMaximumWardUnique1"
+    ]
+  },
+  {
+    "conflictGroupId": "ManaGainedFromEnemyDeath",
+    "affixIds": [
+      "AxeImplicitManaGainedFromEnemyDeath1",
+      "CorruptionManaGainedFromEnemyDeath1",
+      "CorruptionUpgradeManaGainedFromEnemyDeath1",
+      "ManaGainedFromEnemyDeath1",
+      "ManaGainedFromEnemyDeath2",
+      "ManaGainedFromEnemyDeath3",
+      "ManaGainedFromEnemyDeath4",
+      "ManaGainedFromEnemyDeath5",
+      "ManaGainedFromEnemyDeath6",
+      "ManaGainedFromEnemyDeath7",
+      "ManaGainedFromEnemyDeath8"
+    ]
+  },
+  {
+    "conflictGroupId": "ManaLeech",
+    "affixIds": [
+      "CorruptionManaLeech1",
+      "CorruptionUpgradeManaLeech1",
+      "DaggerImplicitManaLeechLocal1",
+      "ManaLeech2",
+      "ManaLeech3",
+      "ManaLeech4",
+      "ManaLeech5",
+      "ManaLeechLocal2",
+      "ManaLeechLocal3",
+      "ManaLeechLocal4",
+      "ManaLeechLocal5"
+    ]
+  },
+  {
+    "conflictGroupId": "ManaRegeneration",
+    "affixIds": [
+      "AmuletImplicitManaRegeneration1",
+      "BodyArmourImplicitManaRegeneration1",
+      "CorruptionManaRegeneration1",
+      "CorruptionUpgradeManaRegeneration1",
+      "ManaRegeneration1",
+      "ManaRegeneration2",
+      "ManaRegeneration3",
+      "ManaRegeneration4",
+      "ManaRegeneration5",
+      "ManaRegeneration6",
+      "ManaRegenerationTwoHand1",
+      "ManaRegenerationTwoHand2",
+      "ManaRegenerationTwoHand3",
+      "ManaRegenerationTwoHand4",
+      "ManaRegenerationTwoHand5",
+      "ManaRegenerationTwoHand6",
+      "RuneseekersCallVerisiumImplicitManaRegen1"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumBlockChance",
+    "affixIds": [
+      "CorruptionMaximumBlockChance1",
+      "CorruptionUpgradeMaximumBlockChance1"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumChaosResistance",
+    "affixIds": [
+      "MaximumChaosResist1",
+      "MaximumChaosResist2_",
+      "MaximumChaosResist3"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumColdResist",
+    "affixIds": [
+      "CorruptionMaximumColdResistance1",
+      "CorruptionUpgradeMaximumColdResistance1",
+      "EventidePetalsVerisiumImplicitMaxColdRes1",
+      "MaximumColdResist1",
+      "MaximumColdResist2",
+      "MaximumColdResist3"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumEnduranceCharges",
+    "affixIds": [
+      "CorruptionMaximumEnduranceCharges1",
+      "CorruptionUpgradeMaximumEnduranceCharges1"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumFireResist",
+    "affixIds": [
+      "CorruptionMaximumFireResistance1",
+      "CorruptionUpgradeMaximumFireResistance1",
+      "MaximumFireResist1",
+      "MaximumFireResist2_",
+      "MaximumFireResist3"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumFrenzyCharges",
+    "affixIds": [
+      "CorruptionMaximumFrenzyCharges1",
+      "CorruptionUpgradeMaximumFrenzyCharges1"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumLifeIncreasePercent",
+    "affixIds": [
+      "MaximumLifeIncrease1",
+      "MaximumLifeIncrease2",
+      "MaximumLifeIncrease3",
+      "VerisiumSacrificialGarbImplicitLifePerCorruptedItem1"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumLightningResistance",
+    "affixIds": [
+      "CorruptionMaximumLightningResistance1",
+      "CorruptionUpgradeMaximumLightningResistance1",
+      "MaximumLightningResist1",
+      "MaximumLightningResist2___",
+      "MaximumLightningResist3"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumManaIncreasePercent",
+    "affixIds": [
+      "MaximumManaIncrease1",
+      "MaximumManaIncrease2",
+      "MaximumManaIncrease3",
+      "RingImplicitPercentMana"
+    ]
+  },
+  {
+    "conflictGroupId": "MaximumResistances",
+    "affixIds": [
+      "BodyArmourImplicitMaximumElementalResistance1",
+      "CorruptionMaximumElementalResistance1",
+      "CorruptionUpgradeMaximumElementalResistance1",
+      "MaximumElementalResistance1",
+      "MaximumElementalResistance2",
+      "RingImplicitMaximumResistance"
+    ]
+  },
+  {
+    "conflictGroupId": "MaxPrefixMaxSuffix",
+    "affixIds": [
+      "AmuletImplicitPrefixSuffixAllowed1",
+      "AmuletImplicitPrefixSuffixAllowed2",
+      "AmuletImplicitPrefixSuffixAllowed3",
+      "AmuletImplicitPrefixSuffixAllowed4",
+      "AmuletImplicitPrefixSuffixAllowed5",
+      "AmuletImplicitPrefixSuffixAllowed6",
+      "AmuletImplicitPrefixSuffixAllowed7",
+      "AmuletImplicitPrefixSuffixAllowed8",
+      "AmuletImplicitPrefixSuffixAllowed9",
+      "RingImplicitPrefixSuffixAllowed1",
+      "RingImplicitPrefixSuffixAllowed2",
+      "RingImplicitPrefixSuffixAllowed3",
+      "RingImplicitPrefixSuffixAllowed4"
+    ]
+  },
+  {
+    "conflictGroupId": "MeleeSplash",
+    "affixIds": [
+      "MaceImplicitSplashDamage1"
+    ]
+  },
+  {
+    "conflictGroupId": "MeleeWeaponAndUnarmedRange",
+    "affixIds": [
+      "CorruptionLocalWeaponRangeIncrease1",
+      "CorruptionUpgradeLocalWeaponRangeIncrease1",
+      "OlrovasaraVerisiumImplicitWeaponRange1",
+      "QuarterstaffWeaponRange1",
+      "SpearImplicitWeaponRange1"
+    ]
+  },
+  {
+    "conflictGroupId": "MinionDamage",
+    "affixIds": [
+      "HyssegsClawVerisiumImplicitMinionDamageUpgraded1"
+    ]
+  },
+  {
+    "conflictGroupId": "MinionLife",
+    "affixIds": [
+      "MinionLife1",
+      "MinionLife2",
+      "MinionLife3",
+      "MinionLife4",
+      "MinionLife5",
+      "MinionLife6"
+    ]
+  },
+  {
+    "conflictGroupId": "MovementVelocity",
+    "affixIds": [
+      "BodyArmourImplicitMovementVelocity1",
+      "BootsImplicitMovementSpeedVerisium1",
+      "BootsImplicitMovementSpeedVerisium2",
+      "CorruptionMovementVelocity1",
+      "CorruptionUpgradeMovementVelocity1",
+      "MovementVelocity1",
+      "MovementVelocity2",
+      "MovementVelocity3",
+      "MovementVelocity4",
+      "MovementVelocity5",
+      "MovementVelocity6"
+    ]
+  },
+  {
+    "conflictGroupId": "Nothing",
+    "affixIds": [
+      "ItemCanAlsoRollRingMods",
+      "ItemCanHaveBaseAndCatalystQuality"
+    ]
+  },
+  {
+    "conflictGroupId": "Other",
+    "affixIds": [
+      "KeeperOfTheArcVerisiumImplicit3Sockets1",
+      "MaceImplicitHasXSockets"
+    ]
+  },
+  {
+    "conflictGroupId": "PercentDamageGoesToMana",
+    "affixIds": [
+      "CorruptionDamageTakenGainedAsMana1",
+      "CorruptionUpgradeDamageTakenGainedAsMana1",
+      "DamageTakenGainedAsMana1",
+      "DamageTakenGainedAsMana2",
+      "DamageTakenGainedAsMana3",
+      "DamageTakenGainedAsMana4",
+      "DamageTakenGainedAsMana5"
+    ]
+  },
+  {
+    "conflictGroupId": "PhysicalDamage",
+    "affixIds": [
+      "AddedPhysicalDamage1",
+      "AddedPhysicalDamage2",
+      "AddedPhysicalDamage3",
+      "AddedPhysicalDamage4",
+      "AddedPhysicalDamage5",
+      "AddedPhysicalDamage6",
+      "AddedPhysicalDamage7",
+      "AddedPhysicalDamage8",
+      "AddedPhysicalDamage9",
+      "LocalAddedPhysicalDamage1",
+      "LocalAddedPhysicalDamage2",
+      "LocalAddedPhysicalDamage3",
+      "LocalAddedPhysicalDamage4",
+      "LocalAddedPhysicalDamage5",
+      "LocalAddedPhysicalDamage6",
+      "LocalAddedPhysicalDamage7",
+      "LocalAddedPhysicalDamage8",
+      "LocalAddedPhysicalDamage9",
+      "LocalAddedPhysicalDamageTwoHand1",
+      "LocalAddedPhysicalDamageTwoHand2",
+      "LocalAddedPhysicalDamageTwoHand3",
+      "LocalAddedPhysicalDamageTwoHand4",
+      "LocalAddedPhysicalDamageTwoHand5",
+      "LocalAddedPhysicalDamageTwoHand6",
+      "LocalAddedPhysicalDamageTwoHand7",
+      "LocalAddedPhysicalDamageTwoHand8",
+      "LocalAddedPhysicalDamageTwoHand9",
+      "NearbyAlliesAddedPhysicalDamage1",
+      "NearbyAlliesAddedPhysicalDamage2",
+      "NearbyAlliesAddedPhysicalDamage3",
+      "NearbyAlliesAddedPhysicalDamage4",
+      "NearbyAlliesAddedPhysicalDamage5",
+      "NearbyAlliesAddedPhysicalDamage6",
+      "NearbyAlliesAddedPhysicalDamage7",
+      "NearbyAlliesAddedPhysicalDamage8",
+      "NearbyAlliesAddedPhysicalDamage9",
+      "QuiverImplicitPhysicalDamage1",
+      "RingImplicitPhysicalDamage1",
+      "RingImplicitPhysicalDamage2"
+    ]
+  },
+  {
+    "conflictGroupId": "PresenceRadius",
+    "affixIds": [
+      "PresenceRadius1",
+      "PresenceRadius2",
+      "PresenceRadius3",
+      "PresenceRadius4"
+    ]
+  },
+  {
+    "conflictGroupId": "ProjectileRange",
+    "affixIds": [
+      "BowImplicitProjectileAttackRange1"
+    ]
+  },
+  {
+    "conflictGroupId": "ProjectileSpeed",
+    "affixIds": [
+      "CrossbowImplicitBoltSpeed1",
+      "ProjectileSpeed1",
+      "ProjectileSpeed2",
+      "ProjectileSpeed3",
+      "ProjectileSpeed4",
+      "ProjectileSpeed5",
+      "SpearImplicitLocalProjectileSpeed1"
+    ]
+  },
+  {
+    "conflictGroupId": "RageOnHit",
+    "affixIds": [
+      "AxeImplicitRageOnHit1",
+      "CorruptionLocalRageOnHit1",
+      "CorruptionUpgradeLocalRageOnHit1"
+    ]
+  },
+  {
+    "conflictGroupId": "ReducedAilmentDuration",
+    "affixIds": [
+      "ReducedBleedDuration1",
+      "ReducedBleedDuration2",
+      "ReducedBleedDuration3",
+      "ReducedBleedDuration4",
+      "ReducedBleedDuration5",
+      "ReducedBurnDuration1",
+      "ReducedBurnDuration2",
+      "ReducedBurnDuration3",
+      "ReducedBurnDuration4",
+      "ReducedBurnDuration5",
+      "ReducedChillDuration1",
+      "ReducedChillDuration2",
+      "ReducedChillDuration3",
+      "ReducedChillDuration4",
+      "ReducedChillDuration5",
+      "ReducedFreezeDuration1",
+      "ReducedFreezeDuration2",
+      "ReducedFreezeDuration3",
+      "ReducedFreezeDuration4",
+      "ReducedFreezeDuration5",
+      "ReducedPoisonDuration1",
+      "ReducedPoisonDuration2",
+      "ReducedPoisonDuration3",
+      "ReducedPoisonDuration4",
+      "ReducedPoisonDuration5",
+      "ReducedShockDuration1",
+      "ReducedShockDuration2",
+      "ReducedShockDuration3",
+      "ReducedShockDuration4",
+      "ReducedShockDuration5"
+    ]
+  },
+  {
+    "conflictGroupId": "ReducedCriticalStrikeDamageTaken",
+    "affixIds": [
+      "BodyArmourImplicitReducedCriticalStrikeDamageTaken1"
+    ]
+  },
+  {
+    "conflictGroupId": "ReducedExtraDamageFromCrits",
+    "affixIds": [
+      "ReducedExtraDamageFromCrits1___",
+      "ReducedExtraDamageFromCrits2__",
+      "ReducedExtraDamageFromCrits3",
+      "ReducedExtraDamageFromCrits4__",
+      "ReducedExtraDamageFromCrits5"
+    ]
+  },
+  {
+    "conflictGroupId": "ReducedPhysicalDamageTaken",
+    "affixIds": [
+      "AdditionalPhysicalDamageReduction1",
+      "AdditionalPhysicalDamageReduction2",
+      "AdditionalPhysicalDamageReduction3",
+      "AdditionalPhysicalDamageReduction4",
+      "AdditionalPhysicalDamageReduction5_",
+      "CorruptionAdditionalPhysicalDamageReduction1",
+      "CorruptionUpgradeAdditionalPhysicalDamageReduction1"
+    ]
+  },
+  {
+    "conflictGroupId": "RunicWardOverflow",
+    "affixIds": [
+      "WaistgateVerisiumImplicitRunicWardCanOverflow1"
+    ]
+  },
+  {
+    "conflictGroupId": "RunicWardPercent",
+    "affixIds": [
+      "EventidePetalsVerisiumImplicitRunicWardPercent1"
+    ]
+  },
+  {
+    "conflictGroupId": "SelfCurseDuration",
+    "affixIds": [
+      "KeeperOfTheArcVerisiumImplicitUnaffectedbyCurses1"
+    ]
+  },
+  {
+    "conflictGroupId": "SelfStatusAilmentDuration",
+    "affixIds": [
+      "BodyArmourImplicitSelfStatusAilmentDuration1"
+    ]
+  },
+  {
+    "conflictGroupId": "ShockChanceIncrease",
+    "affixIds": [
+      "CorruptionShockChanceIncrease1",
+      "ShockChanceIncrease1",
+      "ShockChanceIncrease2",
+      "ShockChanceIncrease3",
+      "ShockChanceIncrease4",
+      "ShockChanceIncrease5"
+    ]
+  },
+  {
+    "conflictGroupId": "ShockEffect",
+    "affixIds": [
+      "CorruptionUpgradeShockChanceIncrease1"
+    ]
+  },
+  {
+    "conflictGroupId": "SkillLifeCost",
+    "affixIds": [
+      "DaggerImplicitSpellLifeCostPercent1"
+    ]
+  },
+  {
+    "conflictGroupId": "SlowPotency",
+    "affixIds": [
+      "BodyArmourImplicitSlowPotency1",
+      "CorruptionSlowPotency1",
+      "CorruptionUpgradeSlowPotency1"
+    ]
+  },
+  {
+    "conflictGroupId": "SpellCriticalStrikeChanceIncrease",
+    "affixIds": [
+      "CorruptionSpellCriticalStrikeChance1",
+      "CorruptionUpgradeSpellCriticalStrikeChance1",
+      "SpellCriticalStrikeChance1",
+      "SpellCriticalStrikeChance2",
+      "SpellCriticalStrikeChance3",
+      "SpellCriticalStrikeChance4",
+      "SpellCriticalStrikeChance5",
+      "SpellCriticalStrikeChance6_",
+      "SpellCriticalStrikeChanceTwoHand1",
+      "SpellCriticalStrikeChanceTwoHand2",
+      "SpellCriticalStrikeChanceTwoHand3",
+      "SpellCriticalStrikeChanceTwoHand4",
+      "SpellCriticalStrikeChanceTwoHand5",
+      "SpellCriticalStrikeChanceTwoHand6"
+    ]
+  },
+  {
+    "conflictGroupId": "SpellDamage",
+    "affixIds": [
+      "SpellDamage1",
+      "SpellDamage2",
+      "SpellDamage3",
+      "SpellDamage4",
+      "SpellDamage5",
+      "SpellDamage6"
+    ]
+  },
+  {
+    "conflictGroupId": "SpellDamageAndMana",
+    "affixIds": [
+      "SpellDamageAndManaOnTwoHandWeapon1",
+      "SpellDamageAndManaOnTwoHandWeapon2",
+      "SpellDamageAndManaOnTwoHandWeapon3",
+      "SpellDamageAndManaOnTwoHandWeapon4",
+      "SpellDamageAndManaOnTwoHandWeapon5",
+      "SpellDamageAndManaOnTwoHandWeapon6",
+      "SpellDamageAndManaOnTwoHandWeapon7",
+      "SpellDamageAndManaOnWeapon1",
+      "SpellDamageAndManaOnWeapon2",
+      "SpellDamageAndManaOnWeapon3",
+      "SpellDamageAndManaOnWeapon4",
+      "SpellDamageAndManaOnWeapon5",
+      "SpellDamageAndManaOnWeapon6",
+      "SpellDamageAndManaOnWeapon7"
+    ]
+  },
+  {
+    "conflictGroupId": "SpellsFire2AdditionalProjectileChance",
+    "affixIds": [
+      "RuneseekersCallVerisiumImplicitChanceForTwoProjectiles1"
+    ]
+  },
+  {
+    "conflictGroupId": "StormBladeImplicitLocalLightningDamage",
+    "affixIds": [
+      "StormBladeImplicitLocalLightningDamage_1"
+    ]
+  },
+  {
+    "conflictGroupId": "Strength",
+    "affixIds": [
+      "AmuletImplicitStrength1",
+      "BeltImplicitStrength1",
+      "CorruptionStrength1",
+      "CorruptionUpgradeJewelStrength1",
+      "CorruptionUpgradeStrength1",
+      "Strength1",
+      "Strength2",
+      "Strength3",
+      "Strength4",
+      "Strength5",
+      "Strength6",
+      "Strength7",
+      "Strength8",
+      "Strength9"
+    ]
+  },
+  {
+    "conflictGroupId": "StunDamageIncrease",
+    "affixIds": [
+      "CorruptionLocalStunDamageIncrease1",
+      "CorruptionUpgradeLocalStunDamageIncrease1",
+      "MaceImplicitStunDamageIncrease1",
+      "MaceImplicitStunDamageIncrease2",
+      "QuiverImplicitStunThresholdReduction1",
+      "StunDamageIncrease1",
+      "StunDamageIncrease2",
+      "StunDamageIncrease3",
+      "StunDamageIncrease4",
+      "StunDamageIncrease5",
+      "StunDamageIncrease6"
+    ]
+  },
+  {
+    "conflictGroupId": "StunDurationIncreasePercent",
+    "affixIds": [
+      "StunDuration1",
+      "StunDuration2",
+      "StunDuration3",
+      "StunDuration4",
+      "StunDuration5",
+      "StunDuration6"
+    ]
+  },
+  {
+    "conflictGroupId": "StunThreshold",
+    "affixIds": [
+      "StunThreshold1",
+      "StunThreshold10",
+      "StunThreshold11",
+      "StunThreshold2",
+      "StunThreshold3",
+      "StunThreshold4",
+      "StunThreshold5",
+      "StunThreshold6",
+      "StunThreshold7",
+      "StunThreshold8",
+      "StunThreshold9"
+    ]
+  },
+  {
+    "conflictGroupId": "Thorns",
+    "affixIds": [
+      "AttackerTakesDamage1",
+      "AttackerTakesDamage2",
+      "AttackerTakesDamage3",
+      "AttackerTakesDamage4",
+      "AttackerTakesDamage5",
+      "AttackerTakesDamage6",
+      "AttackerTakesDamage7",
+      "CorruptionThornsDamageIncrease1",
+      "CorruptionUpgradeThornsDamageIncrease1"
+    ]
+  },
+  {
+    "conflictGroupId": "TrapAndMineThrowSpeed",
+    "affixIds": [
+      "LocalTrapThrowSpeed1",
+      "LocalTrapThrowSpeed2",
+      "LocalTrapThrowSpeed3",
+      "LocalTrapThrowSpeed4",
+      "LocalTrapThrowSpeed5",
+      "LocalTrapThrowSpeed6",
+      "LocalTrapThrowSpeed7"
+    ]
+  },
+  {
+    "conflictGroupId": "TrapCooldownRecovery",
+    "affixIds": [
+      "TrapImplicitCooldownRecovery1"
+    ]
+  },
+  {
+    "conflictGroupId": "TrapDamageAndMana",
+    "affixIds": [
+      "TrapDamageAndManaOnWeapon1",
+      "TrapDamageAndManaOnWeapon2",
+      "TrapDamageAndManaOnWeapon3",
+      "TrapDamageAndManaOnWeapon4",
+      "TrapDamageAndManaOnWeapon5",
+      "TrapDamageAndManaOnWeapon6",
+      "TrapDamageAndManaOnWeapon7"
+    ]
+  },
+  {
+    "conflictGroupId": "VerisiumChargeGeneration",
+    "affixIds": [
+      "KeeperOfTheArcVerisiumImplicitVerisiumCharges1"
+    ]
+  },
+  {
+    "conflictGroupId": "WarcriesExertAnAdditionalAttack",
+    "affixIds": [
+      "MaceImplicitWarcryExert1"
+    ]
+  },
+  {
+    "conflictGroupId": "WardRegenerationRate",
+    "affixIds": [
+      "BodyArmourImplicitWardRegen1",
+      "KeeperOfTheArcVerisiumImplicitWardRegen1",
+      "WaistgateVerisiumImplicitRunicWardRegeneration1"
+    ]
+  },
+  {
+    "conflictGroupId": "WeaponCasterDamagePrefix",
+    "affixIds": [
+      "CorruptionSpellDamageOnTwoHandWeapon1",
+      "CorruptionSpellDamageOnWeapon1",
+      "CorruptionUpgradeSpellDamageOnTwoHandWeapon1",
+      "CorruptionUpgradeSpellDamageOnWeapon1",
+      "SpellDamageOnTwoHandWeapon1",
+      "SpellDamageOnTwoHandWeapon2",
+      "SpellDamageOnTwoHandWeapon3",
+      "SpellDamageOnTwoHandWeapon4",
+      "SpellDamageOnTwoHandWeapon5",
+      "SpellDamageOnTwoHandWeapon6",
+      "SpellDamageOnTwoHandWeapon7",
+      "SpellDamageOnTwoHandWeapon8",
+      "SpellDamageOnWeapon1",
+      "SpellDamageOnWeapon2",
+      "SpellDamageOnWeapon3",
+      "SpellDamageOnWeapon4",
+      "SpellDamageOnWeapon5",
+      "SpellDamageOnWeapon6",
+      "SpellDamageOnWeapon7",
+      "SpellDamageOnWeapon8_",
+      "TrapDamageOnWeapon1",
+      "TrapDamageOnWeapon2",
+      "TrapDamageOnWeapon3",
+      "TrapDamageOnWeapon4",
+      "TrapDamageOnWeapon5",
+      "TrapDamageOnWeapon6",
+      "TrapDamageOnWeapon7",
+      "TrapDamageOnWeapon8"
+    ]
+  },
+  {
+    "conflictGroupId": "WeaponDamageTypePrefix",
+    "affixIds": [
+      "ChaosDamagePrefixOnTwoHandWeapon1",
+      "ChaosDamagePrefixOnTwoHandWeapon2",
+      "ChaosDamagePrefixOnTwoHandWeapon3",
+      "ChaosDamagePrefixOnTwoHandWeapon4",
+      "ChaosDamagePrefixOnTwoHandWeapon5",
+      "ChaosDamagePrefixOnTwoHandWeapon6",
+      "ChaosDamagePrefixOnTwoHandWeapon7",
+      "ChaosDamagePrefixOnTwoHandWeapon8",
+      "ChaosDamagePrefixOnWeapon1",
+      "ChaosDamagePrefixOnWeapon2",
+      "ChaosDamagePrefixOnWeapon3",
+      "ChaosDamagePrefixOnWeapon4",
+      "ChaosDamagePrefixOnWeapon5",
+      "ChaosDamagePrefixOnWeapon6",
+      "ChaosDamagePrefixOnWeapon7",
+      "ChaosDamagePrefixOnWeapon8",
+      "ColdDamagePrefixOnTwoHandWeapon1",
+      "ColdDamagePrefixOnTwoHandWeapon2",
+      "ColdDamagePrefixOnTwoHandWeapon3",
+      "ColdDamagePrefixOnTwoHandWeapon4_",
+      "ColdDamagePrefixOnTwoHandWeapon5_",
+      "ColdDamagePrefixOnTwoHandWeapon6",
+      "ColdDamagePrefixOnTwoHandWeapon7",
+      "ColdDamagePrefixOnTwoHandWeapon8",
+      "ColdDamagePrefixOnWeapon1",
+      "ColdDamagePrefixOnWeapon2",
+      "ColdDamagePrefixOnWeapon3_",
+      "ColdDamagePrefixOnWeapon4",
+      "ColdDamagePrefixOnWeapon5_",
+      "ColdDamagePrefixOnWeapon6",
+      "ColdDamagePrefixOnWeapon7",
+      "ColdDamagePrefixOnWeapon8",
+      "FireDamagePrefixOnTwoHandWeapon1",
+      "FireDamagePrefixOnTwoHandWeapon2___",
+      "FireDamagePrefixOnTwoHandWeapon3",
+      "FireDamagePrefixOnTwoHandWeapon4",
+      "FireDamagePrefixOnTwoHandWeapon5",
+      "FireDamagePrefixOnTwoHandWeapon6",
+      "FireDamagePrefixOnTwoHandWeapon7",
+      "FireDamagePrefixOnTwoHandWeapon8_",
+      "FireDamagePrefixOnWeapon1",
+      "FireDamagePrefixOnWeapon2",
+      "FireDamagePrefixOnWeapon3",
+      "FireDamagePrefixOnWeapon4",
+      "FireDamagePrefixOnWeapon5_",
+      "FireDamagePrefixOnWeapon6",
+      "FireDamagePrefixOnWeapon7_",
+      "FireDamagePrefixOnWeapon8_",
+      "LightningDamagePrefixOnTwoHandWeapon1",
+      "LightningDamagePrefixOnTwoHandWeapon2",
+      "LightningDamagePrefixOnTwoHandWeapon3",
+      "LightningDamagePrefixOnTwoHandWeapon4",
+      "LightningDamagePrefixOnTwoHandWeapon5",
+      "LightningDamagePrefixOnTwoHandWeapon6",
+      "LightningDamagePrefixOnTwoHandWeapon7",
+      "LightningDamagePrefixOnTwoHandWeapon8",
+      "LightningDamagePrefixOnWeapon1_",
+      "LightningDamagePrefixOnWeapon2",
+      "LightningDamagePrefixOnWeapon3",
+      "LightningDamagePrefixOnWeapon4",
+      "LightningDamagePrefixOnWeapon5",
+      "LightningDamagePrefixOnWeapon6",
+      "LightningDamagePrefixOnWeapon7",
+      "LightningDamagePrefixOnWeapon8",
+      "PhysicalDamagePrefixOnTwoHandWeapon1",
+      "PhysicalDamagePrefixOnTwoHandWeapon2",
+      "PhysicalDamagePrefixOnTwoHandWeapon3",
+      "PhysicalDamagePrefixOnTwoHandWeapon4",
+      "PhysicalDamagePrefixOnTwoHandWeapon5",
+      "PhysicalDamagePrefixOnTwoHandWeapon6",
+      "PhysicalDamagePrefixOnTwoHandWeapon7",
+      "PhysicalDamagePrefixOnTwoHandWeapon8",
+      "PhysicalDamagePrefixOnWeapon1",
+      "PhysicalDamagePrefixOnWeapon2",
+      "PhysicalDamagePrefixOnWeapon3",
+      "PhysicalDamagePrefixOnWeapon4",
+      "PhysicalDamagePrefixOnWeapon5",
+      "PhysicalDamagePrefixOnWeapon6",
+      "PhysicalDamagePrefixOnWeapon7",
+      "PhysicalDamagePrefixOnWeapon8"
+    ]
+  },
+  {
+    "conflictGroupId": "WeaponImplicit",
+    "affixIds": [
+      "TalismanImplicitMarkEffect1",
+      "TalismanImplicitMaximumRage1",
+      "TalismanImplicitMinionDamage1"
+    ]
+  },
+  {
+    "conflictGroupId": "WeaponImplicitDamageType",
+    "affixIds": [
+      "AxeImplicitFireDamage1",
+      "BowImplicitBaseChaosDamage1",
+      "BowImplicitBaseChaosDamage2",
+      "BowImplicitBaseChaosDamage3",
+      "BowImplicitChaosDamage1",
+      "BrainRattlerVerisiumImplicitLightningConvert1",
+      "BrutusLeadSprinklerVerisiumImplicitLocalFireConvert1",
+      "CrossbowImplicitColdDamageUnique1",
+      "CrossbowImplicitLightningDamageUnique1",
+      "DaggerImplicitColdDamage1",
+      "FlailImplicitColdDamage1",
+      "FrostBreathVerisiumImplicitLocalColdConvert1",
+      "GatecrasherVerisiumImplicitLocalLightningConvert1",
+      "MaceImplicitFireDamage1",
+      "MjolnerVerisiumImplicitLocalLightningConvert1",
+      "OlrovasaraVerisiumWeaponImplicitDamageIsCold1",
+      "PillarOfCagedGodVerisiumImplicitLocalColdConvert1",
+      "QuarterstaffImplicitBaseLightningDamage1",
+      "QuarterstaffImplicitBaseLightningDamage2",
+      "QuarterstaffImplicitBaseLightningDamage3",
+      "QuarterstaffImplicitColdDamageUnique1",
+      "QuarterstaffImplicitFireDamageUnique1",
+      "QuarterstaffImplicitLightningDamageUnique1",
+      "SaithaVerisiumImplicitLocalFireConvert1",
+      "SpearImplicitLightningDamage1",
+      "SpearImplicitLightningDamageUnique1",
+      "TalismanImplicitFireDamageAndFlammability1",
+      "TalismanImplicitLightningDamageAndShockMagnitude1",
+      "TwistedEmpyreanVerisiumImplicitLocalColdConvert1"
+    ]
+  }
+]

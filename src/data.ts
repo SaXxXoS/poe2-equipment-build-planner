@@ -18,6 +18,7 @@ import {
   type UniqueClusterJewelDefinition,
 } from './domain'
 import classRegistry from '../generated/poe2-tree/class-registry.json'
+import { technicalAffixes } from './affixes/registry'
 
 export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
 export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; classStartNodeId?:string|null; ascendancies:TreeAscendancyRegistryEntry[] }
@@ -57,10 +58,16 @@ const modifierSeed: [string, string, ModifierCategory, ModifierDefinition['unit'
   ['modifier-strength', 'Stärke', 'attribute', 'flat', 'global', []], ['modifier-dexterity', 'Geschick', 'attribute', 'flat', 'global', []],
   ['modifier-intelligence', 'Intelligenz', 'attribute', 'flat', 'global', []],
 ]
-export const modifierDefinitions: ModifierDefinition[] = modifierSeed.map(([id, name, category, unit, scope, tags]) => ({
+const legacyModifierDefinitions: ModifierDefinition[] = modifierSeed.map(([id, name, category, unit, scope, tags]) => ({
   ...placeholderMetadata(id, name, tags), category, valueType: 'number', unit, minValue: 0, maxValue: 200,
   scope, relevantTags: tags, allowedEquipmentSlotIds: equipmentSlotDefinitions.map(slot => slot.id),
 }))
+export const modifierDefinitions: ModifierDefinition[] = legacyModifierDefinitions.concat(technicalAffixes.map(affix => ({
+  ...placeholderMetadata(affix.affixId, 'Deutsche Übersetzung noch nicht verfügbar'), category: 'utility' as const,
+  valueType: affix.statLines.length > 1 ? 'range' as const : 'number' as const, unit: affix.statLines.some(line => line.isPercent) ? 'percent' as const : 'flat' as const,
+  minValue: affix.statLines[0]?.minimum, maxValue: affix.statLines[0]?.maximum, scope: affix.isLocal ? 'local' as const : 'global' as const,
+  relevantTags: [], allowedEquipmentSlotIds: equipmentSlotDefinitions.map(slot => slot.id),
+})))
 
 const skillSeed = [
   ['skill-lightning-arrow', 'Blitzpfeil', ['attack', 'projectile', 'lightning']], ['skill-ball-lightning', 'Kugelblitz', ['spell', 'projectile', 'lightning']],

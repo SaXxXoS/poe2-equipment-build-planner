@@ -46,3 +46,6 @@ Prüfdatum: 20. Juli 2026. Kurzzusammenfassungen, keine Vollkopien. Abruf diente
 ## Erforderliche externe Klärung
 
 Vor einem echten Import wird eine schriftliche, quellen- und kategorienbezogene Bestätigung benötigt, die mindestens automatisierten Abruf, lokale Speicherung, normalisierte/abgeleitete Speicherung, Veröffentlichung im öffentlichen Repository/Pages-Artefakt, Attribution, kommerzielle Einordnung und Mediennutzung beantwortet. Für GGG ist der in den Terms genannte Supportkanal der naheliegende Klärungsweg; dieses Projekt hat keine Anfrage versendet.
+# RePoE-Affiximport 5M.1
+
+Produktiver technischer Pin: `repoe-fork/poe2` Version `4.5.4.4.4`, Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`; Parserreferenz `repoe-fork/repoe` Commit `14e3edc89ed705bd4e4eda5c8135756431c76e81`. Einzeldateien und SHA-256 sind im lokalen `generated/poe2-affixes/affix-source-manifest.json` festgehalten.

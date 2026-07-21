@@ -161,3 +161,6 @@ React hebt den Compact-Plan über einen reinen View-Adapter in den bestehenden B
 ## Reiner Tree-Display-Context aus 5D.2
 
 `App` reicht nur vorhandene Charakter- und Aszendenz-IDs an `PassiveTree`. Eine kontrollierte UI-Tabelle löst diese in offizielle Klassenindizes und Aszendenz-IDs auf. Dieser Pfad importiert keine Engine, startet keine Analyse und verändert weder `BuildInput` noch `CharacterConfiguration`. Das Aszendenz-Inset ist daher keine Umsetzung von Aufgabe 5I.
+# 5M.1 Equipment-Affixe
+
+Der Equipment-Dialog liest ausschließlich das zentrale technische Register. Itemklasse, Item Level, Affixseite, Tier, Statwerte und Konflikte liegen im gespeicherten Equipment und damit in der vorhandenen Eingabesignatur; Änderungen werden stale, Dialogöffnung/-abbruch nicht. Legacy-IDs werden ohne sichere technische ID nicht textbasiert migriert.

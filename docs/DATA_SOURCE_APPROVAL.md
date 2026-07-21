@@ -113,3 +113,6 @@ Direkt abbildbar sind grundsätzlich technische IDs, Namen, einfache Tags, Zahle
 Es wird **keine echte Importaufgabe** empfohlen. Nächster Schritt ist eine externe, schriftliche Rechteklärung – bevorzugt zuerst für den offiziellen GGG-Passivbaumexport ohne Assets – zu automatisiertem Release-Abruf, lokaler Speicherung, normalisierten Ableitungen, öffentlicher Repository-/Pages-Weiterverteilung, Attribution und kommerzieller Einordnung. Erst bei positiver dokumentierter Antwort wäre Aufgabe 5C eng auf `passive-nodes`, `passive-connections` und `jewel-sockets` eines fest gepinnten Releases zu begrenzen.
 
 Priorität nach Freigabe: (1) offizieller Passivbaum ohne Medien, (2) Klassen/Aszendenzen, (3) Skills/Supports/Tags, (4) Itemklassen/Waffen/Slots, (5) Modifier/Affixe/Tiers/Anforderungen, (6) Juwele/Uniques, (7) lokalisierte Namen, (8) Medien zuletzt und nur separat freigegeben.
+# 5M.1-Umsetzung
+
+Der Scope `poe2-technical-affix-data-for-build-planner` wird seit 5M.1 ausschließlich für die minimierten, manifestierten Ausgaben unter `generated/poe2-affixes/` genutzt. Die Entscheidung bleibt `conditionally-approved`; sie umfasst weder Rohspiegel noch Medien, PoE2DB, Skills, Supports, Uniques oder deutsche Display-Namen.

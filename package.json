@@ -1,1 +1,23 @@
-{"name":"poe2-equipment-build-planner","private":true,"version":"0.3.0","type":"module","scripts":{"dev":"vite","build":"tsc -b && vite build --config vite.config.ts","build:pages":"tsc -b && vite build --config vite.config.ts","lint":"eslint .","typecheck":"tsc -b --pretty false","test":"vitest run --exclude src/import/fixture-cli.test.ts","import:fixture":"vitest run src/import/fixture-cli.test.ts --reporter=verbose","import:poe2-tree":"node scripts/poe2-tree-import.mjs import","import:poe2-tree-assets":"node scripts/poe2-tree-asset-import.mjs","check:poe2-tree-update":"node scripts/poe2-tree-import.mjs check"},"dependencies":{"@eslint/js":"latest","@vitejs/plugin-react":"latest","vite":"latest","typescript":"^5.9.3","react":"latest","react-dom":"latest","@types/react":"latest","@types/react-dom":"latest","eslint":"latest","typescript-eslint":"latest","eslint-plugin-react-hooks":"latest","eslint-plugin-react-refresh":"latest"},"devDependencies":{"vitest":"^3.2.4"}}
+{
+  "name": "poe2-equipment-build-planner",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build --config vite.config.ts",
+    "build:pages": "tsc -b && vite build --config vite.config.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc -b --pretty false",
+    "test": "vitest run --exclude src/import/fixture-cli.test.ts",
+    "import:fixture": "vitest run src/import/fixture-cli.test.ts --reporter=verbose",
+    "import:poe2-tree": "node scripts/poe2-tree-import.mjs import",
+    "import:poe2-tree-assets": "node scripts/poe2-tree-asset-import.mjs",
+    "import:poe2-affixes": "node scripts/poe2-affix-import.mjs",
+    "check:poe2-tree-update": "node scripts/poe2-tree-import.mjs check"
+  },
+  "dependencies": {
+    "@eslint/js": "latest", "@vitejs/plugin-react": "latest", "vite": "latest", "typescript": "^5.9.3", "react": "latest", "react-dom": "latest", "@types/react": "latest", "@types/react-dom": "latest", "eslint": "latest", "typescript-eslint": "latest", "eslint-plugin-react-hooks": "latest", "eslint-plugin-react-refresh": "latest"
+  },
+  "devDependencies": { "vitest": "^3.2.4" }
+}

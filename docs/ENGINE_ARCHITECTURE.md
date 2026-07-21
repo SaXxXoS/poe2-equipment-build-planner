@@ -258,3 +258,6 @@ Touchkamera, visuelle Charakterzuordnung und Aszendenz-Inset liegen vollständig
 # UI-Darstellungsgrenze 5L
 
 Der reale Compact-Plan fließt nach dem Worker ausschließlich durch `buildPassivePlanVisualization` in den Baumrenderer. Diese Grenze validiert und klassifiziert IDs, bewertet aber nichts neu. Targeting, Pathfinder, Planner, Pipeline und Haupt-Orchestrator importieren keine React- oder Baumdarstellungsmodule. Kamera, Rollen und Overlays sind Viewzustand und kein Engineinput. Keine automatische Budgetableitung; keine Affix-, Skill- oder Supportdatenänderung. Aufgabe 5M nicht begonnen.
+# Technische Affixgrenze 5M.1
+
+Die UI erzeugt ein normalisiertes `AppliedModifier` mit technischer Mod-/Statidentität und real eingegebenen Werten. BuildProfile und bestehender Worker transportieren dieses Objekt unverändert zum Equipment Analyzer; sichtbare Fallbacktexte entscheiden keine Engine-Regel. Die synthetische Bewertungssemantik ist weiterhin begrenzt und wird durch 5M.1 nicht als reale vollständige Berechnung ausgegeben.

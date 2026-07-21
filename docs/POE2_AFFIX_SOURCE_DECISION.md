@@ -79,3 +79,7 @@ Alle erzeugten Affixdaten müssen unter einem eigenen `generated/affixes/`-Berei
 **Ja, begrenzt:** Der technische Importteil von 5M darf mit dem oben gepinnten RePoE-PoE2-Export begonnen werden, sofern der Importer alle Bedingungen nachweislich erfüllt. **Nein für ungeprüfte deutsche Produktivtexte:** PoE2DB-Import, automatische Spiegelung und eine Freigabe von `display-names` bleiben gesperrt. Nicht eindeutig zugeordnete Texte müssen `translation-missing` bleiben.
 
 5M.0 importiert keine Affixdaten, verändert keine UI oder Engine und beginnt weder 5M praktisch noch Aufgabe 5N.
+
+## Umsetzung 5M.1
+
+Der bedingt freigegebene Scope ist nun technisch umgesetzt. Manifest, Hashes, Coverage, Grenzen und Updateprozess stehen in `docs/POE2_REAL_AFFIX_TECHNICAL_IMPORT.md`. Die Freigabe bleibt eng, widerrufbar und versionsgebunden; Display-Namen bleiben blockiert und 5M.2 ist offen.

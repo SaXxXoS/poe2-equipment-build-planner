@@ -494,6 +494,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 
 ## 14. Arbeitsregeln des Projekts
 
+## Aufgabe 5M.1 – technischer Affiximport (22. Juli 2026)
+
+- RePoE-PoE2 `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Parser `14e3edc89ed705bd4e4eda5c8135756431c76e81`, ist ausschließlich im bedingten Scope `poe2-technical-affix-data-for-build-planner` importiert.
+- Der minimierte Bestand enthält 1.828 Mods, 445 Familien, 1.828 Tiers, 2.265 Statzeilen, 416 Mehrzeiler/Hybride, 29 Itemklassen und 201 Konfliktgruppen; kein Rohdatenspiegel und keine PoE2DB-Daten.
+- UI-Auswahl verwendet technische Itemklasse, Prefix/Suffix, Item Level, Wertebereiche und Konfliktgruppen. Alle sichtbaren technischen Fallbacks sind `translation-missing` und als „Deutsche Übersetzung noch nicht verfügbar“ gekennzeichnet.
+- Offene Aufgabe 5M.2: ID-basierte deutsche Affixlokalisierung und vollständige deutsche Affixsuche. Ebenfalls offen bleiben vollständige reale Skill-/Supportdaten, deutsche Skill-/Supporttexte, echte vollständige Buildabnahme, Buildvergleich, Fotoerkennung und Designoptimierung.
+- Aufgabe 5M insgesamt ist noch nicht abgeschlossen. 5N wurde nicht begonnen. Physische iPhone-Abnahme des 5M.1-Stands ist offen.
+
 - Ausschließlich im verbundenen Repository arbeiten; `main` ist der Standardbranch.
 - Quellcode ist die maßgebliche Wahrheit; keine erfundenen Funktionen oder Tests dokumentieren.
 - Kein Routing, Backend, Datenbank, Login, externe API, PoE2DB-Import, echte DPS-/Optimierungs-Engine oder echter Skilltree ohne ausdrückliche Folgeanweisung.

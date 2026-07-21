@@ -1,7 +1,7 @@
 import type { CharacterConfiguration,EquipmentEntry,SkillSetup } from '../../domain'
 import type { EngineRequest } from '../../engine/common/types'
 import type { AnalyzePayload,InitializePayload } from '../../runtime/real-passive-worker'
-import { clusterJewelDefinitions,jewelDefinitions,modifierDefinitions,skillDefinitions,supportDefinitions,treeClassRegistry,uniqueClusterJewelDefinitions } from '../../data'
+import { clusterJewelDefinitions,jewelDefinitions,modifierDefinitions as allModifierDefinitions,skillDefinitions,supportDefinitions,treeClassRegistry,uniqueClusterJewelDefinitions } from '../../data'
 
 export const REAL_PASSIVE_UI_SOURCE_VERSION='0.5.2'
 export const REAL_PASSIVE_UI_TREE_IDENTITY='fnv1a32-bedf8404'
@@ -19,6 +19,8 @@ export function buildRealPassiveWorkerRequest(input:PassiveAnalysisUiInput,reque
  if(!registry?.selectableInCurrentUi||!registry.classStartNodeId)errors.push('class-start-unavailable')
  if(!input.character.classId||input.character.level<1||input.character.level>100)errors.push('invalid-character-profile')
  if(errors.length||!registry?.classStartNodeId)return{signature,errors}
+ const referencedModifierIds=new Set(input.equipment.flatMap(entry=>entry.modifierValues.map(value=>value.modifierId)))
+ const modifierDefinitions=allModifierDefinitions.filter(value=>referencedModifierIds.has(value.id))
  const request:EngineRequest={input:{character:{...input.character},equipment:structuredClone(input.equipment),skillSetups:structuredClone(input.setups),selectedJewels:[],goalProfile:input.character.goalProfile},candidates:{skills:structuredClone(skillDefinitions),supports:structuredClone(supportDefinitions),passives:[],jewels:structuredClone([...jewelDefinitions,...clusterJewelDefinitions,...uniqueClusterJewelDefinitions]),uniques:[]}}
  return{signature,errors,classStartNodeId:registry.classStartNodeId,payload:{request,modifiers:structuredClone(modifierDefinitions),planning:{requestId,sourceVersion:REAL_PASSIVE_UI_SOURCE_VERSION,pointBudget:input.pointBudget,characterContext:{classId:String(registry.officialClassIndex),ascendancyId:registry.ascendancies.find(value=>value.ascendancyId===input.character.ascendancyId)?.officialExportId,characterLevel:input.character.level},planningMode:input.planningMode,targetProfile:input.character.goalProfile,requiredTargetNodeIds:[],blockedNodeIds:[],excludedTargetNodeIds:[],candidatePoolLimit:50,maximumSelectedTargets:20,minimumTargetScore:0,minimumConfidence:'low',allowKeystoneReoptimization:false}}}
 }

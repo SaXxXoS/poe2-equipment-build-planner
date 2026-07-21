@@ -1,0 +1,30 @@
+{
+  "importFormatVersion": 1,
+  "counts": {
+    "total": 1828,
+    "prefixes": 816,
+    "suffixes": 568,
+    "implicits": 231,
+    "special": 213,
+    "unknown": 0,
+    "families": 445,
+    "tiers": 1828,
+    "statLines": 2265,
+    "hybrids": 416,
+    "itemClasses": 29,
+    "conflictGroups": 201,
+    "translationMissing": 1828,
+    "orphanReferences": 0
+  },
+  "warnings": [],
+  "excludedCategories": [
+    "images",
+    "audio",
+    "media",
+    "skills",
+    "supports",
+    "uniques",
+    "display-names",
+    "crafting-probabilities"
+  ]
+}

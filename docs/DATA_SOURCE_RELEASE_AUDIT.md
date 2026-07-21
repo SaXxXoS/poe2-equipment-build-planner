@@ -114,3 +114,6 @@ Die belegbasierte Prüfung ist in `docs/DATA_SOURCE_APPROVAL.md` und `docs/DATA_
 - Eine zentrale, netzwerkfreie Freigabesperre unter `src/import/approval.ts` verhindert echte Importe ohne passende Quellen-/Kategoriefreigabe und erfüllte Bedingungen; Fixtures bleiben möglich.
 
 **Gesamtstatus echter PoE2-Daten bleibt `blocked`.** Für Aufgabe 5C wird noch kein Import empfohlen. Benötigt wird zuerst eine schriftliche, kategorienbezogene Freigabe, idealerweise für den offiziellen Passivbaumexport ohne Assets, einschließlich Abruf, Speicherung, Ableitungen, öffentlicher Weiterverteilung und Attribution.
+# 5M.1 Affixstand
+
+Der aktuelle technische Affixstand ist exakt `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`. Ein Versions-, Commit- oder Schemawechsel wird nicht automatisch aktiviert, sondern verlangt Diffbericht, neue Hashes, Tests und manuelle Freigabe.
