@@ -1,5 +1,20 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Ergänzung Aufgabe 5M.0 (22. Juli 2026)
+
+- RePoE-PoE2-Export: <https://github.com/repoe-fork/poe2/tree/b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c>, Version `4.5.4.4.4`
+- RePoE-Parser und Schema: <https://github.com/repoe-fork/repoe/tree/14e3edc89ed705bd4e4eda5c8135756431c76e81>
+- RePoE-Lizenztrennung: <https://github.com/repoe-fork/repoe/blob/14e3edc89ed705bd4e4eda5c8135756431c76e81/LICENSE.md>
+- Aktuelles Path of Building PoE2: <https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/f5b94342eeea413a94c339af3e881c5e2a4df0df>; geprüfter Release `v0.22.0`
+- Archiviertes PoB-PoE2-v2: <https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2-v2/tree/7e047f0e86c5539b6fe983606c209066c3569083>
+- Offizielle GGG-Exportgrenze: <https://www.pathofexile.com/developer/docs/data>
+- GGG-Nutzungsbedingungen: <https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy>
+- PoE2DB-Disclaimer: <https://poe2db.tw/de/General_disclaimer>
+
+Der RePoE-Fork extrahiert mit PyPoE aus GGG-Spieldateien. `mods.json`, `mods_by_base.json`, `base_items.json`, `item_classes.json`, `tags.json` und Statbeschreibungen sind technisch geeignet, aber nicht durch die MIT-Codelizenz als frei weiterverteilbare GGG-Daten ausgewiesen. Path of Building enthält eine breite, laufzeitspezifische Lua-Aufbereitung und dient nur als möglicher Auditvergleich. PoE2DB bleibt eine manuelle deutsche Referenz ohne Daten-, Code-, HTML-, CSS-, Asset- oder API-Übernahme.
+
+Die eng begrenzte Projektrisikoentscheidung, Ausschlüsse und Updatebedingungen stehen in `POE2_AFFIX_SOURCE_DECISION.md`. Es wurden in 5M.0 keine Affixdatendateien abgerufen oder importiert.
+
 ## Ergänzung 5D.3
 
 Assetquelle: offizielles GGG-Repository <https://github.com/grindinggear/poe2-skilltree-export>, Release 0.5.2, Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6`. Visuelle Referenz: <https://pathofexile2.com/game/passive-skill-tree>. Approval-Umfang und rechtliche Begrenzung stehen in `POE2_TREE_ASSETS.md`.

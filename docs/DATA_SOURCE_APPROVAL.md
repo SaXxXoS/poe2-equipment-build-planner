@@ -1,18 +1,26 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Aufgabe 5M.0 – eng begrenzte technische Affixdaten
+
+Stand 22. Juli 2026: `repoe-poe2` ist ausschließlich für den Scope `poe2-technical-affix-data-for-build-planner` `conditionally-approved`. Gepinnt sind RePoE-PoE2 `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, sowie der geprüfte Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81`.
+
+Dies ist eine bewusste, widerrufbare Projektrisikoentscheidung und keine behauptete GGG-Datenlizenz. RePoEs MIT-Lizenz gilt für Software; sie weist generierte Daten ausdrücklich GGG zu. Erlaubt sind nur normalisierte technische Affixfelder für den Build Planner unter Attribution, SHA-256-Manifest, deterministischem Offlineimport, einfacher Entfernbarkeit und erneuter Prüfung bei jedem Wechsel. Rohdatenspiegel, Medien, andere Datenkategorien und Laufzeitabrufe bleiben ausgeschlossen.
+
+PoE2DB und `display-names` bleiben `blocked`. PoE2DB darf nur manuell als deutsche Darstellungsreferenz geprüft werden; ohne eindeutige technische Zuordnung bleibt ein Text `translation-missing`. Die vollständige Entscheidung steht in `POE2_AFFIX_SOURCE_DECISION.md`.
+
 ## Ergänzung 5D.3 – eng begrenzte Exportassets
 
 `official-poe2-passive-tree-export-assets` ist `conditionally-approved`, ausschließlich für Release 0.5.2/Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` und nur zur Darstellung des zugehörigen offiziellen Passivbaums. Dies ist keine allgemeine Medienlizenz oder rechtliche Garantie. Alle anderen Bilder bleiben blockiert; jeder Releasewechsel verlangt neue Prüfung und Attribution.
 
-## Korrektur aus Aufgabe 5C (20. Juli 2026)
+## Historische Korrektur aus Aufgabe 5C (20. Juli 2026)
 
-Der offizielle Export `ggg-poe2-skilltree-export` ist nicht mehr pauschal blockiert, sondern ausschließlich für die gepinnte `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Release 0.5.2 ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` festgelegt. Attribution, Hash, Offline-Reproduzierbarkeit, manuelle Saisonfreigabe und Asset-Ausschluss sind Pflichtbedingungen. Es folgt keine Freigabe für Medien, andere Dateien oder andere GGG-Daten. PoE2DB, RePoE und alle übrigen blockierten Kategorien bleiben blockiert. `data-sources/source-approval.json` ist maßgeblich.
+Der offizielle Export `ggg-poe2-skilltree-export` wurde ausschließlich für die gepinnte `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Release 0.5.2 ist auf Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` festgelegt. Attribution, Hash, Offline-Reproduzierbarkeit, manuelle Saisonfreigabe und Asset-Ausschluss sind Pflichtbedingungen. RePoE und PoE2DB waren zu diesem Zeitpunkt blockiert. Die spätere, ausschließlich affixbezogene RePoE-Entscheidung aus 5M.0 steht oben; `data-sources/source-approval.json` ist maßgeblich.
 
 Stand: 20. Juli 2026. Maßgeblich für technische Entscheidungen ist `data-sources/source-approval.json`. Dieses Dokument erklärt die Entscheidung; es ist keine Rechtsberatung.
 
 ## Entscheidung
 
-**Gesamtstatus echter PoE2-Daten: `blocked`. Keine echte Datenkategorie ist für Aufgabe 5C freigegeben.**
+**Historischer 5B/5C-Stand: `blocked`.** Diese Aussage gilt nicht für die später einzeln freigegebenen Baum- und 5M.0-Affixscopes.
 
 Freigegeben sind nur `local-synthetic-fixtures` für Tests. Die offizielle GGG-Entwickler-API ist `conditionally-approved` ausschließlich für konkret dokumentierte Endpunkte und nur nach OAuth-/User-Agent-/Rate-Limit-/Notice-/manueller Freigabeprüfung. Sie liefert keinen vollständigen statischen PoE2-Datensatz und ist keiner derzeit importierbaren Kategorie zugewiesen.
 
@@ -21,12 +29,12 @@ Freigegeben sind nur `local-synthetic-fixtures` für Tests. Die offizielle GGG-E
 | `local-synthetic-fixtures` | Projektintern | TypeScript/In-Memory | `approved` | künstlich, keine echten Spieldaten |
 | `ggg-developer-api` | GGG, offiziell | HTTPS/JSON, meist OAuth, dynamische Rate Limits | `conditionally-approved` | nur dokumentierte Endpunkte; Notice, User-Agent, Limits und manuelle Prüfung erforderlich; Speicherung/Weiterverteilung statischer Daten ungeklärt |
 | `ggg-poe2-skilltree-export` | GGG, offiziell | ausschließlich gepinnte `data.json` | `conditionally-approved` | nur dokumentierte Baumstruktur/-texte; Attribution, Hash, Offlineimport, manuelle Freigabe und Asset-Ausschluss |
-| `repoe-poe2` | Community, inoffiziell | GitHub/hosted JSON, extrahiert aus Spieldateien | `blocked` | Werkzeuglizenz deckt GGG-Daten nicht; Formate instabil; Rechte offen |
+| `repoe-poe2` | Community, inoffiziell | GitHub/hosted JSON, extrahiert aus Spieldateien | damals `blocked`; seit 5M.0 eng `conditionally-approved` | Werkzeuglizenz deckt GGG-Daten nicht; Projektrisikoentscheidung gilt nur für den gepinnten technischen Affixscope |
 | `poe2db` | Community, inoffiziell | lokalisierte HTML-Seiten | `blocked` | keine allgemeine Daten-API/Abrufregeln; Wiki-Lizenzumfang für extrahierte Spieltabellen und Medien unklar |
 | `ggg-game-files-undocumented-endpoints` | GGG-Inhalte, nicht unterstützt | Clientdateien/interne Endpunkte | `rejected` | offizielle Richtlinien und Terms schließen diese Methode aus |
 | `manual-transcription` | manuelle Ableitung | manuell | `pending` | manuell bedeutet nicht rechtefrei; Herkunft, Version und Weiterverteilung offen |
 
-## Quellensteckbriefe
+## Historische Quellensteckbriefe vor 5M.0
 
 Die vollständigen maschinenlesbaren Steckbriefe enthalten `sourceId`, Namen, Status, zehn kontrollierte Bedingungen, Pflichtbedingungen, Belege und Begründung. Ergänzend gilt:
 
@@ -64,7 +72,7 @@ Die vollständigen maschinenlesbaren Steckbriefe enthalten `sourceId`, Namen, St
 
 Jede Quelle führt diese Felder mit `true`, `false` oder `unknown`: `attributionRequired`, `rawRedistributionAllowed`, `derivedRedistributionAllowed`, `automatedAccessAllowed`, `localStorageAllowed`, `repositoryStorageAllowed`, `commercialUseClarified`, `patchVersionRequired`, `rateLimitKnown`, `manualApprovalRequired`. `unknown` ist niemals erfüllt. Bei `conditionally-approved` müssen alle `requiredConditions` durch den späteren Aufrufer ausdrücklich als erfüllt übergeben werden.
 
-## Datenquellenmatrix
+## Historische Datenquellenmatrix vor 5M.0
 
 | Kategorie | benötigte Felder | Domäne/Import | Primär / Ersatz | Status | Transformation/Qualität/Version | Speicherung |
 |---|---|---|---|---|---|---|

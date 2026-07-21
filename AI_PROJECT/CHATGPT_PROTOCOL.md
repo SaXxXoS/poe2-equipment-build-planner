@@ -1,5 +1,15 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.0 – kontrollierte Affixquellenfreigabe
+
+- RePoE-PoE2 ist ausschließlich im Scope `poe2-technical-affix-data-for-build-planner` `conditionally-approved`: Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, geprüfter Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81`.
+- Zulässig sind nur normalisierte technische Affix-/Mod-/Stat-IDs, Prefix/Suffix, Tiers, Werte, Item-Level, Itemklassen, Tags, Spawnregeln, Gruppen/Konflikte und Lokalität. Pflicht: Pinning, SHA-256-Manifest, Attribution, deterministischer Offlineimport, kein Rohdatenspiegel, Entfernbarkeit und erneute manuelle Freigabe bei jedem Wechsel.
+- Dies ist eine bewusste Projektrisikoentscheidung, keine allgemeine GGG-Datenlizenz. RePoEs MIT-Lizenz gilt für Software; generierte Daten werden dort ausdrücklich GGG zugeordnet. Commercial Use bleibt ungeklärt.
+- Path of Building PoE2 wurde als technisch breite, aber laufzeitspezifische und ebenfalls aus Spieldaten abgeleitete Alternative geprüft; es ist keine 5M-Importquelle. Das archivierte `PathOfBuilding-PoE2-v2` ist veraltet.
+- PoE2DB und `display-names` bleiben `blocked`. PoE2DB ist ausschließlich manuelle deutsche Sprach-/Darstellungsreferenz. Nicht eindeutig über technische IDs zugeordnete Texte bleiben `translation-missing`; kein Code, HTML, CSS, Asset, Dump, API- oder Laufzeitabruf.
+- Der technische Teil von 5M darf nach neuem Auftrag unter diesen Bedingungen beginnen. 5M.0 hat keine Daten importiert, UI/Engine nicht verändert, keine Übersetzungen erzeugt und Aufgabe 5N nicht begonnen.
+- Maßgebliche Detailentscheidung: `docs/POE2_AFFIX_SOURCE_DECISION.md`.
+
 ## Aufgabe 5L – reale Pfade im Baum
 
 - `buildPassivePlanVisualization` ist die einzige Grenze vom Compact-Ergebnis zur Baumdarstellung. Sie validiert Source/Hash, Node-/Connection-IDs, Zusammenhang, Layout-/Effekt- und Aszendenzgrenzen; es gibt keine UI-Pfadsuche, Zielsortierung oder Budgetberechnung.
@@ -89,7 +99,7 @@ Abschlussprüfung: Fixture-Import 23/0; 432 reguläre Tests in 15 Dateien erfolg
 
 ## Übergabe nach Aufgabe 5C
 
-Aufgabe 5C ist abgeschlossen. Die 5B-Bewertung wurde korrigiert: `ggg-poe2-skilltree-export` ist ausschließlich für die fest gepinnte offizielle `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Andere echte Kategorien, PoE2DB, RePoE, Medien und andere GGG-Dateien bleiben blockiert.
+Aufgabe 5C ist abgeschlossen. Die damalige 5B-Bewertung wurde korrigiert: `ggg-poe2-skilltree-export` ist ausschließlich für die fest gepinnte offizielle `data.json` und passive Knoten, Verbindungen, Gruppen, Klassen-/Aszendenzstarts sowie explizite Juwelsockel `conditionally-approved`. Andere echte Kategorien, PoE2DB, RePoE, Medien und andere GGG-Dateien blieben zu diesem Zeitpunkt blockiert; die spätere 5M.0-Ausnahme betrifft ausschließlich den gepinnten technischen Affixscope.
 
 Verwendete Quelle: <https://github.com/grindinggear/poe2-skilltree-export>, Release `0.5.2` „Runes of Aldur“, Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6`, Quellhash `f83c94ce7b09f2bfc5b3b1d63523c2ab3d2582d0e964f6aeec34b8b0390abcfe`. Importiert: 5.150 Knoten, 6.067 Verbindungen, 1.621 Gruppen, 6 Klassenstarts, 36 Aszendenzstarts, 19 Juwelsockel, 0 Cluster-Sockel. Übersprungen: Root-Pseudoknoten und zwölf mehrdeutige `jewelSlots`-Referenzen. Bericht: drei Warnungen (eine offizielle Selbstkante, zwölf mehrdeutige Slotreferenzen, 22 offiziell isolierte Knoten), null Fehler, null unbekannte Felder.
 
@@ -408,7 +418,7 @@ Am 20. Juli 2026 nach Aufgabe 4I zusätzlich erfolgreich geprüft:
 
 - Geprüft wurden GGG Developer Docs/API/Terms, der offizielle PoE2-Passivbaumexport, RePoE-PoE2, PoE2DB, nicht dokumentierte Endpunkte/Spieldateien und manuelle Erfassung. Belege und Interpretationsgrenzen stehen in `docs/DATA_SOURCE_REFERENCES.md`.
 - `data-sources/source-approval.json` ist die maschinenlesbare Wahrheit für Quellenstatus, zehn kontrollierte Bedingungen, Kategoriezuordnungen, globale Sperren und Review-Trigger. Sie enthält ausschließlich Metadaten, keine Spieldaten.
-- Nur `local-synthetic-fixtures` ist `approved`. `ggg-developer-api` ist ausschließlich für dokumentierte API-Endpunkte unter Bedingungen `conditionally-approved`, aber keiner echten statischen Importkategorie zugewiesen. GGG-Baumexport, RePoE und PoE2DB sind `blocked`; nicht dokumentierte Endpunkte/Spieldateiextraktion `rejected`; manuelle Erfassung `pending`.
+- Historischer 5B-Stand: Nur `local-synthetic-fixtures` war `approved`; GGG-Baumexport, RePoE und PoE2DB waren damals `blocked`. Spätere eng begrenzte Entscheidungen für Baumexport und 5M.0-Affixscope stehen am Anfang dieses Protokolls und in der maschinenlesbaren Approval-Datei.
 - Keine der 24 geprüften echten Datenkategorien ist freigegeben. Bilder/Icons sind separat blockiert. Technische Erreichbarkeit, öffentliche Git-Repositories oder die Lizenz eines Extraktionswerkzeugs gelten nicht als Datenlizenz.
 - `src/import/approval.ts` enthält Approval-Typen, JSON-Parser, strukturelle Validierung und `evaluateImportApproval`. Der Guard ist rein, deterministisch und netzwerkfrei. Fehlende/ungültige Dateien, unbekannte Quellen/Kategorien, nicht freigegebene Status, falsche Zuordnung und unerfüllte Bedingungen blockieren; synthetische Fixtures bleiben unabhängig erlaubt.
 - Aufgabe 5C darf noch keinen echten Import implementieren. Zuerst ist eine schriftliche, kategorienbezogene Erlaubnis erforderlich. Bevorzugtes enges Klärungsziel ist der offizielle Passivbaumexport ohne Assets, einschließlich Release-Abruf, lokaler Speicherung, normalisierter Ableitungen, öffentlicher Repository-/Pages-Weiterverteilung, Attribution und kommerzieller Einordnung.

@@ -15,6 +15,13 @@ describe('Import-Freigabesperre', () => {
     expect(result.allowed).toBe(true)
   })
   it('erlaubt ausschließlich die eng begrenzte gepinnte Export-Assetkategorie',()=>{const result=evaluateImportApproval(base,{sourceId:'ggg-poe2-skilltree-export',categoryId:'official-poe2-passive-tree-export-assets',satisfiedConditions:{attributionRequired:true,rawRedistributionAllowed:true,derivedRedistributionAllowed:true,localStorageAllowed:true,repositoryStorageAllowed:true,patchVersionRequired:true,manualApprovalRequired:true}});expect(result.allowed).toBe(true);expect(evaluateImportApproval(base,{sourceId:'ggg-poe2-skilltree-export',categoryId:'icons-images'}).allowed).toBe(false)})
+  it('erlaubt RePoE nur im bedingten technischen Affixscope', () => {
+    const satisfiedConditions = { attributionRequired: true, derivedRedistributionAllowed: true, automatedAccessAllowed: true, localStorageAllowed: true, repositoryStorageAllowed: true, patchVersionRequired: true, rateLimitKnown: true, manualApprovalRequired: true }
+    expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'poe2-technical-affix-data-for-build-planner', satisfiedConditions })).toMatchObject({ allowed: true, code: 'conditions-satisfied' })
+    expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'poe2-technical-affix-data-for-build-planner' })).toMatchObject({ allowed: false, code: 'conditions-unmet' })
+    expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'display-names', satisfiedConditions }).allowed).toBe(false)
+    expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'skills', satisfiedConditions }).allowed).toBe(false)
+  })
   it('lässt andere echte Datenkategorien blockiert', () => { expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'skills' }).allowed).toBe(false) })
   it('blockiert eine fehlende Approval-Datei', () => { expect(evaluateImportApproval(undefined, request).code).toBe('approval-missing') })
   it('blockiert eine ungültige Approval-Datei', () => { expect(evaluateImportApproval('{', request).code).toBe('approval-invalid') })

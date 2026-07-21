@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "reviewedAt": "2026-07-20",
+  "reviewedAt": "2026-07-22",
   "reviewedSources": [
     {
       "sourceId": "local-synthetic-fixtures",
@@ -31,12 +31,12 @@
     },
     {
       "sourceId": "repoe-poe2",
-      "name": "RePoE PoE2-Export",
-      "status": "blocked",
-      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": "unknown", "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": "unknown", "localStorageAllowed": "unknown", "repositoryStorageAllowed": "unknown", "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": "unknown", "manualApprovalRequired": true },
-      "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
-      "evidenceUrls": ["https://github.com/repoe-fork/repoe", "https://repoe-fork.github.io/", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
-      "reason": "Maschinenlesbar und breit, aber aus Spieldateien extrahiert; die Werkzeuglizenz überträgt keine Rechte an GGG-Daten."
+      "name": "RePoE PoE2-Export (eng begrenzte Projektrisikoentscheidung)",
+      "status": "conditionally-approved",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": false, "derivedRedistributionAllowed": true, "automatedAccessAllowed": true, "localStorageAllowed": true, "repositoryStorageAllowed": true, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
+      "requiredConditions": ["attributionRequired", "derivedRedistributionAllowed", "automatedAccessAllowed", "localStorageAllowed", "repositoryStorageAllowed", "patchVersionRequired", "rateLimitKnown", "manualApprovalRequired"],
+      "evidenceUrls": ["https://github.com/repoe-fork/repoe/tree/14e3edc89ed705bd4e4eda5c8135756431c76e81", "https://github.com/repoe-fork/poe2/tree/b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c", "https://github.com/repoe-fork/repoe/blob/14e3edc89ed705bd4e4eda5c8135756431c76e81/LICENSE.md", "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
+      "reason": "Nur technische, für den Build Planner erforderliche Affixfelder aus RePoE-PoE2 Version 4.5.4.4.4/Commit b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c. Bewusste, eng begrenzte Projektrisikoentscheidung ohne Behauptung einer GGG-Datenlizenz: Der MIT-Lizenztext gilt für RePoE-Software; generierte Daten werden dort ausdrücklich GGG zugeordnet. Kein Rohdatenspiegel, keine Medien, kein Laufzeitzugriff; Attribution, SHA-256-Manifest, reproduzierbarer Import, Entfernbarkeit und erneute Prüfung sind Pflicht."
     },
     {
       "sourceId": "poe2db",
@@ -67,8 +67,8 @@
     }
   ],
   "approvedSources": ["local-synthetic-fixtures"],
-  "conditionallyApprovedSources": ["ggg-developer-api", "ggg-poe2-skilltree-export"],
-  "blockedSources": ["repoe-poe2", "poe2db"],
+  "conditionallyApprovedSources": ["ggg-developer-api", "ggg-poe2-skilltree-export", "repoe-poe2"],
+  "blockedSources": ["poe2db"],
   "rejectedSources": ["ggg-game-files-undocumented-endpoints"],
   "pendingSources": ["manual-transcription"],
   "categoryAssignments": [
@@ -80,12 +80,13 @@
     { "categoryId": "support-tags", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Taxonomie und Rechte offen." },
     { "categoryId": "damage-types", "primarySourceId": "manual-transcription", "fallbackSourceId": "repoe-poe2", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kleine kontrollierte Taxonomie, aber Freigabeentscheidung fehlt." },
     { "categoryId": "weapon-types", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener Basistyp-Export." },
-    { "categoryId": "item-classes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Kein freigegebener Basistyp-Export." },
+    { "categoryId": "item-classes", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur technische Itemklassen, Basistyp-Tags und Zuordnungen aus dem gepinnten RePoE-PoE2-Export im Scope poe2-technical-affix-data-for-build-planner." },
     { "categoryId": "equipment-slots", "primarySourceId": "manual-transcription", "fallbackSourceId": "repoe-poe2", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Domänentyp vorhanden, Herkunftsfreigabe offen." },
-    { "categoryId": "affixes", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Spawnregeln und Rechte offen." },
-    { "categoryId": "affix-tiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Tier-/Patchschema und Rechte offen." },
-    { "categoryId": "modifiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Komplexe Stats/Übersetzungen und Rechte offen." },
-    { "categoryId": "requirements", "primarySourceId": "repoe-poe2", "fallbackSourceId": "poe2db", "status": "blocked", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Quellenübergreifende Normalisierung und Rechte offen." },
+    { "categoryId": "affixes", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur technische Affix-/Mod-IDs, Generation Type, Domain, Tags, Gruppen, Spawnregeln und Statreferenzen aus Version 4.5.4.4.4; keine sichtbaren Texte oder Rohdatenspiegel." },
+    { "categoryId": "affix-tiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur aus technischen Moddatensätzen deterministisch abgeleitete Tierfamilien, Item-Level-Schwellen und Wertebereiche des gepinnten Exports." },
+    { "categoryId": "modifiers", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur technische Mod-/Stat-IDs, Wertebereiche, lokale/globale Kennzeichnung und Konfliktgruppen für Equipment-Affixe; keine Skill-/Support- oder Mediendaten." },
+    { "categoryId": "requirements", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur affixbezogene Item-Level- und Itemklassenanforderungen aus dem gepinnten technischen Export." },
+    { "categoryId": "poe2-technical-affix-data-for-build-planner", "primarySourceId": "repoe-poe2", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Kontrollscope 5M.0: ausschließlich notwendige technische Affix-, Mod-, Stat-, Tier-, Werte-, Itemklassen-, Tag-, Gruppen-, Konflikt- und Lokalitätsfelder. RePoE-PoE2 4.5.4.4.4/Commit b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c; kein Rohdatenspiegel, keine Texte, Medien oder anderen Datenbereiche." },
     { "categoryId": "passive-nodes", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur aus fest gepinnter offizieller data.json, ohne Assets und mit Attribution." },
     { "categoryId": "passive-connections", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Nur aus fest gepinnter offizieller data.json, ohne Assets und mit Attribution." },
     { "categoryId": "passive-groups", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Gruppen, Orbits und Positionen sind explizite Strukturfelder des Exports." },
@@ -103,11 +104,13 @@
   ],
   "globalRestrictions": [
     "Kein echter Datenimport, solange die Kategorie nicht approved oder conditionally-approved ist.",
+    "Die RePoE-Freigabe ist eine eng begrenzte Projektrisikoentscheidung, keine GGG-Datenlizenz; sie gilt nur für poe2-technical-affix-data-for-build-planner aus Version 4.5.4.4.4/Commit b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c.",
+    "RePoE-Rohdaten dürfen nicht vollständig gespiegelt werden; zulässig sind nur normalisierte, für den Build Planner benötigte technische Ableitungen mit SHA-256-Manifest, Attribution und einfacher Entfernbarkeit.",
     "Conditionally-approved erfordert alle requiredConditions als explizit erfüllt.",
     "GGG-Roh- oder abgeleitete Daten im Repository nur innerhalb einer dokumentierten, kategorienbezogenen Freigabe; für Baumassets ausschließlich Release 0.5.2/Commit 1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6.",
     "Keine Bilder, Icons oder sonstigen Medien außerhalb official-poe2-passive-tree-export-assets herunterladen, hotlinken oder speichern.",
     "Keine nicht dokumentierten Endpunkte, Spieldateiextraktion, Scraper oder Crawler verwenden.",
     "Fixture-Importe bleiben erlaubt und müssen eindeutig synthetisch markiert sein."
   ],
-  "nextReviewTrigger": "Jeder Release- oder Commitwechsel des offiziellen Baumexports, geänderte Assetreferenzen, neue offizielle Lizenz-/API-Dokumentation oder eine Nutzung außerhalb der Darstellung des offiziellen Passivbaums."
+  "nextReviewTrigger": "Jeder Release- oder Commitwechsel des offiziellen Baumexports oder RePoE-PoE2-Exports, geänderte Assetreferenzen, Quell-/Schema-/Lizenzänderungen, neue offizielle Lizenz-/API-Dokumentation, Beanstandung durch Rechteinhaber oder Nutzung außerhalb des jeweils dokumentierten Kontrollscopes."
 }

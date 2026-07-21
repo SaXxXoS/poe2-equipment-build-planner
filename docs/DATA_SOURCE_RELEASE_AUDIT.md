@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## Ergänzung 5M.0 (22. Juli 2026)
+
+Der nachfolgende Gesamtstatus beschreibt den historischen 5B/5C-Stand. Seit 5M.0 ist RePoE-PoE2 ausschließlich für `poe2-technical-affix-data-for-build-planner` aus Version `4.5.4.4.4`/Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c` `conditionally-approved`. Dies ist eine risikobasierte technische Projektentscheidung, keine GGG-Datenlizenz. PoE2DB, deutsche `display-names`, Skills, Supports, Medien und alle übrigen nicht ausdrücklich genannten Kategorien bleiben blockiert. Details: `docs/POE2_AFFIX_SOURCE_DECISION.md` und die maßgebliche `data-sources/source-approval.json`.
+
 ## Freigabeänderung und Importstand 5C
 
 Der frühere Status `blocked` des offiziellen PoE2-Passivbaumexports wurde eng begrenzt auf `conditionally-approved` korrigiert. Release 0.5.2/Commit `1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6` liefert 5.150 importierte Knoten, 6.067 Verbindungen, 1.621 Gruppen, 6 Klassenstarts, 36 Aszendenzstarts und 19 explizite Juwelsockel. Es werden 0 Cluster-Sockel behauptet. 13 Einträge werden kontrolliert übersprungen; drei Warnungen, null Fehler und null unbekannte Felder stehen im Bericht. Andere echte Quellen/Kategorien bleiben blockiert. Saisonupdates folgen `docs/POE2_TREE_UPDATE_PROCESS.md` und benötigen Vergleich, Tests und dokumentierte manuelle Freigabe.
