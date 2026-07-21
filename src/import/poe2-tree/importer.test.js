@@ -25,6 +25,7 @@ describe('offizieller PoE2-Passivbaumimport', () => {
   it('normalisiert Positionen', () => expect(run(raw()).data.nodes[0].position).toEqual({ x: 10, y: 20 }))
   it('erkennt Startknoten', () => expect(run(raw()).report.classStartNodeCount).toBe(1))
   it('erkennt Juwelsockel', () => expect(run(raw()).report.jewelSocketCount).toBe(1))
+  it('übernimmt hideConnection ausschließlich als Verbindungs-Sichtbarkeitsmetadatum', () => { const value=raw(); value.nodes[2].hideConnection=true; const result=run(value); expect(result.data.nodes.find(node=>node.id==='2')).not.toHaveProperty('hideConnection'); expect(result.data.connections.find(connection=>connection.id==='1:2').hideInDefaultState).toBe(true) })
   it('erfindet keine Cluster-Sockel', () => expect(run(raw()).report.clusterSocketCount).toBe(0))
   it('übernimmt keine Assets', () => expect(JSON.stringify(run(raw()).data)).not.toContain('ignored.png'))
   it('kennzeichnet englischen Quelltext und fehlendes Deutsch', () => expect(run(raw()).data.nodes[0].name).toMatchObject({ sourceText: 'Start', sourceLocale: 'en', localizedText: null, localizationStatus: 'pending' }))

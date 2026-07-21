@@ -6,15 +6,16 @@ import { centeredTreeCamera, initialTreeCamera, nodeMatchesFilter, searchTreeNod
 import type { PassiveTreeViewModel, TreeDisplayFilter, TreeNodeViewModel } from '../tree-view/types'
 import { resolveAscendancyDisplayTransform, transformAscendancyPoint } from '../tree-view/ascendancy'
 import { officialClassRegistry, resolveBackgroundSprite, resolveNodeSpriteRenderData, Sprite } from '../tree-view/assets'
+import { resolveTreeConnectionRenderDecision } from '../tree-view/connections'
 import './passive-tree.css'
 
 type Camera = ReturnType<typeof initialTreeCamera>
 type DisplayContext = { characterClassId?: string; characterAscendancyId?: string }
 const FILTERS: Array<{ id: TreeDisplayFilter; label: string }> = [{ id: 'all', label: 'Alle Knoten' }, { id: 'class-start', label: 'Klassenstarts' }, { id: 'ascendancy', label: 'Aszendenzen' }, { id: 'jewel-socket', label: 'Juwelsockel' }, { id: 'keystone', label: 'Keystones' }, { id: 'notable', label: 'Notables' }]
 
-const ConnectionLayer = memo(function ConnectionLayer({ tree, nodes, selected }: { tree: PassiveTreeViewModel; nodes: TreeNodeViewModel[]; selected: TreeNodeViewModel | null }) {
+const ConnectionLayer = memo(function ConnectionLayer({ tree, nodes, selected, activeNodeIds = new Set<string>() }: { tree: PassiveTreeViewModel; nodes: TreeNodeViewModel[]; selected: TreeNodeViewModel | null; activeNodeIds?: ReadonlySet<string> }) {
   const positions = useMemo(() => new Map(nodes.map(node => [node.id, node])), [nodes]), selectedConnections = selected ? new Set(selected.neighbourIds.map(id => [selected.id, id].sort().join(':'))) : new Set<string>()
-  return <g className="tree-connections" aria-hidden="true">{tree.connections.filter(connection => connection.connectionType === 'passive-tree' && positions.has(connection.fromNodeId) && positions.has(connection.toNodeId)).map(connection => { const from = positions.get(connection.fromNodeId)!, to = positions.get(connection.toNodeId)!; return <line key={connection.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={selectedConnections.has([connection.fromNodeId, connection.toNodeId].sort().join(':')) ? 'selected' : ''}/> })}</g>
+  return <g className="tree-connections" aria-hidden="true">{tree.connections.flatMap(connection => { const from=positions.get(connection.fromNodeId),to=positions.get(connection.toNodeId);if(!from||!to)return[];const decision=resolveTreeConnectionRenderDecision(connection,activeNodeIds);if(!decision.visible)return[];return <line key={connection.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} data-connection-status={decision.status} className={selectedConnections.has([connection.fromNodeId, connection.toNodeId].sort().join(':')) ? 'selected' : ''}/> })}</g>
 })
 
 const NodeLayer = memo(function NodeLayer({ nodes, selectedId, highlightedId, filter, detailLevel, onSelect }: { nodes: TreeNodeViewModel[]; selectedId: string | null; highlightedId?: string; filter: TreeDisplayFilter; detailLevel:'far'|'medium'|'near'; onSelect: (node: TreeNodeViewModel) => void }) {

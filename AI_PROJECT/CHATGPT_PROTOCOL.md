@@ -462,3 +462,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - 20 Referenzknoten sind maschinenlesbar und als deterministische SVG-Vergleichstafel dokumentiert. 51 nicht als normale Motive auflösbare Pfade gehören ausschließlich zu 365 Mastery-Knoten und bleiben gemeldete Fallbacks; Mastery-Hintergrundmuster werden nicht als normale Icons zweckentfremdet.
 - Nutzerbestätigt vor 5D.4: physisches iPhone mit Pinch, Pan, Baum, zentraler Aszendenz und Wechseln. Physische Abnahme des neuen Motivstands bleibt offen.
 - Keine Änderung an Gesten, Aszendenzplatzierung, Klassenregister, Engine, Orchestrator, Pathfinder, Targeting oder Planner. Aufgabe 5I bleibt nicht begonnen.
+
+## Nachbesserung 5D.4.1 – Verbindungssichtbarkeit
+
+- Ursache: Der Renderer zeichnete alle 6.027 gleichlayoutigen Exportkanten dauerhaft. Dabei ging das offizielle `hideConnection`-Signal von zwölf Smith-of-Kitava-Spezialknoten verloren.
+- Der Baumimport leitet daraus ausschließlich `hideInDefaultState` an den zwölf Kanten zu Smith’s Masterwork (`9988`) ab. Keine Kante wird gelöscht; 6.067 logische Kanten und 6.027 gleichlayoutige Kanten bleiben erhalten.
+- Zentrale Entscheidung in `src/tree-view/connections.ts`: `normalVisible`, `hiddenUntilActive`, `decorative`, `glowOnly`, `unknown`. Aktueller Exportbestand: 6.015 normal sichtbare Kanten, zwölf im Ruhezustand verborgene Effektkanten, null eindeutig dekorative/glow-only Kanten und 40 weiterhin getrennte Layoutübergänge.
+- Aktivierung verlangt explizit beide aktiven Endpunkte. Die aktuelle reine Baumansicht besitzt keine Punktebelegung; Auswahl wird nicht als Aktivierung interpretiert. Dadurch bleiben die zwölf Effektverbindungen im Ruhezustand unsichtbar.
+- `orbit/orbitX/orbitY` bleiben Geometrieangaben. Mastery- und Jewel-Verbindungen werden ohne Exportflag nicht pauschal ausgeblendet.
+- Knotenmotive, Spriteatlanten, Assetimport, Geometrie, Gesten, Klassenregister, Aszendenzplatzierung, Engine, Orchestrator, Pathfinder, Planner und Targeting bleiben unverändert. Aufgabe 5I bleibt nicht begonnen.

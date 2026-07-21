@@ -26,7 +26,7 @@ export function adaptImportedPoe2Tree(input: ImportedPoe2Tree, report: TreeImpor
   }).sort((a, b) => compareId(a.id, b.id))
   const nodeIds = new Set(nodes.map(node => node.id))
   if (nodeIds.size !== nodes.length) throw new Error('Doppelte technische Knoten-ID im Darstellungsadapter')
-  const connections = input.connections.map(connection => ({ ...connection,connectionType:isDrawableTreeConnection(inputNodes.get(connection.fromNodeId)!,inputNodes.get(connection.toNodeId)!)?'passive-tree':'layout-transition' })).sort((a, b) => compareId(a.fromNodeId, b.fromNodeId) || compareId(a.toNodeId, b.toNodeId))
+  const connections = input.connections.map(connection => ({ ...connection,hideInDefaultState:connection.hideInDefaultState===true,connectionType:isDrawableTreeConnection(inputNodes.get(connection.fromNodeId)!,inputNodes.get(connection.toNodeId)!)?'passive-tree':'layout-transition' })).sort((a, b) => compareId(a.fromNodeId, b.fromNodeId) || compareId(a.toNodeId, b.toNodeId))
   for (const connection of connections) if (!nodeIds.has(connection.fromNodeId) || !nodeIds.has(connection.toNodeId)) throw new Error(`Ungültige Verbindung ${connection.id}`)
   const groups = input.groups.map(group => ({ id: group.groupId, x: finite(group.position.x, `groups.${group.groupId}.x`), y: finite(group.position.y, `groups.${group.groupId}.y`), nodeIds: [...group.nodeIds].sort(compareId) })).sort((a, b) => compareId(a.id, b.id))
   const classStartNodes = nodes.filter(node => node.isClassStart), ascendancyStartNodes = nodes.filter(node => node.isAscendancyStart), jewelSockets = nodes.filter(node => node.isJewelSocket)

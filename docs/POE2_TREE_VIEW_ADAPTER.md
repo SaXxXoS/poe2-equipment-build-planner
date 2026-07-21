@@ -65,3 +65,11 @@ Pointer-Pinch und Wheel zoomen nun um den tatsächlichen Kontaktmittelpunkt; Ein
 ## Motivauflösung 5D.4
 
 `resolveNodeSpriteRenderData(node, state, zoomLevel, radius)` ist die einzige Renderauflösung für Motiv und Rahmen. `tree-render-data.json.nodeIcons` wird über die technische Baum-ID (den äußeren Schlüssel von `data.json.nodes`) adressiert, nicht über die innere Skillkennung `node.id`. Icon- und Frameatlas bleiben getrennte Ebenen; Frame-Sprites werden nach dem Motiv gezeichnet und besitzen transparente Innenbereiche. Fernansicht darf vereinfachen, Mittel- und Nahansicht verwenden dieselbe offizielle Motivreferenz. Verschachtelte Sprite-SVGs clippen einen lokalen ViewBox mit negativem Atlasoffset; nur das direkte Baum-SVG wird durch `.tree-viewport>svg` skaliert.
+
+## Verbindungssichtbarkeit 5D.4.1
+
+Der bisherige Renderer behandelte jede gleichlayoutige Exportkante als dauerhaft sichtbare SVG-Linie. Der offizielle Export setzt jedoch bei zwölf Spezialknoten der Smith-of-Kitava-Aszendenz `hideConnection: true`; alle zwölf sind direkt mit Smith’s Masterwork (`9988`) verbunden. Der Normalisierer übernimmt diese eindeutige Quellaussage ausschließlich als `connection.hideInDefaultState`, ohne Knotenpositionen, Nachbarschaften oder Kanten zu verändern.
+
+`resolveTreeConnectionRenderDecision` ist die einzige Renderentscheidung. Im gepinnten Bestand werden 6.015 gleichlayoutige echte Kanten als `normalVisible`, zwölf Smith-Effektkanten als `hiddenUntilActive` und die bereits bekannten 40 layoutübergreifenden Kanten als `unknown`/nicht gezeichnet behandelt. Bei `hiddenUntilActive` müssen beide Endpunkte in einem expliziten Aktivzustand liegen. Die aktuelle reine Browseransicht besitzt keine Punktebelegung und übergibt deshalb bewusst keine aktiven Knoten; Auswahl oder Hervorhebung wird nicht als Aktivierung erfunden.
+
+Die Rohkanten besitzen nur `from`, `to` sowie teilweise `orbit`, `orbitX` und `orbitY`. Letztere sind Geometrieangaben, keine Sichtbarkeitsflags. Es gibt im Release keine edge-seitige Zuordnung zu dekorativen oder reinen Glow-Ebenen; deshalb werden aktuell null Kanten als `decorative` oder `glowOnly` klassifiziert. Die 644 Mastery-berührenden und 44 Jewel-berührenden Rohkanten werden nicht pauschal ausgeblendet, weil keine von ihnen das eindeutige `hideConnection`-Kriterium erfüllt.
