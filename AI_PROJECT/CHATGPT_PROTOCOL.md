@@ -453,3 +453,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der offizielle 0.5.2-Commit enthält einen Assetordner und `data.json` enthält Bild-/Iconpfade. Mangels ausdrücklicher Medienlizenz beziehungsweise belastbarer Repository-/Pages-Weiterverteilungsfreigabe bleibt `icons-images` blockiert. Keine Assets heruntergeladen, kopiert oder hotgelinkt.
 - SVG-Rahmen und zoomabhängige Detailstufen verbessern die Hierarchie ohne fremde Bilddaten.
 - Aufgabe 5I ist weiterhin gestoppt und nicht begonnen; Engine und Orchestrator bleiben unverändert.
+
+## Nachbesserung 5D.4 – Knotenmotive
+
+- Behoben: Der Assetimport verwendete die innere Skillkennung `node.id` statt der technischen Baum-ID aus dem äußeren `data.json.nodes`-Schlüssel. Dadurch fehlte etwa für Skill Speed `26798` die Auflösung.
+- Behoben: `.tree-viewport svg` skalierte verschachtelte Sprite-SVGs auf Viewportgröße. Die Regel gilt nur noch für das direkte Baum-SVG; Spriteausschnitte verwenden lokalen ViewBox, negativen Atlasoffset und ClipPath.
+- Skill Speed `26798`: `attackspeed.png`, inaktiv `skills-disabled.webp`, aktiv `skills.webp`, jeweils `884/136/34/34`.
+- 20 Referenzknoten sind maschinenlesbar und als deterministische SVG-Vergleichstafel dokumentiert. 51 nicht als normale Motive auflösbare Pfade gehören ausschließlich zu 365 Mastery-Knoten und bleiben gemeldete Fallbacks; Mastery-Hintergrundmuster werden nicht als normale Icons zweckentfremdet.
+- Nutzerbestätigt vor 5D.4: physisches iPhone mit Pinch, Pan, Baum, zentraler Aszendenz und Wechseln. Physische Abnahme des neuen Motivstands bleibt offen.
+- Keine Änderung an Gesten, Aszendenzplatzierung, Klassenregister, Engine, Orchestrator, Pathfinder, Targeting oder Planner. Aufgabe 5I bleibt nicht begonnen.

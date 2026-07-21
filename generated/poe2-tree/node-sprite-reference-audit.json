@@ -1,0 +1,907 @@
+{
+  "sourceVersion": "0.5.2",
+  "sourceCommit": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6",
+  "nodeCount": 20,
+  "nodes": [
+    {
+      "nodeId": "26798",
+      "name": "Skill Speed",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/attackspeed.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/attackspeed.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 884,
+          "spriteY": 136,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 884,
+            "y": 136,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/attackspeed.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 884,
+          "spriteY": 136,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 884,
+            "y": 136,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "4",
+      "name": "Shock Chance",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/LightningDamagenode.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/LightningDamagenode.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 918,
+          "spriteY": 68,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 918,
+            "y": 68,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/LightningDamagenode.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 918,
+          "spriteY": 68,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 918,
+            "y": 68,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "60",
+      "name": "Blind Chance",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/EvasionNode.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/EvasionNode.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 136,
+          "spriteY": 68,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 136,
+            "y": 68,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/EvasionNode.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 136,
+          "spriteY": 68,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 136,
+            "y": 68,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "65",
+      "name": "Freeze Buildup",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/avoidchilling.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/avoidchilling.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 0,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 0,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/avoidchilling.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 0,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 0,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "71",
+      "name": "Physical Damage and Reduced Duration",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/PhysicalDamageNode.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/PhysicalDamageNode.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 918,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 918,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/PhysicalDamageNode.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 918,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 918,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "95",
+      "name": "Minion Damage",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/miniondamageBlue.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/miniondamageBlue.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 578,
+          "spriteY": 204,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 578,
+            "y": 204,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/miniondamageBlue.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 578,
+          "spriteY": 204,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 578,
+            "y": 204,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "144",
+      "name": "Elemental Damage and Freeze Buildup",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/elementaldamage.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/elementaldamage.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 782,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 782,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/elementaldamage.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 782,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 782,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "151",
+      "name": "Accuracy",
+      "nodeType": "normal",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/accuracydex.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/accuracydex.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 782,
+          "spriteY": 136,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 782,
+            "y": 136,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/accuracydex.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 782,
+          "spriteY": 136,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": null,
+          "frameAtlas": null,
+          "renderedSource": {
+            "x": 782,
+            "y": 136,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "55",
+      "name": "Fast Acting Toxins",
+      "nodeType": "notable",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/PhysicalDamageChaosNode.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "notableInactive:Art/2DArt/SkillIcons/passives/PhysicalDamageChaosNode.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 490,
+          "spriteY": 762,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 490,
+            "y": 762,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "notableActive:Art/2DArt/SkillIcons/passives/PhysicalDamageChaosNode.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 490,
+          "spriteY": 762,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 490,
+            "y": 762,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "94",
+      "name": "Efficient Killing",
+      "nodeType": "notable",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/mana.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "notableInactive:Art/2DArt/SkillIcons/passives/mana.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 539,
+          "spriteY": 1154,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 539,
+            "y": 1154,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "notableActive:Art/2DArt/SkillIcons/passives/mana.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 539,
+          "spriteY": 1154,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 539,
+            "y": 1154,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "116",
+      "name": "Insightfulness",
+      "nodeType": "notable",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/energyshield.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "notableInactive:Art/2DArt/SkillIcons/passives/energyshield.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 490,
+          "spriteY": 1105,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 490,
+            "y": 1105,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "notableActive:Art/2DArt/SkillIcons/passives/energyshield.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 490,
+          "spriteY": 1105,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 490,
+            "y": 1105,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "261",
+      "name": "Toxic Sludge",
+      "nodeType": "notable",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/Poison.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "notableInactive:Art/2DArt/SkillIcons/passives/Poison.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 686,
+          "spriteY": 762,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 686,
+            "y": 762,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "notableActive:Art/2DArt/SkillIcons/passives/Poison.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 686,
+          "spriteY": 762,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:NotableFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 686,
+            "y": 762,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "52",
+      "name": "Zealot's Oath",
+      "nodeType": "keystone",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/liferegentoenergyshield.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "keystoneInactive:Art/2DArt/SkillIcons/passives/liferegentoenergyshield.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 0,
+          "spriteY": 1439,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 0,
+            "y": 1439,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "keystoneActive:Art/2DArt/SkillIcons/passives/liferegentoenergyshield.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 0,
+          "spriteY": 1439,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 0,
+            "y": 1439,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "9085",
+      "name": "Crimson Assault",
+      "nodeType": "keystone",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/CrimsonAssaultKeystone.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "keystoneInactive:Art/2DArt/SkillIcons/passives/CrimsonAssaultKeystone.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 68,
+          "spriteY": 1301,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 1301,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "keystoneActive:Art/2DArt/SkillIcons/passives/CrimsonAssaultKeystone.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 68,
+          "spriteY": 1301,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 1301,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "11230",
+      "name": "Ritual Cadence",
+      "nodeType": "keystone",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/SorceressInvocationSpellsKeystone.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "keystoneInactive:Art/2DArt/SkillIcons/passives/SorceressInvocationSpellsKeystone.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 884,
+          "spriteY": 1370,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 884,
+            "y": 1370,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "keystoneActive:Art/2DArt/SkillIcons/passives/SorceressInvocationSpellsKeystone.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 884,
+          "spriteY": 1370,
+          "spriteWidth": 68,
+          "spriteHeight": 69,
+          "frameKey": "frame:KeystoneFrameAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 884,
+            "y": 1370,
+            "width": 68,
+            "height": 69
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "2491",
+      "name": "[Jewel] Socket",
+      "nodeType": "jewel-socket",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 68,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:JewelSocketAltNormal",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 68,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:JewelSocketAltActive",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "3367",
+      "name": "[SinisterJewelSockets|Sinister] [Jewel] Socket",
+      "nodeType": "jewel-socket",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 68,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:JewelSocketAltNormal",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/MasteryBlank.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 68,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:JewelSocketAltActive",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 68,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "47175",
+      "name": "MARAUDER",
+      "nodeType": "class-start",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/blankStr.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/blankStr.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 136,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:PSSkillFrame",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 136,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/blankStr.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 136,
+          "spriteY": 170,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:PSSkillFrameActive",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 136,
+            "y": 170,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "16",
+      "name": "Life Flask Charges",
+      "nodeType": "ascendancy-small",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/PathFinder/PathfinderNode.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "normalInactive:Art/2DArt/SkillIcons/passives/PathFinder/PathfinderNode.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 782,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:AscendancyFrameNormalUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 782,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "normalActive:Art/2DArt/SkillIcons/passives/PathFinder/PathfinderNode.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 782,
+          "spriteY": 102,
+          "spriteWidth": 34,
+          "spriteHeight": 34,
+          "frameKey": "frame:AscendancyFrameNormalAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 782,
+            "y": 102,
+            "width": 34,
+            "height": 34
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    },
+    {
+      "nodeId": "30",
+      "name": "Gathering Winds",
+      "nodeType": "ascendancy-notable",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/DeadEye/DeadeyeTailwind.png",
+      "variants": [
+        {
+          "state": "inactive",
+          "iconKey": "notableInactive:Art/2DArt/SkillIcons/passives/DeadEye/DeadeyeTailwind.png",
+          "iconAtlas": "skills-disabled.webp",
+          "spriteX": 0,
+          "spriteY": 468,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:AscendancyFrameNotableUnallocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 0,
+            "y": 468,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        },
+        {
+          "state": "active",
+          "iconKey": "notableActive:Art/2DArt/SkillIcons/passives/DeadEye/DeadeyeTailwind.png",
+          "iconAtlas": "skills.webp",
+          "spriteX": 0,
+          "spriteY": 468,
+          "spriteWidth": 49,
+          "spriteHeight": 49,
+          "frameKey": "frame:AscendancyFrameNotableAllocated",
+          "frameAtlas": "frame.webp",
+          "renderedSource": {
+            "x": 0,
+            "y": 468,
+            "width": 49,
+            "height": 49
+          },
+          "fallbackReason": null
+        }
+      ],
+      "result": "passed"
+    }
+  ]
+}

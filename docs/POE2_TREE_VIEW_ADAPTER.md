@@ -61,3 +61,7 @@ Desktop 1280 × 800 und emuliertes Mobil 390 × 844 verwendeten denselben ViewBo
 ## Nachbesserung 5D.2
 
 Pointer-Pinch und Wheel zoomen nun um den tatsächlichen Kontaktmittelpunkt; Ein-Pointer-Pan übernimmt nach Pinch ohne Sprung. Klasse und Aszendenz fließen ausschließlich als Darstellungscontext ein. Der Hauptbaum bleibt unverändert, während genau das ausgewählte offizielle Aszendenzlayout in einem Inset mit Originalkoordinaten und internen Verbindungen erscheint. Offizielle Medien bleiben mangels belastbarer Weiterverteilungsfreigabe blockiert; kontrollierte SVG-Detailstufen verbessern stattdessen die Lesbarkeit. Vollständiger Vertrag: [`POE2_TREE_TOUCH_AND_ASCENDANCY.md`](POE2_TREE_TOUCH_AND_ASCENDANCY.md).
+
+## Motivauflösung 5D.4
+
+`resolveNodeSpriteRenderData(node, state, zoomLevel, radius)` ist die einzige Renderauflösung für Motiv und Rahmen. `tree-render-data.json.nodeIcons` wird über die technische Baum-ID (den äußeren Schlüssel von `data.json.nodes`) adressiert, nicht über die innere Skillkennung `node.id`. Icon- und Frameatlas bleiben getrennte Ebenen; Frame-Sprites werden nach dem Motiv gezeichnet und besitzen transparente Innenbereiche. Fernansicht darf vereinfachen, Mittel- und Nahansicht verwenden dieselbe offizielle Motivreferenz. Verschachtelte Sprite-SVGs clippen einen lokalen ViewBox mit negativem Atlasoffset; nur das direkte Baum-SVG wird durch `.tree-viewport>svg` skaliert.

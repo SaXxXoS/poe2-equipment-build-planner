@@ -37,3 +37,7 @@ Ein physisches iPhone stand nicht zur Verfügung. Pinch wurde daher durch die re
 ## Abgrenzung
 
 Keine Engine, kein Orchestrator, keine reale Pipeline, keine Pfadsuche, keine Empfehlung, keine Punktevergabe und keine Aufgabe 5I. Mobalytics wurde weder als Daten- noch als Code- oder Assetquelle verwendet.
+
+## Regression 5D.4
+
+5D.4 ändert keine Pointer-, Kamera-, Pinch-, Pan- oder Aszendenztransformationslogik. Der Nutzer hat Pinch, Pan, Baumdarstellung, zentrale Aszendenz sowie Klassen-/Aszendenzwechsel auf einem physischen iPhone vor dieser Motivkorrektur bestätigt. Die erneute physische Prüfung des neuen Motivstands bleibt offen und wird nicht als bestanden behauptet.

@@ -60,6 +60,2563 @@
     "Art/2DArt/SkillIcons/passives/StaffMasterySymbol.png",
     "Art/2DArt/SkillIcons/passives/WarcryMastery.png"
   ],
+  "unresolvedNodeIcons": [
+    {
+      "nodeId": "240",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "259",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "292",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "857",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1205",
+      "name": "Poison Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPoison.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1215",
+      "name": "Evasion and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1220",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1416",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1477",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1514",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1825",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "1922",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2074",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2102",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2461",
+      "name": "Accuracy Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupAccuracy.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2733",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2841",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2946",
+      "name": "Fire Resistance Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "2978",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "3042",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "3471",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "4139",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "4492",
+      "name": "Attributes Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "4956",
+      "name": "Recovery Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "5348",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "5407",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "5681",
+      "name": "Fortify Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/FortifyMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "5726",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "5826",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6161",
+      "name": "Bleeding Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/BloodMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6338",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6502",
+      "name": "Flail Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupStaff.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6570",
+      "name": "Curse Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryCurse.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6588",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6912",
+      "name": "Two Hand Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupTwoHands.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "6988",
+      "name": "Herald Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryChannelling.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "7023",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "7333",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "7488",
+      "name": "Leech Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShieldMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "7642",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8154",
+      "name": "Herald Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryChannelling.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8460",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8556",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8606",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8629",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8785",
+      "name": "Curse Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryCurse.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "8872",
+      "name": "Dual Wielding Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupDualWield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9040",
+      "name": "Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9083",
+      "name": "Minion Defence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9212",
+      "name": "Minion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9221",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9393",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9458",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9586",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "9698",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10058",
+      "name": "Chaos Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryChaos.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10162",
+      "name": "Power Charge Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/EnduranceFrenzyChargeMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10245",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10429",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10495",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10729",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10738",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "10841",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "11014",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTotem.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "11032",
+      "name": "Evasion and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "11505",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12005",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12125",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12169",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12239",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12382",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "12786",
+      "name": "Aura Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "13387",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "13691",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTotem.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "13862",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "13882",
+      "name": "Infusion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14113",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14122",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14272",
+      "name": "Spell Suppression Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShieldMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14505",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14601",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14832",
+      "name": "Mace Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMace.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14923",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "14980",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "15270",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "15984",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCast.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "16114",
+      "name": "Aura Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "16123",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "16647",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17283",
+      "name": "Evasion and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17380",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17411",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17587",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17745",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTotem.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "17906",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "18121",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "18713",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryArmourandEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "19074",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "19542",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "19749",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "19750",
+      "name": "Armour and Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "19846",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20015",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20119",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20140",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20390",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20637",
+      "name": "Damage Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupExtra.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20641",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "20744",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "21127",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackTotemMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "21324",
+      "name": "Buckler Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "21374",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "21801",
+      "name": "Chaos Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryChaos.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "22959",
+      "name": "Curse Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryCurse.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "23013",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "23105",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "23547",
+      "name": "Chaos Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryChaos.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "23879",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24129",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24224",
+      "name": "Axe Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupAxe.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24481",
+      "name": "Recovery Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24551",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24855",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24889",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "24948",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25011",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25029",
+      "name": "Charms Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/ChannellingAttacksMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25031",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25281",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25446",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25528",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25857",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "25934",
+      "name": "Two Hand Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupTwoHands.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "26148",
+      "name": "Accuracy Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupAccuracy.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "26697",
+      "name": "Sword Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupSword.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "26895",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27234",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27274",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27307",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27492",
+      "name": "Recovery Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27733",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "27992",
+      "name": "Crossbow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28476",
+      "name": "Thorns Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28623",
+      "name": "Spell Suppression Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShieldMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28638",
+      "name": "Quarterstaff Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/StaffMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28680",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28718",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28862",
+      "name": "Leech Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLifeMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28863",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "28903",
+      "name": "Poison Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPoison.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "29065",
+      "name": "Bleeding Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/BloodMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "29663",
+      "name": "Movement Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "29993",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "30077",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "30393",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "30459",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "30553",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "30663",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "31039",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "31284",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "31292",
+      "name": "Mace Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMace.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "31757",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "31779",
+      "name": "Power Charge Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/EnduranceFrenzyChargeMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32040",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32096",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32233",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32241",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32274",
+      "name": "Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32278",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32509",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32523",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "32777",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33221",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33244",
+      "name": "Rage Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltAttackDamageMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33514",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33590",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33596",
+      "name": "Crossbow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33604",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33618",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "33823",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34084",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34317",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34401",
+      "name": "Blind Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34443",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34487",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackTotemMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34552",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34782",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34927",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "34984",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35085",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35118",
+      "name": "Two Hand Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupTwoHands.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35492",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35859",
+      "name": "Leech Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLifeMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35977",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "35980",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "36071",
+      "name": "Spear Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/ImpaleMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "36759",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37434",
+      "name": "Armour and Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37532",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37616",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37641",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37795",
+      "name": "Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "37971",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38235",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38320",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38430",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38474",
+      "name": "Bleed Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/BloodMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38568",
+      "name": "Blind Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "38921",
+      "name": "Block Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "39116",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "39237",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "39416",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "39431",
+      "name": "Crossbow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "39476",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "40196",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "40271",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "40395",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "40550",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackTotemMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "40626",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41016",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41062",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41163",
+      "name": "Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41180",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41225",
+      "name": "Minion Defence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41298",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41415",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41522",
+      "name": "Duration Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryDuration.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "41821",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "42205",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "42361",
+      "name": "Chaos Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryChaos.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "42604",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "42737",
+      "name": "Crossbow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "42802",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "43142",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "43471",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "43579",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "43647",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "43818",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44179",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44298",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44316",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44359",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44423",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44540",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44608",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44612",
+      "name": "Spell Suppression Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShieldMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44850",
+      "name": "Recovery Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44875",
+      "name": "Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "44948",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "45019",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "45576",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46051",
+      "name": "Thorns Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46343",
+      "name": "Two Hand Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupTwoHands.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46421",
+      "name": "Aura Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46561",
+      "name": "Recovery Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46665",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "46761",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47173",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47212",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47242",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47469",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47517",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47606",
+      "name": "Rage Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltAttackDamageMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "47833",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48007",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48267",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48290",
+      "name": "Minion Defence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48505",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48544",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48660",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48717",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "48761",
+      "name": "Thorns Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupExtra.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "49111",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "49259",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "49391",
+      "name": "Block Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "49633",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50146",
+      "name": "Buckler Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50177",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50383",
+      "name": "Infusion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50403",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50540",
+      "name": "Curse Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryCurse.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50616",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50757",
+      "name": "Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "50767",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51210",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51454",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51485",
+      "name": "Shapeshifting Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMinionDamageHeraldMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51583",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51708",
+      "name": "Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51812",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "51974",
+      "name": "Fortify Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/FortifyMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52003",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCast.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52038",
+      "name": "Aura Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52060",
+      "name": "Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52220",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52445",
+      "name": "Evasion and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52462",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "52875",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "53188",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "53216",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "53696",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54198",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54340",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54380",
+      "name": "Poison Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPoison.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54413",
+      "name": "Spell Suppression Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShieldMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54783",
+      "name": "Mana Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMana.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54849",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "54887",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55011",
+      "name": "Caster Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AreaofEffectSpellsMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55152",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackTotemMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55235",
+      "name": "Mark Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MarkMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55348",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55491",
+      "name": "Reservation Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "55843",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56023",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56320",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/BloodMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56472",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56595",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56701",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56926",
+      "name": "Minion Defence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "56934",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "57320",
+      "name": "Armour and Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "57775",
+      "name": "Aura Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltMasteryAuras.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "57966",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "58058",
+      "name": "Bow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "58138",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "58674",
+      "name": "Elemental Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryElementalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "58855",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "58884",
+      "name": "Two Hand Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupTwoHands.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "59355",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "59356",
+      "name": "Flask Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryFlasks.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "59501",
+      "name": "Blind Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60116",
+      "name": "Armour and Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60170",
+      "name": "Cold Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCold.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60210",
+      "name": "Poison Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPoison.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60313",
+      "name": "Chaos Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryChaos.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60488",
+      "name": "Trap Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryTraps.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60809",
+      "name": "Channelling Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/ChannellingAttacksMasterySymbol.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "60916",
+      "name": "Endurance Charge Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/EnduranceFrenzyChargeMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "61432",
+      "name": "Crossbow Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupBow.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "61974",
+      "name": "Invocation Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupExtra.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "61992",
+      "name": "Minion Offence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupMinions.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62015",
+      "name": "Warcry Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/WarcryMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62023",
+      "name": "Attack Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62235",
+      "name": "Armour and Evasion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEvasion.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62581",
+      "name": "Block Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62588",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62628",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62661",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62670",
+      "name": "Minion Defence Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MinionMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62748",
+      "name": "Life Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLife.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62779",
+      "name": "Companion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "62948",
+      "name": "Armour and Energy Shield Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupEnergyShield.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "63268",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "63482",
+      "name": "Lightning Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupLightning.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "63608",
+      "name": "Fire Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupFire.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "63861",
+      "name": "Critical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupCrit.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "64023",
+      "name": "Thorns Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "64042",
+      "name": "Physical Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryPhysicalDamage.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "64683",
+      "name": "Armour Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryGroupArmour.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "64726",
+      "name": "Projectile Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/MasteryProjectiles.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "65042",
+      "name": "Rage Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AltAttackDamageMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "65154",
+      "name": "Totem Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackTotemMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "65226",
+      "name": "Infusion Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    },
+    {
+      "nodeId": "65353",
+      "name": "Banner Mastery",
+      "officialIconReference": "Art/2DArt/SkillIcons/passives/AttackBlindMastery.png",
+      "isMastery": true,
+      "fallbackReason": "official-icon-sprite-unresolved"
+    }
+  ],
   "thirdPartyAssets": 0,
   "externalRuntimeUrls": 0
 }

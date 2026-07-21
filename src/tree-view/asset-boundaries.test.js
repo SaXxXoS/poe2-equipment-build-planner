@@ -10,3 +10,13 @@ describe('blockierte offizielle Baum-Assets', () => {
   it('enthält weder Hotlinks noch Drittanbieter- oder GGG-Bildreferenzen', () => expect(uiSource).not.toMatch(/https?:\/\/|Mobalytics|PoE2DB|RePoE|\.png|\.webp|\.jpg/i))
   it('kopiert keine Bilddateien in die App', () => { const directory = new URL('public/', root), files = existsSync(directory) ? readdirSync(directory, { recursive: true }) : []; expect(files.filter(value => /\.(png|webp|jpe?g|gif)$/i.test(String(value)))).toHaveLength(0) })
 })
+
+describe('Sprite-SVG-Grenze', () => {
+  it('skaliert nur das direkte Baum-SVG und nicht verschachtelte Sprites', () => {
+    for (const path of ['src/styles.css', 'src/components/passive-tree.css']) {
+      const css = readFileSync(new URL(path, root), 'utf8')
+      expect(css).toContain('.tree-viewport>svg')
+      expect(css).not.toContain('.tree-viewport svg{')
+    }
+  })
+})
