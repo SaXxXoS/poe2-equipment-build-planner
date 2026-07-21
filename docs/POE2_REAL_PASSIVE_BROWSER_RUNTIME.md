@@ -1,5 +1,9 @@
 # Browser-Laufzeitarchitektur der realen Passive-Analyse (5J)
 
+## React-Anbindung nach 5K
+
+Die App nutzt den öffentlichen Client nun ausschließlich über `createPassiveAnalysisController`. Erzeugung und Initialisierung erfolgen erst durch „Analyse vorbereiten“, Analysen nur durch „Build analysieren“. Compact, harter Abbruch, Versionsprüfung und Worker-Wiederverwendung bleiben unverändert. Keine Pfadvisualisierung und keine Aufgabe 5L; Details in `POE2_REAL_PASSIVE_UI_INTEGRATION.md`.
+
 ## Entscheidung und Varianten
 
 5J schafft ausschließlich eine UI-neutrale Browser-Laufzeitgrenze. Untersucht wurden: A alles im Hauptthread (einfach, aber bis etwa 1,9 s Context-Blockierung); B Graph/Context im Hauptthread und Analyse im Worker (Blockierung und große Clone-Kosten bleiben); C lokaler Baum im Worker, dort einmal Graph/Context bauen und halten; D Worker lädt JSON selbst (zusätzlicher Fetch-/404-Pfad). Gewählt ist C: Vite bündelt den gepinnten lokalen Baum in einen Module-Worker. Dadurch verlassen Baum, Graph und Context den Worker nicht, und es gibt keinen Runtimezugriff auf GitHub/GGG.

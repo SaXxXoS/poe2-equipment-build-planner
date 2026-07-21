@@ -1,5 +1,9 @@
 # Architektur der Build-Engine
 
+## React-Grenze nach 5K
+
+React kennt nur `PassiveAnalysisController`, Adapterfehler und das Compact-Ergebnis. Der Controller besitzt genau einen Worker-Client; nur dessen Dispatcher erreicht den Haupt-Orchestrator. Graph und Prepared Context bleiben ausschließlich im Worker. Renderer, Targeting, Pathfinder, Planner und Pipeline sind unverändert.
+
 ## 5J: Browser-Laufzeitadapter
 
 `src/runtime/real-passive-worker/` liegt außerhalb der Engine. Genau ein Client und Dispatcher kapseln Module Worker, Protokoll, Lebenszyklus, Abbruch und Fehler. Der Dispatcher ruft ausschließlich `analyzeBuild`; Engine und Orchestrator importieren keine Browser-API.

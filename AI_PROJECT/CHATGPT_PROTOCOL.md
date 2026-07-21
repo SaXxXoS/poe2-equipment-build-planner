@@ -1,5 +1,14 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5K – kontrollierte UI-Integration
+
+- `src/features/real-passive-analysis/` bildet genau eine React-nahe Grenze: reiner Adapter, sitzungsweiter Controller und textliche Compact-Ansicht. React verwendet ausschließlich den öffentlichen 5J-Client.
+- Initialisierung und Analyse sind getrennte Nutzeraktionen. Keine automatische Analyse, kein Budget aus Level/Quests/Aszendenz und keine erfundenen Required-Ziele oder Filter.
+- Start kommt ausschließlich aus dem offiziellen Klassenregister. Fachliche Eingabesignaturen markieren alte Ergebnisse `stale`; visuelle Bauminteraktion zählt nicht als Änderung.
+- Harte Cancellation verwirft das Resultat und verlangt Neuinitialisierung. Echte Stufen erscheinen zentral deutsch ohne Prozentwerte; Compact bleibt Standard.
+- Keine Pfad-/Knotenmarkierung oder Kamerabewegung; Renderer, Engine, Targeting, Pathfinder, Planner und Pipeline bleiben unverändert. Physische iPhone-Abnahme offen. Fotoerkennung, Buildvergleich, Designoptimierung und Aufgabe 5L bleiben offen.
+- Dokumentation: `docs/POE2_REAL_PASSIVE_UI_INTEGRATION.md`.
+
 ## Aufgabe 5J – Browser-Laufzeitarchitektur
 
 - `src/runtime/real-passive-worker/` kapselt genau einen versionierten Module-Worker-Client und Dispatcher außerhalb der Engine. Der Dispatcher ruft ausschließlich `analyzeBuild` über die 5I-Grenze auf.

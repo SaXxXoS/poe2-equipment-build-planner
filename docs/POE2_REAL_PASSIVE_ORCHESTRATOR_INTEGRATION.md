@@ -1,5 +1,9 @@
 # Reale Passive-Pipeline im Haupt-Orchestrator (Aufgabe 5I)
 
+## UI-Grenze nach 5K
+
+React ruft weder Orchestrator noch Pipeline direkt auf. Genau der 5J-Dispatcher erreicht `analyzeBuild`; 5K sendet ausschließlich Compact-Anfragen über den Worker-Client. Budget bleibt explizit, fachliche Regeln sind unverändert und Pfade werden nicht im Baum visualisiert.
+
 ## Browseradapter 5J
 
 Der Workerdispatcher ruft weiterhin ausschließlich `analyzeBuild` mit der 5I-Adaptergrenze auf. Workeranalysen erzwingen Compact und verwenden den im Worker gehaltenen Graph/Context. Keine UI-Anbindung oder Pfadvisualisierung.

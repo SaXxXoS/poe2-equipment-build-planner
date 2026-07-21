@@ -20,7 +20,7 @@ import {
 import classRegistry from '../generated/poe2-tree/class-registry.json'
 
 export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
-export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; ascendancies:TreeAscendancyRegistryEntry[] }
+export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; classStartNodeId?:string|null; ascendancies:TreeAscendancyRegistryEntry[] }
 
 export const treeClassRegistry = classRegistry.classes as unknown as TreeClassRegistryEntry[]
 export const findTreeAscendancy=(id:string)=>{for(const item of treeClassRegistry){const found=item.ascendancies.find(value=>value.ascendancyId===id);if(found)return found}return undefined}

@@ -1,5 +1,9 @@
 # Engine-UI-Integrationsaudit
 
+## Stand nach 5K
+
+Ein begrenzter Vertical-Slice ist aktiv: `UI-State → reiner Adapter → zentraler Controller → 5J-Worker-Client → Dispatcher → Haupt-Orchestrator → Compact-View`. Analyse startet nur per Nutzeraktion. Budget, offizieller Klassenstart, stale-Signatur, Abbruch/Retry und Textausgabe sind integriert. Juwelstate, Required-Ziele und Filter bleiben mangels eindeutiger Auswahl leer; der Platzhalter-Ergebnisbereich bleibt getrennt. Keine Pfadvisualisierung, Budgetableitung oder Aufgabe 5L.
+
 ## Stand nach 5J
 
 Die UI-neutrale Worker-API ist vorbereitet, wird aber weder beim Laden noch durch React gestartet. Es gibt noch keine fachliche UI-Anbindung, Ladeanzeige oder Pfadvisualisierung. Aufgabe 5K wurde nicht begonnen.
