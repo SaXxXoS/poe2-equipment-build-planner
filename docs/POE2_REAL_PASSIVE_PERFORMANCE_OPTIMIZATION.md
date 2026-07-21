@@ -41,23 +41,23 @@ Formatversion, Source-Version, Anzahl und Baumidentität werden vor Wiederverwen
 
 | Messwert | 5I bzw. lokale Baseline | 5I.1 | Änderung |
 |---|---:|---:|---:|
-| ohne Pipeline | 47,50 ms alte Serie | Median 7,77 ms (7,53–11,13) | nicht direkt vergleichbar |
-| vorbereiteter Graph, ohne Context | 2.697,38 ms alte Serie | Median 2.039,53 ms (2.000,52–2.158,03) | reproduzierte Baseline |
-| Graph + Context | – | Median 428,37 ms (403,47–449,76) | −79,0 % lokal |
-| Targeting ohne Context | 1.976,99 ms alte Serie | 1.739,90 ms Stichprobe | Baseline |
-| Targeting mit Context | – | 122,40 ms Stichprobe | −93,0 % lokal |
-| Planning | 202,32 ms | 209,31 ms | Messschwankung |
-| Validierung | – | 0,02 ms | Stichprobe |
-| Context-Aufbau einmalig | – | 1.941,77 ms | amortisierbar |
-| Graphaufbau | 318,63 ms | 398,86 ms | andere Serie |
-| zwei Läufe, Graph/Context | 5.422,55 ms | 855,57 ms | −84,2 % |
-| drei Profile, Graph/Context | 7.901,55 ms | 1.307,59 ms | −83,5 % |
-| Full-Größe | 34.896.050 B | 34.896.112 B | neue Diagnosen |
-| Compact-Größe | – | 717.625 B | −97,94 % gegen Full |
-| Full Heap-Differenz | 234,07 MiB alte Serie | Median 45,11 MiB (37,79–53,24) | nicht vergleichbar |
-| Compact Heap-Differenz | – | Median −12,67 MiB (−73,08 bis −10,16) | GC-dominiert |
+| ohne Pipeline | 47,50 ms alte Serie | Median 8,82 ms (8,03–10,43) | nicht direkt vergleichbar |
+| vorbereiteter Graph, ohne Context | 2.697,38 ms alte Serie | Median 2.064,76 ms (1.958,97–2.074,51) | reproduzierte Baseline |
+| Graph + Context | – | Median 414,43 ms (410,21–447,55) | −79,9 % lokal |
+| Targeting ohne Context | 1.976,99 ms alte Serie | Median 1.797,04 ms (1.702,20–1.798,10) | reproduzierte Baseline |
+| Targeting mit Context | – | Median 134,08 ms (131,42–154,14) | −92,5 % lokal |
+| Planning | 202,32 ms | 202,12 ms | praktisch unverändert |
+| Validierung | – | 0,03 ms | Stichprobe |
+| Context-Aufbau einmalig | – | 1.866,44 ms | amortisierbar |
+| Graphaufbau | 318,63 ms | 353,92 ms | andere Serie |
+| zwei Läufe, Graph/Context | 5.422,55 ms | 926,88 ms | −82,9 % |
+| drei Profile, Graph/Context | 7.901,55 ms | 1.379,08 ms | −82,5 % |
+| Full-Größe | 34.896.050 B | 34.896.120 B | neue Diagnosen |
+| Compact-Größe | – | 717.622 B | −97,94 % gegen Full |
+| Full Heap-Differenz | 234,07 MiB alte Serie | Median 47,46 MiB (37,75–53,28) | nicht vergleichbar |
+| Compact Heap-Differenz | – | Median −11,44 MiB (−75,66 bis −10,13) | GC-dominiert |
 
-Full-Projektion lag unter 0,01 ms, Compact-Projektion bei 0,45 ms, Compact-Serialisierung im Median bei 2,94 ms. Die Full-Serialisierung/Größe wurde separat gemessen; Full bleibt bewusst groß.
+Full-Projektion lag unter 0,01 ms, Compact-Projektion bei 0,41 ms, Compact-Serialisierung im Median bei 2,93 ms. Die Full-Serialisierung/Größe wurde separat gemessen; Full bleibt bewusst groß.
 
 ## Äquivalenz, verworfene Ansätze und Grenzen
 

@@ -2,7 +2,7 @@
 
 ## Stand nach 5I.1
 
-Die reale Passive-Integration bleibt ohne React-/UI-Aufruf. Ihr Adapterstandard ist Compact (gemessen 717.625 Byte statt 34.896.112 Byte Full), doch die synchrone mobile Eignung wurde nicht geprüft. Full bleibt expliziter Auditmodus. Aufgabe 5J und Pfadvisualisierung wurden nicht begonnen.
+Die reale Passive-Integration bleibt ohne React-/UI-Aufruf. Ihr Adapterstandard ist Compact (gemessen 717.622 Byte statt 34.896.120 Byte Full), doch die synchrone mobile Eignung wurde nicht geprüft. Full bleibt expliziter Auditmodus. Aufgabe 5J und Pfadvisualisierung wurden nicht begonnen.
 
 ## Abgrenzung 5I
 
