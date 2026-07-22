@@ -67,3 +67,7 @@ PlayStation-Spieler besitzen keine lokal auslesbaren PC-Dateien. Für sie wäre 
 ## Schlussfolgerung und nächster Schritt
 
 Die Installation und deutsche Locale sind lokal belastbar nachgewiesen, aber ein verlustfreier deutscher Mod-/Stat-/Basistypbestand ist mit dem gepinnten Parser und der aktuellen Clientstruktur **nicht belegt**. Empfohlen ist als eigene Auditaufgabe die Prüfung eines neueren Parser-/PyPoE-Kandidaten gegen denselben Containerpin, ohne den bestehenden Pin oder Approval zu ändern und weiterhin ohne Trade-API. Erst nach vollständiger ID-, Struktur-, Determinismus- und Rechteprüfung darf eine separate Distributionsentscheidung vorbereitet werden. Mobile Textklippung, Buildvergleich und Designoptimierung bleiben offen.
+
+## Follow-up 5M.2.2
+
+Der Kandidatenaudit ist abgeschlossen. Drei exakt gepinnte Stacks wurden geprüft; keiner lieferte einen nachgewiesen verlustfreien, unbeaufsichtigten deutschen/englischen Strukturexport. PoB2/ooz ermöglichte zwar zweimal manifestidentische Offline-Rohextraktionen von fünf Balance-Dateien und 589 CSD-Dateien, die strukturierte Produktabdeckung bleibt jedoch `notAssessable`. Bestehende Produktpins und alle ausstehenden Lokalisierungsfreigaben sind unverändert. Siehe [POE2_GERMAN_PARSER_CANDIDATE_AUDIT.md](POE2_GERMAN_PARSER_CANDIDATE_AUDIT.md).

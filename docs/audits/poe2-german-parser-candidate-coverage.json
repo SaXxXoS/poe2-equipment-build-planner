@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.2",
+  "auditDate": "2026-07-22",
+  "classificationRule": "A candidate that fails before structured analysis is not reported as zero coverage.",
+  "productUniverse": {
+    "mods": 2255,
+    "statLines": 2705,
+    "statIds": 431,
+    "statIdCombinations": 444,
+    "multilineAndHybridMods": 429,
+    "baseTypes": 39,
+    "itemClasses": 33,
+    "technicalTemplateGaps": 485
+  },
+  "candidates": [
+    {
+      "id": "current-repoe-pypoe",
+      "status": "failed-before-full-analysis",
+      "mods": { "total": 2255, "notAssessable": 2255, "reason": "pypoe-table-specification-error" },
+      "statLines": { "total": 2705, "notAssessable": 2705, "reason": "mods-and-stat-descriptions-unavailable" },
+      "statIds": { "total": 431, "notAssessable": 431, "reason": "trade-api-policy-block-and-schema-error" },
+      "statIdCombinations": { "total": 444, "notAssessable": 444 },
+      "multilineAndHybridMods": { "total": 429, "notAssessable": 429 },
+      "baseTypes": { "total": 39, "notAssessable": 39, "reason": "pypoe-table-specification-error" },
+      "itemClasses": { "total": 33, "complete": 32, "missing": 1, "missingTechnicalIds": ["Charm"] },
+      "technicalTemplateGaps": { "total": 485, "notAssessable": 485 },
+      "structuredValues": "not-assessable",
+      "conditions": "not-assessable",
+      "variants": "not-assessable",
+      "placeholders": "not-assessable"
+    },
+    {
+      "id": "pob2-datview-ooz",
+      "status": "raw-extraction-success-structured-coverage-not-assessable",
+      "rawBalanceTables": { "files": 5, "bytes": 21749150, "run1ManifestSha256": "fa781004478566737dc5164e1d67cd5b304aea2121a529dd2ad0f298be7ac295", "run2ManifestSha256": "fa781004478566737dc5164e1d67cd5b304aea2121a529dd2ad0f298be7ac295" },
+      "rawStatDescriptions": { "files": 589, "bytes": 58842434, "run1ManifestSha256": "976a428f088618b24dad7779440413b9f296a9c906c5563659e446d4fd19b11d", "run2ManifestSha256": "976a428f088618b24dad7779440413b9f296a9c906c5563659e446d4fd19b11d" },
+      "mods": { "total": 2255, "notAssessable": 2255, "reason": "no-unattended-lossless-structured-export" },
+      "statLines": { "total": 2705, "notAssessable": 2705 },
+      "statIds": { "total": 431, "notAssessable": 431 },
+      "statIdCombinations": { "total": 444, "notAssessable": 444 },
+      "multilineAndHybridMods": { "total": 429, "notAssessable": 429 },
+      "baseTypes": { "total": 39, "notAssessable": 39 },
+      "itemClasses": { "total": 33, "notAssessable": 33 },
+      "technicalTemplateGaps": { "total": 485, "notAssessable": 485 },
+      "structuredValues": "schema-present-but-not-proven-end-to-end",
+      "conditions": "not-assessable",
+      "variants": "not-assessable",
+      "placeholders": "not-assessable"
+    },
+    {
+      "id": "poe2-mcp-local-pipeline",
+      "status": "failed-before-analysis",
+      "entrypointExitCode": 2,
+      "mods": { "total": 2255, "notAssessable": 2255, "reason": "documented-entrypoint-absent-and-no-current-schema" },
+      "statLines": { "total": 2705, "notAssessable": 2705 },
+      "statIds": { "total": 431, "notAssessable": 431 },
+      "statIdCombinations": { "total": 444, "notAssessable": 444 },
+      "multilineAndHybridMods": { "total": 429, "notAssessable": 429 },
+      "baseTypes": { "total": 39, "notAssessable": 39 },
+      "itemClasses": { "total": 33, "notAssessable": 33 },
+      "technicalTemplateGaps": { "total": 485, "notAssessable": 485 },
+      "structuredValues": "not-assessable",
+      "conditions": "not-assessable",
+      "variants": "not-assessable",
+      "placeholders": "not-assessable"
+    }
+  ],
+  "charmIdConclusion": "The local ItemClasses table read by the current RePoE/PyPoE stack has no technical ID Charm. No candidate produced a second structured ItemClasses result, so the cause remains unknown; no visible-name mapping was made.",
+  "statsValues": "PoB2's schema contains StatsValues fields, but no audited end-to-end export established their required identity and value preservation.",
+  "bondedStatsValues": "No candidate established a structured BondedStatsValues contract; socketable use remains unsupported."
+}

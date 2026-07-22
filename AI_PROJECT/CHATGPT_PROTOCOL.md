@@ -618,3 +618,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Für PlayStation ist später ein ausgelieferter Web-Datensatz oder ein separates Sprachpaket nötig; dafür ist eine separate Approval-Entscheidung erforderlich.
 - Buildvergleich, Designoptimierung und mobile Textklippung bleiben offen.
 - Nächster empfohlener Schritt: gesonderter Kandidatenaudit eines aktualisierten Parser-/PyPoE-Stacks gegen denselben Containerpin, ohne Trade-API und ohne Änderung des bestehenden Pins.
+
+## Aufgabe 5M.2.2 – deutscher Parser-Kandidatenaudit (2026-07-22)
+
+- 5M.2.1 scheiterte für Mods und Basistypen an der inkompatiblen PyPoE-Tabellenspezifikation; StatDescriptions wurden wegen des vor lokaler CSD-Verarbeitung zwingenden Trade-API-Aufrufs nicht gestartet.
+- Drei genaue Kandidaten wurden vertieft geprüft: RePoE `14e3edc89ed705bd4e4eda5c8135756431c76e81` + PyPoE `c30ad895282fc703a804d77e26e8e5c939f57b93`; PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0` + ooz 0.2.4; poe2-mcp `163c30a9fd45f815d330cc54e6ab51a797693d31`.
+- RePoE/PyPoE hat keinen neueren Remote-Head und bleibt für Mods/Basistypen inkompatibel sowie für StatDescriptions ohne Offline-Modus ungeeignet. Der bestehende Produktivpin wurde nicht verändert.
+- PoB2/ooz extrahierte offline und zweimal manifestidentisch fünf Balance-DATC64-Dateien sowie 589 CSD-Dateien. Der GUI-orientierte DatView-Pfad belegt jedoch keinen unbeaufsichtigten verlustfreien deutschen/englischen Strukturexport; Produktcoverage bleibt `notAssessable`.
+- poe2-mcp besitzt am geprüften Pin den dokumentierten Gesamt-Entrypoint nicht und keinen vollständigen aktuellen Schema-/Locale-Vertrag; der Start endete mit Exitcode 2.
+- Keine Trade-API, kein PoE2DB, kein Webseiten-Scraping und keine externe Laufzeitdatenquelle wurden verwendet. Kandidaten, Rohdaten, Volltexte, Tools und Logs bleiben ausschließlich unter `.local-audits/`.
+- `StatsValues` ist im PoB2-Schema sichtbar, aber end-to-end nicht verifiziert; `BondedStatsValues` und die Socketable-Eignung bleiben unbekannt beziehungsweise ungeeignet für Freigabe.
+- Keine 2.255-Mod-, 2.705-Statzeilen-, 431-Stat-ID-, 444-Kombinations-, 429-Mehrzeiler-/Hybrid-, 39-Basistyp- oder 485-Lücken-Coverage konnte belastbar erzeugt werden. Fehlgeschlagene Kandidaten werden nicht als Null-Coverage dargestellt.
+- `Charm` bleibt als technische ItemClass-ID ungeklärt. Keine Zuordnung wurde aus sichtbarem Text abgeleitet.
+- Klare Empfehlung: Kein Kandidat ist ausreichend; eine begrenzte eigene Parseranpassung benötigt einen separaten Auftrag. Danach sind ein eigener Pin-, Approval- und Distributionsentscheid erforderlich.
+- Alle deutschen Produktlokalisierungsscopes bleiben `pending`, `translation-missing` bleibt aktiv, keine deutschen Produkt- oder Volltexte wurden committed.
+- 5M.2 und 5N wurden nicht begonnen. Fotoerkennung, Übersetzungs-Lernmodus, PlayStation-Sprachpaket, Buildvergleich, Designoptimierung und mobile Textklippung bleiben spätere getrennte Aufgaben.
+- Nächster empfohlener Schritt: begrenzter Parseranpassungsauftrag nur für einen gepinnten unbeaufsichtigten Offline-Auditexport, noch ohne Produktimport oder Approval.
