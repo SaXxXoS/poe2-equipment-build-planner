@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.0",
+  "auditDate": "2026-07-22",
+  "startingCommit": "f8a9e021990f8e0505fbb4c78c1b1bee7a9d0b6a",
+  "productionTextsImported": false,
+  "pins": {
+    "repoeExport": { "version": "4.5.4.4.4", "commit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c" },
+    "repoeParser": { "commit": "14e3edc89ed705bd4e4eda5c8135756431c76e81", "currentHeadCheckedAtAudit": "14e3edc89ed705bd4e4eda5c8135756431c76e81" },
+    "pathOfBuildingPoe2": { "branch": "dev", "commit": "f5b94342eeea413a94c339af3e881c5e2a4df0df" },
+    "poe2Mcp": { "commit": "163c30a9fd45f815d330cc54e6ab51a797693d31", "dataRelease": "data-v0.5.0-r12" },
+    "pobr": { "commit": "ff1d07da2a2b38959e34eea077d842d222f631b4" }
+  },
+  "countingRules": {
+    "modId": "one unique affixId/sourceModId after runtime deduplication",
+    "statId": "one unique technical statId",
+    "statLine": "one statLines entry",
+    "statCombination": "one ordered statId sequence per mod; equal sequences count once",
+    "template": "one language template with placeholders and conditions, not one rendered roll",
+    "multiline": "one mod with more than one stat line",
+    "baseType": "one unique baseItemId in generated base-item files",
+    "itemClass": "one unique itemClassId referenced by runtime mods"
+  },
+  "productInventory": {
+    "total": { "uniqueModIds": 2255, "statLines": 2705, "uniqueStatIds": 431, "uniqueStatIdCombinations": 444, "multilineMods": 429, "hybridMods": 429, "technicalTemplatesPresent": 2220, "technicalTemplatesMissing": 485, "baseTypes": 39, "referencedItemClasses": 33 },
+    "mainEquipment": { "mods": 1828, "statLines": 2265, "statIds": 290, "statCombinations": 306, "multiline": 416, "hybrid": 416, "templatesPresent": 2220, "templatesMissing": 45, "itemClasses": 29 },
+    "jewels": { "mods": 320, "statLines": 322, "statIds": 164, "statCombinations": 163, "multiline": 2, "hybrid": 2, "baseTypes": 8 },
+    "charms": { "mods": 64, "statLines": 64, "statIds": 22, "statCombinations": 22, "multiline": 0, "hybrid": 0, "baseTypes": 13 },
+    "lifeFlasks": { "mods": 57, "statLines": 63, "statIds": 13, "statCombinations": 12, "multiline": 6, "hybrid": 6, "baseTypes": 9 },
+    "manaFlasks": { "mods": 52, "statLines": 58, "statIds": 12, "statCombinations": 11, "multiline": 6, "hybrid": 6, "baseTypes": 9 },
+    "mainBreakdown": { "prefixes": 816, "suffixes": 568, "baseImplicits": 231, "corruptionImplicits": 103, "corruptionUpgrades": 110 },
+    "productionLocalizationStatus": "translation-missing"
+  },
+  "sources": [
+    {
+      "sourceId": "official-ggg-developer-api-and-skilltree-export",
+      "role": "official control source",
+      "identifiers": ["passive-tree identifiers only"],
+      "germanItemTexts": "not found in documented official exports",
+      "itemMods": "not found",
+      "baseAndClassNames": "not found",
+      "codeLicense": "not applicable",
+      "gameDataStatus": "official service/export terms apply",
+      "approval": "insufficient for item localization",
+      "uncertainty": "No official German item-localization export was identified; absence beyond reviewed documentation is Unbekannt."
+    },
+    {
+      "sourceId": "repoe-poe2",
+      "files": [
+        { "path": "version.txt", "bytes": 9, "sha256": "ec563ae02051174b61a31ae1a0aa84329cd1025cc5ce2ecde19fae85b446ba28" },
+        { "path": "data/stat_translations/stat_descriptions.json", "bytes": 10605429, "sha256": "5501ffe60e12546a8f3cf3bee42d47f6148514d7e92d596d2c277fb29ffbef3a" },
+        { "path": "data/base_items.json", "bytes": 8127066, "sha256": "846029974c5cd643404072bd6c5b497c5ed129544750a41ca7d0e0c5b4449" },
+        { "path": "data/item_classes.json", "bytes": 16553, "sha256": "f1905c443d45863ad66bc07066b63551c7ed315f77e6b635fee2fa52ee05d821" }
+      ],
+      "statTranslationInventory": { "jsonFiles": 589, "entries": 19460, "uniqueIds": 16432, "englishEntries": 19460, "germanEntries": 0, "languagesDeclared": ["English", "French", "German", "Japanese", "Korean", "Portuguese", "Russian", "Spanish", "Thai", "Traditional Chinese"] },
+      "coverage": { "productStatIds": 431, "directIdMatched": 419, "directIdMissing": 12, "germanDirectIdMatched": 0, "directTechnicalCoveragePercent": 97.22, "germanCoveragePercent": 0 },
+      "missingProductStatIds": ["local_weapon_implicit_hidden_%_base_damage_is_fire", "local_weapon_implicit_hidden_added_minimum_chaos_damage", "local_weapon_implicit_hidden_added_maximum_chaos_damage", "local_weapon_implicit_hidden_%_base_damage_is_chaos", "local_weapon_implicit_hidden_%_base_damage_is_lightning", "local_weapon_implicit_hidden_%_base_damage_is_cold", "local_weapon_implicit_hidden_added_minimum_lightning_damage", "local_weapon_implicit_hidden_added_maximum_lightning_damage", "local_level_requirement_override", "local_hand_wraps_player_level_to_use", "local_display_grants_spear_throw_skill", "local_jewel_effect_base_radius"],
+      "matching": "direct Stat-ID plus conditions/placeholders is structurally strong; Mod-ID comes from mods.json, not the translation row",
+      "codeLicense": "not applicable to generated export",
+      "gameDataStatus": "GGG-derived; no separate German-text redistribution grant identified",
+      "approval": "pending for all German text scopes"
+    },
+    {
+      "sourceId": "repoe-parser",
+      "files": [
+        { "path": "repoe/run_parser.py", "bytes": 3528, "sha256": "9002e9f8229a860a01c0397a7449c95ac7f2f14ee7e51e76955a051c880e6344" },
+        { "path": "repoe/parser/poe2/stat_translations.py", "bytes": 14857, "sha256": "af50e4f2611ffe87632d15c5695101f802c5cf814c06190c1882a9499278be54" },
+        { "path": "repoe/parser/poe2/base_items.py", "bytes": 9819, "sha256": "176a2643a192bc7b8db3f040167a8830af1ec4dac2e77e62fbf9f9b57c7c154e" },
+        { "path": "repoe/parser/poe2/item_classes.py", "bytes": 789, "sha256": "05c00680410ea99a939a5631e71845f39e323bf92f6bba1a69257c39d034a9fd" }
+      ],
+      "languageSupport": { "GermanLocale": "de_DE.utf8", "cli": "--language German or all", "statDescriptions": true, "baseItemNames": true, "itemClassNames": true, "idsPreserved": true },
+      "newerCandidate": "No newer commit existed at audit time; remote HEAD equalled the pinned commit.",
+      "socketableStats": "augments parser renders language-specific text but does not export structured StatsValues/BondedStatsValues",
+      "codeLicense": "MIT",
+      "gameDataStatus": "parser license does not license generated GGG text",
+      "approval": "architecture/control only; no German production import"
+    },
+    {
+      "sourceId": "local-user-installation",
+      "localCheck": { "standardPathsChecked": 3, "installationFound": false, "contentGgpkFound": false },
+      "technicalFeasibility": "RePoE supports an explicit local Content.ggpk and German relational reader; reproducible extraction is plausible but was not executed.",
+      "versionPin": "Unbekannt",
+      "completeness": "Unbekannt",
+      "redistributionRight": "Unbekannt",
+      "localUserOnlyMapping": "pending",
+      "repositoryDataset": "blocked until separate evidence and approval"
+    },
+    {
+      "sourceId": "poe2db",
+      "role": "manual visual/language control only",
+      "automation": "not performed and blocked",
+      "technicalIds": "not proven for a complete German mapping",
+      "codeLicense": "Unbekannt",
+      "gameDataStatus": "GGG-visible text plus community presentation; reuse terms Unbekannt",
+      "approval": "HTML/CSS/API/dump/scraping blocked; no text copied"
+    },
+    {
+      "sourceId": "path-of-building-poe2",
+      "files": [
+        { "path": "src/Data/ModItem.lua", "bytes": 1065757, "sha256": "04ae12361929cc9e0d765555fc51bfd39ff795b17cbcbcd4574b77408061cad2" },
+        { "path": "src/Export/spec.lua", "bytes": 898440, "sha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30" }
+      ],
+      "germanItemLocalization": "not found",
+      "technicalRelation": "English runtime/parser strings and internal mod names; no complete German ID mapping",
+      "codeLicense": "MIT; bundled game data remains separately attributed/restricted",
+      "approval": "control/architecture only"
+    },
+    {
+      "sourceId": "poe2-mcp",
+      "files": [
+        { "path": "src/parsers/csd_parser.py", "bytes": 7301, "sha256": "78654ebcde8d7ab00ebc8a15eb32d0124d5e94ec981ab964a8ca731f3c4163ba" },
+        { "path": "data/game/stat_descriptions/stat_descriptions.json", "bytes": 5832689, "sha256": "c08406053cb9dec7f2324695b3fb8fe16585e12f8b8ac4928a3d1150093f8015" }
+      ],
+      "languageSupport": "CSD parser records languages_available including German but deliberately emits English templates only",
+      "technicalIds": "present for stat descriptions and mods; no complete localized base/item-class product",
+      "codeLicense": "MIT",
+      "gameDataStatus": "maintainer-extracted GGG data; no separate redistribution grant identified",
+      "approval": "control only"
+    }
+  ],
+  "matchingStrategies": {
+    "directStatId": "source-id-verified when locale, pin, condition and placeholder variant are also verified",
+    "directModId": "source-id-verified only if localized record explicitly carries the same Mod ID",
+    "baseMetadataId": "source-id-verified with exact BaseItemTypes/metadata ID",
+    "itemClassId": "source-id-verified with exact ItemClasses ID",
+    "statCombinationConditions": "source-structure-verified; needed for hybrid/multiline variants",
+    "normalizedStructureHash": "control signal after canonical IDs/conditions/placeholders, never sole source proof",
+    "englishText": "control signal only",
+    "manualIdMatch": "manually-id-matched; production requires dual-reviewed and approved source scope"
+  },
+  "recommendedTrustStatuses": ["source-id-verified", "source-structure-verified", "manually-id-matched", "dual-reviewed", "photo-derived-unverified", "user-confirmed-local", "ambiguous", "translation-missing", "deprecated", "source-conflict"],
+  "photoModeFitness": {
+    "directGermanStatTemplates": "potentially suitable after approval: placeholders, signs, percentages, conditions and multi-stat order are representable",
+    "currentPinnedExport": "not suitable for German OCR because German templates are empty",
+    "manualMapping": "technically useful but not scalable or complete without tooling and dual review",
+    "textOnlyMatching": "not suitable as technical identity",
+    "ocrRule": "OCR yields candidates; it must never create a new technical ID"
+  },
+  "approvalDecision": {
+    "germanStatTemplates": "pending",
+    "regularAffixes": "pending",
+    "implicits": "pending",
+    "corruption": "pending",
+    "jewelMods": "pending",
+    "charmMods": "pending",
+    "flaskMods": "pending",
+    "baseTypeNames": "pending",
+    "itemClassNames": "pending",
+    "socketableIdentityNames": "pending",
+    "technicalSearchTerms": "pending",
+    "manualCuratedMappings": "pending",
+    "localUserGeneratedMappings": "pending",
+    "photoDerivedMappings": "blocked"
+  },
+  "minimalFutureFields": ["locale", "statId", "modId", "baseItemId", "itemClassId", "textTemplate", "placeholders", "conditions", "textOrder", "pluralRule", "signRule", "sourcePin", "sourceReference", "reviewStatus", "confidenceStatus", "dataStatus"],
+  "excluded": ["PoE2DB HTML/CSS/API/dumps", "website copies", "images", "audio", "raw game-text mirrors", "flavour text", "lore", "free or unconfirmed machine translation", "unique texts", "complete skill/support texts", "runtime fetches", "hotlinks"],
+  "representativeExamples": [
+    { "kind": "direct-stat-id", "technicalId": "accuracy_rating_+%", "result": "technical source match possible; German text absent at pin" },
+    { "kind": "multistat", "technicalIdCount": 2, "result": "ordered ID combination and conditions required; text equality is insufficient" },
+    { "kind": "base-item", "technicalId": "Metadata/Items/Charms/Charm1", "result": "exact metadata ID required; visible name alone is insufficient" }
+  ],
+  "uncertainties": [
+    "Exact German game-data completeness for a locally installed, pinned client is Unbekannt because no installation was available and no extraction was run.",
+    "Permission to publish a derived German text dataset is Unbekannt; software licenses do not resolve game-text rights.",
+    "Official availability of an undocumented German item localization export is Unbekannt.",
+    "No coverage estimate is assigned to PoE2DB, PoB or local installation without an ID-complete dataset."
+  ]
+}

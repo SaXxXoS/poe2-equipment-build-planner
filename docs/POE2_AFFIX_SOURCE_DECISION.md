@@ -1,5 +1,9 @@
 # 5M.0 – Quellenentscheidung für reale PoE2-Affixdaten
 
+## Abgrenzung 5M.2.0
+
+Die bedingte Freigabe technischer Affixfelder umfasst keine sichtbaren deutschen Texte. RePoE-Sprachfähigkeit ist kein Text-Approval; deutsche Stat-/Modtexte bleiben bis zu gepinntem Lauf, Coverage- und Rechteprüfung `pending`.
+
 > 5M.1B.0C ergänzt getrennte Socketable-Identitätsscopes, verändert aber den bestehenden Affixscope nicht. Socketable-Modwerte, weitere Corruption-Mods, Desecrated, Mutated, Enchantments und Anointments bleiben blockiert/pending. Es erfolgte kein Import.
 
 > 5M.1B.0B behandelt Uniques getrennt vom Affiximport. Keine geprüfte Quelle besitzt eine vollständige itemgebundene technische Unique-Struktur; alle neuen Unique-Scopes bleiben `pending`/`blocked`. Der bestehende RePoE-Affixscope und seine generierten Dateien sind unverändert.

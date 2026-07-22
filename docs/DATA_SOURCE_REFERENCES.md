@@ -1,5 +1,12 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Auditquellen 5M.2.0
+
+- RePoE-PoE2 `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`: englischer Export mit leerem `German`-Feld.
+- RePoE-Parser `14e3edc89ed705bd4e4eda5c8135756431c76e81`: `de_DE.utf8`, StatDescriptions, BaseItems und ItemClasses; MIT-Code, keine automatische Spieldatenlizenz.
+- PoB2 `f5b94342eeea413a94c339af3e881c5e2a4df0df`, poe2-mcp `163c30a9fd45f815d330cc54e6ab51a797693d31`, PoBR `ff1d07da2a2b38959e34eea077d842d222f631b4`: nur Audit-/Kontrollquellen.
+- GGG Developer Docs/API Reference/Terms wurden offiziell geprüft. PoE2DB wurde nicht automatisiert abgerufen.
+
 ## 5M.1B.0C Socketable-/Spezialmod-Audit
 
 - Primär: `repoe-fork/poe2@b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Version `4.5.4.4.4`, insbesondere `data/augments.json`.

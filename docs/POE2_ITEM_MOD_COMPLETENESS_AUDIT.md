@@ -1,5 +1,9 @@
 # PoE2 Item-Mod-Vollständigkeitsaudit (5M.1A)
 
+## Ergänzung 5M.2.0
+
+Der produktive Laufzeitbestand zählt 2.255 eindeutige Mods, 2.705 Statzeilen, 431 Stat-IDs, 444 Stat-ID-Kombinationen und 429 Mehrzeiler/Hybride. Aktuell bestehen null verifizierte deutsche Templates.
+
 > Folgestatus 5M.1B.0C: `augments.json` belegt 295 technische Socketables (221 Rune, 34 SoulCore, 35 Idol, 4 AbyssalEye, 1 CongealedMist). Identitätsfelder sind eng `conditionally-approved`; Moddaten bleiben wegen nicht strukturiert exportierter `StatsValues`/`BondedStatsValues` pending. Die bestehenden 103 Corruption-Implicits und 110 Upgrades sind vollständig abgegrenzt und unverändert. Keine Daten wurden importiert.
 
 > Folgestatus 5M.1B.0B: Das commit-genaue Unique-Audit bestätigt die Lücke. RePoE trennt 449 Unique-Stashzeilen von technischen Mods/Bases; PoB/PoBR führen textbasierte Itemblöcke ohne technische Unique-/Mod-/Stat-IDs; poe2-mcp hat keine Unique-Item-Tabelle. Unique-Identität bleibt `pending`, Unique-Mods, Varianten und item-granted Effects bleiben `blocked`. Keine Daten wurden importiert; die neun 5M.1-Fachdateien bleiben unverändert. Details: `docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md`.

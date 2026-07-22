@@ -1,5 +1,13 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.2.0 – deutsche Gegenstandslokalisierung, Quellenentscheidung (2026-07-22)
+
+- Reine Auditentscheidung: keine deutschen Produktivtexte, keine freie/KI-Übersetzung, keine PoE2DB-Automation und keine UI-, BuildProfile-, Worker-, Analyzer-, Engine- oder Baumänderung. `translation-missing` bleibt produktiv.
+- Bestand: 2.255 eindeutige Mods, 2.705 Statzeilen, 431 Stat-IDs, 444 geordnete Stat-ID-Kombinationen, 429 Mehrzeiler/Hybride, 39 zusätzliche Basistypen und 33 referenzierte Itemklassen.
+- RePoE `4.5.4.4.4`/`b3f38149` besitzt 589 StatDescription-Dateien und deckt 419/431 Produkt-Stat-IDs technisch ab, enthält aber 0 befüllte deutsche Einträge. Parser `14e3edc8` unterstützt `de_DE.utf8`; Remote-HEAD war identisch. Kein lokaler Client war an drei Standardpfaden verfügbar.
+- Alle deutschen Stat-, Mod-, Base-, Klassen-, Socketable- und kuratierten Mapping-Scopes bleiben `pending`; photo-derived Mapping bleibt `blocked`. Repository-Weitergabe ist **Unbekannt** und verlangt eine eigene Entscheidung.
+- 5M.2 und 5N sowie Fotoerkennung und lokaler Lernmodus sind nicht begonnen. Mobile Textklippung aus 5M.1B bleibt offen. Details: `docs/POE2_GERMAN_ITEM_LOCALIZATION_SOURCE_DECISION.md`.
+
 ## Status 5M.1B.0C – Socketable-/Spezialmod-Quellenentscheidung (2026-07-22)
 
 - RePoE `augments.json` belegt 295 technische Socketable-Identitäten: 221 Rune, 34 SoulCore, 35 Idol, 4 AbyssalEye und 1 CongealedMist. Nur minimale technische Identitätsfelder sind unter exakten Pins `conditionally-approved`; es wurde nichts importiert.

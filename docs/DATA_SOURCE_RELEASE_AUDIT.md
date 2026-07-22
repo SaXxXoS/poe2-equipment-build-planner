@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## Zusatzprüfung 5M.2.0 (2026-07-22)
+
+Der RePoE-Parser-Remote-HEAD entsprach exakt `14e3edc89ed705bd4e4eda5c8135756431c76e81`; ein neuerer Kandidat existierte nicht. Ein deutscher Datensatz besitzt keinen Produktpin, weil kein Lauf durchgeführt wurde. Jeder spätere Sprachimport benötigt Spielversionspin, Quellpin, Hashmanifest, vollständigen ID-Vergleich und erneute Approval-Prüfung.
+
 ## 5M.1B.0C – unveränderte Pins
 
 Der Socketable-/Spezialmod-Audit verwendet dieselben RePoE-Pins `4.5.4.4.4`/`b3f38149…` und Parser `14e3edc8…`. PoB ist auf `dev@f5b94342…`, poe2-mcp auf `163c30a9…`/`data-v0.5.0-r12` festgehalten. Jeder Versions-, Commit-, Parser- oder Schemawechsel verlangt neue Hashes, Vergleich und manuelle Freigabe; keine Kategorie wird automatisch produktiv aktiviert.

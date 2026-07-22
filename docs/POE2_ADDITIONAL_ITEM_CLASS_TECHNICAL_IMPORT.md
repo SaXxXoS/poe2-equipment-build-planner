@@ -1,5 +1,9 @@
 # 5M.1B – Technischer Import zusätzlicher Itemklassen
 
+## Lokalisierungsstatus 5M.2.0
+
+Jewels, Charms, Life Flasks und Mana Flasks blieben technisch unverändert und `translation-missing`. Deutsche Mod-, Basistyp- und Itemklassentexte sind weiterhin `pending`; die mobile Klippung langer technischer Texte bleibt offen.
+
 ## Umfang und Freigabe
 
 Importiert werden ausschließlich normale Jewels, Charms, Life Flasks und Mana Flasks aus `repoe-fork/poe2` Export `4.5.4.4.4`, Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`; dokumentierter Parsercommit: `14e3edc89ed705bd4e4eda5c8135756431c76e81`. Die drei Scopes bleiben eng `conditionally-approved`; dies ist keine allgemeine Lizenzfreigabe.

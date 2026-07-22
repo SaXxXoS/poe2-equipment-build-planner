@@ -1,5 +1,9 @@
 # PoE2-Socketables und Spezialmods – Quellenentscheidung 5M.1B.0C
 
+## Abgrenzung 5M.2.0
+
+Die bedingt freigegebenen technischen Socketable-Identitäten umfassen keine deutschen Anzeigenamen. Deutsche Namen bleiben `pending`; strukturierte Wirkungen bleiben wie zuvor pending oder blocked.
+
 ## 1. Ziel, Ausgangslage und Ergebnis
 
 Diese Aufgabe prüft ausschließlich Quellen, Kategorien, IDs, Zuordnungen, Vollständigkeit, Rechte und Approval-Grenzen. Sie importiert keine Runen, Soul Cores, Socketables oder zusätzlichen Spezialmods und verändert weder Produktdaten noch UI, Engine, Worker, Analyzer oder BuildProfile.

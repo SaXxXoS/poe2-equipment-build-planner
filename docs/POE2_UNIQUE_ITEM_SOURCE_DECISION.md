@@ -1,5 +1,9 @@
 # PoE2-Unique-Gegenstände – Quellen- und Approval-Entscheidung (5M.1B.0B)
 
+## Abgrenzung 5M.2.0
+
+Unique-Namen, -Modtexte und Varianten sind nicht Teil der deutschen Lokalisierungsentscheidung. Ihre bestehenden `pending`/`blocked`-Status bleiben unverändert; keine deutsche Unique-Quelle wurde freigegeben.
+
 > Abgrenzung 5M.1B.0C: Technische Socketable-Identitäten werden separat behandelt. `UniqueMutatedVaal…`, Unique-Socketable- und Unique-Anointment-Mods bleiben durch diese Entscheidung ausdrücklich blocked; die Unique-Entscheidung wurde nicht gelockert und keine Unique-Daten wurden importiert.
 
 ## 1. Ziel und Ergebnis

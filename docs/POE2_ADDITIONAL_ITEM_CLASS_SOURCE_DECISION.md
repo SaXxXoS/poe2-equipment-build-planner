@@ -1,5 +1,9 @@
 # 5M.1B.0A – Quellen- und Approval-Entscheidung für zusätzliche Itemklassen
 
+## Abgrenzung 5M.2.0
+
+Die technischen Jewel-/Charm-/Flask-Scopes geben keine deutschen Namen oder Stattexte frei. Alle entsprechenden Sprachkategorien bleiben `pending`; kein 5M.1B-Datensatz wurde verändert.
+
 > Abgrenzung 5M.1B.0C: Die neuen Socketable-Identitätsscopes ändern die bedingten Jewel-/Charm-/Flask-Scopes nicht. Socketables sind keine zusätzlichen normalen Itemklassen; Unique-Jewels/-Charms/-Flasks bleiben ausgeschlossen. Nichts wurde importiert.
 
 > Abgrenzung nach 5M.1B.0B: Unique-Jewels, Unique-Charms und Unique-Flasks sind ausdrücklich nicht von den normalen Scopes dieses Dokuments umfasst. Das separate Unique-Audit hat keinen produktiven Scope freigegeben und keine Daten importiert.

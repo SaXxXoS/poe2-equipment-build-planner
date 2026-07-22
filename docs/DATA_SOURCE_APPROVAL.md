@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Entscheidung 5M.2.0
+
+Kein deutscher Lokalisierungsscope wurde freigegeben. Stattemplates, Gegenstandstexte, Base-/Klassen-/Socketable-Namen, Suchbegriffe, kuratierte und lokal erzeugte Mappings sind `pending`; photo-derived Mapping ist `blocked`. Der gepinnte Export enthält null deutsche Einträge und eine Weitergabefreigabe ist **Unbekannt**. PoE2DB-Automation, Rohspiegel, Medien, Uniques, Skills, Supports, Runtimeabrufe und Hotlinks bleiben blockiert.
+
 ## Ergänzung 5M.1B.0C
 
 Minimale technische Identitätsfelder aus `data/augments.json`, `base_items.json`, `item_classes.json` und `version.txt` sind für exakt Rune, SoulCore, Idol, AbyssalEye und CongealedMist unter RePoE `4.5.4.4.4`/`b3f38149…` und Parser `14e3edc8…` `conditionally-approved`. Effekte, Stattexte, Werte und bonded Mods sind nicht freigegeben. Weitere Corruption-, Desecrated-, Mutated-, Enchantment- und Anointment-Daten bleiben pending/blocked. Keine Importfreigabe wird daraus automatisch ausgeführt.

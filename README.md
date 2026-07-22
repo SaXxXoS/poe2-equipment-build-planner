@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+> Status 5M.2.0: Die ID-basierte deutsche Gegenstandslokalisierung wurde nur hinsichtlich Quellen, Coverage und Approval geprüft. Es wurden keine deutschen Produktivtexte oder freien Übersetzungen importiert; `translation-missing` bleibt aktiv. Alle deutschen Sprachscopes sind `pending`, Foto-Mappings sind `blocked`. Details: [Quellenentscheidung](docs/POE2_GERMAN_ITEM_LOCALIZATION_SOURCE_DECISION.md).
+
 ## Quellenstatus 5M.1B.0C
 
 Die technische Identität der 295 im gepinnten RePoE-Export belegten Socketables ist eng bedingt freigegeben; Rune-/Soul-Core-/Idol-/AbyssalEye-/CongealedMist-Effekte bleiben mangels strukturiert exportierter Werte `pending`. Es wurden keine Daten importiert und keine Laufzeitkomponente geändert. Siehe `docs/POE2_SOCKETABLE_AND_SPECIAL_MOD_SOURCE_DECISION.md`.

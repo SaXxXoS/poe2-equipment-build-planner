@@ -49,6 +49,32 @@ describe('Import-Freigabesperre', () => {
     expect(evaluateImportApproval(base, { ...scopedRequest('poe2-technical-flask-mod-data-for-build-planner', 'Life Flasks'), dataCategories: [dataCategory] })).toMatchObject({ allowed: false, code: 'request-constraints-unmet' })
   })
   it('lässt andere echte Datenkategorien blockiert', () => { expect(evaluateImportApproval(base, { sourceId: 'repoe-poe2', categoryId: 'skills' }).allowed).toBe(false) })
+  it.each([
+    ['poe2-german-stat-template-data-for-build-planner', 'repoe-poe2'],
+    ['poe2-german-item-mod-localization-for-build-planner', 'repoe-poe2'],
+    ['poe2-german-base-item-localization-for-build-planner', 'repoe-poe2'],
+    ['poe2-german-item-class-localization-for-build-planner', 'repoe-poe2'],
+    ['poe2-german-socketable-identity-localization-for-build-planner', 'repoe-poe2'],
+    ['poe2-curated-id-localization-mapping-for-build-planner', 'manual-transcription'],
+  ])('blockiert den noch nicht freigegebenen deutschen Scope %s', (categoryId, sourceId) => {
+    const decision = evaluateImportApproval(base, { sourceId, categoryId })
+    expect(decision.allowed).toBe(false)
+    expect(['source-blocked', 'category-blocked']).toContain(decision.code)
+  })
+  it('blockiert photo-derived-unverified als produktive Lokalisierung', () => {
+    expect(evaluateImportApproval(base, { sourceId: 'manual-transcription', categoryId: 'poe2-photo-derived-localization-mapping-for-build-planner' }).allowed).toBe(false)
+  })
+  it.each([
+    'free-ai-translation', 'unconfirmed-text-match', 'poe2db-scrape', 'poe2db-html',
+    'website-dump', 'raw-game-text-mirror', 'media', 'unique-texts', 'skill-texts',
+    'support-texts', 'runtime-fetch', 'hotlink',
+  ])('erteilt über einen pending Lokalisierungsscope keine Freigabe für %s', dataCategory => {
+    expect(evaluateImportApproval(base, {
+      sourceId: 'repoe-poe2',
+      categoryId: 'poe2-german-item-mod-localization-for-build-planner',
+      dataCategories: [dataCategory],
+    })).toMatchObject({ allowed: false, code: 'category-blocked' })
+  })
   it('blockiert eine fehlende Approval-Datei', () => { expect(evaluateImportApproval(undefined, request).code).toBe('approval-missing') })
   it('blockiert eine ungültige Approval-Datei', () => { expect(evaluateImportApproval('{', request).code).toBe('approval-invalid') })
   it('blockiert eine unbekannte Quelle', () => { expect(evaluateImportApproval(base, { ...request, sourceId: 'unknown' }).code).toBe('source-unknown') })
