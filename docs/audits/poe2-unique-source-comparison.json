@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.1B.0B",
+  "reviewedAt": "2026-07-22",
+  "startingCommit": "4711d7834c16e0826b010e4172133b156b5db61f",
+  "countingRules": {
+    "uniqueItem": "one source item record/block, not one visible line",
+    "technicalUniqueId": "a stable source identifier distinct from display name",
+    "variant": "one explicitly declared selectable or historical variant; roll ranges are counted separately",
+    "baseAssignment": "one item-to-base relationship; name-only joins are not technical assignments",
+    "visibleModLine": "one non-header line in a PoB static item block",
+    "technicalModDefinition": "one stable mod ID with structured stat references",
+    "statCombination": "ordered non-empty stat-ID tuple on one technical mod",
+    "variableRange": "one technical mod or visible line containing at least one unequal minimum/maximum pair",
+    "grantedEffect": "one item-linked technical granted skill/support ID; visible names are reported separately",
+    "unresolvedText": "visible line without a lossless item-linked technical mod/stat identity"
+  },
+  "sources": [
+    {
+      "id": "repoe-poe2",
+      "repository": "repoe-fork/poe2",
+      "branch": "master",
+      "commit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+      "release": "4.5.4.4.4",
+      "codeLicense": "generated-data repository; no general data license asserted",
+      "gameDataStatus": "GGG-derived; existing project decision covers only narrow non-Unique affix scopes",
+      "files": [
+        {"path":"version.txt","bytes":9,"sha256":"ec563ae02051174b61a31ae1a0aa84329cd1025cc5ce2ecde19fae85b446ba28","records":1},
+        {"path":"data/uniques.json","bytes":177396,"sha256":"f7ca314de26c538409925b23605f7e552a4a98572d5bab1993c4ad3c956e5cb7","records":449},
+        {"path":"data/mods.json","bytes":13467532,"sha256":"33e65dd81cc430c067b70550d4b7a6360b66ae477ced225cdc6309d58acafe1b","records":16678},
+        {"path":"data/base_items.json","bytes":8127066,"sha256":"846029974c5cd643423404072bd6c5b497c5ed129544750a41ca7d0e0c5b4449","records":5246},
+        {"path":"data/skills.json","bytes":28943792,"sha256":"1a83f007c1015c1d2fc0e3e22503dc8deb2debed0e3ea450cf64bc3714f378c7","records":"not counted; full skill data remains blocked"}
+      ],
+      "counts": {"uniqueRows":449,"distinctIdStrings":441,"distinctNames":441,"technicalUniqueIds":0,"baseAssignments":0,"itemLinkedModDefinitions":0,"generationTypeUniqueMods":10376,"uniqueStatCombinations":4191,"fixedGenerationUniqueMods":6637,"variableGenerationUniqueMods":3739,"itemLinkedGrantedSkills":0,"itemLinkedGrantedSupports":0},
+      "identifiers": ["UniqueStashLayout row key", "Words.Text display/id string", "visual identity"],
+      "gaps": ["no Metadata ID", "no base item ID", "no item-to-mod relation", "no item variants at this pin", "no item-linked granted effects"],
+      "role": "partial technical control source; not a Unique main source",
+      "approval": "pending/blocked by sub-scope"
+    },
+    {
+      "id": "repoe-parser",
+      "repository": "repoe-fork/repoe",
+      "branch": "master",
+      "commit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+      "codeLicense": "MIT for parser code",
+      "gameDataStatus": "parser license does not license generated GGG data",
+      "paths": ["repoe/parser/poe2/uniques.py", "repoe/parser/poe2/mods.py", "repoe/parser/poe2/base_items.py"],
+      "finding": "uniques.py reads UniqueStashLayout, Words and visual identity only; mods and bases are exported separately and never joined to Unique rows",
+      "role": "schema/provenance evidence only",
+      "approval": "not an import data source"
+    },
+    {
+      "id": "path-of-building-poe2",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "branch": "dev",
+      "commit": "f5b94342eeea413a94c339af3e881c5e2a4df0df",
+      "release": "dev head checked 2026-07-22; release mapping unknown",
+      "codeLicense": "MIT",
+      "gameDataStatus": "Unique files state Item data (c) Grinding Gear Games; code license is not a separate data grant",
+      "counts": {"staticFiles":30,"staticUniqueBlocks":435,"distinctNames":433,"baseNameAssignments":435,"distinctBaseNames":358,"variantDeclarations":579,"itemsWithVariants":216,"visibleModLines":2704,"variableRangeLines":1663,"visibleGrantedSkillLines":117,"visibleGrantedSupportLines":0,"technicalUniqueIds":0,"technicalModIds":0,"statIds":0},
+      "identifiers": ["visible Unique name", "visible base name", "PoB-local variant ordinal", "PoB parser output names"],
+      "gaps": ["no game technical Unique ID", "no technical Mod/Stat ID on item lines", "variants combine history, choices and QoL/test states", "manual/community corrections", "some effects require ModParser/engine code"],
+      "role": "rich control source for coverage, variants and mechanics; not import source",
+      "approval": "pending, no productive scope"
+    },
+    {
+      "id": "path-of-building-poe2-v2",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2-v2",
+      "branch": "dev",
+      "commit": "7e047f0e86c5539b6fe983606c209066c3569083",
+      "status": "archived/historical repository",
+      "role": "not current authority",
+      "approval": "rejected as main/control baseline when current PoB2 exists"
+    },
+    {
+      "id": "poe2-mcp",
+      "repository": "HivemindOverlord/poe2-mcp",
+      "branch": "main",
+      "commit": "163c30a9fd45f815d330cc54e6ab51a797693d31",
+      "release": "data-v0.5.0-r12",
+      "codeLicense": "MIT",
+      "gameDataStatus": "extracted from maintainer licensed local PoE2 install; no general redistribution grant asserted",
+      "files": [
+        {"path":"data/game/mods/mods.json","bytes":19965708,"sha256":"1c9b35f7f4ce5508b4fec80f0995f5d944593afc2cf37e6b736b6fbbed1aa635","records":16788},
+        {"path":"data/game/mods/metadata.json","bytes":2120,"sha256":"4a1c8ab26ec63988ccf479c13a0c0d429033fa17efe7d908a1f71b2f3a56c794","records":1},
+        {"path":"data/game/version.json","bytes":5258,"sha256":"1704c5c43b84815b8ba1c5de70a375d9428b36ec894cfeb32b81f9199eb83beb","records":1},
+        {"path":"data/game/schema_fingerprints.json","bytes":131856,"sha256":"b871cc0ba808517fd403ef45d33891c7252dedd69ba05fb13039e43e9f7dd672","records":1019}
+      ],
+      "counts": {"allMods":16788,"modIdsContainingUnique":5495,"thoseWithStats":5465,"thoseWithVariableRanges":2534,"uniqueItems":0,"itemToModAssignments":0},
+      "identifiers": ["mod_id", "stat_id", "row_index", "schema fingerprint"],
+      "gaps": ["no Unique item dataset", "no base assignment", "no item-to-mod relation", "no variants", "no item-linked granted effects"],
+      "role": "technical mod/schema control source only",
+      "approval": "pending, no productive scope"
+    },
+    {
+      "id": "pobr",
+      "repository": "ackness/pobr",
+      "branch": "default branch at audit",
+      "commit": "ff1d07da2a2b38959e34eea077d842d222f631b4",
+      "dataVersion": "4.5.4.3",
+      "vendorCommit": "29ab8262dd4a867eac56165afb8391a509e34a0e",
+      "codeLicense": "MIT",
+      "gameDataStatus": "README states data under data/ is derived from client assets and copyrighted by GGG",
+      "files": [{"path":"data/4.5.4.3/overlay/uniques.json","bytes":244044,"sha256":"4c9c68b975403cd136d0518900dc3d536838068d40586dee1b78df8eb4edd825","records":435}],
+      "counts": {"uniqueRows":435,"distinctNames":433,"technicalUniqueIds":0,"technicalModIds":0,"statIds":0},
+      "identifiers": ["visible name", "visible base", "PoB-local variant string"],
+      "gaps": ["derivative of PoB text blocks", "raw visible text retained", "no independent technical IDs", "hand-curated special parser layer"],
+      "role": "reproducibility/control example, not independent source",
+      "approval": "pending, no productive scope"
+    }
+  ],
+  "comparison": {
+    "losslessSharedUniqueIdAcrossAllSources": null,
+    "reason": "no shared stable technical Unique identifier exists across RePoE, PoB/PoBR and poe2-mcp",
+    "sameTechnicalIdDifferentValues": null,
+    "textOnlyComparable": ["RePoE Words id/name to PoB/PoBR name", "PoB/PoBR base names to RePoE base display names"],
+    "notComparable": ["Unique item to RePoE/MCP mod ID", "PoB variant to game variant ID", "PoB granted skill name to item-linked GrantedEffect ID"]
+  },
+  "representativeExamples": [
+    {"name":"Astramentis","kind":"variable global modifiers and historical variant","repoe":"identity row only","pob":"base Stellar Amulet; two variants; visible roll lines","poe2Mcp":"possible generic mods only; no item link","technicalIds":"unknown","projectSupport":"simple attribute tags partly expressible; exact real model unsupported","approvalRisk":"text-only join"},
+    {"name":"Choir of the Storm","kind":"item-granted skill and conditional effect","repoe":"identity row only","pob":"visible Grants Skill Lightning Bolt and two variants","poe2Mcp":"no item link","technicalIds":"granted skill ID unknown","projectSupport":"granted skills unsupported by current Unique Analyzer","approvalRisk":"skill name is not an ID"},
+    {"name":"Controlled Metamorphosis","kind":"Unique Jewel with radius/selection variants","repoe":"identity row only","pob":"radius and allocation mechanics with ten variant declarations","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"Unique Analyzer blocks jewel slot; passive/radius semantics unsupported","approvalRisk":"requires passive-engine interaction"},
+    {"name":"The Adorned","kind":"multi-line coupled effect","repoe":"identity row only","pob":"paired variant-tagged lines","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"cross-jewel effect unsupported","approvalRisk":"line splitting would change meaning"},
+    {"name":"Arakaali's Gift","kind":"Unique Charm conditional trigger","repoe":"identity row only","pob":"base Antidote Charm and conditional recovery text","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"Charm slot and trigger simulation unsupported","approvalRisk":"no technical linkage"},
+    {"name":"Olroth's Resolve","kind":"Unique Life Flask with historical versions","repoe":"identity row only","pob":"two variants and recovery/guard mechanics","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"Flask slot/simulation unsupported","approvalRisk":"variant and simulation semantics"},
+    {"name":"Blackbraid","kind":"Unique armour with local/global and historical lines","repoe":"identity only if name present","pob":"three variants, local armour and global defence lines","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"simple tags partly expressible; exact local/base calculation absent","approvalRisk":"text parser dependency"},
+    {"name":"Double Vision","kind":"Unique weapon, multi-line effect and granted skill","repoe":"identity only if name present","pob":"Dyad Crossbow, damage rolls, Gemini Surge and split effect line","poe2Mcp":"no item link","technicalIds":"unknown","projectSupport":"weapon locals, ammunition and granted skill unsupported","approvalRisk":"multiple coupled lines"}
+  ],
+  "currentProject": {"syntheticUniqueFixtures":16,"analyzerVersion":"0.7.0-synthetic","supportedSlots":["weapon","offhand","helmet","body-armour","gloves","boots","amulet","ring","belt","special"],"blockedSlot":["jewel"],"supportedConcepts":["synthetic mechanic tags","class/ascendancy gates","skill/weapon gates","level gate","replacement delta","build-enabler marker","reoptimization marker","trade-off labels"],"unsupportedRealConcepts":["technical Unique identity","versions and roll variants","local weapon/base calculations","item-granted skills/supports","flask/charm triggers","jewel radius/passive interaction","coupled multi-line effects","random/selectable effects","unsupported text preservation"]},
+  "decisions": [
+    {"scope":"poe2-technical-unique-item-identity-data-for-build-planner","status":"pending","primary":"repoe-poe2","reason":"identity fields are incomplete and name-based"},
+    {"scope":"poe2-technical-unique-mod-data-for-build-planner","status":"blocked","primary":"none sufficient","reason":"no item-linked technical mod/stat source"},
+    {"scope":"poe2-technical-unique-variant-data-for-build-planner","status":"blocked","primary":"none sufficient","reason":"PoB variants lack stable technical IDs and mix variant concepts"},
+    {"scope":"poe2-technical-item-granted-effect-reference-data-for-build-planner","status":"blocked","primary":"none sufficient","reason":"no item-linked granted skill/support IDs"}
+  ],
+  "globalExclusions": ["display names and German text", "images/media", "raw mirrors", "drop/trade/price data", "PoE2DB data", "foreign parser/engine logic", "full skill/support data", "runes", "soul cores", "desecrated mods", "mutated mods", "runtime fetches", "hotlinks"],
+  "conclusion": "No productive Unique source or scope is approved. A future import requires an independently reproducible, patch-pinned item-to-base-to-mod mapping with stable IDs and a separate engine-support plan.",
+  "productionDataImported": false
+}

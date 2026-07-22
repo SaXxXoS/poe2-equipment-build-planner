@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Aufgabe 5M.1B.0B – Unique-Gegenstände
+
+Vier getrennte Scopes wurden geprüft, aber keiner freigegeben. `poe2-technical-unique-item-identity-data-for-build-planner` ist `pending`; Unique-Mods, Varianten und item-granted Effect-Referenzen sind `blocked`. RePoE ist nur Teil-/Kontrollquelle, PoB, poe2-mcp und PoBR sind ausschließlich Auditquellen. `allowedSourceFiles` und `allowedFields` sind absichtlich leer. Dies ist keine allgemeine Daten- oder Medienfreigabe.
+
 ## Aufgabe 5M.1B.0A – zusätzliche Itemklassen
 
 Die technische RePoE-Quelle wird nicht pauschal verbreitert. Drei getrennte Scopes sind unter Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c` und Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81` `conditionally-approved`: normale Jewel-Prefixe/-Suffixe, Charm-Technikdaten und Life-/Mana-Flask-Technikdaten. Der Relic-Scope ist `pending`, da er ausschließlich Sanctum-Spezialcontent betrifft und keine Projektarchitektur besitzt. Alle Bedingungen und Negativgrenzen stehen maschinenlesbar in `data-sources/source-approval.json`.

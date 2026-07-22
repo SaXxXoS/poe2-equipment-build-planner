@@ -1,5 +1,7 @@
 # 5M.0 – Quellenentscheidung für reale PoE2-Affixdaten
 
+> 5M.1B.0B behandelt Uniques getrennt vom Affiximport. Keine geprüfte Quelle besitzt eine vollständige itemgebundene technische Unique-Struktur; alle neuen Unique-Scopes bleiben `pending`/`blocked`. Der bestehende RePoE-Affixscope und seine generierten Dateien sind unverändert.
+
 Stand: 22. Juli 2026. Diese technische Projektentscheidung ist keine Rechtsberatung und behauptet keine allgemeine Lizenz von Grinding Gear Games (GGG).
 
 > 5M.1B.0A ergänzt ausschließlich neue, getrennte Approval-Teilscopes: normale Jewel-Mods, Charms und Life-/Mana-Flasks sind unter exakten Pins und Negativgrenzen `conditionally-approved`; Relics bleiben `pending`. Der bestehende 5M.1-Scope ist unverändert. Kein Import, keine UI-/Enginearbeit und keine Lokalisierung erfolgte.

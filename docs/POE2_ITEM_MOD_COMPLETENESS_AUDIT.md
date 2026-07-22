@@ -1,5 +1,7 @@
 # PoE2 Item-Mod-Vollständigkeitsaudit (5M.1A)
 
+> Folgestatus 5M.1B.0B: Das commit-genaue Unique-Audit bestätigt die Lücke. RePoE trennt 449 Unique-Stashzeilen von technischen Mods/Bases; PoB/PoBR führen textbasierte Itemblöcke ohne technische Unique-/Mod-/Stat-IDs; poe2-mcp hat keine Unique-Item-Tabelle. Unique-Identität bleibt `pending`, Unique-Mods, Varianten und item-granted Effects bleiben `blocked`. Keine Daten wurden importiert; die neun 5M.1-Fachdateien bleiben unverändert. Details: `docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md`.
+
 ## Ergebnis
 
 > Folgestatus 5M.1B.0A: Normale Jewel-Prefixe/-Suffixe, Charm-Technikdaten und Life-/Mana-Flask-Technikdaten besitzen nun getrennte `conditionally-approved` Teilscopes. Relics bleiben als Sanctum-Spezialcontent `pending/deferred`. Dies ist keine Datenübernahme; Produktivbestand und alle offenen Unique-, Rune-, Soul-Core-, Desecrated-, Mutated- und Lokalisierungskategorien bleiben unverändert. Details: `docs/POE2_ADDITIONAL_ITEM_CLASS_SOURCE_DECISION.md`.

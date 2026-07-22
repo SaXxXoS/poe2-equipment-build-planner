@@ -1,0 +1,87 @@
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
+import { URL } from 'node:url'
+import { describe, expect, it } from 'vitest'
+import approvalJson from '../../data-sources/source-approval.json'
+import { evaluateImportApproval, parseSourceApproval } from './approval'
+
+const approval = approvalJson
+const scopes = [
+  'poe2-technical-unique-item-identity-data-for-build-planner',
+  'poe2-technical-unique-mod-data-for-build-planner',
+  'poe2-technical-unique-variant-data-for-build-planner',
+  'poe2-technical-item-granted-effect-reference-data-for-build-planner',
+]
+
+const attemptedRequest = (categoryId, overrides = {}) => ({
+  sourceId: 'repoe-poe2', categoryId, sourceVersion: '4.5.4.4.4',
+  exportCommit: 'b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c',
+  parserCommit: '14e3edc89ed705bd4e4eda5c8135756431c76e81',
+  itemCategory: 'Unique Items', sourceFile: 'data/uniques.json',
+  requestedFields: ['uniqueId'], dataCategories: ['unique-items'],
+  sha256Manifest: true, deterministicNormalization: true,
+  rawMirror: false, runtimeFetch: false, hotlink: false, ...overrides,
+})
+
+describe('5M.1B.0B Unique-Quellenentscheidung', () => {
+  it('validiert die erweiterte Approval-Datei', () => expect(parseSourceApproval(approvalJson).ok).toBe(true))
+
+  it.each(scopes)('gibt den Unique-Scope %s nicht frei', categoryId => {
+    expect(evaluateImportApproval(approval, attemptedRequest(categoryId))).toMatchObject({ allowed: false, code: 'category-blocked' })
+  })
+
+  it.each([
+    ['falsche Quelle', { sourceId: 'poe2db' }],
+    ['ungepinnte Quelle', { exportCommit: 'main' }],
+    ['latest', { sourceVersion: 'latest' }],
+    ['falscher Parser', { parserCommit: 'main' }],
+    ['falsche Datei', { sourceFile: 'data/skills.json' }],
+    ['nicht erlaubtes Feld', { requestedFields: ['germanDisplayName'] }],
+    ['deutsche Displaynamen', { dataCategories: ['display-names'] }],
+    ['deutsche Modtexte', { dataCategories: ['german-stat-texts'] }],
+    ['Medien', { dataCategories: ['media'] }],
+    ['Rohspiegel', { rawMirror: true }],
+    ['Laufzeitabruf', { runtimeFetch: true }],
+    ['Hotlink', { hotlink: true }],
+    ['Runen', { dataCategories: ['runes'] }],
+    ['Soul Cores', { dataCategories: ['soul-cores'] }],
+    ['Desecrated Mods', { dataCategories: ['desecrated-mods'] }],
+    ['Mutated Mods', { dataCategories: ['mutated-mods'] }],
+    ['vollständige Skilldaten', { dataCategories: ['skills'] }],
+    ['vollständige Supportdaten', { dataCategories: ['supports'] }],
+    ['granted Skill-ID', { dataCategories: ['granted-skill-references'] }],
+    ['granted Support-ID', { dataCategories: ['granted-support-references'] }],
+    ['Unique-Jewel', { itemCategory: 'Unique Jewels' }],
+    ['Unique-Flask', { itemCategory: 'Unique Flasks' }],
+    ['historische Variante', { dataCategories: ['historical-uniques'] }],
+  ])('blockiert %s im Unique-Modscope', (_label, override) => {
+    const decision = evaluateImportApproval(approval, attemptedRequest(scopes[1], override))
+    expect(decision.allowed).toBe(false)
+    expect(decision.code).toBe(_label === 'falsche Quelle' ? 'source-blocked' : 'category-blocked')
+  })
+
+  it('lässt die bestehenden 5M.1B.0A-Scopes gültig', () => {
+    const ids = approval.categoryAssignments.map(value => value.categoryId)
+    expect(ids).toContain('poe2-technical-jewel-mod-data-for-build-planner')
+    expect(ids).toContain('poe2-technical-charm-mod-data-for-build-planner')
+    expect(ids).toContain('poe2-technical-flask-mod-data-for-build-planner')
+  })
+})
+
+const immutableFiles = {
+  '../../src/domain/uniques.ts': '4b8fc6fb4df5b126b6a3ef634adbab14156df6ab3722b184edc58ac7c2781775',
+  '../../src/engine/uniques/analyzer.ts': 'b4e9071fbf1a44f1763aed9c8a4db27268ae6c2b837af2a87a1bcf1be19247ac',
+  '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
+  '../../src/domain/equipment.ts': '4ef5bfbeb5a306e95df1450461c9edeb32b056e3ac17d8748caa5c5495f62fe2',
+  '../../src/engine/orchestration/analyze-build.ts': 'e5995ae7f8064f1226bc94d6ae4900d30f653ab0fc5c4f37d090185714ac1757',
+  '../../src/engine/jewels/analyzer.ts': '83d6f8bbc273b32d0309e133fbed2afda7316f8e1ee0c11c3b13617fa98505f8',
+  '../../src/engine/equipment/analyzer.ts': '750d4fc5372b8c88607aa04bdc5c079ffcfe0fe0c1e96bc1ad96614e9d9c90fc',
+  '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
+}
+
+describe('5M.1B.0B Produktgrenzen', () => {
+  it.each(Object.entries(immutableFiles))('hält %s bytegleich', async (path, hash) => {
+    const bytes = await readFile(new URL(path, import.meta.url))
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(hash)
+  })
+})

@@ -1,5 +1,7 @@
 # 5M.1B.0A – Quellen- und Approval-Entscheidung für zusätzliche Itemklassen
 
+> Abgrenzung nach 5M.1B.0B: Unique-Jewels, Unique-Charms und Unique-Flasks sind ausdrücklich nicht von den normalen Scopes dieses Dokuments umfasst. Das separate Unique-Audit hat keinen produktiven Scope freigegeben und keine Daten importiert.
+
 ## 1. Ziel und Ausgangslage
 
 Diese Entscheidung betrifft ausschließlich technische Daten der RePoE-Itemklassen `Jewels`, `Charms`, `Life Flasks`, `Mana Flasks` und `Relics`. Ausgangspunkt ist Commit `828653bb4dce747fa58654ec91f1b104c7c4ae4a` und der unveränderte 5M.1-Pin:

@@ -1,5 +1,14 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Quellenentscheidung 5M.1B.0B
+
+- RePoE-PoE2 `repoe-fork/poe2@b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Version 4.5.4.4.4; Parser `repoe-fork/repoe@14e3edc89ed705bd4e4eda5c8135756431c76e81`.
+- PoB2 `PathOfBuildingCommunity/PathOfBuilding-PoE2@f5b94342eeea413a94c339af3e881c5e2a4df0df` (`dev`); historisches PoB2-v2 `7e047f0e86c5539b6fe983606c209066c3569083`.
+- poe2-mcp `HivemindOverlord/poe2-mcp@163c30a9fd45f815d330cc54e6ab51a797693d31`.
+- PoBR `ackness/pobr@ff1d07da2a2b38959e34eea077d842d222f631b4`, derivative PoB-Kontrollquelle.
+- Entscheidung: `docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md`; maschinenlesbar: `docs/audits/poe2-unique-source-comparison.json`.
+- PoE2DB blieb manuelle Referenz; kein Abruf, Scraping oder Import.
+
 ## Quellenentscheidung 5M.1B.0A
 
 Hauptquelle bleibt ausschließlich der bestehende RePoE-Pin `repoe-fork/poe2@b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`/Version `4.5.4.4.4`; Parserbeleg `repoe-fork/repoe@14e3edc89ed705bd4e4eda5c8135756431c76e81`. Verwendbar sind nur `version.txt`, `mods.json`, `mods_by_base.json`, `base_items.json`, `item_classes.json` und `tags.json` mit den scopebezogenen Feldern. Path of Building PoE2 und poe2-mcp bleiben reine Kontrollquellen. Keine neue produktive Quelle wurde hinzugefügt.

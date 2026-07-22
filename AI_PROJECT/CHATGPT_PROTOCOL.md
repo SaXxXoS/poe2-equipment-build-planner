@@ -1,5 +1,14 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.1B.0B – Unique-Quellenentscheidung
+
+- Commit-genau geprüft: RePoE-PoE2 `b3f38149`/Parser `14e3edc8`, PoB2 `dev@f5b94342`, archiviertes PoB2-v2 `7e047f0e`, poe2-mcp `163c30a9` und PoBR `ff1d07da`.
+- Keine Quelle liefert eine vollständige ID-basierte Item–Base–Mod–Stat–Varianten-Beziehung. RePoE hat 449 Stashzeilen/441 Namen ohne Base-/Modlink; PoB hat 435 statische Textblöcke, 579 Variantenzeilen und 2.704 sichtbare Modzeilen ohne technische Unique-/Mod-/Stat-ID; poe2-mcp hat technische Mods, aber keine Unique-Item-Tabelle; PoBR ist derivative PoB-Kontrollquelle.
+- Unique-Identität bleibt `pending`; Unique-Mods, Varianten und item-granted Effect-Referenzen bleiben `blocked`. Keine Quelldatei und kein Feld wurde für einen Import freigegeben. Unique-Jewels, -Charms und -Flasks sind nicht durch 5M.1B.0A freigegeben.
+- Der Analyzer bleibt `0.7.0-synthetic` mit 16 synthetischen Fixtures. Reale Varianten, lokale Waffenwerte, granted Skills/Supports, Charm-/Flasktrigger, Jewel-Radius und gekoppelte Effekte bleiben unsupported.
+- Keine Unique-Daten oder Produktdateien, keine UI-/Engine-/Analyzer-/Worker-/BuildProfile-Änderung, keine deutschen Texte. Runen, Soul Cores, Desecrated/Mutated Mods und Medien bleiben gesperrt. 5M.1B, 5M.1B.0C, 5M.2 und 5N wurden nicht begonnen; physische iPhone-Abnahme offen.
+- Maßgeblich: `docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md` und `docs/audits/poe2-unique-source-comparison.json`.
+
 ## Aufgabe 5M.0 – kontrollierte Affixquellenfreigabe
 
 - RePoE-PoE2 ist ausschließlich im Scope `poe2-technical-affix-data-for-build-planner` `conditionally-approved`: Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, geprüfter Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81`.
