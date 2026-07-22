@@ -1,5 +1,7 @@
 # 5M.1 – Technischer PoE2-Affiximport
 
+> 5M.1B.0C ändert diesen Import nicht. Alle neun generierten Dateien, 1.828 Mods sowie 103 Corruption-Implicits und 110 Corruption-Upgrades bleiben bytegleich. Socketable-Identitäten wurden nur als künftiger Scope bewertet; keine Rune, kein Soul Core und kein Spezialmod wurde importiert.
+
 > Ergänzung 5M.1A: Die 1.828 Mods sind kein vollständiger PoE2-Itemmod-Bestand. Der Importfilter lässt unter anderem Jewel-, Charm-, Flask- und Relic-Zuordnungen aus; Unique-Mods, Runen und Soul-Core-Effekte sind nicht Teil dieses Imports. Der reine Audit steht in `docs/POE2_ITEM_MOD_COMPLETENESS_AUDIT.md`. Keine Fachdatei oder Approval-Regel wurde verändert. Nächster Schritt ist 5M.1B.0; 5M.2 und 5N wurden nicht begonnen.
 
 ## Ergebnis und Freigabe

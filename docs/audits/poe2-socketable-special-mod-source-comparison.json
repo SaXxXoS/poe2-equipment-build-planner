@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.1B.0C",
+  "auditDate": "2026-07-22",
+  "startingCommit": "93132eecbf0e4cebd1478766af1dc353d7918a0b",
+  "productionDataImported": false,
+  "sources": [
+    {
+      "sourceId": "repoe-poe2",
+      "repository": "repoe-fork/poe2",
+      "version": "4.5.4.4.4",
+      "commit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+      "role": "technical primary source for identity; partial source for effects",
+      "codeLicense": "not applicable to generated data repository",
+      "gameDataStatus": "GGG-derived; narrow revocable project-risk decision only",
+      "files": [
+        { "path": "version.txt", "bytes": 9, "sha256": "ec563ae02051174b61a31ae1a0aa84329cd1025cc5ce2ecde19fae85b446ba28" },
+        { "path": "data/augments.json", "bytes": 339373, "sha256": "21985449c8528f13deb9fd50db922d81ef3f8a58fecdcc65c0fa5734e7c516c5", "records": 295 },
+        { "path": "data/base_items.json", "bytes": 8127066, "sha256": "846029974c5cd643423404072bd6c5b497c5ed129544750a41ca7d0e0c5b4449", "records": 5246 },
+        { "path": "data/mods.json", "bytes": 13467532, "sha256": "33e65dd81cc430c067b70550d4b7a6360b66ae477ced225cdc6309d58acafe1b", "records": 16678 },
+        { "path": "data/mods_by_base.json", "bytes": 5241078, "sha256": "80ca517eca450192e88e86cb550af8cc43ccb6d0b29ecc4c2537ac67d47db4b9", "classes": 74 },
+        { "path": "data/item_classes.json", "bytes": 16553, "sha256": "f1905c443d45863ad66bc07066b63551c7ed315f77e6b635fee2fa52ee05d821", "records": 117 }
+      ]
+    },
+    {
+      "sourceId": "repoe-parser",
+      "repository": "repoe-fork/repoe",
+      "commit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+      "role": "parser and schema provenance",
+      "codeLicense": "MIT",
+      "gameDataStatus": "MIT does not grant rights to generated GGG data",
+      "files": [
+        { "path": "repoe/parser/poe2/augments.py", "bytes": 3609, "sha256": "bf74b11a525424dadcdc3126174f650642a42b7c57d7c70a3fa4518768ebfa31" },
+        { "path": "repoe/parser/poe2/mods.py", "bytes": 4972, "sha256": "b80cdacadebd6c590f21a8174c8818035dea6c4f7be12b08e2fe7e3c22346761" },
+        { "path": "repoe/parser/poe2/base_items.py", "bytes": 9819, "sha256": "176a2643a192bc7b8db3f040167a8830af1ec4dac2e77e62fbf9f9b57c7c154e" }
+      ]
+    },
+    {
+      "sourceId": "path-of-building-poe2",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "branch": "dev",
+      "commit": "f5b94342eeea413a94c339af3e881c5e2a4df0df",
+      "release": "unknown",
+      "role": "control source only",
+      "codeLicense": "MIT",
+      "gameDataStatus": "item files identify data as GGG copyright",
+      "files": [
+        { "path": "src/Data/ModRunes.lua", "bytes": 194599, "sha256": "f4e9306150b749f9875ed7ac83d17511173d8bbd4b101c3d214ebe620d963761", "topLevelRecords": 287, "targetRecords": 570 },
+        { "path": "src/Data/ModCorrupted.lua", "bytes": 47786, "sha256": "0b5ebe7e85c197525f8b053284d3a81acb07689b79ee8455156e2d8bcfb0c08b" },
+        { "path": "src/Export/Scripts/soulcores.lua", "bytes": 6596, "sha256": "7c9b31b3ac479a231f27950617e0e59b549985d1b3da82ace4d8356fe9ccc662" }
+      ]
+    },
+    {
+      "sourceId": "poe2-mcp",
+      "repository": "HivemindOverlord/poe2-mcp",
+      "commit": "163c30a9fd45f815d330cc54e6ab51a797693d31",
+      "dataRelease": "data-v0.5.0-r12",
+      "role": "mod and schema control source only",
+      "codeLicense": "MIT",
+      "gameDataStatus": "extracted from maintainer's licensed local installation; no separate data grant",
+      "files": [
+        { "path": "data/game/mods/mods.json", "bytes": 19965708, "sha256": "1c9b35f7f4ce5508b4fec80f0995f5d944593afc2cf37e6b736b6fbbed1aa635", "records": 16788 },
+        { "path": "data/game/schema_fingerprints.json", "bytes": 131856, "sha256": "b871cc0ba808517fd403ef45d33891c7252dedd69ba05fb13039e43e9f7dd672", "tables": 1019 }
+      ]
+    }
+  ],
+  "countingRules": {
+    "item": "one augments.json key/base metadata identity",
+    "effectVariant": "one item category entry; one item may have multiple target categories",
+    "statLine": "one stats[] or bonded_stats[] entry",
+    "technicalMod": "one mods.json key; name fragments are not category proof",
+    "visibleLine": "one PoB string line; never equated with a technical Mod ID",
+    "tier": "a source-explicit tier only; augments.json exposes none",
+    "valueRange": "structured minimum/maximum only; numbers embedded in stat_text do not qualify"
+  },
+  "socketables": {
+    "total": { "items": 295, "effectVariants": 507, "statLines": 552, "bondedStatLines": 510, "translatedTextEntries": 1000, "baseItemLinks": 295 },
+    "Rune": { "items": 221, "effectVariants": 354, "statLines": 382, "uniqueStatIds": 238, "bondedStatLines": 428, "uniqueBondedStatIds": 163, "structuredValueRanges": 0 },
+    "SoulCore": { "items": 34, "effectVariants": 64, "statLines": 70, "uniqueStatIds": 60, "bondedStatLines": 0, "structuredValueRanges": 0 },
+    "Idol": { "items": 35, "effectVariants": 76, "statLines": 87, "uniqueStatIds": 86, "bondedStatLines": 82, "uniqueBondedStatIds": 74, "structuredValueRanges": 0 },
+    "AbyssalEye": { "items": 4, "effectVariants": 12, "statLines": 12, "uniqueStatIds": 12, "structuredValueRanges": 0 },
+    "CongealedMist": { "items": 1, "effectVariants": 1, "statLines": 1, "uniqueStatIds": 1, "structuredValueRanges": 0 }
+  },
+  "existingCorruption": {
+    "corruptionImplicits": { "records": 103, "statLines": 111, "variableRecords": 85, "groups": 77, "generationType": "corrupted", "domain": "item", "productionStatus": "already imported in 5M.1" },
+    "corruptionUpgrades": { "records": 110, "statLines": 118, "variableRecords": 94, "groups": 77, "generationType": "unique", "domain": "item", "productionStatus": "already imported in 5M.1" },
+    "doubleImportAllowed": false
+  },
+  "specialCategories": {
+    "additionalCorruption": { "status": "pending", "reason": "no proven additional equipment set beyond existing 213 records" },
+    "desecrated": { "status": "deferred", "repoeDomainRecords": 415, "reason": "mixed map/Abyss/Unique-Heart domain; normal equipment assignment not established" },
+    "mutated": { "status": "blocked", "reason": "identified Mutated-Vaal records are predominantly Unique mechanics" },
+    "enchantments": { "status": "pending", "reason": "no complete item-enchantment table and assignment" },
+    "anointments": { "status": "deferred", "reason": "requires recipe, item and passive-node linkage; name hit is insufficient" },
+    "otherSpecialMods": { "status": "deferred", "reason": "no unambiguous residual product category" }
+  },
+  "idComparison": {
+    "repoeModIds": 16678,
+    "mcpModIds": 16788,
+    "exactIntersection": 16565,
+    "repoeOnly": 113,
+    "mcpOnly": 223,
+    "socketableItemIntersection": "unknown: poe2-mcp publishes schema fingerprints but no normalized SoulCores/SoulCoreStats item product",
+    "pobIntersection": "text/internal-name comparison only; no stable RePoE Mod ID relation"
+  },
+  "representativeExamples": [
+    { "category": "Rune", "technicalId": "Metadata/Items/SoulCores/EmergentInstinct", "targets": ["Body Armour", "Gloves", "Helmet"], "valueRange": "unknown in structured export" },
+    { "category": "SoulCore", "technicalId": "Metadata/Items/SoulCores/SoulCoreCrit", "targets": ["Body Armour", "Martial Weapon", "Shield or Buckler"], "valueRange": "unknown in structured export" },
+    { "category": "Idol", "technicalId": "Metadata/Items/SoulCores/CarvedCunning", "targets": ["Body Armour", "Boots", "Helmet"], "bonded": true },
+    { "category": "AbyssalEye", "technicalId": "Metadata/Items/SoulCores/AmanamusGaze", "targets": ["Body Armour", "Boots", "Helmet"] },
+    { "category": "CongealedMist", "technicalId": "Metadata/Items/SoulCores/AugmentAnoint", "targets": ["Helmet"], "anointmentRelation": "effect marker only; no recipe/passive mapping" },
+    { "category": "corruption-implicit", "technicalId": "CorruptionAdditionalAmmo1", "productionStatus": "already imported" },
+    { "category": "corruption-upgrade", "technicalId": "CorruptionUpgradeAdditionalAmmo1", "productionStatus": "already imported" },
+    { "category": "mutated", "technicalId": "UniqueMutatedVaalIncreasedLifeLeechRate", "approvalRisk": "Unique scope" },
+    { "category": "anointment", "technicalId": "UniqueMultipleAnointments1", "approvalRisk": "Unique name hit is not an anointment database" }
+  ],
+  "approvalDecision": {
+    "runeIdentity": "conditionally-approved",
+    "runeMods": "pending",
+    "soulCoreIdentity": "conditionally-approved",
+    "soulCoreMods": "pending",
+    "otherSocketableIdentity": "conditionally-approved for Idol, AbyssalEye and CongealedMist only",
+    "otherSocketableMods": "pending",
+    "existingCorruptionImplicits": "conditionally-approved and already imported; no new scope/import",
+    "existingCorruptionUpgrades": "conditionally-approved and already imported; no new scope/import",
+    "additionalCorruption": "pending",
+    "desecrated": "deferred (encoded as pending in approval schema)",
+    "mutated": "blocked",
+    "enchantments": "pending",
+    "anointments": "deferred (encoded as pending in approval schema)",
+    "otherSpecialMods": "deferred"
+  },
+  "buildPlannerRelevance": {
+    "socketableIdentityAndEffects": "important for complete real equipment and build evaluation",
+    "existingCorruption": "already represented technically; analyzer semantics remain incomplete",
+    "desecratedMutated": "special/unique content; not a Version 1 import without model proof",
+    "anointments": "requires passive linkage and separate architecture",
+    "photoMode": "later needs socket count, item-position, type, stat-ID and numeric-value recognition"
+  },
+  "uncertainties": [
+    "Structured numeric StatsValues and BondedStatsValues are absent from augments.json.",
+    "No lossless three-source socketable identity key exists.",
+    "Desecrated domain does not mean normal equipment Desecrated affix.",
+    "Name fragments Rune, Mutated, Enchant or Anoint are not standalone category evidence.",
+    "PoB release corresponding to the audited dev commit is unknown."
+  ]
+}

@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Ergänzung 5M.1B.0C
+
+Minimale technische Identitätsfelder aus `data/augments.json`, `base_items.json`, `item_classes.json` und `version.txt` sind für exakt Rune, SoulCore, Idol, AbyssalEye und CongealedMist unter RePoE `4.5.4.4.4`/`b3f38149…` und Parser `14e3edc8…` `conditionally-approved`. Effekte, Stattexte, Werte und bonded Mods sind nicht freigegeben. Weitere Corruption-, Desecrated-, Mutated-, Enchantment- und Anointment-Daten bleiben pending/blocked. Keine Importfreigabe wird daraus automatisch ausgeführt.
+
 ## Aufgabe 5M.1B.0B – Unique-Gegenstände
 
 Vier getrennte Scopes wurden geprüft, aber keiner freigegeben. `poe2-technical-unique-item-identity-data-for-build-planner` ist `pending`; Unique-Mods, Varianten und item-granted Effect-Referenzen sind `blocked`. RePoE ist nur Teil-/Kontrollquelle, PoB, poe2-mcp und PoBR sind ausschließlich Auditquellen. `allowedSourceFiles` und `allowedFields` sind absichtlich leer. Dies ist keine allgemeine Daten- oder Medienfreigabe.

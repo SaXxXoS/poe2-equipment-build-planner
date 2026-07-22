@@ -1,5 +1,9 @@
 # PoE2 Equipment Build Planner
 
+## Quellenstatus 5M.1B.0C
+
+Die technische Identität der 295 im gepinnten RePoE-Export belegten Socketables ist eng bedingt freigegeben; Rune-/Soul-Core-/Idol-/AbyssalEye-/CongealedMist-Effekte bleiben mangels strukturiert exportierter Werte `pending`. Es wurden keine Daten importiert und keine Laufzeitkomponente geändert. Siehe `docs/POE2_SOCKETABLE_AND_SPECIAL_MOD_SOURCE_DECISION.md`.
+
 Der Equipment-Dialog verwendet seit 5M.1 den commit-gepinnten technischen RePoE-Affixbestand (1.828 normalisierte Mods, 29 Itemklassen). Dieser Bestand ist vollständig für den engen 5M.1-Importfilter, aber **kein vollständiger PoE2-Itemmod-Bestand**. 5M.1B.0A hat ausschließlich getrennte Approval-Teilscopes für normale Jewels, Charms und Life-/Mana-Flasks vorbereitet; zusätzliche Daten oder Produktfunktionen wurden nicht importiert. Das Unique-Audit 5M.1B.0B gibt ebenfalls noch keine realen Uniques frei: Identität bleibt `pending`, Mods/Varianten/granted Effects bleiben `blocked`. Relics, Runen, Soul Cores, Spezialmods und deutsche Lokalisierung bleiben offen. Details: [`docs/POE2_ADDITIONAL_ITEM_CLASS_SOURCE_DECISION.md`](docs/POE2_ADDITIONAL_ITEM_CLASS_SOURCE_DECISION.md) und [`docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md`](docs/POE2_UNIQUE_ITEM_SOURCE_DECISION.md).
 
 Der vorhandene reale Compact-Passivplan kann nach einer manuellen Workeranalyse direkt im offiziellen Baum ein- und ausgeblendet sowie auf Nutzerwunsch zentriert werden. Start, Wege, Ziele und eindeutige Required-Probleme sind rein visuelle Overlays auf unveränderter offizieller Geometrie und unveränderten Assets; die UI berechnet keine Pfade oder Punkte neu. Physische iPhone-Abnahme offen, Aufgabe 5M nicht begonnen.

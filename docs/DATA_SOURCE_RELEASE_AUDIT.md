@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## 5M.1B.0C – unveränderte Pins
+
+Der Socketable-/Spezialmod-Audit verwendet dieselben RePoE-Pins `4.5.4.4.4`/`b3f38149…` und Parser `14e3edc8…`. PoB ist auf `dev@f5b94342…`, poe2-mcp auf `163c30a9…`/`data-v0.5.0-r12` festgehalten. Jeder Versions-, Commit-, Parser- oder Schemawechsel verlangt neue Hashes, Vergleich und manuelle Freigabe; keine Kategorie wird automatisch produktiv aktiviert.
+
 ## 5M.1B.0B – Unique-Pins
 
 Am 2026-07-22 entsprachen die geprüften Branches exakt den dokumentierten Commits: RePoE Export `b3f38149`, Parser `14e3edc8`, PoB2 `dev@f5b94342`, PoB2-v2 `dev@7e047f0e`, poe2-mcp `main@163c30a9`. PoBR wurde am Inventarcommit `ff1d07da` mit Datenversion 4.5.4.3 und internem PoB-Vendorpin `29ab8262` geprüft. Kein Pin ist produktiv für Unique-Daten freigegeben; jeder Wechsel verlangt ein neues Audit.

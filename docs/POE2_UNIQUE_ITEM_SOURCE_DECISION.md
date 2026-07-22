@@ -1,5 +1,7 @@
 # PoE2-Unique-Gegenstände – Quellen- und Approval-Entscheidung (5M.1B.0B)
 
+> Abgrenzung 5M.1B.0C: Technische Socketable-Identitäten werden separat behandelt. `UniqueMutatedVaal…`, Unique-Socketable- und Unique-Anointment-Mods bleiben durch diese Entscheidung ausdrücklich blocked; die Unique-Entscheidung wurde nicht gelockert und keine Unique-Daten wurden importiert.
+
 ## 1. Ziel und Ergebnis
 
 Dieses Audit entscheidet ausschließlich über Quellen und Freigabegrenzen. Es importiert keine Unique-Daten, erzeugt keine Produktdatei und ändert weder UI noch Engine, Analyzer, Worker oder BuildProfile.

@@ -1,5 +1,12 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Status 5M.1B.0C – Socketable-/Spezialmod-Quellenentscheidung (2026-07-22)
+
+- RePoE `augments.json` belegt 295 technische Socketable-Identitäten: 221 Rune, 34 SoulCore, 35 Idol, 4 AbyssalEye und 1 CongealedMist. Nur minimale technische Identitätsfelder sind unter exakten Pins `conditionally-approved`; es wurde nichts importiert.
+- Moddaten bleiben `pending`, weil `augments.py` zwar `StatsValues`/`BondedStatsValues` liest, sie aber nicht strukturiert exportiert. Desecrated und Anointments sind deferred/pending, Mutated bleibt wegen Unique-Kopplung blocked, Enchantments und weitere Corruption-Mods bleiben pending.
+- Die vorhandenen 103 Corruption-Implicits und 110 Corruption-Upgrades sowie alle neun 5M.1-Dateien bleiben unverändert; kein Doppelimport. Keine zusätzlichen Itemklassen, Uniques, deutschen Texte, UI-, Engine-, Worker- oder Analyzeränderungen.
+- 5M.1B, 5M.2 und 5N sind nicht begonnen. Vor Socketable-Modimport ist ein neu gepinnter verlustfreier Parserexport der normalen und bonded Werte erforderlich. Details: `docs/POE2_SOCKETABLE_AND_SPECIAL_MOD_SOURCE_DECISION.md`.
+
 ## Aufgabe 5M.1B.0B – Unique-Quellenentscheidung
 
 - Commit-genau geprüft: RePoE-PoE2 `b3f38149`/Parser `14e3edc8`, PoB2 `dev@f5b94342`, archiviertes PoB2-v2 `7e047f0e`, poe2-mcp `163c30a9` und PoBR `ff1d07da`.
