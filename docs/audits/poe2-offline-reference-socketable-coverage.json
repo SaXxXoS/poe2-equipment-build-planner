@@ -1,0 +1,33 @@
+{
+  "approvalGranted": false,
+  "audit": "5M.2.4",
+  "bondedStatsValues": "not-present-under-proposed-name",
+  "conclusion": "295 Soul Core rows are present but retain one unknown schema byte; structured value tables exist, while absent ItemClasses decoding and missing bonded table prevent a lossless end-to-end product chain.",
+  "fullChains": 0,
+  "germanCsdConnections": "not-end-to-end-resolved",
+  "identities": {
+    "abyssalEyes": "unknown",
+    "congealedMist": "unknown",
+    "idols": "unknown",
+    "runes": "unknown",
+    "soulCores": 295
+  },
+  "partialChains": 295,
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "schemaVersion": 1,
+  "soulCoreStatRows": 507,
+  "soulCoreTypes": 5,
+  "statsValues": "present-as-structured-array-in-soulcorestats",
+  "status": "partially-resolved",
+  "targetCategories": 30
+}

@@ -1,5 +1,18 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.2.4 – Offline-Referenztabellenextraktion (2026-07-23)
+
+- 5M.2.3 ist abgeschlossen; 5M.2.4 erweitert dieselbe Auditpipeline ohne Produktimport. Content-Pin `a917a56f...8a18e28`, PoB2 `c5300ccd`, ooz `0.2.4`, Schema `268ae3a3`, Referenzmanifest `a4bbcd99` und Auditformat 2 sind erzwungen.
+- Zwei Offline-Extraktionen lieferten je 22/22 Dateien und 11.884.854 Bytes; zwei Audits waren byteidentisch (`0ce6cb7b...848b7`). Kein HTTP/HTTPS/DNS/API, keine Trade-API, kein PoE2DB, keine Webseite.
+- ItemClasses: 117 Zeilen, je ein unbekanntes Byte in englischer und deutscher Tabelle; 33 Produktklassen und `Charm` bleiben ungelöst. Das Byte wurde nicht geraten oder ignoriert.
+- 2.255 Produktmods bleiben `partially-resolved`: IDs, Statfolgen, Werte, Tags und Spawnweight-Arrays stimmen; `ModDomains`/`ModGenerationTypes` existieren nicht als lokale DAT-Dateien, `ModFamily` ist keine belegte Konfliktgruppe.
+- Deutsche Coverage bleibt: 12 Stat-IDs ohne deutsche CSD-Struktur, 38 Templatelücken und 2.189 OCR-Mehrdeutigkeiten ungelöst. `translation-missing` bleibt produktiv.
+- Unique-bezogene Tabellen (449 Stash-, 48 Chest-, eine Mutated-Zeile) bilden keine Unique-ID-Kette. Keine Unique-Freigabe.
+- Soul-Core-Audit: 295 Identitätszeilen, 507 Statzeilen, 30 Kategorien, strukturierte StatsValues; Identitätsbyte und Bonded-/Zielkette bleiben offen. Runen/Idols/Abyssal Eyes/Congealed Mist bleiben unbekannt. Keine Socketable-Freigabe.
+- Produktivpin und `source-approval.json` bleiben unverändert; keine deutschen Volltexte, Rohdaten oder Produktdateien committed; keine UI-, BuildProfile-, Worker-, Analyzer-, Engine-, Passive-, Baum- oder Planänderung.
+- 5M.2 und 5N sind nicht begonnen. PS-Nutzer benötigen später ausgelieferte, separat freizugebende Sprachdaten. Fotoerkennung, Lernmodus, Buildvergleich, Designoptimierung und mobile Textklippung bleiben offen.
+- Nächster Schritt: audit-only Schemaentscheidung für die unbekannten ItemClasses-/SoulCores-Bytes und nicht materialisierten Enumtabellen. Details: `docs/POE2_OFFLINE_REFERENCE_TABLE_EXTRACTION.md`.
+
 ## Aufgabe 5M.2.0 – deutsche Gegenstandslokalisierung, Quellenentscheidung (2026-07-22)
 
 - Reine Auditentscheidung: keine deutschen Produktivtexte, keine freie/KI-Übersetzung, keine PoE2DB-Automation und keine UI-, BuildProfile-, Worker-, Analyzer-, Engine- oder Baumänderung. `translation-missing` bleibt produktiv.

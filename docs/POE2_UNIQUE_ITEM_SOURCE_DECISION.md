@@ -182,3 +182,6 @@ Empfohlene Folgeaufgabe bleibt 5M.1B.0C für Runen, Soul Cores und Spezialmods. 
 ## Update 5M.2.3 – lokaler Offline-Auditparser
 
 Die fünf gepinnten Balance-Tabellen enthalten keine beweisbare Unique-Identitäts-/Versionsschicht. `generationType=unique` bei 354 Mods wird nicht als Unique-Gegenstand interpretiert. Basistypzuordnung, Varianten, technische Modreferenzen, Rollbereiche, spezielle Implicits sowie itemgebundene Skill-/Supportreferenzen bleiben Unbekannt. Keine sichtbare Unique-Zeile wurde in eine technische ID umgedeutet; keine Unique-Daten oder Freigabe entstanden. Details: [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).
+# Stand nach 5M.2.4
+
+`UniqueStashLayout` (449), `UniqueChests` (48) und `Incursion2MutatedUniqueModsClient` (1) wurden lokal geprüft. Sie bilden keine verlustfreie Unique-ID→Base→Variante→Mod→Stat-Kette. Unique-Identitäten, Mods, Varianten sowie granted Skill-/Supportreferenzen bleiben `pending`/`blocked`; keine Freigabe oder Produktdatei entstand.

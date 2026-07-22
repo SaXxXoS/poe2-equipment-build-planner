@@ -1,0 +1,2567 @@
+{
+  "audit": "5M.2.4",
+  "extraction": {
+    "bytes": 11884854,
+    "exitCode": 0,
+    "files": 22,
+    "manifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "networkAttempts": 0
+  },
+  "itemClassSchemaByte": {
+    "baseRowBytes": 150,
+    "byteCountPerRow": 1,
+    "conclusion": "schema-unknown; the byte is retained, not interpreted or skipped",
+    "distribution": "unknown-not-decoded",
+    "fieldPosition": 150,
+    "germanRowBytes": 150,
+    "languageDifference": "same-row-width",
+    "losslessDecoding": false,
+    "referenceTarget": "unknown",
+    "relevantToIdentityOrName": "unknown",
+    "safeToIgnore": false,
+    "schemaBytes": 149
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "proposedTableAvailability": [
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "moddomains"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "modgenerationtypes"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "modgroups"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "spawnweights"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "uniqueitems"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "uniqueitemversions"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "uniqueitemmods"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "itemgrantedskills"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "itemgrantedsupports"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "augments"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "augmenttypes"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "statsvalues"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "bondedstatsvalues"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "implicitmods"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "corruptionmods"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "enchantments"
+    },
+    {
+      "status": "not-present-under-proposed-name",
+      "table": "anointments"
+    }
+  ],
+  "schemaVersion": 1,
+  "status": "audit-only",
+  "tables": [
+    {
+      "bytes": 2816986,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemClasses",
+          "index": 2,
+          "name": "ItemClass",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Width",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "Height",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 5,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 6,
+          "name": "BaseType",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "DropLevel",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "FlavourText",
+          "index": 8,
+          "name": "FlavourTextKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "Mods",
+          "index": 9,
+          "name": "ImplicitMods",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 10,
+          "name": "SizeOnGround",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoundEffects",
+          "index": 11,
+          "name": "SoundEffect",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "Tags",
+          "index": 12,
+          "name": "Tags",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ModDomains",
+          "index": 13,
+          "name": "ModDomain",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Enum"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemVisualIdentity",
+          "index": 14,
+          "name": "ItemVisualIdentityKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": "HASH32",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "UInt"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 16,
+          "name": "VendorRecipeAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 17,
+          "name": "Inflection",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "AchievementItems",
+          "index": 18,
+          "name": "EquipAchievement",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 19,
+          "name": "IsCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 20,
+          "name": "IdentifyAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 21,
+          "name": "IdentifyMagicAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "BaseItemTypes",
+          "index": 22,
+          "name": "FragmentBaseItemTypesKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "ShortKey"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 23,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoundEffects",
+          "index": 24,
+          "name": "UncutGemSoundEffect",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 25,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 26,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 27,
+          "name": "Unmodifiable",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 28,
+          "name": "Achievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ShopTag",
+          "index": 29,
+          "name": "ShopTag",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 30,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 31,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 32,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 33,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 34,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        }
+      ],
+      "fields": 34,
+      "locale": "English",
+      "relativePath": "/data/balance/baseitemtypes.datc64",
+      "rowBytes": 360,
+      "rows": 5476,
+      "schemaBytes": 360,
+      "sha256": "a5b0ce5427e2f2592b84a830386005640585798bfe79d1e935d0ed2a7076d510",
+      "status": "resolved",
+      "table": "baseitemtypes",
+      "unknownNamedFields": 8,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 539,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "Mods",
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 2,
+          "name": "ModWeight",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 3,
+      "locale": "English",
+      "relativePath": "/data/balance/endgamecorruptionmods.datc64",
+      "rowBytes": 33,
+      "rows": 15,
+      "schemaBytes": 33,
+      "sha256": "e69f519fda4b4287a9c441931cdff10ea1af530f19c52765e94c346d8ac91e3b",
+      "status": "resolved",
+      "table": "endgamecorruptionmods",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 2850470,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemClasses",
+          "index": 2,
+          "name": "ItemClass",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Width",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "Height",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 5,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 6,
+          "name": "BaseType",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "DropLevel",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "FlavourText",
+          "index": 8,
+          "name": "FlavourTextKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "Mods",
+          "index": 9,
+          "name": "ImplicitMods",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 10,
+          "name": "SizeOnGround",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoundEffects",
+          "index": 11,
+          "name": "SoundEffect",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "Tags",
+          "index": 12,
+          "name": "Tags",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ModDomains",
+          "index": 13,
+          "name": "ModDomain",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Enum"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemVisualIdentity",
+          "index": 14,
+          "name": "ItemVisualIdentityKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": "HASH32",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "UInt"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 16,
+          "name": "VendorRecipeAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 17,
+          "name": "Inflection",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "AchievementItems",
+          "index": 18,
+          "name": "EquipAchievement",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 19,
+          "name": "IsCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 20,
+          "name": "IdentifyAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 21,
+          "name": "IdentifyMagicAchievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "BaseItemTypes",
+          "index": 22,
+          "name": "FragmentBaseItemTypesKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "ShortKey"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 23,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoundEffects",
+          "index": 24,
+          "name": "UncutGemSoundEffect",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 25,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 26,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 27,
+          "name": "Unmodifiable",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 28,
+          "name": "Achievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ShopTag",
+          "index": 29,
+          "name": "ShopTag",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 30,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 31,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 32,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 33,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 34,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        }
+      ],
+      "fields": 34,
+      "locale": "German",
+      "relativePath": "/data/balance/german/baseitemtypes.datc64",
+      "rowBytes": 360,
+      "rows": 5476,
+      "schemaBytes": 360,
+      "sha256": "9c1b2ae1ae3a37066533255bbbd15c3b5bdc24769b1ccd89f99c9f35c4e63a78",
+      "status": "resolved",
+      "table": "baseitemtypes-german",
+      "unknownNamedFields": 8,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 6634,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 3,
+      "locale": "German",
+      "relativePath": "/data/balance/german/itemclasscategories.datc64",
+      "rowBytes": 32,
+      "rows": 75,
+      "schemaBytes": 32,
+      "sha256": "1741365752964817b849ad0508f471de591e2208070a3358598bd12d2dba42fb",
+      "status": "resolved",
+      "table": "itemclasscategories-german",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 23930,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemClassCategories",
+          "index": 3,
+          "name": "ItemClassCategory",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "RemovedIfLeavesArea",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 5,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 6,
+          "name": "Achievements",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "AllocateToMapOwner",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": "AlwaysAllocate",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": "CanHaveVeiledMods",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "QuestFlags",
+          "index": 10,
+          "name": "PickedUpQuest",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 11,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 12,
+          "name": "AlwaysShow",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 13,
+          "name": "CanBeCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 14,
+          "name": "CanHaveIncubators",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": "CanHaveInfluence",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 16,
+          "name": "CanBeDoubleCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 17,
+          "name": "CanHaveAspects",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemStances",
+          "index": 18,
+          "name": "ItemStance",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 19,
+          "name": "CanScourge",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 20,
+          "name": "CanUpgradeRarity",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 21,
+          "name": "Flags",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 22,
+          "name": "Unmodifiable",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 23,
+          "name": "CanBeFractured",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "AchievementItems",
+          "index": 24,
+          "name": "EquipAchievements",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 25,
+          "name": "UsedInMapDevice",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 26,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 27,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 27,
+      "locale": "German",
+      "relativePath": "/data/balance/german/itemclasses.datc64",
+      "rowBytes": 150,
+      "rows": 117,
+      "schemaBytes": 149,
+      "sha256": "408f61163090751c16e3cea369822fccb1eb0829b7e15074c58c8dc1ceac6d71",
+      "status": "schema-unknown",
+      "table": "itemclasses-german",
+      "unknownNamedFields": 4,
+      "unknownTrailingBytes": 1
+    },
+    {
+      "bytes": 380,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Limit",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Description",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 4,
+      "locale": "German",
+      "relativePath": "/data/balance/german/soulcorelimits.datc64",
+      "rowBytes": 21,
+      "rows": 4,
+      "schemaBytes": 21,
+      "sha256": "fa8423d4576935a4f41565a414643f8f0d4640a967645018569c680f899c7e4e",
+      "status": "resolved",
+      "table": "soulcorelimits-german",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 3366,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": true,
+          "foreignKey": "ItemClasses",
+          "index": 2,
+          "name": "ItemClass",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Text",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        }
+      ],
+      "fields": 4,
+      "locale": "German",
+      "relativePath": "/data/balance/german/soulcorestatcategories.datc64",
+      "rowBytes": 36,
+      "rows": 30,
+      "schemaBytes": 36,
+      "sha256": "f2bd3cb2ef71eb304fa83f6b885ed1525bc81149bee204bac498bfd83fdf6307",
+      "status": "resolved",
+      "table": "soulcorestatcategories-german",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 584,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "Stats",
+          "index": 2,
+          "name": "EffectStat",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "Stats",
+          "index": 4,
+          "name": "CountStat",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 4,
+      "locale": "German",
+      "relativePath": "/data/balance/german/soulcoretypes.datc64",
+      "rowBytes": 48,
+      "rows": 5,
+      "schemaBytes": 48,
+      "sha256": "a9ac02cf8984fccc9603bef76761daeb0ac2baf947932d907b89bfb3c4718632",
+      "status": "resolved",
+      "table": "soulcoretypes-german",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 3983872,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "GrantedEffects",
+          "index": 1,
+          "name": "GrantedEffect",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Level",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "CostMultiplier",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "StoredUses",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 5,
+          "name": "Cooldown",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "CooldownBypassTypes",
+          "index": 6,
+          "name": "CooldownBypassType",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Enum"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "VaalSouls",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": "VaalStoredUses",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": "CooldownGroup",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 10,
+          "name": "PvPDamageMultiplier",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 11,
+          "name": "SoulGainPreventionDuration",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 12,
+          "name": "AttackSpeedMultiplier",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 13,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 14,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 16,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 17,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 18,
+          "name": "AttackTime",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 19,
+          "name": "SpiritReservation",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 20,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 21,
+          "name": "CostAmounts",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 22,
+          "name": "ActorLevel",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Float"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 23,
+          "name": "ReservationMultiplier",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        }
+      ],
+      "fields": 23,
+      "locale": "English",
+      "relativePath": "/data/balance/grantedeffectsperlevel.datc64",
+      "rowBytes": 116,
+      "rows": 34298,
+      "schemaBytes": 116,
+      "sha256": "58c90b4878409f4ff2754aebf2d6189941dd8e7735e0a806718629d179629a4c",
+      "status": "resolved",
+      "table": "grantedeffectsperlevel",
+      "unknownNamedFields": 6,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 3936,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": true,
+          "foreignKey": "Mods",
+          "index": 2,
+          "name": "Mods",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        }
+      ],
+      "fields": 2,
+      "locale": "English",
+      "relativePath": "/data/balance/incursion2mutateduniquemodsclient.datc64",
+      "rowBytes": 24,
+      "rows": 1,
+      "schemaBytes": 24,
+      "sha256": "75e1728b72d2310a90fbfbc6a69149f93dfe2b2b135ed3c4b4c471c1cb476ea3",
+      "status": "resolved",
+      "table": "incursion2mutateduniquemodsclient",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 5770,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 3,
+      "locale": "English",
+      "relativePath": "/data/balance/itemclasscategories.datc64",
+      "rowBytes": 32,
+      "rows": 75,
+      "schemaBytes": 32,
+      "sha256": "2d0dda06ade190d8e41d6b69e5b0288b1009c05b8f8efedc5a2eb1868dd61d87",
+      "status": "resolved",
+      "table": "itemclasscategories",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 23384,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemClassCategories",
+          "index": 3,
+          "name": "ItemClassCategory",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "RemovedIfLeavesArea",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 5,
+          "name": null,
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 6,
+          "name": "Achievements",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "AllocateToMapOwner",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": "AlwaysAllocate",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": "CanHaveVeiledMods",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "QuestFlags",
+          "index": 10,
+          "name": "PickedUpQuest",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 11,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 12,
+          "name": "AlwaysShow",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 13,
+          "name": "CanBeCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 14,
+          "name": "CanHaveIncubators",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": "CanHaveInfluence",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 16,
+          "name": "CanBeDoubleCorrupted",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 17,
+          "name": "CanHaveAspects",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemStances",
+          "index": 18,
+          "name": "ItemStance",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 19,
+          "name": "CanScourge",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 20,
+          "name": "CanUpgradeRarity",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 21,
+          "name": "Flags",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 22,
+          "name": "Unmodifiable",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 23,
+          "name": "CanBeFractured",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "AchievementItems",
+          "index": 24,
+          "name": "EquipAchievements",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 25,
+          "name": "UsedInMapDevice",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 26,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 27,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 27,
+      "locale": "English",
+      "relativePath": "/data/balance/itemclasses.datc64",
+      "rowBytes": 150,
+      "rows": 117,
+      "schemaBytes": 149,
+      "sha256": "493179fd10626dc623eeba916b647aad448277c14cba7f356afa2c47ab96f6fa",
+      "status": "schema-unknown",
+      "table": "itemclasses",
+      "unknownNamedFields": 4,
+      "unknownTrailingBytes": 1
+    },
+    {
+      "bytes": 409050,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        }
+      ],
+      "fields": 1,
+      "locale": "English",
+      "relativePath": "/data/balance/modfamily.datc64",
+      "rowBytes": 8,
+      "rows": 6113,
+      "schemaBytes": 8,
+      "sha256": "816b1870a48c9f1061b53e4dd257e91b02405b7cd0e2041436d9f5f3a1fbf2f7",
+      "status": "resolved",
+      "table": "modfamily",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 2092,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "Mods",
+          "index": 1,
+          "name": "Mod",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "SkillGems",
+          "index": 2,
+          "name": "SkillGem",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 2,
+      "locale": "English",
+      "relativePath": "/data/balance/modgrantedskills.datc64",
+      "rowBytes": 32,
+      "rows": 65,
+      "schemaBytes": 32,
+      "sha256": "6285fa2a0c2df69361ddb219ad1740f04b16386cd43dcaf1a5b59a76aec5f4a6",
+      "status": "resolved",
+      "table": "modgrantedskills",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 1601608,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": true,
+          "foreignKey": "Stats",
+          "index": 2,
+          "name": "Stats",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 3,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 4,
+      "locale": "English",
+      "relativePath": "/data/balance/modtype.datc64",
+      "rowBytes": 41,
+      "rows": 12522,
+      "schemaBytes": 41,
+      "sha256": "d576f91295c833286b2d1e2c84fc5d6db38f9127fa6d32a13e73d46b0a7f4bce",
+      "status": "resolved",
+      "table": "modtype",
+      "unknownNamedFields": 2,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 364,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "Limit",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Description",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 4,
+      "locale": "English",
+      "relativePath": "/data/balance/soulcorelimits.datc64",
+      "rowBytes": 21,
+      "rows": 4,
+      "schemaBytes": 21,
+      "sha256": "6d90e881c8664117f2dbe1fad23cb39d5b1855a03fe688f4c174b6e8757b878c",
+      "status": "resolved",
+      "table": "soulcorelimits",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 28922,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "BaseItemTypes",
+          "index": 1,
+          "name": "BaseItemTypes",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 2,
+          "name": "LevelReq",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoulCoreLimits",
+          "index": 3,
+          "name": "Limit",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ClientStrings2",
+          "index": 4,
+          "name": "Description",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoulCoreTypes",
+          "index": 5,
+          "name": "Type",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoulCores",
+          "index": 6,
+          "name": "TierHigher",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "ShortKey"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "IsSocketBound",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 10,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "ClientStrings2",
+          "index": 11,
+          "name": "ExtraDescription",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 12,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 12,
+      "locale": "English",
+      "relativePath": "/data/balance/soulcores.datc64",
+      "rowBytes": 98,
+      "rows": 295,
+      "schemaBytes": 97,
+      "sha256": "7ba552525ea8838f703b11ed451ec8ac924a4e566da5d872938e4424a03b29f8",
+      "status": "schema-unknown",
+      "table": "soulcores",
+      "unknownNamedFields": 4,
+      "unknownTrailingBytes": 1
+    },
+    {
+      "bytes": 3088,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": true,
+          "foreignKey": "ItemClasses",
+          "index": 2,
+          "name": "ItemClass",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Text",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        }
+      ],
+      "fields": 4,
+      "locale": "English",
+      "relativePath": "/data/balance/soulcorestatcategories.datc64",
+      "rowBytes": 36,
+      "rows": 30,
+      "schemaBytes": 36,
+      "sha256": "11df03ef9d29c6b96412ce520234517b6d152ce7edd7daedcb84147a90508108",
+      "status": "resolved",
+      "table": "soulcorestatcategories",
+      "unknownNamedFields": 1,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 66580,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "SoulCores",
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "SoulCoreStatCategories",
+          "index": 2,
+          "name": "Category",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "Stats",
+          "index": 3,
+          "name": "Stats",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 4,
+          "name": "StatValue",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": "Stats",
+          "index": 5,
+          "name": "BondedStats",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 6,
+          "name": "BondedValues",
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        }
+      ],
+      "fields": 6,
+      "locale": "English",
+      "relativePath": "/data/balance/soulcorestats.datc64",
+      "rowBytes": 96,
+      "rows": 507,
+      "schemaBytes": 96,
+      "sha256": "3fe03f295e749afb68efb153b884a8b19cc7e494a909b1df7461f30d18f60235",
+      "status": "resolved",
+      "table": "soulcorestats",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 552,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "Stats",
+          "index": 2,
+          "name": "EffectStat",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 3,
+          "name": "Name",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "Stats",
+          "index": 4,
+          "name": "CountStat",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 4,
+      "locale": "English",
+      "relativePath": "/data/balance/soulcoretypes.datc64",
+      "rowBytes": 48,
+      "rows": 5,
+      "schemaBytes": 48,
+      "sha256": "525314a3a5a9e8564fed4dbe7a33631e7955e644e5f612623d0be3ca8184a92a",
+      "status": "resolved",
+      "table": "soulcoretypes",
+      "unknownNamedFields": 0,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 15468,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 1,
+          "name": "Id",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": "Words",
+          "index": 2,
+          "name": "WordsKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "FlavourText",
+          "index": 3,
+          "name": "FlavourTextKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": "MinLevel",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": "Mods",
+          "index": 5,
+          "name": "ModsKeys",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 6,
+          "name": "SpawnWeight",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 7,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": "AOFile",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "String"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": true,
+          "foreignKey": null,
+          "index": 10,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": true,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": "Chests",
+          "index": 11,
+          "name": "AppearanceChestsKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "Chests",
+          "index": 12,
+          "name": "ChestsKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": true,
+          "foreignKey": "AchievementItems",
+          "index": 13,
+          "name": "Achievement",
+          "nullable": true,
+          "orderRelevant": true,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 14,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 15,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 16,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "Stats",
+          "index": 17,
+          "name": "RequiredMapStat",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        }
+      ],
+      "fields": 17,
+      "locale": "English",
+      "relativePath": "/data/balance/uniquechests.datc64",
+      "rowBytes": 178,
+      "rows": 48,
+      "schemaBytes": 178,
+      "sha256": "81faf5da2947fa1cb32121768a00f71bb3bd0c60bc8e4fcd5e81fb8f80c2bdaa",
+      "status": "resolved",
+      "table": "uniquechests",
+      "unknownNamedFields": 6,
+      "unknownTrailingBytes": 0
+    },
+    {
+      "bytes": 37279,
+      "fieldDefinitions": [
+        {
+          "array": false,
+          "foreignKey": "Words",
+          "index": 1,
+          "name": "WordsKey",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "ItemVisualIdentity",
+          "index": 2,
+          "name": "ItemVisualIdentity",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": "UniqueStashTypes",
+          "index": 3,
+          "name": "UniqueStashTypes",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "Key"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 4,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 5,
+          "name": null,
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 6,
+          "name": "OverrideWidth",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 7,
+          "name": "OverrideHeight",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Int"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 8,
+          "name": "ShowIfEmptyChallengeLeague",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 9,
+          "name": "ShowIfEmptyStandard",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        },
+        {
+          "array": false,
+          "foreignKey": "UniqueStashLayout",
+          "index": 10,
+          "name": "RenamedVersion",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "ShortKey"
+        },
+        {
+          "array": false,
+          "foreignKey": "UniqueStashLayout",
+          "index": 11,
+          "name": "BaseVersion",
+          "nullable": true,
+          "orderRelevant": false,
+          "type": "ShortKey"
+        },
+        {
+          "array": false,
+          "foreignKey": null,
+          "index": 12,
+          "name": "IsAlternateArt",
+          "nullable": false,
+          "orderRelevant": false,
+          "type": "Bool"
+        }
+      ],
+      "fields": 12,
+      "locale": "English",
+      "relativePath": "/data/balance/uniquestashlayout.datc64",
+      "rowBytes": 83,
+      "rows": 449,
+      "schemaBytes": 83,
+      "sha256": "be014490c4d0fa00387f3a6cbe43930356d9cd1e00f4efe6d5451d582f023270",
+      "status": "resolved",
+      "table": "uniquestashlayout",
+      "unknownNamedFields": 2,
+      "unknownTrailingBytes": 0
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "approvalGranted": false,
+  "audit": "5M.2.4",
+  "baseTypeAssignments": "unknown",
+  "conclusion": "Related tables do not form a stable Unique-ID → base → variant → Mod-ID chain.",
+  "extractedRelatedTables": {
+    "mutatedUniqueModsClient": 1,
+    "uniqueStashLayout": 449,
+    "uniquechests": 48
+  },
+  "grantedSkills": "unknown",
+  "grantedSupports": "unknown",
+  "identities": "unknown",
+  "modReferences": "unknown",
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "schemaVersion": 1,
+  "statIds": "unknown",
+  "status": "unsupported-category",
+  "structuredValues": "unknown",
+  "variants": "unknown"
+}

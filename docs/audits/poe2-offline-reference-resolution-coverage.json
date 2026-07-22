@@ -1,0 +1,314 @@
+{
+  "approvalChanged": false,
+  "audit": "5M.2.4",
+  "charmId": {
+    "classification": "weiterhin unbekannt",
+    "directIdReadable": false,
+    "reason": "ItemClasses is not losslessly decoded; no name matching used.",
+    "status": "unknown"
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "productCoverage": {
+    "baseTypes": {
+      "itemClassRowsDecoded": 0,
+      "partiallyResolved": 39,
+      "resolved": 0,
+      "total": 39,
+      "unresolved": 0
+    },
+    "itemClasses": {
+      "partiallyResolved": 0,
+      "reason": "ItemClasses retains one unknown trailing byte and is not decoded.",
+      "resolved": 0,
+      "total": 33,
+      "unresolved": 33
+    },
+    "missingGermanStatIds": {
+      "resolvedByReferenceTables": 0,
+      "total": 12,
+      "unresolved": 12
+    },
+    "mods": {
+      "domainResolved": 0,
+      "generationTypeResolved": 0,
+      "groupResolved": 0,
+      "partiallyResolved": 2255,
+      "reason": "ModDomains and ModGenerationTypes are schema-only names without extractable DAT files; ModFamily is present but is not a ModGroup conflict table.",
+      "resolved": 0,
+      "tagsAndSpawnWeightsPreservedInMods": 2255,
+      "total": 2255,
+      "unresolved": 0
+    },
+    "ocrAmbiguities": {
+      "conclusion": "not recomputed as resolved because the required domain/generation/item-class semantics remain unavailable",
+      "contextCandidatesAdded": [
+        "mod-family",
+        "mod-type",
+        "base-item",
+        "soul-core-category"
+      ],
+      "resolvedByReferenceTables": 0,
+      "total": 2189
+    },
+    "previous": {
+      "baseTypes": {
+        "partiallyResolved": 39,
+        "reason": "Metadata IDs resolve; ItemClasses is schema-unknown.",
+        "resolved": 0,
+        "total": 39,
+        "unresolved": 0
+      },
+      "itemClasses": {
+        "partiallyResolved": 0,
+        "resolved": 0,
+        "total": 33,
+        "unresolved": 33
+      },
+      "mods": {
+        "directIdMatches": 2255,
+        "idStatValueMatches": 2255,
+        "partiallyResolved": 2255,
+        "reason": "GenerationType, Domain and item-class reference tables are not present in the five-table input.",
+        "resolved": 0,
+        "statIdConflicts": 0,
+        "total": 2255,
+        "unresolved": 0,
+        "valueConflicts": 0
+      },
+      "multilineAndHybridMods": {
+        "partiallyResolved": 429,
+        "resolved": 0,
+        "total": 429,
+        "unresolved": 0
+      },
+      "statIdCombinations": {
+        "partiallyResolved": 0,
+        "resolved": 444,
+        "total": 444,
+        "unresolved": 0
+      },
+      "statIds": {
+        "localized": 419,
+        "partiallyResolved": 0,
+        "resolved": 431,
+        "total": 431,
+        "unresolved": 0
+      },
+      "statLines": {
+        "partiallyResolved": 0,
+        "resolved": 2705,
+        "total": 2705,
+        "unresolved": 0
+      },
+      "technicalTemplateGaps": {
+        "englishCsdStructures": 447,
+        "germanCsdStructures": 447,
+        "partiallyResolved": 447,
+        "reason": "CSD structure exists for some gaps, but no product text is generated.",
+        "resolved": 0,
+        "total": 485,
+        "unresolved": 38
+      }
+    },
+    "templateGaps": {
+      "resolvedByReferenceTables": 0,
+      "total": 38,
+      "unresolved": 38
+    }
+  },
+  "productDataChanged": false,
+  "productPinChanged": false,
+  "references": {
+    "issues": [
+      {
+        "count": 727,
+        "sourceField": "FlavourTextKey",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "FlavourText"
+      },
+      {
+        "count": 5476,
+        "sourceField": "ItemVisualIdentityKey",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "ItemVisualIdentity"
+      },
+      {
+        "count": 5476,
+        "sourceField": "ModDomain",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "ModDomains"
+      },
+      {
+        "count": 57,
+        "sourceField": "ShopTag",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "ShopTag"
+      },
+      {
+        "count": 949,
+        "sourceField": "SoundEffect",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "SoundEffects"
+      },
+      {
+        "count": 47,
+        "sourceField": "UncutGemSoundEffect",
+        "sourceTable": "baseitemtypes",
+        "status": "schema-unknown",
+        "targetTable": "SoundEffects"
+      },
+      {
+        "count": 34298,
+        "sourceField": "CooldownBypassType",
+        "sourceTable": "grantedeffectsperlevel",
+        "status": "schema-unknown",
+        "targetTable": "CooldownBypassTypes"
+      },
+      {
+        "count": 34298,
+        "sourceField": "GrantedEffect",
+        "sourceTable": "grantedeffectsperlevel",
+        "status": "schema-unknown",
+        "targetTable": "GrantedEffects"
+      },
+      {
+        "count": 65,
+        "sourceField": "SkillGem",
+        "sourceTable": "modgrantedskills",
+        "status": "schema-unknown",
+        "targetTable": "SkillGems"
+      },
+      {
+        "count": 263,
+        "sourceField": "BuffTemplate",
+        "sourceTable": "mods",
+        "status": "schema-unknown",
+        "targetTable": "BuffTemplates"
+      },
+      {
+        "count": 6,
+        "sourceField": "BuffTemplate2",
+        "sourceTable": "mods",
+        "status": "schema-unknown",
+        "targetTable": "BuffTemplates"
+      },
+      {
+        "count": 16678,
+        "sourceField": "Domain",
+        "sourceTable": "mods",
+        "status": "schema-unknown",
+        "targetTable": "ModDomains"
+      },
+      {
+        "count": 16678,
+        "sourceField": "GenerationType",
+        "sourceTable": "mods",
+        "status": "schema-unknown",
+        "targetTable": "ModGenerationTypes"
+      },
+      {
+        "count": 16678,
+        "sourceField": "NodeType",
+        "sourceTable": "mods",
+        "status": "schema-unknown",
+        "targetTable": "PassiveNodeTypes"
+      },
+      {
+        "count": 2197,
+        "sourceField": "ContextFlags",
+        "sourceTable": "stats",
+        "status": "schema-unknown",
+        "targetTable": "VirtualStatContextFlags"
+      },
+      {
+        "count": 18,
+        "sourceField": "DotFlag",
+        "sourceTable": "stats",
+        "status": "schema-unknown",
+        "targetTable": "VirtualStatContextFlags"
+      },
+      {
+        "count": 2784,
+        "sourceField": "PassiveCategory",
+        "sourceTable": "stats",
+        "status": "schema-unknown",
+        "targetTable": "PassiveSkillStatCategories"
+      },
+      {
+        "count": 27178,
+        "sourceField": "Semantic",
+        "sourceTable": "stats",
+        "status": "schema-unknown",
+        "targetTable": "StatSemantics"
+      },
+      {
+        "count": 12,
+        "sourceField": "_unknown_4",
+        "sourceTable": "tags",
+        "status": "schema-unknown",
+        "targetTable": "ClientStrings"
+      },
+      {
+        "count": 37,
+        "sourceField": "ChestsKey",
+        "sourceTable": "uniquechests",
+        "status": "schema-unknown",
+        "targetTable": "Chests"
+      },
+      {
+        "count": 48,
+        "sourceField": "FlavourTextKey",
+        "sourceTable": "uniquechests",
+        "status": "schema-unknown",
+        "targetTable": "FlavourText"
+      },
+      {
+        "count": 48,
+        "sourceField": "WordsKey",
+        "sourceTable": "uniquechests",
+        "status": "schema-unknown",
+        "targetTable": "Words"
+      },
+      {
+        "count": 449,
+        "sourceField": "ItemVisualIdentity",
+        "sourceTable": "uniquestashlayout",
+        "status": "schema-unknown",
+        "targetTable": "ItemVisualIdentity"
+      },
+      {
+        "count": 449,
+        "sourceField": "UniqueStashTypes",
+        "sourceTable": "uniquestashlayout",
+        "status": "schema-unknown",
+        "targetTable": "UniqueStashTypes"
+      },
+      {
+        "count": 449,
+        "sourceField": "WordsKey",
+        "sourceTable": "uniquestashlayout",
+        "status": "schema-unknown",
+        "targetTable": "Words"
+      }
+    ],
+    "resolved": 137090,
+    "unresolved": 165365
+  },
+  "schemaVersion": 1,
+  "status": "audit-only"
+}

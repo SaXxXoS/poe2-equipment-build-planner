@@ -75,3 +75,6 @@ Der Kandidatenaudit ist abgeschlossen. Drei exakt gepinnte Stacks wurden geprüf
 ## Follow-up 5M.2.3
 
 Der neue Offline-Auditparser belegt 2.255 direkte Mod-ID-/Stat-/Wertübereinstimmungen und deutsche CSD-Strukturen für 419/431 Produkt-Stat-IDs. 447/485 bisher fehlende Templates besitzen eine deutsche und englische CSD-Struktur. Wegen fehlender Referenztabellen und des nicht positionssicher auflösbaren ItemClasses-Zusatzbytes bleibt dies nichtproduktiv. Keine Volltexte, Produktdaten oder Approval-Änderungen. Siehe [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).
+# Fortsetzung 5M.2.4
+
+Die lokale deutsche Vorprüfung umfasst nun deutsche BaseItemTypes, ItemClasses/-Kategorien und Soul-Core-Kategorien aus einem zweiten gepinnten Offline-Audit. Keine Volltexte wurden versioniert. Die zusätzlichen Tabellen schließen die 12 fehlenden deutschen Stat-IDs oder 38 Templatelücken nicht; öffentliche Distribution bleibt ungeklärt und separat freigabepflichtig.

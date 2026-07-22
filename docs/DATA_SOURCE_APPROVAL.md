@@ -138,3 +138,6 @@ Der Scope `poe2-technical-affix-data-for-build-planner` wird seit 5M.1 ausschlie
 > **Approval-Update 5M.2.1:** Lokale Extraktion ist nur ein nichtproduktiver Preflight. Alle deutschen Lokalisierungsscopes bleiben `pending`, Repository-Speicherung bleibt `false`, Foto-Mapping bleibt `blocked`; eine öffentliche Distribution braucht eine eigene Entscheidung.
 > **Approval-Update 5M.2.2:** Der Parser-Kandidatenaudit ist ebenfalls rein lokal und nichtproduktiv. Keiner der drei Kandidaten erhält Produktfreigabe; `source-approval.json`, der bestehende RePoE-Pin, alle deutschen `pending`-Scopes und `translation-missing` bleiben unverändert. Auch deterministischer PoB2/ooz-Rohzugriff ist keine Daten- oder Distributionsfreigabe.
 > **Approval-Update 5M.2.3:** Der versionierte Parsercode und bereinigte Zahlen-/Hashberichte sind Audit-only. Weder deutsche Texte noch Unique-/Socketable-Daten werden freigegeben; `source-approval.json` bleibt unverändert. Lokale Extraktion und technische Übereinstimmung sind ausdrücklich keine Distributionsfreigabe.
+# Auditstatus 5M.2.4
+
+Die Offline-Referenztabellenextraktion ist ausschließlich ein lokaler Audit. Sie erweitert keine Approval-Scopes, zulässigen Produktfelder oder Produktpins. Deutsche Texte, Unique-Daten und Socketable-Moddaten bleiben pending beziehungsweise blocked; `source-approval.json` ist unverändert.

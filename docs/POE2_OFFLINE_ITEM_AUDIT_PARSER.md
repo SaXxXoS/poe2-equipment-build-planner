@@ -152,3 +152,6 @@ Sanitized evidence:
 - `docs/audits/poe2-offline-item-audit-determinism.json`
 
 The next recommended task is not product import. It is a narrowly pinned input-expansion audit that extracts the missing enum/reference, Unique identity/version and Augments/Socketable tables, updates the PoB2 schema pin for the one-byte ItemClasses drift, and reruns this parser. Only after full reference closure should a separate production-pin, distribution and Approval decision be considered.
+# Fortsetzung 5M.2.4
+
+Die modulare Pipeline wurde um `reference-tables.mjs` ergänzt. 22 lokal vorhandene Referenztabellen wurden zweimal byteidentisch extrahiert und auditiert. Die Erweiterung belegt Soul-Core-Strukturen, löst ItemClasses, Domain/Generation, Uniques und Bonded-Werte jedoch nicht verlustfrei. Maßgeblich ist `POE2_OFFLINE_REFERENCE_TABLE_EXTRACTION.md`; 5M.2.3-Pins und Ergebnisse bleiben unverändert.

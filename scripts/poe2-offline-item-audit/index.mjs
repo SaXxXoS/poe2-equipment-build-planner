@@ -35,8 +35,8 @@ const REF_TYPES = new Set(['Enum', 'ShortKey', 'Key'])
 const NULL32 = 0xfefefefe
 const NULL64 = 0xfefefefefefefefen
 
-const sha256 = value => createHash('sha256').update(value).digest('hex')
-const stable = value => JSON.stringify(sortValue(value), null, 2) + '\n'
+export const sha256 = value => createHash('sha256').update(value).digest('hex')
+export const stable = value => JSON.stringify(sortValue(value), null, 2) + '\n'
 
 function sortValue(value) {
   if (Array.isArray(value)) return value.map(sortValue)
@@ -207,7 +207,7 @@ export function parseDatc64(buffer, schema, tableName) {
   }
 }
 
-function resolveReferences(tables) {
+export function resolveReferences(tables) {
   const issues = []
   let resolved = 0
   let missing = 0
@@ -276,7 +276,7 @@ export function parseCsd(buffer, fileName = '<fixture>') {
   return { fileName, entries, unknownLines }
 }
 
-async function walkFiles(root) {
+export async function walkFiles(root) {
   const result = []
   for (const item of await readdir(root, { withFileTypes: true })) {
     const path = join(root, item.name)
@@ -295,7 +295,7 @@ function aggregateIssues(issues) {
   return [...counts].map(([key, count]) => ({ ...JSON.parse(key), count })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)))
 }
 
-async function contentManifest(root, files) {
+export async function contentManifest(root, files) {
   const records = []
   for (const path of files) {
     const bytes = await readFile(path)

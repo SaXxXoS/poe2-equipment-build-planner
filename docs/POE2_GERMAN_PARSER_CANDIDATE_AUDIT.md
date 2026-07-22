@@ -151,3 +151,6 @@ The next recommended task is a narrowly scoped parser-adaptation design and impl
 ## Follow-up 5M.2.3
 
 The recommended limited parser was implemented as an audit-only local tool. It deterministically decodes four exact-schema tables, refuses the one-byte ItemClasses drift, parses all 589 CSD files, and matches every current product Mod ID/Stat/value tuple. Missing reference, Unique and Socketable tables prevent a production-pin recommendation. See [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).
+# Fortsetzung 5M.2.4
+
+Der Kandidat PoB2/ooz wurde ausschließlich auditseitig um 22 konkrete lokale Dateien erweitert. Zwei Extraktionen und Audits waren byteidentisch und vollständig offline. Der Produktivpin bleibt unverändert; ItemClasses und SoulCores besitzen weiterhin je ein unbekanntes Schemabyte. Ein neuer Pin ist nicht empfohlen.

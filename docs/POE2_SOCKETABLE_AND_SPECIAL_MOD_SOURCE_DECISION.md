@@ -170,3 +170,6 @@ Klare Schlussfolgerung: **Die technische Socketable-Identität ist belastbar und
 ## Update 5M.2.3 – lokaler Offline-Auditparser
 
 Die bisherigen Identitätszahlen für Runen, Soul Cores, Idols, Abyssal Eyes und Congealed Mist wurden nicht ungeprüft übernommen. Augments- und Socketable-Identitätstabellen gehören nicht zu den fünf gepinnten Eingaben. `StatsValues` ist nur im breiteren PoB2-Schema sichtbar und nicht Ende-zu-Ende verknüpft; `BondedStatsValues` bleibt `schema-unknown`. Zielitemkategorien, Effektvarianten und Werte dürfen nicht aus Text zurückgerechnet werden. Scope und Approval bleiben blockiert/pending. Details: [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).
+# Stand nach 5M.2.4
+
+Die lokale Extraktion belegt 295 SoulCore-Zeilen, 507 SoulCoreStats-Zeilen, 30 Statkategorien und strukturierte `StatsValues`. Ein unbekanntes SoulCores-Schemabyte sowie die fehlende Bonded-/Itemklassen-/Zielkategoriekette verhindern die vollständige Auflösung. Runen, Idols, Abyssal Eyes und Congealed Mist wurden nicht aus Namen rekonstruiert. Alle Modscopes bleiben unverändert pending/blocked.
