@@ -150,3 +150,4 @@ Die Baumansicht übernimmt die bereits absoluten offiziellen Knotenkoordinaten u
 ## Touch und ausgewählte Aszendenz
 
 Der offizielle Baum unterstützt Pointer-basierten Zwei-Finger-Pinch um den Finger-Mittelpunkt, Ein-Finger-/Maus-Pan und Wheel-Zoom. Der Charakter-State steuert rein visuell den hervorgehobenen Klassenstart und genau ein offizielles Aszendenz-Inset. Offizielle GGG-Medien bleiben mangels belastbarer Weiterverteilungsfreigabe blockiert; die näher am Spiel liegende Hierarchie entsteht ohne Assets aus skalierenden SVG-Rahmen und drei Detailstufen. Siehe [`docs/POE2_TREE_TOUCH_AND_ASCENDANCY.md`](docs/POE2_TREE_TOUCH_AND_ASCENDANCY.md). Aufgabe 5I ist nicht begonnen.
+> 5M.1B ergänzt gepinnte technische Eingaben für normale Jewels, Charms und Life-/Mana-Flasks. Uniques, Relics, Socketables, deutsche Affixtexte und Simulation bleiben ausgeschlossen. Siehe `docs/POE2_ADDITIONAL_ITEM_CLASS_TECHNICAL_IMPORT.md`.

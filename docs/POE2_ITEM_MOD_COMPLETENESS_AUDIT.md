@@ -116,3 +116,4 @@ Vorgeschlagene, noch nicht freigegebene Scope-Gruppen sind `poe2-technical-base-
 Keine belastbare Gesamtzahl aller PoE2-Itemmods wird behauptet. Unique-Modzeilen, Rune-/Soul-Core-Modzeilen, Desecrated/Mutated und ein verlustfreier Drei-Quellen-Abgleich bleiben unbekannt. Physische iPhone-Abnahme bleibt für den bestehenden UI-Stand offen; diese reine Dokument-/Auditänderung benötigt keine neue Geräteabnahme.
 
 Klare Schlussfolgerung: **5M.1 ist technisch abgeschlossen, aber sein Bestand von 1.828 Mods ist fachlich unvollständig für das Projektziel.**
+> 5M.1B importiert 320 reguläre Jewel-IDs, 51 reguläre Charm-IDs, 57 Life-Flask- und 52 Mana-Flask-IDs plus 13 Charm-Base-Implicits. Unique-/Corrupted-Jewel-Referenzen bleiben ausgeschlossen.

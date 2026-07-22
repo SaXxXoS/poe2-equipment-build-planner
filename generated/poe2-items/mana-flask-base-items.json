@@ -1,0 +1,200 @@
+[
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana1",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 1,
+    "properties": {
+      "charges_max": 60,
+      "charges_per_use": 10,
+      "duration": 20,
+      "mana_per_use": 50
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana2",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 4,
+    "properties": {
+      "charges_max": 65,
+      "charges_per_use": 10,
+      "duration": 30,
+      "mana_per_use": 70
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana3",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 10,
+    "properties": {
+      "charges_max": 70,
+      "charges_per_use": 10,
+      "duration": 25,
+      "mana_per_use": 90
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana4",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 16,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 25,
+      "mana_per_use": 110
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana5",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 23,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 35,
+      "mana_per_use": 165
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana6",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 30,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 25,
+      "mana_per_use": 165
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana7",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 40,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 20,
+      "mana_per_use": 185
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana8",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 50,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 35,
+      "mana_per_use": 285
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskMana9",
+    "itemClassId": "Mana Flasks",
+    "itemKind": "mana-flask",
+    "dropLevel": 60,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 30,
+      "mana_per_use": 310
+    },
+    "tags": [
+      "default",
+      "flask",
+      "mana_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskMana9",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  }
+]

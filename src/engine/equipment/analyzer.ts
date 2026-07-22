@@ -77,6 +77,7 @@ export const equipmentAnalyzer: EquipmentAnalyzer = { analyze({ input }, context
   const combined = analyzeProfile(values, input.goalProfile, config)
   const set1 = analyzeProfile(values.filter(value => setForSlot(value.entry.slotId) === 'set-1'), input.goalProfile, config)
   const set2 = analyzeProfile(values.filter(value => setForSlot(value.entry.slotId) === 'set-2'), input.goalProfile, config)
+  combined.profile.technicalItems=input.equipment.filter(entry=>entry.itemClassId||entry.itemDefinitionId||entry.modifierValues.length).map(entry=>({slotId:entry.slotId,itemClassId:entry.itemClassId,baseItemId:entry.itemDefinitionId,itemLevel:entry.itemLevel,sourceVersion:entry.modifierValues.find(value=>value.sourceVersion)?.sourceVersion,dataStatus:entry.modifierValues.some(value=>value.dataStatus==='legacy-unresolved')?'legacy-unresolved':entry.itemClassId==='Jewels'?'partially-supported':'transport-only',modifiers:entry.modifierValues.map(value=>({modifierId:value.modifierId,tierId:value.tierId,statValues:value.statValues??[]}))}))
   const reasons = [...combined.reasons]
   const violations: ConstraintViolation[] = [...unknownIds].sort().map(id => ({ code: 'unknown-modifier', severity: 'error', messageKey: 'engine.constraint.unknownModifier', sourceId: id, relatedIds: [id], blocking: true }))
   const warnings: ConstraintViolation[] = []

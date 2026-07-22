@@ -1,0 +1,200 @@
+[
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife1",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 1,
+    "properties": {
+      "charges_max": 60,
+      "charges_per_use": 10,
+      "duration": 30,
+      "life_per_use": 50
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife2",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 4,
+    "properties": {
+      "charges_max": 65,
+      "charges_per_use": 10,
+      "duration": 50,
+      "life_per_use": 90
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife3",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 10,
+    "properties": {
+      "charges_max": 70,
+      "charges_per_use": 10,
+      "duration": 40,
+      "life_per_use": 150
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife4",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 16,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 50,
+      "life_per_use": 260
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife5",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 23,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 40,
+      "life_per_use": 340
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife6",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 30,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 40,
+      "life_per_use": 450
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife7",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 40,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 50,
+      "life_per_use": 710
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife8",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 50,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 40,
+      "life_per_use": 840
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourFlaskLife9",
+    "itemClassId": "Life Flasks",
+    "itemKind": "life-flask",
+    "dropLevel": 60,
+    "properties": {
+      "charges_max": 75,
+      "charges_per_use": 10,
+      "duration": 30,
+      "life_per_use": 920
+    },
+    "tags": [
+      "default",
+      "flask",
+      "life_flask"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourFlaskLife9",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  }
+]

@@ -133,3 +133,4 @@ Die belegbasierte Prüfung ist in `docs/DATA_SOURCE_APPROVAL.md` und `docs/DATA_
 # 5M.1 Affixstand
 
 Der aktuelle technische Affixstand ist exakt `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`. Ein Versions-, Commit- oder Schemawechsel wird nicht automatisch aktiviert, sondern verlangt Diffbericht, neue Hashes, Tests und manuelle Freigabe.
+> 5M.1B-Pin: Export `4.5.4.4.4`/`b3f38149…`, Parser `14e3edc8…`; Wechsel erfordert neue Hashes, Approval und manuelle Freigabe.

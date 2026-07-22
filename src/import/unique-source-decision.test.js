@@ -73,9 +73,9 @@ const immutableFiles = {
   '../../src/engine/uniques/analyzer.ts': 'b4e9071fbf1a44f1763aed9c8a4db27268ae6c2b837af2a87a1bcf1be19247ac',
   '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
   '../../src/domain/equipment.ts': '4ef5bfbeb5a306e95df1450461c9edeb32b056e3ac17d8748caa5c5495f62fe2',
-  '../../src/engine/orchestration/analyze-build.ts': 'e5995ae7f8064f1226bc94d6ae4900d30f653ab0fc5c4f37d090185714ac1757',
-  '../../src/engine/jewels/analyzer.ts': '83d6f8bbc273b32d0309e133fbed2afda7316f8e1ee0c11c3b13617fa98505f8',
-  '../../src/engine/equipment/analyzer.ts': '750d4fc5372b8c88607aa04bdc5c079ffcfe0fe0c1e96bc1ad96614e9d9c90fc',
+  '../../src/engine/orchestration/analyze-build.ts': '59c74c363936df10032ffaf83a54a1f6cdf9ed33b3603533a3d8ea17299aba93',
+  '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
+  '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
 }
 

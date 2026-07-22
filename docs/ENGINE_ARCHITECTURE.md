@@ -261,3 +261,4 @@ Der reale Compact-Plan fließt nach dem Worker ausschließlich durch `buildPassi
 # Technische Affixgrenze 5M.1
 
 Die UI erzeugt ein normalisiertes `AppliedModifier` mit technischer Mod-/Statidentität und real eingegebenen Werten. BuildProfile und bestehender Worker transportieren dieses Objekt unverändert zum Equipment Analyzer; sichtbare Fallbacktexte entscheiden keine Engine-Regel. Die synthetische Bewertungssemantik ist weiterhin begrenzt und wird durch 5M.1 nicht als reale vollständige Berechnung ausgegeben.
+> 5M.1B transportiert technische Zusatzitems über `EquipmentEntry`, `BuildProfile.technicalItems` und das bestehende Workerprotokoll. Jewel-Stats bleiben unsupported; Charm/Flask transport-only.

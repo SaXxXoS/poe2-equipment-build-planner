@@ -130,3 +130,4 @@ Priorität nach Freigabe: (1) offizieller Passivbaum ohne Medien, (2) Klassen/As
 # 5M.1-Umsetzung
 
 Der Scope `poe2-technical-affix-data-for-build-planner` wird seit 5M.1 ausschließlich für die minimierten, manifestierten Ausgaben unter `generated/poe2-affixes/` genutzt. Die Entscheidung bleibt `conditionally-approved`; sie umfasst weder Rohspiegel noch Medien, PoE2DB, Skills, Supports, Uniques oder deutsche Display-Namen.
+> 5M.1B nutzt die drei bestehenden `conditionally-approved` Scopes nur für normale Jewels, Charms und Life-/Mana-Flasks am exakten Pin; keine allgemeine Lizenzfreigabe.

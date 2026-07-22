@@ -1,0 +1,151 @@
+[
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelDex",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "dexjewel",
+      "jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelDex",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelDiamond",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "dexjewel",
+      "intjewel",
+      "jewel",
+      "not_for_sale",
+      "strjewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelDiamond",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelInt",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "intjewel",
+      "jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelInt",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelRadiusDex",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "dex_radius_jewel",
+      "jewel",
+      "not_for_sale",
+      "radius_jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelRadiusDex",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelRadiusDiamond",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "dex_radius_jewel",
+      "int_radius_jewel",
+      "jewel",
+      "not_for_sale",
+      "radius_jewel",
+      "str_radius_jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelRadiusDiamond",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelRadiusInt",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "int_radius_jewel",
+      "jewel",
+      "not_for_sale",
+      "radius_jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelRadiusInt",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelRadiusStr",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "jewel",
+      "not_for_sale",
+      "radius_jewel",
+      "str_radius_jewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelRadiusStr",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Jewels/JewelStr",
+    "itemClassId": "Jewels",
+    "itemKind": "jewel",
+    "dropLevel": 20,
+    "properties": {},
+    "tags": [
+      "default",
+      "jewel",
+      "strjewel"
+    ],
+    "implicitModIds": [],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Jewels/JewelStr",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  }
+]

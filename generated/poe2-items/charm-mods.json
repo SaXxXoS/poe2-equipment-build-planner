@@ -1,0 +1,3511 @@
+[
+  {
+    "affixId": "CharmGainLifeOnUse1",
+    "sourceModId": "CharmGainLifeOnUse1",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 8,
+        "maximum": 12,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse1",
+    "technicalText": "CharmGainLifeOnUse1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse2",
+    "sourceModId": "CharmGainLifeOnUse2",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 14,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 35,
+        "maximum": 52,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse2",
+    "technicalText": "CharmGainLifeOnUse2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse3",
+    "sourceModId": "CharmGainLifeOnUse3",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 63,
+        "maximum": 92,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse3",
+    "technicalText": "CharmGainLifeOnUse3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse4",
+    "sourceModId": "CharmGainLifeOnUse4",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 36,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 96,
+        "maximum": 130,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse4",
+    "technicalText": "CharmGainLifeOnUse4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse5",
+    "sourceModId": "CharmGainLifeOnUse5",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 47,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 134,
+        "maximum": 180,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse5",
+    "technicalText": "CharmGainLifeOnUse5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse6",
+    "sourceModId": "CharmGainLifeOnUse6",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-6",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 58,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 185,
+        "maximum": 230,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse6",
+    "technicalText": "CharmGainLifeOnUse6",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse7",
+    "sourceModId": "CharmGainLifeOnUse7",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-7",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 67,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 235,
+        "maximum": 280,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse7.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse7",
+    "technicalText": "CharmGainLifeOnUse7",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainLifeOnUse8",
+    "sourceModId": "CharmGainLifeOnUse8",
+    "familyId": "CharmGainLifeOnUse",
+    "tierId": "prefix:CharmGainLifeOnUse:tier-8",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 76,
+    "tags": [
+      "charm",
+      "life",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_life_when_used",
+        "minimum": 285,
+        "maximum": 350,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainLifeOnUse8.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainLifeOnUse8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainLifeOnUse8",
+    "technicalText": "CharmGainLifeOnUse8",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse1",
+    "sourceModId": "CharmGainManaOnUse1",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 16,
+        "maximum": 24,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse1",
+    "technicalText": "CharmGainManaOnUse1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse2",
+    "sourceModId": "CharmGainManaOnUse2",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 14,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 33,
+        "maximum": 50,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse2",
+    "technicalText": "CharmGainManaOnUse2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse3",
+    "sourceModId": "CharmGainManaOnUse3",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 55,
+        "maximum": 75,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse3",
+    "technicalText": "CharmGainManaOnUse3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse4",
+    "sourceModId": "CharmGainManaOnUse4",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 36,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 80,
+        "maximum": 110,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse4",
+    "technicalText": "CharmGainManaOnUse4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse5",
+    "sourceModId": "CharmGainManaOnUse5",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 47,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 115,
+        "maximum": 145,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse5",
+    "technicalText": "CharmGainManaOnUse5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse6",
+    "sourceModId": "CharmGainManaOnUse6",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-6",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 58,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 150,
+        "maximum": 180,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse6",
+    "technicalText": "CharmGainManaOnUse6",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse7",
+    "sourceModId": "CharmGainManaOnUse7",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-7",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 67,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 185,
+        "maximum": 225,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse7.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse7",
+    "technicalText": "CharmGainManaOnUse7",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGainManaOnUse8",
+    "sourceModId": "CharmGainManaOnUse8",
+    "familyId": "CharmGainManaOnUse",
+    "tierId": "prefix:CharmGainManaOnUse:tier-8",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 76,
+    "tags": [
+      "charm",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_recover_X_mana_when_used",
+        "minimum": 230,
+        "maximum": 300,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGainManaOnUse8.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGainManaOnUse8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGainManaOnUse8",
+    "technicalText": "CharmGainManaOnUse8",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive1",
+    "sourceModId": "CharmGuardWhileActive1",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 10,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 44,
+        "maximum": 66,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive1",
+    "technicalText": "CharmGuardWhileActive1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive2",
+    "sourceModId": "CharmGuardWhileActive2",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 21,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 85,
+        "maximum": 128,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive2",
+    "technicalText": "CharmGuardWhileActive2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive3",
+    "sourceModId": "CharmGuardWhileActive3",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 36,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 148,
+        "maximum": 200,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive3",
+    "technicalText": "CharmGuardWhileActive3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive4",
+    "sourceModId": "CharmGuardWhileActive4",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 48,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 205,
+        "maximum": 260,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive4",
+    "technicalText": "CharmGuardWhileActive4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive5",
+    "sourceModId": "CharmGuardWhileActive5",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 60,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 265,
+        "maximum": 350,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive5",
+    "technicalText": "CharmGuardWhileActive5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmGuardWhileActive6",
+    "sourceModId": "CharmGuardWhileActive6",
+    "familyId": "CharmGuardWhileActive",
+    "tierId": "prefix:CharmGuardWhileActive:tier-6",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 75,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "charm_gain_X_guard_for_duration",
+        "minimum": 355,
+        "maximum": 500,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": false,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmGuardWhileActive6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": false,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmGuardWhileActive6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmGuardWhileActive6",
+    "technicalText": "CharmGuardWhileActive6",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnBleed1",
+    "sourceModId": "CharmImplicitUseOnBleed1",
+    "familyId": "FlaskUseOnAffectedByBleed",
+    "tierId": "implicit:FlaskUseOnAffectedByBleed:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm2"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_bleed",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnBleed1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnBleed1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnBleed1",
+    "technicalText": "CharmImplicitUseOnBleed1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnChaosDamage1",
+    "sourceModId": "CharmImplicitUseOnChaosDamage1",
+    "familyId": "FlaskUseOnTakingChaosDamage",
+    "tierId": "implicit:FlaskUseOnTakingChaosDamage:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm11"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_chaos_damage_taken",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnChaosDamage1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnChaosDamage1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnChaosDamage1",
+    "technicalText": "CharmImplicitUseOnChaosDamage1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnColdDamage1",
+    "sourceModId": "CharmImplicitUseOnColdDamage1",
+    "familyId": "FlaskUseOnTakingColdDamage",
+    "tierId": "implicit:FlaskUseOnTakingColdDamage:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm9"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_cold_damage_taken",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnColdDamage1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnColdDamage1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnColdDamage1",
+    "technicalText": "CharmImplicitUseOnColdDamage1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnCurse1",
+    "sourceModId": "CharmImplicitUseOnCurse1",
+    "familyId": "FlaskUseOnAffectedByCurse",
+    "tierId": "implicit:FlaskUseOnAffectedByCurse:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm13"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_charm_trigger_when_cursed",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnCurse1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnCurse1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnCurse1",
+    "technicalText": "CharmImplicitUseOnCurse1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnFireDamage1",
+    "sourceModId": "CharmImplicitUseOnFireDamage1",
+    "familyId": "FlaskUseOnTakingFireDamage",
+    "tierId": "implicit:FlaskUseOnTakingFireDamage:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm8"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_fire_damage_taken",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnFireDamage1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnFireDamage1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnFireDamage1",
+    "technicalText": "CharmImplicitUseOnFireDamage1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnFreeze1",
+    "sourceModId": "CharmImplicitUseOnFreeze1",
+    "familyId": "FlaskUseOnAffectedByFreeze",
+    "tierId": "implicit:FlaskUseOnAffectedByFreeze:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm1"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_freeze",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnFreeze1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnFreeze1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnFreeze1",
+    "technicalText": "CharmImplicitUseOnFreeze1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnIgnite1",
+    "sourceModId": "CharmImplicitUseOnIgnite1",
+    "familyId": "FlaskUseOnAffectedByIgnite",
+    "tierId": "implicit:FlaskUseOnAffectedByIgnite:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm4"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_ignite",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnIgnite1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnIgnite1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnIgnite1",
+    "technicalText": "CharmImplicitUseOnIgnite1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnLightningDamage1",
+    "sourceModId": "CharmImplicitUseOnLightningDamage1",
+    "familyId": "FlaskUseOnTakingLightningDamage",
+    "tierId": "implicit:FlaskUseOnTakingLightningDamage:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm10"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_lightning_damage_taken",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnLightningDamage1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnLightningDamage1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnLightningDamage1",
+    "technicalText": "CharmImplicitUseOnLightningDamage1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnPoison1",
+    "sourceModId": "CharmImplicitUseOnPoison1",
+    "familyId": "FlaskUseOnAffectedByPoison",
+    "tierId": "implicit:FlaskUseOnAffectedByPoison:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm3"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_poison",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnPoison1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnPoison1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnPoison1",
+    "technicalText": "CharmImplicitUseOnPoison1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnRareUniqueKill1",
+    "sourceModId": "CharmImplicitUseOnRareUniqueKill1",
+    "familyId": "FlaskUseOnKillingRareUnique",
+    "tierId": "implicit:FlaskUseOnKillingRareUnique:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm12"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_killing_rare_or_unique_enemy",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnRareUniqueKill1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnRareUniqueKill1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnRareUniqueKill1",
+    "technicalText": "CharmImplicitUseOnRareUniqueKill1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnShock1",
+    "sourceModId": "CharmImplicitUseOnShock1",
+    "familyId": "FlaskUseOnAffectedByShock",
+    "tierId": "implicit:FlaskUseOnAffectedByShock:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm5"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_shock",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnShock1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnShock1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnShock1",
+    "technicalText": "CharmImplicitUseOnShock1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnSlow1",
+    "sourceModId": "CharmImplicitUseOnSlow1",
+    "familyId": "FlaskUseOnAffectedBySlow",
+    "tierId": "implicit:FlaskUseOnAffectedBySlow:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm7"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_affected_by_slow",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnSlow1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnSlow1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnSlow1",
+    "technicalText": "CharmImplicitUseOnSlow1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmImplicitUseOnStun1",
+    "sourceModId": "CharmImplicitUseOnStun1",
+    "familyId": "FlaskUseOnAffectedByStun",
+    "tierId": "implicit:FlaskUseOnAffectedByStun:tier-1",
+    "generationType": "unique",
+    "affixSide": "implicit",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [
+      "Metadata/Items/Flasks/FourCharm6"
+    ],
+    "requiredItemLevel": 1,
+    "tags": [],
+    "spawnWeights": [],
+    "statLines": [
+      {
+        "statId": "local_flask_use_on_stunned",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmImplicitUseOnStun1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskEnchantment"
+    ],
+    "conflictGroups": [
+      "FlaskEnchantment"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmImplicitUseOnStun1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmImplicitUseOnStun1",
+    "technicalText": "CharmImplicitUseOnStun1",
+    "sourceSides": [
+      "implicit"
+    ]
+  },
+  {
+    "affixId": "CharmIncreasedDuration1",
+    "sourceModId": "CharmIncreasedDuration1",
+    "familyId": "CharmIncreasedDuration",
+    "tierId": "prefix:CharmIncreasedDuration:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charm_duration_+%",
+        "minimum": 16,
+        "maximum": 20,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmIncreasedDuration1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmIncreasedDuration1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmIncreasedDuration1",
+    "technicalText": "CharmIncreasedDuration1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmIncreasedDuration2",
+    "sourceModId": "CharmIncreasedDuration2",
+    "familyId": "CharmIncreasedDuration",
+    "tierId": "prefix:CharmIncreasedDuration:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 20,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charm_duration_+%",
+        "minimum": 21,
+        "maximum": 25,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmIncreasedDuration2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmIncreasedDuration2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmIncreasedDuration2",
+    "technicalText": "CharmIncreasedDuration2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmIncreasedDuration3",
+    "sourceModId": "CharmIncreasedDuration3",
+    "familyId": "CharmIncreasedDuration",
+    "tierId": "prefix:CharmIncreasedDuration:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 42,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charm_duration_+%",
+        "minimum": 26,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmIncreasedDuration3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmIncreasedDuration3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmIncreasedDuration3",
+    "technicalText": "CharmIncreasedDuration3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmIncreasedDuration4",
+    "sourceModId": "CharmIncreasedDuration4",
+    "familyId": "CharmIncreasedDuration",
+    "tierId": "prefix:CharmIncreasedDuration:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 61,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charm_duration_+%",
+        "minimum": 31,
+        "maximum": 35,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmIncreasedDuration4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmIncreasedDuration4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmIncreasedDuration4",
+    "technicalText": "CharmIncreasedDuration4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "CharmIncreasedDuration5",
+    "sourceModId": "CharmIncreasedDuration5",
+    "familyId": "CharmIncreasedDuration",
+    "tierId": "prefix:CharmIncreasedDuration:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 78,
+    "tags": [
+      "charm"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "utility_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charm_duration_+%",
+        "minimum": 36,
+        "maximum": 40,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#CharmIncreasedDuration5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#CharmIncreasedDuration5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "CharmIncreasedDuration5",
+    "technicalText": "CharmIncreasedDuration5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskChanceRechargeOnKill1",
+    "sourceModId": "FlaskChanceRechargeOnKill1",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 8,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 21,
+        "maximum": 25,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill1",
+    "technicalText": "FlaskChanceRechargeOnKill1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChanceRechargeOnKill2",
+    "sourceModId": "FlaskChanceRechargeOnKill2",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 26,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill2",
+    "technicalText": "FlaskChanceRechargeOnKill2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChanceRechargeOnKill3",
+    "sourceModId": "FlaskChanceRechargeOnKill3",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 45,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 31,
+        "maximum": 35,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill3",
+    "technicalText": "FlaskChanceRechargeOnKill3",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent1",
+    "sourceModId": "FlaskChargesAddedIncreasePercent1",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 23,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent1",
+    "technicalText": "FlaskChargesAddedIncreasePercent1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent2_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent2_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 13,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 31,
+        "maximum": 38,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent2_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent2_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent2_",
+    "technicalText": "FlaskChargesAddedIncreasePercent2_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent3_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent3_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 33,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 39,
+        "maximum": 46,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent3_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent3_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent3_",
+    "technicalText": "FlaskChargesAddedIncreasePercent3_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent4_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent4_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 48,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 47,
+        "maximum": 54,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent4_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent4_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent4_",
+    "technicalText": "FlaskChargesAddedIncreasePercent4_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent5__",
+    "sourceModId": "FlaskChargesAddedIncreasePercent5__",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 63,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 55,
+        "maximum": 62,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent5__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent5__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent5__",
+    "technicalText": "FlaskChargesAddedIncreasePercent5__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent6",
+    "sourceModId": "FlaskChargesAddedIncreasePercent6",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 82,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 63,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent6",
+    "technicalText": "FlaskChargesAddedIncreasePercent6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed1",
+    "sourceModId": "FlaskChargesUsed1",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -17,
+        "maximum": -15,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed1",
+    "technicalText": "FlaskChargesUsed1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed2",
+    "sourceModId": "FlaskChargesUsed2",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 14,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -20,
+        "maximum": -18,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed2",
+    "technicalText": "FlaskChargesUsed2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed3__",
+    "sourceModId": "FlaskChargesUsed3__",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 34,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -23,
+        "maximum": -21,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed3__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed3__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed3__",
+    "technicalText": "FlaskChargesUsed3__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed4__",
+    "sourceModId": "FlaskChargesUsed4__",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 49,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -26,
+        "maximum": -24,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed4__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed4__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed4__",
+    "technicalText": "FlaskChargesUsed4__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed5",
+    "sourceModId": "FlaskChargesUsed5",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 64,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -29,
+        "maximum": -27,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed5",
+    "technicalText": "FlaskChargesUsed5",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed6",
+    "sourceModId": "FlaskChargesUsed6",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 83,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -32,
+        "maximum": -30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed6",
+    "technicalText": "FlaskChargesUsed6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges1",
+    "sourceModId": "FlaskExtraCharges1",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 23,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges1",
+    "technicalText": "FlaskExtraCharges1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges2__",
+    "sourceModId": "FlaskExtraCharges2__",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 12,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 31,
+        "maximum": 38,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges2__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges2__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges2__",
+    "technicalText": "FlaskExtraCharges2__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges3_",
+    "sourceModId": "FlaskExtraCharges3_",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 32,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 39,
+        "maximum": 46,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges3_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges3_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges3_",
+    "technicalText": "FlaskExtraCharges3_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges4__",
+    "sourceModId": "FlaskExtraCharges4__",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 47,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 47,
+        "maximum": 54,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges4__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges4__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges4__",
+    "technicalText": "FlaskExtraCharges4__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges5",
+    "sourceModId": "FlaskExtraCharges5",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 62,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 55,
+        "maximum": 62,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges5",
+    "technicalText": "FlaskExtraCharges5",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges6",
+    "sourceModId": "FlaskExtraCharges6",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 81,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 63,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges6",
+    "technicalText": "FlaskExtraCharges6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute1",
+    "sourceModId": "FlaskFillChargesPerMinute1",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 8,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 9,
+        "maximum": 9,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute1",
+    "technicalText": "FlaskFillChargesPerMinute1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute2",
+    "sourceModId": "FlaskFillChargesPerMinute2",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 12,
+        "maximum": 12,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute2",
+    "technicalText": "FlaskFillChargesPerMinute2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute3",
+    "sourceModId": "FlaskFillChargesPerMinute3",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 45,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute3",
+    "technicalText": "FlaskFillChargesPerMinute3",
+    "sourceSides": [
+      "suffix"
+    ]
+  }
+]

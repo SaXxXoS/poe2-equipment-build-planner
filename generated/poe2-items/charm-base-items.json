@@ -1,0 +1,301 @@
+[
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm1",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 12,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 40,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnFreeze1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm10",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 5,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 40
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnLightningDamage1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm10",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm11",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 40,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 30,
+      "duration": 40
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnChaosDamage1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm11",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm12",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 50,
+    "properties": {
+      "charges_max": 80,
+      "charges_per_use": 80,
+      "duration": 10
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnRareUniqueKill1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm12",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm13",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 40,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnCurse1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm13",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm2",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 18,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 30,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnBleed1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm3",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 24,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnPoison1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm4",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 32,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 30,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnIgnite1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm5",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 32,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 30,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnShock1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm6",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 8,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnStun1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm7",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 10,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 30
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnSlow1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm8",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 5,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 40
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnFireDamage1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  },
+  {
+    "baseItemId": "Metadata/Items/Flasks/FourCharm9",
+    "itemClassId": "Charms",
+    "itemKind": "charm",
+    "dropLevel": 5,
+    "properties": {
+      "charges_max": 40,
+      "charges_per_use": 20,
+      "duration": 40
+    },
+    "tags": [
+      "default",
+      "flask",
+      "utility_flask"
+    ],
+    "implicitModIds": [
+      "CharmImplicitUseOnColdDamage1"
+    ],
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/base_items.json#Metadata/Items/Flasks/FourCharm9",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing"
+  }
+]

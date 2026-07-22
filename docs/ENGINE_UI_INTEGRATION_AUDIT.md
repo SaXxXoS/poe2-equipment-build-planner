@@ -164,3 +164,4 @@ React hebt den Compact-Plan über einen reinen View-Adapter in den bestehenden B
 # 5M.1 Equipment-Affixe
 
 Der Equipment-Dialog liest ausschließlich das zentrale technische Register. Itemklasse, Item Level, Affixseite, Tier, Statwerte und Konflikte liegen im gespeicherten Equipment und damit in der vorhandenen Eingabesignatur; Änderungen werden stale, Dialogöffnung/-abbruch nicht. Legacy-IDs werden ohne sichere technische ID nicht textbasiert migriert.
+> 5M.1B: sechs kontrollierte Slots verwenden den zentralen Affixdialog. Base, Tier, Roll, Stat-ID und Konflikte sind strukturiert; sichtbare Texte steuern keine Fachlogik, Änderungen gehen in stale ein.

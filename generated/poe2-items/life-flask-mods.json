@@ -1,0 +1,3383 @@
+[
+  {
+    "affixId": "FlaskChanceRechargeOnKill1",
+    "sourceModId": "FlaskChanceRechargeOnKill1",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 8,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 21,
+        "maximum": 25,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill1",
+    "technicalText": "FlaskChanceRechargeOnKill1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChanceRechargeOnKill2",
+    "sourceModId": "FlaskChanceRechargeOnKill2",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 26,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill2",
+    "technicalText": "FlaskChanceRechargeOnKill2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChanceRechargeOnKill3",
+    "sourceModId": "FlaskChanceRechargeOnKill3",
+    "familyId": "FlaskChanceRechargeOnKill",
+    "tierId": "suffix:FlaskChanceRechargeOnKill:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 45,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_%_chance_to_gain_flask_charge_on_kill",
+        "minimum": 31,
+        "maximum": 35,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChanceRechargeOnKill3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChanceRechargeOnKill3",
+    "technicalText": "FlaskChanceRechargeOnKill3",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent1",
+    "sourceModId": "FlaskChargesAddedIncreasePercent1",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 23,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent1",
+    "technicalText": "FlaskChargesAddedIncreasePercent1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent2_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent2_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 13,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 31,
+        "maximum": 38,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent2_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent2_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent2_",
+    "technicalText": "FlaskChargesAddedIncreasePercent2_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent3_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent3_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 33,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 39,
+        "maximum": 46,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent3_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent3_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent3_",
+    "technicalText": "FlaskChargesAddedIncreasePercent3_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent4_",
+    "sourceModId": "FlaskChargesAddedIncreasePercent4_",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 48,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 47,
+        "maximum": 54,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent4_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent4_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent4_",
+    "technicalText": "FlaskChargesAddedIncreasePercent4_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent5__",
+    "sourceModId": "FlaskChargesAddedIncreasePercent5__",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 63,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 55,
+        "maximum": 62,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent5__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent5__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent5__",
+    "technicalText": "FlaskChargesAddedIncreasePercent5__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesAddedIncreasePercent6",
+    "sourceModId": "FlaskChargesAddedIncreasePercent6",
+    "familyId": "FlaskIncreasedChargesAdded",
+    "tierId": "suffix:FlaskIncreasedChargesAdded:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 82,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_added_+%",
+        "minimum": 63,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRechargeRate"
+    ],
+    "conflictGroups": [
+      "FlaskRechargeRate"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesAddedIncreasePercent6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesAddedIncreasePercent6",
+    "technicalText": "FlaskChargesAddedIncreasePercent6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed1",
+    "sourceModId": "FlaskChargesUsed1",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -17,
+        "maximum": -15,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed1",
+    "technicalText": "FlaskChargesUsed1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed2",
+    "sourceModId": "FlaskChargesUsed2",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 14,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -20,
+        "maximum": -18,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed2",
+    "technicalText": "FlaskChargesUsed2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed3__",
+    "sourceModId": "FlaskChargesUsed3__",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 34,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -23,
+        "maximum": -21,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed3__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed3__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed3__",
+    "technicalText": "FlaskChargesUsed3__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed4__",
+    "sourceModId": "FlaskChargesUsed4__",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 49,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -26,
+        "maximum": -24,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed4__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed4__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed4__",
+    "technicalText": "FlaskChargesUsed4__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed5",
+    "sourceModId": "FlaskChargesUsed5",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 64,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -29,
+        "maximum": -27,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed5",
+    "technicalText": "FlaskChargesUsed5",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskChargesUsed6",
+    "sourceModId": "FlaskChargesUsed6",
+    "familyId": "FlaskChargesUsed",
+    "tierId": "suffix:FlaskChargesUsed:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 83,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_charges_used_+%",
+        "minimum": -32,
+        "maximum": -30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskChargesUsed6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskChargesUsed"
+    ],
+    "conflictGroups": [
+      "FlaskChargesUsed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskChargesUsed6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskChargesUsed6",
+    "technicalText": "FlaskChargesUsed6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges1",
+    "sourceModId": "FlaskExtraCharges1",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 23,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges1",
+    "technicalText": "FlaskExtraCharges1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges2__",
+    "sourceModId": "FlaskExtraCharges2__",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 12,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 31,
+        "maximum": 38,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges2__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges2__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges2__",
+    "technicalText": "FlaskExtraCharges2__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges3_",
+    "sourceModId": "FlaskExtraCharges3_",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 32,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 39,
+        "maximum": 46,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges3_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges3_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges3_",
+    "technicalText": "FlaskExtraCharges3_",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges4__",
+    "sourceModId": "FlaskExtraCharges4__",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-4",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 47,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 47,
+        "maximum": 54,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges4__.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges4__",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges4__",
+    "technicalText": "FlaskExtraCharges4__",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges5",
+    "sourceModId": "FlaskExtraCharges5",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-5",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 62,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 55,
+        "maximum": 62,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges5",
+    "technicalText": "FlaskExtraCharges5",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraCharges6",
+    "sourceModId": "FlaskExtraCharges6",
+    "familyId": "FlaskIncreasedMaxCharges",
+    "tierId": "suffix:FlaskIncreasedMaxCharges:tier-6",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 81,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_max_charges_+%",
+        "minimum": 63,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraCharges6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskNumCharges"
+    ],
+    "conflictGroups": [
+      "FlaskNumCharges"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraCharges6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraCharges6",
+    "technicalText": "FlaskExtraCharges6",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraLifeCostsMana1",
+    "sourceModId": "FlaskExtraLifeCostsMana1",
+    "familyId": "FlaskExtraLifeCostsMana",
+    "tierId": "prefix:FlaskExtraLifeCostsMana:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 13,
+    "tags": [
+      "flask",
+      "life",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_life_to_recover_+%",
+        "minimum": 61,
+        "maximum": 68,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana1.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_removes_%_of_life_recovery_from_mana_on_use",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana1.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraLifeCostsMana1",
+    "technicalText": "FlaskExtraLifeCostsMana1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraLifeCostsMana2",
+    "sourceModId": "FlaskExtraLifeCostsMana2",
+    "familyId": "FlaskExtraLifeCostsMana",
+    "tierId": "prefix:FlaskExtraLifeCostsMana:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 30,
+    "tags": [
+      "flask",
+      "life",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_life_to_recover_+%",
+        "minimum": 69,
+        "maximum": 76,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana2.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_removes_%_of_life_recovery_from_mana_on_use",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana2.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraLifeCostsMana2",
+    "technicalText": "FlaskExtraLifeCostsMana2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraLifeCostsMana3",
+    "sourceModId": "FlaskExtraLifeCostsMana3",
+    "familyId": "FlaskExtraLifeCostsMana",
+    "tierId": "prefix:FlaskExtraLifeCostsMana:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 47,
+    "tags": [
+      "flask",
+      "life",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_life_to_recover_+%",
+        "minimum": 77,
+        "maximum": 84,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana3.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_removes_%_of_life_recovery_from_mana_on_use",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana3.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraLifeCostsMana3",
+    "technicalText": "FlaskExtraLifeCostsMana3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraLifeCostsMana4",
+    "sourceModId": "FlaskExtraLifeCostsMana4",
+    "familyId": "FlaskExtraLifeCostsMana",
+    "tierId": "prefix:FlaskExtraLifeCostsMana:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 64,
+    "tags": [
+      "flask",
+      "life",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_life_to_recover_+%",
+        "minimum": 85,
+        "maximum": 92,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana4.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_removes_%_of_life_recovery_from_mana_on_use",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana4.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraLifeCostsMana4",
+    "technicalText": "FlaskExtraLifeCostsMana4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskExtraLifeCostsMana5_",
+    "sourceModId": "FlaskExtraLifeCostsMana5_",
+    "familyId": "FlaskExtraLifeCostsMana",
+    "tierId": "prefix:FlaskExtraLifeCostsMana:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 81,
+    "tags": [
+      "flask",
+      "life",
+      "mana",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_life_to_recover_+%",
+        "minimum": 93,
+        "maximum": 100,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana5_.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_removes_%_of_life_recovery_from_mana_on_use",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana5_.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskExtraLifeCostsMana5_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskExtraLifeCostsMana5_",
+    "technicalText": "FlaskExtraLifeCostsMana5_",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute1",
+    "sourceModId": "FlaskFillChargesPerMinute1",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-1",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 8,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 9,
+        "maximum": 9,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute1",
+    "technicalText": "FlaskFillChargesPerMinute1",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute2",
+    "sourceModId": "FlaskFillChargesPerMinute2",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-2",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 26,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 12,
+        "maximum": 12,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute2",
+    "technicalText": "FlaskFillChargesPerMinute2",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFillChargesPerMinute3",
+    "sourceModId": "FlaskFillChargesPerMinute3",
+    "familyId": "FlaskGainChargePerMinute",
+    "tierId": "suffix:FlaskGainChargePerMinute:tier-3",
+    "generationType": "suffix",
+    "affixSide": "suffix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Charms",
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 45,
+    "tags": [],
+    "spawnWeights": [
+      {
+        "tag": "default",
+        "weight": 1
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_gain_X_charges_every_minute",
+        "minimum": 15,
+        "maximum": 15,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFillChargesPerMinute3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskGainCharge"
+    ],
+    "conflictGroups": [
+      "FlaskGainCharge"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFillChargesPerMinute3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFillChargesPerMinute3",
+    "technicalText": "FlaskFillChargesPerMinute3",
+    "sourceSides": [
+      "suffix"
+    ]
+  },
+  {
+    "affixId": "FlaskFullInstantRecovery1",
+    "sourceModId": "FlaskFullInstantRecovery1",
+    "familyId": "FlaskFullInstantRecovery",
+    "tierId": "prefix:FlaskFullInstantRecovery:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 42,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovers_instantly",
+        "minimum": 1,
+        "maximum": 1,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskFullInstantRecovery1.stats[0]",
+        "localizationStatus": "translation-missing"
+      },
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": -50,
+        "maximum": -50,
+        "numericType": "integer",
+        "valueType": "fixed",
+        "isLocal": true,
+        "statOrder": 1,
+        "sourceReference": "data/mods.json#FlaskFullInstantRecovery1.stats[1]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskBuffWhileHealing"
+    ],
+    "conflictGroups": [
+      "FlaskBuffWhileHealing"
+    ],
+    "isHybrid": true,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskFullInstantRecovery1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskFullInstantRecovery1",
+    "technicalText": "FlaskFullInstantRecovery1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskHealsMinions1",
+    "sourceModId": "FlaskHealsMinions1",
+    "familyId": "FlaskHealsMinions",
+    "tierId": "prefix:FlaskHealsMinions:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 10,
+    "tags": [
+      "flask",
+      "life",
+      "minion",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_minion_heal_%",
+        "minimum": 51,
+        "maximum": 56,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskHealsMinions1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskHealsOthers"
+    ],
+    "conflictGroups": [
+      "FlaskHealsOthers"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskHealsMinions1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskHealsMinions1",
+    "technicalText": "FlaskHealsMinions1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskHealsMinions2",
+    "sourceModId": "FlaskHealsMinions2",
+    "familyId": "FlaskHealsMinions",
+    "tierId": "prefix:FlaskHealsMinions:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 28,
+    "tags": [
+      "flask",
+      "life",
+      "minion",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_minion_heal_%",
+        "minimum": 57,
+        "maximum": 62,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskHealsMinions2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskHealsOthers"
+    ],
+    "conflictGroups": [
+      "FlaskHealsOthers"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskHealsMinions2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskHealsMinions2",
+    "technicalText": "FlaskHealsMinions2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskHealsMinions3",
+    "sourceModId": "FlaskHealsMinions3",
+    "familyId": "FlaskHealsMinions",
+    "tierId": "prefix:FlaskHealsMinions:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 46,
+    "tags": [
+      "flask",
+      "life",
+      "minion",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_minion_heal_%",
+        "minimum": 63,
+        "maximum": 68,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskHealsMinions3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskHealsOthers"
+    ],
+    "conflictGroups": [
+      "FlaskHealsOthers"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskHealsMinions3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskHealsMinions3",
+    "technicalText": "FlaskHealsMinions3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskHealsMinions4____",
+    "sourceModId": "FlaskHealsMinions4____",
+    "familyId": "FlaskHealsMinions",
+    "tierId": "prefix:FlaskHealsMinions:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 64,
+    "tags": [
+      "flask",
+      "life",
+      "minion",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_minion_heal_%",
+        "minimum": 69,
+        "maximum": 74,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskHealsMinions4____.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskHealsOthers"
+    ],
+    "conflictGroups": [
+      "FlaskHealsOthers"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskHealsMinions4____",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskHealsMinions4____",
+    "technicalText": "FlaskHealsMinions4____",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskHealsMinions5",
+    "sourceModId": "FlaskHealsMinions5",
+    "familyId": "FlaskHealsMinions",
+    "tierId": "prefix:FlaskHealsMinions:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 82,
+    "tags": [
+      "flask",
+      "life",
+      "minion",
+      "resource"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_minion_heal_%",
+        "minimum": 75,
+        "maximum": 80,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskHealsMinions5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskHealsOthers"
+    ],
+    "conflictGroups": [
+      "FlaskHealsOthers"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskHealsMinions5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskHealsMinions5",
+    "technicalText": "FlaskHealsMinions5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount1",
+    "sourceModId": "FlaskIncreasedRecoveryAmount1",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 41,
+        "maximum": 45,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount1",
+    "technicalText": "FlaskIncreasedRecoveryAmount1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount2_",
+    "sourceModId": "FlaskIncreasedRecoveryAmount2_",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 11,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 46,
+        "maximum": 50,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount2_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount2_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount2_",
+    "technicalText": "FlaskIncreasedRecoveryAmount2_",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount3",
+    "sourceModId": "FlaskIncreasedRecoveryAmount3",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 23,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 51,
+        "maximum": 55,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount3",
+    "technicalText": "FlaskIncreasedRecoveryAmount3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount4",
+    "sourceModId": "FlaskIncreasedRecoveryAmount4",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 34,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 56,
+        "maximum": 60,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount4",
+    "technicalText": "FlaskIncreasedRecoveryAmount4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount5",
+    "sourceModId": "FlaskIncreasedRecoveryAmount5",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 46,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 61,
+        "maximum": 65,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount5",
+    "technicalText": "FlaskIncreasedRecoveryAmount5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount6",
+    "sourceModId": "FlaskIncreasedRecoveryAmount6",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-6",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 56,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 66,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount6",
+    "technicalText": "FlaskIncreasedRecoveryAmount6",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount7",
+    "sourceModId": "FlaskIncreasedRecoveryAmount7",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-7",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 67,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 71,
+        "maximum": 75,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount7.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount7",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount7",
+    "technicalText": "FlaskIncreasedRecoveryAmount7",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryAmount8",
+    "sourceModId": "FlaskIncreasedRecoveryAmount8",
+    "familyId": "FlaskIncreasedRecoveryAmount",
+    "tierId": "prefix:FlaskIncreasedRecoveryAmount:tier-8",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 83,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%",
+        "minimum": 76,
+        "maximum": 80,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount8.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryAmount8",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryAmount8",
+    "technicalText": "FlaskIncreasedRecoveryAmount8",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryOnLowLife1",
+    "sourceModId": "FlaskIncreasedRecoveryOnLowLife1",
+    "familyId": "FlaskIncreasedRecoveryOnLowLife",
+    "tierId": "prefix:FlaskIncreasedRecoveryOnLowLife:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 2,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%_when_on_low_life",
+        "minimum": 51,
+        "maximum": 60,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryOnLowLife1",
+    "technicalText": "FlaskIncreasedRecoveryOnLowLife1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryOnLowLife2_",
+    "sourceModId": "FlaskIncreasedRecoveryOnLowLife2_",
+    "familyId": "FlaskIncreasedRecoveryOnLowLife",
+    "tierId": "prefix:FlaskIncreasedRecoveryOnLowLife:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 25,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%_when_on_low_life",
+        "minimum": 61,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife2_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife2_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryOnLowLife2_",
+    "technicalText": "FlaskIncreasedRecoveryOnLowLife2_",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryOnLowLife3",
+    "sourceModId": "FlaskIncreasedRecoveryOnLowLife3",
+    "familyId": "FlaskIncreasedRecoveryOnLowLife",
+    "tierId": "prefix:FlaskIncreasedRecoveryOnLowLife:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 44,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%_when_on_low_life",
+        "minimum": 71,
+        "maximum": 80,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryOnLowLife3",
+    "technicalText": "FlaskIncreasedRecoveryOnLowLife3",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryOnLowLife4",
+    "sourceModId": "FlaskIncreasedRecoveryOnLowLife4",
+    "familyId": "FlaskIncreasedRecoveryOnLowLife",
+    "tierId": "prefix:FlaskIncreasedRecoveryOnLowLife:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 63,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%_when_on_low_life",
+        "minimum": 81,
+        "maximum": 90,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryOnLowLife4",
+    "technicalText": "FlaskIncreasedRecoveryOnLowLife4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoveryOnLowLife5",
+    "sourceModId": "FlaskIncreasedRecoveryOnLowLife5",
+    "familyId": "FlaskIncreasedRecoveryOnLowLife",
+    "tierId": "prefix:FlaskIncreasedRecoveryOnLowLife:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 82,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_amount_to_recover_+%_when_on_low_life",
+        "minimum": 91,
+        "maximum": 100,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoveryAmount"
+    ],
+    "conflictGroups": [
+      "FlaskRecoveryAmount"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoveryOnLowLife5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoveryOnLowLife5",
+    "technicalText": "FlaskIncreasedRecoveryOnLowLife5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed1",
+    "sourceModId": "FlaskIncreasedRecoverySpeed1",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 1,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 41,
+        "maximum": 45,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed1",
+    "technicalText": "FlaskIncreasedRecoverySpeed1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed2",
+    "sourceModId": "FlaskIncreasedRecoverySpeed2",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 15,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 46,
+        "maximum": 50,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed2",
+    "technicalText": "FlaskIncreasedRecoverySpeed2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed3_",
+    "sourceModId": "FlaskIncreasedRecoverySpeed3_",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 31,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 51,
+        "maximum": 55,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed3_.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed3_",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed3_",
+    "technicalText": "FlaskIncreasedRecoverySpeed3_",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed4",
+    "sourceModId": "FlaskIncreasedRecoverySpeed4",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-4",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 46,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 56,
+        "maximum": 60,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed4.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed4",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed4",
+    "technicalText": "FlaskIncreasedRecoverySpeed4",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed5",
+    "sourceModId": "FlaskIncreasedRecoverySpeed5",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-5",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 61,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 61,
+        "maximum": 65,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed5.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed5",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed5",
+    "technicalText": "FlaskIncreasedRecoverySpeed5",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskIncreasedRecoverySpeed6",
+    "sourceModId": "FlaskIncreasedRecoverySpeed6",
+    "familyId": "FlaskIncreasedRecoverySpeed",
+    "tierId": "prefix:FlaskIncreasedRecoverySpeed:tier-6",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 81,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_speed_+%",
+        "minimum": 66,
+        "maximum": 70,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed6.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskIncreasedRecoverySpeed6",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskIncreasedRecoverySpeed6",
+    "technicalText": "FlaskIncreasedRecoverySpeed6",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskPartialInstantRecovery1",
+    "sourceModId": "FlaskPartialInstantRecovery1",
+    "familyId": "FlaskPartialInstantRecovery",
+    "tierId": "prefix:FlaskPartialInstantRecovery:tier-1",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 3,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_amount_%_to_recover_instantly",
+        "minimum": 20,
+        "maximum": 23,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskPartialInstantRecovery1.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskPartialInstantRecovery1",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskPartialInstantRecovery1",
+    "technicalText": "FlaskPartialInstantRecovery1",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskPartialInstantRecovery2",
+    "sourceModId": "FlaskPartialInstantRecovery2",
+    "familyId": "FlaskPartialInstantRecovery",
+    "tierId": "prefix:FlaskPartialInstantRecovery:tier-2",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 27,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_amount_%_to_recover_instantly",
+        "minimum": 24,
+        "maximum": 27,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskPartialInstantRecovery2.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskPartialInstantRecovery2",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskPartialInstantRecovery2",
+    "technicalText": "FlaskPartialInstantRecovery2",
+    "sourceSides": [
+      "prefix"
+    ]
+  },
+  {
+    "affixId": "FlaskPartialInstantRecovery3",
+    "sourceModId": "FlaskPartialInstantRecovery3",
+    "familyId": "FlaskPartialInstantRecovery",
+    "tierId": "prefix:FlaskPartialInstantRecovery:tier-3",
+    "generationType": "prefix",
+    "affixSide": "prefix",
+    "domain": "flask",
+    "itemClassIds": [
+      "Life Flasks",
+      "Mana Flasks"
+    ],
+    "baseItemIds": [],
+    "requiredItemLevel": 46,
+    "tags": [
+      "flask"
+    ],
+    "spawnWeights": [
+      {
+        "tag": "life_flask",
+        "weight": 1
+      },
+      {
+        "tag": "mana_flask",
+        "weight": 1
+      },
+      {
+        "tag": "default",
+        "weight": 0
+      }
+    ],
+    "statLines": [
+      {
+        "statId": "local_flask_recovery_amount_%_to_recover_instantly",
+        "minimum": 28,
+        "maximum": 30,
+        "numericType": "integer",
+        "valueType": "range",
+        "isLocal": true,
+        "statOrder": 0,
+        "sourceReference": "data/mods.json#FlaskPartialInstantRecovery3.stats[0]",
+        "localizationStatus": "translation-missing"
+      }
+    ],
+    "groups": [
+      "FlaskRecoverySpeed"
+    ],
+    "conflictGroups": [
+      "FlaskRecoverySpeed"
+    ],
+    "isHybrid": false,
+    "isLocal": true,
+    "sourceVersion": "4.5.4.4.4",
+    "sourceReference": "data/mods.json#FlaskPartialInstantRecovery3",
+    "dataStatus": "available",
+    "localizationStatus": "translation-missing",
+    "technicalName": "FlaskPartialInstantRecovery3",
+    "technicalText": "FlaskPartialInstantRecovery3",
+    "sourceSides": [
+      "prefix"
+    ]
+  }
+]

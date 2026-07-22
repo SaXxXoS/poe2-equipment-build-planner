@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "importFormatVersion": 1,
+  "approvalScopes": [
+    "poe2-technical-jewel-mod-data-for-build-planner",
+    "poe2-technical-charm-mod-data-for-build-planner",
+    "poe2-technical-flask-mod-data-for-build-planner"
+  ],
+  "approvalStatus": "conditionally-approved",
+  "exportRepository": "repoe-fork/poe2",
+  "exportVersion": "4.5.4.4.4",
+  "exportCommit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+  "parserRepository": "repoe-fork/repoe",
+  "parserCommit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+  "sourceFiles": [
+    {
+      "relativePath": "version.txt",
+      "sha256": "ec563ae02051174b61a31ae1a0aa84329cd1025cc5ce2ecde19fae85b446ba28",
+      "sizeBytes": 9,
+      "usedFields": []
+    },
+    {
+      "relativePath": "data/mods.json",
+      "sha256": "33e65dd81cc430c067b70550d4b7a6360b66ae477ced225cdc6309d58acafe1b",
+      "sizeBytes": 13467532,
+      "usedFields": [
+        "generation_type",
+        "domain",
+        "required_level",
+        "adds_tags",
+        "implicit_tags",
+        "spawn_weights",
+        "stats",
+        "groups",
+        "type"
+      ]
+    },
+    {
+      "relativePath": "data/mods_by_base.json",
+      "sha256": "80ca517eca450192e88e86cb550af8cc43ccb6d0b29ecc4c2537ac67d47db4b9",
+      "sizeBytes": 5241078,
+      "usedFields": [
+        "bases",
+        "mods",
+        "prefix",
+        "suffix"
+      ]
+    },
+    {
+      "relativePath": "data/base_items.json",
+      "sha256": "846029974c5cd643423404072bd6c5b497c5ed129544750a41ca7d0e0c5b4449",
+      "sizeBytes": 8127066,
+      "usedFields": [
+        "item_class",
+        "drop_level",
+        "implicits",
+        "properties",
+        "release_state",
+        "tags"
+      ]
+    },
+    {
+      "relativePath": "data/item_classes.json",
+      "sha256": "f1905c443d45863ad66bc07066b63551c7ed315f77e6b635fee2fa52ee05d821",
+      "sizeBytes": 16553,
+      "usedFields": [
+        "name"
+      ]
+    },
+    {
+      "relativePath": "data/tags.json",
+      "sha256": "37f16501f1838d928e8b62616fbed3a6c70b5dd6c8e657e6fe47f08b4ef5ab92",
+      "sizeBytes": 29977,
+      "usedFields": []
+    }
+  ],
+  "generatedFiles": [
+    {
+      "relativePath": "jewel-base-items.json",
+      "sha256": "9dd5b90ec03e697f643d7365c68ebc4a40e77d137e8ef1c463dbb75c5cde8e41",
+      "sizeBytes": 3945
+    },
+    {
+      "relativePath": "jewel-mods.json",
+      "sha256": "aa3317605c2202696677a564f69f234734d43f55a4fc1ebca0d70333a1fa214a",
+      "sizeBytes": 459174
+    },
+    {
+      "relativePath": "charm-base-items.json",
+      "sha256": "f97c6226253b5c199fe8f5f1dcebb7802b5eb1afeb53d4d71c3d1239104a3ab5",
+      "sizeBytes": 7479
+    },
+    {
+      "relativePath": "charm-mods.json",
+      "sha256": "e560b58908de02c51b42dce95b03cc3102fc3ede0479ccde8a37f2da4e3d56ce",
+      "sizeBytes": 89137
+    },
+    {
+      "relativePath": "life-flask-base-items.json",
+      "sha256": "3914eb34b1b0cdf1c698faf6c8a8c5a6a08dde81c2f39949f403b908f9385cb1",
+      "sizeBytes": 5183
+    },
+    {
+      "relativePath": "life-flask-mods.json",
+      "sha256": "18972dca90860680e0eeb8f2ed23da088c73db6c783645056bba86b9867c0624",
+      "sizeBytes": 85670
+    },
+    {
+      "relativePath": "mana-flask-base-items.json",
+      "sha256": "fe72c9a54a36bc54977cdceda786c1e55bfbc485d48ecf500beec5d85ed8922d",
+      "sizeBytes": 5182
+    },
+    {
+      "relativePath": "mana-flask-mods.json",
+      "sha256": "735cf93d9f9ed8394856f825ed7fdc6908b795e0e41c65ab56b5d353b3f751ad",
+      "sizeBytes": 78552
+    },
+    {
+      "relativePath": "additional-item-class-index.json",
+      "sha256": "009d2e67b82dec85e32781a35f6e561fc1d10f2a95f02940766389e45f3081c0",
+      "sizeBytes": 18698
+    },
+    {
+      "relativePath": "additional-item-coverage-report.json",
+      "sha256": "a1d3bb760c414f90cf15743375abf8438da8434baae5814fbbf2cea447d49dc8",
+      "sizeBytes": 2913
+    },
+    {
+      "relativePath": "additional-item-import-report.json",
+      "sha256": "e3fbc04f364995af5b9463d8f08acba721d86d1bd05d1944cbe89afdfc7155c5",
+      "sizeBytes": 294
+    }
+  ],
+  "excludedCategories": [
+    "raw-export-mirror",
+    "uniques",
+    "relics",
+    "socketables",
+    "skills",
+    "supports",
+    "display-names",
+    "german-texts",
+    "media"
+  ],
+  "attribution": "Technical data derived from RePoE; game data and content are property of Grinding Gear Games.",
+  "rightsNotice": "Conditionally approved project scope; no general data license or legal guarantee is asserted.",
+  "removable": true
+}

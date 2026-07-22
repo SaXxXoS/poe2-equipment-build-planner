@@ -153,3 +153,4 @@ Empfohlener nächster Schritt ist 5M.1B als **reiner technischer Import** der fr
 ## 14. Schlussfolgerung
 
 Jewels, Charms sowie Life- und Mana-Flasks besitzen am fest gepinnten RePoE-Stand eine ausreichende technische, reproduzierbare Basis für eng begrenzte conditionally-approved Teilscopes. Relics sind nachweislich Sanctum-Spezialcontent und bleiben deferred. Es wurden keine Mods importiert und keine Produktfunktion erweitert.
+> Status 5M.1B: Jewels, Charms, Life Flasks und Mana Flasks sind eng importiert; Relics bleiben deferred, Socketable-Identitäten nicht produktiv importiert.

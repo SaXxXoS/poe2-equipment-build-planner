@@ -18,7 +18,7 @@ import {
   type UniqueClusterJewelDefinition,
 } from './domain'
 import classRegistry from '../generated/poe2-tree/class-registry.json'
-import { technicalAffixes } from './affixes/registry'
+import { allTechnicalAffixes } from './affixes/registry'
 
 export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
 export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; classStartNodeId?:string|null; ascendancies:TreeAscendancyRegistryEntry[] }
@@ -35,6 +35,9 @@ const slotSeed = [
   ['slot-ring-2', 'Ring 2', 'not-applicable', 'not-applicable'], ['slot-belt', 'Gürtel', 'not-applicable', 'not-applicable'],
   ['slot-weapon-set-1-left', 'Waffe Set 1 links', 'set-1', 'left'], ['slot-weapon-set-1-right', 'Waffe Set 1 rechts', 'set-1', 'right'],
   ['slot-weapon-set-2-left', 'Waffe Set 2 links', 'set-2', 'left'], ['slot-weapon-set-2-right', 'Waffe Set 2 rechts', 'set-2', 'right'],
+  ['slot-jewel-1', 'Normales Juwel 1', 'not-applicable', 'not-applicable'], ['slot-jewel-2', 'Normales Juwel 2', 'not-applicable', 'not-applicable'],
+  ['slot-charm-1', 'Charm 1', 'not-applicable', 'not-applicable'], ['slot-charm-2', 'Charm 2', 'not-applicable', 'not-applicable'],
+  ['slot-life-flask', 'Lebensfläschchen', 'not-applicable', 'not-applicable'], ['slot-mana-flask', 'Manafläschchen', 'not-applicable', 'not-applicable'],
 ] as const
 export const equipmentSlotDefinitions: EquipmentSlotDefinition[] = slotSeed.map(([id, name, weaponSet, hand]) => ({ ...placeholderMetadata(id, name), weaponSet, hand }))
 export const initialEquipment: EquipmentEntry[] = equipmentSlotDefinitions.map(slot => ({ id: `equipment-${slot.id}`, slotId: slot.id, modifierValues: [] }))
@@ -62,7 +65,7 @@ const legacyModifierDefinitions: ModifierDefinition[] = modifierSeed.map(([id, n
   ...placeholderMetadata(id, name, tags), category, valueType: 'number', unit, minValue: 0, maxValue: 200,
   scope, relevantTags: tags, allowedEquipmentSlotIds: equipmentSlotDefinitions.map(slot => slot.id),
 }))
-export const modifierDefinitions: ModifierDefinition[] = legacyModifierDefinitions.concat(technicalAffixes.map(affix => ({
+export const modifierDefinitions: ModifierDefinition[] = legacyModifierDefinitions.concat(allTechnicalAffixes.map(affix => ({
   ...placeholderMetadata(affix.affixId, 'Deutsche Übersetzung noch nicht verfügbar'), category: 'utility' as const,
   valueType: affix.statLines.length > 1 ? 'range' as const : 'number' as const, unit: affix.statLines.some(line => line.isPercent) ? 'percent' as const : 'flat' as const,
   minValue: affix.statLines[0]?.minimum, maxValue: affix.statLines[0]?.maximum, scope: affix.isLocal ? 'local' as const : 'global' as const,

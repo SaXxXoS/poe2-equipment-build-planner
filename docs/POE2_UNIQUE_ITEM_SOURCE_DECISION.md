@@ -173,3 +173,4 @@ Zählungen sind quellspezifisch. PoB-Itemblöcke sind keine Spiel-Datensätze; R
 **Klare Schlussfolgerung:** RePoE reicht teilweise für getrennte Identitäts- und Modtechnik, aber nicht als Unique-Hauptquelle. PoB ist die reichste Kontrollquelle für sichtbare Itemdefinitionen und Mechaniken, jedoch ohne benötigte technische IDs. poe2-mcp ist eine technische Mod-/Schemareferenz ohne Unique-Items. PoBR ist derivative Reproduzierbarkeitskontrolle. Es gibt deshalb keine Freigabe und keinen Import.
 
 Empfohlene Folgeaufgabe bleibt 5M.1B.0C für Runen, Soul Cores und Spezialmods. Erst danach darf eine gesonderte Importarchitektur geplant werden. 5M.1B, 5M.1B.0C, 5M.2 und 5N wurden hier nicht begonnen. Die physische iPhone-Abnahme bleibt offen und war mangels UI-Änderung nicht erforderlich.
+> 5M.1B ändert die Entscheidung nicht: Unique Jewels, Charms, Flasks, Items und Mods sind nicht importiert.

@@ -7,6 +7,12 @@ import type { Recommendation, RotationStep } from './recommendations'
 export interface JewelSelection {
   slotId: EntityId
   jewelId: EntityId
+  baseItemId?: EntityId
+  itemClassId?: EntityId
+  itemLevel?: number
+  sourceVersion?: string
+  dataStatus?: string
+  modifiers?: { modifierId:EntityId; tierId?:EntityId; statValues:{statId:EntityId;value:number}[] }[]
 }
 
 export interface BuildInput {
