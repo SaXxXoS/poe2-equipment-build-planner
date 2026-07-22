@@ -492,6 +492,17 @@ Aufgabe 5B gibt noch keine Aufgabe 5C mit echtem Import frei. Zuerst eine schrif
 
 Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `data-sources/source-approval.json`, `docs/DATA_SOURCE_APPROVAL.md`, Belege, Import-Fixture, Tests, Lint, Typecheck und Build prüfen. Alle Analyzer, Rotation und Explanation besitzen getrennte Regel-/Template-Module und zentrale Konfigurationen. Der Approval-Guard ist eine vorgeschaltete, reine Sperre; er ist noch mit keinem echten Importer verbunden, weil es keinen echten Importer gibt. Keine echte Kategorie ist freigegeben. Vor Aufgabe 5C muss eine schriftliche Freigabe dokumentiert und die maschinenlesbare Entscheidung geprüft geändert werden. Engine und UI bleiben getrennt; Fixtures und Regeln sind künstlich und keine echten Spieldaten, Zeit-/DPS-Simulation, kombinierte Optimierung, Preise oder fachlich verifizierte Empfehlung.
 
+## Aufgabe 5M.1A – Itemmod-Vollständigkeitsaudit (22. Juli 2026)
+
+- 5M.1 bleibt technisch abgeschlossen, ist aber kein vollständiger PoE2-Itemmod-Bestand. Der Pin enthält 16.678 rohe Mods und 3.450 klassenübergreifende `mods_by_base`-Referenzen; die feste 29-Klassen-Auswahl plus deren Basistyp-Implicits ergibt unverändert 1.828 Records.
+- Alle Records sind kategorisiert: 816 Prefixe, 568 Suffixe, 231 Basis-Implicits, 103 Corruption-Implicits und 110 Corruption-Upgrades; kein Special bleibt unresolved.
+- Nachgewiesene Filterlücken sind unter anderem Jewels (446 eindeutige Referenzen), Charms (51), Life Flasks (57), Mana Flasks (52) und Relics (137). Wegen Überschneidungen nicht addieren.
+- Unique-Items/Unique-Modzeilen, Runen, Soul-Core-Effekte und weitere Spezialkategorien bleiben fachlich beziehungsweise approval-seitig offen. Keine unbekannte Gesamtzahl schätzen.
+- 51 Topic-Repositories wurden inventarisiert; die vertieften Quellen wurden commit-genau nur als Auditkontrollen geprüft.
+- Maßgeblich sind `docs/POE2_ITEM_MOD_COMPLETENESS_AUDIT.md` und die drei JSON-Berichte. Die neun generierten 5M.1-Dateien und `data-sources/source-approval.json` bleiben bytegleich.
+- Keine Approval-Erweiterung, deutschen Texte oder UI-/Engine-/Workeränderung. 5M.1B, 5M.2 und 5N wurden nicht begonnen. Physische iPhone-Abnahme bleibt offen.
+- Nächster Schritt: 5M.1B.0 für getrennte technische Scope-/Quellenentscheidungen; Lokalisierung erst nach stabiler technischer Ziel-ID-Menge.
+
 ## 14. Arbeitsregeln des Projekts
 
 ## Aufgabe 5M.1 – technischer Affiximport (22. Juli 2026)

@@ -2,6 +2,8 @@
 
 Stand: 22. Juli 2026. Diese technische Projektentscheidung ist keine Rechtsberatung und behauptet keine allgemeine Lizenz von Grinding Gear Games (GGG).
 
+> Audit 5M.1A: 5M.1 deckt eine feste Auswahl von 29 Itemklassen ab, nicht alle PoE2-Gegenstandsmodifikatoren. Ausgeschlossene RePoE-Klassen, Unique-Daten und Socketables benötigen getrennte Folgeentscheidungen. Path of Building PoE2 und poe2-mcp wurden ausschließlich als commit-gepinnte Kontrollen untersucht. Keine Quelle, Kategorie oder Lokalisierung wurde zusätzlich freigegeben; `data-sources/source-approval.json` blieb bytegleich.
+
 ## Entscheidung
 
 `repoe-poe2` wird ausschließlich im Scope `poe2-technical-affix-data-for-build-planner` als `conditionally-approved` geführt. Maßgeblich ist der unveränderliche Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, dessen `version.txt` den Spiel-/Exportstand `4.5.4.4.4` nennt. Der zugehörige RePoE-Parser wurde bei Commit `14e3edc89ed705bd4e4eda5c8135756431c76e81` geprüft.

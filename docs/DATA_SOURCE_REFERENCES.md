@@ -1,5 +1,14 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## Auditkontrollen 5M.1A (keine Produktivquellen)
+
+- Path of Building PoE2: `dev@f5b94342eeea413a94c339af3e881c5e2a4df0df`; historische v2: `dev@7e047f0e86c5539b6fe983606c209066c3569083`.
+- poe2-mcp: `main@163c30a9fd45f815d330cc54e6ab51a797693d31`.
+- poe2-tools Build Planner: `master@a173f7b0d398951693fee83ee5ee40f327d4a749`.
+- GitHub-Topic `path-of-exile-2`: 51 Repositories, Snapshot 22.07.2026; Commits und Relevanzklassen stehen in `docs/audits/poe2-community-source-inventory.json`.
+
+Diese Quellen wurden nur strukturell verglichen. Code-Lizenzen gewähren keine Rechte an GGG-abgeleiteten Spieldaten. Es wurden keine Dateien, sichtbaren Texte oder Parserteile übernommen.
+
 ## Ergänzung Aufgabe 5M.0 (22. Juli 2026)
 
 - RePoE-PoE2-Export: <https://github.com/repoe-fork/poe2/tree/b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c>, Version `4.5.4.4.4`

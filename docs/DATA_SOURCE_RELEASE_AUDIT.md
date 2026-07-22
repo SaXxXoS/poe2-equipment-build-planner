@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## 5M.1A – unveränderter Produktivpin
+
+5M.1A änderte Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81` und die neun generierten Dateien nicht. Der Audit ermittelte 16.678 rohe Mod-IDs, 3.450 klassenübergreifend referenzierte IDs und 1.597 Referenzen in der festen 29-Klassen-Auswahl; ausgewählte Basistyp-Implicits ergeben die unveränderten 1.828 Records. Ein Releasewechsel muss Klassen, Implicits, Generation Types, Uniques und Socketable-Strukturen melden und manuell freigegeben werden.
+
 ## Ergänzung 5M.0 (22. Juli 2026)
 
 Der nachfolgende Gesamtstatus beschreibt den historischen 5B/5C-Stand. Seit 5M.0 ist RePoE-PoE2 ausschließlich für `poe2-technical-affix-data-for-build-planner` aus Version `4.5.4.4.4`/Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c` `conditionally-approved`. Dies ist eine risikobasierte technische Projektentscheidung, keine GGG-Datenlizenz. PoE2DB, deutsche `display-names`, Skills, Supports, Medien und alle übrigen nicht ausdrücklich genannten Kategorien bleiben blockiert. Details: `docs/POE2_AFFIX_SOURCE_DECISION.md` und die maßgebliche `data-sources/source-approval.json`.

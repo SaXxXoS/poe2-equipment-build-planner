@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.1A",
+  "sources": [
+    {
+      "name": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "branch": "dev",
+      "commit": "f5b94342eeea413a94c339af3e881c5e2a4df0df",
+      "classification": "B",
+      "finding": "Current maintained PoB2; rich manually/generated Lua bases, mod parsers, uniques, runes and soul-core support; audit/control only.",
+      "codeLicense": "MIT (LICENSE.md)",
+      "gameDataRights": "not granted by code license"
+    },
+    {
+      "name": "PathOfBuildingCommunity/PathOfBuilding-PoE2-v2",
+      "branch": "dev",
+      "commit": "7e047f0e86c5539b6fe983606c209066c3569083",
+      "classification": "I",
+      "finding": "Archived historical repository; not current authority.",
+      "codeLicense": "repository license not asserted by audit",
+      "gameDataRights": "unknown"
+    },
+    {
+      "name": "HivemindOverlord/poe2-mcp",
+      "branch": "main",
+      "commit": "163c30a9fd45f815d330cc54e6ab51a797693d31",
+      "classification": "B",
+      "finding": "Local structured Mods.datc64 extraction with 16,788 stated records and provenance metadata; no normalized complete unique/socketable item model established.",
+      "codeLicense": "MIT (LICENSE)",
+      "gameDataRights": "not granted by code license"
+    },
+    {
+      "name": "poe2-tools/poe2-build-planner",
+      "branch": "master",
+      "commit": "a173f7b0d398951693fee83ee5ee40f327d4a749",
+      "classification": "E",
+      "finding": "Items are free-text plans; RePoE is used for gem data, not a structured item-mod database.",
+      "codeLicense": "MIT",
+      "gameDataRights": "explicitly separated from code license"
+    },
+    {
+      "name": "repoe-fork/repoe",
+      "branch": "master",
+      "commit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+      "classification": "A",
+      "finding": "Pinned parser used to create 5M.1 export; parser paths normalize Mods, ModsByBase and BaseItemTypes separately.",
+      "codeLicense": "MIT",
+      "gameDataRights": "not granted by code license"
+    },
+    {
+      "name": "repoe-fork/poe2",
+      "branch": "master",
+      "commit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+      "classification": "A",
+      "finding": "Pinned technical export used by 5M.1 and this audit.",
+      "codeLicense": "generated-data repository; no general data grant asserted",
+      "gameDataRights": "GGG-derived; existing narrow conditional approval only"
+    }
+  ],
+  "comparisonKeyPolicy": [
+    "technical Mod ID",
+    "stat ID combination",
+    "base-type metadata path",
+    "generation type",
+    "domain"
+  ],
+  "results": {
+    "repoePinned": {
+      "rawModIds": 16678,
+      "imported5M1Ids": 1828,
+      "baseTypes": 5246
+    },
+    "poe2Mcp": {
+      "claimedModRecords": 16788,
+      "comparableById": "partial; schema and patch differ"
+    },
+    "pathOfBuilding": {
+      "comparableById": "limited; many Lua definitions and visible mod lines are manually normalized strings rather than RePoE Mod IDs"
+    },
+    "allThreeExactIntersection": {
+      "count": null,
+      "countingRule": "unknown: no lossless shared stable identifier across all three audited schemas"
+    },
+    "sameIdDifferentFields": {
+      "count": null,
+      "countingRule": "not asserted without patch-aligned normalization"
+    },
+    "onlyInSource": {
+      "count": null,
+      "countingRule": "not asserted because PoB visible lines and MCP patch records are not semantically equivalent to RePoE IDs"
+    }
+  },
+  "representativeExamples": [
+    {
+      "modId": "AddedColdDamage1",
+      "primaryCategory": "regular-prefix",
+      "additionalCategories": [
+        "multi-stat"
+      ],
+      "generationType": "prefix",
+      "domain": "item",
+      "sourceSides": [
+        "prefix"
+      ],
+      "itemClassIds": [
+        "Gloves",
+        "Quivers",
+        "Rings"
+      ],
+      "statLineCount": 2,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#AddedColdDamage1"
+    },
+    {
+      "modId": "AddedColdDamage2",
+      "primaryCategory": "regular-prefix",
+      "additionalCategories": [
+        "multi-stat"
+      ],
+      "generationType": "prefix",
+      "domain": "item",
+      "sourceSides": [
+        "prefix"
+      ],
+      "itemClassIds": [
+        "Gloves",
+        "Quivers",
+        "Rings"
+      ],
+      "statLineCount": 2,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#AddedColdDamage2"
+    },
+    {
+      "modId": "AdditionalAmmo1",
+      "primaryCategory": "regular-suffix",
+      "additionalCategories": [],
+      "generationType": "suffix",
+      "domain": "item",
+      "sourceSides": [
+        "suffix"
+      ],
+      "itemClassIds": [
+        "Crossbows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#AdditionalAmmo1"
+    },
+    {
+      "modId": "AdditionalAmmo2",
+      "primaryCategory": "regular-suffix",
+      "additionalCategories": [],
+      "generationType": "suffix",
+      "domain": "item",
+      "sourceSides": [
+        "suffix"
+      ],
+      "itemClassIds": [
+        "Crossbows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#AdditionalAmmo2"
+    },
+    {
+      "modId": "AbyssalWastingOnHit",
+      "primaryCategory": "base-implicit",
+      "additionalCategories": [],
+      "generationType": "unique",
+      "domain": "item",
+      "sourceSides": [
+        "implicit"
+      ],
+      "itemClassIds": [
+        "Rings"
+      ],
+      "statLineCount": 1,
+      "spawnable": false,
+      "sourceReference": "data/mods.json#AbyssalWastingOnHit"
+    },
+    {
+      "modId": "AllAttributesImplicitDemigodOneHandSword1",
+      "primaryCategory": "base-implicit",
+      "additionalCategories": [],
+      "generationType": "unique",
+      "domain": "item",
+      "sourceSides": [
+        "implicit"
+      ],
+      "itemClassIds": [
+        "One Hand Swords"
+      ],
+      "statLineCount": 1,
+      "spawnable": false,
+      "sourceReference": "data/mods.json#AllAttributesImplicitDemigodOneHandSword1"
+    },
+    {
+      "modId": "CorruptionAdditionalAmmo1",
+      "primaryCategory": "corruption-implicit",
+      "additionalCategories": [],
+      "generationType": "corrupted",
+      "domain": "item",
+      "sourceSides": [
+        "corrupted"
+      ],
+      "itemClassIds": [
+        "Crossbows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#CorruptionAdditionalAmmo1"
+    },
+    {
+      "modId": "CorruptionAdditionalArrows1",
+      "primaryCategory": "corruption-implicit",
+      "additionalCategories": [],
+      "generationType": "corrupted",
+      "domain": "item",
+      "sourceSides": [
+        "corrupted"
+      ],
+      "itemClassIds": [
+        "Bows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#CorruptionAdditionalArrows1"
+    },
+    {
+      "modId": "CorruptionUpgradeAdditionalAmmo1",
+      "primaryCategory": "corruption-upgrade",
+      "additionalCategories": [],
+      "generationType": "unique",
+      "domain": "item",
+      "sourceSides": [
+        "unique"
+      ],
+      "itemClassIds": [
+        "Crossbows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#CorruptionUpgradeAdditionalAmmo1"
+    },
+    {
+      "modId": "CorruptionUpgradeAdditionalArrows1",
+      "primaryCategory": "corruption-upgrade",
+      "additionalCategories": [],
+      "generationType": "unique",
+      "domain": "item",
+      "sourceSides": [
+        "unique"
+      ],
+      "itemClassIds": [
+        "Bows"
+      ],
+      "statLineCount": 1,
+      "spawnable": true,
+      "sourceReference": "data/mods.json#CorruptionUpgradeAdditionalArrows1"
+    }
+  ],
+  "conclusion": "5M.1 is internally complete for its explicit 29-class reference selection, but is not a complete PoE2 item-mod corpus. Unique items/mods, socketables and multiple equipment classes require separate source and approval work.",
+  "approvalChanged": false,
+  "productionDataImported": false
+}

@@ -1,6 +1,6 @@
 # PoE2 Equipment Build Planner
 
-Der Equipment-Dialog verwendet seit 5M.1 den commit-gepinnten technischen RePoE-Affixbestand (1.828 normalisierte Mods, 29 Itemklassen). Deutsche Affixlokalisierung ist noch nicht verfügbar und folgt getrennt in 5M.2. Details: `docs/POE2_REAL_AFFIX_TECHNICAL_IMPORT.md`.
+Der Equipment-Dialog verwendet seit 5M.1 den commit-gepinnten technischen RePoE-Affixbestand (1.828 normalisierte Mods, 29 Itemklassen). Dieser Bestand ist vollständig für den engen 5M.1-Importfilter, aber **kein vollständiger PoE2-Itemmod-Bestand**: Uniques, Runen, Soul Cores sowie weitere Itemklassen fehlen. Der reine 5M.1A-Audit dokumentiert die Grenzen in [`docs/POE2_ITEM_MOD_COMPLETENESS_AUDIT.md`](docs/POE2_ITEM_MOD_COMPLETENESS_AUDIT.md). Deutsche Affixlokalisierung wurde nicht begonnen.
 
 Der vorhandene reale Compact-Passivplan kann nach einer manuellen Workeranalyse direkt im offiziellen Baum ein- und ausgeblendet sowie auf Nutzerwunsch zentriert werden. Start, Wege, Ziele und eindeutige Required-Probleme sind rein visuelle Overlays auf unveränderter offizieller Geometrie und unveränderten Assets; die UI berechnet keine Pfade oder Punkte neu. Physische iPhone-Abnahme offen, Aufgabe 5M nicht begonnen.
 

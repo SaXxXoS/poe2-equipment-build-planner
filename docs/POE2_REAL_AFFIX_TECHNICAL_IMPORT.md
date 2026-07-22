@@ -1,5 +1,7 @@
 # 5M.1 – Technischer PoE2-Affiximport
 
+> Ergänzung 5M.1A: Die 1.828 Mods sind kein vollständiger PoE2-Itemmod-Bestand. Der Importfilter lässt unter anderem Jewel-, Charm-, Flask- und Relic-Zuordnungen aus; Unique-Mods, Runen und Soul-Core-Effekte sind nicht Teil dieses Imports. Der reine Audit steht in `docs/POE2_ITEM_MOD_COMPLETENESS_AUDIT.md`. Keine Fachdatei oder Approval-Regel wurde verändert. Nächster Schritt ist 5M.1B.0; 5M.2 und 5N wurden nicht begonnen.
+
 ## Ergebnis und Freigabe
 
 Der vorherige Bestand bestand aus 18 manuell erzeugten deutschen Platzhaltern ohne reale Familien, Tiers, Itemklassen, Spawnregeln oder Konfliktgruppen. 5M.1 ersetzt ihn im Affixdialog durch einen abgeleiteten technischen Bestand aus `repoe-fork/poe2` Version `4.5.4.4.4`, Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`; geprüfter Parsercommit ist `14e3edc89ed705bd4e4eda5c8135756431c76e81`. Der Scope `poe2-technical-affix-data-for-build-planner` ist ausschließlich `conditionally-approved`; dies ist keine allgemeine GGG-Datenlizenz.
