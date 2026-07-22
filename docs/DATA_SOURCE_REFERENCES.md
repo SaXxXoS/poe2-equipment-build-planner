@@ -86,3 +86,4 @@ Vor einem echten Import wird eine schriftliche, quellen- und kategorienbezogene 
 
 Produktiver technischer Pin: `repoe-fork/poe2` Version `4.5.4.4.4`, Commit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`; Parserreferenz `repoe-fork/repoe` Commit `14e3edc89ed705bd4e4eda5c8135756431c76e81`. Einzeldateien und SHA-256 sind im lokalen `generated/poe2-affixes/affix-source-manifest.json` festgehalten.
 > 5M.1B: genaue Eingabe-/Ausgabehashes in `generated/poe2-items/additional-item-source-manifest.json`, Erläuterung in `POE2_ADDITIONAL_ITEM_CLASS_TECHNICAL_IMPORT.md`.
+> **Lokale Auditquelle 5M.2.1:** GGG-Standalone-Client `4.5.4.53018`, anonymisiert als `<POE2_INSTALLATION>`, `Content.ggpk` SHA-256 `a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28`; RePoE-Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81`. Keine Rohtexte sind Referenzdateien im Repository.

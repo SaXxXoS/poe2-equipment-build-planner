@@ -604,3 +604,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Gepinnt importiert: 320 normale Jewel-Mods, 64 Charm-Mods inklusive 13 Base-Implicits, 57 Life-Flask- und 52 Mana-Flask-Mods; Laufzeit dedupliziert gemeinsame IDs auf 427, Überschneidung mit 5M.1: null.
 - UI, BuildProfile und Worker transportieren Base/Klasse/Mod/Tier/Stat/Wert/Source. Jewel-Stats bleiben unsupported, Charms/Flasks transport-only; keine Textheuristik, Simulation oder automatische Analyse.
 - Relics deferred; Uniques und Socketables ausgeschlossen beziehungsweise blocked/pending; keine deutschen Texte; 5M.2/5N nicht begonnen; physisches iPhone offen. Details: `docs/POE2_ADDITIONAL_ITEM_CLASS_TECHNICAL_IMPORT.md`.
+## Aufgabe 5M.2.1 – lokaler deutscher Extraktions-Preflight (2026-07-22)
+
+- Ausgang: 5M.2.0 abgeschlossen; 5M.2.1 als rein lokaler, nichtproduktiver Audit gestartet.
+- Lokaler Spielpin: GGG-Standalone `4.5.4.53018`, `Content.ggpk` SHA-256 `a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28`.
+- Parserpin: RePoE `14e3edc89ed705bd4e4eda5c8135756431c76e81`; lokale PyPoE-Abhängigkeit `c30ad895282fc703a804d77e26e8e5c939f57b93`.
+- Ergebnis: ItemClasses erfolgreich; 117 deutsche/117 englische IDs, vollständige ID-Parität, zwei deutsche Ausgaben byteidentisch. 32/33 produktreferenzierte IDs haben deutsche Namen; `Charm` fehlt.
+- Mods, Statzeilen, Stat-IDs, Kombinationen, Mehrzeiler/Hybride, Basistypen und Templatelücken sind `not-assessable`: aktuelles Clientschema und PyPoE-Spezifikation führen zu `struct.error` vor Ausgabe.
+- StatDescriptions wurden nicht gestartet, da das gepinnte Modul zwingend die Trade-API abfragt; Netzwerk-/Trade-Daten waren verboten.
+- Mehrdeutigkeiten, Bedingungen, Varianten, Platzhalter und OCR-Tauglichkeit bleiben für Stattexte Unbekannt. Foto-Modus ist derzeit nicht geeignet.
+- Distributionsstatus: keine Produktfreigabe. Alle deutschen Scopes bleiben `pending`; `translation-missing` bleibt produktiv aktiv. Keine deutschen Volltexte oder Spieldateien im Repository.
+- 5M.2 und 5N wurden nicht begonnen. Fotoerkennung und Übersetzungs-Lernmodus bleiben spätere Aufgaben.
+- Für PlayStation ist später ein ausgelieferter Web-Datensatz oder ein separates Sprachpaket nötig; dafür ist eine separate Approval-Entscheidung erforderlich.
+- Buildvergleich, Designoptimierung und mobile Textklippung bleiben offen.
+- Nächster empfohlener Schritt: gesonderter Kandidatenaudit eines aktualisierten Parser-/PyPoE-Stacks gegen denselben Containerpin, ohne Trade-API und ohne Änderung des bestehenden Pins.

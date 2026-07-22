@@ -42,3 +42,4 @@ Gemessener Stand: neun generierte Fach-/Manifestdateien, davon `technical-affixe
 
 Nächster fachlicher Schritt ist ausschließlich 5M.2: ID-basierte, separat freigegebene deutsche Lokalisierung und vollständige deutsche Suche. 5N wurde nicht begonnen.
 > 5M.1B ergänzt separat vier freigegebene Kategorien, ohne die 1.828 bestehenden 5M.1-Records zu regenerieren oder zu duplizieren. Details: `POE2_ADDITIONAL_ITEM_CLASS_TECHNICAL_IMPORT.md`.
+> **5M.2.1:** Die 2.255 Mod-IDs und 2.705 Statzeilen bleiben unverändert und `translation-missing`. Der lokale deutsche Parserlauf scheiterte vor Modausgabe an der Client-/PyPoE-Schemaschnittstelle; keine Produktdaten wurden ersetzt.

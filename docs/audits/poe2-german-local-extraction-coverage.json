@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.1",
+  "auditDate": "2026-07-22",
+  "status": "partial-parser-success-preflight-only",
+  "productionDataChanged": false,
+  "localPin": {
+    "channel": "standalone",
+    "registeredVersion": "4.5.4.53018",
+    "containerBytes": 152881075152,
+    "containerSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28"
+  },
+  "parser": {
+    "repository": "repoe-fork/repoe",
+    "commit": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+    "python": "3.12.13",
+    "pypoeDependencyCommit": "c30ad895282fc703a804d77e26e8e5c939f57b93"
+  },
+  "results": {
+    "mods": { "total": 2255, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 2255 },
+    "statLines": { "total": 2705, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 2705 },
+    "statIds": { "total": 431, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 431 },
+    "statIdCombinations": { "total": 444, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 444 },
+    "multilineAndHybridMods": { "total": 429, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 429 },
+    "baseTypes": { "total": 39, "complete": 0, "partial": 0, "missing": 0, "ambiguous": 0, "conflict": 0, "notAssessable": 39 },
+    "itemClasses": { "total": 33, "complete": 32, "partial": 0, "missing": 1, "ambiguous": 0, "conflict": 0, "notAssessable": 0, "missingTechnicalIds": ["Charm"] }
+  },
+  "itemClassExtraction": {
+    "germanRecords": 117,
+    "germanEmptyNames": 25,
+    "productIdsFound": 32,
+    "productIdsWithNonEmptyGermanName": 32,
+    "localFiles": 6,
+    "localBytes": 78163
+  },
+  "categoryCoverage": {
+    "regularPrefixes": "not-assessable-parser-schema-error",
+    "regularSuffixes": "not-assessable-parser-schema-error",
+    "baseImplicits": "not-assessable-parser-schema-error",
+    "corruptionImplicits": "not-assessable-parser-schema-error",
+    "corruptionUpgrades": "not-assessable-parser-schema-error",
+    "jewels": "not-assessable-parser-schema-error",
+    "charms": "not-assessable-parser-schema-error",
+    "charmImplicits": "not-assessable-parser-schema-error",
+    "lifeFlasks": "not-assessable-parser-schema-error",
+    "manaFlasks": "not-assessable-parser-schema-error"
+  },
+  "templateGapAudit": { "total": 485, "assessable": 0, "notAssessable": 485 },
+  "ocrFitness": "currently-not-suitable",
+  "reason": "The pinned parser reads German ItemClasses, but Mods/BaseItemTypes fail against the current client schema. StatDescriptions were not run because the pinned module unconditionally calls the Trade API, which this audit forbids.",
+  "productLocalizationStatus": "translation-missing"
+}

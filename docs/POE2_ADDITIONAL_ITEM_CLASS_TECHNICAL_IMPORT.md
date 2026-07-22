@@ -55,3 +55,4 @@ Empfohlener Folgeschritt: verlustfreie Parserentscheidung für Socketable-Wirkun
 - Mobilautomation 390×844 und 430×932: Dokumentbreite 376/415 px bei Viewport 390/430 px, kein Seitenüberlauf; Dialoge vertikal scrollbar. Lange technische Optionen werden innerhalb eines horizontal geklippten Dialogs gehalten. Keine Console-Warnung/-Fehler.
 - Asset-/Daten-404: keine im lokalen Browser beobachtet. Physisches iPhone: nicht geprüft. Touch wurde nur über bestehende Gestenregressionen abgedeckt.
 - Zuverlässige Parse-/Index-/Filter-/Heap-Einzelmessungen: **Unbekannt**. Es werden keine erfundenen Werte angegeben.
+> **5M.2.1:** 32 von 33 referenzierten ItemClasses-Quell-IDs besitzen im lokalen deutschen Lauf einen nichtleeren Namen; `Charm` fehlt. Diese Auditfeststellung wurde nicht in Produktdaten übernommen.

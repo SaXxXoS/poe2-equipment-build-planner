@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.1",
+  "decision": "no-production-approval",
+  "options": [
+    { "id": "A", "model": "full-raw-dump-in-repository", "technicalFit": "high", "playStationUtility": "high", "reproducibility": "high", "risk": "very-high", "removability": "low", "recommendation": "reject" },
+    { "id": "B", "model": "normalized-id-template-dataset", "technicalFit": "high-if-parser-fixed", "playStationUtility": "high", "reproducibility": "high", "risk": "unresolved", "removability": "high", "recommendation": "separate-approval-required" },
+    { "id": "C", "model": "end-user-local-runtime-generation", "technicalFit": "partial", "playStationUtility": "none", "reproducibility": "medium", "risk": "lower-but-unresolved", "removability": "high", "recommendation": "not-sufficient-for-project-goal" },
+    { "id": "D", "model": "optional-language-pack", "technicalFit": "high-if-parser-fixed", "playStationUtility": "high", "reproducibility": "high", "risk": "unresolved", "removability": "high", "recommendation": "separate-approval-required" },
+    { "id": "E", "model": "small-curated-mapping", "technicalFit": "low-for-completeness", "playStationUtility": "partial", "reproducibility": "medium", "risk": "lower-but-unresolved", "removability": "high", "recommendation": "possible-later-after-approval" },
+    { "id": "F", "model": "user-confirmed-local-additions", "technicalFit": "partial", "playStationUtility": "partial", "reproducibility": "low", "risk": "unresolved", "removability": "high", "recommendation": "not-a-complete-source" },
+    { "id": "G", "model": "technical-validation-only-no-distribution", "technicalFit": "high-for-audit", "playStationUtility": "none", "reproducibility": "high", "risk": "lowest", "removability": "high", "recommendation": "current-model" }
+  ],
+  "playStation": "A browser-delivered or separately supplied language dataset would be required; local PC extraction cannot serve PlayStation-only users.",
+  "legalConclusion": "Unknown. Local extraction does not establish permission to publish GGG game text.",
+  "approvalStatus": "pending"
+}

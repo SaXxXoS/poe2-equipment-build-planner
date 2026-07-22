@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.1",
+  "auditDate": "2026-07-22",
+  "scope": "sanitized-local-preflight",
+  "germanRuns": [
+    { "run": 1, "module": "item_classes", "exitCode": 0, "seconds": 20.534, "records": 117, "sha256": "18081adb6ed228ad256281713f6fff33818d68a89bd9cbe2acad43d4aa78f67b" },
+    { "run": 2, "module": "item_classes", "exitCode": 0, "seconds": 18.928, "records": 117, "sha256": "18081adb6ed228ad256281713f6fff33818d68a89bd9cbe2acad43d4aa78f67b" }
+  ],
+  "englishControl": { "module": "item_classes", "exitCode": 0, "seconds": 19.295, "records": 117, "sha256": "f1905c443d45863ad66bc07066b63551c7ed315f77e6b635fee2fa52ee05d821" },
+  "itemClassIdParity": { "german": 117, "english": 117, "both": 117, "germanOnly": 0, "englishOnly": 0 },
+  "determinism": { "classification": "byte-identical-for-successful-item-class-scope", "germanFullHashEqual": true, "germanMinHashEqual": true },
+  "failedModules": {
+    "mods": { "status": "failed-before-output", "errorClass": "struct.error", "message": "unpack requires a buffer of 8 bytes", "warnings": 2 },
+    "baseItems": { "status": "failed-before-output", "errorClass": "struct.error", "message": "unpack requires a buffer of 8 bytes", "warnings": 2 },
+    "statTranslations": { "status": "not-run-policy-blocked", "reason": "Pinned module performs an unconditional Trade API request." }
+  },
+  "statParity": { "status": "unknown", "reason": "No compliant German StatDescription output was produced." },
+  "conditionsParity": "unknown",
+  "variantsParity": "unknown",
+  "placeholdersParity": "unknown",
+  "rawTextsCommitted": false
+}

@@ -121,3 +121,4 @@ Keine belastbare Gesamtzahl aller PoE2-Itemmods wird behauptet. Unique-Modzeilen
 
 Klare Schlussfolgerung: **5M.1 ist technisch abgeschlossen, aber sein Bestand von 1.828 Mods ist fachlich unvollständig für das Projektziel.**
 > 5M.1B importiert 320 reguläre Jewel-IDs, 51 reguläre Charm-IDs, 57 Life-Flask- und 52 Mana-Flask-IDs plus 13 Charm-Base-Implicits. Unique-/Corrupted-Jewel-Referenzen bleiben ausgeschlossen.
+> **5M.2.1:** Die bestehenden technischen Vollständigkeitszahlen bleiben maßgeblich. Deutsche Mod-/Stat-Coverage ist wegen des dokumentierten Parser-Schemafehlers vollständig `not-assessable`, nicht fälschlich als abgedeckt gezählt.
