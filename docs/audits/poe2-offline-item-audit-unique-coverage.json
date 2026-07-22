@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "status": "unsupported-category",
+  "identities": "unknown",
+  "baseTypeAssignments": "unknown",
+  "technicalModReferences": "unknown",
+  "statIds": "unknown",
+  "structuredRollRanges": "unknown",
+  "variants": "unknown",
+  "uniqueSpecificImplicits": "unknown",
+  "grantedSkillReferences": "unknown",
+  "grantedSupportReferences": "unknown",
+  "unresolvedVisibleEffects": "unknown",
+  "reason": "Unique identity/version/reference tables are not among the five pinned inputs. Mods with generationType unique are not treated as Unique-item identities.",
+  "productDataCreated": false,
+  "approvalGranted": false
+}

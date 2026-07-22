@@ -71,3 +71,7 @@ Die Installation und deutsche Locale sind lokal belastbar nachgewiesen, aber ein
 ## Follow-up 5M.2.2
 
 Der Kandidatenaudit ist abgeschlossen. Drei exakt gepinnte Stacks wurden geprüft; keiner lieferte einen nachgewiesen verlustfreien, unbeaufsichtigten deutschen/englischen Strukturexport. PoB2/ooz ermöglichte zwar zweimal manifestidentische Offline-Rohextraktionen von fünf Balance-Dateien und 589 CSD-Dateien, die strukturierte Produktabdeckung bleibt jedoch `notAssessable`. Bestehende Produktpins und alle ausstehenden Lokalisierungsfreigaben sind unverändert. Siehe [POE2_GERMAN_PARSER_CANDIDATE_AUDIT.md](POE2_GERMAN_PARSER_CANDIDATE_AUDIT.md).
+
+## Follow-up 5M.2.3
+
+Der neue Offline-Auditparser belegt 2.255 direkte Mod-ID-/Stat-/Wertübereinstimmungen und deutsche CSD-Strukturen für 419/431 Produkt-Stat-IDs. 447/485 bisher fehlende Templates besitzen eine deutsche und englische CSD-Struktur. Wegen fehlender Referenztabellen und des nicht positionssicher auflösbaren ItemClasses-Zusatzbytes bleibt dies nichtproduktiv. Keine Volltexte, Produktdaten oder Approval-Änderungen. Siehe [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).

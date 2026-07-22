@@ -634,3 +634,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Alle deutschen Produktlokalisierungsscopes bleiben `pending`, `translation-missing` bleibt aktiv, keine deutschen Produkt- oder Volltexte wurden committed.
 - 5M.2 und 5N wurden nicht begonnen. Fotoerkennung, Übersetzungs-Lernmodus, PlayStation-Sprachpaket, Buildvergleich, Designoptimierung und mobile Textklippung bleiben spätere getrennte Aufgaben.
 - Nächster empfohlener Schritt: begrenzter Parseranpassungsauftrag nur für einen gepinnten unbeaufsichtigten Offline-Auditexport, noch ohne Produktimport oder Approval.
+
+## Aufgabe 5M.2.3 – gepinnter Offline-Item-Auditparser (2026-07-23)
+
+- 5M.2.2 ist abgeschlossen. 5M.2.3 implementiert ausschließlich `scripts/poe2-offline-item-audit/index.mjs`; keine Produktpipeline wurde ersetzt.
+- Pins: Container `a917a56f…a18e28`, PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`, Schema `268ae3a3…d3d30`, ooz 0.2.4/Artefakt `e6d7e728…94af4`, Parserformat 1, Node 24.14.0.
+- Architektur: Pin-/Pfadguard → deterministische Lua-Schemaextraktion → DATC64-Dekodierung → technische Referenzen → UTF-16LE-CSD-Struktur → Produktvergleich → lokale Voll- und bereinigte Berichte.
+- Tabellen: Mods 16.678/677 Bytes, Stats 27.178/106, BaseItemTypes 5.476/360 und Tags 1.327/44 passen exakt. ItemClasses 117/150 besitzt gegenüber 149 Schemabytes ein unbekanntes Byte und bleibt vollständig ungelöst.
+- Produktcoverage: 2.255/2.255 Mod-IDs, Statfolgen und Werteintervalle stimmen; 2.705 Statzeilen, 431 Stat-IDs und 444 Kombinationen sind vorhanden. 429 Mehrzeiler/Hybride und 39 Basistyp-IDs stimmen technisch, bleiben wegen fehlender Zieltabellen teilweise aufgelöst. 33 Itemklassen bleiben ungelöst.
+- Deutsche CSD: 589 Dateien, 19.916 Einträge, 324.035 Varianten, 16.284 deutsche Stat-IDs. 419/431 Produkt-Stat-IDs und 447/485 bisherige Templatelücken besitzen deutsche CSD-Strukturen. 33 Deutsch-/Englisch-Strukturkonflikte bleiben sichtbar.
+- Unique-Ergebnis: Identitäten, Basistypketten, Varianten, Mods, Rollbereiche und Skill-/Supportreferenzen Unbekannt, weil die notwendigen Tabellen fehlen. Keine Unique-Freigabe.
+- Socketable-Ergebnis: Identitäten Unbekannt; `StatsValues` nicht Ende-zu-Ende aufgelöst; `BondedStatsValues` `schema-unknown`. Frühere Zahlen wurden nicht ungeprüft übernommen. Keine Socketable-Freigabe.
+- Charm-ID bleibt ungelöst; keine Namens- oder Textähnlichkeitszuordnung.
+- OCR-Audit lokal: 25.648 normalisierte deutsche Strukturen, 2.189 mehrdeutig. Reguläre Items teilweise geeignet; Uniques/Socketables Unbekannt. Keine OCR/Fotofunktion implementiert.
+- Zwei vollständige Läufe sind byteidentisch: Normalisierung `c001bcc8…f15f`, bereinigter Bericht `065c3b26…d5016`.
+- Offlinegarantie: kein HTTP/HTTPS/DNS, keine Trade-API, kein PoE2DB, keine Webseite, kein Hotlink. Volltexte und Rohdaten bleiben unter `.local-audits/`.
+- Produktivpin, `source-approval.json`, Produktdaten, UI, BuildProfile, Worker, Analyzer, Engine, Baum und `translation-missing` sind unverändert.
+- 5M.2 und 5N wurden nicht begonnen. PS-Sprachbestand, Fotoerkennung, Lernmodus, mobile Textklippung, Buildvergleich und Designoptimierung bleiben spätere Aufgaben.
+- Nächster Schritt: separater gepinnter Input-Erweiterungsaudit für fehlende Enum-/Referenz-, Unique- und Augments/Socketable-Tabellen sowie die ItemClasses-Schemadrift; noch kein Produktimport.

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "auditDate": "2026-07-23",
+  "status": "completed-audit-only-partial-structure",
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobSchemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30",
+    "oozVersion": "0.2.4",
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "balanceManifestSha256": "fa781004478566737dc5164e1d67cd5b304aea2121a529dd2ad0f298be7ac295",
+    "csdManifestSha256": "976a428f088618b24dad7779440413b9f296a9c906c5563659e446d4fd19b11d",
+    "nodeRuntime": "v24.14.0",
+    "auditParserFormat": 1
+  },
+  "tables": [
+    { "table": "Mods", "bytes": 13539600, "sha256": "6f05d9759854adaf02d76ef01af7eb6c03c074ef67723678a2f33f3db8f64785", "rows": 16678, "rowBytes": 677, "fields": 66, "unknownFields": 6, "unknownBytes": 0, "status": "resolved" },
+    { "table": "Stats", "bytes": 5262504, "sha256": "9260fa271908668f64903e4ae5fd5c25933041565e5dc9c7f1e4538167225919", "rows": 27178, "rowBytes": 106, "fields": 19, "unknownFields": 4, "unknownBytes": 0, "status": "resolved" },
+    { "table": "BaseItemTypes", "bytes": 2816986, "sha256": "a5b0ce5427e2f2592b84a830386005640585798bfe79d1e935d0ed2a7076d510", "rows": 5476, "rowBytes": 360, "fields": 34, "unknownFields": 8, "unknownBytes": 0, "status": "resolved" },
+    { "table": "ItemClasses", "bytes": 23384, "sha256": "493179fd10626dc623eeba916b647aad448277c14cba7f356afa2c47ab96f6fa", "rows": 117, "rowBytes": 150, "schemaBytes": 149, "fields": 27, "unknownFields": 4, "unknownBytes": 1, "status": "schema-unknown" },
+    { "table": "Tags", "bytes": 106676, "sha256": "972a5af6f3ae6904e68a67cd89c90ffaee90d4d1aca104498123d87536057524", "rows": 1327, "rowBytes": 44, "fields": 5, "unknownFields": 1, "unknownBytes": 0, "status": "resolved" }
+  ],
+  "csd": {
+    "files": 589,
+    "bytes": 58842434,
+    "entries": 19916,
+    "statIds": 16487,
+    "variants": 324035,
+    "germanVariants": 29432,
+    "englishVariants": 29613,
+    "germanStatIds": 16284,
+    "englishStatIds": 16432,
+    "sharedStatIds": 16284,
+    "englishOnlyStatIds": 148,
+    "germanOnlyStatIds": 0,
+    "comparableEntries": 19352,
+    "structuralConflicts": 33,
+    "unparsedLines": 3
+  },
+  "references": { "resolved": 82769, "notResolvedBecauseTargetTableMissingOrReferenceInvalid": 128634 },
+  "network": { "http": false, "https": false, "dns": false, "tradeApi": false, "poe2db": false, "websites": false },
+  "productPinChanged": false,
+  "approvalChanged": false,
+  "productDataChanged": false,
+  "conclusion": "The five-table parser proves deterministic IDs and structured Mod values, but the input set is insufficient for complete ItemClasses, Unique identities, Socketables or all reference semantics. No production pin is recommended."
+}

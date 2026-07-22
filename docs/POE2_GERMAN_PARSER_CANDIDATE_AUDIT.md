@@ -147,3 +147,7 @@ Machine-readable evidence is in:
 Known risks are schema drift at every client update, hidden reference-table dependencies, locale-dependent CSD behavior, GUI-only extraction, manual/hard-coded downstream transformations, and legal/distribution uncertainty. `Charm`, `BondedStatsValues`, full socketable support and all requested structured product coverage remain unresolved.
 
 The next recommended task is a narrowly scoped parser-adaptation design and implementation audit. It should pin PoB2's schema and ooz extraction layer (or an equivalently proven local layer), add an unattended offline German/English structured exporter without product import, verify every required structure against fixtures and the exact container pin, and only then propose a separate parser-pin and approval decision.
+
+## Follow-up 5M.2.3
+
+The recommended limited parser was implemented as an audit-only local tool. It deterministically decodes four exact-schema tables, refuses the one-byte ItemClasses drift, parses all 589 CSD files, and matches every current product Mod ID/Stat/value tuple. Missing reference, Unique and Socketable tables prevent a production-pin recommendation. See [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).

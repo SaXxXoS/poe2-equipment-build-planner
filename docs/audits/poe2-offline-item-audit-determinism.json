@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "status": "byteidentical",
+  "runs": 2,
+  "samePins": true,
+  "sameBalanceManifest": true,
+  "sameCsdManifest": true,
+  "normalizedSha256Run1": "c001bcc876fb1d1d43760329b33cf29aa83e2fbf2ab0d33b459d34163ba9f15f",
+  "normalizedSha256Run2": "c001bcc876fb1d1d43760329b33cf29aa83e2fbf2ab0d33b459d34163ba9f15f",
+  "sanitizedSha256Run1": "065c3b266f194fabb6f5fa3921a15c853226bc2c7a7680d69986ea01263d5016",
+  "sanitizedSha256Run2": "065c3b266f194fabb6f5fa3921a15c853226bc2c7a7680d69986ea01263d5016",
+  "coverageEqual": true,
+  "conflictsEqual": true,
+  "ambiguitiesEqual": true,
+  "warningsEqual": true,
+  "errors": [],
+  "timestampsInSemanticHash": false
+}

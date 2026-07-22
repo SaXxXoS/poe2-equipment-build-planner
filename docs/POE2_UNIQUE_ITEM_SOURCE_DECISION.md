@@ -178,3 +178,7 @@ Zählungen sind quellspezifisch. PoB-Itemblöcke sind keine Spiel-Datensätze; R
 
 Empfohlene Folgeaufgabe bleibt 5M.1B.0C für Runen, Soul Cores und Spezialmods. Erst danach darf eine gesonderte Importarchitektur geplant werden. 5M.1B, 5M.1B.0C, 5M.2 und 5N wurden hier nicht begonnen. Die physische iPhone-Abnahme bleibt offen und war mangels UI-Änderung nicht erforderlich.
 > 5M.1B ändert die Entscheidung nicht: Unique Jewels, Charms, Flasks, Items und Mods sind nicht importiert.
+
+## Update 5M.2.3 – lokaler Offline-Auditparser
+
+Die fünf gepinnten Balance-Tabellen enthalten keine beweisbare Unique-Identitäts-/Versionsschicht. `generationType=unique` bei 354 Mods wird nicht als Unique-Gegenstand interpretiert. Basistypzuordnung, Varianten, technische Modreferenzen, Rollbereiche, spezielle Implicits sowie itemgebundene Skill-/Supportreferenzen bleiben Unbekannt. Keine sichtbare Unique-Zeile wurde in eine technische ID umgedeutet; keine Unique-Daten oder Freigabe entstanden. Details: [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).

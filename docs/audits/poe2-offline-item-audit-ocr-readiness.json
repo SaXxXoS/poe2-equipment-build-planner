@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "localOnlyNormalization": true,
+  "ocrImplemented": false,
+  "normalizedGermanTemplateStructures": 25648,
+  "ambiguousGermanTemplateStructures": 2189,
+  "categories": {
+    "regularAffixes": "partially-suitable",
+    "implicits": "partially-suitable",
+    "corruptionMods": "only-with-additional-context",
+    "jewels": "partially-suitable",
+    "charms": "partially-suitable",
+    "flasks": "partially-suitable",
+    "uniques": "unknown",
+    "runes": "unknown",
+    "soulCores": "unknown",
+    "otherSocketables": "unknown"
+  },
+  "ambiguityControlsRequired": ["item-class", "base-type", "value-range", "neighboring-lines", "variant-condition"],
+  "textsVersioned": false
+}

@@ -166,3 +166,7 @@ Es wurden keine Daten importiert, keine Produktivdateien erzeugt und keine beste
 
 Klare Schlussfolgerung: **Die technische Socketable-Identität ist belastbar und eng freigabefähig; die vollständigen Effekte sind es am aktuellen Exportformat noch nicht.** Empfohlener nächster Schritt ist eine Planungsentscheidung, ob vor 5M.1B zuerst ein gepinnter RePoE-Parserkandidat mit verlustfreien `StatsValues`/`BondedStatsValues` geprüft werden soll. Ohne diese Vorarbeit darf 5M.1B nur bereits vollständig freigegebene 5M.1B.0A-Bereiche importieren.
 > 5M.1B importiert weder Socketable-Identitäten noch deren weiterhin blockierte/pending Wirkungen. Relics bleiben deferred.
+
+## Update 5M.2.3 – lokaler Offline-Auditparser
+
+Die bisherigen Identitätszahlen für Runen, Soul Cores, Idols, Abyssal Eyes und Congealed Mist wurden nicht ungeprüft übernommen. Augments- und Socketable-Identitätstabellen gehören nicht zu den fünf gepinnten Eingaben. `StatsValues` ist nur im breiteren PoB2-Schema sichtbar und nicht Ende-zu-Ende verknüpft; `BondedStatsValues` bleibt `schema-unknown`. Zielitemkategorien, Effektvarianten und Werte dürfen nicht aus Text zurückgerechnet werden. Scope und Approval bleiben blockiert/pending. Details: [POE2_OFFLINE_ITEM_AUDIT_PARSER.md](POE2_OFFLINE_ITEM_AUDIT_PARSER.md).

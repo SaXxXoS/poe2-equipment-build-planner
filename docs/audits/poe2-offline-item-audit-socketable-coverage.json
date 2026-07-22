@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "status": "unsupported-category",
+  "identities": {
+    "runes": "unknown",
+    "soulCores": "unknown",
+    "idols": "unknown",
+    "abyssalEyes": "unknown",
+    "congealedMist": "unknown",
+    "additionalSocketables": "unknown"
+  },
+  "statsValues": { "status": "not-end-to-end-resolved", "reason": "A StatsValues field exists in the broader PoB2 schema, but Augments and identity tables are not in the pinned input set." },
+  "bondedStatsValues": { "status": "schema-unknown", "reason": "No end-to-end BondedStatsValues field chain is present in the five inputs." },
+  "targetItemCategories": "unknown",
+  "effectVariants": "unknown",
+  "structuredValues": "unknown",
+  "germanCsdLinks": "unknown",
+  "previousIdentityCountsAcceptedWithoutVerification": false,
+  "productDataCreated": false,
+  "approvalGranted": false
+}

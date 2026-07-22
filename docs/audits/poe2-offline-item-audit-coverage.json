@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "audit": "5M.2.3",
+  "classificationRule": "Resolved means every required field in the audit scope is proven; partiallyResolved preserves IDs/stat sequences/values but lacks one or more required reference tables.",
+  "coverage": {
+    "mods": { "total": 2255, "resolved": 0, "partiallyResolved": 2255, "unresolved": 0, "directIdMatches": 2255, "idStatValueMatches": 2255, "statIdConflicts": 0, "valueConflicts": 0 },
+    "statLines": { "total": 2705, "resolved": 2705, "partiallyResolved": 0, "unresolved": 0 },
+    "statIds": { "total": 431, "resolved": 431, "partiallyResolved": 0, "unresolved": 0, "withGermanCsdStructure": 419, "withoutGermanCsdStructure": 12 },
+    "statIdCombinations": { "total": 444, "resolved": 444, "partiallyResolved": 0, "unresolved": 0 },
+    "multilineAndHybridMods": { "total": 429, "resolved": 0, "partiallyResolved": 429, "unresolved": 0 },
+    "baseTypes": { "total": 39, "resolved": 0, "partiallyResolved": 39, "unresolved": 0 },
+    "itemClasses": { "total": 33, "resolved": 0, "partiallyResolved": 0, "unresolved": 33, "reason": "ItemClasses row size differs from the pinned schema by one unknown byte." },
+    "technicalTemplateGaps": { "total": 485, "resolved": 0, "partiallyResolved": 447, "unresolved": 38, "germanCsdStructures": 447, "englishCsdStructures": 447 }
+  },
+  "categories": {
+    "regularPrefixes": { "total": 1028, "partiallyResolved": 1028, "unresolved": 0 },
+    "regularSuffixes": { "total": 770, "partiallyResolved": 770, "unresolved": 0 },
+    "baseImplicits": { "total": 244, "partiallyResolved": 244, "unresolved": 0 },
+    "corruptionMods": { "total": 103, "partiallyResolved": 103, "unresolved": 0 },
+    "uniqueGenerationMods": { "total": 354, "partiallyResolved": 354, "unresolved": 0, "note": "This generation type is not a Unique-item identity layer." },
+    "jewels": { "total": 320, "partiallyResolved": 320, "unresolved": 0 },
+    "charms": { "total": 64, "partiallyResolved": 64, "unresolved": 0 },
+    "lifeFlasks": { "total": 57, "partiallyResolved": 57, "unresolved": 0 },
+    "manaFlasks": { "total": 52, "partiallyResolved": 52, "unresolved": 0 }
+  },
+  "charmId": { "status": "unresolved", "nameBasedMappingUsed": false, "reason": "The ItemClasses table is schema-unknown; no other extracted table proves the normalized project ID." }
+}
