@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## 5M.1B.0A – gleicher Pin, neue Teilentscheidungen
+
+Die Entscheidung verwendet ausschließlich den unveränderten RePoE-Pin aus 5M.1/5M.1A. Ein Releasevergleich oder Datenimport fand nicht statt. Jeder künftige Import muss je Teilscope Pin, Quelldatei, Feldmenge, Itemkategorie, SHA-256-Manifest, Determinismus und Negativgrenzen erneut nachweisen. Relics bleiben trotz vorhandener Daten `pending`.
+
 ## 5M.1A – unveränderter Produktivpin
 
 5M.1A änderte Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81` und die neun generierten Dateien nicht. Der Audit ermittelte 16.678 rohe Mod-IDs, 3.450 klassenübergreifend referenzierte IDs und 1.597 Referenzen in der festen 29-Klassen-Auswahl; ausgewählte Basistyp-Implicits ergeben die unveränderten 1.828 Records. Ein Releasewechsel muss Klassen, Implicits, Generation Types, Uniques und Socketable-Strukturen melden und manuell freigegeben werden.

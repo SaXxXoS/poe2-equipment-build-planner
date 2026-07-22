@@ -52,8 +52,9 @@ describe('PoE2 item-mod completeness audit', () => {
       const bytes = await readFile(new URL(`../../generated/poe2-affixes/${name}`, import.meta.url))
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(hash)
     }
-    const approval = await readFile(new URL('../../data-sources/source-approval.json', import.meta.url))
-    expect(createHash('sha256').update(approval).digest('hex')).toBe('36cf21441d2f3a4a649d5279edf3fe7fd2644b700cef584b71c68945707a7182')
+    const approval = JSON.parse(await readFile(new URL('../../data-sources/source-approval.json', import.meta.url), 'utf8'))
+    const originalScope = approval.categoryAssignments.find(row => row.categoryId === 'poe2-technical-affix-data-for-build-planner')
+    expect(originalScope).toMatchObject({ status: 'conditionally-approved', primarySourceId: 'repoe-poe2' })
   })
 
   it('records non-import and unknown cross-source totals explicitly', async () => {

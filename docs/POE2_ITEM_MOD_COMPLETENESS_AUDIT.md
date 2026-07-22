@@ -2,6 +2,8 @@
 
 ## Ergebnis
 
+> Folgestatus 5M.1B.0A: Normale Jewel-Prefixe/-Suffixe, Charm-Technikdaten und Life-/Mana-Flask-Technikdaten besitzen nun getrennte `conditionally-approved` Teilscopes. Relics bleiben als Sanctum-Spezialcontent `pending/deferred`. Dies ist keine Datenübernahme; Produktivbestand und alle offenen Unique-, Rune-, Soul-Core-, Desecrated-, Mutated- und Lokalisierungskategorien bleiben unverändert. Details: `docs/POE2_ADDITIONAL_ITEM_CLASS_SOURCE_DECISION.md`.
+
 Der mit 5M.1 erzeugte Bestand ist **kein vollständiger PoE2-Gegenstandsmodifikatorbestand**. Er ist reproduzierbar und intern vollständig für die bewusst ausgewählten 29 `mods_by_base`-Klassen: 1.828 technische Mod-IDs, davon 816 Prefixe, 568 Suffixe, 231 über ausgewählte Basistypen referenzierte Implicits und 213 technisch aufgelöste Spezialdatensätze. Unique-Gegenstände und deren feste/variable Modzeilen, Runen, Soul Cores als auswertbare Socketables sowie Jewel-, Flask-, Charm- und Relic-Modbestände sind nicht Bestandteil von 5M.1.
 
 Diese Aufgabe hat keine zusätzlichen Fach- oder Lokalisierungsdaten importiert, keine Approval-Regel geändert und weder UI noch Engine verändert. 5M.1B, 5M.2 und 5N wurden nicht begonnen.

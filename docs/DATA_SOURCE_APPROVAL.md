@@ -1,5 +1,11 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Aufgabe 5M.1B.0A – zusätzliche Itemklassen
+
+Die technische RePoE-Quelle wird nicht pauschal verbreitert. Drei getrennte Scopes sind unter Version `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c` und Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81` `conditionally-approved`: normale Jewel-Prefixe/-Suffixe, Charm-Technikdaten und Life-/Mana-Flask-Technikdaten. Der Relic-Scope ist `pending`, da er ausschließlich Sanctum-Spezialcontent betrifft und keine Projektarchitektur besitzt. Alle Bedingungen und Negativgrenzen stehen maschinenlesbar in `data-sources/source-approval.json`.
+
+Approval erlaubt noch keinen Import. Uniques, Cluster-/Radiusmechaniken, corrupted Spezialmods, Runen, Soul Cores, Desecrated/Mutated, Skills, Supports, deutsche Texte, Medien, Rohspiegel, Runtime-Abruf und Hotlinks bleiben gesperrt.
+
 ## Aufgabe 5M.0 – eng begrenzte technische Affixdaten
 
 Stand 22. Juli 2026: `repoe-poe2` ist ausschließlich für den Scope `poe2-technical-affix-data-for-build-planner` `conditionally-approved`. Gepinnt sind RePoE-PoE2 `4.5.4.4.4`, Exportcommit `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, sowie der geprüfte Parsercommit `14e3edc89ed705bd4e4eda5c8135756431c76e81`.

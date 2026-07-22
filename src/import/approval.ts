@@ -28,6 +28,22 @@ export interface CategoryAssignment {
   repositoryStorage: ApprovalConditionValue
   offlineOnly: boolean
   reason: string
+  constraints?: CategoryApprovalConstraints
+}
+
+export interface CategoryApprovalConstraints {
+  sourceVersion: string
+  exportCommit: string
+  parserCommit: string
+  allowedItemCategories: string[]
+  allowedSourceFiles: string[]
+  allowedFields: string[]
+  blockedDataCategories: string[]
+  requireSha256Manifest: boolean
+  requireDeterministicNormalization: boolean
+  forbidRawMirror: boolean
+  forbidRuntimeFetch: boolean
+  forbidHotlinks: boolean
 }
 
 export interface SourceApprovalFile {
@@ -51,10 +67,22 @@ export interface ImportApprovalRequest {
   categoryId: string
   satisfiedConditions?: Partial<Record<ApprovalCondition, boolean>>
   fixture?: boolean
+  sourceVersion?: string
+  exportCommit?: string
+  parserCommit?: string
+  itemCategory?: string
+  sourceFile?: string
+  requestedFields?: string[]
+  dataCategories?: string[]
+  sha256Manifest?: boolean
+  deterministicNormalization?: boolean
+  rawMirror?: boolean
+  runtimeFetch?: boolean
+  hotlink?: boolean
 }
 export interface ImportApprovalDecision {
   allowed: boolean
-  code: 'fixture-allowed' | 'approved' | 'conditions-satisfied' | 'approval-missing' | 'approval-invalid' | 'source-unknown' | 'category-unknown' | 'source-blocked' | 'category-blocked' | 'source-not-assigned' | 'conditions-unmet'
+  code: 'fixture-allowed' | 'approved' | 'conditions-satisfied' | 'approval-missing' | 'approval-invalid' | 'source-unknown' | 'category-unknown' | 'source-blocked' | 'category-blocked' | 'source-not-assigned' | 'conditions-unmet' | 'request-constraints-unmet'
   message: string
   unmetConditions: ApprovalCondition[]
 }
@@ -108,6 +136,14 @@ export function validateSourceApproval(input: unknown): ApprovalValidationResult
     if (!isStatus(value.status)) issues.push(issue(`${path}.status`, 'Ungültiger Freigabestatus'))
     if (![true, false, 'unknown'].includes(value.repositoryStorage as never)) issues.push(issue(`${path}.repositoryStorage`, 'repositoryStorage muss true, false oder unknown sein'))
     for (const field of ['primarySourceId', 'fallbackSourceId'] as const) if (value[field] !== null && typeof value[field] !== 'string') issues.push(issue(`${path}.${field}`, `${field} muss String oder null sein`))
+    if (value.constraints !== undefined) {
+      if (!isRecord(value.constraints)) issues.push(issue(`${path}.constraints`, 'constraints muss ein Objekt sein'))
+      else {
+        for (const field of ['sourceVersion', 'exportCommit', 'parserCommit'] as const) if (typeof value.constraints[field] !== 'string' || !value.constraints[field]) issues.push(issue(`${path}.constraints.${field}`, `${field} fehlt`))
+        for (const field of ['allowedItemCategories', 'allowedSourceFiles', 'allowedFields', 'blockedDataCategories'] as const) if (!Array.isArray(value.constraints[field]) || value.constraints[field].some(entry => typeof entry !== 'string')) issues.push(issue(`${path}.constraints.${field}`, `${field} muss ein String-Array sein`))
+        for (const field of ['requireSha256Manifest', 'requireDeterministicNormalization', 'forbidRawMirror', 'forbidRuntimeFetch', 'forbidHotlinks'] as const) if (typeof value.constraints[field] !== 'boolean') issues.push(issue(`${path}.constraints.${field}`, `${field} muss boolean sein`))
+      }
+    }
   }
 
   if (issues.length) return { ok: false, issues }
@@ -128,6 +164,23 @@ export function evaluateImportApproval(input: string | unknown | undefined, requ
   if (source.status !== 'approved' && source.status !== 'conditionally-approved') return deny('source-blocked', `Quelle ${source.sourceId} hat Status ${source.status}`)
   if (category.status !== 'approved' && category.status !== 'conditionally-approved') return deny('category-blocked', `Datenkategorie ${category.categoryId} hat Status ${category.status}`)
   if (![category.primarySourceId, category.fallbackSourceId].includes(source.sourceId)) return deny('source-not-assigned', `Quelle ${source.sourceId} ist der Kategorie ${category.categoryId} nicht zugeordnet`)
+  const constraints = category.constraints
+  if (constraints) {
+    const violations: string[] = []
+    if (request.sourceVersion !== constraints.sourceVersion) violations.push('sourceVersion')
+    if (request.exportCommit !== constraints.exportCommit) violations.push('exportCommit')
+    if (request.parserCommit !== constraints.parserCommit) violations.push('parserCommit')
+    if (!request.itemCategory || !constraints.allowedItemCategories.includes(request.itemCategory)) violations.push('itemCategory')
+    if (!request.sourceFile || !constraints.allowedSourceFiles.includes(request.sourceFile)) violations.push('sourceFile')
+    if (!request.requestedFields || request.requestedFields.some(field => !constraints.allowedFields.includes(field))) violations.push('requestedFields')
+    if (request.dataCategories?.some(value => constraints.blockedDataCategories.includes(value))) violations.push('blockedDataCategories')
+    if (constraints.requireSha256Manifest && request.sha256Manifest !== true) violations.push('sha256Manifest')
+    if (constraints.requireDeterministicNormalization && request.deterministicNormalization !== true) violations.push('deterministicNormalization')
+    if (constraints.forbidRawMirror && request.rawMirror !== false) violations.push('rawMirror')
+    if (constraints.forbidRuntimeFetch && request.runtimeFetch !== false) violations.push('runtimeFetch')
+    if (constraints.forbidHotlinks && request.hotlink !== false) violations.push('hotlink')
+    if (violations.length) return deny('request-constraints-unmet', `Request verletzt Scope-Bedingungen: ${violations.join(', ')}`)
+  }
   if (source.status === 'conditionally-approved' || category.status === 'conditionally-approved') {
     const unmet = source.requiredConditions.filter(condition => request.satisfiedConditions?.[condition] !== true)
     if (unmet.length) return deny('conditions-unmet', `Bedingungen für ${source.sourceId} sind nicht erfüllt: ${unmet.join(', ')}`, unmet)

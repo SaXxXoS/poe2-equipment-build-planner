@@ -503,6 +503,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Keine Approval-Erweiterung, deutschen Texte oder UI-/Engine-/Workeränderung. 5M.1B, 5M.2 und 5N wurden nicht begonnen. Physische iPhone-Abnahme bleibt offen.
 - Nächster Schritt: 5M.1B.0 für getrennte technische Scope-/Quellenentscheidungen; Lokalisierung erst nach stabiler technischer Ziel-ID-Menge.
 
+## Aufgabe 5M.1B.0A – zusätzliche Itemklassen (22. Juli 2026)
+
+- RePoE-Pin bleibt `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`, Parser `14e3edc89ed705bd4e4eda5c8135756431c76e81`.
+- `poe2-technical-jewel-mod-data-for-build-planner`: conditionally-approved nur für 142 normale Prefix- und 178 normale Suffix-IDs; Unique-/corrupted-Sides, Radius-/Passive- und Clustermechaniken blockiert.
+- `poe2-technical-charm-mod-data-for-build-planner`: conditionally-approved für 27 Prefixe, 24 Suffixe, 13 basistypreferenzierte Implicits und minimale technische Basiswerte; keine Trigger-/Ladungssimulation.
+- `poe2-technical-flask-mod-data-for-build-planner`: conditionally-approved für Life Flasks (33/24) und Mana Flasks (28/24) plus minimale Basiswerte; Kategorien getrennt, keine Flask-Simulation/Quality/Enchantments.
+- `poe2-technical-relic-mod-data-for-build-planner`: pending/deferred; 137 IDs liegen ausschließlich in `sanctum_relic`, keine normale Equipmentarchitektur.
+- Der Guard prüft bei neuen Scopes Pins, Itemkategorie, Datei, Felder, Negativkategorien, SHA-256-Manifest, Determinismus, Rohspiegel, Runtime-Abruf und Hotlinks. Der bestehende 5M.1-Scope bleibt unverändert.
+- Kein Import, keine neuen produktiven Itemklassen, keine UI-, BuildProfile-, Worker-, Analyzer-, Engine- oder Orchestratoränderung. Keine deutschen Texte.
+- Uniques bleiben getrennt gesperrt. Runen, Soul Cores, Desecrated, Mutated und andere Spezialmods benötigen getrennte Folgeentscheidungen. 5M.1B, 5M.1B.0B, 5M.1B.0C, 5M.2 und 5N nicht begonnen; iPhone-Abnahme offen.
+- Später getrennt: Fotoerkennung, ID-basierter Übersetzungs-Lernmodus, Buildvergleich vorher/nachher und Designoptimierung.
+- Nächster Schritt: 5M.1B als technischer, getrennter Import nur der freigegebenen Jewel-/Charm-/Life-/Mana-Flask-Daten; Relics ausschließen.
+
 ## 14. Arbeitsregeln des Projekts
 
 ## Aufgabe 5M.1 – technischer Affiximport (22. Juli 2026)

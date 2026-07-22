@@ -2,6 +2,8 @@
 
 Stand: 22. Juli 2026. Diese technische Projektentscheidung ist keine Rechtsberatung und behauptet keine allgemeine Lizenz von Grinding Gear Games (GGG).
 
+> 5M.1B.0A ergänzt ausschließlich neue, getrennte Approval-Teilscopes: normale Jewel-Mods, Charms und Life-/Mana-Flasks sind unter exakten Pins und Negativgrenzen `conditionally-approved`; Relics bleiben `pending`. Der bestehende 5M.1-Scope ist unverändert. Kein Import, keine UI-/Enginearbeit und keine Lokalisierung erfolgte.
+
 > Audit 5M.1A: 5M.1 deckt eine feste Auswahl von 29 Itemklassen ab, nicht alle PoE2-Gegenstandsmodifikatoren. Ausgeschlossene RePoE-Klassen, Unique-Daten und Socketables benötigen getrennte Folgeentscheidungen. Path of Building PoE2 und poe2-mcp wurden ausschließlich als commit-gepinnte Kontrollen untersucht. Keine Quelle, Kategorie oder Lokalisierung wurde zusätzlich freigegeben; `data-sources/source-approval.json` blieb bytegleich.
 
 ## Entscheidung
