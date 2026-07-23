@@ -1014,3 +1014,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Abschnittsbreite, entsprechend rund 97 Prozent der gesamten Sectionbreite
   einschließlich deren Rahmen. Bei 390 × 844 weiterhin 340 Pixel und kein
   horizontaler Überlauf. Browserkonsole ohne Fehler/Warnungen.
+
+## Paperdoll – Höhenkorrektur und tatsächlicher Schmucktausch
+
+- Klarstellung des Auftraggebers: Die Breite war bereits ausreichend; nur die
+  vertikale Größe sollte wachsen.
+- Die vier Equipment-Rasterzeilen wurden deutlich erhöht. Bei 590 × 1280
+  misst die Paperdoll nun 539 × 974 Pixel; bei 390 × 844 misst sie 340 × 824
+  Pixel.
+- Schmucktausch entsprechend der gemeinten Ausgangslage: Das Amulett
+  übernimmt den früheren oberen Schmuckplatz. Ring 1 und Ring 2 stehen
+  gemeinsam in der darunterliegenden Schmuckreihe und besitzen eine exakt
+  identische Oberkante.
+- Breite und sonstige Funktionen blieben unverändert. Kein horizontaler
+  Überlauf und keine Browserfehler/-warnungen.
