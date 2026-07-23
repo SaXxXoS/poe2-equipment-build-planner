@@ -3,25 +3,21 @@ import './styles.css'
 import './domain.css'
 import type { CharacterConfiguration } from './domain'
 import type { BuildAnalysis } from './engine'
-import { initialEquipment, skillSetups as initialSkillSetups } from './data'
+import { initialEquipment } from './data'
 import { CharacterSection } from './components/CharacterSection'
 import { EquipmentSection } from './components/EquipmentSection'
 import { SkillsSection } from './components/SkillsSection'
+import { createEmptySkillSetups } from './features/skills/initial-state'
+import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
 import { RealPassiveAnalysis, type PassivePlanPresentation } from './features/real-passive-analysis'
 import { runBuildAssistantV1, validateBuildAssistantInput } from './features/build-assistant-v1'
 
 export default function App() {
-  const [character, setCharacter] = useState<CharacterConfiguration>({
-    classId: '',
-    ascendancyId: '',
-    level: 70,
-    additionalPassivePoints: 0,
-    goalProfile: 'balanced',
-  })
+  const [character, setCharacter] = useState<CharacterConfiguration>(createInitialCharacterConfiguration)
   const [equipment, setEquipment] = useState(initialEquipment)
-  const [setups, setSetups] = useState(initialSkillSetups)
+  const [setups, setSetups] = useState(createEmptySkillSetups)
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])

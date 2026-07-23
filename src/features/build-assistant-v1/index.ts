@@ -117,6 +117,8 @@ export function runBuildAssistantV1(input: BuildAssistantInput): BuildAnalysis {
 export function validateBuildAssistantInput(input: BuildAssistantInput): string[] {
   const errors: string[] = []
   if (!input.character.classId) errors.push('Bitte wähle eine Klasse.')
+  if (!Number.isInteger(input.character.level) || input.character.level < 1 || input.character.level > 100) errors.push('Bitte gib ein gültiges Charakterlevel ein.')
+  if (input.character.additionalPassivePoints != null && (!Number.isInteger(input.character.additionalPassivePoints) || input.character.additionalPassivePoints < 0)) errors.push('Bitte gib gültige Story-Passivpunkte ein.')
   if (!input.character.goalProfile) errors.push('Bitte wähle ein Zielprofil.')
   return errors
 }

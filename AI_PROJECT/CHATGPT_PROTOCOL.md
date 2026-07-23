@@ -904,3 +904,53 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Überlauf, Rare-Editor mit 3/3 Slots und Startsockel, Live-Suche „Leben“ mit
   46 technisch möglichen Prefixen, keine neuen Konsolenfehler/-warnungen.
 - Nächster empfohlener Auftrag: V1.3.1-Praxistest und enger UX-/Sprachfeinschliff mit lokal bereitgestellten Referenzbildern.
+
+# Abschluss Aufgabe V1.3.1 – sichtbare UX-Korrektur (2026-07-23)
+
+- Ausgangscommit: `020ec87f9bc81f9938a5108ef6369153f43fef49`.
+- Auftraggeberfeedback: Die V1.3-Oberfläche zeigte eine lange Klassenliste,
+  eine große Charakterkarte, nicht löschbare sichtbare Nullwerte, getrennte
+  Equipmentblöcke, zweispaltig gequetschte mobile Skillkarten und ungefragt
+  vorgefüllte Demo-Skills samt Supports.
+- Charakter: genau eine kompakte Klassen- und eine abhängige
+  Aszendenzauswahl. Sichtbar sind nur die acht durch
+  `selectableInCurrentUi` produktiv bestätigten Klassen Hexe,
+  Waldläuferin, Krieger, Zauberin, Jägerin, Söldner, Mönch und Druide.
+  Marauder, Duelist, Shadow und Templar bleiben ausgeblendet.
+- Level, Passivpunkte durch Level, Story-Passivpunkte und Gesamtpunkte stehen
+  in einem kompakten Bereich. Lokale Texteingabeentwürfe beseitigen die
+  `Number('') === 0`-Rücksetzung; Level und Storypunkte lassen sich vollständig
+  löschen und bleiben bis zur Validierung sichtbar leer.
+- Der Produktinitialzustand verwendet eigene leere Fabriken: keine Klasse,
+  Aszendenz, Ausrüstung, Fertigkeit, Supports oder Ergebnisse; genau sechs
+  leere Startkarten. Demo-Setups bleiben ausschließlich Test-/Datenfixtures.
+- Equipment: eine zusammenhängende räumliche Hauptausrüstung mit kompaktem
+  Waffenset-1/2-Umschalter; nur die Waffenplätze wechseln. Juwelen, Charms und
+  Fläschchen bleiben getrennte kompakte Bereiche. Der Item-Editor und die
+  Mehrfach-Affix-Funktion sind unverändert.
+- Die Mobalytics-Ansicht wurde nur als Bedien- und Layoutreferenz betrachtet.
+  Kein fremder Code, CSS, Bild, Logo oder Asset wurde übernommen. Die
+  Auftraggeber-Referenzbilder waren im aktuellen Workspace nicht verfügbar;
+  ihre schriftlichen Vorgaben blieben maßgeblich.
+- Fertigkeiten: mobil genau eine Kartenspalte; leere Karten zeigen nur Suche
+  und Auswahl. Rollen, Waffenset und Supports erscheinen erst nach Skillwahl.
+  Blitzpfeil, Kugelblitz, Sturmrufer, Flammenwand, Zeitverzerrung und
+  Sprungschlag werden nicht mehr vorausgefüllt.
+- BuildProfile, Analyzer, Scores, Ergebnisaggregation, Passive-Pfade,
+  Mapping, Boss, Rotation, Datenquellen und Pins bleiben unverändert.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_V1_3_1_UX_CORRECTION.md`.
+- Prüfung: 20/20 fokussierte UX-/V1.3-Regressionstests; vollständiger
+  Parallel-Lauf 1.017/1.020 mit drei ausschließlichen Zeitüberschreitungen;
+  serieller Wiederholungslauf der betroffenen Dateien 50/50. Lint, Typecheck,
+  Produktions- und Pages-Build sowie 132/132 JSON-Dateien erfolgreich.
+- Browser: Desktop und 390 × 844 ohne horizontalen Überlauf; mobil sechs
+  Karten mit 321 Pixel Breite und ohne gemeinsame Kartenzeile. Level und
+  Storypunkte bleiben nach echter Tastaturlöschung leer, Waffenset 2 wechselt
+  nur die Waffenplätze, der Editor öffnet weiterhin, und die Browserkonsole
+  enthält keine Fehler oder Warnungen.
+- Pages- und finaler Git-Status werden nach Deployment im Abschlussbericht
+  festgehalten.
+- Nächster Schritt nach erfolgreicher Verifikation: Auftraggeber-Praxistest
+  des korrigierten leeren Equipment-first-Flows; danach nur konkret
+  beobachtete UX- und Sprachkorrekturen.
