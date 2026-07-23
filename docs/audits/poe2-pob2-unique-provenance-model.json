@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "sourceKind": "pob2-planner-data",
+  "namespace": "pob2:<source-record-id>",
+  "fixtureNamespace": "fixture:<id>",
+  "required": [
+    "sourceKind",
+    "sourceRepository",
+    "sourceCommit",
+    "sourceRecordIdentifier",
+    "sourceLicense",
+    "importedAtBuild",
+    "technicalIdentityStatus",
+    "gggIdentityStatus",
+    "localizationSource",
+    "valueSource",
+    "variantSource",
+    "identityStatus",
+    "localizationStatus"
+  ],
+  "gggIdentityStatus": "unknown",
+  "syntheticExample": {
+    "id": "pob2:fixture-source#1",
+    "sourceRecordIdentifier": "fixture-source#1",
+    "name": "Synthetic Example",
+    "visibleModifiers": [],
+    "technicalGggStatLink": null
+  }
+}

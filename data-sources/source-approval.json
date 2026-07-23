@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "reviewedAt": "2026-07-22",
+  "reviewedAt": "2026-07-23",
   "reviewedSources": [
     {
       "sourceId": "local-synthetic-fixtures",
@@ -91,10 +91,19 @@
       "requiredConditions": ["rawRedistributionAllowed", "derivedRedistributionAllowed", "localStorageAllowed", "repositoryStorageAllowed", "manualApprovalRequired"],
       "evidenceUrls": ["https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy"],
       "reason": "Manuelle Erfassung beseitigt weder Urheber-/Datenrechte noch Herkunfts-, Versions- und Weiterverteilungsfragen."
+    },
+    {
+      "sourceId": "path-of-building-poe2-unique-planner-c5300ccd",
+      "name": "Path of Building 2 – gepinnte Unique-Planerdaten",
+      "status": "conditionally-approved",
+      "conditions": { "attributionRequired": true, "rawRedistributionAllowed": false, "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": true, "localStorageAllowed": true, "repositoryStorageAllowed": false, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
+      "requiredConditions": ["attributionRequired", "automatedAccessAllowed", "patchVersionRequired", "manualApprovalRequired"],
+      "evidenceUrls": ["https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0", "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/blob/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/LICENSE.md"],
+      "reason": "5M.2.8: Auftraggeberfreigabe ausschließlich als eigenständige PoB2-Unique-Planerdatenquelle. Keine Behauptung technischer GGG-IDs, keine regulären Affix-/Crafting-/CSD-Daten, keine Medien, kein Rohmirror und kein Laufzeitzugriff. Die MIT-Codelizenz ist belegt; die Weiterverteilung der mitgelieferten GGG-/Community-Itemdaten bleibt distribution-pending. Deshalb ist nur Audit und Vertragsvorbereitung zulässig; Produktimport bleibt bis separater Klärung und 5M.2.9 blockiert."
     }
   ],
   "approvedSources": ["local-synthetic-fixtures"],
-  "conditionallyApprovedSources": ["ggg-developer-api", "ggg-poe2-skilltree-export", "repoe-poe2"],
+  "conditionallyApprovedSources": ["ggg-developer-api", "ggg-poe2-skilltree-export", "repoe-poe2", "path-of-building-poe2-unique-planner-c5300ccd"],
   "blockedSources": ["poe2db"],
   "rejectedSources": ["ggg-game-files-undocumented-endpoints"],
   "pendingSources": ["manual-transcription", "path-of-building-poe2", "poe2-mcp", "pobr"],
@@ -154,9 +163,33 @@
     { "categoryId": "poe2-photo-derived-localization-mapping-for-build-planner", "primarySourceId": null, "fallbackSourceId": null, "status": "blocked", "repositoryStorage": false, "offlineOnly": true, "reason": "5M.2.0: photo-derived-unverified darf keine verifizierte Fachidentität oder produktive Übersetzung erzeugen. Fotoerkennung und Lernmodus sind nicht begonnen." },
     { "categoryId": "official-poe2-passive-tree-export-assets", "primarySourceId": "ggg-poe2-skilltree-export", "fallbackSourceId": null, "status": "conditionally-approved", "repositoryStorage": true, "offlineOnly": true, "reason": "Ausschließlich direkt enthaltene Assets aus Release 0.5.2/Commit 1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6 zur lokalen Darstellung des zugehörigen offiziellen Passivbaums; keine Hotlinks, keine Bedeutungsänderung, Attribution und erneute Prüfung bei jedem Releasewechsel. Keine rechtliche Garantie." },
     { "categoryId": "icons-images", "primarySourceId": null, "fallbackSourceId": null, "status": "blocked", "repositoryStorage": false, "offlineOnly": true, "reason": "Alle sonstigen GGG- oder Drittanbieterbilder außerhalb der eng begrenzten Kategorie official-poe2-passive-tree-export-assets bleiben gesperrt." },
-    { "categoryId": "patch-version-information", "primarySourceId": "ggg-developer-api", "fallbackSourceId": "ggg-poe2-skilltree-export", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Als Referenz nutzbar; maschinenlesbare, kategorienübergreifende Versionsbindung fehlt." }
+    { "categoryId": "patch-version-information", "primarySourceId": "ggg-developer-api", "fallbackSourceId": "ggg-poe2-skilltree-export", "status": "pending", "repositoryStorage": "unknown", "offlineOnly": true, "reason": "Als Referenz nutzbar; maschinenlesbare, kategorienübergreifende Versionsbindung fehlt." },
+    {
+      "categoryId": "poe2-pob2-unique-planner-data",
+      "primarySourceId": "path-of-building-poe2-unique-planner-c5300ccd",
+      "fallbackSourceId": null,
+      "status": "conditionally-approved",
+      "repositoryStorage": false,
+      "offlineOnly": true,
+      "reason": "5M.2.8: eng begrenzter planner-only Unique-Scope am PoB2-Commit c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0. Auditvertrag freigegeben; echter Import und Distribution bleiben pending und werden durch den dedizierten Guard blockiert. PoB2 ersetzt keine GGG-/RePoE-Technikdaten.",
+      "constraints": {
+        "sourceVersion": "commit:c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+        "exportCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+        "parserCommit": "1",
+        "allowedItemCategories": ["Unique Items"],
+        "allowedSourceFiles": ["src/Data/Uniques/amulet.lua", "src/Data/Uniques/belt.lua", "src/Data/Uniques/body.lua", "src/Data/Uniques/boots.lua", "src/Data/Uniques/bow.lua", "src/Data/Uniques/crossbow.lua", "src/Data/Uniques/flask.lua", "src/Data/Uniques/focus.lua", "src/Data/Uniques/gloves.lua", "src/Data/Uniques/helmet.lua", "src/Data/Uniques/jewel.lua", "src/Data/Uniques/mace.lua", "src/Data/Uniques/quiver.lua", "src/Data/Uniques/ring.lua", "src/Data/Uniques/sceptre.lua", "src/Data/Uniques/shield.lua", "src/Data/Uniques/spear.lua", "src/Data/Uniques/staff.lua", "src/Data/Uniques/talisman.lua", "src/Data/Uniques/wand.lua"],
+        "allowedFields": ["sourceId", "name", "baseDisplayName", "slot", "itemCategory", "requiredLevel", "variants", "visibleModifiers", "rollRanges", "implicits", "legacyStatus", "provenance", "resolutionStatus"],
+        "blockedDataCategories": ["normal-affixes", "technical-mods", "technical-stats", "crafting-pools", "spawnweights", "german-csd", "photo-mappings", "runes", "soul-cores", "socketables", "skills", "supports", "media", "passive-tree", "raw-export-mirror"],
+        "requireSha256Manifest": true,
+        "requireDeterministicNormalization": true,
+        "forbidRawMirror": true,
+        "forbidRuntimeFetch": true,
+        "forbidHotlinks": true
+      }
+    }
   ],
   "globalRestrictions": [
+    "5M.2.8 lässt PoB2 ausschließlich als getrennte Unique-Planerdatenquelle am Commit c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0 zu. Distribution und Produktimport bleiben pending; der Scope darf keine GGG-Mod-/Stat-IDs, regulären Affixe, CSD-Texte, Craftingdaten, Medien, Hotlinks oder Laufzeitquellen liefern.",
     "Kein echter Datenimport, solange die Kategorie nicht approved oder conditionally-approved ist.",
     "Die RePoE-Freigabe ist eine eng begrenzte Projektrisikoentscheidung, keine GGG-Datenlizenz; sie gilt nur für poe2-technical-affix-data-for-build-planner aus Version 4.5.4.4.4/Commit b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c.",
     "RePoE-Rohdaten dürfen nicht vollständig gespiegelt werden; zulässig sind nur normalisierte, für den Build Planner benötigte technische Ableitungen mit SHA-256-Manifest, Attribution und einfacher Entfernbarkeit.",

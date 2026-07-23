@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "sourceId": "path-of-building-poe2-unique-planner-c5300ccd",
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "decision": "conditionally-approved",
+  "auditStatus": "allowed",
+  "importStatus": "blocked-pending-5M.2.9-and-distribution",
+  "distributionStatus": "pending",
+  "localizationStatus": "not-approved",
+  "gggIdStatus": "not-claimed",
+  "approvedPurpose": "Unique planner data only",
+  "forbiddenReplacementScopes": [
+    "GGG technical affixes",
+    "base item completeness",
+    "item class completeness",
+    "German CSD",
+    "crafting data",
+    "socketables",
+    "skills",
+    "supports",
+    "media"
+  ],
+  "productFilesChanged": false,
+  "realPob2RecordsImported": false,
+  "nextTask": "5M.2.9 after distribution clarification"
+}

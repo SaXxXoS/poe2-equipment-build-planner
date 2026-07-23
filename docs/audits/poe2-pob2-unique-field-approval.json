@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "fields": [
+    {
+      "field": "sourceId",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "name",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "baseDisplayName",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "slot",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "itemCategory",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "requiredLevel",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "variants",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "visibleModifiers",
+      "status": "allowed-product-field",
+      "condition": "Only PoB2-defined planner representation; no inferred GGG IDs or text-to-number recovery."
+    },
+    {
+      "field": "rollRanges",
+      "status": "allowed-product-field",
+      "condition": "Only PoB2-defined planner representation; no inferred GGG IDs or text-to-number recovery."
+    },
+    {
+      "field": "implicits",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "legacyStatus",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "provenance",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "resolutionStatus",
+      "status": "allowed-product-field",
+      "condition": "Planner-only provenance required."
+    },
+    {
+      "field": "sourceRecordPath",
+      "status": "allowed-audit-only"
+    },
+    {
+      "field": "sourceOrder",
+      "status": "allowed-derived-field",
+      "condition": "Stable source order may form a sourceLineId; it is not a GGG identity."
+    },
+    {
+      "field": "grantedSkills",
+      "status": "pending",
+      "condition": "Only an explicit structured Unique-linked PoB2 reference may be considered by a later approval."
+    },
+    {
+      "field": "grantedSupports",
+      "status": "pending",
+      "condition": "Only an explicit structured Unique-linked PoB2 reference may be considered by a later approval."
+    },
+    {
+      "field": "gggUniqueId",
+      "status": "forbidden"
+    },
+    {
+      "field": "gggBaseItemId",
+      "status": "forbidden"
+    },
+    {
+      "field": "gggModId",
+      "status": "forbidden"
+    },
+    {
+      "field": "gggStatId",
+      "status": "forbidden"
+    },
+    {
+      "field": "technicalGggStatLink",
+      "status": "forbidden"
+    },
+    {
+      "field": "spawnWeights",
+      "status": "forbidden"
+    },
+    {
+      "field": "modDomain",
+      "status": "forbidden"
+    },
+    {
+      "field": "modGenerationType",
+      "status": "forbidden"
+    },
+    {
+      "field": "conflictGroup",
+      "status": "forbidden"
+    },
+    {
+      "field": "craftingWeight",
+      "status": "forbidden"
+    },
+    {
+      "field": "image",
+      "status": "forbidden"
+    },
+    {
+      "field": "icon",
+      "status": "forbidden"
+    },
+    {
+      "field": "media",
+      "status": "forbidden"
+    },
+    {
+      "field": "hotlink",
+      "status": "forbidden"
+    },
+    {
+      "field": "flavourText",
+      "status": "forbidden"
+    },
+    {
+      "field": "germanText",
+      "status": "forbidden"
+    },
+    {
+      "field": "skillDefinition",
+      "status": "forbidden"
+    },
+    {
+      "field": "supportDefinition",
+      "status": "forbidden"
+    },
+    {
+      "field": "passiveTreeData",
+      "status": "forbidden"
+    },
+    {
+      "field": "calculationResult",
+      "status": "forbidden"
+    },
+    {
+      "field": "communityNotes",
+      "status": "forbidden"
+    },
+    {
+      "field": "dropSource",
+      "status": "forbidden"
+    },
+    {
+      "field": "unknownField",
+      "status": "unknown",
+      "condition": "Fail closed."
+    }
+  ],
+  "counts": {
+    "allowedProduct": 13,
+    "auditOnly": 1,
+    "derived": 1,
+    "pending": 2,
+    "forbidden": 22,
+    "unknown": 1
+  },
+  "unknownFieldsPolicy": "block"
+}

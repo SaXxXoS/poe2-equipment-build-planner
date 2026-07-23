@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "codeLicense": {
+    "status": "confirmed",
+    "license": "MIT",
+    "file": "LICENSE.md",
+    "attributionRequired": true
+  },
+  "bundledItemData": {
+    "origin": "GGG and community-maintained planner data",
+    "licenseCoverage": "unknown",
+    "distributionStatus": "pending"
+  },
+  "operations": {
+    "localAudit": "allowed",
+    "buildProcessing": "conditionally-allowed",
+    "repositoryStorage": "forbidden-until-resolved",
+    "generatedProductStorage": "pending",
+    "githubPagesDistribution": "pending",
+    "runtimeLoading": "forbidden",
+    "hotlinks": "forbidden"
+  },
+  "attributionPlan": [
+    "README",
+    "DATA_SOURCE_REFERENCES",
+    "Third-Party-Notices if distribution is later approved",
+    "source repository and exact commit",
+    "planner-data and non-GGG-ID disclaimer"
+  ],
+  "legalAdvice": false
+}

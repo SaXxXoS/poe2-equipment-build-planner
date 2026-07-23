@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "contractVersion": "1",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "input": {
+    "files": [
+      "src/Data/Uniques/amulet.lua",
+      "src/Data/Uniques/belt.lua",
+      "src/Data/Uniques/body.lua",
+      "src/Data/Uniques/boots.lua",
+      "src/Data/Uniques/bow.lua",
+      "src/Data/Uniques/crossbow.lua",
+      "src/Data/Uniques/flask.lua",
+      "src/Data/Uniques/focus.lua",
+      "src/Data/Uniques/gloves.lua",
+      "src/Data/Uniques/helmet.lua",
+      "src/Data/Uniques/jewel.lua",
+      "src/Data/Uniques/mace.lua",
+      "src/Data/Uniques/quiver.lua",
+      "src/Data/Uniques/ring.lua",
+      "src/Data/Uniques/sceptre.lua",
+      "src/Data/Uniques/shield.lua",
+      "src/Data/Uniques/spear.lua",
+      "src/Data/Uniques/staff.lua",
+      "src/Data/Uniques/talisman.lua",
+      "src/Data/Uniques/wand.lua"
+    ],
+    "sha256ManifestRequired": true
+  },
+  "output": {
+    "planned": "generated/pob2/uniques.json",
+    "createdInThisTask": false,
+    "currentlyBlocked": true
+  },
+  "allowedFields": [
+    "sourceId",
+    "name",
+    "baseDisplayName",
+    "slot",
+    "itemCategory",
+    "requiredLevel",
+    "variants",
+    "visibleModifiers",
+    "rollRanges",
+    "implicits",
+    "legacyStatus",
+    "provenance",
+    "resolutionStatus"
+  ],
+  "forbiddenFieldPolicy": "fail",
+  "deterministicId": "pob2:<source-record-id>",
+  "deterministicSort": [
+    "sourceRecordIdentifier",
+    "sourceVariantId",
+    "sourceOrder"
+  ],
+  "variants": {
+    "fields": [
+      "sourceVariantId",
+      "displayLabel",
+      "currentOrLegacy",
+      "modifierSet",
+      "rollRanges",
+      "availabilityStatus",
+      "sourceOrder",
+      "uncertaintyStatus"
+    ],
+    "mergeByVisibleName": false
+  },
+  "modifierLines": {
+    "fields": [
+      "sourceLineId",
+      "normalizedPlannerLine",
+      "valuePlaceholders",
+      "rollRanges",
+      "lineOrder",
+      "variantScope",
+      "sourceKind",
+      "technicalGggStatLink",
+      "localizationStatus"
+    ],
+    "technicalGggStatLink": "null-unless-independently-proven"
+  },
+  "failures": [
+    "unpinned-source",
+    "unknown-file",
+    "hash-mismatch",
+    "unknown-schema",
+    "unknown-field",
+    "missing-provenance",
+    "identity-loss",
+    "variant-conflict",
+    "scope-escape",
+    "distribution-pending"
+  ],
+  "followUp": "5M.2.9"
+}

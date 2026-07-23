@@ -698,3 +698,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Importfähigkeit: Nein. Unique-Affixe technisch vollständig geklärt: **Nein**. Blocker sind fehlende Item-Unique-ID-, Unique→Base-, Unique→Mod/Stat- und Version-/Variantenketten.
 - Keine Rohdaten/Volltexte oder Unique-Daten importiert; Produktivpin, Approval, Analyzer, UI, Engine und `translation-missing` unverändert. 5M.2/5N nicht begonnen.
 - Nächster Schritt: separate lokale Quellenentscheidung, ob serverseitige Unique-Definitionen überhaupt im Clientcontainer materialisiert sind oder eine zulässige offizielle ID-Quelle benötigt wird.
+
+## Aufgabe 5M.2.8 – PoB2-Unique-Planerdaten-Approval
+
+- 5M.2.7 abgeschlossen: keine geprüfte Quelle liefert die vollständige GGG-Unique-ID-/Base-/Mod-/Stat-/Werte-/CSD-Kette.
+- Auftraggeberentscheidung: `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0` darf als eigenständige `pob2-planner-data`-Quelle für Uniques vorbereitet werden.
+- Neuer Scope `poe2-pob2-unique-planner-data`: `conditionally-approved`, aber Distribution `pending`, Produktimport blockiert und 5M.2.9 erforderlich.
+- Erlaubt geplant: PoB2-Quellidentität, Name, Basisanzeige, Slot/Kategorie, Level, Varianten, sichtbare Planerzeilen, belegte PoB2-Rollbereiche, Implicits, Legacy- und Provenienzstatus.
+- Verboten: technische GGG-IDs, reguläre Affixe, Crafting-/Spawnweight-/CSD-Daten, deutsche Texte, Medien, Hotlinks, Runtime-Netzwerk, Scraping, Socketables und Skill-/Support-Vollimporte. Unique-linked Skill-/Supporthinweise bleiben pending.
+- Modell: Namespace `pob2:<source-record-id>`, Fixtures `fixture:<id>`; `gggIdentityStatus: unknown`; keine implizite Feldherkunft. Varianten und Modzeilen bleiben quellenspezifisch.
+- 20 statische Unique-Quelldateien sind mit SHA-256 festgelegt; `Special/Generated.lua`, Loader, leere Kategorien und Voll-Datenbank sind ausgeschlossen.
+- MIT-Codelizenz bestätigt; Herkunft/Weiterverteilung der mitgelieferten GGG-/Community-Itemdaten nicht eindeutig durch MIT gedeckt und deshalb `distribution-pending`. Attribution ist Pflicht; keine Rechtsfreigabe behauptet.
+- Dedizierter Approval-, Feld-, Produkttrennungs-, Provenienz- und Distributionsguard implementiert. Er erlaubt nur Audit und blockiert `generated/`, `public/` sowie Produktimport.
+- Keine PoB2-Unique-Daten, deutschen Unique-Texte oder Produktdateien importiert; Unique Analyzer, UI, Engine, Worker, BuildProfile, RePoE-/PyPoE-Pin und bestehende Approval-Scopes unverändert.
+- 5M.2 und 5N weiterhin nicht begonnen. Fotoerkennung und mobile Textklippung bleiben offen; PlayStation-Nutzer benötigen später ausgelieferte Daten.
+- Nächster Schritt: Distributionsstatus der statischen PoB2-Unique-Planerdaten klären; erst danach Aufgabe 5M.2.9 unter dem festgelegten Importvertrag.

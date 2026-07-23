@@ -169,3 +169,7 @@ Domain und Generation Type sind für 2.255/2.255 Mods bestätigt; StatsValues/Bo
 ## 5M.2.6 Unique-Identitäts-/Affix-Audit
 
 25 gepinnte lokale Kandidatendateien wurden zweimal offline geprüft. Stash-, Words-, Visual-, Chest-, Mutation-, Legacy- und Skillfragmente enthalten keine vollständige Unique-ID→Base→Variante→Mod/Stat→Werte-Kette. Unique-Affixe sind technisch nicht vollständig geklärt; kein Import oder Approval. Details: `docs/POE2_UNIQUE_IDENTITY_AND_AFFIX_AUDIT.md`.
+
+## 5M.2.8 PoB2-Unique-Planerdaten-Approval
+
+Auf ausdrückliche Auftraggeberentscheidung ist PoB2 am Commit `c5300ccd…ab7d0` als getrennte Unique-Planerdatenquelle bedingt zugelassen. Der Scope darf keine technischen GGG-IDs, regulären Affixe, Crafting-/CSD-/Socketable-/Medien- oder Runtime-Daten liefern. Distribution und Produktimport bleiben pending; es wurden keine Uniques oder Texte importiert. Vertrag: `docs/POE2_POB2_UNIQUE_PLANNER_DATA_APPROVAL.md`.

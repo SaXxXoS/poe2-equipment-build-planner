@@ -136,3 +136,7 @@ Domain und Generation Type sind für 2.255/2.255 Mods bestätigt. Wegen unbelegt
 ## Stand nach 5M.2.6
 
 Der Unique-Audit fand 0 technisch verknüpfte Item-Unique-Affixe. 311 Modreferenzen aus UniqueChests/Mutation sind ausdrücklich keine Unique-Gegenstandsaffixe und verändern den Produktbestand nicht.
+
+## Produkttrennung 5M.2.8
+
+PoB2-Unique-Planerzeilen gehören nicht zum technischen Modbestand. Sie verändern weder die 2.255 Produktmods noch Stat-IDs, Domains, Generation Types, Spawnweights oder Craftingpools. Der dedizierte Guard blockiert jede solche Vermischung; keine Produktdatei wurde verändert.

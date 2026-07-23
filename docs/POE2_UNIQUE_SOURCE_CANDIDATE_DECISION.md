@@ -160,3 +160,7 @@ Verbleibende Möglichkeiten:
 3. belastbare Herkunfts- und Distributionsklärung durch GGG beziehungsweise den Datenherausgeber.
 
 Der nächste Schritt ist eine eng begrenzte Quellenbeobachtung oder technische Anfrage nach genau dieser ID-Kette. Erst dann folgt eine eigene Pin-, Feldallowlist-, Lizenz-, Distributions- und Guard-Entscheidung. Bis dahin bleiben Unique-Affixe höchste Priorität, reguläre Produktlokalisierung zurückgestellt, Produktivpin und Approval unverändert, `translation-missing` aktiv sowie 5M.2, 5N, OCR und Fotoerkennung nicht begonnen.
+
+## Auftraggeberentscheidung 5M.2.8
+
+Der Auftraggeber hat PoB2 trotz der fehlenden GGG-ID-Kette als eigenständige Unique-Planerdatenquelle zugelassen. Diese Entscheidung ersetzt nicht das technische Ergebnis aus 5M.2.7: PoB2 bleibt `pob2-planner-data` und darf keine GGG-Mod-/Stat-Identität behaupten. Der neue Scope ist nur bedingt freigegeben; Distribution und Produktimport bleiben pending. Details und Guards stehen in `POE2_POB2_UNIQUE_PLANNER_DATA_APPROVAL.md`.

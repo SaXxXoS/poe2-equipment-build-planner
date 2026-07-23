@@ -151,3 +151,7 @@ Der Binärschema-/Enum-Audit ist audit-only. Er gibt weder ItemClasses/Soul Core
 ## Auditstatus 5M.2.6
 
 Auch der priorisierte Unique-Audit ist audit-only. Fehlende Identitäts-, Basis-, Mod- und Variantenketten verhindern jede Unique- oder deutsche Unique-Textfreigabe. `source-approval.json` bleibt unverändert.
+
+## Bedingter PoB2-Unique-Scope 5M.2.8
+
+`source-approval.json` enthält nun zusätzlich `poe2-pob2-unique-planner-data` am exakten PoB2-Commit. Die bedingte Freigabe gilt ausschließlich für Audit und Vorbereitung eines späteren Unique-Planerdatenimports. Repositoryspeicherung und Distribution der Itemdaten sind pending; der Produktimport bleibt blockiert. Alle bestehenden Scopes und der RePoE-Produktivpin bleiben unverändert.

@@ -62,3 +62,7 @@ Verbleibende exakte Blocker:
 **Sind die Unique-Affixe technisch vollständig geklärt? Nein.** Die vorhandenen lokalen DAT-Quellen enthalten Stash-, Words-, Visual-, Chest-, Mutation-, Legacy- und Skillfragmente, aber keine vollständige Unique-Item-Affixkette. Ein produktiver Import oder Approval ist nicht vertretbar.
 
 Nächster Schritt ist eine separate, weiterhin lokale Quellenentscheidung: prüfen, ob die serverseitige Unique-Definition überhaupt im Clientcontainer materialisiert ist oder ob eine andere ausdrücklich zulässige, ID-basierte offizielle Quelle erforderlich ist. Bis dahin bleiben Unique-Import, reguläre Lokalisierungsfortsetzung, 5M.2, 5N, OCR und Fotoerkennung zurückgestellt.
+
+## Planerdatenentscheidung 5M.2.8
+
+Das negative technische Ergebnis bleibt gültig. Die neue Auftraggeberentscheidung erlaubt PoB2 separat als Planerdatensatz, nicht als nachträglichen Beweis der fehlenden GGG-Kette. In 5M.2.8 wurden nur Scope, Modell, Provenienz, Guard und Importvertrag erstellt; keine Unique-Daten oder Texte wurden importiert.

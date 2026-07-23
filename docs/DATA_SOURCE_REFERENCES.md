@@ -104,3 +104,7 @@ Belegquellen sind ausschließlich die gepinnten PoB2-Dateien `spec.lua`, `Script
 ## Lokaler Audit 5M.2.6
 
 Unique-Referenzen stammen ausschließlich aus 25 lokal aus demselben Content-Pin extrahierten DATC64-Dateien, Manifest `c4fdc6fe…972752c`. Sie sind Auditbelege, keine freigegebene Produkt- oder Distributionsquelle.
+
+## PoB2-Unique-Planerdaten 5M.2.8
+
+Neue getrennte Referenz: `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Der minimale spätere Dateiscope umfasst 20 statische `src/Data/Uniques/*.lua`-Dateien mit SHA-256-Manifest. `Special/Generated.lua`, leere Kategorien, Medien, Runtime und Gesamt-Datenbank sind ausgeschlossen. Die MIT-Codelizenz ist belegt; die Verteilungsrechte der mitgelieferten Itemdaten bleiben unbekannt/pending.

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "implementedIn": "src/import/pob2-unique-approval.ts",
+  "guards": {
+    "approval": [
+      "exact-scope",
+      "exact-repository",
+      "exact-commit",
+      "exact-file",
+      "field-allowlist",
+      "sha256-manifest",
+      "deterministic-normalization"
+    ],
+    "separation": [
+      "no-normal-affixes",
+      "no-technical-mods-or-stats",
+      "no-crafting",
+      "no-spawnweights",
+      "no-csd",
+      "no-photo-mapping",
+      "no-socketables",
+      "no-full-skills-or-supports",
+      "no-overwrite"
+    ],
+    "provenance": [
+      "required-fields",
+      "pob2-namespace",
+      "unknown-ggg-identity"
+    ],
+    "distribution": [
+      "product-import-blocked-while-pending",
+      "no-generated",
+      "no-public"
+    ],
+    "external": [
+      "no-runtime-network",
+      "no-hotlinks",
+      "no-scraping",
+      "no-media",
+      "no-raw-mirror"
+    ]
+  },
+  "failClosed": true
+}

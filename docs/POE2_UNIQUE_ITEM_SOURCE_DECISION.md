@@ -195,3 +195,7 @@ Bestätigte Enumwerte verbessern nur Teilreferenzen. Es entsteht keine vollstän
 ## Stand nach 5M.2.6
 
 Der priorisierte Audit bestätigt das negative Ergebnis: 449 Stashfragmente, 311 technische Chest-/Mutations-Modreferenzen und 65 ModGrantedSkills bilden keine Item-Unique-Kette. 0 bestätigte Unique-Item-Identitäten, Basistypbezüge, Varianten oder Item-Affixe. Scope bleibt `pending`/`blocked`.
+
+## Getrennter PoB2-Planerscope nach 5M.2.8
+
+Der bisherige GGG-Unique-Identitäts- und Affixscope bleibt unverändert pending beziehungsweise blocked. Neu ist ausschließlich `poe2-pob2-unique-planner-data` am Commit `c5300ccd…ab7d0`: planerbezogene Namen, Slots, Varianten, sichtbare Zeilen und belegte PoB2-Rollbereiche dürfen nach separater Distributionsklärung und 5M.2.9 verarbeitet werden. Sie sind keine technischen GGG-Daten.

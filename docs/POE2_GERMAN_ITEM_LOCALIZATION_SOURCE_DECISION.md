@@ -102,3 +102,7 @@ Bestätigte Mod-Enums ändern die Distribution nicht: 12 Stat-IDs, 38 Templatel�
 ## Priorität nach 5M.2.6
 
 Reguläre Produktlokalisierung bleibt bis zur Unique-Quellenklärung zurückgestellt. Deutsche CSD-Zeilen allein dürfen fehlende Unique-Identitäten oder Modketten nicht ersetzen; alle Lokalisierungsscopes bleiben unverändert.
+
+## Abgrenzung 5M.2.8
+
+Der PoB2-Unique-Scope gibt keine deutschen Unique-Texte frei und ändert keinen deutschen Lokalisierungsscope. Ohne unabhängige Stat-ID-Verbindung darf ein PoB2-Modtext nicht automatisch einer lokalen CSD-Struktur zugeordnet werden. `translation-missing` bleibt produktiv unverändert.
