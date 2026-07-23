@@ -1,0 +1,207 @@
+{
+  "approvalChanged": false,
+  "audit": "5M.2.5",
+  "coverage": {
+    "counts": {
+      "confirmed": 2255,
+      "conflict": 0,
+      "rawPresent": 2255,
+      "stronglySupported": 0,
+      "total": 2255,
+      "unknown": 0
+    },
+    "rawDistribution": {
+      "1": 1828,
+      "2": 107,
+      "11": 320
+    }
+  },
+  "enumValues": [
+    {
+      "label": "Generic Modifiers",
+      "rawValue": 1
+    },
+    {
+      "label": "Flask / Charm",
+      "rawValue": 2
+    },
+    {
+      "label": "Monster",
+      "rawValue": 3
+    },
+    {
+      "label": "Treasure chest",
+      "rawValue": 4
+    },
+    {
+      "label": "Strongboxes & Chest Spawn",
+      "rawValue": 5
+    },
+    {
+      "label": "Map",
+      "rawValue": 6
+    },
+    {
+      "label": "7",
+      "rawValue": 7
+    },
+    {
+      "label": "Sanctum",
+      "rawValue": 8
+    },
+    {
+      "label": "9",
+      "rawValue": 9
+    },
+    {
+      "label": "Crafted",
+      "rawValue": 10
+    },
+    {
+      "label": "Jewel",
+      "rawValue": 11
+    },
+    {
+      "label": "Sextant",
+      "rawValue": 12
+    },
+    {
+      "label": "Additional Areas",
+      "rawValue": 13
+    },
+    {
+      "label": "14",
+      "rawValue": 14
+    },
+    {
+      "label": "Fragments & Scarabs",
+      "rawValue": 15
+    },
+    {
+      "label": "Dummy",
+      "rawValue": 16
+    },
+    {
+      "label": "17",
+      "rawValue": 17
+    },
+    {
+      "label": "Map Drop Quantity monster mods",
+      "rawValue": 18
+    },
+    {
+      "label": "Map Drop Quantity",
+      "rawValue": 19
+    },
+    {
+      "label": "Synthesis Map",
+      "rawValue": 20
+    },
+    {
+      "label": "Synthesis Map",
+      "rawValue": 21
+    },
+    {
+      "label": "Unique Jewel",
+      "rawValue": 22
+    },
+    {
+      "label": "Heist",
+      "rawValue": 23
+    },
+    {
+      "label": "Heist",
+      "rawValue": 24
+    },
+    {
+      "label": "26",
+      "rawValue": 25
+    },
+    {
+      "label": "Veiled Prefixes",
+      "rawValue": 26
+    },
+    {
+      "label": "Expedition",
+      "rawValue": 27
+    },
+    {
+      "label": "Jun",
+      "rawValue": 28
+    },
+    {
+      "label": "Sentinel",
+      "rawValue": 29
+    },
+    {
+      "label": "Maven Memory Lines",
+      "rawValue": 30
+    },
+    {
+      "label": "33",
+      "rawValue": 31
+    },
+    {
+      "label": "Breach Tower",
+      "rawValue": 32
+    },
+    {
+      "label": "Ultimatum",
+      "rawValue": 33
+    }
+  ],
+  "evidence": "confirmed",
+  "network": {
+    "api": false,
+    "dns": false,
+    "http": false,
+    "https": false,
+    "poe2db": false,
+    "tradeApi": false,
+    "websites": false
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "productDataChanged": false,
+  "productPinChanged": false,
+  "rawField": {
+    "evidence": "confirmed",
+    "name": "Domain",
+    "schemaReference": "ModDomains",
+    "type": "Enum"
+  },
+  "sources": [
+    {
+      "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "path": "src/Export/Scripts/enums.lua",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "role": "enum generator",
+      "symbol": "modDomains"
+    },
+    {
+      "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "path": "src/Export/Scripts/mods.lua",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "role": "consumer constants",
+      "symbol": "Domains"
+    },
+    {
+      "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "path": "src/Export/spec.lua",
+      "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "role": "binary field contract",
+      "symbol": "mods.Domain"
+    }
+  ],
+  "status": "completed-audit-only",
+  "unknownValues": []
+}

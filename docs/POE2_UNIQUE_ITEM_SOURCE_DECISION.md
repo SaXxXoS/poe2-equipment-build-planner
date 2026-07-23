@@ -185,3 +185,7 @@ Die fünf gepinnten Balance-Tabellen enthalten keine beweisbare Unique-Identitä
 # Stand nach 5M.2.4
 
 `UniqueStashLayout` (449), `UniqueChests` (48) und `Incursion2MutatedUniqueModsClient` (1) wurden lokal geprüft. Sie bilden keine verlustfreie Unique-ID→Base→Variante→Mod→Stat-Kette. Unique-Identitäten, Mods, Varianten sowie granted Skill-/Supportreferenzen bleiben `pending`/`blocked`; keine Freigabe oder Produktdatei entstand.
+
+## Stand nach 5M.2.5
+
+Bestätigte Enumwerte verbessern nur Teilreferenzen. Es entsteht keine vollständige Unique-Kette; kein Unique-Scope wurde freigegeben oder importiert.

@@ -155,3 +155,7 @@ The next recommended task is not product import. It is a narrowly pinned input-e
 # Fortsetzung 5M.2.4
 
 Die modulare Pipeline wurde um `reference-tables.mjs` ergänzt. 22 lokal vorhandene Referenztabellen wurden zweimal byteidentisch extrahiert und auditiert. Die Erweiterung belegt Soul-Core-Strukturen, löst ItemClasses, Domain/Generation, Uniques und Bonded-Werte jedoch nicht verlustfrei. Maßgeblich ist `POE2_OFFLINE_REFERENCE_TABLE_EXTRACTION.md`; 5M.2.3-Pins und Ergebnisse bleiben unverändert.
+
+## Fortsetzung 5M.2.5
+
+`binary-schema-enum-audit.mjs` ergänzt kontrollierte Bytevarianten, gepinnte Enumquellen und SoulCore-Parallelarrayprüfungen. Zwei Läufe waren byteidentisch; der Code bleibt außerhalb der Web-App.

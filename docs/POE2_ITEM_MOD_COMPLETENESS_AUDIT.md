@@ -126,3 +126,7 @@ Klare Schlussfolgerung: **5M.1 ist technisch abgeschlossen, aber sein Bestand vo
 # Stand nach 5M.2.4
 
 Alle 2.255 Produktmods behalten vollständige Mod-ID-, Stat-ID- und Werteübereinstimmung, bleiben jedoch `partially-resolved`: Domain- und Generation-Enumtabellen sind nicht als lokale DAT-Dateien materialisiert, ItemClasses ist wegen eines unbekannten Bytes nicht verlustfrei dekodiert. Der Produktbestand selbst wurde nicht verändert.
+
+## Stand nach 5M.2.5
+
+Domain und Generation Type sind für 2.255/2.255 Mods bestätigt. Wegen unbelegter Konfliktgruppensemantik bleiben 0 resolved und 2.255 partially-resolved; Produktdateien sind unverändert.

@@ -665,3 +665,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Produktivpin, `source-approval.json`, Produktdaten, UI, BuildProfile, Worker, Analyzer, Engine, Baum und `translation-missing` sind unverändert.
 - 5M.2 und 5N wurden nicht begonnen. PS-Sprachbestand, Fotoerkennung, Lernmodus, mobile Textklippung, Buildvergleich und Designoptimierung bleiben spätere Aufgaben.
 - Nächster Schritt: separater gepinnter Input-Erweiterungsaudit für fehlende Enum-/Referenz-, Unique- und Augments/Socketable-Tabellen sowie die ItemClasses-Schemadrift; noch kein Produktimport.
+
+## Aufgabe 5M.2.5 – Abschlussstatus
+
+- Audit-only mit unveränderten Pins. ItemClasses: 117 EN/117 DE, 150 statt 149 Schema-Bytes; 49 mögliche Offsets (65–113), exakter Offset/Semantik `unknown`, 33 Produktklassen partial.
+- `Charms` stammt aus RePoE/Projekt-Normalisierung (`project-normalized-id`), nicht aus Namensableitung.
+- 295 SoulCores bleiben partial; 552 StatsValues- und 510 BondedStats-Wertepaare sowie 30 Category→ItemClass[]-Kategorien sind strukturell belegt, das Zusatzbyte bleibt unbekannt.
+- Domain und Generation Type sind durch Schema, Enumgenerator und Consumercode für 2.255/2.255 Mods bestätigt. ModFamily/ModType sind Referenzen, Konfliktsemantik bleibt `unknown`; 0 resolved/2.255 partial.
+- Lokalisierung unverändert: 419/431 Stat-IDs, 12 fehlend, 38 Templatelücken, 2.189 OCR-Mehrdeutigkeiten. Zwei Läufe byteidentisch (`b9cb4850…5d701c7`), vollständig offline.
+- Produktivpin, Approval, Produktdaten, `translation-missing`, UI, Worker, Analyzer, Engine und Baum unverändert. Keine Rohdaten/Volltexte committed; 5M.2/5N nicht begonnen.
+- Nächster Schritt: gepinntes Schemaquellen-Audit für die Restbytes und Konfliktgruppensemantik; Fotoerkennung, PS-Sprachbestand und mobile Textklippung bleiben offen.

@@ -92,3 +92,7 @@ Produktiver technischer Pin: `repoe-fork/poe2` Version `4.5.4.4.4`, Commit `b3f3
 # Lokaler Audit 5M.2.4
 
 Auditquelle bleibt ausschließlich die lokal legal vorhandene, gepinnte Content.ggpk. Technische Werkzeuge: PoB2 `c5300ccd`, ooz `0.2.4`, Schema-SHA `268ae3a3`. Das 22-Dateien-Referenzmanifest `a4bbcd99...e971353` ist keine Produkt- oder Distributionsquelle.
+
+## Lokaler Audit 5M.2.5
+
+Belegquellen sind ausschließlich die gepinnten PoB2-Dateien `spec.lua`, `Scripts/enums.lua`, `mods.lua` und `soulcores.lua`. Sie sind Schema-/Codebelege, keine neue Produkt- oder Textquelle.

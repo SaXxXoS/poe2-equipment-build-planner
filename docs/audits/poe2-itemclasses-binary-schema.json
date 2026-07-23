@@ -1,0 +1,200 @@
+{
+  "approvalChanged": false,
+  "audit": "5M.2.5",
+  "charm": {
+    "conclusion": "The product ID is a RePoE/project plural normalization; no singular local ID was manufactured.",
+    "evidence": "strongly-supported",
+    "localExactId": false,
+    "localTechnicalCandidates": [],
+    "projectFlow": [
+      "RePoE data/item_classes.json key Charms",
+      "scripts/poe2-additional-item-import.mjs CATEGORIES.Charms.classId",
+      "generated/poe2-items and src/affixes/registry.ts itemClassId Charms"
+    ],
+    "status": "project-normalized-id"
+  },
+  "classification": "teilweise dekodierbar",
+  "english": {
+    "candidateOffsetCount": 49,
+    "candidateOffsetMaximum": 113,
+    "candidateOffsetMinimum": 65,
+    "exactOffset": null,
+    "exactOffsetStatus": "unknown",
+    "observedBinaryCandidates": [
+      {
+        "distribution": {
+          "0": 108,
+          "1": 9
+        },
+        "offset": 65
+      },
+      {
+        "distribution": {
+          "0": 75,
+          "1": 42
+        },
+        "offset": 66
+      },
+      {
+        "distribution": {
+          "0": 95,
+          "1": 22
+        },
+        "offset": 67
+      },
+      {
+        "distribution": {
+          "0": 117
+        },
+        "offset": 86
+      },
+      {
+        "distribution": {
+          "0": 117
+        },
+        "offset": 87
+      },
+      {
+        "distribution": {
+          "0": 108,
+          "1": 9
+        },
+        "offset": 88
+      },
+      {
+        "distribution": {
+          "0": 73,
+          "1": 44
+        },
+        "offset": 89
+      },
+      {
+        "distribution": {
+          "0": 87,
+          "1": 30
+        },
+        "offset": 90
+      }
+    ],
+    "rowBytes": 150,
+    "rows": 117,
+    "schemaBytes": 149,
+    "unknownLength": 1
+  },
+  "evidence": "unknown",
+  "german": {
+    "candidateOffsetCount": 49,
+    "candidateOffsetMaximum": 113,
+    "candidateOffsetMinimum": 65,
+    "exactOffset": null,
+    "exactOffsetStatus": "unknown",
+    "observedBinaryCandidates": [
+      {
+        "distribution": {
+          "0": 108,
+          "1": 9
+        },
+        "offset": 65
+      },
+      {
+        "distribution": {
+          "0": 75,
+          "1": 42
+        },
+        "offset": 66
+      },
+      {
+        "distribution": {
+          "0": 95,
+          "1": 22
+        },
+        "offset": 67
+      },
+      {
+        "distribution": {
+          "0": 117
+        },
+        "offset": 86
+      },
+      {
+        "distribution": {
+          "0": 117
+        },
+        "offset": 87
+      },
+      {
+        "distribution": {
+          "0": 108,
+          "1": 9
+        },
+        "offset": 88
+      },
+      {
+        "distribution": {
+          "0": 73,
+          "1": 44
+        },
+        "offset": 89
+      },
+      {
+        "distribution": {
+          "0": 87,
+          "1": 30
+        },
+        "offset": 90
+      }
+    ],
+    "rowBytes": 150,
+    "rows": 117,
+    "schemaBytes": 149,
+    "unknownLength": 1
+  },
+  "hypotheses": [
+    {
+      "evidence": "strongly-supported",
+      "reason": "Pinned spec declares a final unnamed Bool and values are 0/1 in both locales.",
+      "type": "Bool"
+    },
+    {
+      "evidence": "contradicted",
+      "reason": "The byte varies (114 true, 3 false) and is explicitly represented by the pinned schema.",
+      "type": "padding"
+    },
+    {
+      "evidence": "contradicted",
+      "reason": "Variation is record-dependent; no alignment effect exists after the final byte.",
+      "type": "alignment"
+    },
+    {
+      "evidence": "contradicted",
+      "reason": "No reference target, only binary values, and exact 150-byte row closure as Bool.",
+      "type": "enum/reference/larger-field"
+    }
+  ],
+  "idParity": true,
+  "idsDecodedInExperiment": 117,
+  "languageParity": true,
+  "network": {
+    "api": false,
+    "dns": false,
+    "http": false,
+    "https": false,
+    "poe2db": false,
+    "tradeApi": false,
+    "websites": false
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "productDataChanged": false,
+  "productPinChanged": false,
+  "status": "completed-audit-only"
+}

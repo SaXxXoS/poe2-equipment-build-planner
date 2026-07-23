@@ -92,3 +92,7 @@ Quellen: [GGG Developer Docs](https://www.pathofexile.com/developer/docs), [GGG 
 # Stand nach 5M.2.4
 
 Die technische lokale Verfügbarkeit weiterer Tabellen ändert die Quellenentscheidung nicht. Alle deutschen Produktlokalisierungsscopes bleiben `pending`, `translation-missing` bleibt aktiv und es gibt keine Repository-/Runtime-Freigabe deutscher Volltexte. 12 Stat-IDs, 38 Templatelücken und 2.189 OCR-Mehrdeutigkeiten bleiben ungelöst.
+
+## Stand nach 5M.2.5
+
+Bestätigte Mod-Enums ändern die Distribution nicht: 12 Stat-IDs, 38 Templatelücken und 2.189 OCR-Mehrdeutigkeiten bleiben offen; keine deutschen Texte wurden importiert.

@@ -1,0 +1,127 @@
+{
+  "approvalChanged": false,
+  "audit": "5M.2.5",
+  "bondedStats": {
+    "evidence": "confirmed",
+    "lengthMismatchRows": 0,
+    "paired": 510,
+    "sourceContract": "SoulCoreStats.BondedStats and parallel BondedValues arrays"
+  },
+  "categories": 30,
+  "hypotheses": [
+    {
+      "evidence": "strongly-supported",
+      "reason": "Pinned spec contains an unnamed final Bool and the observed values are only 0/1.",
+      "type": "Bool"
+    },
+    {
+      "evidence": "contradicted",
+      "reason": "The byte varies across rows and the pinned schema declares a final Bool.",
+      "type": "padding"
+    },
+    {
+      "evidence": "contradicted",
+      "reason": "One byte and binary values match Bool; no reference target exists.",
+      "type": "enum/reference"
+    }
+  ],
+  "layout": {
+    "candidateOffsetCount": 98,
+    "candidateOffsetMaximum": 97,
+    "candidateOffsetMinimum": 0,
+    "exactOffset": null,
+    "exactOffsetStatus": "unknown",
+    "observedBinaryCandidates": [
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 2
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 3
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 4
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 5
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 6
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 7
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 8
+      },
+      {
+        "distribution": {
+          "0": 295
+        },
+        "offset": 9
+      }
+    ],
+    "rowBytes": 98,
+    "rows": 295,
+    "schemaBytes": 97,
+    "unknownLength": 1
+  },
+  "limits": 4,
+  "network": {
+    "api": false,
+    "dns": false,
+    "http": false,
+    "https": false,
+    "poe2db": false,
+    "tradeApi": false,
+    "websites": false
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "productDataChanged": false,
+  "productPinChanged": false,
+  "rows": 295,
+  "sourceCodeUse": "confirmed-parallel-array-use",
+  "statRows": 507,
+  "statsValues": {
+    "evidence": "confirmed",
+    "lengthMismatchRows": 0,
+    "paired": 552
+  },
+  "status": "completed-audit-only",
+  "targetCategories": {
+    "evidence": "confirmed",
+    "rows": 30,
+    "sourceContract": "SoulCoreStats.Category -> SoulCoreStatCategories.ItemClass[]"
+  },
+  "types": 5
+}

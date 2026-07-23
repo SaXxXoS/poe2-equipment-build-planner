@@ -173,3 +173,7 @@ Die bisherigen Identitätszahlen für Runen, Soul Cores, Idols, Abyssal Eyes und
 # Stand nach 5M.2.4
 
 Die lokale Extraktion belegt 295 SoulCore-Zeilen, 507 SoulCoreStats-Zeilen, 30 Statkategorien und strukturierte `StatsValues`. Ein unbekanntes SoulCores-Schemabyte sowie die fehlende Bonded-/Itemklassen-/Zielkategoriekette verhindern die vollständige Auflösung. Runen, Idols, Abyssal Eyes und Congealed Mist wurden nicht aus Namen rekonstruiert. Alle Modscopes bleiben unverändert pending/blocked.
+
+## Stand nach 5M.2.5
+
+552 Stats-/Value- und 510 BondedStats-/BondedValues-Paare sind längenkonsistent; der gepinnte Consumer bestätigt den Parallelarrayvertrag. Das SoulCores-Zusatzbyte bleibt unbekannt, alle 295 Ketten partial und alle Scopes pending/blocked.

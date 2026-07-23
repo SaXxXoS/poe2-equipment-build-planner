@@ -117,3 +117,7 @@ Die Extraktionsmöglichkeit ist deterministisch, aber der aktuelle PoB2-Schemast
 Technische Schlussfolgerung: 5M.2.4 verbessert das Tabelleninventar und belegt Soul-Core-Strukturen, löst jedoch die 2.255 Produktmods nicht über den Status `partially-resolved` hinaus. Es rechtfertigt weder einen neuen Produktivpin noch eine Approval-Freigabe.
 
 Empfohlener nächster Schritt ist ein eigener, audit-only Schemaentscheid für die zwei unbekannten Bytes und die nicht als DAT materialisierten Enumtabellen. Erst nach einer belegten Schemaquelle darf ein weiterer End-to-End-Audit erfolgen. 5M.2, 5N, Fotoerkennung, Übersetzungs-Lernmodus und mobile Textklippung bleiben offen.
+
+## Fortsetzung 5M.2.5
+
+Schema, Enumgenerator und Consumercode bestätigen Domain/Generation für 2.255 Mods. Zusatzbytes und Konfliktgruppensemantik bleiben unbekannt. Details: [POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md](POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md).

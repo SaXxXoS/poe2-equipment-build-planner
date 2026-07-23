@@ -141,3 +141,7 @@ Der Scope `poe2-technical-affix-data-for-build-planner` wird seit 5M.1 ausschlie
 # Auditstatus 5M.2.4
 
 Die Offline-Referenztabellenextraktion ist ausschließlich ein lokaler Audit. Sie erweitert keine Approval-Scopes, zulässigen Produktfelder oder Produktpins. Deutsche Texte, Unique-Daten und Socketable-Moddaten bleiben pending beziehungsweise blocked; `source-approval.json` ist unverändert.
+
+## Auditstatus 5M.2.5
+
+Der Binärschema-/Enum-Audit ist audit-only. Er gibt weder ItemClasses/Soul Cores noch Uniques, Socketables oder deutsche Texte frei. `source-approval.json` und Produktivpins bleiben unverändert.

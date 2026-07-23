@@ -159,3 +159,7 @@ Der offizielle Baum unterstützt Pointer-basierten Zwei-Finger-Pinch um den Fing
 # 5M.2.4 Offline-Referenztabellenaudit
 
 Die bestehende Offline-Auditpipeline inventarisiert nun deterministisch 22 konkret benötigte lokale Referenztabellen. ItemClasses und SoulCores behalten je ein unbekanntes Schemabyte; Domain-/Generation-/Unique-/Bonded-Ketten bleiben deshalb Auditlücken. Es wurden keine Produktdaten oder Volltexte importiert, keine Freigabe erteilt und 5M.2/5N nicht begonnen. Details: `docs/POE2_OFFLINE_REFERENCE_TABLE_EXTRACTION.md`.
+
+## 5M.2.5 Binärschema-/Enum-Audit
+
+Domain und Generation Type sind für 2.255/2.255 Mods bestätigt; StatsValues/BondedStats sind als Parallelarrays belegt. Zusatzbytes in ItemClasses/SoulCores und Konfliktgruppensemantik bleiben unbekannt. Keine Produkt-, UI-, Engine- oder Approval-Änderung; 5M.2/5N bleiben unbegonnen. Details: `docs/POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md`.

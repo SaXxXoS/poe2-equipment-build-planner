@@ -144,3 +144,7 @@ Der aktuelle technische Affixstand ist exakt `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3
 # 5M.2.4 Release-Audit
 
 Der lokale Spielpin 4.5.4.53018/Content-SHA `a917a56f...8a18e28` blieb unverändert. Zwei Referenztabellenextraktionen und zwei Audits waren byteidentisch. Es erfolgte kein Release-, Produktivpin- oder Approval-Wechsel; ein neuer Release verlangt weiterhin eine vollständige erneute Prüfung.
+
+## 5M.2.5 Release-Audit
+
+Zwei Schema-/Enum-Läufe waren byteidentisch (`b9cb4850…5d701c7`). Container-, PoB2-, ooz-, Schema-, Produktiv- und Approval-Pins blieben unverändert; unbekannte Bytes bleiben Releaseblocker.
