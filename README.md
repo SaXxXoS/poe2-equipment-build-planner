@@ -190,3 +190,6 @@ Domain und Generation Type sind für 2.255/2.255 Mods bestätigt; StatsValues/Bo
 ## 5M.2.8 PoB2-Unique-Planerdaten-Approval
 
 Auf ausdrückliche Auftraggeberentscheidung ist PoB2 am Commit `c5300ccd…ab7d0` als getrennte Unique-Planerdatenquelle bedingt zugelassen. Der Scope darf keine technischen GGG-IDs, regulären Affixe, Crafting-/CSD-/Socketable-/Medien- oder Runtime-Daten liefern. Distribution und Produktimport bleiben pending; es wurden keine Uniques oder Texte importiert. Vertrag: `docs/POE2_POB2_UNIQUE_PLANNER_DATA_APPROVAL.md`.
+## Deutsche PoB2-Unique-Anzeige (5M.2.11)
+
+Die 435 englischen PoB2-Uniques besitzen nun eine getrennte, ID-verknüpfte deutsche Anzeigeschicht unter `generated/localization/de/pob2-uniques.json`. Sie deckt 435 Namen, 435 Basistypen, 579 Varianten, 2.345 Modzeilen und 273 Implicits ab. Das sind App-Übersetzungen und keine offiziellen oder technisch bestätigten GGG-Texte. 2.080 Felder bleiben als `review-required` für sprachlichen Feinschliff sichtbar; leere Übersetzungen fallen auf Englisch und anschließend `translation-missing` zurück. Englische Produktdaten, Registry, Analyzer, Engine, Crafting- und RePoE-Daten bleiben unverändert.

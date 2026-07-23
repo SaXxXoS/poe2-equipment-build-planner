@@ -180,3 +180,6 @@ Auch der priorisierte Unique-Audit ist audit-only. Fehlende Identitäts-, Basis-
 ## Bedingter PoB2-Unique-Scope 5M.2.8
 
 `source-approval.json` enthält nun zusätzlich `poe2-pob2-unique-planner-data` am exakten PoB2-Commit. Die bedingte Freigabe gilt ausschließlich für Audit und Vorbereitung eines späteren Unique-Planerdatenimports. Repositoryspeicherung und Distribution der Itemdaten sind pending; der Produktimport bleibt blockiert. Alle bestehenden Scopes und der RePoE-Produktivpin bleiben unverändert.
+## App-Anzeigeschicht 5M.2.11
+
+Die deutsche PoB2-Unique-Anzeige ist kein neuer technischer GGG-Datenscope. Sie verwendet den bestehenden englischen PoB2-Produktbestand als Struktur und speichert nur ID-verknüpfte Anzeigefelder. `reviewed-app-translation` und `review-required` dürfen nicht als offizielle oder technisch verifizierte GGG-Lokalisierung bezeichnet werden.

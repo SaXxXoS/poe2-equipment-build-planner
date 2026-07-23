@@ -148,3 +148,6 @@ PoB2 ist **nur unter Bedingungen** als eigenständige Unique-Planerdatenquelle f
 6. Distributionsklärung und separate Aufgabe 5M.2.9 vor jedem Produktimport.
 
 Aktuell erlaubt der Guard nur Audit. Produktimport und öffentliche Distribution bleiben blockiert. 5M.2 und 5N wurden nicht begonnen. Empfohlener nächster Schritt ist die eng begrenzte Klärung der Weiterverteilung der statischen PoB2-Unique-Planerdaten; erst danach folgt 5M.2.9.
+## Anzeige-Lokalisierung 5M.2.11
+
+Der bestehende PoB2-Produkt- und Distributionsscope wird nicht erweitert. Deutsche App-Anzeigetexte sind eine getrennte, projektinterne Lokalisierungsschicht. Sie ersetzen keine PoB2-Quelldaten, keine lokalen CSD-Daten und keine technischen GGG-/RePoE-Definitionen.

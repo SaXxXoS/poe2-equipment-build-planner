@@ -167,3 +167,6 @@ Nach Stabilisierung dieses Imports ist eine separate, eng begrenzte Aufgabe für
 ## Folgestand 5M.2.10
 
 Das Offline-Lokalisierungsaudit bestätigt den unveränderten englischen Bestand. Deutsche `Words`-, BaseItem- und CSD-Inhalte liefern zahlreiche Textkandidaten, aber keine gemeinsame technische Identität zu den `pob2:`-Records. Status: `audit-only-no-safe-product-link`; alle 435 Items bleiben deutsch `translation-missing`. Es wurden weder deutsche Produktdaten noch automatische Übersetzungen erzeugt.
+## Deutsche Anzeigeschicht 5M.2.11
+
+Der englische Import bleibt unverändert und maßgeblich. Die deutsche Anzeige liegt separat unter `generated/localization/de/pob2-uniques.json` und referenziert ausschließlich PoB2-Item-, Varianten- und Zeilen-IDs. Sie dupliziert keine Rollbereiche oder Analyzerfelder und erzeugt keine technische GGG-Verbindung.

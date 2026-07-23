@@ -137,3 +137,6 @@ Unique-Referenzen stammen ausschließlich aus 25 lokal aus demselben Content-Pin
 ## PoB2-Unique-Planerdaten 5M.2.8
 
 Neue getrennte Referenz: `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Der minimale spätere Dateiscope umfasst 20 statische `src/Data/Uniques/*.lua`-Dateien mit SHA-256-Manifest. `Special/Generated.lua`, leere Kategorien, Medien, Runtime und Gesamt-Datenbank sind ausgeschlossen. Die MIT-Codelizenz ist belegt; die Verteilungsrechte der mitgelieferten Itemdaten bleiben unbekannt/pending.
+## Deutsche PoB2-Unique-Anzeige 5M.2.11
+
+Strukturquelle bleibt `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`; Produkt-SHA bleibt `db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452`. Lokale Words-, BaseItem- und CSD-Bestände am bekannten Clientpin dienen nur als sprachliche Prüfgrundlage. Mangels technischer gemeinsamer Unique-ID werden daraus keine GGG-Identitätsbehauptungen abgeleitet.

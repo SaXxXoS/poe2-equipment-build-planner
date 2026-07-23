@@ -810,3 +810,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Keine PoB2-Unique-Daten, deutschen Unique-Texte oder Produktdateien importiert; Unique Analyzer, UI, Engine, Worker, BuildProfile, RePoE-/PyPoE-Pin und bestehende Approval-Scopes unverändert.
 - 5M.2 und 5N weiterhin nicht begonnen. Fotoerkennung und mobile Textklippung bleiben offen; PlayStation-Nutzer benötigen später ausgelieferte Daten.
 - Nächster Schritt: Distributionsstatus der statischen PoB2-Unique-Planerdaten klären; erst danach Aufgabe 5M.2.9 unter dem festgelegten Importvertrag.
+## Aufgabe 5M.2.11 – deutsche PoB2-Unique-Anzeigeschicht
+
+- 5M.2.10 ist abgeschlossen. 5M.2.11 setzt die ausdrückliche Entscheidung für eine eigenständige deutsche App-Lokalisierung um; sie ist keine offizielle oder technische GGG-Lokalisierung.
+- Englisch bleibt technische Unique-Struktur: 435 Items, 579 Varianten, 2.345 Modzeilen, 273 Implicits; Produkt-SHA `db3837b5…a2452`, Fachhash `a5a7e7ba…04329`, PoB2-Pin `c5300ccd…7d0`.
+- Neue reine Anzeigedatei: `generated/localization/de/pob2-uniques.json`; Verbindung ausschließlich über `pob2:`-ID, Varianten-ID und Zeilen-ID. Keine Duplikation von Rollbereichen, Provenienz, Analyzer- oder Registrydaten.
+- Coverage: 435 Namen, 435 Basistypen, 579 Variantenlabels, 2.345 Modzeilen, 273 Implicits und fünf Systemtexte. Status: 1.992 `reviewed-app-translation`, 2.080 `review-required`, 0 `verified-local-source`, 0 `translation-missing`.
+- Der Resolver verwendet Deutsch, danach englischen PoB2-Fallback, danach `translation-missing`. Es gibt keine Runtime-Übersetzung, API, PoE2DB-Automatisierung, Textheuristik als technische Wahrheit oder erfundene GGG-ID.
+- Die UI besitzt eine minimale deutsche Unique-Suche und Detailanzeige. Registry, Unique Analyzer, Engine, Worker, BuildProfile, Crafting, normale Affixe und RePoE-Daten bleiben unverändert.
+- Nächster Schritt: manueller Sprachreview der `review-required`-Felder. 5M.2 und 5N bleiben nicht begonnen.

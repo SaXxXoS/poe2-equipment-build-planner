@@ -1,0 +1,36 @@
+{
+  "task": "5M.2.11",
+  "scope": "app-display-localization",
+  "locale": "de",
+  "sourceProductSha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "sourceProductSemanticHash": "a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329",
+  "pob2Commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "counts": {
+    "uniqueNames": 435,
+    "baseDisplayNames": 435,
+    "variants": 579,
+    "modifierLines": 2345,
+    "implicitLines": 273,
+    "systemTexts": 5
+  },
+  "statusCounts": {
+    "verified-local-source": 0,
+    "reviewed-app-translation": 1992,
+    "review-required": 2080,
+    "translation-missing": 0
+  },
+  "fieldCoverage": {
+    "uniqueNames": { "reviewed-app-translation": 434, "review-required": 1 },
+    "baseDisplayNames": { "reviewed-app-translation": 425, "review-required": 10 },
+    "variants": { "reviewed-app-translation": 579 },
+    "modifierLines": { "reviewed-app-translation": 474, "review-required": 1871 },
+    "implicitLines": { "reviewed-app-translation": 75, "review-required": 198 },
+    "systemTexts": { "reviewed-app-translation": 5 }
+  },
+  "productDataChanged": false,
+  "registryChanged": false,
+  "analyzerChanged": false,
+  "technicalGggIdentityClaimed": false,
+  "runtimeTranslation": false,
+  "decision": "complete-app-display-layer-with-review-required-language-drafts"
+}

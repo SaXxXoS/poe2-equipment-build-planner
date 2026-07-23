@@ -142,3 +142,6 @@ Lokale deutsche Inhalte sind umfangreich vorhanden, aber kein geprüfter Pfad ve
 ## 33. Ausführbarer Folgeauftrag
 
 Nächster Auftrag: **5M.2.10A – Offline-Audit einer stabilen Unique-Identitätsbrücke**. Er soll ausschließlich prüfen, ob ein gepinnter PoB2-Generatorinput oder eine bereits lokale technische Quelle einen gemeinsamen Words-/Unique-/Base-/Mod-/Stat-Schlüssel liefert. Ohne solchen Nachweis bleiben alle deutschen Unique-Felder `translation-missing`.
+## Umsetzung 5M.2.11
+
+Die Auftraggeberentscheidung ersetzt die zuvor nur technisch erlaubte Lokalisierungsbrücke durch eine ausdrücklich getrennte App-Anzeigeschicht. Sie behauptet keine GGG-Lokalisierung und erzeugt keine GGG-IDs. Ergebnis: 435/435 Namen, 435/435 Basistypen, 579/579 Varianten, 2.345/2.345 Modzeilen und 273/273 Implicits besitzen Anzeigeeinträge. Status: 1.992 `reviewed-app-translation`, 2.080 `review-required`, 0 `verified-local-source`, 0 `translation-missing`. Der englische Produktbestand bleibt unverändert; Details stehen in `POE2_POB2_UNIQUE_GERMAN_DISPLAY_LAYER.md`.

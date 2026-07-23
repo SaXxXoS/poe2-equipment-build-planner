@@ -183,3 +183,6 @@ Zwei Unique-Extraktionen und Audits waren byteidentisch (`fd9a0418…8759283`). 
 ## PoB2-Updatevertrag 5M.2.8
 
 Ein neuer PoB2-Stand darf nicht automatisch übernommen werden. Commit, Archiv, 20-Datei-Allowlist, Einzelhashes, Lizenzdatei, Schema, Unique-/Varianten-/Wertediff und Approval müssen erneut geprüft werden. Unbekannte Dateien oder Felder, Herkunftsverlust und Variantenkonflikte brechen ab. Der bisherige technische RePoE-/PyPoE-Pin bleibt unverändert.
+## 5M.2.11 Release-Audit
+
+Der englische PoB2-Produktbestand, sein Fachhash, PoB2-Pin und die RePoE-/GGG-Pins bleiben unverändert. Die neue deutsche Anzeigeschicht ist gegen diese Pins gebunden und muss bei jeder Änderung vollständig deterministisch neu erzeugt und geprüft werden. 5M.2 und 5N bleiben nicht begonnen.
