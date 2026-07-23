@@ -1043,3 +1043,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   echten 390 × 844 CSS-Viewport. Die Skillansicht verwendet dort eine
   321-Pixel-Einzelspalte. Kein horizontaler Überlauf und keine
   Browserfehler/-warnungen.
+
+## Paperdoll – kompaktere vertikale Abstimmung
+
+- Nach erneutem Auftraggeberfeedback blieb die passende mobile Breite von
+  340 Pixel unverändert; nur die zuvor zu stark gestreckte Höhe wurde
+  reduziert.
+- Die Rasterzeilen, Waffenplätze, Schnellslots, Juwelenplätze und vertikalen
+  Innenabstände wurden proportional kompakter ausgelegt.
+- Browsermessung bei 390 × 844: 340 × 715 Pixel statt zuvor 340 × 824
+  Pixel. Amulett sowie die auf gleicher Höhe liegenden Ringe behalten ihre
+  festgelegten Positionen.
+- Kein horizontaler Überlauf; Browserkonsole ohne Fehler oder Warnungen.
