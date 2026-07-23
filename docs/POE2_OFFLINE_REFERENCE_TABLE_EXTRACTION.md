@@ -121,3 +121,7 @@ Empfohlener nächster Schritt ist ein eigener, audit-only Schemaentscheid für d
 ## Fortsetzung 5M.2.5
 
 Schema, Enumgenerator und Consumercode bestätigen Domain/Generation für 2.255 Mods. Zusatzbytes und Konfliktgruppensemantik bleiben unbekannt. Details: [POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md](POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md).
+
+## Fortsetzung 5M.2.6
+
+Die lokale Referenzextraktion wurde gezielt um 25 Unique-Kandidatendateien erweitert. Sie belegen Fragmente, aber keine Unique-ID→Base→Mod/Stat-Kette. Rohdaten bleiben ausschließlich lokal.

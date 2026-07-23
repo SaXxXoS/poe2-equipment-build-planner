@@ -163,3 +163,7 @@ Die bestehende Offline-Auditpipeline inventarisiert nun deterministisch 22 konkr
 ## 5M.2.5 Binärschema-/Enum-Audit
 
 Domain und Generation Type sind für 2.255/2.255 Mods bestätigt; StatsValues/BondedStats sind als Parallelarrays belegt. Zusatzbytes in ItemClasses/SoulCores und Konfliktgruppensemantik bleiben unbekannt. Keine Produkt-, UI-, Engine- oder Approval-Änderung; 5M.2/5N bleiben unbegonnen. Details: `docs/POE2_BINARY_SCHEMA_AND_ENUM_AUDIT.md`.
+
+## 5M.2.6 Unique-Identitäts-/Affix-Audit
+
+25 gepinnte lokale Kandidatendateien wurden zweimal offline geprüft. Stash-, Words-, Visual-, Chest-, Mutation-, Legacy- und Skillfragmente enthalten keine vollständige Unique-ID→Base→Variante→Mod/Stat→Werte-Kette. Unique-Affixe sind technisch nicht vollständig geklärt; kein Import oder Approval. Details: `docs/POE2_UNIQUE_IDENTITY_AND_AFFIX_AUDIT.md`.

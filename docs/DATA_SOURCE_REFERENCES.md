@@ -96,3 +96,7 @@ Auditquelle bleibt ausschließlich die lokal legal vorhandene, gepinnte Content.
 ## Lokaler Audit 5M.2.5
 
 Belegquellen sind ausschließlich die gepinnten PoB2-Dateien `spec.lua`, `Scripts/enums.lua`, `mods.lua` und `soulcores.lua`. Sie sind Schema-/Codebelege, keine neue Produkt- oder Textquelle.
+
+## Lokaler Audit 5M.2.6
+
+Unique-Referenzen stammen ausschließlich aus 25 lokal aus demselben Content-Pin extrahierten DATC64-Dateien, Manifest `c4fdc6fe…972752c`. Sie sind Auditbelege, keine freigegebene Produkt- oder Distributionsquelle.

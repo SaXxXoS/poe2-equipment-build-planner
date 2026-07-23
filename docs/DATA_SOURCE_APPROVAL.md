@@ -145,3 +145,7 @@ Die Offline-Referenztabellenextraktion ist ausschließlich ein lokaler Audit. Si
 ## Auditstatus 5M.2.5
 
 Der Binärschema-/Enum-Audit ist audit-only. Er gibt weder ItemClasses/Soul Cores noch Uniques, Socketables oder deutsche Texte frei. `source-approval.json` und Produktivpins bleiben unverändert.
+
+## Auditstatus 5M.2.6
+
+Auch der priorisierte Unique-Audit ist audit-only. Fehlende Identitäts-, Basis-, Mod- und Variantenketten verhindern jede Unique- oder deutsche Unique-Textfreigabe. `source-approval.json` bleibt unverändert.

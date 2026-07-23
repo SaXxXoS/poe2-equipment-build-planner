@@ -130,3 +130,7 @@ Alle 2.255 Produktmods behalten vollständige Mod-ID-, Stat-ID- und Werteüberei
 ## Stand nach 5M.2.5
 
 Domain und Generation Type sind für 2.255/2.255 Mods bestätigt. Wegen unbelegter Konfliktgruppensemantik bleiben 0 resolved und 2.255 partially-resolved; Produktdateien sind unverändert.
+
+## Stand nach 5M.2.6
+
+Der Unique-Audit fand 0 technisch verknüpfte Item-Unique-Affixe. 311 Modreferenzen aus UniqueChests/Mutation sind ausdrücklich keine Unique-Gegenstandsaffixe und verändern den Produktbestand nicht.

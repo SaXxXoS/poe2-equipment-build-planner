@@ -43,3 +43,7 @@ Verwendet werden `confirmed`, `strongly-supported`, `plausible`, `contradicted` 
 Der Lauf war vollständig offline: kein HTTP, HTTPS, DNS, API, Trade-API, PoE2DB oder Webseitenzugriff. Rohdaten und Volltexte bleiben unter `.local-audits/`; keine Ausgabe erfolgte nach `generated/` oder `public/`. PoB2- und ooz-Code-Lizenzen bleiben getrennt vom Status extrahierter GGG-Spieldaten; dieses Audit erteilt keine Distributionsfreigabe.
 
 Technische Schlussfolgerung: Domain und Generation Type sind für reguläre Affixe belastbar vorbereitet. 5M.2 insgesamt ist **noch nicht vollständig vorbereitet**, weil ItemClasses/SoulCores je ein nicht eindeutig lokalisierbares Byte und die Konfliktgruppensemantik ungelöst bleiben. Nächster Schritt ist ein gezieltes, gepinntes Schemaquellen-Audit für genau diese drei Restblocker; erst danach darf eine separate Pin-/Approval-Entscheidung erwogen werden. 5M.2 und 5N wurden nicht begonnen.
+
+## Prioritätsfortsetzung 5M.2.6
+
+Der Auftraggeber priorisiert nun Unique-Affixe. Der separate Offline-Audit fand keine vollständige Item-Unique-Identitäts-/Affixkette; bestätigte reguläre Mod-Enums ändern dieses Ergebnis nicht.

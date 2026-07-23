@@ -148,3 +148,7 @@ Der lokale Spielpin 4.5.4.53018/Content-SHA `a917a56f...8a18e28` blieb unveränd
 ## 5M.2.5 Release-Audit
 
 Zwei Schema-/Enum-Läufe waren byteidentisch (`b9cb4850…5d701c7`). Container-, PoB2-, ooz-, Schema-, Produktiv- und Approval-Pins blieben unverändert; unbekannte Bytes bleiben Releaseblocker.
+
+## 5M.2.6 Release-Audit
+
+Zwei Unique-Extraktionen und Audits waren byteidentisch (`fd9a0418…8759283`). Alle Pins blieben unverändert. Ein neuer Release muss Identitäts-, Basis-, Mod- und Variantenketten vollständig neu prüfen.

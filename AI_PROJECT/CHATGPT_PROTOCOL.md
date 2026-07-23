@@ -675,3 +675,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Lokalisierung unverändert: 419/431 Stat-IDs, 12 fehlend, 38 Templatelücken, 2.189 OCR-Mehrdeutigkeiten. Zwei Läufe byteidentisch (`b9cb4850…5d701c7`), vollständig offline.
 - Produktivpin, Approval, Produktdaten, `translation-missing`, UI, Worker, Analyzer, Engine und Baum unverändert. Keine Rohdaten/Volltexte committed; 5M.2/5N nicht begonnen.
 - Nächster Schritt: gepinntes Schemaquellen-Audit für die Restbytes und Konfliktgruppensemantik; Fotoerkennung, PS-Sprachbestand und mobile Textklippung bleiben offen.
+
+## Aufgabe 5M.2.6 – Abschlussstatus und Priorität
+
+- Auftraggeberpriorität: Unique-Affixe sind vor regulärer deutscher Lokalisierung, OCR/Foto, Soul Cores, 5M.2 und 5N zu klären.
+- 25 lokale Unique-Kandidatendateien wurden zweimal offline extrahiert (25.477.050 Bytes; Manifest `c4fdc6fe…972752c`) und zweimal auditiert (`fd9a0418…8759283`, byteidentical).
+- Gefunden: 449 UniqueStashLayout-Fragmente, 17.163 VisualIdentity-Zeilen, 48 UniqueChests, 1 Mutated-Modset, 14 Legacy-Mage-Definitionen, 65 ModGrantedSkills. Keine davon bildet eine vollständige Item-Unique-Identität.
+- Technische Unique-Item-Identitäten 0; Basis-/Itemklassenreferenzen 0; Versionen/Varianten 0; Item-Modreferenzen und direkte Unique-Statdefinitionen 0.
+- 311 nicht-itembezogene Modreferenzen auf 265 Mods, 278 Statzeilen/Werte und je 261 deutsche/englische CSD-Zeilen wurden getrennt belegt und nicht als Item-Affixe gezählt.
+- Granted Skills mit Unique-Item-Zuordnung 0; Granted Supports `unknown`. Unique-Implicits/Spezialeffekte mangels Identitätskette nicht beurteilbar.
+- Importfähigkeit: Nein. Unique-Affixe technisch vollständig geklärt: **Nein**. Blocker sind fehlende Item-Unique-ID-, Unique→Base-, Unique→Mod/Stat- und Version-/Variantenketten.
+- Keine Rohdaten/Volltexte oder Unique-Daten importiert; Produktivpin, Approval, Analyzer, UI, Engine und `translation-missing` unverändert. 5M.2/5N nicht begonnen.
+- Nächster Schritt: separate lokale Quellenentscheidung, ob serverseitige Unique-Definitionen überhaupt im Clientcontainer materialisiert sind oder eine zulässige offizielle ID-Quelle benötigt wird.

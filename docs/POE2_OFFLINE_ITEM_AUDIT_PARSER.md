@@ -159,3 +159,7 @@ Die modulare Pipeline wurde um `reference-tables.mjs` ergänzt. 22 lokal vorhand
 ## Fortsetzung 5M.2.5
 
 `binary-schema-enum-audit.mjs` ergänzt kontrollierte Bytevarianten, gepinnte Enumquellen und SoulCore-Parallelarrayprüfungen. Zwei Läufe waren byteidentisch; der Code bleibt außerhalb der Web-App.
+
+## Fortsetzung 5M.2.6
+
+`unique-affix-audit.mjs` erweitert dieselbe Offlinepipeline. Es trennt itembezogene Identität strikt von Stash-, Visual-, Text-, Chest- und Mutationsfragmenten und erzeugt keine Produktdaten.

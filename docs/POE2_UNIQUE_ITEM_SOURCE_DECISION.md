@@ -189,3 +189,7 @@ Die fünf gepinnten Balance-Tabellen enthalten keine beweisbare Unique-Identitä
 ## Stand nach 5M.2.5
 
 Bestätigte Enumwerte verbessern nur Teilreferenzen. Es entsteht keine vollständige Unique-Kette; kein Unique-Scope wurde freigegeben oder importiert.
+
+## Stand nach 5M.2.6
+
+Der priorisierte Audit bestätigt das negative Ergebnis: 449 Stashfragmente, 311 technische Chest-/Mutations-Modreferenzen und 65 ModGrantedSkills bilden keine Item-Unique-Kette. 0 bestätigte Unique-Item-Identitäten, Basistypbezüge, Varianten oder Item-Affixe. Scope bleibt `pending`/`blocked`.

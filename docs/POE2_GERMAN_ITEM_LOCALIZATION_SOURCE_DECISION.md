@@ -96,3 +96,7 @@ Die technische lokale Verfügbarkeit weiterer Tabellen ändert die Quellenentsch
 ## Stand nach 5M.2.5
 
 Bestätigte Mod-Enums ändern die Distribution nicht: 12 Stat-IDs, 38 Templatelücken und 2.189 OCR-Mehrdeutigkeiten bleiben offen; keine deutschen Texte wurden importiert.
+
+## Priorität nach 5M.2.6
+
+Reguläre Produktlokalisierung bleibt bis zur Unique-Quellenklärung zurückgestellt. Deutsche CSD-Zeilen allein dürfen fehlende Unique-Identitäten oder Modketten nicht ersetzen; alle Lokalisierungsscopes bleiben unverändert.

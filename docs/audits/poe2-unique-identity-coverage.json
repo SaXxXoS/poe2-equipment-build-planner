@@ -1,0 +1,48 @@
+{
+  "approvalChanged": false,
+  "audit": "5M.2.6",
+  "countingRule": "stable language-independent item key, not visible text, stash row or visual ID",
+  "endToEnd": {
+    "fullyResolved": 0,
+    "identityOnly": 0,
+    "localizationOnly": 0,
+    "partiallyResolved": 0,
+    "schemaUnknown": 0,
+    "sourceConflict": 0,
+    "technicallyResolvedLocalizationPartial": 0,
+    "unresolved": 449
+  },
+  "identity": {
+    "ambiguous": 0,
+    "candidates": 449,
+    "conclusion": "No local table supplies a stable item Unique-ID with base-item and affix references. Words rows, visual identities and stash positions are not promoted to item identities.",
+    "confirmedItemIdentities": 0,
+    "mapIdentityFragments": 0,
+    "stashOnly": 449,
+    "stronglySupportedIdentities": 0,
+    "unknown": 449
+  },
+  "network": {
+    "api": false,
+    "dns": false,
+    "http": false,
+    "https": false,
+    "poe2db": false,
+    "tradeApi": false,
+    "websites": false
+  },
+  "pins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "fileInventorySha256": "9a8cc5e1f408cca027bce446696cc220de7d4de2854e14316a5fdbf713bbe4bb",
+    "formatVersion": 2,
+    "oozArtifactSha256": "e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4",
+    "oozVersion": "0.2.4",
+    "pobCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "pobRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "productDataChanged": false,
+  "productPinChanged": false,
+  "status": "completed-audit-only"
+}
