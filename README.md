@@ -193,3 +193,9 @@ Auf ausdrückliche Auftraggeberentscheidung ist PoB2 am Commit `c5300ccd…ab7d0
 ## Deutsche PoB2-Unique-Anzeige (5M.2.11)
 
 Die 435 englischen PoB2-Uniques besitzen nun eine getrennte, ID-verknüpfte deutsche Anzeigeschicht unter `generated/localization/de/pob2-uniques.json`. Sie deckt 435 Namen, 435 Basistypen, 579 Varianten, 2.345 Modzeilen und 273 Implicits ab. Das sind App-Übersetzungen und keine offiziellen oder technisch bestätigten GGG-Texte. 2.080 Felder bleiben als `review-required` für sprachlichen Feinschliff sichtbar; leere Übersetzungen fallen auf Englisch und anschließend `translation-missing` zurück. Englische Produktdaten, Registry, Analyzer, Engine, Crafting- und RePoE-Daten bleiben unverändert.
+
+## Build-Assistent V1
+
+Der bisher statische Test-Build ist durch einen echten, deterministischen End-to-End-Fluss ersetzt. Klasse, Aszendenz, Ausrüstung, Affixe, ausgewählte PoB2-Uniques samt Variante, Hauptangriff und Zielprofil werden in das vorhandene BuildProfile und die Analyzer-Orchestrierung übertragen.
+
+Das deutsche Ergebnis umfasst Ausrüstung, Hauptangriff, Supports, passive Schwerpunkte, Juwelen, fachlich belegbare Uniques, Mapping, Boss, Rotationsstatus, Konflikte, Confidence und nächste Schritte. Leere optionale Slots bleiben zulässig; nicht belegbare Aussagen werden klar als unbekannt oder nicht verfügbar angezeigt. Details: [`docs/BUILD_ASSISTANT_V1_END_TO_END.md`](docs/BUILD_ASSISTANT_V1_END_TO_END.md).

@@ -819,3 +819,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Resolver verwendet Deutsch, danach englischen PoB2-Fallback, danach `translation-missing`. Es gibt keine Runtime-Übersetzung, API, PoE2DB-Automatisierung, Textheuristik als technische Wahrheit oder erfundene GGG-ID.
 - Die UI besitzt eine minimale deutsche Unique-Suche und Detailanzeige. Registry, Unique Analyzer, Engine, Worker, BuildProfile, Crafting, normale Affixe und RePoE-Daten bleiben unverändert.
 - Nächster Schritt: manueller Sprachreview der `review-required`-Felder. 5M.2 und 5N bleiben nicht begonnen.
+
+## Hauptaufgabe V1 – End-to-End-Integration des Build-Assistenten
+
+- Ausgangscommit: `4f242d9e0cb15624ebe1d0f455d81ee08c9159f9`.
+- Die Datenbasisphase ist beendet. 5M.2.11 ist abgeschlossen; 2.080 `review-required`-Texte bleiben späterer Feinschliff und wurden nicht erneut geprüft.
+- Der sichtbare statische `buildResult`-Pfad wurde aus `App.tsx` entfernt. Seine Fixture bleibt nur für bestehende Tests.
+- Neuer Fluss: Charakter, Ausrüstung, Hauptangriff und Zielprofil → BuildInput → vorhandener `analyzeBuild`-Orchestrator → Equipment-, Skill-, Support-, Passive-, Jewel- und Unique-Analyzer → Rotation und Erklärung → deutscher V1-Bericht.
+- Der gewählte Hauptangriff steuert Support und Rotation. Inkompatibilität wird sichtbar und nicht durch stille Skillwahl verdeckt.
+- Normale Affixe, leere Slots, PoB2-Uniques und Varianten werden verlustfrei transportiert.
+- Die bestehende reale Passive-Analyse bleibt im Worker und verwendet denselben Charakter-, Equipment- und Skillzustand. Keine zweite Engine oder neue Workerarchitektur.
+- Der Unique Analyzer verarbeitet 435 produktive `pob2:`-Kandidaten; `fixture:` ist ausgeschlossen. Deutsche Anzeige und englischer Fallback stammen aus der getrennten Lokalisierungsschicht.
+- Belegte Grenze: Die PoB2-Kandidaten besitzen keine technischen Mechanik-Tags oder GGG-Stat-Links. Ohne echtes Matchsignal wird keine scheinpräzise Unique-Empfehlung ausgegeben.
+- Sichtbar: Zusammenfassung, Equipment, Hauptangriff, gerankte und blockierte Supports, passive Schwerpunkte, Juwelen, belegbare Uniques, Mapping, Boss, Rotation oder Rotationslücke, Konflikte, Trade-offs, Confidence und nächste Schritte.
+- Neue UI-Texte sind Deutsch. Unbekannte Inhalte bleiben unbekannt oder nicht verfügbar. Leere optionale Slots sind zulässig.
+- Fokussierte Tests prüfen sechs Analyzertransporte, Zielprofilwirkung, Unique-/Fixture-Trennung, Varianten, leere Slots, Determinismus und deutsche Ergebnisbereiche.
+- Keine neue Datenquelle, kein Audit, keine Pin-, Crafting- oder Produktdatenänderung, keine Preisberechnung, DPS-Simulation, externe API oder Scraping.
+- Maßgeblich: `docs/BUILD_ASSISTANT_V1_END_TO_END.md`.
+- Nächster Hauptauftrag: bereits zulässige Kandidatenmetadaten gezielt vertiefen, besonders semantische PoB2-Unique-Signale; keine neue Datenquellenphase.

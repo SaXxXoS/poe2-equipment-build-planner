@@ -102,13 +102,13 @@ describe('5M.1B.0C Approval-Entscheidung', () => {
 const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
   '../../src/affixes/registry.ts': '268760739aa233052060962bfd9a034d4cd351e13078964df92b9962e73f7d1d',
-  '../../src/components/AffixDialog.tsx': 'f269a26d9251287b24b888995ace7708c3cdaf4733966dc36b1b26753d28e367',
+  '../../src/components/AffixDialog.tsx': '89d77b9a1cb1bb168382ef4ddfaa085ba9a6731971fae248a4d8575f22eda566',
   '../../src/engine/common/types.ts': 'f81364bd22c352340585b5b0890ee679b845edab820192ff8b62bed1e2b60e50',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/uniques/analyzer.ts': 'b4e9071fbf1a44f1763aed9c8a4db27268ae6c2b837af2a87a1bcf1be19247ac',
-  '../../src/engine/orchestration/analyze-build.ts': '59c74c363936df10032ffaf83a54a1f6cdf9ed33b3603533a3d8ea17299aba93',
+  '../../src/engine/orchestration/analyze-build.ts': '7d0c8338ebc44b5fbc0c7910ae28afa74628287f86087ef58bd186c4d70041b2',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'b8bc73e99da77878d092162281335b70b0be104f1fb4db34e1fe65b324eab04d',
 }

@@ -1,7 +1,7 @@
 import type { CharacterConfiguration, GoalProfile } from '../domain'
 import { ascendancyDefinitions, classDefinitions, findTreeAscendancy, skillDefinitions, treeClassRegistry } from '../data'
 
-const goalLabels: Record<GoalProfile, string> = { balanced: 'Ausgeglichen', mapping: 'Mapping', boss: 'Boss' }
+const goalLabels: Record<GoalProfile, string> = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
 
 export function CharacterSection({ value, onChange }: { value: CharacterConfiguration; onChange: (value: CharacterConfiguration) => void }) {
   const availableAscendancies = ascendancyDefinitions.filter(ascendancy => ascendancy.classId === value.classId)

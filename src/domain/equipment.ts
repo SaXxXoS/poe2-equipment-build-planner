@@ -16,4 +16,6 @@ export interface EquipmentEntry {
   itemDefinitionId?: EntityId
   itemClassId?: EntityId
   itemLevel?: number
+  uniqueItemId?: EntityId
+  uniqueVariantId?: EntityId
 }
