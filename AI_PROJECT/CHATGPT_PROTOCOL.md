@@ -1000,3 +1000,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   darunter, ohne den Brust- oder Schmuckplatz zu überlagern.
 - Browsermessung 390 × 844: identische Ring-Oberkante, kein horizontaler
   Überlauf. Desktopmessung: 960 Pixel. Browserkonsole ohne Fehler/Warnungen.
+
+## Paperdoll – Vollbreite und Schmuckpositionen
+
+- Die Paperdoll verwendet nun 100 Prozent der nutzbaren Breite des
+  Ausrüstungsbereichs statt einer festen Maximalbreite. Die seitlichen
+  Innenabstände des Equipment-Abschnitts wurden auf ein kompaktes Maß
+  reduziert.
+- Amulett: nach oben neben den Helm versetzt.
+- Ring 1 und Ring 2: gemeinsam nach unten neben die Brust versetzt und exakt
+  auf derselben Rasterhöhe ausgerichtet.
+- Browserprüfung bei 590 × 1280: Paperdoll 539 Pixel bei 555 Pixel
+  Abschnittsbreite, entsprechend rund 97 Prozent der gesamten Sectionbreite
+  einschließlich deren Rahmen. Bei 390 × 844 weiterhin 340 Pixel und kein
+  horizontaler Überlauf. Browserkonsole ohne Fehler/Warnungen.

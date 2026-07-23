@@ -14,8 +14,8 @@ body:has(.modal-backdrop){overflow:hidden}
 .affix-scaling-grid{display:grid;gap:.65rem}.affix-scaling-grid>div{padding:.65rem;border:1px solid #303b48;border-radius:8px}.affix-scaling-grid h4{margin:.1rem 0}@media(min-width:760px){.affix-scaling-grid{grid-template-columns:repeat(3,1fr)}}
 
 /* Foto-2-inspirierte eigene Paperdoll: keine fremden Assets oder Styles. */
-#equipment{padding-inline:clamp(.55rem,1.6vw,1rem)}
-.equipment-paperdoll-stage{width:min(960px,100%);margin-inline:auto;padding:1.5rem clamp(.55rem,2.6vw,1.7rem) 1.7rem;border:1px solid #3b4167;border-radius:18px;background:radial-gradient(circle at 50% 35%,#302d59 0,#24213f 56%,#19182e 100%);box-shadow:inset 0 0 42px #09081666}
+#equipment{padding-inline:.45rem}
+.equipment-paperdoll-stage{width:100%;margin-inline:auto;padding:1.65rem clamp(.6rem,2.8vw,2rem) 1.9rem;border:1px solid #3b4167;border-radius:18px;background:radial-gradient(circle at 50% 35%,#302d59 0,#24213f 56%,#19182e 100%);box-shadow:inset 0 0 42px #09081666}
 .equipment-paperdoll-stage .weapon-set-toggle{width:min(250px,70%);margin:0 auto 1.1rem;gap:0}
 .equipment-paperdoll-stage .weapon-set-toggle button{min-height:44px;border-radius:11px;background:#363259;color:#cbc9d9;border-color:#46416e}
 .equipment-paperdoll-stage .weapon-set-toggle button+button{margin-left:-1px}
@@ -32,9 +32,9 @@ body:has(.modal-backdrop){overflow:hidden}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-weapon-set-1-left,.equipment-paperdoll-stage .equipment-loadout .slot-slot-weapon-set-2-left{grid-column:1;grid-row:1/4;min-height:270px}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-weapon-set-1-right,.equipment-paperdoll-stage .equipment-loadout .slot-slot-weapon-set-2-right{grid-column:5;grid-row:1/4;min-height:270px}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-helmet{grid-column:3;grid-row:1}
-.equipment-paperdoll-stage .equipment-loadout .slot-slot-ring-1{grid-column:2;grid-row:2}
-.equipment-paperdoll-stage .equipment-loadout .slot-slot-ring-2{grid-column:4;grid-row:2}
-.equipment-paperdoll-stage .equipment-loadout .slot-slot-amulet{grid-column:4;grid-row:3;align-self:start;min-height:64px}
+.equipment-paperdoll-stage .equipment-loadout .slot-slot-amulet{grid-column:4;grid-row:1;align-self:end;min-height:64px}
+.equipment-paperdoll-stage .equipment-loadout .slot-slot-ring-1{grid-column:2;grid-row:3;align-self:start;min-height:64px}
+.equipment-paperdoll-stage .equipment-loadout .slot-slot-ring-2{grid-column:4;grid-row:3;align-self:start;min-height:64px}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-body-armour{grid-column:3;grid-row:2/4}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-gloves{grid-column:1/3;grid-row:4}
 .equipment-paperdoll-stage .equipment-loadout .slot-slot-belt{grid-column:3;grid-row:4}
