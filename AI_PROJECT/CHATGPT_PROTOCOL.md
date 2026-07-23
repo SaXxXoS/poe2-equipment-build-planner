@@ -1028,3 +1028,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   identische Oberkante.
 - Breite und sonstige Funktionen blieben unverändert. Kein horizontaler
   Überlauf und keine Browserfehler/-warnungen.
+
+## Mobile Skalierung – eigentliche Ursache der zu kleinen Höhe
+
+- Die Auftraggeber-Screenshots zeigten trotz mobiler Gerätebreite weiterhin
+  Desktopmerkmale, insbesondere zweispaltige Fertigkeitskarten.
+- Ursache: `index.html` besaß überhaupt keinen `viewport`-Metaeintrag. Safari
+  verwendete deshalb eine breite virtuelle Desktopfläche und skalierte die
+  gesamte Anwendung einschließlich des Equipmentbereichs nachträglich klein.
+- Korrektur: vollständiges HTML-Grundgerüst mit `lang="de"`, UTF-8,
+  `width=device-width, initial-scale=1, viewport-fit=cover`, Theme-Farbe und
+  Seitentitel.
+- Der zuvor vergrößerte Equipmentbereich bleibt 340 × 824 Pixel bei einem
+  echten 390 × 844 CSS-Viewport. Die Skillansicht verwendet dort eine
+  321-Pixel-Einzelspalte. Kein horizontaler Überlauf und keine
+  Browserfehler/-warnungen.
