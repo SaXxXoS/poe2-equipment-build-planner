@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { initialEquipment, skillSetups } from '../../data'
 import type { CharacterConfiguration, EquipmentEntry } from '../../domain'
 import { BuildAssistantResultSection } from '../../components/BuildAssistantResultSection'
-import { buildAssistantCandidates, createBuildAssistantRequest, runBuildAssistantV1, validateBuildAssistantInput } from '.'
+import { buildAssistantCandidates, createBuildAssistantRequest, deriveWeaponContext, runBuildAssistantV1, validateBuildAssistantInput } from '.'
 
 const character = (goalProfile: CharacterConfiguration['goalProfile'] = 'balanced', desiredMainSkillId = 'skill-lightning-arrow'): CharacterConfiguration => ({
   classId: 'class-official-6',
@@ -47,6 +47,34 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(request.input.equipment[8].modifierValues).toHaveLength(2)
   })
 
+  it('leitet Waffentyp und belegte Sets aus den echten Ausrüstungsslots ab', () => {
+    const values = equipment()
+    values[10] = { ...values[10], itemClassId: 'One Hand Maces' }
+    expect(deriveWeaponContext(values)).toEqual({
+      availableWeaponTypes: ['melee-weapon', 'ranged-weapon'],
+      availableWeaponSets: ['set-1', 'set-2'],
+    })
+  })
+
+  it('behandelt ein leeres zweites Waffenset nicht als verfügbare Wechselgrundlage', () => {
+    const request = createBuildAssistantRequest(input())
+    expect(request.weaponContext.availableWeaponSets).toEqual(['set-1'])
+    const result = runBuildAssistantV1(input())
+    expect(result.rotationAnalysis.allPlans.flatMap(plan => plan.steps).some(step => step.actionType === 'switch-weapon-set')).toBe(false)
+  })
+
+  it('wendet Waffenanforderungen des Hauptskills auf reale Ausrüstung an', () => {
+    const result = runBuildAssistantV1(input('balanced', 'skill-ice-strike'))
+    expect(result.skillAnalysis.allCandidates.find(item => item.skillId === 'skill-ice-strike')?.violations.map(value => value.code)).toContain('skill-wrong-weapon')
+  })
+
+  it('verwendet in Rotationen nur tatsächlich konfigurierte Skills', () => {
+    const values = input()
+    values.setups = [{ id: 'setup-main-only', skillId: 'skill-lightning-arrow', role: 'main', weaponSet: 'set-1', supportGemIds: [] }]
+    const result = runBuildAssistantV1(values)
+    expect(result.rotationAnalysis.allPlans.flatMap(plan => plan.requiredSkills).every(id => id === 'skill-lightning-arrow')).toBe(true)
+  })
+
   it('verwendet ausschließlich echte PoB2-Uniques ohne Fixture-Namespace', () => {
     expect(buildAssistantCandidates.uniques).toHaveLength(435)
     expect(buildAssistantCandidates.uniques.every(item => item.id.startsWith('pob2:'))).toBe(true)
@@ -73,5 +101,8 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     const html = renderToStaticMarkup(<BuildAssistantResultSection analysis={runBuildAssistantV1(input())} equipment={equipment()}/>)
     for (const heading of ['Zusammenfassung', 'Ausrüstung', 'Hauptangriff und Supports', 'Passive Schwerpunkte', 'Juwelen und Cluster', 'Passende Uniques', 'Mapping', 'Boss', 'Nächste Verbesserungen']) expect(html).toContain(heading)
     expect(html).not.toContain('FESTE PLATZHALTERDATEN')
+    expect(html).toContain('Mapping-Ranglisten')
+    expect(html).toContain('Boss-Ranglisten')
+    expect(html).toContain('Konkreter Pfad noch nicht berechnet')
   })
 })

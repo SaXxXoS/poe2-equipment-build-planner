@@ -73,7 +73,7 @@ const immutableFiles = {
   '../../src/engine/uniques/analyzer.ts': 'b4e9071fbf1a44f1763aed9c8a4db27268ae6c2b837af2a87a1bcf1be19247ac',
   '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
   '../../src/domain/equipment.ts': 'a5416cf3ca4c4419ad81d3f3b957d9e749228a4a182a9ea30cb8d4bf5748b2b9',
-  '../../src/engine/orchestration/analyze-build.ts': '7d0c8338ebc44b5fbc0c7910ae28afa74628287f86087ef58bd186c4d70041b2',
+  '../../src/engine/orchestration/analyze-build.ts': '1a01596e5fd4535bcddc2c473771acbc4d0507b3b9c6e2829279f3c52e30ba59',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',

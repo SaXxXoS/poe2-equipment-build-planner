@@ -1,4 +1,4 @@
-import type { BuildInput, EntityId, MechanicTag, SkillGemDefinition, SupportGemDefinition, AnyJewelDefinition, UniqueItemDefinition, PassiveNodeDefinition, PassiveConnection } from '../../domain'
+import type { BuildInput, EntityId, MechanicTag, SkillGemDefinition, SupportGemDefinition, AnyJewelDefinition, UniqueItemDefinition, PassiveNodeDefinition, PassiveConnection, SyntheticWeaponType } from '../../domain'
 import type { RealPassivePlanningConfiguration,RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 
 export const SCORE_CATEGORIES = ['damage', 'defence', 'mapping', 'boss', 'speed', 'utility', 'resource', 'ascendancy-synergy', 'equipment-synergy', 'path-efficiency'] as const
@@ -133,4 +133,12 @@ export interface UniqueCandidate extends UniqueItemDefinition {
 }
 export interface EngineCandidates { skills: SkillGemDefinition[]; supports: SupportGemDefinition[]; passives: PassiveCandidate[]; jewels: AnyJewelDefinition[]; uniques: UniqueCandidate[] }
 export interface BuildAnalysis { equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile; skillAnalysis: SkillAnalysis; skillRecommendations: SkillRecommendation[]; supportAnalysis: SupportAnalysis; supportRecommendations: SupportRecommendation[]; passiveAnalysis: PassiveAnalysis; passiveRecommendations: PassiveRecommendation[]; jewelAnalysis: JewelAnalysis; jewelRecommendations: JewelRecommendation[]; uniqueAnalysis: UniqueAnalysis; uniqueRecommendations: UniqueRecommendation[]; rotationAnalysis: RotationAnalysis; mappingRotation: MappingRotation; bossRotation: BossRotation; explanations: ExplanationResult; warnings: ConstraintViolation[]; status: EngineStatus; engineVersion: string; moduleTrace: string[]; realPassivePlanning?:RealPassivePlanningIntegrationResult }
-export interface EngineRequest { input: BuildInput; candidates: EngineCandidates; realPassivePlanning?:RealPassivePlanningConfiguration }
+export interface EngineRequest {
+  input: BuildInput
+  candidates: EngineCandidates
+  realPassivePlanning?: RealPassivePlanningConfiguration
+  weaponContext?: {
+    availableWeaponTypes: SyntheticWeaponType[]
+    availableWeaponSets: ('set-1' | 'set-2')[]
+  }
+}

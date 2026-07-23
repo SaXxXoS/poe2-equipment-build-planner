@@ -4,6 +4,8 @@ import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type PassiveCa
 import { localizedPob2UniquesDe } from '../../localization/pob2-uniques-de'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
 import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
+import { technicalItemClasses } from '../../affixes/registry'
+import type { SyntheticWeaponType } from '../../domain'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
 
@@ -57,6 +59,41 @@ export interface BuildAssistantInput {
   setups: SkillSetup[]
 }
 
+const isOccupied = (entry: EquipmentEntry) =>
+  Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId || entry.modifierValues.length)
+
+const syntheticWeaponType = (technicalName: string): SyntheticWeaponType | undefined => {
+  const value = technicalName.toLowerCase()
+  if (value.includes('bow') || value.includes('crossbow') || value.includes('wand')) return 'ranged-weapon'
+  if (['claw', 'dagger', 'flail', 'mace', 'quarterstaff', 'spear', 'sword', 'axe'].some(token => value.includes(token))) return 'melee-weapon'
+  if (value.includes('focus')) return 'focus'
+  return undefined
+}
+
+export function deriveWeaponContext(equipment: EquipmentEntry[]) {
+  const occupied = equipment.filter(isOccupied)
+  const availableWeaponSets = (['set-1', 'set-2'] as const).filter(set =>
+    occupied.some(entry => entry.slotId.includes(set)),
+  )
+  const types = new Set<SyntheticWeaponType>()
+  for (const entry of occupied) {
+    if (!entry.slotId.includes('weapon-set')) continue
+    const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
+    const technicalType = itemClass && itemClass.weaponType !== 'not-applicable'
+      ? syntheticWeaponType(itemClass.weaponType)
+      : undefined
+    if (technicalType) types.add(technicalType)
+    if (entry.uniqueItemId) {
+      const unique = buildAssistantCandidates.uniques.find(value => value.id === entry.uniqueItemId)
+      for (const required of unique?.requiredWeaponTypes ?? []) types.add(required)
+    }
+  }
+  return {
+    availableWeaponTypes: types.size ? [...types].sort() : ['any'] as SyntheticWeaponType[],
+    availableWeaponSets: availableWeaponSets.length ? [...availableWeaponSets] : ['set-1'] as ('set-1' | 'set-2')[],
+  }
+}
+
 export function createBuildAssistantRequest(input: BuildAssistantInput) {
   const buildInput: BuildInput = {
     character: input.character,
@@ -65,7 +102,7 @@ export function createBuildAssistantRequest(input: BuildAssistantInput) {
     selectedJewels: [],
     goalProfile: input.character.goalProfile,
   }
-  return { input: buildInput, candidates: buildAssistantCandidates }
+  return { input: buildInput, candidates: buildAssistantCandidates, weaponContext: deriveWeaponContext(input.equipment) }
 }
 
 export function runBuildAssistantV1(input: BuildAssistantInput): BuildAnalysis {

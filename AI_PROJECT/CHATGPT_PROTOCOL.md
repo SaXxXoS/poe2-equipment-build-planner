@@ -1,5 +1,27 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Hauptaufgabe V1.2 – funktionale Vollständigkeit
+
+- Ausgangscommit: `1242dd78f0bb4eedacaeb03505390704aefa78d1`.
+- Auftraggeberentscheidung: Version 1 wird zuerst funktional abgeschlossen; Design, mobile Benutzerführung, deutsche Restdarstellung und sprachlicher Feinschliff folgen getrennt.
+- Das vollständige Funktionsinventar steht in `docs/BUILD_ASSISTANT_V1_2_FUNCTIONAL_COMPLETENESS.md`.
+- Die bestehende Architektur bleibt unverändert maßgeblich: Eingabe → BuildProfile → Analyzer → Aggregation → deutsche Ergebnisansicht.
+- Geschlossene Kernlücken: erkannte Waffenarten und tatsächlich belegte Waffensets erreichen Skill-, Support-, Unique- und Rotationslogik; ein leeres Set 2 ist keine Wechselgrundlage.
+- Rotationen verwenden nur den gewählten Hauptskill und tatsächlich konfigurierte Skill-Setups. Fehlende Rollen werden nicht erfunden.
+- Der vorhandene Compact-Passive-Plan ist mit Reihenfolge, Punktkosten, Pfadknoten und Baumfokus in den zusammenhängenden Build-Vorschlag eingebunden.
+- Mapping und Boss zeigen nun jeweils die bereits vorhandenen Support-, Passive-, Juwel- und Unique-Ranglisten.
+- Nächste Verbesserungen berücksichtigen zusätzlich belegten Widerstands- und allgemeinen Verteidigungsbedarf.
+- Offline-Status: statischer lokaler Datenbestand, keine Runtime-API, keine Rohquelle und kein Hotlink als Funktionsvoraussetzung; keine neue PWA-Stufe.
+- Datenpins und Produktdateien bleiben unverändert. Keine neue Datenquelle, Übersetzungsphase, Designphase oder allgemeine Architekturänderung.
+- Geparkt bleiben normale englische Affixtexte, sichtbare technische Begriffe, `Accuracy|Accuracy|`, mobiler Affixdialog, Zeilenumbrüche, visuelle Hierarchie, Tier-/Item-Level-Gewichtung, Abstände, Schriftgrößen, Touchflächen und Unique-Sprachfeinschliff.
+- Funktionaler V1-Abschlussstatus: alle bestätigten Pflichtlücken sind geschlossen; fehlende fachliche Grundlagen bleiben offen als `Unbekannt` oder eingeschränkte Funktion.
+- Prüfstatus: 51 fokussierte V1.2-/Rotationsprüfungen, 95 Grenz-/Approval-Prüfungen und die vollständige Suite mit 1.012/1.012 Tests erfolgreich; drei zeitkritische Passive-Performanceprüfungen zusätzlich seriell erfolgreich.
+- Lint, Typecheck, Produktions-Build, Pages-Build, 132 JSON-Dateien, `git diff --check` und Git-Sicherheitsprüfung erfolgreich.
+- Technische Browserprüfung: Desktop-End-to-End-Ergebnis mit Mapping-/Boss-Ranglisten; 390 × 844 ohne horizontalen Seitenüberlauf, Dialog innerhalb des Viewports, Berechnung erreichbar und Ergebnis sichtbar. Keine neuen Browserfehler oder -warnungen.
+- Der lokal geladene Build berechnet vollständig aus gebündelten Daten; kein Laufzeit-Netzwerkzugriff wurde beobachtet. Eine neue Service-Worker-/PWA-Stufe ist weiterhin nicht Bestandteil von V1.2.
+- Pages-Status und Abschlusscommit werden nach Push/Deployment ergänzt.
+- Nächster Auftrag: getrennte Design-, deutsche Darstellungs- und Benutzerfreundlichkeitsphase.
+
 ## Hauptaufgabe V1.1 – semantische Analyzer-Breite
 
 - Ausgangscommit: `143e605b3af83e9ed446e27c5c20ba7a1a03ffb0`.

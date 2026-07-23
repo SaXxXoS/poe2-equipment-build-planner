@@ -37,6 +37,11 @@ export default function App() {
     setPassivePlan(value)
     if (value.status === 'completed' && value.result) setPlanVisible(true)
   }, [])
+  const showPassivePlan = useCallback(() => {
+    setPlanVisible(true)
+    setFocusPlanRequest(value => value + 1)
+    setTimeout(() => document.querySelector('.tree-viewport')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 0)
+  }, [])
   function calculate() {
     const input = { character, equipment, setups }
     const errors = validateBuildAssistantInput(input)
@@ -65,11 +70,7 @@ export default function App() {
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); invalidateResult() }}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResult={passivePlan.result} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
-      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={() => {
-        setPlanVisible(true)
-        setFocusPlanRequest(value => value + 1)
-        setTimeout(() => document.querySelector('.tree-viewport')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 0)
-      }}/>
+      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan}/>
       <section className="calculate">
         <h2>7. Build auswerten</h2>
         <p>Leere optionale Ausrüstungsslots sind erlaubt. Sie senken lediglich die Sicherheit der Empfehlung.</p>
@@ -77,7 +78,7 @@ export default function App() {
         <button className="calculate-btn" disabled={calculationState === 'running'} onClick={calculate}>{calculationState === 'running' ? 'Berechnung läuft …' : 'Build-Vorschlag erstellen'}</button>
         <p className="calculation-status" aria-live="polite">{calculationState === 'completed' ? 'Ergebnis vorhanden' : calculationState === 'error' ? 'Fehler bei der Berechnung' : calculationState === 'running' ? 'Analyzer werden ausgeführt' : 'Bereit zur Auswertung'}</p>
       </section>
-      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment}/>}
+      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment} passivePlan={passivePlan} onShowPassivePlan={showPassivePlan}/>}
     </main>
     <footer>Lokale, deterministische Build-Auswertung · Keine Runtime-Verbindung zu externen Datenquellen</footer>
   </>
