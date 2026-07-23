@@ -19,7 +19,8 @@
 - Lint, Typecheck, Produktions-Build, Pages-Build, 132 JSON-Dateien, `git diff --check` und Git-Sicherheitsprüfung erfolgreich.
 - Technische Browserprüfung: Desktop-End-to-End-Ergebnis mit Mapping-/Boss-Ranglisten; 390 × 844 ohne horizontalen Seitenüberlauf, Dialog innerhalb des Viewports, Berechnung erreichbar und Ergebnis sichtbar. Keine neuen Browserfehler oder -warnungen.
 - Der lokal geladene Build berechnet vollständig aus gebündelten Daten; kein Laufzeit-Netzwerkzugriff wurde beobachtet. Eine neue Service-Worker-/PWA-Stufe ist weiterhin nicht Bestandteil von V1.2.
-- Pages-Status und Abschlusscommit werden nach Push/Deployment ergänzt.
+- Abschlusscommit der funktionalen Implementierung: `982eb50c62731757b36673d10ec5e43417c32811`.
+- GitHub Pages: Workflow „Deploy GitHub Pages“, Lauf 54, erfolgreich; HTTP 200 und V1.2-Asset `index-C3Oush7P.js` ausgeliefert.
 - Nächster Auftrag: getrennte Design-, deutsche Darstellungs- und Benutzerfreundlichkeitsphase.
 
 ## Hauptaufgabe V1.1 – semantische Analyzer-Breite
