@@ -989,3 +989,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Mobile Browserprüfung: drei Charms, Änderung von zwei auf vier und zurück
   auf drei Juwelenplätze, kein horizontaler Überlauf. Desktopbreite: 820
   Pixel. Browserkonsole ohne Fehler/Warnungen.
+
+## Paperdoll – zweite Größen- und Ringkorrektur
+
+- Auf ausdrückliches Auftraggeberfeedback wurde die maximale Desktopbreite
+  von 820 auf 960 Pixel erhöht. Mobil nutzt der Equipmentbereich reduzierte
+  Seitenabstände; bei 390 Pixel Viewport wuchs die Paperdoll von 321 auf 340
+  Pixel.
+- Ring 1 und Ring 2 liegen nun in exakt derselben Gridzeile. Das Amulett steht
+  darunter, ohne den Brust- oder Schmuckplatz zu überlagern.
+- Browsermessung 390 × 844: identische Ring-Oberkante, kein horizontaler
+  Überlauf. Desktopmessung: 960 Pixel. Browserkonsole ohne Fehler/Warnungen.
