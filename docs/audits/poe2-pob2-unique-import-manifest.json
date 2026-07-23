@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.9",
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFileCount": 20,
+  "sourceFiles": "docs/audits/poe2-pob2-unique-source-files.json",
+  "sourceFilesManifestHash": "60a36d0be53a4ad37e45a156e569f2ed86c2594558fa17c21e60300072a136c2",
+  "importContractVersion": "2",
+  "parserFormatVersion": "1",
+  "productPath": "generated/pob2/uniques.json",
+  "productFileSha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "semanticHash": "a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329",
+  "recordCount": 435,
+  "provenanceStatus": "complete",
+  "localizationStatus": "english-source-with-german-translation-missing"
+}

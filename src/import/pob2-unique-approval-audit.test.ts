@@ -40,13 +40,13 @@ describe('5M.2.8 PoB2-Unique-Approval-Auditberichte', () => {
     expect(decision.distributionStatus).toBe('distribution-project-approved-with-disclosed-uncertainty')
     expect(decision.externalPermissionStatus).toBe('not-requested-not-obtained')
     expect(license.bundledItemData.licenseCoverage).toBe('license-scope-unknown')
-    expect(contract.output.createdInThisTask).toBe(false)
+    expect(contract.output.createdInThisTask).toBe(true)
     expect(contract.output.currentlyBlocked).toBe(false)
   })
-  it('enthält keine vollständigen PoB2-Rohdaten oder Produktdatei', () => {
+  it('enthält keine vollständigen PoB2-Rohdaten und nur die freigegebene Produktdatei', () => {
     const reports = [decision, fields, contract, license, files, guards]
     expect(JSON.stringify(reports)).not.toContain('Unique Item')
-    expect(contract.output.createdInThisTask).toBe(false)
+    expect(contract.output.createdInThisTask).toBe(true)
     expect(files.rawDatabaseImportForbidden).toBe(true)
   })
 })

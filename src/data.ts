@@ -19,6 +19,7 @@ import {
 } from './domain'
 import classRegistry from '../generated/poe2-tree/class-registry.json'
 import { allTechnicalAffixes } from './affixes/registry'
+export { pob2UniqueAnalyzerCandidates, pob2UniquePlannerRegistry } from './uniques'
 
 export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
 export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; classStartNodeId?:string|null; ascendancies:TreeAscendancyRegistryEntry[] }

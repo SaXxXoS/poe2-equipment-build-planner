@@ -2,6 +2,8 @@
 
 ## 5M.2.8B – Entscheidungsprovenienz
 
+> Produktreferenz 5M.2.9: `generated/pob2/uniques.json` enthält den reduzierten englischen Datensatz aus `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Source Kind ist `pob2-planner-data`, Deutsch ist `translation-missing`, und keine technische GGG-ID-Kette wird behauptet.
+
 Die in 5M.2.8A geprüften PoB2- und GGG-Primärquellen bleiben maßgeblich für
 die offengelegte Unsicherheit. Neu ist ausschließlich die interne
 Auftraggeberentscheidung; sie ist keine neue externe Quelle. Beide

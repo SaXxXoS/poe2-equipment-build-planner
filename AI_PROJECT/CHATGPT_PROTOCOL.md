@@ -2,6 +2,21 @@
 
 ## Aufgabe 5M.2.8B – Auftraggeberentscheidung (2026-07-23)
 
+## Abschlussstatus 5M.2.9
+
+- Ausgangscommit `544d43279ae9369adaffc264b97873610fd4384b`; 5M.2.8B abgeschlossen.
+- Buildzeitlicher Offline-Importer unter `scripts/pob2-unique-import/`; kein Lua und kein Runtime-Netzwerk.
+- 20 gepinnte Dateien aus PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`.
+- Produkt `generated/pob2/uniques.json`; SHA-256 `db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452`; Fachhash `a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329`.
+- 435 Uniques, 579 Varianten, 2.345 Modzeilen, 273 Implicit-Zeilen und 1.689 Rollbereiche.
+- 104 Skillhinweise auditseitig erkannt, null Skills/Supports produktiv importiert.
+- Vollständige Provenienz; Source Kind `pob2-planner-data`; GGG Identity `unknown`.
+- Produktregistry stellt dem bestehenden Unique Analyzer 435 Kandidaten bereit; der passive Compact-Worker bleibt unverändert und transportiert keine unnötige Unique-Gesamtregistry. Fixtures bleiben test-only getrennt.
+- Englisch ist Quelle; 435-mal Deutsch `translation-missing`; keine deutschen Unique-Texte.
+- Zwei Importläufe byteidentisch. Normale Affixe, Craftingdaten, Medien, Flavour Text, Hotlinks, Runtime-Netzwerk und erfundene GGG-IDs bleiben ausgeschlossen.
+- Keine externe Genehmigung wird behauptet; bekannte Unsicherheit bleibt dokumentiert.
+- 5M.2 und 5N weiterhin nicht begonnen.
+
 - 5M.2.8A endete historisch mit `distribution-pending-both`.
 - Der Auftraggeber hat ausdrücklich entschieden, keine externen
   Einzelanfragen an PoB2, Path of Building Community oder GGG zu verfolgen.

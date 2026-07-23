@@ -45,13 +45,13 @@ describe('5M.2.8B Auftraggeberentscheidung', () => {
 
   it('gibt 5M.2.9 nur unter dem exakten reduzierten Vertrag frei', () => {
     expect(decision.importStatus).toBe('5M.2.9-may-begin-under-existing-guards')
-    expect(contract.followUp).toBe('5M.2.9-may-begin')
+    expect(contract.followUp).toBe('5M.2.9-imported-under-existing-guards')
     expect(contract.input.files).toHaveLength(20)
     expect(Object.keys(contract.input.fileHashes)).toHaveLength(20)
     expect(contract.output).toMatchObject({
       planned: 'generated/pob2/uniques.json',
       format: 'normalized-json',
-      createdInThisTask: false,
+      createdInThisTask: true,
       currentlyBlocked: false,
     })
     expect(contract.localization.germanUniqueTexts).toBe('not-approved')

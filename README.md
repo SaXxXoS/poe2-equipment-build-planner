@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+> Datenstatus 5M.2.9: 435 englische Unique-Planerrecords aus `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0` sind offline integriert. Sie sind strikt von GGG-/RePoE-Affixdaten getrennt; deutsche Unique-Texte bleiben `translation-missing`. Keine externe Billigung wird behauptet.
+
 > PoB2 Unique data policy: the project owner has authorized a future reduced,
 > source-separated planner data set under disclosed legal/licensing
 > uncertainty. No individual permission was requested from or granted by

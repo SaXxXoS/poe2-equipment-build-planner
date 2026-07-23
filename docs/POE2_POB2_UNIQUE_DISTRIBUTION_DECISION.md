@@ -1,5 +1,7 @@
 # PoB2-Unique-Planerdaten: Distributionsentscheidung 5M.2.8A
 
+> Historische Einordnung: `distribution-pending-both` wurde in 5M.2.8B durch `distribution-project-approved-with-disclosed-uncertainty` abgelöst. 5M.2.9 behauptet weiterhin keine externe Lizenz oder Genehmigung.
+
 > **Historischer Stand, durch 5M.2.8B technisch abgelöst:** Der Auftraggeber
 > hat entschieden, keine externen Einzelbestätigungen einzuholen. Die
 > Entwürfe wurden nicht versendet. Der neue aktive Status ist

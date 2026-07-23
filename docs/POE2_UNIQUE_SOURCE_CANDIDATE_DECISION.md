@@ -1,5 +1,7 @@
 # PoE2 Unique source candidate decision (5M.2.7)
 
+> Folgeergebnis 5M.2.9: PoB2 wurde ausschließlich als getrennte Planerdatenquelle genutzt: 435 englische Records, ohne technische GGG-Identitätsbehauptung und ohne deutsche Unique-Texte.
+
 > **5M.2.8B-Update:** PoB2 bleibt die getrennte Unique-Planerdatenquelle.
 > Der reduzierte Datensatz ist intern
 > `distribution-project-approved-with-disclosed-uncertainty`. Keine externe

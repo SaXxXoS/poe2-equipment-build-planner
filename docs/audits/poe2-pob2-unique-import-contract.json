@@ -61,7 +61,7 @@
   "output": {
     "planned": "generated/pob2/uniques.json",
     "format": "normalized-json",
-    "createdInThisTask": false,
+    "createdInThisTask": true,
     "currentlyBlocked": false,
     "maximumDataCategories": [
       "unique-planner-items"
@@ -152,5 +152,5 @@
     "scope-escape",
     "missing-project-owner-decision"
   ],
-  "followUp": "5M.2.9-may-begin"
+  "followUp": "5M.2.9-imported-under-existing-guards"
 }

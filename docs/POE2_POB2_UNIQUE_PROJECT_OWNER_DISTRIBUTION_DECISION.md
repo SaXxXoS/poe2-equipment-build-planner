@@ -1,5 +1,7 @@
 # PoB2-Unique-Planerdaten: Auftraggeberentscheidung 5M.2.8B
 
+> Umsetzung 5M.2.9: 435 englische PoB2-Planer-Uniques wurden quellengetrennt importiert. Externe Genehmigungen werden weiterhin weder behauptet noch vorausgesetzt; Rechteunsicherheit, Attribution und Scopegrenzen bleiben dokumentiert.
+
 ## 1. Ziel
 
 5M.2.8B setzt die ausdrückliche interne Projektentscheidung um, den
@@ -190,4 +192,3 @@ BuildProfile-Datei verändert.
 Nächster Schritt ist 5M.2.9: deterministischer Import des minimalen
 englischen PoB2-Unique-Planerdatensatzes mit Manifest, Coverage, Attribution
 und Produkttrennungsnachweis. 5M.2 und 5N wurden nicht begonnen.
-

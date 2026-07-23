@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.9",
+  "comparisonBase": "no-previous-pob2-product-dataset",
+  "added": 435,
+  "removed": 0,
+  "changed": 0,
+  "variantChanged": 0,
+  "valueChanged": 0,
+  "provenanceChanged": 0,
+  "unresolved": 0,
+  "interpretation": "Every imported record is new because this is the first approved product import."
+}

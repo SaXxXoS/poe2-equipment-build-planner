@@ -2,6 +2,8 @@
 
 ## 5M.2.8B – Auftraggeberentscheidung
 
+> Vollzug 5M.2.9: Scope `poe2-pob2-unique-planner-data`, Importvertrag 2, 435 englische Records aus exakt 20 Dateien. Reguläre Affixe, GGG-Mod-/Stat-IDs, Medien und deutsche Unique-Texte bleiben ausgeschlossen.
+
 Nur für `poe2-pob2-unique-planner-data` gilt nun
 `distribution-project-approved-with-disclosed-uncertainty`. PoB2- und
 GGG-Einzelfreigaben wurden nicht angefragt oder erteilt und werden nicht

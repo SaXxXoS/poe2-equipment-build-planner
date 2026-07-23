@@ -198,8 +198,8 @@
         "projectOwnerDecision": "approved-with-disclosed-uncertainty",
         "externalPermissionStatus": "not-requested-not-obtained-not-required-by-project-policy",
         "uncertaintyStatus": "unresolved-external-rights-disclosed-and-accepted-by-project-owner",
-        "importStatus": "5M.2.9-may-begin-under-existing-guards",
-        "nextRequiredAction": "Execute 5M.2.9 under the exact import contract; do not broaden files, fields, localization, media, runtime access or GGG-ID claims."
+        "importStatus": "5M.2.9-imported-under-existing-guards",
+        "nextRequiredAction": "Keep the exact import contract and guards for every rebuild or update; separately decide any German Unique localization scope."
       }
     }
   ],

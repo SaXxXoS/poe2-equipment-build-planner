@@ -1,5 +1,7 @@
 # PoE2 PoB2 Unique Planner Data Approval
 
+> Importstatus 5M.2.9: Importvertrag 2 wurde mit 20/20 Dateien am gepinnten Commit umgesetzt. Produktiv sind 435 englische Records; normale Affixe, GGG-IDs, Medien, Flavour Text und deutsche Unique-Texte wurden nicht importiert.
+
 > **5M.2.8B-Update:** Der Auftraggeber erlaubt den reduzierten Datensatz als
 > Projektentscheidung mit offengelegter Unsicherheit. Externe Bestätigungen
 > wurden nicht angefragt und werden nicht als technischer Blocker verwendet.

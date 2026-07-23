@@ -59,7 +59,7 @@ export interface Pob2UniqueProvenance {
   sourceRepository: typeof POB2_UNIQUE_REPOSITORY
   sourceCommit: typeof POB2_UNIQUE_COMMIT
   sourceRecordIdentifier: string
-  sourceLicense: 'MIT-code-data-rights-pending'
+  sourceLicense: 'MIT-code-data-rights-pending' | 'MIT-code-data-rights-project-approved-with-disclosed-uncertainty'
   importedAtBuild: boolean
   technicalIdentityStatus: 'pob2-source-identity'
   gggIdentityStatus: 'unknown'
@@ -199,7 +199,7 @@ export function guardPob2UniquePlannerData(
   if (request.projectOwnerDistributionDecision !== POB2_UNIQUE_PROJECT_OWNER_DECISION) issues.push('project-owner-decision')
   if (scopeConstraints?.projectOwnerDecision !== POB2_UNIQUE_PROJECT_OWNER_DECISION
     || scopeConstraints.distributionStatus !== POB2_UNIQUE_DISTRIBUTION_STATUS
-    || scopeConstraints.importStatus !== '5M.2.9-may-begin-under-existing-guards') issues.push('versioned-project-owner-decision')
+    || !['5M.2.9-may-begin-under-existing-guards', '5M.2.9-imported-under-existing-guards'].includes(String(scopeConstraints.importStatus))) issues.push('versioned-project-owner-decision')
   if (!request.attributionIncluded) issues.push('attribution')
   if (!request.licenseNoticeIncluded) issues.push('license-notice')
   if (!request.sourceLabelIncluded) issues.push('source-label')

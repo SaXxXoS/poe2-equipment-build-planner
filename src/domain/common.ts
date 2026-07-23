@@ -1,4 +1,4 @@
-export const DATA_SOURCES = ['local-placeholder', 'poe2db', 'official', 'manual'] as const
+export const DATA_SOURCES = ['local-placeholder', 'poe2db', 'official', 'manual', 'pob2-planner-data'] as const
 export type DataSource = (typeof DATA_SOURCES)[number]
 
 export const DATA_STATUSES = ['placeholder', 'imported', 'verified'] as const

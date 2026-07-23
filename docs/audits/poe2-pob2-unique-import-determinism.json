@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.9",
+  "status": "byteidentical",
+  "runCount": 2,
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFileCount": 20,
+  "importContractVersion": "2",
+  "parserFormatVersion": "1",
+  "run01Sha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "run02Sha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "productSha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "semanticHash": "a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329",
+  "identicalIds": true,
+  "identicalVariants": true,
+  "identicalModifierLines": true,
+  "identicalRollRanges": true,
+  "identicalProvenance": true,
+  "identicalSortOrder": true,
+  "identicalCoverage": true,
+  "timestampsInSemanticHash": false
+}

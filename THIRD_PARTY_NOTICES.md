@@ -1,5 +1,7 @@
 # Third-Party Notices
 
+Since task 5M.2.9, the application distributes a reduced English planner dataset derived from 435 records in the pinned PoB2 sources. It is labelled `pob2-planner-data`; it is not a raw mirror and contains no images, media, flavour text, or asserted technical GGG identity chain. No individual external permission was requested or obtained. The documented GGG/community origin and unresolved rights uncertainty remain disclosed.
+
 ## Path of Building 2
 
 The project has approved Path of Building 2 as a source-separated Unique

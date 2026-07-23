@@ -4,6 +4,8 @@
 
 ## Abgrenzung 5M.2.0
 
+> Status 5M.2.9: Der getrennte PoB2-Planerdatensatz ist mit 435 englischen Uniques produktiv importiert. Die technische GGG-Unique-Identitätsfrage bleibt unberührt; Deutsch bleibt `translation-missing`.
+
 Unique-Namen, -Modtexte und Varianten sind nicht Teil der deutschen Lokalisierungsentscheidung. Ihre bestehenden `pending`/`blocked`-Status bleiben unverändert; keine deutsche Unique-Quelle wurde freigegeben.
 
 > Abgrenzung 5M.1B.0C: Technische Socketable-Identitäten werden separat behandelt. `UniqueMutatedVaal…`, Unique-Socketable- und Unique-Anointment-Mods bleiben durch diese Entscheidung ausdrücklich blocked; die Unique-Entscheidung wurde nicht gelockert und keine Unique-Daten wurden importiert.
