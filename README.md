@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+> **Datenstand 5M.2.10:** Der englische PoB2-Unique-Bestand bleibt unverändert. Lokale deutsche Namen, Basistypen und CSD-Templates wurden offline geprüft, besitzen jedoch keine sichere gemeinsame technische Identität mit den `pob2:`-Records. Daher wurden keine deutschen Unique-Produkttexte importiert; alle 435 Items bleiben `translation-missing`.
+
 > Datenstatus 5M.2.9: 435 englische Unique-Planerrecords aus `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0` sind offline integriert. Sie sind strikt von GGG-/RePoE-Affixdaten getrennt; deutsche Unique-Texte bleiben `translation-missing`. Keine externe Billigung wird behauptet.
 
 > PoB2 Unique data policy: the project owner has authorized a future reduced,

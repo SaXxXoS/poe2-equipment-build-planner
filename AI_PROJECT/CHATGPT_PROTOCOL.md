@@ -1,5 +1,22 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Abschlussstatus 5M.2.10 – deutsche PoB2-Unique-Lokalisierungsstrategie
+
+- Ausgangscommit: `8bc97c1e73c2be81134fbb2ea1e9bd2e50360d75`.
+- Der englische PoB2-Produktbestand blieb bytegleich: 435 Items, 579 Varianten, 2.345 Modzeilen, 273 Implicits; SHA-256 `db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452`.
+- Geprüfte lokale Quellen: 589 CSD-Dateien, 5.476 englische/deutsche BaseItemTypes, 3.246 englische/deutsche Words-Records, ItemClasses und die Unique-DAT-Audits aus 5M.2.6.
+- Namen: 434 eindeutige sichtbare Words-Kandidaten, ein mehrdeutiger Kandidat, 0 sichere Produktjoins.
+- Basistypen: 425 eindeutige Textkandidaten, zehn mehrdeutige Kandidaten, 0 sichere Produktjoins.
+- Modzeilen: 759 eindeutige und 355 mehrdeutige Templatekandidaten, 1.231 ohne lokalen Kandidaten; 0 technisch sichere deutsche Zeilen.
+- Implicits: 57 eindeutige und 46 mehrdeutige Kandidaten, 170 ohne Kandidaten; 0 technisch sichere deutsche Implicits.
+- Varianten: 579 variantenspezifisch ungelöst; Current/Legacy dürfen nur als UI-Systemtexte behandelt werden.
+- Alle Kandidaten bleiben Audit-only. Keine Namens-, Text-, Basis- oder Zahlenheuristik wurde als Produktwahrheit verwendet.
+- Getrenntes Zielmodell: `generated/localization/de/pob2-uniques.json`, in dieser Aufgabe nicht erzeugt; Join nur über stabile `pob2:`-, Varianten- und Zeilen-IDs nach eigener technischer Identitätsfreigabe.
+- Gesamtstatus: `audit-only-no-safe-product-link`.
+- Keine deutschen Unique-Produkttexte, keine automatische oder KI-Übersetzung, keine erfundenen GGG-IDs, keine externen Anfragen.
+- Empfohlener nächster Schritt: 5M.2.10A, Offline-Audit einer stabilen Unique-Identitätsbrücke. Ein deutscher Import kann davor nicht beginnen.
+- 5M.2 und 5N sind weiterhin nicht begonnen.
+
 ## Aufgabe 5M.2.8B – Auftraggeberentscheidung (2026-07-23)
 
 ## Abschlussstatus 5M.2.9

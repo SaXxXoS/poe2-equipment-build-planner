@@ -1,5 +1,9 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## PoB2-Unique-Lokalisierungsaudit 5M.2.10
+
+Das Audit verwendet ausschließlich den unveränderten PoB2-Produktbestand, Content.ggpk-Pin `a917a56f...`, Schema `268ae3a3...`, Referenzmanifest `a4bbcd99...`, die lokalen `Words`-/BaseItemTypes-DAT-Extrakte und 589 normalisierte CSD-Dateien. Es verwendet keine Onlinequelle, Trade-API, PoE2DB-Automatisierung oder externe Anfrage. Texttreffer sind Auditkandidaten und keine Produktreferenzen.
+
 ## 5M.2.8B – Entscheidungsprovenienz
 
 > Produktreferenz 5M.2.9: `generated/pob2/uniques.json` enthält den reduzierten englischen Datensatz aus `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Source Kind ist `pob2-planner-data`, Deutsch ist `translation-missing`, und keine technische GGG-ID-Kette wird behauptet.

@@ -1,5 +1,9 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+## Auditstand 5M.2.10
+
+Die deutsche Anzeige der PoB2-Uniques ist nicht freigegeben. `Words`, `BaseItemTypes` und CSD liefern lokale deutsche Anzeige- und Templatekandidaten, aber keinen sicheren technischen Join zu den 435 `pob2:`-Items. Der englische Scope und alle bestehenden Approval-Einträge bleiben unverändert. Der mögliche Scope `poe2-local-german-unique-localization` hat den Status `not-created-not-approved`.
+
 ## 5M.2.8B – Auftraggeberentscheidung
 
 > Vollzug 5M.2.9: Scope `poe2-pob2-unique-planner-data`, Importvertrag 2, 435 englische Records aus exakt 20 Dateien. Reguläre Affixe, GGG-Mod-/Stat-IDs, Medien und deutsche Unique-Texte bleiben ausgeschlossen.

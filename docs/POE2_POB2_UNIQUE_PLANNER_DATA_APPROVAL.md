@@ -1,5 +1,7 @@
 # PoE2 PoB2 Unique Planner Data Approval
 
+> **5M.2.10:** Der Scope bleibt eine ausschließlich englische PoB2-Planerdatenquelle. Lokale deutsche Texte wurden nur offline als Kandidaten auditiert. Mangels gemeinsamer technischer Unique-/Mod-/Stat-Identität ist kein deutscher Produktjoin freigegeben; ein separater möglicher Scope `poe2-local-german-unique-localization` wurde nur entworfen, nicht angelegt.
+
 > Importstatus 5M.2.9: Importvertrag 2 wurde mit 20/20 Dateien am gepinnten Commit umgesetzt. Produktiv sind 435 englische Records; normale Affixe, GGG-IDs, Medien, Flavour Text und deutsche Unique-Texte wurden nicht importiert.
 
 > **5M.2.8B-Update:** Der Auftraggeber erlaubt den reduzierten Datensatz als

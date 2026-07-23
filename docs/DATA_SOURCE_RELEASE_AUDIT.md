@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## Release-Auswirkung 5M.2.10
+
+Keine Runtime- oder Produktdatenänderung. `generated/pob2/uniques.json` bleibt bei SHA-256 `db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452`; Registry und Analyzer bleiben unverändert. Sieben bereinigte Auditberichte und die Lokalisierungsstrategie dokumentieren den Status `audit-only-no-safe-product-link`. 5M.2 und 5N sind nicht begonnen.
+
 ## 5M.2.8B – Release-Grenze
 
 > Release-Audit 5M.2.9: 435 Records und 579 Varianten wurden offline gebündelt; Produkt-SHA-256 `db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452`. Zwei Importläufe waren byteidentisch. Rohquellen, Medien, Flavour Text, deutsche Unique-Texte und Runtime-Netzwerk fehlen absichtlich.

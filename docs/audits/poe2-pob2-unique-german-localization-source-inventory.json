@@ -1,0 +1,100 @@
+{
+  "audit": "5M.2.10",
+  "auditFormatVersion": 1,
+  "conclusion": "Local German names, bases and CSD templates exist, but no source supplies a shared technical Unique identity chain to the PoB2 records.",
+  "network": {
+    "api": false,
+    "dns": false,
+    "http": false,
+    "https": false,
+    "poe2db": false,
+    "scraping": false,
+    "tradeApi": false
+  },
+  "sourcePins": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "pob2Commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "referenceManifestSha256": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+    "schemaSha256": "268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30"
+  },
+  "sourceProductHash": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "sourceProductSemanticHash": "a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329",
+  "sourceScope": "poe2-pob2-unique-planner-data",
+  "sources": [
+    {
+      "baseItemIds": false,
+      "format": "normalized JSON from 589 CSD files",
+      "language": "German and English",
+      "path": ".local-audits/poe2-offline-audit-parser/run-01/normalized-audit.json",
+      "pin": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+      "productUse": "only after an independent technical Unique line to Stat-ID chain",
+      "records": 19916,
+      "source": "local-german-csd-stat-descriptions",
+      "statIds": true,
+      "status": "teilweise-geeignet",
+      "uniqueIdentityFields": false,
+      "variants": false,
+      "visibleNames": false
+    },
+    {
+      "baseItemIds": true,
+      "format": "normalized DAT audit JSON",
+      "language": "German and English",
+      "path": ".local-audits/poe2-offline-reference-extraction/run-01/audit/normalized-reference-audit.json",
+      "pin": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+      "productUse": "German base name only after an independent PoB2 Unique to BaseItemTypes ID link",
+      "records": 5476,
+      "source": "BaseItemTypes English/German",
+      "statIds": false,
+      "status": "teilweise-geeignet",
+      "uniqueIdentityFields": false,
+      "variants": false,
+      "visibleNames": true
+    },
+    {
+      "baseItemIds": false,
+      "format": "DATC64 decoded with pinned PoB2 schema",
+      "language": "German and English",
+      "path": ".local-audits/poe2-unique-affix-audit/extraction-run-01/data/balance/{german/,}words.datc64",
+      "pin": "c4fdc6fea68206f69381a752e9b3973f5ff4008b7fa047ad532dab20b972752c",
+      "productUse": "text candidates only; not product approved",
+      "records": 3246,
+      "source": "Words English/German",
+      "statIds": false,
+      "status": "nur-Anzeigehilfe",
+      "uniqueIdentityFields": false,
+      "variants": false,
+      "visibleNames": true
+    },
+    {
+      "baseItemIds": false,
+      "format": "normalized offline audit JSON",
+      "language": "German and English where present",
+      "path": ".local-audits/poe2-unique-affix-audit/audit-run-01/unique-affix-audit.json",
+      "pin": "c4fdc6fea68206f69381a752e9b3973f5ff4008b7fa047ad532dab20b972752c",
+      "productUse": "no stable Unique-ID to base/mod/variant chain",
+      "records": 449,
+      "source": "Unique-related local DAT tables",
+      "statIds": false,
+      "status": "Audit-only",
+      "uniqueIdentityFields": false,
+      "variants": false,
+      "visibleNames": true
+    },
+    {
+      "baseItemIds": false,
+      "format": "normalized DAT audit JSON",
+      "language": "German and English",
+      "path": ".local-audits/poe2-offline-reference-extraction/run-01/audit/normalized-reference-audit.json",
+      "pin": "a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353",
+      "productUse": "one schema byte remains unknown and no Unique foreign key exists",
+      "records": 117,
+      "source": "ItemClasses English/German",
+      "statIds": false,
+      "status": "nicht-geeignet",
+      "uniqueIdentityFields": false,
+      "variants": false,
+      "visibleNames": true
+    }
+  ]
+}
