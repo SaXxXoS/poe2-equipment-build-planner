@@ -38,10 +38,11 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
   it('ordnet die Hauptausrüstung zusammenhängend und schaltet nur Waffenplätze', () => {
     const html = renderToStaticMarkup(<EquipmentSection entries={initialEquipment} setEntries={() => undefined}/>)
     expect(html).toContain('equipment-loadout')
+    expect(html).toContain('equipment-paperdoll-stage')
     expect(html).toContain('Waffenset auswählen')
     expect(html).toContain('Juwelen')
-    expect(html).toContain('Charms')
-    expect(html).toContain('Fläschchen')
+    expect(html).toContain('Charms und Fläschchen')
+    expect(html).toContain('equipment-quick-slots')
     expect(html).not.toContain('Waffenset 2 links')
     expect(activeWeaponSlotIds('set-1')).toEqual(['slot-weapon-set-1-left','slot-weapon-set-1-right'])
     expect(activeWeaponSlotIds('set-2')).toEqual(['slot-weapon-set-2-left','slot-weapon-set-2-right'])

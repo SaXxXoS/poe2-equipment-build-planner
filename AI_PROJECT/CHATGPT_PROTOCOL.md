@@ -954,3 +954,22 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Nächster Schritt nach erfolgreicher Verifikation: Auftraggeber-Praxistest
   des korrigierten leeren Equipment-first-Flows; danach nur konkret
   beobachtete UX- und Sprachkorrekturen.
+
+## V1.3.1 – Paperdoll-Nachkorrektur nach Foto 2
+
+- Die vom Auftraggeber bereitgestellte Datei `Foto 2.jpg` wurde als konkrete
+  Layoutreferenz geprüft.
+- Die Ausrüstung verwendet nun eine eigene kompakte Paperdoll: hohe
+  Waffenplätze außen, Helm und Brust zentral, kleine Schmuckplätze körpernah,
+  Handschuhe/Gürtel/Schuhe darunter sowie Fläschchen und Charms in einer
+  unteren Schnellplatzreihe. Juwelen stehen abgetrennt darunter.
+- Der Umschalter heißt kompakt `Set 1 | Set 2`; nur die Waffenplätze wechseln.
+- Es wurden keine Bilder, CSS-Regeln, Logos oder sonstigen fremden Assets aus
+  der Referenz übernommen. Leere Plätze verwenden eigene neutrale
+  CSS-/Textsymbole.
+- Item-Editor, Mehrfach-Affixe, Werteingabe, Analyzer und Build-Ergebnis sind
+  unverändert.
+- Mobile Prüfung 390 × 844: 321 Pixel breite Paperdoll, kein horizontaler
+  Überlauf, Item-Editor erreichbar und Browserkonsole ohne Fehler/Warnungen.
+- Fokussierte Equipment-/Editor-Regression: 8/8; Lint, Typecheck und
+  Pages-Build erfolgreich.
