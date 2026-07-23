@@ -2,6 +2,7 @@ import type { EntityId, GameDataMetadata, MechanicTag } from './common'
 
 export type SkillRole = 'main' | 'secondary' | 'utility' | 'movement' | 'defensive'
 export type SkillWeaponSet = 'set-1' | 'set-2' | 'both'
+export type SkillOrigin = 'manual' | 'recommended' | 'ascendancy' | 'equipment'
 export type RotationDurationCategory = 'short' | 'medium' | 'long' | 'persistent'
 
 export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'any'
@@ -71,4 +72,7 @@ export interface SkillSetup {
   role: SkillRole
   weaponSet: SkillWeaponSet
   supportGemIds: EntityId[]
+  origin?: SkillOrigin
+  level?: number
+  locked?: boolean
 }

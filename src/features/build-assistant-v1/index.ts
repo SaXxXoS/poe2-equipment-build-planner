@@ -6,6 +6,7 @@ import { pob2UniqueAnalyzerCandidates } from '../../uniques'
 import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
 import { technicalItemClasses } from '../../affixes/registry'
 import type { SyntheticWeaponType } from '../../domain'
+import { migrateEquipmentEntry } from '../equipment-editor/model'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
 
@@ -97,7 +98,7 @@ export function deriveWeaponContext(equipment: EquipmentEntry[]) {
 export function createBuildAssistantRequest(input: BuildAssistantInput) {
   const buildInput: BuildInput = {
     character: input.character,
-    equipment: input.equipment,
+    equipment: input.equipment.map(migrateEquipmentEntry),
     skillSetups: input.setups,
     selectedJewels: [],
     goalProfile: input.character.goalProfile,
@@ -116,7 +117,6 @@ export function runBuildAssistantV1(input: BuildAssistantInput): BuildAnalysis {
 export function validateBuildAssistantInput(input: BuildAssistantInput): string[] {
   const errors: string[] = []
   if (!input.character.classId) errors.push('Bitte wähle eine Klasse.')
-  if (!input.character.desiredMainSkillId) errors.push('Bitte wähle einen Hauptangriff.')
   if (!input.character.goalProfile) errors.push('Bitte wähle ein Zielprofil.')
   return errors
 }

@@ -4,6 +4,8 @@ import { equipmentSlotDefinitions, jewelDefinitions, clusterJewelDefinitions, un
 import { localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import type { PassivePlanPresentation } from '../features/real-passive-analysis'
+import { technicalAffixById } from '../affixes/registry'
+import { affixDisplayName } from '../features/equipment-editor/affix-display'
 
 const confidenceText: Record<Confidence, string> = { high: 'Hohe Sicherheit', medium: 'Mittlere Sicherheit', low: 'Niedrige Sicherheit' }
 const goalText = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
@@ -86,6 +88,18 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   const confidence = topConfidence(analysis)
   const dominantDamage = analysis.equipmentAnalysis.dominantDamageType
   const dominantMechanic = analysis.equipmentAnalysis.dominantMechanic
+  const appliedAffixes = equipment.flatMap(entry => entry.modifierValues)
+  const weakIds = new Set([...analysis.equipmentAnalysis.weaklyUsedModifierIds, ...analysis.equipmentAnalysis.unusedModifierIds])
+  const conflictIds = new Set(analysis.equipmentAnalysis.conflictingModifierIds)
+  const affixLabel = (id: string) => {
+    const value = appliedAffixes.find(item => item.modifierId === id)
+    const affix = technicalAffixById.get(id)
+    return `${affix ? affixDisplayName(affix) : definitionName(id)}${value ? ` (${value.statValues?.map(item => item.value).join(' / ') ?? String(value.value)})` : ''}`
+  }
+  const strongAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => !weakIds.has(id) && !conflictIds.has(id)))].slice(0, 8)
+  const partialAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => weakIds.has(id)))].slice(0, 8)
+  const unsuitableAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => conflictIds.has(id)))].slice(0, 8)
+  const fitCategory = !desiredSkill?.valid ? 'Schwach passend' : analysis.equipmentAnalysis.profileClarity >= 70 && confidence !== 'low' ? 'Sehr passend' : analysis.equipmentAnalysis.profileClarity >= 45 ? 'Gut passend' : 'Bedingt passend'
   const nextSteps = [
     ...(desiredSkill && !desiredSkill.valid ? ['Waffen- oder Skillkonflikt zuerst beheben.'] : []),
     ...(analysis.equipmentAnalysis.conflictingModifierIds.length ? ['Konfliktierende Affixe überprüfen.'] : []),
@@ -99,7 +113,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   return <section id="result" className="result build-assistant-result">
     <div className="placeholder">BUILD-ASSISTENT V1 · ECHTE ANALYZER-AUSWERTUNG</div>
     <h2>Build-Vorschlag</h2>
-    <article className="build-summary"><h3>Zusammenfassung</h3><dl className="summary-grid">
+    <article className="build-summary"><h3>Zusammenfassung · Build-Eignung: {fitCategory}</h3><p className="muted">Orientierung aus Profilklarheit, Waffen-/Skillkompatibilität, Konflikten und Analyzer-Sicherheit – keine DPS-Zahl.</p><dl className="summary-grid">
       <div><dt>Zielprofil</dt><dd>{goalText[analysis.buildProfile.goals.mappingWeight > analysis.buildProfile.goals.bossWeight ? 'mapping' : analysis.buildProfile.goals.bossWeight > analysis.buildProfile.goals.mappingWeight ? 'boss' : 'balanced']}</dd></div>
       <div><dt>Hauptschaden</dt><dd>{dominantDamage ? damageText[dominantDamage] : 'Unbekannt'}</dd></div>
       <div><dt>Mechanik</dt><dd>{dominantMechanic ? mechanicText[dominantMechanic] : 'Unbekannt'}</dd></div>
@@ -107,6 +121,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
       <div><dt>Stärke</dt><dd>{dominantDamage ? `Klarster Schwerpunkt: ${damageText[dominantDamage]}` : 'Noch kein klarer Schwerpunkt'}</dd></div>
       <div><dt>Schwäche</dt><dd>{emptySlots.length ? `${emptySlots.length} leere Slots begrenzen die Aussagekraft` : analysis.warnings.length ? `${analysis.warnings.length} Konflikte oder Warnungen` : 'Keine deutliche Schwäche erkannt'}</dd></div>
     </dl></article>
+    <details open><summary>Affixskalierung</summary><div className="result-panel"><div className="affix-scaling-grid"><div><h4>Stark passend</h4>{strongAffixes.length ? <ul>{strongAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine starke, belegte Skalierung erkannt.</p>}</div><div><h4>Teilweise hilfreich</h4>{partialAffixes.length ? <ul>{partialAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine teilweise genutzten Affixe.</p>}</div><div><h4>Konflikte oder unpassend</h4>{unsuitableAffixes.length ? <ul>{unsuitableAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine eindeutigen Affixkonflikte erkannt.</p>}</div></div><p><b>Fehlende Grundlage:</b> {analysis.buildProfile.defence.resistanceNeed > 0 ? 'Widerstände ' : ''}{analysis.buildProfile.defence.generalDefenceNeed > 0 ? 'Leben oder eine belastbare Verteidigungsschicht' : 'Keine eindeutige defensive Lücke'}</p></div></details>
     <details open><summary>Ausrüstung</summary><div className="result-panel"><p>{equipment.length - emptySlots.length} von {equipment.length} Slots enthalten Daten. {emptySlots.length ? 'Die Analyse bleibt möglich, besitzt aber geringere Sicherheit.' : 'Alle Slots wurden erfasst.'}</p>
       {equippedUniques.length > 0 && <><h4>Ausgerüstete Uniques</h4><ul>{equippedUniques.map(({ entry, unique }) => <li key={entry.id}>{unique?.name ?? entry.uniqueItemId} · {equipmentSlotDefinitions.find(slot => slot.id === entry.slotId)?.displayNameDe ?? entry.slotId}{entry.uniqueVariantId ? ` · Variante ${entry.uniqueVariantId}` : ''}</li>)}</ul></>}
       <p><b>Waffensets:</b> {analysis.equipmentAnalysis.dominantWeaponSet === 'balanced' ? 'Beide Sets sind ähnlich gewichtet.' : `${analysis.equipmentAnalysis.dominantWeaponSet === 'set-1' ? 'Set 1' : 'Set 2'} ist stärker ausgeprägt.`}</p>

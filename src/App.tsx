@@ -3,7 +3,7 @@ import './styles.css'
 import './domain.css'
 import type { CharacterConfiguration } from './domain'
 import type { BuildAnalysis } from './engine'
-import { ascendancyDefinitions, initialEquipment, skillSetups as initialSkillSetups } from './data'
+import { initialEquipment, skillSetups as initialSkillSetups } from './data'
 import { CharacterSection } from './components/CharacterSection'
 import { EquipmentSection } from './components/EquipmentSection'
 import { SkillsSection } from './components/SkillsSection'
@@ -14,11 +14,11 @@ import { runBuildAssistantV1, validateBuildAssistantInput } from './features/bui
 
 export default function App() {
   const [character, setCharacter] = useState<CharacterConfiguration>({
-    classId: 'class-official-6',
-    ascendancyId: ascendancyDefinitions.find(value => value.classId === 'class-official-6')?.id ?? '',
+    classId: '',
+    ascendancyId: '',
     level: 70,
+    additionalPassivePoints: 0,
     goalProfile: 'balanced',
-    desiredMainSkillId: 'skill-lightning-arrow',
   })
   const [equipment, setEquipment] = useState(initialEquipment)
   const [setups, setSetups] = useState(initialSkillSetups)
@@ -59,6 +59,14 @@ export default function App() {
       }
     }, 0)
   }
+  function recommendSupports(setupId: string) {
+    const setup = setups.find(value => value.id === setupId)
+    if (!setup?.skillId || !character.classId) return
+    const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups })
+    const supportGemIds = result.supportAnalysis.topCandidates.slice(0, 5).map(value => value.supportId)
+    setSetups(setups.map(value => value.id === setupId ? { ...value, supportGemIds } : value))
+    invalidateResult()
+  }
   return <>
     <header>
       <p className="eyebrow">Equipment-first · Build-Assistent V1</p>
@@ -68,7 +76,7 @@ export default function App() {
     <main>
       <CharacterSection value={character} onChange={value => { setCharacter(value); invalidateResult() }}/>
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }}/>
-      <SkillsSection setups={setups} onChange={value => { setSetups(value); invalidateResult() }}/>
+      <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResult={passivePlan.result} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
       <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan}/>
       <section className="calculate">

@@ -874,3 +874,33 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Keine neue Datenquelle, kein Audit, keine Pin-, Crafting- oder Produktdatenänderung, keine Preisberechnung, DPS-Simulation, externe API oder Scraping.
 - Maßgeblich: `docs/BUILD_ASSISTANT_V1_END_TO_END.md`.
 - Nächster Hauptauftrag: bereits zulässige Kandidatenmetadaten gezielt vertiefen, besonders semantische PoB2-Unique-Signale; keine neue Datenquellenphase.
+# Abschluss HAUPTAUFGABE V1.3 – Equipment-first (2026-07-23)
+
+- Ausgangscommit: `d609834125e3a11222a814314cb8eb218a576efe`.
+- V1.2 war abgeschlossen; V1.3 korrigiert die sichtbare Produktvision auf „vorhandenen Charakter und reale Ausrüstung nachbauen, daraus Build ableiten“.
+- Architektur bleibt unverändert: zentrale React-Eingabe, BuildProfile, vorhandener Orchestrator und bestehende Analyzer.
+- Charakterflow: Klassenliste, danach passende Aszendenzen, Level, zusätzliche Story-Passivpunkte und automatisch abgeleitete Gesamtpunkte.
+- Equipment-first: räumliche Paperdoll-Gruppierung, getrennte Waffensets sowie eigene Utility-/Juwelbereiche.
+- Itemmodell kompatibel erweitert um `rarity`, generische `sockets` und eine
+  rein sichtbare `baseDisplayName`-Angabe ohne behauptete technische
+  Basistypidentität; `modifierValues` bleibt kanonisch.
+- Rare zeigt drei Prefix- und drei Suffixplätze; Implicits bleiben getrennt. Magic nutzt 1/1, Normal 0/0.
+- Werteingabe verwendet bestätigte Statzeilen und Grenzen; Tier ist keine Pflichtauswahl.
+- Sichtbarer Affixtext bereinigt Parser-Auswahlmarker; deutsche Suchaliasse nutzen vorhandene technische Semantik.
+- Sechs dynamische Fertigkeitskarten verwenden den produktiven Skill-/Supportbestand. Supports bleiben kartenbezogen und können durch den vorhandenen Analyzer vorgeschlagen werden.
+- Ohne manuelle Hauptfertigkeit wird der beste gültige Hauptskill des bestehenden Rankings verwendet; Nutzerwahl wird nicht heimlich ersetzt.
+- Automatische Aszendenz- und Equipmentskills bleiben aus, solange keine technisch belegte Zuordnung vorliegt.
+- Ergebnis ergänzt Affixskalierung und eine deterministische Eignungskategorie statt einer nicht belastbaren Prozentzahl.
+- Bestehende Waffensets, Passive-Pfade, Mapping, Boss und evidenzgebundene Rotation bleiben erhalten.
+- Produktpins, PoB2-Produktdaten, RePoE-Daten, Crafting Engine und Datenquellen wurden nicht geändert.
+- Lokale Referenzbilder waren im Workspace nicht verfügbar; die schriftliche Layoutvorgabe wurde mit neutralen Platzhaltern umgesetzt.
+- Bekannte Grenzen: Sockelmaxima/-inhalte pro Basis, automatische gewährte Skills und viele deutsche normale Affixtexte sind **Unbekannt** beziehungsweise nicht vollständig belegt.
+- Hauptdokument: `docs/BUILD_ASSISTANT_V1_3_EQUIPMENT_FIRST_UX.md`.
+- Prüfung: 19/19 fokussierte V1.3-/End-to-End-Tests; vollständiger
+  Parallel-Lauf 1.016/1.019 mit drei Zeitüberschreitungen ohne
+  Assertion-Fehler; serieller Wiederholungslauf der betroffenen Dateien 50/50.
+  Lint, Typecheck, Produktions- und Pages-Build erfolgreich.
+- Browser: Desktop und 390 × 844 technisch bedienbar, kein horizontaler
+  Überlauf, Rare-Editor mit 3/3 Slots und Startsockel, Live-Suche „Leben“ mit
+  46 technisch möglichen Prefixen, keine neuen Konsolenfehler/-warnungen.
+- Nächster empfohlener Auftrag: V1.3.1-Praxistest und enger UX-/Sprachfeinschliff mit lokal bereitgestellten Referenzbildern.

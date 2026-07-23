@@ -102,7 +102,8 @@ describe('5M.1B.0C Approval-Entscheidung', () => {
 const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
   '../../src/affixes/registry.ts': '268760739aa233052060962bfd9a034d4cd351e13078964df92b9962e73f7d1d',
-  '../../src/components/AffixDialog.tsx': '89d77b9a1cb1bb168382ef4ddfaa085ba9a6731971fae248a4d8575f22eda566',
+  // V1.3 explicitly authorizes the backwards-compatible equipment editor expansion.
+  '../../src/components/AffixDialog.tsx': '45bcda48ae138661f0b3239a73a720f2032d027aae31b249d8f6dbce86d0723b',
   '../../src/engine/common/types.ts': '95f7ac64646c6322a0eb43cffd8550b69d706dc0757e13c311934ae465912971',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',

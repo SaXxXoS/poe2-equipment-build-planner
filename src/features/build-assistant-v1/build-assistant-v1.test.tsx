@@ -94,7 +94,8 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
   it('erlaubt leere optionale Slots und validiert nur echte Mindesteingaben', () => {
     expect(validateBuildAssistantInput({ character: character(), equipment: initialEquipment, setups: skillSetups })).toEqual([])
     expect(() => runBuildAssistantV1({ character: character(), equipment: initialEquipment, setups: skillSetups })).not.toThrow()
-    expect(validateBuildAssistantInput({ character: { ...character(), desiredMainSkillId: undefined }, equipment: initialEquipment, setups: skillSetups })).toContain('Bitte wähle einen Hauptangriff.')
+    expect(validateBuildAssistantInput({ character: { ...character(), desiredMainSkillId: undefined }, equipment: initialEquipment, setups: skillSetups })).toEqual([])
+    expect(runBuildAssistantV1({ character: { ...character(), desiredMainSkillId: undefined }, equipment: initialEquipment, setups: skillSetups }).supportAnalysis.allCandidates[0]?.skillId).toBeTruthy()
   })
 
   it('rendert einen zusammenhängenden deutschen Ergebnisbericht mit allen V1-Bereichen', () => {
