@@ -1,6 +1,7 @@
 import product from '../../generated/pob2/uniques.json'
 import type { UniqueItemSlot } from '../domain'
 import type { UniqueCandidate } from '../engine/common/types'
+import { classifyPob2Unique } from './pob2-semantics'
 
 export interface Pob2UniquePlannerRecord {
   sourceId: string
@@ -9,7 +10,8 @@ export interface Pob2UniquePlannerRecord {
   slot: UniqueItemSlot
   itemCategory: string
   requiredLevel: number | null
-  variants: Array<{ sourceVariantId: string; currentOrLegacy: string }>
+  variants: Array<{ sourceVariantId: string; currentOrLegacy: string; modifierSet: string[] }>
+  visibleModifiers: Array<{ sourceLineId: string; normalizedPlannerLine: string }>
   provenance: {
     sourceKind: 'pob2-planner-data'
     sourceRepository: string
@@ -24,7 +26,9 @@ const records = product.items as Pob2UniquePlannerRecord[]
 
 export const pob2UniquePlannerRegistry = Object.freeze(records)
 
-export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item => ({
+export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item => {
+  const semantics = classifyPob2Unique(item)
+  return ({
   id: item.sourceId,
   displayNameDe: 'translation-missing',
   nameEn: item.name,
@@ -32,7 +36,7 @@ export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item 
   source: 'pob2-planner-data',
   sourceReference: `${item.provenance.sourceRepository}@${item.provenance.sourceCommit}:${item.provenance.sourceRecordIdentifier}`,
   status: 'imported',
-  tags: [],
+  tags: semantics.tags,
   provenance: {
     sourceId: product.sourceScope,
     sourceRecordId: item.provenance.sourceRecordIdentifier,
@@ -49,7 +53,11 @@ export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item 
   ascendancyIds: [],
   enabled: true,
   experimental: true,
-}))
+  semanticEvidence: semantics.evidence,
+  tradeOffs: semantics.tradeOffs,
+  buildEnabler: semantics.buildEnabler,
+  requiredWeaponTypes: semantics.requiredWeaponTypes,
+})})
 
 if (new Set(pob2UniqueAnalyzerCandidates.map(item => item.id)).size !== pob2UniqueAnalyzerCandidates.length) throw new Error('Duplicate PoB2 Unique planner IDs')
 if (pob2UniqueAnalyzerCandidates.some(item => item.id.startsWith('fixture:'))) throw new Error('PoB2 Unique registry collides with fixture namespace')

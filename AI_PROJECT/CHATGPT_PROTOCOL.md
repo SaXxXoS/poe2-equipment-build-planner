@@ -1,5 +1,19 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Hauptaufgabe V1.1 – semantische Analyzer-Breite
+
+- Ausgangscommit: `143e605b3af83e9ed446e27c5c20ba7a1a03ffb0`.
+- Die V1-End-to-End-Architektur bleibt unverändert; Orchestrator, BuildProfile, Aggregation und Scoremodelle bleiben maßgeblich.
+- Produktive Kandidaten: Skills 6→12, Supports 5→13, Juwelen/Cluster 7→13.
+- Affix-Coverage: 2.255 technische Affixe, 1.507 semantisch klassifiziert, 406 mehrzeilig/teilweise abgeleitet, 748 ungelöst.
+- Unique-Semantik: 435 Items/579 Varianten; 147 `structured-exact`, 14 `structured-derived`, 274 `text-pattern-exact`. 288 Items liefern produktiv nutzbare Tags oder Restriktionen.
+- Evidenzklassen sind `structured-exact`, `structured-derived`, `text-pattern-exact`, `text-pattern-ambiguous` und `unresolved`.
+- Nur gemeinsame Variantenzeilen dürfen itemweite Semantik erzeugen. Legacy-only-Eigenschaften werden nicht übertragen.
+- Keine technische GGG-ID, keine deutsche Anzeigeschicht als technische Quelle, kein Fuzzy Matching, keine neue Datenquelle und kein Scraping.
+- PoB2-Produktpin, RePoE-/GGG-Pins, englische Produktdatei und deutsche Anzeigeschicht bleiben unverändert.
+- Hauptskill-Suche und verständliche Unique-Evidenzanzeige ergänzen die vorhandene deutsche UI.
+- Coverage und Vorher-/Nachher-Grenzen stehen in `docs/BUILD_ASSISTANT_V1_1_SEMANTIC_EXPANSION.md`.
+
 ## Abschlussstatus 5M.2.10 – deutsche PoB2-Unique-Lokalisierungsstrategie
 
 - Ausgangscommit: `8bc97c1e73c2be81134fbb2ea1e9bd2e50360d75`.

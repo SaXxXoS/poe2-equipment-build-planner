@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "comparisonType": "deterministic-candidate-breadth-and-evidence",
+  "profiles": [
+    {"id": "physical-melee", "skillCandidatesBefore": 6, "skillCandidatesAfter": 12, "supportCandidatesBefore": 5, "supportCandidatesAfter": 13, "jewelCandidatesBefore": 7, "jewelCandidatesAfter": 13, "productiveUniqueCandidatesBefore": 0, "productiveUniqueCandidatesAfter": 288},
+    {"id": "elemental-projectile-attack", "skillCandidatesBefore": 6, "skillCandidatesAfter": 12, "supportCandidatesBefore": 5, "supportCandidatesAfter": 13, "jewelCandidatesBefore": 7, "jewelCandidatesAfter": 13, "productiveUniqueCandidatesBefore": 0, "productiveUniqueCandidatesAfter": 288},
+    {"id": "spell", "skillCandidatesBefore": 6, "skillCandidatesAfter": 12, "supportCandidatesBefore": 5, "supportCandidatesAfter": 13, "jewelCandidatesBefore": 7, "jewelCandidatesAfter": 13, "productiveUniqueCandidatesBefore": 0, "productiveUniqueCandidatesAfter": 288},
+    {"id": "defensively-incomplete", "skillCandidatesBefore": 6, "skillCandidatesAfter": 12, "supportCandidatesBefore": 5, "supportCandidatesAfter": 13, "jewelCandidatesBefore": 7, "jewelCandidatesAfter": 13, "productiveUniqueCandidatesBefore": 0, "productiveUniqueCandidatesAfter": 288}
+  ],
+  "conflicts": "preserved by existing analyzers",
+  "confidence": "preserved; experimental and incomplete profiles remain reduced",
+  "emptyResultAreas": "reduced where exact semantic evidence exists; still explicit otherwise",
+  "rankings": "existing analyzer scores and tie-breakers remain authoritative",
+  "deterministicEquality": true,
+  "claimBoundary": "This report measures evidence-bearing candidate breadth, not gameplay optimality."
+}

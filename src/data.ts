@@ -19,6 +19,7 @@ import {
 } from './domain'
 import classRegistry from '../generated/poe2-tree/class-registry.json'
 import { allTechnicalAffixes } from './affixes/registry'
+import { classifyTechnicalAffix } from './affixes/analyzer-semantics'
 export { pob2UniqueAnalyzerCandidates, pob2UniquePlannerRegistry } from './uniques'
 
 export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
@@ -70,7 +71,7 @@ export const modifierDefinitions: ModifierDefinition[] = legacyModifierDefinitio
   ...placeholderMetadata(affix.affixId, 'Deutsche Übersetzung noch nicht verfügbar'), category: 'utility' as const,
   valueType: affix.statLines.length > 1 ? 'range' as const : 'number' as const, unit: affix.statLines.some(line => line.isPercent) ? 'percent' as const : 'flat' as const,
   minValue: affix.statLines[0]?.minimum, maxValue: affix.statLines[0]?.maximum, scope: affix.isLocal ? 'local' as const : 'global' as const,
-  relevantTags: [], allowedEquipmentSlotIds: equipmentSlotDefinitions.map(slot => slot.id),
+  relevantTags: classifyTechnicalAffix(affix).tags, allowedEquipmentSlotIds: equipmentSlotDefinitions.map(slot => slot.id),
 })))
 
 const skillSeed = [

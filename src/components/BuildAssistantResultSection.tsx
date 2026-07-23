@@ -2,6 +2,7 @@ import type { BuildAnalysis, Confidence, ConstraintViolation, RotationPlan } fro
 import type { EquipmentEntry } from '../domain'
 import { equipmentSlotDefinitions, jewelDefinitions, clusterJewelDefinitions, uniqueClusterJewelDefinitions, passiveNodeDefinitions, skillDefinitions, supportDefinitions } from '../data'
 import { localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
+import { buildAssistantCandidates } from '../features/build-assistant-v1'
 
 const confidenceText: Record<Confidence, string> = { high: 'Hohe Sicherheit', medium: 'Mittlere Sicherheit', low: 'Niedrige Sicherheit' }
 const goalText = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
@@ -10,9 +11,17 @@ const mechanicText: Record<string, string> = { attack: 'Angriff', spell: 'Zauber
 const verdictText: Record<string, string> = { 'clear-upgrade': 'Klare Verbesserung', 'situational-upgrade': 'Situative Verbesserung', sidegrade: 'Seitentausch', downgrade: 'Voraussichtlich schwächer', unknown: 'Unbekannt' }
 const definitionName = (id: string) => {
   const resolvedId = id.startsWith('candidate:') ? id.slice('candidate:'.length) : id
-  return [...skillDefinitions, ...supportDefinitions, ...passiveNodeDefinitions, ...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions].find(item => item.id === resolvedId)?.displayNameDe ?? 'Unbekannte Empfehlung'
+  return [...buildAssistantCandidates.skills, ...buildAssistantCandidates.supports, ...buildAssistantCandidates.jewels, ...skillDefinitions, ...supportDefinitions, ...passiveNodeDefinitions, ...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions].find(item => item.id === resolvedId)?.displayNameDe ?? 'Unbekannte Empfehlung'
 }
 const uniqueById = new Map(localizedPob2UniquesDe.map(item => [item.id, item]))
+const uniqueCandidateById = new Map(buildAssistantCandidates.uniques.map(item => [item.id, item]))
+const evidenceText: Record<string, string> = {
+  'structured-exact': 'Direkt aus strukturierten Daten',
+  'structured-derived': 'Sicher aus strukturierten Daten abgeleitet',
+  'text-pattern-exact': 'Aus eindeutigem Beschreibungsmuster abgeleitet',
+  'text-pattern-ambiguous': 'Datenlage eingeschränkt',
+  unresolved: 'Semantik nicht verfügbar',
+}
 const issueText = (issue: ConstraintViolation) => {
   const known: Record<string, string> = {
     'skill-wrong-weapon': 'Die gewählte Fertigkeit passt nicht zur erkannten Waffenart.',
@@ -86,7 +95,7 @@ export function BuildAssistantResultSection({ analysis, equipment }: { analysis:
     </div></details>
     <details open><summary>Passive Schwerpunkte</summary><div className="result-panel"><RecommendationList values={analysis.passiveAnalysis.eligibleCandidates} name={definitionName}/>{analysis.passiveAnalysis.topKeystoneCandidates.length ? <p><b>Keystone-Hinweis:</b> Nachteile vor Auswahl prüfen; Trade-offs bleiben sichtbar.</p> : <p>Kein belastbarer Keystone-Vorschlag verfügbar.</p>}</div></details>
     <details><summary>Juwelen und Cluster</summary><div className="result-panel"><RecommendationList values={[...analysis.jewelAnalysis.topNormalJewels, ...analysis.jewelAnalysis.topClusterJewels, ...analysis.jewelAnalysis.topUniqueClusterJewels]} name={definitionName}/></div></details>
-    <details open><summary>Passende Uniques</summary><div className="result-panel">{uniques.length ? <ol>{uniques.map(item => { const unique = uniqueById.get(item.uniqueId); return <li key={item.uniqueId}><b>{unique?.name ?? item.uniqueId}</b> · {unique?.baseDisplayName ?? item.itemSlot} · {verdictText[item.replacementVerdict]}<br/><span>Slot {item.itemSlot} · {confidenceText[item.confidence]} · {item.requiresReoptimization ? 'Neuberechnung erforderlich' : 'Keine Neuberechnung erkannt'}{item.tradeOffs.length ? ` · Trade-offs: ${item.tradeOffs.join(', ')}` : ''}</span></li> })}</ol> : <p>Keine fachlich begrenzte Unique-Empfehlung verfügbar.</p>}<p className="muted">PoB2-Uniques ohne technische GGG-Stat-Verknüpfung erhalten nur die von vorhandenen Regeln belegbare Bewertung.</p></div></details>
+    <details open><summary>Passende Uniques</summary><div className="result-panel">{uniques.length ? <ol>{uniques.map(item => { const unique = uniqueById.get(item.uniqueId), candidate = uniqueCandidateById.get(item.uniqueId); return <li key={item.uniqueId}><b>{unique?.name ?? item.uniqueId}</b> · {unique?.baseDisplayName ?? item.itemSlot} · {verdictText[item.replacementVerdict]}<br/><span>Slot {item.itemSlot} · {confidenceText[item.confidence]} · {evidenceText[candidate?.semanticEvidence ?? 'unresolved']} · {item.requiresReoptimization ? 'Neuberechnung erforderlich' : 'Keine Neuberechnung erkannt'}{item.tradeOffs.length ? ` · Belegte Einschränkungen: ${item.tradeOffs.length}` : ''}</span></li> })}</ol> : <p>Keine fachlich begrenzte Unique-Empfehlung verfügbar.</p>}<p className="muted">PoB2-Uniques ohne technische GGG-Stat-Verknüpfung erhalten nur die von vorhandenen Regeln belegbare Bewertung.</p></div></details>
     <div className="rotation-grid"><article><h3>Mapping</h3><p>Priorität: Flächenwirkung, Projektilabdeckung und Bewegung, soweit vom Skill unterstützt.</p><Rotation plan={analysis.mappingRotation}/></article><article><h3>Boss</h3><p>Priorität: Einzelzielwirkung, Schwächungen und stabile Schadensfenster, soweit belegt.</p><Rotation plan={analysis.bossRotation}/></article></div>
     <details open><summary>Nächste Verbesserungen</summary><div className="result-panel">{nextSteps.length ? <ol>{nextSteps.map(step => <li key={step}>{step}</li>)}</ol> : <p>Keine konkrete Verbesserung aus den vorhandenen Daten ableitbar.</p>}</div></details>
   </section>

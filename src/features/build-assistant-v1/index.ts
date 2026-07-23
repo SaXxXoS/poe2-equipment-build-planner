@@ -3,13 +3,14 @@ import { clusterJewelDefinitions, jewelDefinitions, modifierDefinitions, passive
 import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type PassiveCandidate } from '../../engine'
 import { localizedPob2UniquesDe } from '../../localization/pob2-uniques-de'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
+import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
 
 const localizedUniqueNames = new Map(localizedPob2UniquesDe.map(item => [item.id, item.name]))
 const damageTags = new Set<MechanicTag>(['physical', 'fire', 'cold', 'lightning', 'chaos'])
 
-const skills: SkillGemDefinition[] = skillDefinitions.map(skill => ({
+const skills: SkillGemDefinition[] = [...skillDefinitions, ...expandedSkillCandidates].map(skill => ({
   ...skill,
   damageTypes: skill.tags.filter(tag => damageTags.has(tag)) as SkillGemDefinition['damageTypes'],
   possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility'] : skill.tags.includes('buff') ? ['utility'] : ['main', 'secondary'],
@@ -18,7 +19,7 @@ const skills: SkillGemDefinition[] = skillDefinitions.map(skill => ({
   enabled: true,
 }))
 
-const supports: SupportGemDefinition[] = supportDefinitions.map(support => ({
+const supports: SupportGemDefinition[] = [...supportDefinitions, ...expandedSupportCandidates].map(support => ({
   ...support,
   ownTags: support.requiredTags,
   supportedMechanics: support.requiredTags,
@@ -43,7 +44,7 @@ export const buildAssistantCandidates: EngineCandidates = {
   skills,
   supports,
   passives,
-  jewels: [...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions],
+  jewels: [...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions, ...expandedJewelCandidates],
   uniques: pob2UniqueAnalyzerCandidates.map(candidate => ({
     ...candidate,
     displayNameDe: localizedUniqueNames.get(candidate.id) ?? candidate.nameEn ?? 'Unbekanntes Unique',
@@ -82,4 +83,3 @@ export function validateBuildAssistantInput(input: BuildAssistantInput): string[
   if (!input.character.goalProfile) errors.push('Bitte wähle ein Zielprofil.')
   return errors
 }
-

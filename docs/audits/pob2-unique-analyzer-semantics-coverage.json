@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceProductSha256": "db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452",
+  "totalItems": 435,
+  "totalVariants": 579,
+  "totalModifierLines": 2345,
+  "structuredExact": 147,
+  "structuredDerived": 14,
+  "textPatternExact": 274,
+  "textPatternAmbiguous": 0,
+  "unresolved": 0,
+  "productiveSemanticItems": 288,
+  "productiveSemanticVariants": 0,
+  "negativeEffectsDetected": 21,
+  "enablersDetected": 0,
+  "weaponRestrictionsDetected": 14,
+  "damageTypeTags": ["physical", "fire", "cold", "lightning", "chaos"],
+  "mechanicTags": ["attack", "spell", "projectile", "melee", "area", "critical", "damage-over-time", "minion", "movement"],
+  "defensiveTags": ["defensive", "resistance"],
+  "blockedPatterns": ["fuzzy matching", "German display text", "item-name inference", "technical GGG-ID synthesis"],
+  "unknownPatterns": ["complex conditional mechanics", "variant-only effects", "unstructured trigger semantics"],
+  "countingRule": "Item-wide text semantics use only source line IDs present in every declared variant. Structured-derived counts are exact bow/crossbow or mace/spear category restrictions without productive common text tags."
+}

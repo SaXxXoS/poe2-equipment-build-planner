@@ -103,7 +103,7 @@ const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
   '../../src/affixes/registry.ts': '268760739aa233052060962bfd9a034d4cd351e13078964df92b9962e73f7d1d',
   '../../src/components/AffixDialog.tsx': '89d77b9a1cb1bb168382ef4ddfaa085ba9a6731971fae248a4d8575f22eda566',
-  '../../src/engine/common/types.ts': 'f81364bd22c352340585b5b0890ee679b845edab820192ff8b62bed1e2b60e50',
+  '../../src/engine/common/types.ts': '7adb8070603e2dc6ea4aecc5431c6395ead3a46b65962372d84bc472f99f2b40',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',

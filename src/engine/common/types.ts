@@ -126,7 +126,11 @@ export interface ExplanationResult { summary: ExplanationEntry[]; sections: Expl
 export interface ExplanationGeneratorInput { reasons: ScoreReason[]; violations: ConstraintViolation[]; equipmentAnalysis: EquipmentAnalysis; skillAnalysis: SkillAnalysis; supportAnalysis: SupportAnalysis; passiveAnalysis: PassiveAnalysis; jewelAnalysis: JewelAnalysis; uniqueAnalysis: UniqueAnalysis; rotationAnalysis: RotationAnalysis; displayNames: Record<EntityId, string | undefined> }
 export interface PassiveClusterCandidate { clusterId: EntityId; targetNodeIds: EntityId[]; requiredPathNodeIds: EntityId[]; entryNodeId: EntityId; totalPointCost?: number; weaponSet?: 'set-1' | 'set-2' | 'both'; classId?: EntityId; ascendancyId?: EntityId; experimental?: boolean }
 export interface PassiveCandidate { id: EntityId; candidateType?: 'node' | 'cluster'; nodeId?: EntityId; cluster?: PassiveClusterCandidate; nodes?: PassiveNodeDefinition[]; connections?: PassiveConnection[]; tags?: MechanicTag[]; utilityScore?: number; pathCost?: number; reachable?: boolean; availablePointBudget?: number }
-export interface UniqueCandidate extends UniqueItemDefinition { ascendancyIds: EntityId[]; buildEnabler?: boolean }
+export interface UniqueCandidate extends UniqueItemDefinition {
+  ascendancyIds: EntityId[]
+  buildEnabler?: boolean
+  semanticEvidence?: 'structured-exact' | 'structured-derived' | 'text-pattern-exact' | 'text-pattern-ambiguous' | 'unresolved'
+}
 export interface EngineCandidates { skills: SkillGemDefinition[]; supports: SupportGemDefinition[]; passives: PassiveCandidate[]; jewels: AnyJewelDefinition[]; uniques: UniqueCandidate[] }
 export interface BuildAnalysis { equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile; skillAnalysis: SkillAnalysis; skillRecommendations: SkillRecommendation[]; supportAnalysis: SupportAnalysis; supportRecommendations: SupportRecommendation[]; passiveAnalysis: PassiveAnalysis; passiveRecommendations: PassiveRecommendation[]; jewelAnalysis: JewelAnalysis; jewelRecommendations: JewelRecommendation[]; uniqueAnalysis: UniqueAnalysis; uniqueRecommendations: UniqueRecommendation[]; rotationAnalysis: RotationAnalysis; mappingRotation: MappingRotation; bossRotation: BossRotation; explanations: ExplanationResult; warnings: ConstraintViolation[]; status: EngineStatus; engineVersion: string; moduleTrace: string[]; realPassivePlanning?:RealPassivePlanningIntegrationResult }
 export interface EngineRequest { input: BuildInput; candidates: EngineCandidates; realPassivePlanning?:RealPassivePlanningConfiguration }

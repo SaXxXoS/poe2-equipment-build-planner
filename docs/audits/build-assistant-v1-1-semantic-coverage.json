@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "Build Assistant V1.1 semantic expansion",
+  "skillCandidatesBefore": 6,
+  "skillCandidatesAfter": 12,
+  "supportCandidatesBefore": 5,
+  "supportCandidatesAfter": 13,
+  "jewelCandidatesBefore": 7,
+  "jewelCandidatesAfter": 13,
+  "affixesTotal": 2255,
+  "affixesSemanticallyClassified": 1507,
+  "affixesPartiallyClassified": 406,
+  "affixesUnresolved": 748,
+  "uniqueItemsTotal": 435,
+  "uniqueVariantsTotal": 579,
+  "uniqueItemsWithStructuredSemantics": 147,
+  "uniqueItemsWithDerivedSemantics": 14,
+  "uniqueItemsWithExactTextPatternSemantics": 274,
+  "uniqueItemsAmbiguous": 0,
+  "uniqueItemsUnresolved": 0,
+  "supportedMechanics": [
+    "attack", "spell", "projectile", "melee", "area", "critical",
+    "damage-over-time", "minion", "movement", "physical", "fire", "cold",
+    "lightning", "chaos", "life", "mana", "energy-shield", "armour",
+    "evasion", "resistance", "weapon-set", "mapping", "boss"
+  ],
+  "unsupportedMechanics": [
+    "full-dps-simulation", "prices", "complex-trigger-order", "unique-ggg-stat-links",
+    "variant-specific-unique-ranking", "ailment-magnitude", "stun-simulation"
+  ],
+  "limitations": [
+    "Curated skill/support/jewel candidates are project-maintained V1.1 rules, not a complete game database.",
+    "Unique text-pattern semantics never assert GGG Mod or Stat IDs.",
+    "Only modifier lines shared by every variant contribute item-wide Unique ranking."
+  ]
+}
