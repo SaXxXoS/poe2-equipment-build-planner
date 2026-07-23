@@ -1,10 +1,20 @@
 # Datenquellen-Freigabeaudit
 
-## 5M.2.8A Release-Guard
+## 5M.2.8B – Release-Grenze
 
-PoB2-Unique-Produktdaten dürfen nicht veröffentlicht werden. Der
-Distributionsguard blockiert wegen `distribution-pending-both`; erlaubte
-Distributionsartefakte sind leer. Reguläre Affixdaten, Produktivpins,
+5M.2.9 darf für den PoB2-Unique-Scope beginnen. Ein Release ist nur mit
+Vertragsversion 2 zulässig: exakter Commit, 20 exakte Hashes, reduzierte
+Feldallowlist, vollständige Provenienz, Attribution, Quellenkennzeichnung und
+deterministisches Manifest. Keine externen Genehmigungen werden behauptet.
+Deutsche Texte, Rohmirror, Medien, reguläre Affixe und GGG-ID-Behauptungen
+bleiben gesperrt.
+
+## Historischer 5M.2.8A Release-Guard
+
+PoB2-Unique-Produktdaten durften in 5M.2.8A nicht veröffentlicht werden. Der
+damalige Guard blockierte wegen `distribution-pending-both`; erlaubte
+Distributionsartefakte waren leer. 5M.2.8B löst ausschließlich diesen
+technischen Blocker ab. Reguläre Affixdaten, Produktivpins,
 deutsche Lokalisierung und `translation-missing` bleiben unverändert.
 
 ## Unique-Kandidatenaudit 5M.2.7

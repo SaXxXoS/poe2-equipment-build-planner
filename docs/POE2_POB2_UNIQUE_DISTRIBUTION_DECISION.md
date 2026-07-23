@@ -1,5 +1,14 @@
 # PoB2-Unique-Planerdaten: Distributionsentscheidung 5M.2.8A
 
+> **Historischer Stand, durch 5M.2.8B technisch abgelöst:** Der Auftraggeber
+> hat entschieden, keine externen Einzelbestätigungen einzuholen. Die
+> Entwürfe wurden nicht versendet. Der neue aktive Status ist
+> `distribution-project-approved-with-disclosed-uncertainty`; 5M.2.9 darf
+> unter allen bestehenden Guards beginnen. Die hier dokumentierte
+> Rechteunsicherheit und das Fehlen externer Genehmigungen bleiben
+> unverändert wahr. Maßgeblich ist
+> `POE2_POB2_UNIQUE_PROJECT_OWNER_DISTRIBUTION_DECISION.md`.
+
 ## 1. Ziel und Ergebnis
 
 5M.2.8A klärt ausschließlich Lizenz, Herkunft und öffentliche Distribution
@@ -220,4 +229,3 @@ Nächster Schritt ist die menschliche Prüfung und manuelle Versendung beider
 Entwürfe. Antworten müssen anschließend in einer neuen, quellenbelegten
 Approval-Entscheidung ausgewertet werden. 5M.2, 5M.2.9 und 5N wurden nicht
 begonnen; Fotoerkennung bleibt eine spätere Aufgabe.
-

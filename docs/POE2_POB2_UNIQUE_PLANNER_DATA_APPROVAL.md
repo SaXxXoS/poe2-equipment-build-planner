@@ -1,11 +1,19 @@
 # PoE2 PoB2 Unique Planner Data Approval
 
-> **5M.2.8A-Update (23. Juli 2026):** Der technische Unique-Scope bleibt
-> `conditionally-approved`, seine Distribution ist jedoch
+> **5M.2.8B-Update:** Der Auftraggeber erlaubt den reduzierten Datensatz als
+> Projektentscheidung mit offengelegter Unsicherheit. Externe Bestätigungen
+> wurden nicht angefragt und werden nicht als technischer Blocker verwendet.
+> 5M.2.9 darf unter Pin-, Hash-, Feld-, Provenienz-, Attributions- und
+> Produkttrennungsguards beginnen. Dies behauptet weder externe Genehmigung
+> noch geklärte Rechte.
+
+> **Historischer 5M.2.8A-Stand (23. Juli 2026):** Der technische Unique-Scope
+> blieb `conditionally-approved`, seine Distribution war jedoch
 > `distribution-pending-both`. Die MIT-Codelizenz belegt nicht eindeutig die
 > Rechte an den GGG-gekennzeichneten statischen Unique-Daten. Zusätzlich
-> fehlt eine schriftliche GGG-Zustimmung. 5M.2.9 bleibt blockiert. Maßgeblich
-> ist `POE2_POB2_UNIQUE_DISTRIBUTION_DECISION.md`.
+> fehlte eine schriftliche GGG-Zustimmung. 5M.2.9 war blockiert. Dieser Stand
+> ist durch die oben dokumentierte 5M.2.8B-Projektentscheidung technisch
+> abgelöst.
 
 ## Ziel und Entscheidung
 

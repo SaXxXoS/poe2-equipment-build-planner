@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
   "pin": {
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
     "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -13,10 +13,15 @@
       "exact-scope",
       "exact-repository",
       "exact-commit",
-      "exact-file",
+      "explicit-project-owner-decision",
       "field-allowlist",
       "sha256-manifest",
       "deterministic-normalization"
+    ],
+    "source": [
+      "exact-20-file-allowlist",
+      "exact-per-file-sha256",
+      "unknown-file-fail-closed"
     ],
     "separation": [
       "no-normal-affixes",
@@ -32,14 +37,17 @@
     "provenance": [
       "required-fields",
       "pob2-namespace",
-      "unknown-ggg-identity"
+      "unknown-ggg-identity",
+      "source-label-per-record"
     ],
     "distribution": [
-      "product-import-blocked-while-pending",
-      "no-generated",
-      "no-public"
+      "exact-generated-output-only",
+      "attribution-required",
+      "license-notice-required",
+      "uncertainty-disclosed"
     ],
     "external": [
+      "external-confirmation-not-required-by-project-policy",
       "no-runtime-network",
       "no-hotlinks",
       "no-scraping",
@@ -47,5 +55,6 @@
       "no-raw-mirror"
     ]
   },
+  "noGenericRiskBypass": true,
   "failClosed": true
 }

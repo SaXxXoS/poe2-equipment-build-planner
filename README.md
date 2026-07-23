@@ -1,10 +1,17 @@
 # PoE2 Equipment Build Planner
 
-> Data-source status: Path of Building 2 is approved only as a prospective,
-> source-separated Unique planner-data source. Public distribution of derived
-> PoB2 Unique data remains blocked pending written confirmation from both
-> PoB2 maintainers and Grinding Gear Games. No PoB2 Unique product data are
-> currently included.
+> PoB2 Unique data policy: the project owner has authorized a future reduced,
+> source-separated planner data set under disclosed legal/licensing
+> uncertainty. No individual permission was requested from or granted by
+> Path of Building Community or Grinding Gear Games. This is a project
+> decision, not legal advice. Exact pinning, attribution, notices and all
+> product-separation guards remain mandatory; no PoB2 Unique product data
+> were imported by task 5M.2.8B.
+
+> Historical 5M.2.8A status: public distribution was initially blocked
+> pending two written confirmations. 5M.2.8B supersedes that technical
+> blocker through the explicit project-owner decision above; no external
+> permission is claimed.
 
 > Datenstatus 5M.2.7: Der priorisierte Unique-Quellenaudit ist abgeschlossen. Offizielle Quellen, RePoE, PoB2, poe2-mcp und weitere Kandidaten liefern keine vollständige technische Unique-ID→Base→Mod/Stat→Werte→Varianten-Kette. Es wurden keine Daten importiert; Approval, Produktivpin, Runtime und `translation-missing` bleiben unverändert.
 

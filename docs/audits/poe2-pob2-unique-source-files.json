@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
   "pin": {
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
     "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -11,121 +11,121 @@
       "path": "src/Data/Uniques/amulet.lua",
       "sha256": "688004e0b18364d0201dfcc05ffc64eed82c705c371a38c3a129fe85ff3cf307",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/belt.lua",
       "sha256": "23e36248d5de42d04e9af7d890a92b376de211aacb378a5b43d2b09df436311b",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/body.lua",
       "sha256": "a39172cafcab5feb7d77ea15b29a67355a02d0706b8b1a8bb3d6562ffbc16c97",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/boots.lua",
       "sha256": "74335281fb54a8cd115bf6f7bf8b2d1808b2b4a588e3b1820231ed56560c26ba",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/bow.lua",
       "sha256": "2d0f6a4b434145034e7de102a7590ac05c56c41cbe92c19779d735d9ef21775a",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/crossbow.lua",
       "sha256": "b76cd73e9d334b0bc2ba76f3d20aaf1e20133340a936571447331e37755ec40c",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/flask.lua",
       "sha256": "49c50365eb9a4e425c83ced89e5ffae034ca4a9a25b50868eda6f45d6b96eae3",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/focus.lua",
       "sha256": "a363116d3971b330769d20fd9e73a1d1330a89a746bd0d9f4f0820c6625570fc",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/gloves.lua",
       "sha256": "063f9e48e33e2721e3bfcf1079b7f5d029822a94d3fcea903319ef512a3dcd43",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/helmet.lua",
       "sha256": "a3d542e9f51950665ce901a3f59bfcf3e6d6e1e6909c9e94cb23eb1a42555dc7",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/jewel.lua",
       "sha256": "06115f389a916bf0b906c6b1aaef80fb3453582024a18cf5ffef64961c4d3425",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/mace.lua",
       "sha256": "10cf27b6851799271f62aad32f59e7b0c44174ddc88daa58486c613b2057ff76",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/quiver.lua",
       "sha256": "0a48c5f5945b052fabc8c03b19c0317283016b05ca5d854bc03390209cb32ac5",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/ring.lua",
       "sha256": "2330af5132959b8f499825b3cb5b76bf563d1c32bc728c56af7ede115f47834b",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/sceptre.lua",
       "sha256": "8595984d05ac9107480c42715752e0f06b2f79a8e8f1338af0f056329f39412f",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/shield.lua",
       "sha256": "1f25309f43b9936a22599c02c2c90f9e0101ec9fb36bf387181b94958724f709",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/spear.lua",
       "sha256": "867d313faec7e87e39c00258f44f5e9f4e930b2c097e0f25c4ee66a05e0cfdeb",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/staff.lua",
       "sha256": "b5b4529d3999d0960d2179490ca43657c318149b5376b224d9dd5f43fec8aeaf",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/talisman.lua",
       "sha256": "4f682fa8dc5a6f439bb9d0d22c2c64ce4e48755c42764bd63a35c1b307f63d3c",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     },
     {
       "path": "src/Data/Uniques/wand.lua",
       "sha256": "a94306112c1cdddb0dcef966091dfad33e45d7a13cc4dfbe0868ed0af2bdae52",
       "purpose": "static Unique planner records",
-      "decision": "allowed-input-after-distribution-approval"
+      "decision": "allowed-input-for-5M.2.9-under-guards"
     }
   ],
   "excluded": [

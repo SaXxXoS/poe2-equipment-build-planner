@@ -1,24 +1,30 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8A",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
   "pin": {
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
     "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
     "importFormatVersion": "1"
   },
-  "status": "prepared-not-activated",
+  "status": "mandatory-for-5M.2.9",
   "requiredLocations": [
     "README",
     "DATA_SOURCE_REFERENCES",
     "THIRD_PARTY_NOTICES.md",
-    "visible app data-source/info location before distribution"
+    "source label and manifest reference in product data",
+    "visible app data-source/info location before user-facing release"
   ],
-  "block": [
-    "Unique planner data adapted from Path of Building Community / PathOfBuilding-PoE2 at commit c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0. PoB2 code is MIT-licensed. Underlying Path of Exile 2 item names and properties are identified by PoB2 as Grinding Gear Games content. This product is not affiliated with or endorsed by Grinding Gear Games. No technical GGG Unique, Mod or Stat identity is claimed."
+  "requiredStatements": [
+    "PoB2 Unique planner data",
+    "repository and exact commit",
+    "PoB2 code MIT notice",
+    "GGG/community data origin",
+    "no external individual permission requested or obtained",
+    "unresolved external rights disclosed",
+    "no official GGG technical identity claimed",
+    "GGG non-affiliation",
+    "no PoB2 endorsement claimed"
   ],
-  "licenseTextPlan": "Conservatively retain the complete applicable PoB2 MIT notice if code or substantial licensed material is copied; do not describe GGG content as MIT-licensed.",
-  "pending": [
-    "PoB2 preferred wording",
-    "GGG written permission and any required notice"
-  ]
+  "licenseTextPlan": "Retain the applicable PoB2 MIT notice for copied code or substantial licensed material; do not describe all bundled data as MIT-licensed.",
+  "externalApprovalClaimed": false
 }

@@ -36,24 +36,27 @@ describe('5M.2.8A PoB2-Unique-Distributionsaudit', () => {
     expect(options.recommended).toBe('D')
   })
 
-  it('spiegelt den Status im Approval-Scope ohne Distributionsartefakt', () => {
+  it('bewahrt den 5M.2.8A-Bericht historisch und zeigt die spätere Scopeentscheidung getrennt', () => {
     expect(scope).toBeDefined()
     if (!scope?.constraints) throw new Error('PoB2 approval constraints fehlen')
-    expect(scope.constraints.distributionStatus).toBe('distribution-pending-both')
-    expect(scope.constraints.allowedDistributionArtifacts).toEqual([])
-    expect(scope.constraints.clarificationStatus).toBe(
-      'maintainer-and-ggg-confirmation-missing',
+    expect(scope.constraints.distributionStatus).toBe(
+      'distribution-project-approved-with-disclosed-uncertainty',
     )
+    expect(scope.constraints.allowedDistributionArtifacts).toContain('generated/pob2/uniques.json')
+    expect(scope.constraints.clarificationStatus).toBe('not-pursued-by-project-owner-decision')
   })
 
-  it('dokumentiert Attribution und nicht versendete externe Entwürfe', () => {
-    expect(attribution.status).toBe('prepared-not-activated')
+  it('dokumentiert verpflichtende Attribution und nicht verfolgte externe Entwürfe', () => {
+    expect(attribution.status).toBe('mandatory-for-5M.2.9')
     expect(attribution.requiredLocations).toContain('THIRD_PARTY_NOTICES.md')
     expect(clarification.automaticMessagesSent).toBe(false)
     expect(clarification.maintainer.sent).toBe(false)
     expect(clarification.ggg.sent).toBe(false)
+    expect(clarification.maintainer.pursued).toBe(false)
+    expect(clarification.ggg.pursued).toBe(false)
     for (const draft of [pob2Draft, gggDraft]) {
       expect(draft).toContain('nicht versendet')
+      expect(draft).toContain('not-pursued')
     }
   })
 

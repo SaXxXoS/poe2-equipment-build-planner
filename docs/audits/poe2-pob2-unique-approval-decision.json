@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
   "sourceId": "path-of-building-poe2-unique-planner-c5300ccd",
   "scopeId": "poe2-pob2-unique-planner-data",
   "pin": {
@@ -9,16 +9,19 @@
     "importFormatVersion": "1"
   },
   "decision": "conditionally-approved",
+  "projectOwnerDecision": "approved-with-disclosed-uncertainty",
+  "externalPermissionStatus": "not-requested-not-obtained",
+  "uncertaintyStatus": "unresolved-external-rights-disclosed",
   "auditStatus": "allowed",
-  "importStatus": "blocked-pending-distribution-confirmations",
-  "distributionStatus": "distribution-pending-both",
+  "importStatus": "5M.2.9-may-begin-under-guards",
+  "distributionStatus": "distribution-project-approved-with-disclosed-uncertainty",
   "localizationStatus": "not-approved",
   "gggIdStatus": "not-claimed",
   "approvedPurpose": "Unique planner data only",
   "forbiddenReplacementScopes": [
     "GGG technical affixes",
     "base item completeness",
-    "item class completeness",
+    "base item class completeness",
     "German CSD",
     "crafting data",
     "socketables",
@@ -28,5 +31,5 @@
   ],
   "productFilesChanged": false,
   "realPob2RecordsImported": false,
-  "nextTask": "Manual PoB2-maintainer and GGG clarification before 5M.2.9"
+  "nextTask": "5M.2.9 under exact import contract"
 }

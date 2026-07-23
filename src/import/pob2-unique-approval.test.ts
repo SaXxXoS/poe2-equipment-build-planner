@@ -14,6 +14,7 @@ const request = (): Pob2UniqueGuardRequest => ({
   repository: POB2_UNIQUE_REPOSITORY,
   commit: POB2_UNIQUE_COMMIT,
   sourceFile: 'src/Data/Uniques/amulet.lua',
+  sourceFileSha256: '688004e0b18364d0201dfcc05ffc64eed82c705c371a38c3a129fe85ff3cf307',
   requestedFields: ['sourceId', 'name', 'slot', 'variants', 'visibleModifiers', 'provenance'],
   namespace: 'pob2:src/Data/Uniques/amulet.lua#1',
   provenance: {
@@ -27,11 +28,17 @@ const request = (): Pob2UniqueGuardRequest => ({
   sha256Manifest: true, deterministicNormalization: true, runtimeNetwork: false,
   hotlinks: false, scraping: false, media: false, rawMirror: false,
   dataCategories: ['unique-planner-items'],
+  projectOwnerDistributionDecision: 'approved-with-disclosed-uncertainty',
+  attributionIncluded: true,
+  licenseNoticeIncluded: true,
+  sourceLabelIncluded: true,
 })
 
 describe('PoB2-Unique-Approval- und Trennungsguard', () => {
   it('erlaubt nur den gepinnten Auditvertrag', () => expect(guardPob2UniquePlannerData(approval, request())).toEqual({ allowed: true, code: 'audit-allowed', issues: [] }))
-  it('blockiert den Produktimport solange Distribution pending ist', () => expect(guardPob2UniquePlannerData(approval, { ...request(), mode: 'product-import' })).toMatchObject({ allowed: false, code: 'product-import-blocked' }))
+  it('erlaubt 5M.2.9 nur am exakt freigegebenen Produktpfad', () => expect(guardPob2UniquePlannerData(approval, {
+    ...request(), mode: 'product-import', outputPath: 'generated/pob2/uniques.json',
+  })).toEqual({ allowed: true, code: 'product-import-allowed', issues: [] }))
   it('blockiert den belegten Status pending-both mit beiden externen Lücken', () => {
     expect(evaluatePob2UniqueDistribution('distribution-pending-both', {
       maintainerConfirmed: false, gggConfirmed: false, attributionIncluded: true, licenseNoticeIncluded: true,
@@ -49,7 +56,30 @@ describe('PoB2-Unique-Approval- und Trennungsguard', () => {
     expect(evaluatePob2UniqueDistribution('distribution-approved', {
       maintainerConfirmed: true, gggConfirmed: true, attributionIncluded: true, licenseNoticeIncluded: true,
     }).allowed).toBe(true)
-    expect(guardPob2UniquePlannerData(approval, { ...request(), mode: 'product-import', requestedFields: ['gggStatId'] }).allowed).toBe(false)
+    expect(guardPob2UniquePlannerData(approval, {
+      ...request(), mode: 'product-import', outputPath: 'generated/pob2/uniques.json', requestedFields: ['gggStatId'],
+    }).allowed).toBe(false)
+  })
+  it('setzt die Auftraggeberentscheidung ohne externe Antworten um', () => {
+    expect(evaluatePob2UniqueDistribution('distribution-project-approved-with-disclosed-uncertainty', {
+      maintainerConfirmed: false,
+      gggConfirmed: false,
+      attributionIncluded: true,
+      licenseNoticeIncluded: true,
+      projectOwnerDecision: 'approved-with-disclosed-uncertainty',
+      uncertaintyDisclosed: true,
+    })).toEqual({ allowed: true, issues: [] })
+  })
+  it('blockiert, wenn die versionierte Scopeentscheidung fehlt', () => {
+    const withoutDecision = structuredClone(approval)
+    const category = withoutDecision.categoryAssignments.find(
+      value => value.categoryId === POB2_UNIQUE_SCOPE_ID,
+    )
+    if (!category?.constraints) throw new Error('PoB2-Scope fehlt')
+    delete category.constraints.projectOwnerDecision
+    expect(guardPob2UniquePlannerData(withoutDecision, {
+      ...request(), mode: 'product-import', outputPath: 'generated/pob2/uniques.json',
+    })).toMatchObject({ allowed: false, code: 'guard-denied' })
   })
   it.each([
     ['latest', { commit: 'latest' }],
@@ -62,8 +92,13 @@ describe('PoB2-Unique-Approval- und Trennungsguard', () => {
     ['Scraping', { scraping: true }],
     ['Flavour Text', { requestedFields: ['flavourText'] }],
     ['unbekanntes Feld', { requestedFields: ['mysteryField'] }],
+    ['falscher Dateihash', { sourceFileSha256: '0'.repeat(64) }],
+    ['fehlende Projektentscheidung', { projectOwnerDistributionDecision: undefined }],
+    ['fehlende Attribution', { attributionIncluded: false }],
+    ['fehlender Lizenzhinweis', { licenseNoticeIncluded: false }],
+    ['fehlende Quellenkennzeichnung', { sourceLabelIncluded: false }],
     ['vollständiger Mirror', { rawMirror: true }],
-    ['generated-Ausgabe', { outputPath: 'generated/pob2/uniques.json' }],
+    ['generated-Ausgabe im Auditmodus', { outputPath: 'generated/pob2/uniques.json' }],
     ['public-Ausgabe', { outputPath: 'public/pob2/uniques.json' }],
   ])('blockiert %s', (_label, override) => expect(guardPob2UniquePlannerData(approval, { ...request(), ...override } as Pob2UniqueGuardRequest).allowed).toBe(false))
   it('blockiert fehlende Provenienz', () => expect(guardPob2UniquePlannerData(approval, { ...request(), provenance: {} })).toMatchObject({ allowed: false, code: 'guard-denied' }))

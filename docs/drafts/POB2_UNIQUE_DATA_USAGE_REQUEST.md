@@ -1,6 +1,12 @@
 # Entwurf: Anfrage zur Nutzung des PoB2-Unique-Planerdatensatzes
 
-Status: Entwurf zur menschlichen Prüfung; nicht versendet.
+Status: `not-pursued` – nicht versendet, nicht zur Versendung vorgesehen.
+
+Historie: 5M.2.8A bereitete diesen konservativen Klärungsweg vor. Der
+Auftraggeber hat in 5M.2.8B ausdrücklich entschieden, keine externe
+Einzelfreigabe anzufragen. Es liegt daher weder eine Antwort noch eine
+Genehmigung vor. Der Text bleibt ausschließlich als Entscheidungsverlauf
+erhalten.
 
 Hello Path of Building Community maintainers,
 
@@ -34,4 +40,3 @@ MIT licence or have additional data-source conditions.
 
 This request concerns only PoB2's permission and preferred attribution. We
 will seek any separately required permission from Grinding Gear Games.
-

@@ -13,7 +13,7 @@ const source = approvalJson.reviewedSources.find(value => value.sourceId === 'pa
 describe('5M.2.8 PoB2-Unique-Approval-Auditberichte', () => {
   it('pinnt einen ausschließlich auf Unique begrenzten Scope', () => {
     expect(source).toMatchObject({ status: 'conditionally-approved' })
-    expect(scope).toMatchObject({ status: 'conditionally-approved', repositoryStorage: false, offlineOnly: true })
+    expect(scope).toMatchObject({ status: 'conditionally-approved', repositoryStorage: true, offlineOnly: true })
     expect(scope?.constraints?.exportCommit).toBe('c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0')
     expect(scope?.constraints?.sourceVersion).not.toContain('latest')
     expect(scope?.constraints?.allowedItemCategories).toEqual(['Unique Items'])
@@ -34,13 +34,14 @@ describe('5M.2.8 PoB2-Unique-Approval-Auditberichte', () => {
     expect(contract.deterministicId).toBe('pob2:<source-record-id>')
     expect(contract.modifierLines.technicalGggStatLink).toBe('null-unless-independently-proven')
   })
-  it('blockiert Distribution und Produktimport trotz bedingter Scopeentscheidung', () => {
+  it('erlaubt 5M.2.9 ausschließlich als Projektentscheidung mit offengelegter Unsicherheit', () => {
     expect(decision.decision).toBe('conditionally-approved')
-    expect(decision.importStatus).toContain('blocked')
-    expect(decision.distributionStatus).toBe('distribution-pending-both')
+    expect(decision.importStatus).toBe('5M.2.9-may-begin-under-guards')
+    expect(decision.distributionStatus).toBe('distribution-project-approved-with-disclosed-uncertainty')
+    expect(decision.externalPermissionStatus).toBe('not-requested-not-obtained')
     expect(license.bundledItemData.licenseCoverage).toBe('license-scope-unknown')
     expect(contract.output.createdInThisTask).toBe(false)
-    expect(contract.output.currentlyBlocked).toBe(true)
+    expect(contract.output.currentlyBlocked).toBe(false)
   })
   it('enthält keine vollständigen PoB2-Rohdaten oder Produktdatei', () => {
     const reports = [decision, fields, contract, license, files, guards]

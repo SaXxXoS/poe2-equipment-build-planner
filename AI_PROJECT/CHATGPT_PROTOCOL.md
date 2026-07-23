@@ -1,5 +1,37 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.2.8B – Auftraggeberentscheidung (2026-07-23)
+
+- 5M.2.8A endete historisch mit `distribution-pending-both`.
+- Der Auftraggeber hat ausdrücklich entschieden, keine externen
+  Einzelanfragen an PoB2, Path of Building Community oder GGG zu verfolgen.
+  Beide Entwürfe bleiben `not-pursued`, wurden nicht versendet und erhielten
+  keine Antwort.
+- Keine externe Genehmigung und keine vollständig geklärte Rechtslage werden
+  behauptet. Die Datenlizenz bleibt teilweise `Unbekannt`.
+- Neuer aktiver Status:
+  `distribution-project-approved-with-disclosed-uncertainty`.
+- Projektentscheidungswert: `approved-with-disclosed-uncertainty`.
+- Externe Permission:
+  `not-requested-not-obtained-not-required-by-project-policy`.
+- Unsicherheit:
+  `unresolved-external-rights-disclosed-and-accepted-by-project-owner`.
+- Nur `poe2-pob2-unique-planner-data` wurde geändert; andere pending oder
+  blocked Scopes bleiben unverändert. Kein generischer Risiko-Bypass.
+- Der Guard verlangt weiterhin exakten Commit, eine der 20 Dateien, exakten
+  SHA-256, Feldallowlist, Provenienz, Attribution, Lizenzhinweis,
+  Quellenkennzeichnung, deterministische Normalisierung und den exakten
+  Produktpfad. Rohmirror, Medien, Flavour Text, Netzwerk, Hotlinks, Scraping,
+  reguläre Affixe und GGG-ID-Behauptungen bleiben gesperrt.
+- Importvertrag Version 2 erlaubt 5M.2.9 grundsätzlich. Deutsche
+  Unique-Texte bleiben `not-approved`; Englisch beziehungsweise
+  `translation-missing` bleibt erforderlich.
+- Keine PoB2-Produktdaten oder Produktdateien wurden in 5M.2.8B erzeugt.
+  UI, Engine, Worker, Analyzer, BuildProfile und reguläre Affixdaten blieben
+  unverändert.
+- Nächste Aufgabe: 5M.2.9 unter dem exakten Importvertrag.
+- 5M.2 und 5N wurden weiterhin nicht begonnen.
+
 ## Aufgabe 5M.2.8A – PoB2-Unique-Distribution (2026-07-23)
 
 - 5M.2.8 ist abgeschlossen; 20 statische Unique-Dateien sind exakt gepinnt
@@ -16,9 +48,10 @@
 - Es wurde keine vorhandene eindeutige PoB2-Maintainerfreigabe gefunden.
   Zwei reviewbare Entwürfe für PoB2 und GGG wurden erstellt und nicht
   versendet.
-- Endstatus: `distribution-pending-both`. Option D (keine Distribution) ist
-  bis zur externen Klärung maßgeblich. Der Guard blockiert Produktimport,
-  `generated/`, `public/` und 5M.2.9.
+- Historischer 5M.2.8A-Endstatus: `distribution-pending-both`. Option D war
+  damals maßgeblich; der damalige Guard blockierte Produktimport,
+  `generated/`, `public/` und 5M.2.9. 5M.2.8B hat diesen technischen Status
+  durch die ausdrücklich dokumentierte Auftraggeberentscheidung abgelöst.
 - Attribution ist für README, Datenquellendokumentation,
   `THIRD_PARTY_NOTICES.md` und eine spätere sichtbare App-Info geplant. Der
   endgültige Wortlaut bleibt pending.

@@ -1,13 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8",
-  "contractVersion": "1",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
+  "contractVersion": "2",
   "pin": {
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
     "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
     "importFormatVersion": "1"
   },
   "scopeId": "poe2-pob2-unique-planner-data",
+  "projectOwnerDecision": "approved-with-disclosed-uncertainty",
+  "externalPermissionStatus": "not-requested-not-obtained",
+  "uncertaintyStatus": "unresolved-external-rights-disclosed",
   "input": {
     "files": [
       "src/Data/Uniques/amulet.lua",
@@ -31,12 +34,39 @@
       "src/Data/Uniques/talisman.lua",
       "src/Data/Uniques/wand.lua"
     ],
+    "fileHashes": {
+      "src/Data/Uniques/amulet.lua": "688004e0b18364d0201dfcc05ffc64eed82c705c371a38c3a129fe85ff3cf307",
+      "src/Data/Uniques/belt.lua": "23e36248d5de42d04e9af7d890a92b376de211aacb378a5b43d2b09df436311b",
+      "src/Data/Uniques/body.lua": "a39172cafcab5feb7d77ea15b29a67355a02d0706b8b1a8bb3d6562ffbc16c97",
+      "src/Data/Uniques/boots.lua": "74335281fb54a8cd115bf6f7bf8b2d1808b2b4a588e3b1820231ed56560c26ba",
+      "src/Data/Uniques/bow.lua": "2d0f6a4b434145034e7de102a7590ac05c56c41cbe92c19779d735d9ef21775a",
+      "src/Data/Uniques/crossbow.lua": "b76cd73e9d334b0bc2ba76f3d20aaf1e20133340a936571447331e37755ec40c",
+      "src/Data/Uniques/flask.lua": "49c50365eb9a4e425c83ced89e5ffae034ca4a9a25b50868eda6f45d6b96eae3",
+      "src/Data/Uniques/focus.lua": "a363116d3971b330769d20fd9e73a1d1330a89a746bd0d9f4f0820c6625570fc",
+      "src/Data/Uniques/gloves.lua": "063f9e48e33e2721e3bfcf1079b7f5d029822a94d3fcea903319ef512a3dcd43",
+      "src/Data/Uniques/helmet.lua": "a3d542e9f51950665ce901a3f59bfcf3e6d6e1e6909c9e94cb23eb1a42555dc7",
+      "src/Data/Uniques/jewel.lua": "06115f389a916bf0b906c6b1aaef80fb3453582024a18cf5ffef64961c4d3425",
+      "src/Data/Uniques/mace.lua": "10cf27b6851799271f62aad32f59e7b0c44174ddc88daa58486c613b2057ff76",
+      "src/Data/Uniques/quiver.lua": "0a48c5f5945b052fabc8c03b19c0317283016b05ca5d854bc03390209cb32ac5",
+      "src/Data/Uniques/ring.lua": "2330af5132959b8f499825b3cb5b76bf563d1c32bc728c56af7ede115f47834b",
+      "src/Data/Uniques/sceptre.lua": "8595984d05ac9107480c42715752e0f06b2f79a8e8f1338af0f056329f39412f",
+      "src/Data/Uniques/shield.lua": "1f25309f43b9936a22599c02c2c90f9e0101ec9fb36bf387181b94958724f709",
+      "src/Data/Uniques/spear.lua": "867d313faec7e87e39c00258f44f5e9f4e930b2c097e0f25c4ee66a05e0cfdeb",
+      "src/Data/Uniques/staff.lua": "b5b4529d3999d0960d2179490ca43657c318149b5376b224d9dd5f43fec8aeaf",
+      "src/Data/Uniques/talisman.lua": "4f682fa8dc5a6f439bb9d0d22c2c64ce4e48755c42764bd63a35c1b307f63d3c",
+      "src/Data/Uniques/wand.lua": "a94306112c1cdddb0dcef966091dfad33e45d7a13cc4dfbe0868ed0af2bdae52"
+    },
     "sha256ManifestRequired": true
   },
   "output": {
     "planned": "generated/pob2/uniques.json",
+    "format": "normalized-json",
     "createdInThisTask": false,
-    "currentlyBlocked": true
+    "currentlyBlocked": false,
+    "maximumDataCategories": [
+      "unique-planner-items"
+    ],
+    "requiresManifestReference": true
   },
   "allowedFields": [
     "sourceId",
@@ -55,6 +85,7 @@
   ],
   "forbiddenFieldPolicy": "fail",
   "deterministicId": "pob2:<source-record-id>",
+  "fixtureNamespace": "fixture:<id>",
   "deterministicSort": [
     "sourceRecordIdentifier",
     "sourceVariantId",
@@ -87,6 +118,25 @@
     ],
     "technicalGggStatLink": "null-unless-independently-proven"
   },
+  "requiredProvenance": [
+    "sourceKind",
+    "sourceRepository",
+    "sourceCommit",
+    "sourceRecordIdentifier",
+    "sourceLicense",
+    "identityStatus",
+    "localizationStatus"
+  ],
+  "requiredNotices": [
+    "README",
+    "DATA_SOURCE_REFERENCES",
+    "THIRD_PARTY_NOTICES.md",
+    "source label per record"
+  ],
+  "localization": {
+    "germanUniqueTexts": "not-approved",
+    "default": "english-only-or-translation-missing"
+  },
   "failures": [
     "unpinned-source",
     "unknown-file",
@@ -94,10 +144,13 @@
     "unknown-schema",
     "unknown-field",
     "missing-provenance",
+    "missing-attribution",
+    "missing-license-notice",
+    "missing-source-label",
     "identity-loss",
     "variant-conflict",
     "scope-escape",
-    "distribution-pending"
+    "missing-project-owner-decision"
   ],
-  "followUp": "5M.2.9"
+  "followUp": "5M.2.9-may-begin"
 }

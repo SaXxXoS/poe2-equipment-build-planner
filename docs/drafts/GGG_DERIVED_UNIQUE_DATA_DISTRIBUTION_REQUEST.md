@@ -1,6 +1,12 @@
 # Entwurf: Anfrage zur Distribution abgeleiteter Unique-Planerdaten
 
-Status: Entwurf zur menschlichen Prüfung; nicht versendet.
+Status: `not-pursued` – nicht versendet, nicht zur Versendung vorgesehen.
+
+Historie: 5M.2.8A bereitete diesen konservativen Klärungsweg vor. Der
+Auftraggeber hat in 5M.2.8B ausdrücklich entschieden, keine externe
+Einzelfreigabe anzufragen. Es liegt daher weder eine Antwort noch eine
+Genehmigung vor. Der Text bleibt ausschließlich als Entscheidungsverlauf
+erhalten.
 
 Hello Grinding Gear Games,
 
@@ -29,4 +35,3 @@ so, please specify any required attribution, permitted fields, restrictions
 or review process.
 
 No data distribution will begin unless the required permissions are resolved.
-

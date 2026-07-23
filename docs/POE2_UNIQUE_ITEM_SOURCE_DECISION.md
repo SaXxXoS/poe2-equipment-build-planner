@@ -198,11 +198,17 @@ Der priorisierte Audit bestätigt das negative Ergebnis: 449 Stashfragmente, 311
 
 ## Getrennter PoB2-Planerscope nach 5M.2.8
 
-5M.2.8A hat die Distribution separat geprüft. Der technische Planerscope
-bleibt bestehen, doch die öffentliche Verteilung ist
+5M.2.8B löst den technischen Blocker aus 5M.2.8A durch eine ausdrückliche,
+scopegebundene Auftraggeberentscheidung ab. Es werden keine externen
+Einzelanfragen verfolgt und keine Genehmigungen behauptet. Der reduzierte
+PoB2-Planerdatensatz darf in 5M.2.9 unter allen bestehenden Guards importiert
+werden; deutsche Unique-Texte bleiben nicht freigegeben.
+
+Historischer Stand 5M.2.8A: Der technische Planerscope blieb bestehen, doch
+die öffentliche Verteilung war
 `distribution-pending-both`: Weder die MIT-Abdeckung der
 GGG-gekennzeichneten Unique-Dateien noch eine GGG-Genehmigung ist belegt.
-5M.2.9 bleibt blockiert; keine Unique-Daten oder deutschen Texte wurden
+5M.2.9 war damals blockiert; keine Unique-Daten oder deutschen Texte wurden
 importiert.
 
-Der bisherige GGG-Unique-Identitäts- und Affixscope bleibt unverändert pending beziehungsweise blocked. Neu ist ausschließlich `poe2-pob2-unique-planner-data` am Commit `c5300ccd…ab7d0`: planerbezogene Namen, Slots, Varianten, sichtbare Zeilen und belegte PoB2-Rollbereiche dürfen nach separater Distributionsklärung und 5M.2.9 verarbeitet werden. Sie sind keine technischen GGG-Daten.
+Der bisherige GGG-Unique-Identitäts- und Affixscope bleibt unverändert pending beziehungsweise blocked. Ausschließlich `poe2-pob2-unique-planner-data` am Commit `c5300ccd…ab7d0` darf in 5M.2.9 unter Vertragsversion 2 verarbeitet werden. Planerbezogene Namen, Slots, Varianten, sichtbare Zeilen und belegte PoB2-Rollbereiche sind weiterhin keine technischen GGG-Daten.

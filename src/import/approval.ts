@@ -53,6 +53,12 @@ export interface CategoryApprovalConstraints {
   forbiddenDistributionArtifacts?: string[]
   clarificationStatus?: string
   nextRequiredAction?: string
+  projectOwnerDecision?: string
+  externalPermissionStatus?: string
+  uncertaintyStatus?: string
+  importStatus?: string
+  clarificationRequestStatus?: string
+  allowedOutputPaths?: string[]
 }
 
 export interface SourceApprovalFile {
@@ -151,10 +157,10 @@ export function validateSourceApproval(input: unknown): ApprovalValidationResult
         for (const field of ['sourceVersion', 'exportCommit', 'parserCommit'] as const) if (typeof value.constraints[field] !== 'string' || !value.constraints[field]) issues.push(issue(`${path}.constraints.${field}`, `${field} fehlt`))
         for (const field of ['allowedItemCategories', 'allowedSourceFiles', 'allowedFields', 'blockedDataCategories'] as const) if (!Array.isArray(value.constraints[field]) || value.constraints[field].some(entry => typeof entry !== 'string')) issues.push(issue(`${path}.constraints.${field}`, `${field} muss ein String-Array sein`))
         for (const field of ['requireSha256Manifest', 'requireDeterministicNormalization', 'forbidRawMirror', 'forbidRuntimeFetch', 'forbidHotlinks'] as const) if (typeof value.constraints[field] !== 'boolean') issues.push(issue(`${path}.constraints.${field}`, `${field} muss boolean sein`))
-        for (const field of ['evidence', 'distributionConditions', 'attributionRequirements', 'licenseNoticeRequirements', 'allowedDistributionArtifacts', 'forbiddenDistributionArtifacts'] as const) {
+        for (const field of ['evidence', 'distributionConditions', 'attributionRequirements', 'licenseNoticeRequirements', 'allowedDistributionArtifacts', 'forbiddenDistributionArtifacts', 'allowedOutputPaths'] as const) {
           if (value.constraints[field] !== undefined && (!Array.isArray(value.constraints[field]) || value.constraints[field].some(entry => typeof entry !== 'string'))) issues.push(issue(`${path}.constraints.${field}`, `${field} muss ein String-Array sein`))
         }
-        for (const field of ['distributionStatus', 'clarificationStatus', 'nextRequiredAction'] as const) {
+        for (const field of ['distributionStatus', 'clarificationStatus', 'nextRequiredAction', 'projectOwnerDecision', 'externalPermissionStatus', 'uncertaintyStatus', 'importStatus', 'clarificationRequestStatus'] as const) {
           if (value.constraints[field] !== undefined && (typeof value.constraints[field] !== 'string' || !value.constraints[field])) issues.push(issue(`${path}.constraints.${field}`, `${field} muss ein nichtleerer String sein`))
         }
       }

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8B",
+  "scopeId": "poe2-pob2-unique-planner-data",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "previousDistributionStatus": "distribution-pending-both",
+  "distributionStatus": "distribution-project-approved-with-disclosed-uncertainty",
+  "projectOwnerDecision": "approved-with-disclosed-uncertainty",
+  "externalPermissionStatus": "not-requested-not-obtained-not-required-by-project-policy",
+  "clarificationRequestStatus": "drafts-retained-not-sent-not-pursued",
+  "uncertaintyStatus": "unresolved-external-rights-disclosed-and-accepted-by-project-owner",
+  "importStatus": "5M.2.9-may-begin-under-existing-guards",
+  "allowedArtifacts": [
+    "generated/pob2/uniques.json",
+    "derived GitHub Pages artifact containing the same allowlisted records"
+  ],
+  "forbiddenArtifacts": [
+    "raw PoB2 Lua files",
+    "full PoB2 Unique database",
+    "images",
+    "icons",
+    "media",
+    "flavour text",
+    "German Unique texts",
+    "normal affix data",
+    "technical GGG ID claims"
+  ],
+  "attributionRequirements": [
+    "Path of Building Community",
+    "repository",
+    "exact commit",
+    "MIT code notice",
+    "GGG/community origin and uncertainty notice",
+    "non-affiliation notice",
+    "source label per record"
+  ],
+  "licenseNoticeRequirements": [
+    "retain applicable PoB2 MIT notice",
+    "do not claim MIT coverage for all bundled data",
+    "do not claim external permission"
+  ],
+  "conditions": [
+    "exact 20-file manifest and hashes",
+    "field allowlist",
+    "fail closed unknowns",
+    "full provenance",
+    "deterministic output and manifest",
+    "no runtime network, hotlinks or scraping",
+    "product separation"
+  ],
+  "externalApprovalClaimed": false,
+  "legalClearanceClaimed": false,
+  "productDataImportedInThisTask": false,
+  "nextTask": "5M.2.9"
+}

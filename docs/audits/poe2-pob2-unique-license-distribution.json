@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0.0",
-  "task": "5M.2.8",
+  "schemaVersion": "1.1.0",
+  "task": "5M.2.8B",
   "pin": {
     "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
     "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -15,14 +15,16 @@
   "bundledItemData": {
     "origin": "GGG-labelled and community-maintained planner data",
     "licenseCoverage": "license-scope-unknown",
-    "distributionStatus": "distribution-pending-both"
+    "externalPermission": "not-requested-not-obtained",
+    "uncertainty": "disclosed-and-accepted-by-project-owner",
+    "distributionStatus": "distribution-project-approved-with-disclosed-uncertainty"
   },
   "operations": {
     "localAudit": "allowed",
-    "buildProcessing": "audit-only-until-confirmed",
-    "repositoryStorage": "forbidden-until-confirmed",
-    "generatedProductStorage": "distribution-pending-both",
-    "githubPagesDistribution": "distribution-pending-both",
+    "buildProcessing": "allowed-under-guards",
+    "repositoryStorage": "allowed-reduced-artifact-only",
+    "generatedProductStorage": "allowed-exact-contract-only",
+    "githubPagesDistribution": "allowed-exact-contract-only",
     "runtimeLoading": "forbidden",
     "hotlinks": "forbidden"
   },

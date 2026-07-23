@@ -1,12 +1,23 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
-## 5M.2.8A – PoB2-Unique-Distribution
+## 5M.2.8B – Auftraggeberentscheidung
 
-Der Scope `poe2-pob2-unique-planner-data` ist technisch quellengetrennt, aber
+Nur für `poe2-pob2-unique-planner-data` gilt nun
+`distribution-project-approved-with-disclosed-uncertainty`. PoB2- und
+GGG-Einzelfreigaben wurden nicht angefragt oder erteilt und werden nicht
+behauptet. Der Auftraggeber akzeptiert die offengelegte, ungelöste
+Rechteunsicherheit als interne Projektentscheidung. 5M.2.9 darf unter dem
+exakten 20-Dateien-/Hash-/Feld-/Provenienz-/Attributionsvertrag beginnen.
+Andere pending Scopes bleiben blockiert.
+
+## Historischer Stand 5M.2.8A – PoB2-Unique-Distribution
+
+Der Scope `poe2-pob2-unique-planner-data` war technisch quellengetrennt, aber
 für Distribution `distribution-pending-both`. PoB2-Code ist MIT-lizenziert;
 die Lizenzabdeckung der GGG-gekennzeichneten Unique-Dateien ist unbekannt.
 Eine PoB2-Maintainerbestätigung und eine GGG-Bestätigung fehlen. Deshalb
-bleiben Produktimport, `generated/`, `public/` und 5M.2.9 blockiert.
+blieben Produktimport, `generated/`, `public/` und 5M.2.9 damals blockiert.
+5M.2.8B ersetzt nur diesen technischen Status, nicht die Unsicherheit.
 
 > Audit 5M.2.7 erteilt keine Freigabe. RePoE aktuell, PoB2 und poe2-mcp wurden als Unique-Kandidaten geprüft; keiner erfüllt die technische Mindestkette. Code-Lizenz, GGG-Datenherkunft und Distribution bleiben getrennt, Unique- und deutsche Scopes unverändert pending/blocked.
 

@@ -1,10 +1,17 @@
 # PoE2 Unique source candidate decision (5M.2.7)
 
-> **5M.2.8A-Update:** PoB2 bleibt der vom Auftraggeber ausgewählte,
+> **5M.2.8B-Update:** PoB2 bleibt die getrennte Unique-Planerdatenquelle.
+> Der reduzierte Datensatz ist intern
+> `distribution-project-approved-with-disclosed-uncertainty`. Keine externe
+> Genehmigung wurde angefragt oder erteilt; die Unsicherheit bleibt
+> dokumentiert. 5M.2.9 darf ausschließlich unter dem exakten Vertrag
+> beginnen.
+
+> **Historischer 5M.2.8A-Stand:** PoB2 blieb der vom Auftraggeber ausgewählte,
 > quellengetrennte Unique-Planerdatensatz. Das ist keine Aussage über
 > technische GGG-IDs und keine Distributionsfreigabe. Wegen ungeklärter
 > PoB2-Datenlizenz und fehlender GGG-Zustimmung gilt
-> `distribution-pending-both`; es wurden keine Daten importiert.
+> `distribution-pending-both`; in 5M.2.8A wurden keine Daten importiert.
 
 ## Ziel, Priorität und Ergebnis
 

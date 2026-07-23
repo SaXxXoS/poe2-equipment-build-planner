@@ -1,6 +1,13 @@
 # Quellenverzeichnis zur Datenfreigabe
 
-## 5M.2.8A – primäre Distributionsbelege
+## 5M.2.8B – Entscheidungsprovenienz
+
+Die in 5M.2.8A geprüften PoB2- und GGG-Primärquellen bleiben maßgeblich für
+die offengelegte Unsicherheit. Neu ist ausschließlich die interne
+Auftraggeberentscheidung; sie ist keine neue externe Quelle. Beide
+Anfrageentwürfe sind `not-pursued`, nicht versendet und ohne Antwort.
+
+## Historischer Stand 5M.2.8A – primäre Distributionsbelege
 
 - PoB2, exakter Pin:
   `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`
@@ -13,7 +20,8 @@
 
 Abrufdatum der Webquellen: 23. Juli 2026. Die Quellen belegen weder eine
 ausdrückliche MIT-Datenlizenz noch eine GGG-Distributionszustimmung; Status
-bleibt `distribution-pending-both`.
+führte damals zu `distribution-pending-both`. Die Beleglage bleibt
+unverändert, während 5M.2.8B den technischen Projektstatus neu setzt.
 
 ## 5M.2.7 – Unique-Quellenkandidaten
 
