@@ -1,5 +1,7 @@
 # Verbindliche Datenquellen- und Importfreigabe
 
+> Audit 5M.2.7 erteilt keine Freigabe. RePoE aktuell, PoB2 und poe2-mcp wurden als Unique-Kandidaten geprüft; keiner erfüllt die technische Mindestkette. Code-Lizenz, GGG-Datenherkunft und Distribution bleiben getrennt, Unique- und deutsche Scopes unverändert pending/blocked.
+
 ## Entscheidung 5M.2.0
 
 Kein deutscher Lokalisierungsscope wurde freigegeben. Stattemplates, Gegenstandstexte, Base-/Klassen-/Socketable-Namen, Suchbegriffe, kuratierte und lokal erzeugte Mappings sind `pending`; photo-derived Mapping ist `blocked`. Der gepinnte Export enthält null deutsche Einträge und eine Weitergabefreigabe ist **Unbekannt**. PoE2DB-Automation, Rohspiegel, Medien, Uniques, Skills, Supports, Runtimeabrufe und Hotlinks bleiben blockiert.

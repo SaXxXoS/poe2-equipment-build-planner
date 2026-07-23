@@ -1,5 +1,7 @@
 # PoE2 Unique Identity and Affix Audit (5M.2.6)
 
+> Folgestand 5M.2.7: Die Quellenentscheidung fand weder bei offiziellen GGG-Angeboten noch bei RePoE, PoB2, poe2-mcp oder ID-sicheren Kombinationen eine vollständige technische Unique-ID→Base→Mod/Stat-Kette. Details: [POE2_UNIQUE_SOURCE_CANDIDATE_DECISION.md](POE2_UNIQUE_SOURCE_CANDIDATE_DECISION.md). Keine Daten oder Freigabe entstanden.
+
 ## 1–5. Ziel, Priorität, Ausgangslage, Grenzen und Pins
 
 Der Auftraggeber priorisiert die Klärung echter Unique-Affixe vor regulärer deutscher Produktlokalisierung, OCR, Fotoerkennung, Soul Cores, 5M.2 und 5N. Dieser Auftrag ist ausschließlich ein lokaler Offline-Audit. Maßgeblich bleiben Content-SHA `a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28`, PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`, ooz 0.2.4/Archiv `e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4`, Schema `268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30`, Auditformat 1 und Node 24.14.0. Produktivpin und Approval bleiben unverändert.

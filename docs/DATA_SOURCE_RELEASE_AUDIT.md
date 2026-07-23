@@ -1,5 +1,9 @@
 # Datenquellen-Freigabeaudit
 
+## Unique-Kandidatenaudit 5M.2.7
+
+RePoE-PoE2 Remote-HEAD ist `1a6066ec60d24af274cb7a87d00b6ab1c0975ebd`; dieser Stand wurde nur im Auditbereich geprüft und ersetzt nicht den Produktivpin `b3f38149…`. RePoE-Parser `14e3edc…`, PoB2 `c5300ccd…` und poe2-mcp `163c30a9…` waren unverändert. Keine Quelle wurde aktiviert.
+
 ## Zusatzprüfung 5M.2.0 (2026-07-22)
 
 Der RePoE-Parser-Remote-HEAD entsprach exakt `14e3edc89ed705bd4e4eda5c8135756431c76e81`; ein neuerer Kandidat existierte nicht. Ein deutscher Datensatz besitzt keinen Produktpin, weil kein Lauf durchgeführt wurde. Jeder spätere Sprachimport benötigt Spielversionspin, Quellpin, Hashmanifest, vollständigen ID-Vergleich und erneute Approval-Prüfung.

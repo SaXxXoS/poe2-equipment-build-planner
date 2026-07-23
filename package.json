@@ -16,6 +16,7 @@
     "import:poe2-affixes": "node scripts/poe2-affix-import.mjs",
     "import:poe2-additional-items": "node scripts/poe2-additional-item-import.mjs",
     "audit:poe2-item-mods": "node scripts/poe2-item-mod-audit.mjs",
+    "audit:poe2-unique-sources": "node scripts/poe2-unique-source-candidate-audit.mjs",
     "check:poe2-tree-update": "node scripts/poe2-tree-import.mjs check"
   },
   "dependencies": {

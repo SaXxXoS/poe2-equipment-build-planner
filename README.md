@@ -1,5 +1,7 @@
 # PoE2 Equipment Build Planner
 
+> Datenstatus 5M.2.7: Der priorisierte Unique-Quellenaudit ist abgeschlossen. Offizielle Quellen, RePoE, PoB2, poe2-mcp und weitere Kandidaten liefern keine vollständige technische Unique-ID→Base→Mod/Stat→Werte→Varianten-Kette. Es wurden keine Daten importiert; Approval, Produktivpin, Runtime und `translation-missing` bleiben unverändert.
+
 > Status 5M.2.0: Die ID-basierte deutsche Gegenstandslokalisierung wurde nur hinsichtlich Quellen, Coverage und Approval geprüft. Es wurden keine deutschen Produktivtexte oder freien Übersetzungen importiert; `translation-missing` bleibt aktiv. Alle deutschen Sprachscopes sind `pending`, Foto-Mappings sind `blocked`. Details: [Quellenentscheidung](docs/POE2_GERMAN_ITEM_LOCALIZATION_SOURCE_DECISION.md).
 
 ## Quellenstatus 5M.1B.0C

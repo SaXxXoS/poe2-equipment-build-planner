@@ -1,0 +1,129 @@
+{
+  "audit": "5M.2.7",
+  "candidates": [
+    {
+      "attributionRequired": false,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG official material/service",
+      "id": "ggg-developer-api",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": false,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG official material/service",
+      "id": "ggg-trade",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": false,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG official material/service",
+      "id": "ggg-poe2-skilltree-export",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": false,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG official material/service",
+      "id": "local-client",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "license-and/or-distribution-pending",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "MIT parser; export data separate",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "repoe-current-export",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "license-and/or-distribution-pending",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "MIT",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "path-of-building-poe2",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "license-and/or-distribution-pending",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "MIT",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "poe2-mcp-local-pipeline",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "license-and/or-distribution-pending",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "MIT",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "pobr",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "poe2-tools-build-planner",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "GGG-derived and/or community-maintained; field-level origin not fully separable",
+      "id": "poe2-community-wiki",
+      "localAudit": "reviewed or audit-only",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    },
+    {
+      "attributionRequired": true,
+      "codeLicense": "not-applicable-or-unknown",
+      "dataOrigin": "unknown third-party derivation",
+      "id": "poe2db",
+      "localAudit": "not-used",
+      "repositoryStorage": false,
+      "runtimeLoading": false,
+      "status": "not-approved",
+      "webAppDistribution": "legal-status-unknown"
+    }
+  ],
+  "codeAndDataLicensesSeparated": true,
+  "finalDistributionStatus": "pending",
+  "reviewedNotLegalAdvice": true
+}

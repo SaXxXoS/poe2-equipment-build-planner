@@ -1,5 +1,7 @@
 # PoE2 Item-Mod-Vollständigkeitsaudit (5M.1A)
 
+> Stand 5M.2.7: Der Vollständigkeitsstatus für Unique-Affixe bleibt offen. Keine geprüfte externe Quelle verbindet Unique-Identität, Base, Mod/Stat, strukturierte Werte und Varianten über technische IDs. Die vorhandenen regulären Produktdaten wurden nicht verändert.
+
 ## Ergänzung 5M.2.0
 
 Der produktive Laufzeitbestand zählt 2.255 eindeutige Mods, 2.705 Statzeilen, 431 Stat-IDs, 444 Stat-ID-Kombinationen und 429 Mehrzeiler/Hybride. Aktuell bestehen null verifizierte deutsche Templates.

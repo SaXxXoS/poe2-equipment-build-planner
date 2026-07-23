@@ -1,0 +1,265 @@
+{
+  "audit": "5M.2.7",
+  "deepCandidateCount": 3,
+  "pins": {
+    "auditDate": "2026-07-23",
+    "localContainer": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "productRePoEExport": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+    "productRePoEParser": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+    "startingCommit": "7b90dd2375e4a32cf6d3ff1a5740c78788b33f7f"
+  },
+  "requirements": {
+    "affix": "Unique-ID → Mod-ID or direct Stat-ID definition",
+    "baseReference": "Unique-ID → BaseItemType/metadata ID",
+    "forbiddenEvidence": [
+      "display-name join",
+      "base-name join",
+      "numbers parsed from text",
+      "URL slug",
+      "stash position"
+    ],
+    "itemClass": "technical class reference",
+    "localization": "technical Stat-ID connection to pinned local CSD",
+    "uniqueIdentity": "stable technical key independent from display text",
+    "values": "structured fixed/ranged/multi-value representation",
+    "variants": "technical version/variant relation"
+  },
+  "sourceCount": 11,
+  "sources": [
+    {
+      "deepAudit": false,
+      "finding": "Published PoE2 API resources expose account/item instances, not a versioned offline Unique definition → technical Mod/Stat dataset. Undocumented endpoints are expressly out of scope.",
+      "id": "ggg-developer-api",
+      "operator": "Grinding Gear Games",
+      "pin": "documentation reviewed 2026-07-23",
+      "status": [
+        "technically-unsuitable",
+        "requires-runtime-network"
+      ],
+      "type": "official-api",
+      "url": "https://www.pathofexile.com/developer/docs"
+    },
+    {
+      "deepAudit": false,
+      "finding": "Not used. Listing/item text is neither an offline definition corpus nor a stable item-to-Mod-ID chain; separate API approval would be required.",
+      "id": "ggg-trade",
+      "operator": "Grinding Gear Games",
+      "pin": "not called; documentation reviewed 2026-07-23",
+      "status": [
+        "technically-unsuitable",
+        "requires-runtime-network",
+        "audit-only"
+      ],
+      "type": "official-website-api-candidate",
+      "url": "https://www.pathofexile.com/developer/docs"
+    },
+    {
+      "deepAudit": false,
+      "finding": "Official and reproducible, but scoped to the passive tree and contains no Unique item definition chain.",
+      "id": "ggg-poe2-skilltree-export",
+      "operator": "Grinding Gear Games",
+      "pin": "1e9eb2d8c1946398c3aaaacfbaead5c75c0d1fa6 (existing project pin)",
+      "status": [
+        "technically-unsuitable"
+      ],
+      "type": "official-static-export",
+      "url": "https://github.com/grindinggear/poe2-skilltree-export"
+    },
+    {
+      "deepAudit": false,
+      "finding": "5M.2.6 proved deterministic fragments and technical Mods/CSD, but no stable item Unique-ID → base → affix relation is materialized in the audited client sources.",
+      "id": "local-client",
+      "operator": "Grinding Gear Games",
+      "pin": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+      "status": [
+        "technically-partial",
+        "audit-only",
+        "distribution-pending"
+      ],
+      "type": "official-local-material",
+      "url": "<LOCAL_INSTALLATION>/Content.ggpk"
+    },
+    {
+      "archiveSha256": "b0d631c987ce3ba388dd6e06fd82162eb02bd6f452b3a8c40f3c8df16f65f21a",
+      "commit": "1a6066ec60d24af274cb7a87d00b6ab1c0975ebd",
+      "counts": {
+        "baseItems": 5246,
+        "itemClasses": 117,
+        "mods": 16678,
+        "uniqueRows": 449
+      },
+      "deepAudit": true,
+      "fileHashes": {
+        "baseItems": "acb63728684a57d61e99ac2e919833fcf3199e9ca185770d57a0df568e60266c",
+        "itemClasses": "eec6f2a4c3b53a26f6979a26e57c9ab7644f26b914e57c4d3a9f9768a1aed723",
+        "mods": "e4cfac6ebb1f1a86ea3e6465bab79b6e8a2bb39a317bd9ffe8ba5cc99befa2b1",
+        "uniques": "5c303e991763d4f89c7e41306561c1eb02bb55d79ebe0c26f43520906f9c059b"
+      },
+      "finding": "The updated export changed file hashes but not the decisive Unique schema or counts. Its id remains the visible Words key; base_version/renamed_version do not provide the required base/mod/variant chain.",
+      "format": "JSON",
+      "id": "repoe-current-export",
+      "operator": "repoe-fork",
+      "repository": "https://github.com/repoe-fork/poe2",
+      "status": [
+        "technically-partial",
+        "license-pending",
+        "distribution-pending",
+        "audit-only"
+      ],
+      "technical": {
+        "baseId": false,
+        "directStats": false,
+        "grantedSkills": false,
+        "grantedSupports": false,
+        "itemClassId": false,
+        "localCsdLink": false,
+        "modIdLink": false,
+        "stableUniqueId": false,
+        "statIds": false,
+        "structuredValues": false,
+        "variants": false
+      },
+      "type": "community-generated-export",
+      "uniqueFields": [
+        "id",
+        "inventory_height",
+        "inventory_width",
+        "is_alternate_art",
+        "item_class",
+        "name",
+        "visual_identity",
+        "renamed_version",
+        "base_version"
+      ],
+      "version": "4.5.4.4.4"
+    },
+    {
+      "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "counts": {
+        "priorStaticBlocks": 435,
+        "priorVariantDeclarations": 579,
+        "priorVisibleModLines": 2704,
+        "uniqueSourceFiles": 33
+      },
+      "deepAudit": true,
+      "finding": "Richest visible Unique/variant control corpus, but it parses display lines into PoB-internal semantics. Generated and test variants are not game IDs; exact local Mod/Stat/CSD joins are impossible without forbidden text matching.",
+      "format": "Lua item blocks plus generated runtime definitions",
+      "id": "path-of-building-poe2",
+      "operator": "PathOfBuildingCommunity",
+      "repository": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2",
+      "status": [
+        "technically-partial",
+        "requires-text-matching",
+        "license-pending",
+        "distribution-pending",
+        "audit-only"
+      ],
+      "technical": {
+        "baseId": false,
+        "directStats": false,
+        "grantedSkills": "visible names/PoB semantics",
+        "grantedSupports": "PoB semantics",
+        "itemClassId": false,
+        "localCsdLink": false,
+        "modIdLink": false,
+        "stableUniqueId": false,
+        "statIds": false,
+        "structuredValues": "text-encoded",
+        "variants": "PoB-local declarations"
+      },
+      "type": "community-planner-data",
+      "version": "dev; remote HEAD verified 2026-07-23"
+    },
+    {
+      "commit": "163c30a9fd45f815d330cc54e6ab51a797693d31",
+      "counts": {
+        "mods": 16788,
+        "schemaFingerprints": 1019
+      },
+      "deepAudit": true,
+      "finding": "Useful Mod/schema control source but contains no Unique-item definition table and no item Unique-ID → base/mod relation.",
+      "format": "JSON and schema fingerprints",
+      "id": "poe2-mcp-local-pipeline",
+      "operator": "HivemindOverlord",
+      "repository": "https://github.com/HivemindOverlord/poe2-mcp",
+      "status": [
+        "technically-unsuitable",
+        "license-pending",
+        "distribution-pending",
+        "audit-only"
+      ],
+      "technical": {
+        "baseId": false,
+        "directStats": false,
+        "grantedSkills": false,
+        "grantedSupports": false,
+        "itemClassId": false,
+        "localCsdLink": false,
+        "modIdLink": false,
+        "stableUniqueId": false,
+        "statIds": "available for general Mods only",
+        "structuredValues": "available for general Mods only",
+        "variants": false
+      },
+      "type": "community-local-extractor",
+      "version": "data-v0.5.0-r12"
+    },
+    {
+      "commit": "ff1d07da2a2b38959e34eea077d842d222f631b4",
+      "deepAudit": false,
+      "finding": "Reproducible derivative of PoB visible item blocks, not an independent ID source; no technical Unique/Mod/Stat IDs.",
+      "id": "pobr",
+      "operator": "ackness",
+      "repository": "https://github.com/ackness/pobr",
+      "status": [
+        "technically-partial",
+        "requires-text-matching",
+        "outdated",
+        "audit-only"
+      ],
+      "type": "community-derived-export",
+      "version": "data 4.5.4.3"
+    },
+    {
+      "commit": "a173f7b0d398951693fee83ee5ee40f327d4a749",
+      "deepAudit": false,
+      "finding": "Free-text item plans and derivative sources; no complete technical Unique chain.",
+      "id": "poe2-tools-build-planner",
+      "operator": "poe2-tools",
+      "repository": "https://github.com/poe2-tools/poe2-build-planner",
+      "status": [
+        "technically-unsuitable",
+        "requires-text-matching"
+      ],
+      "type": "community-build-planner"
+    },
+    {
+      "deepAudit": false,
+      "finding": "Human-readable pages may enumerate items but no reviewed offline export with stable game Unique/Mod/Stat IDs and structured provenance was found. No scraping was performed.",
+      "id": "poe2-community-wiki",
+      "operator": "community",
+      "pin": "not downloaded; candidate classification 2026-07-23",
+      "status": [
+        "technically-unsuitable",
+        "requires-runtime-network",
+        "source-origin-unknown"
+      ],
+      "type": "wiki-candidate",
+      "url": "https://www.poe2wiki.net/"
+    },
+    {
+      "deepAudit": false,
+      "finding": "Blocked by project rules. No scraping, API discovery, HTML extraction or data use occurred.",
+      "id": "poe2db",
+      "operator": "third party",
+      "pin": "not accessed for data",
+      "status": [
+        "technically-unsuitable",
+        "requires-runtime-network",
+        "source-origin-unknown"
+      ],
+      "type": "website-candidate",
+      "url": "https://poe2db.tw/"
+    }
+  ]
+}

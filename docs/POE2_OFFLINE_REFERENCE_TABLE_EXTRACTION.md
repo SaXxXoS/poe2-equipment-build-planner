@@ -1,5 +1,7 @@
 # PoE2 Offline Reference Table Extraction (5M.2.4)
 
+> Folgestand 5M.2.7: Der externe Vergleich bestätigt, dass die fehlende Unique-Referenzkante weder im aktualisierten RePoE-Export noch in PoB2 oder poe2-mcp materialisiert ist. Lokale Referenzdaten und Pins bleiben unverändert.
+
 ## 1. Ziel und Ausgangslage
 
 5M.2.4 erweitert ausschließlich die lokale Auditpipeline aus 5M.2.3. Es wurden keine Produktdaten, deutschen Produkttexte, Uniques oder Socketables importiert. Produktivpin, Approval, `translation-missing`, UI, BuildProfile, Worker, Analyzer, Engine, Passive Pipeline, Baum und Planvisualisierung bleiben unverändert. 5M.2 und 5N wurden nicht begonnen.

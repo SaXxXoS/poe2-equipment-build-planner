@@ -1,0 +1,47 @@
+{
+  "audit": "5M.2.7",
+  "conclusion": "No combination preserves exact IDs and field provenance without prohibited name/text matching.",
+  "evaluated": true,
+  "options": [
+    {
+      "base": "missing",
+      "id": "repoe-identity-plus-local-mods",
+      "identity": "RePoE Words/stash key",
+      "mod": "local",
+      "reason": "no exact Unique-ID → BaseItemType/Mod foreign key",
+      "result": "rejected"
+    },
+    {
+      "base": "visible base name",
+      "id": "pob-identity-plus-local-csd",
+      "identity": "visible PoB name/block",
+      "reason": "requires name/text/value matching",
+      "result": "rejected",
+      "stats": "absent"
+    },
+    {
+      "id": "mcp-mods-plus-local-client",
+      "identity": "missing",
+      "reason": "neither side supplies the missing Unique item relation",
+      "result": "rejected",
+      "stats": "general Mod IDs"
+    }
+  ],
+  "pins": {
+    "auditDate": "2026-07-23",
+    "localContainer": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "productRePoEExport": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+    "productRePoEParser": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+    "startingCommit": "7b90dd2375e4a32cf6d3ff1a5740c78788b33f7f"
+  },
+  "provenanceModel": [
+    "sourceIdentity",
+    "sourceBaseReference",
+    "sourceModReference",
+    "sourceStats",
+    "sourceValues",
+    "sourceVariant",
+    "sourceLocalization"
+  ],
+  "technicallyValidOptions": 0
+}

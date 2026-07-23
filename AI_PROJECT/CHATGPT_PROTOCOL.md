@@ -1,5 +1,16 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.2.7 – Unique-Quellenentscheidung (2026-07-23)
+
+- 5M.2.6 belegt lokal keine vollständige Item-Unique-ID→Base→Mod/Stat-Kette. 5M.2.7 priorisiert deshalb diese Quellenentscheidung vor regulärer Lokalisierung, OCR, Socketables, 5M.2 und 5N.
+- Offizielle GGG-Dokumentation/Exports, RePoE, PoB2, poe2-mcp, PoBR, Communityprojekte sowie Wikis/Webseiten wurden klassifiziert. Trade/PoE2DB wurden nicht als Datenquellen aufgerufen; kein Scraping, Hotlink oder Runtime-Abruf.
+- Vertieft und exakt gepinnt: RePoE-PoE2 `1a6066ec60d24af274cb7a87d00b6ab1c0975ebd`, PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`, poe2-mcp `163c30a9fd45f815d330cc54e6ab51a797693d31`.
+- RePoE hat weiterhin 449 name-/stashbasierte Unique-Zeilen ohne Base-/Mod-/Statbezug. PoB2 besitzt sichtbare Items/Varianten ohne technische Spiel-IDs; poe2-mcp allgemeine Mods ohne Unique-Itemschicht.
+- Keine Einzelquelle und keine ID-sichere Kombination liefert die vollständige Kette. Deutsche CSD-Verbindbarkeit und Renderbarkeit bleiben deshalb nicht bestimmbar.
+- Code-Lizenzen und GGG-Datenstatus sind getrennt; Distribution bleibt `pending`/`legal-status-unknown`. Solange die technische Quelle fehlt, wird keine Approval-Aufgabe empfohlen.
+- Keine Unique- oder deutschen Produktdaten, keine Volltexte, keine Produktdateien, keine UI-/Engine-/Worker-/Analyzeränderung. Produktivpin, Approval und `translation-missing` bleiben unverändert; 5M.2 und 5N sind nicht begonnen.
+- Nächster Schritt: offizieller oder reproduzierbarer ID-basierter Unique-Definitionsbestand und erst danach separate Pin-/Approval-/Distributionsaufgabe. Details: `docs/POE2_UNIQUE_SOURCE_CANDIDATE_DECISION.md`.
+
 ## Aufgabe 5M.2.4 – Offline-Referenztabellenextraktion (2026-07-23)
 
 - 5M.2.3 ist abgeschlossen; 5M.2.4 erweitert dieselbe Auditpipeline ohne Produktimport. Content-Pin `a917a56f...8a18e28`, PoB2 `c5300ccd`, ooz `0.2.4`, Schema `268ae3a3`, Referenzmanifest `a4bbcd99` und Auditformat 2 sind erzwungen.

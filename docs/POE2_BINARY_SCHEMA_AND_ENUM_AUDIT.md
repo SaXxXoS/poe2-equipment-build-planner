@@ -1,5 +1,7 @@
 # PoE2 binary schema and enum audit (5M.2.5)
 
+> Folgestand 5M.2.7: Die bestätigten lokalen Domains und Generation Types erzeugen keine vollständige externe Unique-Kette, weil allen vertieften Kandidaten der stabile Unique→Base/Mod-Fremdschlüssel fehlt. Der Schema-/Enum-Stand bleibt unverändert.
+
 ## 1–4. Ziel, Ausgangslage, Grenzen und Pins
 
 5M.2.5 erweitert ausschließlich die lokale Auditpipeline. Produktdateien, Approval, Laufzeitcode und deutsche Produkttexte bleiben unverändert. Maßgeblich sind `Content.ggpk` SHA-256 `a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28`, PoB2 `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`, ooz `0.2.4` (Archiv `e6d7e728a8b02d2203a80f41bdf8f13c524afda2d393773930b8dfc0afd94af4`), Schema `268ae3a318fb23604aa33f01ec2107a2b7fd0e8628294633faab93d0445d3d30`, Referenzmanifest `a4bbcd99f21490520b516c83800e67bf3a0b691e971d0da59e318dfe6e971353`, Auditformat 1 und Node.js 24.14.0.

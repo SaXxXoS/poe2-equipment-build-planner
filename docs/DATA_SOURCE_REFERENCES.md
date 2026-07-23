@@ -1,5 +1,9 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## 5M.2.7 – Unique-Quellenkandidaten
+
+Am 2026-07-23 wurden die offiziellen GGG Developer Docs einschließlich API-Referenz, Changelog und Terms, der offizielle Passivbaumexport, `repoe-fork/poe2@1a6066ec…`, RePoE-Parser `14e3edc…`, `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccd…`, `HivemindOverlord/poe2-mcp@163c30a9…`, PoBR und das Communityinventar geprüft. Wikis/PoE2DB/Trade blieben Kandidaten ohne Datenübernahme. Details: `POE2_UNIQUE_SOURCE_CANDIDATE_DECISION.md`.
+
 ## Auditquellen 5M.2.0
 
 - RePoE-PoE2 `4.5.4.4.4`/`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`: englischer Export mit leerem `German`-Feld.

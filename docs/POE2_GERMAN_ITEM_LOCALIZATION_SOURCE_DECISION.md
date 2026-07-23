@@ -1,5 +1,7 @@
 # 5M.2.0 – Quellenentscheidung für deutsche Gegenstandslokalisierung
 
+> Prioritätsstand 5M.2.7: Reguläre Produktlokalisierung bleibt zurückgestellt, bis die technische Unique-Affixquelle geklärt ist. Der Kandidatenaudit fand keine ID-sichere Unique-Quelle; deutsche Unique-CSD-Verbindungen sind ohne Affixkante nicht bestimmbar. Alle Lokalisierungsscopes bleiben pending und `translation-missing` aktiv.
+
 ## Entscheidung
 
 5M.2.0 ist eine reine Quellen-, ID-, Rechte- und Approval-Prüfung. Es wurde kein deutscher Produktivtext importiert, erzeugt oder frei übersetzt. Alle deutschen Lokalisierungsscopes bleiben `pending`; `photo-derived-unverified` bleibt für Produktivdaten `blocked`. Der sichtbare Fallback `translation-missing` bleibt unverändert. 5M.2, 5N, Fotoerkennung und Lernmodus wurden nicht begonnen.

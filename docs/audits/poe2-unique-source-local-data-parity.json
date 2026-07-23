@@ -1,0 +1,52 @@
+{
+  "ambiguities": "not countable without a shared technical Unique key",
+  "audit": "5M.2.7",
+  "candidates": [
+    {
+      "baseItemParity": "not joinable from Unique rows",
+      "germanCsd": "not joinable",
+      "id": "repoe-current-export",
+      "modParity": "general Mod IDs available but not Unique-linked",
+      "statIdParity": "not joinable from Unique rows",
+      "valueParity": "not joinable from Unique rows"
+    },
+    {
+      "baseItemParity": "name-only; rejected",
+      "germanCsd": "no technical join",
+      "id": "path-of-building-poe2",
+      "modParity": "PoB-internal text parser; not game IDs",
+      "statIdParity": "absent",
+      "valueParity": "text-encoded; rejected"
+    },
+    {
+      "baseItemParity": "no Unique rows",
+      "germanCsd": "no Unique join",
+      "id": "poe2-mcp-local-pipeline",
+      "modParity": "general IDs only",
+      "statIdParity": "general Mods only",
+      "valueParity": "general Mods only"
+    }
+  ],
+  "conflicts": 0,
+  "localConfirmed": {
+    "confirmedItemIdentities": 0,
+    "distinctMods": 265,
+    "englishCsdLines": 261,
+    "germanCsdLines": 261,
+    "nonItemModReferences": 311,
+    "structuredStatLines": 278,
+    "uniqueIdentityFragments": 449
+  },
+  "localPins": {
+    "container": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "uniqueAuditHash": "fd9a0418e4c20c8dc1e3138712839ddefb1dd361ec99ebe74ab5731668759283"
+  },
+  "pins": {
+    "auditDate": "2026-07-23",
+    "localContainer": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "productRePoEExport": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+    "productRePoEParser": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+    "startingCommit": "7b90dd2375e4a32cf6d3ff1a5740c78788b33f7f"
+  },
+  "prohibitedJoinsUsed": false
+}

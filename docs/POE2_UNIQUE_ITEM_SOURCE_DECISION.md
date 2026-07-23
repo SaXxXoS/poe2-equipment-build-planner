@@ -1,5 +1,7 @@
 # PoE2-Unique-Gegenstände – Quellen- und Approval-Entscheidung (5M.1B.0B)
 
+> Stand 5M.2.7: RePoE `1a6066ec…`, PoB2 `c5300ccd…` und poe2-mcp `163c30a9…` liefern weder einzeln noch ID-sicher kombiniert die vollständige Item→Base→Mod/Stat→Werte→Varianten-Kette. Es wurde keine technisch geeignete Unique-Quelle gefunden; Approval und Produktivpin bleiben unverändert.
+
 ## Abgrenzung 5M.2.0
 
 Unique-Namen, -Modtexte und Varianten sind nicht Teil der deutschen Lokalisierungsentscheidung. Ihre bestehenden `pending`/`blocked`-Status bleiben unverändert; keine deutsche Unique-Quelle wurde freigegeben.

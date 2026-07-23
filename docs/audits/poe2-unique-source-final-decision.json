@@ -1,0 +1,47 @@
+{
+  "approvalTaskRecommended": false,
+  "approvalUnchanged": true,
+  "audit": "5M.2.7",
+  "bestTechnicalCandidate": "none",
+  "decision": "no-technically-sufficient-candidate",
+  "exactStatement": "Kein Kandidat liefert die vollständige Unique-ID → Base-ID → Mod/Stat-ID → strukturierte Werte → Varianten-Kette.",
+  "fullTextsCommitted": false,
+  "network": {
+    "hotlinks": false,
+    "poe2dbCalls": false,
+    "productRuntime": false,
+    "research": true,
+    "scraping": false,
+    "tradeApiCalls": false
+  },
+  "nextOptions": [
+    "GGG-published versioned Unique definition export with stable technical IDs",
+    "a reproducible parser/export that proves the missing server-side item relation without text matching",
+    "GGG or source-maintainer clarification covering data origin and redistribution before any approval"
+  ],
+  "pins": {
+    "auditDate": "2026-07-23",
+    "localContainer": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "productRePoEExport": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+    "productRePoEParser": "14e3edc89ed705bd4e4eda5c8135756431c76e81",
+    "startingCommit": "7b90dd2375e4a32cf6d3ff1a5740c78788b33f7f"
+  },
+  "productDataChanged": false,
+  "productPinUnchanged": true,
+  "runtimeChanged": false,
+  "status": "completed-source-decision-only",
+  "task5M2Started": false,
+  "task5NStarted": false,
+  "technicallySuitableUniqueSourceFound": false,
+  "uniqueDataImported": false,
+  "updateContract": {
+    "abortOnIdentityLoss": true,
+    "abortOnVariantConflict": true,
+    "coverageDiff": true,
+    "deterministicSort": true,
+    "fixedParserPin": true,
+    "fixedSourcePin": true,
+    "hashManifest": true,
+    "silentFallback": false
+  }
+}
