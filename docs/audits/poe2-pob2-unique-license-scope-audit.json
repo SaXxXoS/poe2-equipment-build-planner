@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8A",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "repositoryLicense": {
+    "name": "MIT",
+    "status": "confirmed",
+    "scope": "PoB2 software; static GGG-labelled data coverage not explicit",
+    "dataCoverage": "license-scope-unknown"
+  },
+  "codeDataSeparation": {
+    "programCode": "MIT",
+    "parserLogic": "MIT if copied; independent implementation unaffected",
+    "declarativeUniqueFiles": "GGG-labelled mixed data",
+    "communityCorrections": "contributor-authored changes with underlying GGG content",
+    "generatedPlannerData": "requires separate permissions"
+  },
+  "officialEvidence": [
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/blob/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/LICENSE.md",
+      "retrievedAt": "2026-07-23",
+      "statement": "MIT software licence and third-party licence compilation; no explicit grant for GGG-marked item data."
+    },
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/src/Data/Uniques",
+      "retrievedAt": "2026-07-23",
+      "statement": "All scoped files identify item data as Grinding Gear Games copyright."
+    },
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "retrievedAt": "2026-07-23",
+      "statement": "README describes MIT and the searchable Unique database but contains no third-party data redistribution permission."
+    },
+    {
+      "authority": "GGG",
+      "url": "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy",
+      "retrievedAt": "2026-07-23",
+      "statement": "Terms sections 4, 6 and 7 reserve rights in names, virtual items and properties; reproduction, storage, distribution and derivative works outside the limited licence require prior written approval."
+    },
+    {
+      "authority": "GGG",
+      "url": "https://www.pathofexile.com/developer/docs",
+      "retrievedAt": "2026-07-23",
+      "statement": "Public applications require a visible non-affiliation notice; API policy does not grant redistribution rights for this non-API dataset."
+    }
+  ],
+  "thirdPartyNoticeRequired": true,
+  "legalAdvice": false
+}

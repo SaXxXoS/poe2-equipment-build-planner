@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8A",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "status": "distribution-pending-both",
+  "exactlyOneStatus": true,
+  "evidence": [
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/blob/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/LICENSE.md",
+      "retrievedAt": "2026-07-23",
+      "statement": "MIT software licence and third-party licence compilation; no explicit grant for GGG-marked item data."
+    },
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/src/Data/Uniques",
+      "retrievedAt": "2026-07-23",
+      "statement": "All scoped files identify item data as Grinding Gear Games copyright."
+    },
+    {
+      "authority": "PoB2",
+      "url": "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+      "retrievedAt": "2026-07-23",
+      "statement": "README describes MIT and the searchable Unique database but contains no third-party data redistribution permission."
+    },
+    {
+      "authority": "GGG",
+      "url": "https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy",
+      "retrievedAt": "2026-07-23",
+      "statement": "Terms sections 4, 6 and 7 reserve rights in names, virtual items and properties; reproduction, storage, distribution and derivative works outside the limited licence require prior written approval."
+    },
+    {
+      "authority": "GGG",
+      "url": "https://www.pathofexile.com/developer/docs",
+      "retrievedAt": "2026-07-23",
+      "statement": "Public applications require a visible non-affiliation notice; API policy does not grant redistribution rights for this non-API dataset."
+    }
+  ],
+  "fieldMatrix": [
+    {
+      "subject": "PoB2 program code",
+      "status": "allowed",
+      "reason": "MIT, notice required for copied substantial portions"
+    },
+    {
+      "subject": "PoB2 parser logic",
+      "status": "conditionally-allowed",
+      "reason": "Reimplementation preferred; copied code requires MIT notice"
+    },
+    {
+      "subject": "local audit processing",
+      "status": "allowed",
+      "reason": "No publication; exact pin"
+    },
+    {
+      "subject": "build-time processing",
+      "status": "conditionally-allowed",
+      "reason": "Only after both written confirmations for distributable output"
+    },
+    {
+      "subject": "derived dataset in repository",
+      "status": "requires-maintainer-confirmation",
+      "reason": "Also requires GGG confirmation"
+    },
+    {
+      "subject": "derived dataset on GitHub Pages",
+      "status": "requires-ggg-confirmation",
+      "reason": "Also requires maintainer confirmation"
+    },
+    {
+      "subject": "names",
+      "status": "pending",
+      "reason": "GGG Rights expressly include in-game names"
+    },
+    {
+      "subject": "visible modifier lines",
+      "status": "pending",
+      "reason": "GGG-labelled game text/properties"
+    },
+    {
+      "subject": "roll ranges",
+      "status": "pending",
+      "reason": "Game-item properties; no separate grant"
+    },
+    {
+      "subject": "variants and legacy data",
+      "status": "pending",
+      "reason": "Mixed exporter/community curation"
+    },
+    {
+      "subject": "skills and supports",
+      "status": "forbidden",
+      "reason": "Outside approved field scope"
+    },
+    {
+      "subject": "images and media",
+      "status": "forbidden",
+      "reason": "Outside scope"
+    },
+    {
+      "subject": "flavour text",
+      "status": "forbidden",
+      "reason": "Not functionally necessary"
+    },
+    {
+      "subject": "German texts",
+      "status": "forbidden",
+      "reason": "No localization approval"
+    }
+  ],
+  "repositoryDistribution": "pending",
+  "githubPagesDistribution": "pending",
+  "buildTimeProcessing": "audit-only-until-confirmed",
+  "fullMirror": "forbidden",
+  "reducedDataset": "pending",
+  "fiveM29": "blocked",
+  "conditions": [
+    "written PoB2 maintainer confirmation",
+    "written GGG confirmation",
+    "approved attribution wording",
+    "exact pin and hashes",
+    "allowlisted reduced fields only",
+    "all existing separation guards"
+  ],
+  "nextAction": "Human review and manual sending of both prepared requests; record written responses in a new approval decision."
+}

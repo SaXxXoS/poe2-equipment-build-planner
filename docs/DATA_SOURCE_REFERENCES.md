@@ -1,5 +1,20 @@
 # Quellenverzeichnis zur Datenfreigabe
 
+## 5M.2.8A – primäre Distributionsbelege
+
+- PoB2, exakter Pin:
+  `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`
+- PoB2 `LICENSE.md`, `README.md`, `CONTRIBUTING.md`, Dateiköpfe der 20
+  `src/Data/Uniques/*.lua` und pfadbezogene Git-Historie
+- GGG Terms of Use:
+  <https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy>
+- GGG Developer Documentation:
+  <https://www.pathofexile.com/developer/docs>
+
+Abrufdatum der Webquellen: 23. Juli 2026. Die Quellen belegen weder eine
+ausdrückliche MIT-Datenlizenz noch eine GGG-Distributionszustimmung; Status
+bleibt `distribution-pending-both`.
+
 ## 5M.2.7 – Unique-Quellenkandidaten
 
 Am 2026-07-23 wurden die offiziellen GGG Developer Docs einschließlich API-Referenz, Changelog und Terms, der offizielle Passivbaumexport, `repoe-fork/poe2@1a6066ec…`, RePoE-Parser `14e3edc…`, `PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccd…`, `HivemindOverlord/poe2-mcp@163c30a9…`, PoBR und das Communityinventar geprüft. Wikis/PoE2DB/Trade blieben Kandidaten ohne Datenübernahme. Details: `POE2_UNIQUE_SOURCE_CANDIDATE_DECISION.md`.

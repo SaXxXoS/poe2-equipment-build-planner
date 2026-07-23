@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8A",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "status": "distribution-pending-both",
+  "maintainer": {
+    "existingExplicitPermissionFound": false,
+    "searches": [
+      "pinned README/LICENSE/CONTRIBUTING",
+      "official GitHub issues, discussions and pull-request search"
+    ],
+    "draft": "docs/drafts/POB2_UNIQUE_DATA_USAGE_REQUEST.md",
+    "sent": false,
+    "confirmationRequired": true
+  },
+  "ggg": {
+    "termsReviewed": true,
+    "priorWrittenApprovalRequired": true,
+    "draft": "docs/drafts/GGG_DERIVED_UNIQUE_DATA_DISTRIBUTION_REQUEST.md",
+    "sent": false,
+    "confirmationRequired": true
+  },
+  "automaticMessagesSent": false
+}

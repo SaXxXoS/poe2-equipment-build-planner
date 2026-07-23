@@ -37,8 +37,8 @@ describe('5M.2.8 PoB2-Unique-Approval-Auditberichte', () => {
   it('blockiert Distribution und Produktimport trotz bedingter Scopeentscheidung', () => {
     expect(decision.decision).toBe('conditionally-approved')
     expect(decision.importStatus).toContain('blocked')
-    expect(decision.distributionStatus).toBe('pending')
-    expect(license.bundledItemData.licenseCoverage).toBe('unknown')
+    expect(decision.distributionStatus).toBe('distribution-pending-both')
+    expect(license.bundledItemData.licenseCoverage).toBe('license-scope-unknown')
     expect(contract.output.createdInThisTask).toBe(false)
     expect(contract.output.currentlyBlocked).toBe(true)
   })

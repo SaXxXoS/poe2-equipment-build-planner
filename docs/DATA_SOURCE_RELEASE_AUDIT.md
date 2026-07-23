@@ -1,5 +1,12 @@
 # Datenquellen-Freigabeaudit
 
+## 5M.2.8A Release-Guard
+
+PoB2-Unique-Produktdaten dürfen nicht veröffentlicht werden. Der
+Distributionsguard blockiert wegen `distribution-pending-both`; erlaubte
+Distributionsartefakte sind leer. Reguläre Affixdaten, Produktivpins,
+deutsche Lokalisierung und `translation-missing` bleiben unverändert.
+
 ## Unique-Kandidatenaudit 5M.2.7
 
 RePoE-PoE2 Remote-HEAD ist `1a6066ec60d24af274cb7a87d00b6ab1c0975ebd`; dieser Stand wurde nur im Auditbereich geprüft und ersetzt nicht den Produktivpin `b3f38149…`. RePoE-Parser `14e3edc…`, PoB2 `c5300ccd…` und poe2-mcp `163c30a9…` waren unverändert. Keine Quelle wurde aktiviert.

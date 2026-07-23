@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "5M.2.8A",
+  "pin": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "importFormatVersion": "1"
+  },
+  "options": [
+    {
+      "id": "A",
+      "name": "derived JSON committed to repository",
+      "status": "pending",
+      "advantages": [
+        "reproducible",
+        "offline",
+        "PlayStation/iPhone friendly"
+      ],
+      "risks": [
+        "public storage and Pages distribution require both confirmations"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "build-only Pages artifact",
+      "status": "pending",
+      "advantages": [
+        "raw files not committed"
+      ],
+      "risks": [
+        "still public distribution; CI needs a lawful pinned input and both confirmations"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "user-side local import",
+      "status": "conditionally-allowed",
+      "advantages": [
+        "no central data distribution"
+      ],
+      "risks": [
+        "impractical on iPhone/PlayStation",
+        "complex provenance and user-supplied rights"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "no distribution",
+      "status": "allowed",
+      "advantages": [
+        "preserves fail-closed posture"
+      ],
+      "risks": [
+        "Unique feature remains disabled"
+      ]
+    }
+  ],
+  "recommended": "D",
+  "reason": "A reduced dataset changes exposure but does not create missing permissions. Await both written confirmations."
+}

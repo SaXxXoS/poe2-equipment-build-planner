@@ -1,5 +1,12 @@
 # PoE2 PoB2 Unique Planner Data Approval
 
+> **5M.2.8A-Update (23. Juli 2026):** Der technische Unique-Scope bleibt
+> `conditionally-approved`, seine Distribution ist jedoch
+> `distribution-pending-both`. Die MIT-Codelizenz belegt nicht eindeutig die
+> Rechte an den GGG-gekennzeichneten statischen Unique-Daten. Zusätzlich
+> fehlt eine schriftliche GGG-Zustimmung. 5M.2.9 bleibt blockiert. Maßgeblich
+> ist `POE2_POB2_UNIQUE_DISTRIBUTION_DECISION.md`.
+
 ## Ziel und Entscheidung
 
 Aufgabe 5M.2.8 setzt die ausdrückliche Entscheidung des Auftraggebers um, den gepinnten Path-of-Building-2-Bestand als **eigenständige Unique-Planerdatenquelle** vorzubereiten. Das Ergebnis ist eine bedingte, eng begrenzte Approval-Entscheidung und ein fehlersicherer Importvertrag. Es wurden keine PoB2-Unique-Daten importiert und keine Produktdateien erzeugt.

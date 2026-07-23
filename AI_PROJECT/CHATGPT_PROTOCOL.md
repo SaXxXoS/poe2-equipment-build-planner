@@ -1,5 +1,35 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Aufgabe 5M.2.8A – PoB2-Unique-Distribution (2026-07-23)
+
+- 5M.2.8 ist abgeschlossen; 20 statische Unique-Dateien sind exakt gepinnt
+  und gehasht, aber es wurden weiterhin keine Produktdaten importiert.
+- Alle 20 Dateien tragen den Header `Item data (c) Grinding Gear Games`.
+  Ihre Git-Historie zeigt Export-, Patch- und Communitypflege; eine
+  recordgenaue Herkunft ist teilweise `Unbekannt`.
+- PoB2-Code ist am Pin MIT-lizenziert. Eine ausdrückliche MIT-Lizenzierung
+  der GGG-gekennzeichneten statischen Daten ist nicht belegt
+  (`license-scope-unknown`).
+- Die offiziellen GGG-Bedingungen und Developer-Dokumente wurden geprüft.
+  Für Speicherung und öffentliche Distribution des geplanten reduzierten
+  Nicht-API-Datensatzes fehlt eine schriftliche GGG-Bestätigung.
+- Es wurde keine vorhandene eindeutige PoB2-Maintainerfreigabe gefunden.
+  Zwei reviewbare Entwürfe für PoB2 und GGG wurden erstellt und nicht
+  versendet.
+- Endstatus: `distribution-pending-both`. Option D (keine Distribution) ist
+  bis zur externen Klärung maßgeblich. Der Guard blockiert Produktimport,
+  `generated/`, `public/` und 5M.2.9.
+- Attribution ist für README, Datenquellendokumentation,
+  `THIRD_PARTY_NOTICES.md` und eine spätere sichtbare App-Info geplant. Der
+  endgültige Wortlaut bleibt pending.
+- Reguläre GGG-/RePoE-Affixe, Produktivpins, Approval-Trennung,
+  `translation-missing`, UI, Analyzer, Engine, Worker und BuildProfile
+  bleiben unverändert. Deutsche Unique-Texte sind nicht freigegeben.
+- Nächster Schritt: Entwürfe menschlich prüfen und manuell an PoB2 und GGG
+  senden; beide schriftlichen Antworten anschließend in einer separaten
+  Approval-Entscheidung auswerten.
+- 5M.2, 5M.2.9 und 5N wurden nicht begonnen. Fotoerkennung bleibt später.
+
 ## Aufgabe 5M.2.7 – Unique-Quellenentscheidung (2026-07-23)
 
 - 5M.2.6 belegt lokal keine vollständige Item-Unique-ID→Base→Mod/Stat-Kette. 5M.2.7 priorisiert deshalb diese Quellenentscheidung vor regulärer Lokalisierung, OCR, Socketables, 5M.2 und 5N.

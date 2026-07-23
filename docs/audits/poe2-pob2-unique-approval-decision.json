@@ -10,8 +10,8 @@
   },
   "decision": "conditionally-approved",
   "auditStatus": "allowed",
-  "importStatus": "blocked-pending-5M.2.9-and-distribution",
-  "distributionStatus": "pending",
+  "importStatus": "blocked-pending-distribution-confirmations",
+  "distributionStatus": "distribution-pending-both",
   "localizationStatus": "not-approved",
   "gggIdStatus": "not-claimed",
   "approvedPurpose": "Unique planner data only",
@@ -28,5 +28,5 @@
   ],
   "productFilesChanged": false,
   "realPob2RecordsImported": false,
-  "nextTask": "5M.2.9 after distribution clarification"
+  "nextTask": "Manual PoB2-maintainer and GGG clarification before 5M.2.9"
 }

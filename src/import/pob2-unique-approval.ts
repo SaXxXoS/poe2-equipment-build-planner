@@ -5,6 +5,15 @@ export const POB2_UNIQUE_SCOPE_ID = 'poe2-pob2-unique-planner-data'
 export const POB2_UNIQUE_REPOSITORY = 'PathOfBuildingCommunity/PathOfBuilding-PoE2'
 export const POB2_UNIQUE_COMMIT = 'c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0'
 export const POB2_UNIQUE_FORMAT_VERSION = '1'
+export const POB2_UNIQUE_DISTRIBUTION_STATUS = 'distribution-pending-both' as const
+
+export type Pob2UniqueDistributionStatus =
+  | 'distribution-approved'
+  | 'distribution-conditionally-approved'
+  | 'distribution-pending-maintainer-confirmation'
+  | 'distribution-pending-ggg-confirmation'
+  | 'distribution-pending-both'
+  | 'distribution-blocked'
 
 export const POB2_UNIQUE_ALLOWED_FIELDS = [
   'sourceId', 'name', 'baseDisplayName', 'slot', 'itemCategory', 'requiredLevel',
@@ -60,6 +69,36 @@ export interface Pob2UniqueGuardDecision {
   allowed: boolean
   code: 'audit-allowed' | 'product-import-blocked' | 'approval-denied' | 'guard-denied'
   issues: string[]
+}
+
+export interface Pob2UniqueDistributionEvidence {
+  maintainerConfirmed: boolean
+  gggConfirmed: boolean
+  attributionIncluded: boolean
+  licenseNoticeIncluded: boolean
+}
+
+export function evaluatePob2UniqueDistribution(
+  status: Pob2UniqueDistributionStatus,
+  evidence: Pob2UniqueDistributionEvidence,
+): { allowed: boolean; issues: string[] } {
+  const issues: string[] = []
+  if (status === 'distribution-blocked') return { allowed: false, issues: ['distribution-blocked'] }
+  if (status === 'distribution-pending-maintainer-confirmation' || status === 'distribution-pending-both') {
+    if (!evidence.maintainerConfirmed) issues.push('maintainer-confirmation-missing')
+  }
+  if (status === 'distribution-pending-ggg-confirmation' || status === 'distribution-pending-both') {
+    if (!evidence.gggConfirmed) issues.push('ggg-confirmation-missing')
+  }
+  if (status === 'distribution-conditionally-approved') {
+    if (!evidence.maintainerConfirmed) issues.push('maintainer-confirmation-missing')
+    if (!evidence.gggConfirmed) issues.push('ggg-confirmation-missing')
+    if (!evidence.attributionIncluded) issues.push('attribution-missing')
+    if (!evidence.licenseNoticeIncluded) issues.push('license-notice-missing')
+  }
+  return { allowed: issues.length === 0 && status === 'distribution-approved'
+    ? true
+    : issues.length === 0 && status === 'distribution-conditionally-approved', issues }
 }
 
 const requiredProvenance: (keyof Pob2UniqueProvenance)[] = [
@@ -120,7 +159,11 @@ export function guardPob2UniquePlannerData(
 
   if (!generic.allowed) return { allowed: false, code: 'approval-denied', issues }
   if (issues.length) return { allowed: false, code: 'guard-denied', issues: [...new Set(issues)] }
-  // 5M.2.8 leaves distribution pending. Audit is permitted; product output stays closed.
-  if (request.mode === 'product-import') return { allowed: false, code: 'product-import-blocked', issues: ['distribution-pending', 'follow-up-5M.2.9-required'] }
+  // 5M.2.8A found neither a PoB2 maintainer permission nor GGG written approval.
+  if (request.mode === 'product-import') return {
+    allowed: false,
+    code: 'product-import-blocked',
+    issues: ['distribution-pending-both', 'maintainer-confirmation-missing', 'ggg-confirmation-missing', 'follow-up-5M.2.9-blocked'],
+  }
   return { allowed: true, code: 'audit-allowed', issues: [] }
 }

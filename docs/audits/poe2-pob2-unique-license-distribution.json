@@ -13,23 +13,23 @@
     "attributionRequired": true
   },
   "bundledItemData": {
-    "origin": "GGG and community-maintained planner data",
-    "licenseCoverage": "unknown",
-    "distributionStatus": "pending"
+    "origin": "GGG-labelled and community-maintained planner data",
+    "licenseCoverage": "license-scope-unknown",
+    "distributionStatus": "distribution-pending-both"
   },
   "operations": {
     "localAudit": "allowed",
-    "buildProcessing": "conditionally-allowed",
-    "repositoryStorage": "forbidden-until-resolved",
-    "generatedProductStorage": "pending",
-    "githubPagesDistribution": "pending",
+    "buildProcessing": "audit-only-until-confirmed",
+    "repositoryStorage": "forbidden-until-confirmed",
+    "generatedProductStorage": "distribution-pending-both",
+    "githubPagesDistribution": "distribution-pending-both",
     "runtimeLoading": "forbidden",
     "hotlinks": "forbidden"
   },
   "attributionPlan": [
     "README",
     "DATA_SOURCE_REFERENCES",
-    "Third-Party-Notices if distribution is later approved",
+    "THIRD_PARTY_NOTICES.md",
     "source repository and exact commit",
     "planner-data and non-GGG-ID disclaimer"
   ],

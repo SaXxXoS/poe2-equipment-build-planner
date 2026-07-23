@@ -99,7 +99,7 @@
       "conditions": { "attributionRequired": true, "rawRedistributionAllowed": false, "derivedRedistributionAllowed": "unknown", "automatedAccessAllowed": true, "localStorageAllowed": true, "repositoryStorageAllowed": false, "commercialUseClarified": false, "patchVersionRequired": true, "rateLimitKnown": true, "manualApprovalRequired": true },
       "requiredConditions": ["attributionRequired", "automatedAccessAllowed", "patchVersionRequired", "manualApprovalRequired"],
       "evidenceUrls": ["https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0", "https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/blob/c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0/LICENSE.md"],
-      "reason": "5M.2.8: Auftraggeberfreigabe ausschließlich als eigenständige PoB2-Unique-Planerdatenquelle. Keine Behauptung technischer GGG-IDs, keine regulären Affix-/Crafting-/CSD-Daten, keine Medien, kein Rohmirror und kein Laufzeitzugriff. Die MIT-Codelizenz ist belegt; die Weiterverteilung der mitgelieferten GGG-/Community-Itemdaten bleibt distribution-pending. Deshalb ist nur Audit und Vertragsvorbereitung zulässig; Produktimport bleibt bis separater Klärung und 5M.2.9 blockiert."
+      "reason": "5M.2.8A: Auftraggeberfreigabe ausschließlich als eigenständige PoB2-Unique-Planerdatenquelle. Die MIT-Codelizenz ist belegt, deckt die in allen 20 Dateien ausdrücklich als GGG-Copyright bezeichneten Itemdaten aber nicht nachweislich ab. Weder eine PoB2-Maintainerfreigabe für Drittverteilung noch eine schriftliche GGG-Zustimmung liegt vor; Abschnitt 7 der GGG Terms sieht für die dort erfassten Nutzungen vorherige schriftliche Zustimmung vor. Status distribution-pending-both; nur Audit und Vertragsvorbereitung, 5M.2.9 bleibt blockiert."
     }
   ],
   "approvedSources": ["local-synthetic-fixtures"],
@@ -171,7 +171,7 @@
       "status": "conditionally-approved",
       "repositoryStorage": false,
       "offlineOnly": true,
-      "reason": "5M.2.8: eng begrenzter planner-only Unique-Scope am PoB2-Commit c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0. Auditvertrag freigegeben; echter Import und Distribution bleiben pending und werden durch den dedizierten Guard blockiert. PoB2 ersetzt keine GGG-/RePoE-Technikdaten.",
+      "reason": "5M.2.8A: eng begrenzter planner-only Unique-Scope am PoB2-Commit c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0. Audit bleibt erlaubt; Distribution ist distribution-pending-both, weil PoB2-Maintainer- und GGG-Schriftbestätigung fehlen. Produktimport und 5M.2.9 bleiben blockiert. PoB2 ersetzt keine GGG-/RePoE-Technikdaten.",
       "constraints": {
         "sourceVersion": "commit:c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
         "exportCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -184,7 +184,16 @@
         "requireDeterministicNormalization": true,
         "forbidRawMirror": true,
         "forbidRuntimeFetch": true,
-        "forbidHotlinks": true
+        "forbidHotlinks": true,
+        "distributionStatus": "distribution-pending-both",
+        "evidence": ["PoB2 LICENSE.md at c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0", "20 source headers: Item data (c) Grinding Gear Games", "PoB2 README: MIT and third-party licenses, no data redistribution grant", "GGG Terms of Use sections 4, 6 and 7, retrieved 2026-07-23", "GGG Developer Docs third-party notice, retrieved 2026-07-23"],
+        "distributionConditions": ["written PoB2 maintainer confirmation", "written GGG confirmation", "exact pin and 20-file hashes", "reduced allowlisted output only", "attribution and notices", "no media, flavour text, German text, hotlinks, runtime network or raw mirror"],
+        "attributionRequirements": ["Path of Building Community", "PathOfBuildingCommunity/PathOfBuilding-PoE2", "exact commit", "MIT code notice", "planner-data and non-GGG-ID disclaimer", "GGG non-affiliation notice"],
+        "licenseNoticeRequirements": ["retain PoB2 MIT notice if code or substantial licensed material is copied", "identify GGG-marked item data separately", "do not claim MIT coverage for GGG content"],
+        "allowedDistributionArtifacts": [],
+        "forbiddenDistributionArtifacts": ["raw PoB2 Lua files", "full PoB2 unique database", "generated or public Unique product JSON", "images", "icons", "flavour text", "German Unique texts"],
+        "clarificationStatus": "maintainer-and-ggg-confirmation-missing",
+        "nextRequiredAction": "Review and manually send both prepared clarification requests; record written answers in a separate approval task before 5M.2.9."
       }
     }
   ],

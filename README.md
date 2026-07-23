@@ -1,5 +1,11 @@
 # PoE2 Equipment Build Planner
 
+> Data-source status: Path of Building 2 is approved only as a prospective,
+> source-separated Unique planner-data source. Public distribution of derived
+> PoB2 Unique data remains blocked pending written confirmation from both
+> PoB2 maintainers and Grinding Gear Games. No PoB2 Unique product data are
+> currently included.
+
 > Datenstatus 5M.2.7: Der priorisierte Unique-Quellenaudit ist abgeschlossen. Offizielle Quellen, RePoE, PoB2, poe2-mcp und weitere Kandidaten liefern keine vollständige technische Unique-ID→Base→Mod/Stat→Werte→Varianten-Kette. Es wurden keine Daten importiert; Approval, Produktivpin, Runtime und `translation-missing` bleiben unverändert.
 
 > Status 5M.2.0: Die ID-basierte deutsche Gegenstandslokalisierung wurde nur hinsichtlich Quellen, Coverage und Approval geprüft. Es wurden keine deutschen Produktivtexte oder freien Übersetzungen importiert; `translation-missing` bleibt aktiv. Alle deutschen Sprachscopes sind `pending`, Foto-Mappings sind `blocked`. Details: [Quellenentscheidung](docs/POE2_GERMAN_ITEM_LOCALIZATION_SOURCE_DECISION.md).

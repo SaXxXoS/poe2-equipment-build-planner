@@ -1,5 +1,11 @@
 # PoE2 Unique source candidate decision (5M.2.7)
 
+> **5M.2.8A-Update:** PoB2 bleibt der vom Auftraggeber ausgewählte,
+> quellengetrennte Unique-Planerdatensatz. Das ist keine Aussage über
+> technische GGG-IDs und keine Distributionsfreigabe. Wegen ungeklärter
+> PoB2-Datenlizenz und fehlender GGG-Zustimmung gilt
+> `distribution-pending-both`; es wurden keine Daten importiert.
+
 ## Ziel, Priorität und Ergebnis
 
 Diese Aufgabe prüft ausschließlich Quellen für die in 5M.2.6 fehlende Kette

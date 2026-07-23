@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import approvalJson from '../../data-sources/source-approval.json'
 import type { SourceApprovalFile } from './approval'
 import {
-  guardPob2UniquePlannerData, POB2_UNIQUE_COMMIT, POB2_UNIQUE_REPOSITORY,
+  evaluatePob2UniqueDistribution, guardPob2UniquePlannerData, POB2_UNIQUE_COMMIT, POB2_UNIQUE_REPOSITORY,
   POB2_UNIQUE_SCOPE_ID, POB2_UNIQUE_SOURCE_ID, type Pob2UniqueGuardRequest,
 } from './pob2-unique-approval'
 
@@ -32,6 +32,25 @@ const request = (): Pob2UniqueGuardRequest => ({
 describe('PoB2-Unique-Approval- und Trennungsguard', () => {
   it('erlaubt nur den gepinnten Auditvertrag', () => expect(guardPob2UniquePlannerData(approval, request())).toEqual({ allowed: true, code: 'audit-allowed', issues: [] }))
   it('blockiert den Produktimport solange Distribution pending ist', () => expect(guardPob2UniquePlannerData(approval, { ...request(), mode: 'product-import' })).toMatchObject({ allowed: false, code: 'product-import-blocked' }))
+  it('blockiert den belegten Status pending-both mit beiden externen Lücken', () => {
+    expect(evaluatePob2UniqueDistribution('distribution-pending-both', {
+      maintainerConfirmed: false, gggConfirmed: false, attributionIncluded: true, licenseNoticeIncluded: true,
+    })).toEqual({ allowed: false, issues: ['maintainer-confirmation-missing', 'ggg-confirmation-missing'] })
+  })
+  it('validiert eine spätere bedingte Freigabe vollständig', () => {
+    expect(evaluatePob2UniqueDistribution('distribution-conditionally-approved', {
+      maintainerConfirmed: true, gggConfirmed: true, attributionIncluded: true, licenseNoticeIncluded: true,
+    })).toEqual({ allowed: true, issues: [] })
+    expect(evaluatePob2UniqueDistribution('distribution-conditionally-approved', {
+      maintainerConfirmed: true, gggConfirmed: true, attributionIncluded: false, licenseNoticeIncluded: true,
+    }).allowed).toBe(false)
+  })
+  it('hebt bei approved keine übrigen Scopeguards auf', () => {
+    expect(evaluatePob2UniqueDistribution('distribution-approved', {
+      maintainerConfirmed: true, gggConfirmed: true, attributionIncluded: true, licenseNoticeIncluded: true,
+    }).allowed).toBe(true)
+    expect(guardPob2UniquePlannerData(approval, { ...request(), mode: 'product-import', requestedFields: ['gggStatId'] }).allowed).toBe(false)
+  })
   it.each([
     ['latest', { commit: 'latest' }],
     ['normales Affix', { dataCategories: ['normal-affixes'] }],
