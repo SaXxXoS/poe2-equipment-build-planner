@@ -4,7 +4,7 @@ import { CharacterSection } from './CharacterSection'
 import { EquipmentSection } from './EquipmentSection'
 import { SkillsSection } from './SkillsSection'
 import { applyClassSelection, parseUnsignedIntegerDraft, supportedClassOptions } from '../features/character/ui-options'
-import { activeWeaponSlotIds } from '../features/equipment-editor/layout'
+import { activeWeaponSlotIds, canRemoveJewelEntry, createNextJewelEntry, jewelEntries } from '../features/equipment-editor/layout'
 import { createEmptySkillSetups } from '../features/skills/initial-state'
 import { createInitialCharacterConfiguration } from '../features/character/initial-state'
 import { availablePassivePoints } from '../features/character/passive-points'
@@ -43,6 +43,12 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(html).toContain('Juwelen')
     expect(html).toContain('Charms und Fläschchen')
     expect(html).toContain('equipment-quick-slots')
+    expect(html).toContain('Charm 3')
+    expect(html).toContain('Juwelenplatz hinzufügen')
+    expect(jewelEntries(initialEquipment)).toHaveLength(2)
+    expect(createNextJewelEntry(initialEquipment).slotId).toBe('slot-jewel-3')
+    expect(canRemoveJewelEntry(jewelEntries(initialEquipment).at(-1))).toBe(true)
+    expect(canRemoveJewelEntry({ ...jewelEntries(initialEquipment)[0], itemClassId:'Jewels' })).toBe(false)
     expect(html).not.toContain('Waffenset 2 links')
     expect(activeWeaponSlotIds('set-1')).toEqual(['slot-weapon-set-1-left','slot-weapon-set-1-right'])
     expect(activeWeaponSlotIds('set-2')).toEqual(['slot-weapon-set-2-left','slot-weapon-set-2-right'])

@@ -24,11 +24,11 @@ export const itemClassAffixIndex = {...indexData,...additionalIndex} as Record<s
 const classesBySlot: Record<string, string[]> = {
   'slot-helmet':['Helmets'],'slot-body-armour':['Body Armours'],'slot-gloves':['Gloves'],'slot-boots':['Boots'],'slot-belt':['Belts'],
   'slot-amulet':['Amulets'],'slot-ring-1':['Rings'],'slot-ring-2':['Rings'],
-  'slot-jewel-1':['Jewels'],'slot-jewel-2':['Jewels'],'slot-charm-1':['Charms'],'slot-charm-2':['Charms'],'slot-life-flask':['Life Flasks'],'slot-mana-flask':['Mana Flasks'],
+  'slot-jewel-1':['Jewels'],'slot-jewel-2':['Jewels'],'slot-charm-1':['Charms'],'slot-charm-2':['Charms'],'slot-charm-3':['Charms'],'slot-life-flask':['Life Flasks'],'slot-mana-flask':['Mana Flasks'],
 }
 export const baseItemsFor=(itemClassId:string)=>technicalBaseItems.filter(value=>value.itemClassId===itemClassId)
 export function itemClassesForSlot(slotId: string): TechnicalItemClass[] {
-  const allowed = classesBySlot[slotId]
+  const allowed = classesBySlot[slotId] ?? (slotId.startsWith('slot-jewel-') ? ['Jewels'] : undefined)
   return technicalItemClasses.filter(value => allowed ? allowed.includes(value.itemClassId) : value.slotType === 'weapon' || value.slotType === 'offhand')
 }
 export function affixesFor(itemClassId: string, side: 'prefix'|'suffix'|'implicit', itemLevel?: number): TechnicalAffix[] {

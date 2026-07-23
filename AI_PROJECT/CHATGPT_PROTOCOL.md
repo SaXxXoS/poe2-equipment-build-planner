@@ -973,3 +973,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Überlauf, Item-Editor erreichbar und Browserkonsole ohne Fehler/Warnungen.
 - Fokussierte Equipment-/Editor-Regression: 8/8; Lint, Typecheck und
   Pages-Build erfolgreich.
+
+## Paperdoll – Größe, dritter Charm und variable Juwelenzahl
+
+- Die Desktop-Paperdoll wurde von 690 auf 820 Pixel Maximalbreite vergrößert;
+  mobil bleibt sie responsiv innerhalb der verfügbaren Seitenbreite.
+- Ein dritter produktiver Charm-Platz wurde in Equipmentdefinition,
+  Affixfilter und Initialzustand ergänzt.
+- Die Juwelenanzeige besitzt eine sichtbare Anzahl sowie Plus/Minus. Neue
+  Plätze erhalten deterministische IDs `slot-jewel-<n>` und werden als normale
+  Equipment-Einträge durch den vorhandenen Editor und BuildProfile-Transport
+  geführt.
+- Minus entfernt ausschließlich den letzten vollständig leeren Juwelenplatz.
+  Ein belegter Platz wird nicht stillschweigend gelöscht.
+- Mobile Browserprüfung: drei Charms, Änderung von zwei auf vier und zurück
+  auf drei Juwelenplätze, kein horizontaler Überlauf. Desktopbreite: 820
+  Pixel. Browserkonsole ohne Fehler/Warnungen.

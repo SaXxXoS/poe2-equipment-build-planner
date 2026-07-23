@@ -39,6 +39,7 @@ const slotSeed = [
   ['slot-weapon-set-2-left', 'Waffe Set 2 links', 'set-2', 'left'], ['slot-weapon-set-2-right', 'Waffe Set 2 rechts', 'set-2', 'right'],
   ['slot-jewel-1', 'Normales Juwel 1', 'not-applicable', 'not-applicable'], ['slot-jewel-2', 'Normales Juwel 2', 'not-applicable', 'not-applicable'],
   ['slot-charm-1', 'Charm 1', 'not-applicable', 'not-applicable'], ['slot-charm-2', 'Charm 2', 'not-applicable', 'not-applicable'],
+  ['slot-charm-3', 'Charm 3', 'not-applicable', 'not-applicable'],
   ['slot-life-flask', 'Lebensfläschchen', 'not-applicable', 'not-applicable'], ['slot-mana-flask', 'Manafläschchen', 'not-applicable', 'not-applicable'],
 ] as const
 export const equipmentSlotDefinitions: EquipmentSlotDefinition[] = slotSeed.map(([id, name, weaponSet, hand]) => ({ ...placeholderMetadata(id, name), weaponSet, hand }))
