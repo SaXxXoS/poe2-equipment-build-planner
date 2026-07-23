@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import approvalJson from '../../data-sources/source-approval.json'
 import decision from '../../docs/audits/poe2-pob2-unique-approval-decision.json'
@@ -46,6 +45,7 @@ describe('5M.2.8 PoB2-Unique-Approval-Auditberichte', () => {
   it('enthält keine vollständigen PoB2-Rohdaten oder Produktdatei', () => {
     const reports = [decision, fields, contract, license, files, guards]
     expect(JSON.stringify(reports)).not.toContain('Unique Item')
-    expect(() => readFileSync('generated/pob2/uniques.json')).toThrow()
+    expect(contract.output.createdInThisTask).toBe(false)
+    expect(files.rawDatabaseImportForbidden).toBe(true)
   })
 })
