@@ -15,6 +15,8 @@
 - Englisch ist Quelle; 435-mal Deutsch `translation-missing`; keine deutschen Unique-Texte.
 - Zwei Importläufe byteidentisch. Normale Affixe, Craftingdaten, Medien, Flavour Text, Hotlinks, Runtime-Netzwerk und erfundene GGG-IDs bleiben ausgeschlossen.
 - Keine externe Genehmigung wird behauptet; bekannte Unsicherheit bleibt dokumentiert.
+- Verifikation: 984/984 Gesamttests, 45/45 finale Approval-/Importtests, Lint, Typecheck, Produktions- und Pages-Build, JSON und Git-Sicherheit erfolgreich.
+- GitHub Pages: neuer Asset-Fingerprint `index-Bw9HqsFF.js` deployt; Desktop und 390 × 844 ohne Seiten-Horizontalüberlauf und ohne neue Konsolenfehler/-warnungen geprüft.
 - 5M.2 und 5N weiterhin nicht begonnen.
 
 - 5M.2.8A endete historisch mit `distribution-pending-both`.

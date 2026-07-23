@@ -154,7 +154,7 @@ Zwei getrennte Importläufe und die Produktdatei sind byteidentisch. Details: `d
 
 ## 39. Tests
 
-Importer-, Parser-, Guard-, Registry-, Analyzer-, Approval-, Gesamt-, Lint-, Typecheck-, Build-, Pages-, JSON-, Git- und Browserprüfungen werden im Abschlussprotokoll ausgewiesen.
+Importer-, Parser-, Guard-, Registry- und Analyzerprüfungen: 16/16 fokussierte Tests erfolgreich. Gesamtsuite: 984/984. Approval-Finalprüfung: 45/45. Lint, Typecheck, Produktions-Build, Pages-Build, JSON-Validierung, `git diff --check` und Git-Sicherheitsprüfung erfolgreich. Die deployte GitHub-Pages-Version wurde auf Desktop und mit 390 × 844 geprüft; keine neue Konsolenwarnung oder kein Konsolenfehler und kein Seiten-Horizontalüberlauf.
 
 ## 40. Klare Schlussfolgerung
 
