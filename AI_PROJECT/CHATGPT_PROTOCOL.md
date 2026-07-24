@@ -1166,3 +1166,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   offizielle Baum zeigt den jeweils gewählten Plan.
 - Aszendenzpunkte bleiben getrennt und werden nicht automatisch eingerechnet.
 - Datenpins, Baumquelle und bestehende Pfadsuche bleiben unverändert.
+
+# Vollständige Nutzung des normalen Passivpunktebudgets
+
+- Der frühe Planungsstopp nach wenigen hochwertigen Zielen wurde behoben.
+- Die bestehende strategische Auswahl bleibt die erste Planungsphase.
+- Eine zweite, deterministische Abschlussphase nutzt Restpunkte nur für
+  erreichbare Kandidaten mit positiver Evidenz und ohne bekannte Konflikte.
+- Kandidaten- und Iterationsrahmen decken das produktive maximale
+  Normalbudget ab; die Pfadsuche traversiert bereits belegte Teilbäume
+  weiterhin kostenfrei.
+- Ein Test mit dem offiziellen Produktbaum weist für ein repräsentatives
+  Profil 121 von 121 verwendete normale Punkte nach.
+- Wenn nicht genügend sichere Kandidaten existieren, bleibt das Restbudget
+  sichtbar. Unbekannte oder negative Knoten werden nicht erfunden.
+- Waffen-Set-Aufteilungen bleiben Teil des normalen Budgets.
+- Aszendenzpunkte bleiben ein separater Punkttyp und sind weiterhin nicht
+  Bestandteil dieser Planung.
+- Baumdaten und sämtliche Datenpins bleiben unverändert.

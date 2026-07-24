@@ -41,3 +41,14 @@ umgeschaltet werden. Der offizielle Baum zeigt immer den ausgewählten Plan.
 - Die bestehenden offiziellen Baumdaten, Datenpins und Pfadsuchregeln wurden
   nicht ersetzt.
 
+## Vollständige normale Budgetnutzung
+
+Nach der priorisierten strategischen Auswahl verwendet eine zweite,
+evidenzbasierte Planungsphase verbleibende normale Punkte für weitere
+erreichbare, positiv bewertete und konfliktfreie Ziele. Der produktive
+offizielle Baum ist mit 121 von 121 verwendeten Punkten getestet.
+
+Unbekannte, negative oder konfliktbehaftete Knoten werden nicht als bloße
+Füllpunkte vergeben. Wenn für ein Profil nicht genügend sichere Ziele
+vorliegen, bleibt deshalb ein Restbudget sichtbar. Aszendenzpunkte bleiben
+weiterhin ein getrennter Punkttyp.

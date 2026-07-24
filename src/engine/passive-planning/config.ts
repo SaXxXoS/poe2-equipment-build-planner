@@ -1,11 +1,11 @@
 import type { Confidence } from '../common/types'
 import type { PassivePlanningMode } from './types'
 
-export const PASSIVE_PLANNER_VERSION = '5G-1.0.0'
-export const PASSIVE_PLANNING_STRATEGY = 'required-first-incremental-subtree-heuristic'
+export const PASSIVE_PLANNER_VERSION = '5G-1.1.0'
+export const PASSIVE_PLANNING_STRATEGY = 'required-first-incremental-subtree-with-evidenced-budget-completion'
 
 export const PASSIVE_PLANNING_CONFIG = Object.freeze({
-  limits: { maximumCandidates: 50, maximumSelectedTargets: 12, maximumPointBudget: 123, maximumPathSearches: 4000, maximumIterations: 12 },
+  limits: { maximumCandidates: 150, maximumSelectedTargets: 123, maximumPointBudget: 123, maximumPathSearches: 4000, maximumIterations: 123 },
   confidenceRank: { low: 1, medium: 2, high: 3 } satisfies Record<Confidence, number>,
   confidenceMultiplier: { low: 0.55, medium: 0.8, high: 1 } satisfies Record<Confidence, number>,
   valueWeights: { target: 0.45, profile: 0.25, mode: 0.3 },

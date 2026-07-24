@@ -22,21 +22,15 @@ function cacheKey(input:PassivePlanningInput,anchor:string,target:string,state:S
  return JSON.stringify([input.passiveGraph.version,anchor,target,uniqueSorted(state.allocated),uniqueSorted(input.blockedNodeIds??[])])
 }
 function fromPath(value:PassivePathResult):PassivePlanCachedPath{return{reachable:value.reachable,withinBudget:value.withinBudget,pathNodeIds:[...value.orderedNodeIds],connectionIds:[...value.orderedConnectionIds],addedNodeIds:[...value.newlyAllocatedNodeIds],reusedNodeIds:[...value.reusedNodeIds],pointCost:value.totalPointCost,pathLength:value.pathLength}}
-function comparePath(a:PassivePlanCachedPath,b:PassivePlanCachedPath){return a.pointCost-b.pointCost||a.addedNodeIds.length-b.addedNodeIds.length||a.pathLength-b.pathLength||a.pathNodeIds.join('\0').localeCompare(b.pathNodeIds.join('\0'))}
 
 function incrementalPath(input:PassivePlanningInput,target:string,state:State,cache:PassivePlanningPathCache):PassivePlanCachedPath|undefined {
  if(state.merged.has(target))return{reachable:true,withinBudget:true,pathNodeIds:[target],connectionIds:[],addedNodeIds:[],reusedNodeIds:[target],pointCost:0,pathLength:0}
- const found:PassivePlanCachedPath[]=[]
- for(const anchor of uniqueSorted(state.merged)){
-  const key=cacheKey(input,anchor,target,state);let path=cache.entries.get(key)
-  if(path){state.cacheHits++}else{
-   if(state.pathSearches>=PASSIVE_PLANNING_CONFIG.limits.maximumPathSearches){state.safety=true;break}
-   const result=findPassivePath(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:${target}`,startNodeId:anchor,targetNodeIds:[target],allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:['normal','notable','keystone','class-start','jewel-socket'],searchMode:'lowest-cost-path'})
-   state.pathSearches++;path=fromPath(result);cache.entries.set(key,path)
-  }
-  if(path.reachable)found.push(path)
- }
- return found.sort(comparePath)[0]
+ const anchor=input.startNodeId,key=cacheKey(input,anchor,target,state);let path=cache.entries.get(key)
+ if(path){state.cacheHits++;return path.reachable?path:undefined}
+ if(state.pathSearches>=PASSIVE_PLANNING_CONFIG.limits.maximumPathSearches){state.safety=true;return undefined}
+ const result=findPassivePath(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:${target}`,startNodeId:anchor,targetNodeIds:[target],allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:['normal','notable','keystone','class-start','jewel-socket'],searchMode:'lowest-cost-path'})
+ state.pathSearches++;path=fromPath(result);cache.entries.set(key,path)
+ return path.reachable?path:undefined
 }
 
 function redundancy(candidate:PassivePlanCandidate,selected:PassivePlanCandidate[]):{penalty:number;codes:string[]} {
@@ -82,6 +76,24 @@ export function planPassiveTargets(input:PassivePlanningInput):PassivePlanResult
   for(const candidate of candidates){if(state.selected.has(candidate.recommendation.nodeId)||candidate.required)continue;const path=incrementalPath(input,candidate.recommendation.nodeId,state,cache);if(!path||!path.reachable||state.used+path.pointCost>input.pointBudget)continue;const value=evaluate(input,candidate,path,selectedCandidates);if(value.effectiveValue>0&&value.score>0)evaluations.push(value)}
   const chosen=evaluations.sort(compareEvaluation)[0];if(!chosen)break;add(chosen,evaluations.length)
  }
+ let completionIterations=0
+ while(state.selected.size<limit&&state.used<input.pointBudget&&completionIterations<PASSIVE_PLANNING_CONFIG.limits.maximumIterations&&!state.safety){
+  completionIterations++
+  let chosen:Evaluation|undefined
+  for(const candidate of candidates){
+   if(state.selected.has(candidate.recommendation.nodeId)||candidate.required)continue
+   const base=baseValueComponents(input,candidate.recommendation)
+   if(base.effectiveValue<=0||candidate.recommendation.conflictingTags.length||candidate.recommendation.conflictingProfileFields.length||candidate.recommendation.conflictingNodeIds.length)continue
+   const path=incrementalPath(input,candidate.recommendation.nodeId,state,cache)
+   if(!path||path.pointCost<=0||state.used+path.pointCost>input.pointBudget)continue
+   const evaluated=evaluate(input,candidate,path,[])
+   if(evaluated.effectiveValue>0){chosen=evaluated;break}
+  }
+  if(!chosen)break
+  warnings.push('evidenced-budget-completion')
+  add(chosen,1)
+ }
+ iterations+=completionIterations
  if(iterations>=PASSIVE_PLANNING_CONFIG.limits.maximumIterations){state.safety=true;warnings.push('maximum-planning-iterations-reached')}if(state.safety)warnings.push('maximum-path-searches-reached')
  const selectedIds=selectedTargets.map(value=>value.nodeId),skipped=candidates.map(value=>value.recommendation.nodeId).filter(id=>!state.selected.has(id)),newly=uniqueSorted([...state.merged].filter(id=>!(input.alreadyAllocatedNodeIds??[]).includes(id)&&id!==input.startNodeId&&input.passiveGraph.nodes.get(id)!.traversalCost>0)),reused=uniqueSorted([...state.merged].filter(id=>!newly.includes(id)))
  const pathNodes=selectedTargets.flatMap(value=>value.pathNodeIds),reusedOccurrences=selectedTargets.reduce((sum,value)=>sum+value.reusedNodeIds.length,0)
