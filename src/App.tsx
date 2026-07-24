@@ -21,7 +21,7 @@ export default function App() {
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])
-  const [passivePlan, setPassivePlan] = useState<PassivePlanPresentation>({ result: null, status: 'uninitialized' })
+  const [passivePlan, setPassivePlan] = useState<PassivePlanPresentation>({ result: null, status: 'uninitialized', activePlan: 'shared' })
   const [planVisible, setPlanVisible] = useState(true)
   const [focusPlanRequest, setFocusPlanRequest] = useState(0)
   function invalidateResult() {

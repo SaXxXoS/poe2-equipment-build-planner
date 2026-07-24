@@ -1153,3 +1153,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   für `poe2-repoe-skill-support-catalog`; sie behauptet keine externe
   Lizenzfreigabe oder vollständige rechtliche Klärung. Die übrigen deutschen
   Lokalisierungsscopes bleiben unverändert.
+# Waffen-Set-Passivplanung
+
+- Waffen-Set-Punkte werden als Aufteilung normaler Passivpunkte behandelt,
+  nicht als zusätzliche Punkte.
+- Die reale Passive-Pipeline plant einen gemeinsamen Stamm sowie getrennte
+  Ergänzungen für Waffenset 1 und Waffenset 2.
+- Beide Set-Pläne verwenden denselben gemeinsamen Stamm und bleiben jeweils
+  innerhalb des normalen Gesamtbudgets.
+- Bei null aufgeteilten Punkten bleibt die bisherige Einzelplanung erhalten.
+- Die UI kann zwischen gemeinsamem Plan, Set 1 und Set 2 umschalten; der
+  offizielle Baum zeigt den jeweils gewählten Plan.
+- Aszendenzpunkte bleiben getrennt und werden nicht automatisch eingerechnet.
+- Datenpins, Baumquelle und bestehende Pfadsuche bleiben unverändert.
