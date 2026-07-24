@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import catalog from '../../generated/poe2-gems/catalog.json'
+import germanDisplay from '../../generated/localization/de/poe2-gems.json'
 import approval from '../../data-sources/source-approval.json'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import { repoeGemCatalogCoverage, repoeSkillCatalog, repoeSupportCatalog } from './repoe-catalog'
@@ -49,5 +50,20 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
     const references = repoeSkillCatalog.flatMap(item => item.recommendedSupportIds ?? [])
     expect(references).toHaveLength(2984)
     expect(references.filter(id => supportIds.has(id))).toHaveLength(2952)
+  })
+
+  it('verwendet vollständig ID-basiert belegte deutsche Clientnamen', () => {
+    expect(germanDisplay.resolutionMethod).toBe('exact-base-item-id-and-table-row-chain')
+    expect(germanDisplay.counts).toEqual({
+      total: 686,
+      skills: 235,
+      supports: 451,
+      verifiedLocalSource: 686,
+      fallbackEnglish: 0,
+    })
+    expect(new Set(germanDisplay.items.map(item => item.id)).size).toBe(686)
+    expect(germanDisplay.items.every(item => item.status === 'verified-local-source')).toBe(true)
+    expect(repoeSkillCatalog.find(item => item.nameEn === 'Arc')?.displayNameDe).toBe('Lichtbogen')
+    expect(repoeSupportCatalog.find(item => item.nameEn === 'Abiding Hex')?.displayNameDe).toBe('Verweilender Fluch')
   })
 })

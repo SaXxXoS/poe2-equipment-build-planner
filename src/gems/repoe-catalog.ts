@@ -1,4 +1,5 @@
 import catalog from '../../generated/poe2-gems/catalog.json'
+import germanDisplay from '../../generated/localization/de/poe2-gems.json'
 import type { MechanicTag, SkillGemDefinition, SupportGemDefinition, SyntheticWeaponType } from '../domain'
 
 const supportedTags = new Set<MechanicTag>([
@@ -54,11 +55,13 @@ const provenance = (sourceRecordId: string) => ({
   verificationStatus: 'structure-validated' as const,
 })
 
+const germanNameById = new Map(germanDisplay.items.map(item => [item.id, item.nameDe]))
+
 export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item => {
   const tags = mapTags(item.tags)
   return {
     id: item.id,
-    displayNameDe: item.nameEn,
+    displayNameDe: germanNameById.get(item.id) ?? item.nameEn,
     nameEn: item.nameEn,
     dataVersion: catalog.sourceVersion,
     source: 'repoe-poe2',
@@ -79,7 +82,7 @@ export const repoeSupportCatalog: SupportGemDefinition[] = catalog.supports.map(
   const tags = mapTags(item.tags)
   return {
     id: item.id,
-    displayNameDe: item.nameEn,
+    displayNameDe: germanNameById.get(item.id) ?? item.nameEn,
     nameEn: item.nameEn,
     dataVersion: catalog.sourceVersion,
     source: 'repoe-poe2',

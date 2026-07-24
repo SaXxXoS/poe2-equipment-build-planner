@@ -1129,3 +1129,27 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   -warnungen.
 - Nächster Arbeitspunkt: vollständigerer produktiver Skill- und
   Supportbestand.
+
+## Deutsche Originalnamen für Skills und Supports (2026-07-24)
+
+- Auf ausdrücklichen Auftraggeberwunsch wurden keine frei übersetzten Namen
+  verwendet, sondern ausschließlich die deutschen Bezeichnungen der lokal
+  installierten deutschen PoE2-Clientversion `4.5.4.53018`.
+- Die lokale Extraktion ist an `Content.ggpk` SHA-256
+  `a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28`
+  und PoB2-Schema-Commit
+  `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0` gebunden.
+- Alle 686 reduzierten Katalogeinträge wurden deterministisch über ihre
+  technische `BaseItemTypes`-ID sowie die positionsgleiche
+  `SkillGems`-/`GemEffects`-Kette aufgelöst: 235 Skills und 451
+  Supportstufen, kein englischer Fallback am aktuellen Pin.
+- Produktdatei:
+  `generated/localization/de/poe2-gems.json`; sie enthält nur deutsche
+  Anzeigenamen und ID-Provenienz. Der englische RePoE-Katalog, Skillsemantik,
+  Supportregeln, Analyzer und Scores bleiben unverändert.
+- Keine automatische Übersetzung, kein Textmatching, keine Icons, Medien,
+  Beschreibungen, Stat-IDs oder Laufzeitquelle wurden hinzugefügt.
+- Die Anzeigeschicht bleibt innerhalb der eng begrenzten Projektentscheidung
+  für `poe2-repoe-skill-support-catalog`; sie behauptet keine externe
+  Lizenzfreigabe oder vollständige rechtliche Klärung. Die übrigen deutschen
+  Lokalisierungsscopes bleiben unverändert.

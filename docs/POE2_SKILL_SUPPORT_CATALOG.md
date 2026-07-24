@@ -48,8 +48,29 @@ Ranking benötigt eine ausdrückliche `recommended_supports`-Referenz des
 gewählten gepinnten Skillrecords. Ohne diese Evidenz bleibt der Support
 auswählbar, wird aber durch `insufficient-semantic-evidence` blockiert.
 
-Kuratierte deutsche Einträge bleiben vorrangig. Andernfalls erscheint der
-englische Quellname als Fallback.
+## Deutsche Anzeigenamen
+
+Der vollständige Katalog verwendet jetzt die echten deutschen
+Spielbezeichnungen aus der lokal vorhandenen deutschen Clientversion
+`4.5.4.53018`. Es wurde nichts frei übersetzt:
+
+- 686/686 Katalogeinträge wurden über die exakte `BaseItemTypes`-ID gefunden.
+- `SkillGems` und `GemEffects` bestätigen dieselbe technische Datensatzkette.
+- Deutsche und englische Tabellen besitzen identische Zeilenzahlen und
+  positionsgleiche technische IDs.
+- 235 Skillnamen und 451 Supportstufen tragen
+  `verified-local-source`.
+- Textmatching, Fuzzy Matching und Namensheuristiken werden nicht verwendet.
+
+Die getrennte Anzeigedatei ist
+`generated/localization/de/poe2-gems.json`. Sie enthält nur ID, deutschen
+Anzeigenamen, Status und knappe Quellenreferenzen. Mechaniken, Beschreibungen,
+Werte, Bilder und Rohtabellen werden nicht dupliziert. Falls bei einem
+späteren Pin keine exakte ID-Verbindung besteht, bleibt der englische
+Originalname als Fallback erhalten.
+
+SHA-256 der deutschen Anzeigedatei:
+`4eba093cadd22cc1de5ad11aafdbacd37d1e660ec28ec320e6ec532fa2c112a1`.
 
 Nicht importiert werden Icons, Medien, Tutorialvideos, Beschreibungen,
 numerische Effekttabellen, technische Stat-IDs oder Rohdaten.
