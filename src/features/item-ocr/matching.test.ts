@@ -54,6 +54,7 @@ CORRUPTED`,'slot-weapon-set-1-left')
       '294% INCREASED PHYSICAL DAMAGE',
       'CREATE A FRAGMENT OF DIVINITY IN YOUR PRESENCE EVERY 4 SECONDS',
     ]))
+    expect(result.observedLines).toEqual(result.unique?.observedLines)
   },30000)
   it('lässt unlesbaren oder mehrdeutigen Text ungeklärt',()=>{
     const result=matchItemOcr('xx 11 ?? unreadable','slot-helmet')
@@ -121,6 +122,11 @@ RAVEN-TOUCHED
     expect(automatic.filter(value=>value.affixSide==='suffix')).toHaveLength(3)
     expect(automatic).not.toEqual(expect.arrayContaining([
       expect.objectContaining({affixId:'ItemFoundRarityIncreasePrefix3'}),
+    ]))
+    expect(result.observedLines).toEqual(expect.arrayContaining([
+      '16% INCREASED RARITY OF ITEMS FOUND',
+      '+73 TO MAXIMUM ENERGY SHIELD',
+      '+45% TO FIRE RESISTANCE',
     ]))
   })
   it('erkennt Qualität, Ausweichwert und Energieschild als getrennte endgültige Gegenstandswerte',()=>{

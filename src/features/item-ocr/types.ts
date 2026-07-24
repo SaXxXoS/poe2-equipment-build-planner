@@ -29,6 +29,7 @@ export interface ItemOcrResult {
   defences?: EquipmentDefences
   baseDisplayName?: string
   itemClassId?: string
+  observedLines: string[]
   affixes: OcrAffixCandidate[]
   unique?: OcrUniqueCandidate
   warnings: string[]

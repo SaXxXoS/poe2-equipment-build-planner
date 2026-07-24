@@ -70,3 +70,6 @@ body:has(.modal-backdrop){overflow:hidden}
 .ocr-match span{display:grid;gap:.2rem;min-width:0}.ocr-match small,.ocr-match em{overflow-wrap:anywhere}.ocr-match em{font-size:.78rem;color:#9da9ba}
 .ocr-raw-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;padding:.7rem;background:#080d15;border-radius:8px}
 @media(max-width:520px){.item-ocr-actions,.ocr-review dl{grid-template-columns:1fr}.item-ocr-panel{padding:.75rem}.item-ocr-preview{max-height:220px}}
+.socket-editor{display:grid;gap:.55rem}
+.socket-entry{display:grid;grid-template-columns:42px minmax(0,1fr);gap:.55rem;align-items:center;margin:0}
+.socket-entry select{min-width:0}

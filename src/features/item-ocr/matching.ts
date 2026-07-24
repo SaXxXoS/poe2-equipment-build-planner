@@ -139,6 +139,14 @@ function resolveAmbiguousAffixSides(values:OcrAffixCandidate[],rarity:ItemRarity
     return chosen.get(normalizeOcrText(value.sourceText))===value?value:{...value,resolutionStatus:'review-required' as const}
   })
 }
+function observedPropertyLines(text:string){
+  const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
+  const requirementsIndex=lines.findIndex(line=>/^(?:Requires|Erfordert)\s+(?:Level|Stufe)\b/i.test(line))
+  const lastHeaderIndex=lines.reduce((last,line,index)=>/^(?:Physical Damage|Lightning Damage|Cold Damage|Fire Damage|Chaos Damage|Critical Hit Chance|Attacks per Second|Range|Quality|Qualität|Armour|Rüstung|Evasion Rating|Ausweichwert|Energy Shield|Energieschild)\s*:/i.test(line)?index:last,-1)
+  const propertiesStart=Math.max(requirementsIndex,lastHeaderIndex)+1
+  const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert)$/i.test(line))
+  return propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex).filter(line=>!/^[-=]{3,}$/.test(line))
+}
 function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined{
   const allowedSlot=slotId.includes('helmet')?'helmet':slotId.includes('body')?'body-armour':slotId.includes('gloves')?'gloves':slotId.includes('boots')?'boots':slotId.includes('amulet')?'amulet':slotId.includes('ring')?'ring':slotId.includes('belt')?'belt':slotId.includes('weapon')?'weapon':slotId.includes('jewel')?'jewel':'special'
   const candidates=productUniques.filter(item=>item.slot===allowedSlot||allowedSlot==='weapon'&&item.slot==='offhand')
@@ -146,13 +154,7 @@ function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined
   const best=candidates[0]
   if(!best||best.score<.7)return
   const confidence=Math.round(best.score*100)
-  const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
-  const requirementsIndex=lines.findIndex(line=>/^(?:Requires|Erfordert)\s+(?:Level|Stufe)\b/i.test(line))
-  const lastHeaderIndex=lines.reduce((last,line,index)=>/^(?:Physical Damage|Lightning Damage|Cold Damage|Fire Damage|Chaos Damage|Critical Hit Chance|Attacks per Second|Range|Quality|Armour|Evasion Rating|Energy Shield)\s*:/i.test(line)?index:last,-1)
-  const propertiesStart=Math.max(requirementsIndex,lastHeaderIndex)+1
-  const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert)$/i.test(line))
-  const observedLines=propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex).filter(line=>!/^[-=]{3,}$/.test(line))
-  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required',observedLines}
+  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required',observedLines:observedPropertyLines(text)}
 }
 
 export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
@@ -181,5 +183,5 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   if(rarity!=='unique'&&!affixes.some(value=>value.resolutionStatus==='auto-selected'))warnings.push('Kein Affix wurde sicher genug für eine automatische Übernahme erkannt.')
   if(!itemClassId&&classes.length>1)warnings.push('Die Waffen- oder Offhandklasse muss vor dem Speichern geprüft werden.')
   const recognizedDefences=Object.values(defences).some(value=>value!==undefined)?defences:undefined
-  return{rawText:text,rarity,itemLevel,quality,defences:recognizedDefences,baseDisplayName:baseNameFrom(lines),itemClassId,affixes,unique,warnings}
+  return{rawText:text,rarity,itemLevel,quality,defences:recognizedDefences,baseDisplayName:baseNameFrom(lines),itemClassId,observedLines:observedPropertyLines(text),affixes,unique,warnings}
 }
