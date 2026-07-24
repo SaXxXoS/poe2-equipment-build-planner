@@ -8,6 +8,7 @@ import type { ItemOcrResult } from '../features/item-ocr'
 import { ItemOcrPanel } from './ItemOcrPanel'
 
 const rarityText: Record<ItemRarity, string> = { normal: 'Normal', magic: 'Magisch', rare: 'Selten', unique: 'Einzigartig' }
+export const affixConflictGroupsBlockObservedEquipment = false
 const propertyKindText:Record<ItemPropertyKind,string>={prefix:'Prefix',suffix:'Suffix',implicit:'Implicit','socket-effect':'Sockeleffekt','unique-property':'Unique-Eigenschaft',enchantment:'Verzauberung','granted-skill':'Gewährte Fertigkeit',unknown:'Unbekannt'}
 const uniqueSlots = (slotId: string) => slotId.includes('helmet') ? ['helmet'] : slotId.includes('body-armour') ? ['body-armour'] : slotId.includes('gloves') ? ['gloves'] : slotId.includes('boots') ? ['boots'] : slotId.includes('amulet') ? ['amulet'] : slotId.includes('ring') ? ['ring'] : slotId.includes('belt') ? ['belt'] : slotId.includes('weapon') ? (slotId.endsWith('right') ? ['weapon', 'offhand'] : ['weapon']) : slotId.includes('jewel') ? ['jewel'] : ['special']
 
@@ -52,8 +53,9 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
     groups.set(key, [...(groups.get(key) ?? []), affix])
     return groups
   }, new Map<string, typeof visible>())].sort(([a], [b]) => a.localeCompare(b, 'de'))
-  const conflicts = new Set(added.filter(value => value.id !== appliedModifierId(entry.id, picker?.side ?? '', picker?.index ?? -1)).flatMap(value => technicalAffixById.get(value.modifierId)?.conflictGroups ?? []))
-  const blocked = chosen?.conflictGroups.some(group => conflicts.has(group)) ?? false
+  // Reale Gegenstände können dieselbe Statfamilie mehrfach besitzen, etwa
+  // durch Sockeleffekte, Verzauberungen, Verderbnis oder Hybrid-Eigenschaften.
+  const blocked = affixConflictGroupsBlockObservedEquipment
   const nextModifierIndex=(side:'prefix'|'suffix'|'implicit')=>{
     let index=0
     while(added.some(value=>value.id===appliedModifierId(entry.id,side,index)))index++
@@ -89,7 +91,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
     setRarity(nextRarity);setItemClassId(nextClass);setItemLevel(result.itemLevel);setBaseDisplayName(result.baseDisplayName??'');setAdded(next);setStep('editor');setPicker(undefined)
   }
   function applyAffix() {
-    if (!picker || !chosen || blocked) return
+    if (!picker || !chosen) return
     const statValues = chosen.statLines.map((line, index) => ({ statId: line.statId, value: line.valueType === 'fixed' ? line.minimum : values[index] ?? line.minimum }))
     const next: AppliedModifier = { id: appliedModifierId(entry.id, picker.side, picker.index), modifierId: chosen.affixId, value: statValues.length > 1 ? { min: statValues[0].value, max: statValues[1].value } : statValues[0]?.value ?? 0, sourceModId: chosen.sourceModId, statValues, itemClassId, affixSide: picker.side, tierId: chosen.tierId, requiredItemLevel: chosen.requiredItemLevel, isLocal: chosen.isLocal, isHybrid: chosen.isHybrid, sourceVersion: chosen.sourceVersion, dataStatus: chosen.dataStatus }
     setAdded([...added.filter(value => value.id !== next.id), next]); setPicker(undefined); setSelected(''); setValues([]); setSearch('')

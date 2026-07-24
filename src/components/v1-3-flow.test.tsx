@@ -9,7 +9,7 @@ import { createEmptySkillSetups } from '../features/skills/initial-state'
 import { createInitialCharacterConfiguration } from '../features/character/initial-state'
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
-import { AffixDialog } from './AffixDialog'
+import { AffixDialog, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
@@ -86,5 +86,8 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
       rawText:'THE ORDAINED',rarity:'unique',observedLines:[],affixes:[],warnings:[],
       unique:{uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',uniqueName:'The Ordained',confidence:100,resolutionStatus:'auto-selected',observedLines:['GRANTS SKILL: SPEAR THROW'],observedImplicitLines:[]},
     })).toEqual(['pob2:src/Data/Uniques/spear.lua#4'])
+  })
+  it('blockiert reale Mehrfachwerte nicht durch technische Konfliktgruppen',()=>{
+    expect(affixConflictGroupsBlockObservedEquipment).toBe(false)
   })
 })
