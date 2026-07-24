@@ -3,9 +3,10 @@
 ## Tesseract.js – lokale Gegenstandserkennung
 
 Die Foto- und Screenshot-Erkennung verwendet `tesseract.js` 6.0.1 und
-`tesseract.js-core` 6.1.2 unter der Apache License 2.0 sowie das englische
-Sprachmodell `@tesseract.js-data/eng` 1.0.0 unter MIT. Worker, WASM-Kern und
-Sprachmodell werden zusammen mit der App ausgeliefert; Bilder werden nicht an
+`tesseract.js-core` 6.1.2 unter der Apache License 2.0 sowie die deutschen und
+englischen Sprachmodelle `@tesseract.js-data/deu` 1.0.0 und
+`@tesseract.js-data/eng` 1.0.0 unter MIT. Worker, WASM-Kern und Sprachmodelle
+werden zusammen mit der App ausgeliefert; Bilder werden nicht an
 einen externen OCR-Dienst übertragen. Die zugehörigen Lizenztexte liegen
 unter `public/ocr/licenses/`.
 

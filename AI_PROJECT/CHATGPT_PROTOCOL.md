@@ -6,7 +6,8 @@
 - Bilder werden ausschließlich lokal im Browser durch Tesseract.js 6.0.1
   verarbeitet; kein Upload, keine externe OCR-API und keine Speicherung im
   BuildProfile.
-- Worker, Tesseract-Core 6.1.2 und englisches Sprachmodell 1.0.0 werden
+- Worker, Tesseract-Core 6.1.2 sowie deutsches und englisches Sprachmodell
+  1.0.0 werden
   statisch unter `public/ocr/` ausgeliefert und sind Pages-/offlinefähig.
 - OCR-Zeilen werden fail-safe gegen den bestehenden slot-, itemklassen-,
   Generation-Type- und Item-Level-gefilterten Affixbestand geprüft.
@@ -27,6 +28,11 @@
   Beständigkeit-/Widerstand-Terminologie, Titelzeilen ohne `Rarity:`-Header
   und Seltenheitsableitung aus sicher erkannten Affixen werden jetzt
   unterstützt.
+- Foto-OCR verwendet zusätzlich einen fokussierten Tooltip-Ausschnitt und
+  drei kontrastierte Leseläufe. Menü-, Inventar- und Controllertexte sowie
+  kurze unverständliche OCR-Fragmente werden vor der Produktübernahme
+  verworfen. Prüfkandidaten werden pro erkannter Quellzeile auf den jeweils
+  besten plausiblen Treffer begrenzt.
 - Regression `DOOM CREST`/`AHNENTIARA`, Gegenstandsstufe 82: Basis,
   Seltenheit, `+120` Leben mit korrektem Tier und mindestens fünf sichtbare
   Affixe werden deterministisch erkannt.

@@ -23,7 +23,7 @@ Ausgeliefert werden:
 
 - `tesseract.js` 6.0.1
 - `tesseract.js-core` 6.1.2
-- das englische Tesseract-Sprachmodell `eng` 1.0.0
+- die Tesseract-Sprachmodelle `deu` und `eng` 1.0.0
 
 Die statischen OCR-Dateien liegen unter `public/ocr/` und funktionieren damit
 auch in der GitHub-Pages-Auslieferung ohne externen OCR-Dienst.
@@ -32,7 +32,9 @@ auch in der GitHub-Pages-Auslieferung ohne externen OCR-Dienst.
 
 1. Der Nutzer öffnet einen Ausrüstungsslot.
 2. Er nimmt ein Foto auf oder wählt einen Screenshot.
-3. Die lokale OCR liest den sichtbaren Gegenstandstext.
+3. Die lokale OCR liest den sichtbaren Gegenstandstext mit deutschem und
+   englischem Sprachmodell. Monitorfotos erhalten zusätzlich einen
+   fokussierten Tooltip-Ausschnitt und mehrere Kontrastvarianten.
 4. Seltenheit, Item-Level, sichtbarer Basistyp und Itemklasse werden
    extrahiert, soweit sie im Bild eindeutig vorkommen.
 5. Modzeilen werden ausschließlich gegen den vorhandenen, für Slot,
@@ -54,6 +56,10 @@ Affixregister. Das Bild kann keine neue technische ID erzeugen.
 - Nicht sicher erkannte Werte bleiben `review-required` und werden nicht
   stillschweigend eingesetzt.
 - Unbekannte Zeilen erzeugen keinen Affix.
+- Menütexte, Bedienhinweise und kurze unverständliche OCR-Fragmente werden
+  verworfen und nicht als freie Eigenschaften in den Editor übernommen.
+- Pro Quellzeile wird höchstens der beste plausible Prüfkandidat angezeigt;
+  schwache Treffer ohne passende tatsächliche Werte werden ausgeblendet.
 - Affixgrenzen der Seltenheit werden weiterhin eingehalten.
 - Prefix, Suffix und Implicit bleiben getrennt.
 - Normale Affixe und Unique-Eigenschaften werden nicht vermischt.

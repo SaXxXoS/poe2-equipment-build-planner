@@ -3,27 +3,30 @@ import { matchItemOcr } from './matching'
 
 export interface OcrProgress { status:string; progress:number }
 
-type PreparedVariant = 'screenshot' | 'photo-threshold' | 'photo-contrast'
+type PreparedVariant = 'screenshot' | 'photo-threshold' | 'photo-contrast' | 'photo-tooltip'
 
 function preparedItemImage(file:File,variant:PreparedVariant):Promise<Blob>{
   return createImageBitmap(file).then(bitmap=>new Promise((resolve,reject)=>{
     const targetWidth=variant==='screenshot'?1800:2400
-    const scale=Math.min(2.4,targetWidth/bitmap.width)
+    const crop=variant==='photo-tooltip'
+      ?{x:Math.round(bitmap.width*.02),y:Math.round(bitmap.height*.24),width:Math.round(bitmap.width*.9),height:Math.round(bitmap.height*.68)}
+      :{x:0,y:0,width:bitmap.width,height:bitmap.height}
+    const scale=Math.min(2.4,targetWidth/crop.width)
     const canvas=document.createElement('canvas')
-    canvas.width=Math.max(1,Math.round(bitmap.width*scale))
-    canvas.height=Math.max(1,Math.round(bitmap.height*scale))
+    canvas.width=Math.max(1,Math.round(crop.width*scale))
+    canvas.height=Math.max(1,Math.round(crop.height*scale))
     const context=canvas.getContext('2d',{willReadFrequently:true})
     if(!context){bitmap.close();reject(new Error('Das Bild konnte nicht vorbereitet werden.'));return}
     context.imageSmoothingEnabled=true
     context.imageSmoothingQuality='high'
     if(variant!=='screenshot')context.filter='blur(.35px)'
-    context.drawImage(bitmap,0,0,canvas.width,canvas.height)
+    context.drawImage(bitmap,crop.x,crop.y,crop.width,crop.height,0,0,canvas.width,canvas.height)
     bitmap.close()
     const pixels=context.getImageData(0,0,canvas.width,canvas.height)
     for(let index=0;index<pixels.data.length;index+=4){
       const red=pixels.data[index],green=pixels.data[index+1],blue=pixels.data[index+2]
       const lightness=Math.max(red,green,blue)
-      const threshold=variant==='screenshot'?72:142
+      const threshold=variant==='screenshot'?72:variant==='photo-tooltip'?118:142
       const value=variant==='photo-contrast'
         ?255-Math.max(0,Math.min(255,(lightness-82)*2.35))
         :lightness>=threshold?0:255
@@ -52,9 +55,9 @@ export async function recognizeItemImage(file:File,slotId:string,onProgress?:(va
   const { createWorker, PSM }=await import('tesseract.js')
   const base=import.meta.env.BASE_URL
   onProgress?.({status:'Bildkontrast wird optimiert',progress:.02})
-  const variants:PreparedVariant[]=mode==='photo'?['photo-threshold','photo-contrast']:['screenshot']
+  const variants:PreparedVariant[]=mode==='photo'?['photo-tooltip','photo-threshold','photo-contrast']:['screenshot']
   const preparedImages=await Promise.all(variants.map(variant=>preparedItemImage(file,variant)))
-  const worker=await createWorker('eng',1,{
+  const worker=await createWorker(['deu','eng'],1,{
     workerPath:`${base}ocr/worker.min.js`,
     corePath:`${base}ocr/core`,
     langPath:`${base}ocr/lang`,

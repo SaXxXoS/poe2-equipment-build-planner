@@ -83,7 +83,11 @@ function baseNameFrom(lines:string[]){
   const rarityIndex=lines.findIndex(line=>/^(?:Rarity|Seltenheit)\s*:/i.test(line))
   const itemLevelIndex=lines.findIndex(line=>/(?:Item\s*Level|Gegenstandsstufe|Item-Level)\s*:?\s*\d{1,3}/i.test(line))
   const itemClassIndex=lines.findIndex(line=>/^(?:Body Armour|K.rperr.stung|Helmet|Helm|Gloves|Handschuhe|Boots|Schuhe|Belt|G.rtel|Amulet|Amulett|Ring|Spear|Speer|Bow|Bogen|Staff|Stab|Wand|Zauberstab)\b/i.test(line))
-  if(itemClassIndex>0)return lines[itemClassIndex-1]
+  if(itemClassIndex>0){
+    const candidate=lines[itemClassIndex-1]
+    if(!/(?:zur.ck|back|schlie.en|close|hinzuf.gen|add|inventar|equipment|ausr.stung)/i.test(candidate)&&/^[\p{L}\p{M}' -]{3,}$/u.test(candidate))return candidate
+  }
+  if(rarityIndex<0)return
   const start=rarityIndex>=0?rarityIndex+1:0
   const end=itemLevelIndex>=0?itemLevelIndex:Math.min(lines.length,start+2)
   const header=lines.slice(start,end).filter(line=>line&&!/^-{3,}$/.test(line)&&!/^Spielversion\s*:/i.test(line)).slice(0,2)
@@ -153,7 +157,28 @@ function observedPropertyLines(text:string){
   const propertiesStart=Math.max(requirementsIndex,lastHeaderIndex)+1
   const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert|Ve\s*rderbt|Ausger.stet|Entfernen)$/i.test(line))
   return propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex)
-    .filter(line=>line.length>4&&!/^\d+$/.test(line)&&!/^[-=]{3,}$/.test(line))
+    .filter(isPlausiblePropertyLine)
+}
+const propertyVocabulary=/(?:life|leben|mana|spirit|geist|energy shield|energieschild|armour|armor|r.stung|evasion|ausweich|resistan|widerstand|damage|schaden|attack|angriff|spell|zauber|critical|kritisch|rarity|seltenheit|speed|geschwindigkeit|accuracy|genauigkeit|attribute|st.rke|strength|dexterity|geschick|intelligen|block|projectile|projektil|melee|nahkampf|area|fl.che|level|stufe|skill|fertigkeit|socket|sockel|leech|raub|regener|recovery|wiederher|gain|erhalt|grant|gew.hrt|allocat|weist|chance|duration|dauer|seconds?|sekunden?|fragment|presence|pr.senz|charges?|ladungen?|minion|kreatur|element|physical|physisch|fire|feuer|cold|k.lte|lightning|blitz|chaos|poison|gift|touch|ber.hrt)/i
+function isPlausiblePropertyLine(line:string){
+  if(line.length<7||line.length>220||/^\d+$/.test(line)||/^[-=]{3,}$/.test(line))return false
+  if(/^(?:ausger.stet|entfernen|inventar|quests?|atlas|kosmetisch|fertigkeiten|spielversion|game version|variant|variante)\b/i.test(line))return false
+  const hasNumber=/[+-]?\d+(?:[.,]\d+)?/.test(line)
+  const hasStructuredPhrase=propertyVocabulary.test(line)
+  return hasStructuredPhrase&&(hasNumber||/(?:grant|gew.hrt|allocat|weist|touch|ber.hrt|corrupt|verderbt)/i.test(line))
+}
+function conciseAffixCandidates(values:OcrAffixCandidate[]){
+  const automatic=values.filter(value=>value.resolutionStatus==='auto-selected')
+  const automaticKeys=new Set(automatic.map(value=>`${normalizeOcrText(value.sourceText)}:${value.affixSide}`))
+  const reviewGroups=new Map<string,OcrAffixCandidate[]>()
+  for(const value of values){
+    if(value.resolutionStatus==='auto-selected'||value.confidence<75||!value.values.length)continue
+    const key=`${normalizeOcrText(value.sourceText)}:${value.affixSide}`
+    if(automaticKeys.has(key))continue
+    reviewGroups.set(key,[...(reviewGroups.get(key)??[]),value])
+  }
+  const review=[...reviewGroups.values()].flatMap(group=>group.sort((a,b)=>b.confidence-a.confidence||a.affixId.localeCompare(b.affixId)).slice(0,1))
+  return [...automatic,...review].sort((a,b)=>a.affixSide.localeCompare(b.affixSide)||b.confidence-a.confidence||a.affixId.localeCompare(b.affixId))
 }
 function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined{
   const allowedSlot=slotId.includes('helmet')?'helmet':slotId.includes('body')?'body-armour':slotId.includes('gloves')?'gloves':slotId.includes('boots')?'boots':slotId.includes('amulet')?'amulet':slotId.includes('ring')?'ring':slotId.includes('belt')?'belt':slotId.includes('weapon')?'weapon':slotId.includes('jewel')?'jewel':'special'
@@ -188,6 +213,7 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
     else if(recognizedSourceLines.size>=1)rarity='magic'
   }
   affixes=resolveAmbiguousAffixSides(affixes,rarity)
+  affixes=conciseAffixCandidates(affixes)
   const warnings:string[]=[]
   if(!text)warnings.push('Es wurde kein lesbarer Text erkannt.')
   if(rarity==='unique'&&!unique)warnings.push('Der Unique-Name konnte nicht sicher zugeordnet werden.')

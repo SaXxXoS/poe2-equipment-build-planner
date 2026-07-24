@@ -11,6 +11,9 @@ importers:
       '@eslint/js':
         specifier: latest
         version: 10.0.1(eslint@10.7.0)
+      '@tesseract.js-data/deu':
+        specifier: 1.0.0
+        version: 1.0.0
       '@tesseract.js-data/eng':
         specifier: 1.0.0
         version: 1.0.0
@@ -608,6 +611,9 @@ packages:
     resolution: {integrity: sha512-BfzEnDJOt9T8M989/lA37EcJgat01wLRnoi5dQf3QzOH7jzpqTAzdDbVfRljVr5r+jzKqpbHeyOfAaXxAd0PAA==}
     cpu: [x64]
     os: [win32]
+
+  '@tesseract.js-data/deu@1.0.0':
+    resolution: {integrity: sha512-3ter1p2gFAiCd5CMC+PodZ9YY2UDomkKj+ytlKeeZqOUmhLx1SDnYPf5zog0g5MBbxYveW+8omI3PUflqHfZ4Q==}
 
   '@tesseract.js-data/eng@1.0.0':
     resolution: {integrity: sha512-mbTumm6KQPUHyzTPQaF3ObXYnx0SqqfV2nabqFVQBwD6Kl7PhGSLSzOlfFTWy0P3BjghaSKA2W9GB19Jk+ZcTg==}
@@ -1859,6 +1865,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
+
+  '@tesseract.js-data/deu@1.0.0': {}
 
   '@tesseract.js-data/eng@1.0.0': {}
 

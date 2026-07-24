@@ -185,4 +185,33 @@ AUSGERUSTET`,'slot-body-armour')
     expect(result.observedLines).toHaveLength(10)
     expect(result.observedLines).not.toContain('AUSGERUSTET')
   })
+  it('verwirft OCR-Menütext und unverständliche Fragmente statt sie als Eigenschaften zu importieren',()=>{
+    const result=matchItemOcr(`INVENTAR
+ENERGIESCHILD: 622
+50 ZU AUSWEICHWERT
+14 ZU MAXIMALEM ENERGIESCHILD
+42% ZU FEUERWIDERSTAND
+43% ZU KÄLTEWIDERSTAND
+42% ZU BLITZWIDERSTAND
+161 ZU AUSWEICHWERT
+47 ZU MAXIMALEM ENERGIESCHILD
+3 vl i
+111 IIl
+WAPPE
+---p-
+AUSGERÜSTET
+ENTFERNEN`,'slot-body-armour')
+    expect(result.observedLines).toEqual([
+      '50 ZU AUSWEICHWERT',
+      '14 ZU MAXIMALEM ENERGIESCHILD',
+      '42% ZU FEUERWIDERSTAND',
+      '43% ZU KÄLTEWIDERSTAND',
+      '42% ZU BLITZWIDERSTAND',
+      '161 ZU AUSWEICHWERT',
+      '47 ZU MAXIMALEM ENERGIESCHILD',
+    ])
+    expect(result.observedLines).not.toEqual(expect.arrayContaining(['+3 vl i','+111 IIl','+WAPPE','+---p-']))
+    expect(result.baseDisplayName).toBeUndefined()
+    expect(result.affixes.length).toBeLessThanOrEqual(14)
+  })
 })
