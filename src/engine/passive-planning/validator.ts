@@ -5,7 +5,7 @@ export function validatePassivePlanningInput(input:PassivePlanningInput):string[
   const violations:string[]=[]
   if(!input.requestId.trim())violations.push('missing-request-id')
   if(!input.passiveGraph.nodes.has(input.startNodeId))violations.push('unknown-start-node')
-  else if(input.passiveGraph.nodes.get(input.startNodeId)?.nodeType!=='class-start')violations.push('invalid-class-start-node')
+  else if(input.passiveGraph.nodes.get(input.startNodeId)?.nodeType!==(input.planningScope==='ascendancy'?'ascendancy-start':'class-start'))violations.push(input.planningScope==='ascendancy'?'invalid-ascendancy-start-node':'invalid-class-start-node')
   if(!Number.isInteger(input.pointBudget)||input.pointBudget<0||input.pointBudget>PASSIVE_PLANNING_CONFIG.limits.maximumPointBudget)violations.push('invalid-point-budget')
   if(!Number.isInteger(input.maximumSelectedTargets)||input.maximumSelectedTargets<1)violations.push('invalid-maximum-selected-targets')
   if(!Number.isInteger(input.candidatePoolLimit)||input.candidatePoolLimit<1)violations.push('invalid-candidate-pool-limit')

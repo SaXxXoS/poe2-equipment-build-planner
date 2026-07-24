@@ -16,6 +16,7 @@ export interface RealPassivePlanningConfiguration {
   sourceVersion?:string
   pointBudget?:number
   weaponSetPointBudget?:number
+  ascendancyPointBudget?:number
   characterContext?:RealPassiveCharacterContext
   startNodeId?:string
   passiveGraph?:PassiveGraph
@@ -44,7 +45,7 @@ export interface WeaponSetPassivePlanningResult {
   set2:ProjectedRealPassivePipelineResult
 }
 export interface RealPassiveIntegrationPerformance { integrationDurationMs:number;pipelineDurationMs:number;orchestratorDurationMs?:number;inputValidationMs:number;graphPreparationMs:number;targetingMs:number;planningMs:number;outputValidationMs:number;projectionMs:number;serializationMs:number;resultSizeBytes:number;graphReused:boolean;graphBuildCount:number;targetingContextReused:boolean;targetingContextBuildCount:number;evaluatedTargetCount:number;pathSearchCount:number }
-export interface RealPassivePlanningIntegrationResult { enabled:boolean;status:RealPassiveIntegrationStatus;detailMode:RealPassiveResultDetailMode;pipelineResult:ProjectedRealPassivePipelineResult|null;weaponSetPlanning?:WeaponSetPassivePlanningResult;issues:PipelineIssue[];projection:RealPassiveProjectionDiagnostics|null;performance:RealPassiveIntegrationPerformance|null }
+export interface RealPassivePlanningIntegrationResult { enabled:boolean;status:RealPassiveIntegrationStatus;detailMode:RealPassiveResultDetailMode;pipelineResult:ProjectedRealPassivePipelineResult|null;weaponSetPlanning?:WeaponSetPassivePlanningResult;ascendancyPlanning?:ProjectedRealPassivePipelineResult;issues:PipelineIssue[];projection:RealPassiveProjectionDiagnostics|null;performance:RealPassiveIntegrationPerformance|null }
 
 const issue=(code:string):PipelineIssue=>({code,sourceModule:'pipeline',stageId:'validate-input'})
 const statusOf=(result:RealPassivePipelineResult):RealPassiveIntegrationStatus=>{
@@ -65,6 +66,8 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
   if(!configuration.passiveTree)errors.push('missing-passive-tree')
   if(!configuration.sourceVersion)errors.push('missing-source-version')
   if(!Number.isInteger(configuration.pointBudget))errors.push(configuration.pointBudget===undefined?'missing-point-budget':'invalid-point-budget')
+  if(!Number.isInteger(configuration.ascendancyPointBudget??0)||(configuration.ascendancyPointBudget??0)<0||(configuration.ascendancyPointBudget??0)>8)errors.push('invalid-ascendancy-point-budget')
+  if((configuration.ascendancyPointBudget??0)>0&&!configuration.characterContext?.ascendancyId)errors.push('missing-ascendancy-for-points')
   if(!configuration.characterContext)errors.push('missing-character-context')
   if(!configuration.planningMode)errors.push('missing-planning-mode')
   if(!configuration.targetProfile)errors.push('missing-target-profile')
@@ -77,6 +80,7 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
   const started=performance.now(),pipelineStarted=performance.now(),fullResult=runner(input),pipelineDurationMs=performance.now()-pipelineStarted,projection=projectRealPassivePipelineResult(fullResult,detailMode),pipelineResult=projection.result,integrationDurationMs=performance.now()-started
   const stage=(id:string)=>fullResult.pipelineStages.find(value=>value.stageId===id)?.durationMs??0
   let weaponSetPlanning:WeaponSetPassivePlanningResult|undefined
+  let ascendancyPlanning:ProjectedRealPassivePipelineResult|undefined
   if(specializationPointLimit&&weaponSetProfiles&&pipelineResult){
     const sharedNodeIds=[...fullResult.allocatedNodeIds]
     const combine=(setResult:RealPassivePipelineResult):RealPassivePipelineResult=>({
@@ -92,5 +96,9 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
     const set2Full=combine(runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,pointBudget:specializationPointLimit,buildProfile:weaponSetProfiles['set-2'],alreadyAllocatedNodeIds:sharedNodeIds}))
     weaponSetPlanning={specializationPointLimit,sharedPointBudget:input.pointBudget,shared:pipelineResult,set1:projectRealPassivePipelineResult(set1Full,detailMode).result,set2:projectRealPassivePipelineResult(set2Full,detailMode).result}
   }
-  return{enabled:true,status:statusOf(fullResult),detailMode,pipelineResult,weaponSetPlanning,issues:[...fullResult.violations],projection:projection.diagnostics,performance:{integrationDurationMs,pipelineDurationMs,inputValidationMs:stage('validate-input'),graphPreparationMs:stage('prepare-graph'),targetingMs:stage('evaluate-targets'),planningMs:stage('create-passive-plan'),outputValidationMs:stage('validate-output'),projectionMs:projection.diagnostics.projectionDurationMs,serializationMs:projection.diagnostics.serializationDurationMs,resultSizeBytes:projection.diagnostics.projectedSizeBytes,graphReused:fullResult.graphDiagnostics.graphReused,graphBuildCount:fullResult.graphDiagnostics.graphBuildCount,targetingContextReused:fullResult.targetingDiagnostics.preparedContextReused,targetingContextBuildCount:fullResult.targetingDiagnostics.preparedContextBuildCount,evaluatedTargetCount:fullResult.targetingDiagnostics.evaluatedNodeCount,pathSearchCount:fullResult.planningDiagnostics.pathSearchCount}}
+  if((configuration.ascendancyPointBudget??0)>0){
+    const ascendancyFull=runner({...baseInput,requestId:`${baseInput.requestId}-ascendancy`,planningScope:'ascendancy',pointBudget:configuration.ascendancyPointBudget!,startNodeId:undefined,alreadyAllocatedNodeIds:[],requiredNodeTypes:['ascendancy'],candidatePoolLimit:24,maximumSelectedTargets:8})
+    ascendancyPlanning=projectRealPassivePipelineResult(ascendancyFull,detailMode).result
+  }
+  return{enabled:true,status:statusOf(fullResult),detailMode,pipelineResult,weaponSetPlanning,ascendancyPlanning,issues:[...fullResult.violations,...(ascendancyPlanning?.violations??[])],projection:projection.diagnostics,performance:{integrationDurationMs,pipelineDurationMs,inputValidationMs:stage('validate-input'),graphPreparationMs:stage('prepare-graph'),targetingMs:stage('evaluate-targets'),planningMs:stage('create-passive-plan'),outputValidationMs:stage('validate-output'),projectionMs:projection.diagnostics.projectionDurationMs,serializationMs:projection.diagnostics.serializationDurationMs,resultSizeBytes:projection.diagnostics.projectedSizeBytes,graphReused:fullResult.graphDiagnostics.graphReused,graphBuildCount:fullResult.graphDiagnostics.graphBuildCount,targetingContextReused:fullResult.targetingDiagnostics.preparedContextReused,targetingContextBuildCount:fullResult.targetingDiagnostics.preparedContextBuildCount,evaluatedTargetCount:fullResult.targetingDiagnostics.evaluatedNodeCount,pathSearchCount:fullResult.planningDiagnostics.pathSearchCount}}
 }

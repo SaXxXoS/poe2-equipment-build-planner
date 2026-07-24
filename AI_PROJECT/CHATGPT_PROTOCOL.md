@@ -1184,3 +1184,22 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Aszendenzpunkte bleiben ein separater Punkttyp und sind weiterhin nicht
   Bestandteil dieser Planung.
 - Baumdaten und sämtliche Datenpins bleiben unverändert.
+
+# Separate Aszendenzpunkte und Aszendenzplanung
+
+- Im Charakterbereich kann der Nutzer nun separat angeben, wie viele
+  Aszendenzpunkte verfügbar sind. Erlaubt sind ausschließlich 0 bis 8.
+- Aszendenzpunkte werden weder zum normalen Passivpunktebudget addiert noch
+  als Waffen-Set-Punkte behandelt.
+- Die reale Passive-Pipeline verwendet dafür den versionierten Scope
+  `ascendancy` und löst den offiziellen Start der gewählten Aszendenz auf.
+- Der getrennte Plan darf ausschließlich Start- und Passivknoten der
+  ausgewählten Aszendenz enthalten. Normale Baumknoten und andere
+  Aszendenzen sind fail-closed ausgeschlossen.
+- Die Oberfläche bietet nach der Analyse einen eigenen Aszendenz-Reiter und
+  zeigt Budget, verwendete und verbleibende Aszendenzpunkte separat.
+- Fehlende positive Evidenz wird nicht durch künstliches Auffüllen ersetzt:
+  Restpunkte bleiben sichtbar, statt konfliktbehaftete Knoten zu erfinden.
+- Passive Planner `5G-1.2.0`, reale Passive-Pipeline `5H-1.1.0`.
+- Baumquelle, Produktdaten, Datenpins, Analyzerarchitektur und
+  Waffen-Set-Regel bleiben unverändert.

@@ -5,5 +5,6 @@ export const createInitialCharacterConfiguration = (): CharacterConfiguration =>
   ascendancyId: '',
   level: 0,
   additionalPassivePoints: undefined,
+  ascendancyPassivePoints: undefined,
   goalProfile: 'balanced',
 })

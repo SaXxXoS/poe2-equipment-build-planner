@@ -13,6 +13,7 @@ export interface CharacterConfiguration {
   ascendancyId: EntityId
   level: number
   additionalPassivePoints?: number
+  ascendancyPassivePoints?: number
   goalProfile: GoalProfile
   desiredMainSkillId?: EntityId
 }

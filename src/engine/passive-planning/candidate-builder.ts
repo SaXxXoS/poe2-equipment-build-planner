@@ -25,6 +25,7 @@ export function baseValueComponents(input:PassivePlanningInput,value:PassiveTarg
 function isCandidate(input:PassivePlanningInput,value:PassiveTargetRecommendation,required:Set<string>):boolean {
   const graphNode=input.passiveGraph.nodes.get(value.nodeId)
   if(!graphNode||!graphNode.enabled||value.eligibility==='blocked'||value.nodeId===input.startNodeId) return false
+  if(input.planningScope==='ascendancy') return graphNode.nodeType==='ascendancy'&&Boolean(input.ascendancyId)&&graphNode.ascendancyId===input.ascendancyId&&!(input.excludedTargetNodeIds??[]).includes(value.nodeId)&&value.totalScore>=input.minimumTargetScore&&confidence(value.confidence)>=confidence(input.minimumConfidence)
   if(['class-start','ascendancy-start','ascendancy','unknown'].includes(graphNode.nodeType)) return false
   if(graphNode.nodeType==='jewel-socket'&&!required.has(value.nodeId)) return false
   if(!allowed.has(graphNode.nodeType)&&!(required.has(value.nodeId)&&graphNode.nodeType==='jewel-socket')) return false

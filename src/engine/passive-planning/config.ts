@@ -1,7 +1,7 @@
 import type { Confidence } from '../common/types'
 import type { PassivePlanningMode } from './types'
 
-export const PASSIVE_PLANNER_VERSION = '5G-1.1.0'
+export const PASSIVE_PLANNER_VERSION = '5G-1.2.0'
 export const PASSIVE_PLANNING_STRATEGY = 'required-first-incremental-subtree-with-evidenced-budget-completion'
 
 export const PASSIVE_PLANNING_CONFIG = Object.freeze({

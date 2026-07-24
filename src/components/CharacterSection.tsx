@@ -8,22 +8,27 @@ const goalLabels: Record<GoalProfile, string> = { balanced: 'Allround', mapping:
 export function CharacterSection({ value, onChange }: { value: CharacterConfiguration; onChange: (value: CharacterConfiguration) => void }) {
   const [levelInput, setLevelInput] = useState(value.level > 0 ? String(value.level) : '')
   const [storyInput, setStoryInput] = useState(value.additionalPassivePoints == null ? '' : String(value.additionalPassivePoints))
+  const [ascendancyInput, setAscendancyInput] = useState(value.ascendancyPassivePoints == null ? '' : String(value.ascendancyPassivePoints))
   const levelValid = /^\d+$/.test(levelInput) && Number(levelInput) >= 1 && Number(levelInput) <= 100
   const storyValid = /^\d+$/.test(storyInput) && Number(storyInput) >= 0 && Number(storyInput) <= 50
+  const ascendancyValid = /^\d+$/.test(ascendancyInput) && Number(ascendancyInput) >= 0 && Number(ascendancyInput) <= 8
   const availableAscendancies = ascendancyDefinitions.filter(ascendancy =>
     ascendancy.classId === value.classId && findTreeAscendancy(ascendancy.id)?.selectableInCurrentUi,
   )
   const levelPoints = levelValid ? availablePassivePoints(Number(levelInput), 0) : null
   const totalPoints = levelValid && storyValid ? availablePassivePoints(Number(levelInput), Number(storyInput)) : null
-  const updateNumber = (kind: 'level' | 'story', input: string) => {
+  const updateNumber = (kind: 'level' | 'story' | 'ascendancy', input: string) => {
     const parsed = parseUnsignedIntegerDraft(input)
     if (parsed === null) return
     if (kind === 'level') {
       setLevelInput(input)
       onChange({ ...value, level: parsed ?? 0 })
-    } else {
+    } else if (kind === 'story') {
       setStoryInput(input)
       onChange({ ...value, additionalPassivePoints: parsed })
+    } else {
+      setAscendancyInput(input)
+      onChange({ ...value, ascendancyPassivePoints: parsed })
     }
   }
   return <section id="character"><h2>1. Charakter</h2>
@@ -50,6 +55,9 @@ export function CharacterSection({ value, onChange }: { value: CharacterConfigur
         <input aria-label="Story-Passivpunkte" inputMode="numeric" pattern="[0-9]*" placeholder="Punkte eingeben" value={storyInput} aria-invalid={storyInput !== '' && !storyValid} onChange={event => updateNumber('story', event.target.value)}/>
       </label>
       <label>Gesamtpunkte<output>{totalPoints ?? '—'}</output></label>
+      <label>Aszendenzpunkte
+        <input aria-label="Aszendenzpunkte" inputMode="numeric" pattern="[0-9]*" placeholder="0 bis 8" value={ascendancyInput} aria-invalid={ascendancyInput !== '' && !ascendancyValid} onChange={event => updateNumber('ascendancy', event.target.value)}/>
+      </label>
     </div>
     <label className="goal-field">Zielprofil<select value={value.goalProfile} onChange={event => onChange({ ...value, goalProfile: event.target.value as GoalProfile })}>{Object.entries(goalLabels).map(([id, label]) => <option value={id} key={id}>{label}</option>)}</select></label>
     <a className="step-link" href="#equipment">Weiter zur Ausrüstung →</a>

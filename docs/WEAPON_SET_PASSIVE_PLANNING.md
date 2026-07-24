@@ -51,4 +51,5 @@ offizielle Baum ist mit 121 von 121 verwendeten Punkten getestet.
 Unbekannte, negative oder konfliktbehaftete Knoten werden nicht als bloße
 Füllpunkte vergeben. Wenn für ein Profil nicht genügend sichere Ziele
 vorliegen, bleibt deshalb ein Restbudget sichtbar. Aszendenzpunkte bleiben
-weiterhin ein getrennter Punkttyp.
+weiterhin ein getrennter Punkttyp. Er wird über ein eigenes Feld mit maximal
+acht Punkten erfasst und in einem eigenen Aszendenzplan ausgewiesen.

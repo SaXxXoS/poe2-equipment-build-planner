@@ -3,6 +3,7 @@ import type { PassiveGraph } from '../passive-pathfinding/types'
 import type { PassiveTargetAnalysis, PassiveTargetNodeType, PassiveTargetRecommendation } from '../passive-targeting/types'
 
 export type PassivePlanningMode = 'value-first' | 'efficiency-first' | 'balanced'
+export type PassivePlanningScope = 'normal' | 'ascendancy'
 export type PassivePlanningStatus = 'complete' | 'partial' | 'blocked' | 'no-eligible-targets' | 'budget-exhausted' | 'required-target-unreachable' | 'required-target-over-budget' | 'invalid-input'
 
 export interface PassivePlanningInput {
@@ -10,6 +11,7 @@ export interface PassivePlanningInput {
   buildProfile: BuildProfile
   characterClassId: string
   ascendancyId?: string
+  planningScope?: PassivePlanningScope
   startNodeId: string
   pointBudget: number
   targetProfile: 'mapping' | 'boss' | 'balanced'

@@ -33,6 +33,8 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     const html = renderToStaticMarkup(<CharacterSection value={{ classId:'', ascendancyId:'', level:0, goalProfile:'balanced' }} onChange={() => undefined}/>)
     expect(html).toContain('placeholder="Level eingeben"')
     expect(html).toContain('placeholder="Punkte eingeben"')
+    expect(html).toContain('placeholder="0 bis 8"')
+    expect(html).toContain('Aszendenzpunkte')
     expect(html).not.toContain('value="0"')
   })
   it('ordnet die Hauptausrüstung zusammenhängend und schaltet nur Waffenplätze', () => {
@@ -54,7 +56,7 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(activeWeaponSlotIds('set-2')).toEqual(['slot-weapon-set-2-left','slot-weapon-set-2-right'])
   })
   it('startet mit sechs kompakten leeren Fertigkeitskarten ohne Supports', () => {
-    expect(createInitialCharacterConfiguration()).toEqual({ classId:'', ascendancyId:'', level:0, additionalPassivePoints:undefined, goalProfile:'balanced' })
+    expect(createInitialCharacterConfiguration()).toEqual({ classId:'', ascendancyId:'', level:0, additionalPassivePoints:undefined, ascendancyPassivePoints:undefined, goalProfile:'balanced' })
     expect(initialEquipment.every(value => !value.itemClassId && !value.uniqueItemId && value.modifierValues.length === 0)).toBe(true)
     const setups = createEmptySkillSetups()
     const html = renderToStaticMarkup(<SkillsSection setups={setups} onChange={() => undefined}/>)
