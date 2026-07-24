@@ -1,5 +1,12 @@
 # PoE2 Equipment Build Planner
 
+> **Foto- und Screenshotmodus:** Jeder Ausrüstungsslot kann einen lokal
+> aufgenommenen oder ausgewählten Gegenstandsscreenshot auswerten. Die
+> browserlokale OCR gleicht erkannte Zeilen und tatsächliche Werte gegen den
+> technisch möglichen Affixbestand ab; unsichere Kandidaten müssen geprüft
+> werden. Es findet kein Bild-Upload und kein externer OCR-Aufruf statt.
+> Details: [docs/ITEM_PHOTO_AND_SCREENSHOT_OCR.md](docs/ITEM_PHOTO_AND_SCREENSHOT_OCR.md).
+
 > **Skill-/Supportkatalog:** Die Auswahl enthält nun 235 belegte Skills
 > (219 aktiv, 16 Spirit) und 451 getrennte Supportstufen aus dem gepinnten
 > lokalen RePoE-PoE2-Export. Englische Namen dienen als Fallback; unbekannte

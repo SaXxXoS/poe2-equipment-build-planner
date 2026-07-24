@@ -1,5 +1,28 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Foto- und Screenshotmodus je Ausrüstungsslot (2026-07-24)
+
+- Jeder Ausrüstungsslot bietet `Foto aufnehmen` und `Screenshot wählen`.
+- Bilder werden ausschließlich lokal im Browser durch Tesseract.js 6.0.1
+  verarbeitet; kein Upload, keine externe OCR-API und keine Speicherung im
+  BuildProfile.
+- Worker, Tesseract-Core 6.1.2 und englisches Sprachmodell 1.0.0 werden
+  statisch unter `public/ocr/` ausgeliefert und sind Pages-/offlinefähig.
+- OCR-Zeilen werden fail-safe gegen den bestehenden slot-, itemklassen-,
+  Generation-Type- und Item-Level-gefilterten Affixbestand geprüft.
+- Sichere tatsächliche Werte wählen die passende technische Affixstufe;
+  unsichere Treffer bleiben prüfpflichtig oder deaktiviert.
+- Der Nutzer bestätigt Kandidaten vor der Übernahme. Anschließend bleiben alle
+  Daten im vollständigen manuellen Item-Editor korrigierbar.
+- Normale Affixe, Implicits und Unique-Eigenschaften bleiben getrennt.
+  Mehrdeutige Unique-Varianten werden nicht geraten.
+- Browsernachweis: seltener Helm, Item-Level 70 und `+100 zu
+  Treffgenauigkeit` wurden korrekt in Prefix 1 übernommen; ein unsicherer
+  Hybridkandidat blieb blockiert.
+- Mobile Prüfung bei 390 × 844: Dialogbreite 363,8 px bei 390 px Viewport,
+  kein horizontaler Seitenüberlauf.
+- Dokumentation: `docs/ITEM_PHOTO_AND_SCREENSHOT_OCR.md`.
+
 ## Numerische Schadensberechnung V1 (2026-07-24)
 
 - Auftraggeberentscheidung: Schaden der tatsächlich eingegebenen Ausrüstung numerisch darstellen und Builds vergleichbar machen.

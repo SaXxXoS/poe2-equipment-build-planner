@@ -2,6 +2,7 @@
   "name": "poe2-equipment-build-planner",
   "private": true,
   "version": "0.3.0",
+  "packageManager": "pnpm@11.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -29,7 +30,22 @@
     "check:poe2-tree-update": "node scripts/poe2-tree-import.mjs check"
   },
   "dependencies": {
-    "@eslint/js": "latest", "@vitejs/plugin-react": "latest", "vite": "latest", "typescript": "^5.9.3", "react": "latest", "react-dom": "latest", "@types/react": "latest", "@types/react-dom": "latest", "eslint": "latest", "typescript-eslint": "latest", "eslint-plugin-react-hooks": "latest", "eslint-plugin-react-refresh": "latest"
+    "@eslint/js": "latest",
+    "@tesseract.js-data/eng": "1.0.0",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "eslint": "latest",
+    "eslint-plugin-react-hooks": "latest",
+    "eslint-plugin-react-refresh": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tesseract.js": "6.0.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "latest",
+    "vite": "latest"
   },
-  "devDependencies": { "vitest": "^3.2.4" }
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
 }

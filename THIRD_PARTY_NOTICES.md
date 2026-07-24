@@ -1,5 +1,14 @@
 # Third-Party Notices
 
+## Tesseract.js – lokale Gegenstandserkennung
+
+Die Foto- und Screenshot-Erkennung verwendet `tesseract.js` 6.0.1 und
+`tesseract.js-core` 6.1.2 unter der Apache License 2.0 sowie das englische
+Sprachmodell `@tesseract.js-data/eng` 1.0.0 unter MIT. Worker, WASM-Kern und
+Sprachmodell werden zusammen mit der App ausgeliefert; Bilder werden nicht an
+einen externen OCR-Dienst übertragen. Die zugehörigen Lizenztexte liegen
+unter `public/ocr/licenses/`.
+
 ## Begrenzte PoB2-Schadensreferenz
 
 Die App verwendet für eine reduzierte, offline erzeugte Trefferschaden-Schätzung statische Skill- und Waffenbasisfelder aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Der PoB2-Programmcode steht dort unter MIT; die Quelldateien kennzeichnen Spieldaten separat als Grinding-Gear-Games-Inhalte. Es wurde keine einzelne Genehmigung von PoB2 oder GGG eingeholt und keine solche Genehmigung wird behauptet.

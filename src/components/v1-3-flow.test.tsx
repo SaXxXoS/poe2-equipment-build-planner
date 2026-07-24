@@ -9,6 +9,7 @@ import { createEmptySkillSetups } from '../features/skills/initial-state'
 import { createInitialCharacterConfiguration } from '../features/character/initial-state'
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
+import { AffixDialog } from './AffixDialog'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
   it('zeigt kompakte deutsche Charakterauswahlen und nur unterstützte Klassen', () => {
@@ -71,5 +72,12 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(html).toContain('Unterstützungsplätze')
     expect(html).toContain('Zuerst eine Fertigkeit auswählen')
     expect(html).toContain('Support 5')
+  })
+  it('bietet Foto- und Screenshot-Erkennung direkt im leeren Ausrüstungsslot an',()=>{
+    const html=renderToStaticMarkup(<AffixDialog entry={initialEquipment[0]} slotName="Helm" onSave={()=>undefined} onClose={()=>undefined}/>)
+    expect(html).toContain('Foto aufnehmen')
+    expect(html).toContain('Screenshot wählen')
+    expect(html).toContain('capture="environment"')
+    expect(html).toContain('Das Bild bleibt auf deinem Gerät')
   })
 })

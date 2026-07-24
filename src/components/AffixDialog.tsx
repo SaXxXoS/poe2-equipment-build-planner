@@ -3,7 +3,9 @@ import { affixesFor, baseItemsFor, itemClassesForSlot, technicalAffixById } from
 import type { AppliedModifier, EquipmentEntry, ItemRarity } from '../domain'
 import { localizedPob2LinesForVariant, localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
 import { affixDisplayName, affixGroupName, affixSearchText } from '../features/equipment-editor/affix-display'
-import { RARITY_LIMITS, appliedModifierId, clearItem, inferItemRarity, migrateEquipmentEntry, modifiersFor } from '../features/equipment-editor/model'
+import { RARITY_LIMITS, appliedModifierId, clearItem, createAppliedModifier, inferItemRarity, migrateEquipmentEntry, modifiersFor } from '../features/equipment-editor/model'
+import type { ItemOcrResult } from '../features/item-ocr'
+import { ItemOcrPanel } from './ItemOcrPanel'
 
 const rarityText: Record<ItemRarity, string> = { normal: 'Normal', magic: 'Magisch', rare: 'Selten', unique: 'Einzigartig' }
 const uniqueSlots = (slotId: string) => slotId.includes('helmet') ? ['helmet'] : slotId.includes('body-armour') ? ['body-armour'] : slotId.includes('gloves') ? ['gloves'] : slotId.includes('boots') ? ['boots'] : slotId.includes('amulet') ? ['amulet'] : slotId.includes('ring') ? ['ring'] : slotId.includes('belt') ? ['belt'] : slotId.includes('weapon') ? (slotId.endsWith('right') ? ['weapon', 'offhand'] : ['weapon']) : slotId.includes('jewel') ? ['jewel'] : ['special']
@@ -47,6 +49,24 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   const blocked = chosen?.conflictGroups.some(group => conflicts.has(group)) ?? false
 
   function chooseRarity(value: ItemRarity) { setRarity(value); setStep('editor'); setPicker(undefined) }
+  function applyOcr(result:ItemOcrResult,selectedIds:Set<string>){
+    if(result.unique&&selectedIds.has(result.unique.uniqueItemId)){
+      setRarity('unique');setUniqueItemId(result.unique.uniqueItemId);setUniqueVariantId('');setAdded([]);setStep('editor');return
+    }
+    const nextRarity=result.rarity&&result.rarity!=='unique'?result.rarity:'rare'
+    const nextClass=result.itemClassId??itemClassId
+    const limits=RARITY_LIMITS[nextRarity]
+    const selectedAffixes=result.affixes.filter(match=>selectedIds.has(match.affixId)&&(match.resolutionStatus==='auto-selected'||match.values.length))
+    const next=selectedAffixes.flatMap(match=>{
+      const affix=technicalAffixById.get(match.affixId)
+      if(!affix)return[]
+      const sameSide=selectedAffixes.filter(value=>value.affixSide===match.affixSide)
+      const index=sameSide.indexOf(match)
+      if(match.affixSide==='prefix'&&index>=limits.prefix||match.affixSide==='suffix'&&index>=limits.suffix||match.affixSide==='implicit'&&index>0)return[]
+      return[createAppliedModifier(entry.id,affix,match.affixSide,index,match.values,nextClass)]
+    })
+    setRarity(nextRarity);setItemClassId(nextClass);setItemLevel(result.itemLevel);setBaseDisplayName(result.baseDisplayName??'');setAdded(next);setStep('editor');setPicker(undefined)
+  }
   function applyAffix() {
     if (!picker || !chosen || blocked) return
     const statValues = chosen.statLines.map((line, index) => ({ statId: line.statId, value: line.valueType === 'fixed' ? line.minimum : values[index] ?? line.minimum }))
@@ -62,8 +82,8 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   return <div className="modal-backdrop" onMouseDown={event => event.target === event.currentTarget && onClose()}><div className="modal item-editor" role="dialog" aria-modal="true">
     <header className="dialog-header"><button className="text-button" onClick={() => picker ? setPicker(undefined) : step === 'editor' ? setStep(existingRarity ? 'action' : 'rarity') : onClose()}>← Zurück</button><h2>{slotName}</h2><button className="icon" aria-label="Dialog schließen" onClick={onClose}>×</button></header>
     <div className="dialog-scroll">
-      {step === 'action' && <div className="rarity-choice"><button onClick={() => setStep('editor')}>Gegenstand bearbeiten</button><button onClick={() => setStep('rarity')}>Gegenstand ersetzen</button><button className="danger" onClick={() => { onSave(clearItem(entry)); onClose() }}>Gegenstand entfernen</button></div>}
-      {step === 'rarity' && <><h3>Seltenheit wählen</h3><div className="rarity-choice">{(Object.keys(rarityText) as ItemRarity[]).map(value => <button key={value} onClick={() => chooseRarity(value)}>{rarityText[value]}</button>)}</div></>}
+      {step === 'action' && <><div className="rarity-choice"><button onClick={() => setStep('editor')}>Gegenstand bearbeiten</button><button onClick={() => setStep('rarity')}>Gegenstand ersetzen</button><button className="danger" onClick={() => { onSave(clearItem(entry)); onClose() }}>Gegenstand entfernen</button></div><ItemOcrPanel slotId={entry.slotId} onApply={applyOcr}/></>}
+      {step === 'rarity' && <><ItemOcrPanel slotId={entry.slotId} onApply={applyOcr}/><h3>Oder Seltenheit manuell wählen</h3><div className="rarity-choice">{(Object.keys(rarityText) as ItemRarity[]).map(value => <button key={value} onClick={() => chooseRarity(value)}>{rarityText[value]}</button>)}</div></>}
       {step === 'editor' && !picker && <>{rarity === 'unique' ? <><label>Unique suchen<input autoFocus type="search" value={uniqueSearch} onChange={event => setUniqueSearch(event.target.value)} placeholder="Name oder Basistyp"/></label><label>Unique<select className="affix-list" size={7} value={uniqueItemId} onChange={event => { setUniqueItemId(event.target.value); setUniqueVariantId('') }}><option value="">Bitte wählen</option>{uniqueOptions.map(item => <option value={item.id} key={item.id}>{item.name} · {item.baseDisplayName}</option>)}</select></label>{chosenUnique && <div className="unique-choice-summary">
         <b>{chosenUnique.name}</b>
         <span>{chosenUnique.baseDisplayName}</span>

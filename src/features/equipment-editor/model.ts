@@ -1,4 +1,5 @@
 import type { AppliedModifier, EquipmentEntry, ItemRarity } from '../../domain'
+import type { TechnicalAffix } from '../../affixes/model'
 
 export const RARITY_LIMITS: Record<ItemRarity, { prefix: number; suffix: number }> = {
   normal: { prefix: 0, suffix: 0 },
@@ -21,6 +22,11 @@ export function modifiersFor(entry: EquipmentEntry, side: AppliedModifier['affix
 
 export function appliedModifierId(entryId: string, side: string, index: number) {
   return `${entryId}:${side}:${index + 1}`
+}
+
+export function createAppliedModifier(entryId:string,affix:TechnicalAffix,side:'prefix'|'suffix'|'implicit',index:number,values:number[],itemClassId=affix.itemClassIds[0]):AppliedModifier{
+  const statValues=affix.statLines.map((line,valueIndex)=>({statId:line.statId,value:line.valueType==='fixed'?line.minimum:values[valueIndex]??line.minimum}))
+  return{id:appliedModifierId(entryId,side,index),modifierId:affix.affixId,value:statValues.length>1?{min:statValues[0].value,max:statValues[1].value}:statValues[0]?.value??0,sourceModId:affix.sourceModId,statValues,itemClassId,affixSide:side,tierId:affix.tierId,requiredItemLevel:affix.requiredItemLevel,isLocal:affix.isLocal,isHybrid:affix.isHybrid,sourceVersion:affix.sourceVersion,dataStatus:affix.dataStatus}
 }
 
 export function migrateEquipmentEntry(entry: EquipmentEntry): EquipmentEntry {
