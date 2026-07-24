@@ -5,6 +5,7 @@ import { localizedPob2UniquesDe } from '../../localization/pob2-uniques-de'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
 import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
 import { technicalItemClasses } from '../../affixes/registry'
+import { repoeSkillCatalog, repoeSupportCatalog } from '../../gems/repoe-catalog'
 import type { SyntheticWeaponType } from '../../domain'
 import { migrateEquipmentEntry } from '../equipment-editor/model'
 
@@ -13,7 +14,9 @@ export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
 const localizedUniqueNames = new Map(localizedPob2UniquesDe.map(item => [item.id, item.name]))
 const damageTags = new Set<MechanicTag>(['physical', 'fire', 'cold', 'lightning', 'chaos'])
 
-const skills: SkillGemDefinition[] = [...skillDefinitions, ...expandedSkillCandidates].map(skill => ({
+const curatedSkills = [...skillDefinitions, ...expandedSkillCandidates]
+const curatedSkillNames = new Set(curatedSkills.flatMap(item => [item.displayNameDe, item.nameEn].filter(Boolean).map(name => name!.toLocaleLowerCase('en'))))
+const skills: SkillGemDefinition[] = [...curatedSkills, ...repoeSkillCatalog.filter(item => !curatedSkillNames.has(item.nameEn?.toLocaleLowerCase('en') ?? ''))].map(skill => ({
   ...skill,
   damageTypes: skill.tags.filter(tag => damageTags.has(tag)) as SkillGemDefinition['damageTypes'],
   possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility'] : skill.tags.includes('buff') ? ['utility'] : ['main', 'secondary'],
@@ -22,7 +25,9 @@ const skills: SkillGemDefinition[] = [...skillDefinitions, ...expandedSkillCandi
   enabled: true,
 }))
 
-const supports: SupportGemDefinition[] = [...supportDefinitions, ...expandedSupportCandidates].map(support => ({
+const curatedSupports = [...supportDefinitions, ...expandedSupportCandidates]
+const curatedSupportNames = new Set(curatedSupports.flatMap(item => [item.displayNameDe, item.nameEn].filter(Boolean).map(name => name!.toLocaleLowerCase('en'))))
+const supports: SupportGemDefinition[] = [...curatedSupports, ...repoeSupportCatalog.filter(item => !curatedSupportNames.has(item.nameEn?.toLocaleLowerCase('en') ?? ''))].map(support => ({
   ...support,
   ownTags: support.requiredTags,
   supportedMechanics: support.requiredTags,

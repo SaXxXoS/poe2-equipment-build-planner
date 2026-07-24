@@ -1,5 +1,14 @@
 # PoE2 Equipment Build Planner
 
+> **Skill-/Supportkatalog:** Die Auswahl enthält nun 235 belegte Skills
+> (219 aktiv, 16 Spirit) und 451 getrennte Supportstufen aus dem gepinnten
+> lokalen RePoE-PoE2-Export. Englische Namen dienen als Fallback; unbekannte
+> Semantik wird nicht erfunden. Details:
+> [docs/POE2_SKILL_SUPPORT_CATALOG.md](docs/POE2_SKILL_SUPPORT_CATALOG.md).
+> Mit den kuratierten, namensbasiert deduplizierten Kandidaten sind in der
+> Produktoberfläche insgesamt 241 Fertigkeiten und 463 Unterstützungen
+> durchsuchbar.
+
 > **Deutsche normale Affixe:** Alle 2.255 produktiven technischen Affixe besitzen eine getrennte deutsche Anzeigeschicht. Technische IDs, Werte und Analyzer-Daten bleiben unverändert. Details: [docs/POE2_GERMAN_AFFIX_DISPLAY.md](docs/POE2_GERMAN_AFFIX_DISPLAY.md).
 
 > **Datenstand 5M.2.10:** Der englische PoB2-Unique-Bestand bleibt unverändert. Lokale deutsche Namen, Basistypen und CSD-Templates wurden offline geprüft, besitzen jedoch keine sichere gemeinsame technische Identität mit den `pob2:`-Records. Daher wurden keine deutschen Unique-Produkttexte importiert; alle 435 Items bleiben `translation-missing`.

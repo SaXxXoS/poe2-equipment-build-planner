@@ -36,6 +36,7 @@ export interface SkillGemDefinition extends GameDataMetadata {
   affectsTarget?: boolean
   affectsPlayer?: boolean
   blockedForRotation?: boolean
+  recommendedSupportIds?: EntityId[]
 }
 
 export interface SupportGemDefinition extends GameDataMetadata {
@@ -64,6 +65,7 @@ export interface SupportGemDefinition extends GameDataMetadata {
   requiredWeaponSet?: SkillWeaponSet
   enabled?: boolean
   experimental?: boolean
+  selectionOnly?: boolean
 }
 
 export interface SkillSetup {

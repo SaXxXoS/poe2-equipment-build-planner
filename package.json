@@ -22,6 +22,7 @@
     "audit:pob2-unique-german-localization": "node scripts/pob2-unique-localization-audit/index.mjs",
     "generate:pob2-unique-german-display": "node scripts/pob2-unique-german-display/generate.mjs",
     "generate:poe2-affix-german-display": "node scripts/poe2-affix-german-display/generate.mjs",
+    "generate:poe2-gem-catalog": "node scripts/poe2-gem-catalog/generate.mjs",
     "import:pob2-uniques": "node scripts/pob2-unique-import/index.mjs",
     "check:poe2-tree-update": "node scripts/poe2-tree-import.mjs check"
   },

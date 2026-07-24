@@ -1,5 +1,20 @@
 # Third-Party Notices
 
+## RePoE-PoE2 Skill- und Supportkatalog
+
+Die App verteilt einen reduzierten englischen Auswahlkatalog aus
+`repoe-poe2` Version `4.5.4.4.4`, Commit
+`b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`. Er enthält 235 normalisierte
+Skill- und 451 Supportrecords aus `data/skill_gems.json`, jedoch keine
+Rohdatei, Bilder, Medien, Tutorialvideos, Beschreibungen oder numerischen
+Effekttabellen.
+
+RePoE-Programmcode steht unter MIT; die exportierten Spieldaten werden
+Grinding Gear Games zugeordnet. Es wurde keine individuelle externe
+Genehmigung eingeholt oder erteilt. Die begrenzte Verwendung beruht auf einer
+Projektentscheidung mit offengelegter Rechteunsicherheit. Eine Zugehörigkeit
+zu oder Billigung durch RePoE oder Grinding Gear Games wird nicht behauptet.
+
 Since task 5M.2.9, the application distributes a reduced English planner dataset derived from 435 records in the pinned PoB2 sources. It is labelled `pob2-planner-data`; it is not a raw mirror and contains no images, media, flavour text, or asserted technical GGG identity chain. No individual external permission was requested or obtained. The documented GGG/community origin and unresolved rights uncertainty remain disclosed.
 
 ## Path of Building 2

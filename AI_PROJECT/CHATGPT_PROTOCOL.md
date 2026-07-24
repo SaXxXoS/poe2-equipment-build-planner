@@ -1,5 +1,29 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Vollständigerer Skill-/Supportkatalog (2026-07-24)
+
+- Ausgangsbestand: 12 kuratierte Skills und 13 kuratierte Supports.
+- Gepinnte Quelle: RePoE-PoE2 `4.5.4.4.4`,
+  `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`,
+  `data/skill_gems.json`, SHA-256
+  `2c5a481f1147a87c844b1734a8fd2c660e4e13922145470ac72bca75095a69e3`.
+- Produktfilter: `released`, herstellbar (`crafting_level > 0`), aktive,
+  Spirit- oder Support-Gem, kein `Coming Soon`.
+- Ergebnis: 219 aktive + 16 Spirit = 235 Skills sowie 451 getrennte
+  Supportstufen.
+- Nach Deduplizierung mit dem kuratierten Bestand zeigt die Produktoberfläche
+  241 Fertigkeiten und 463 Unterstützungen.
+- Die erwarteten 240/200 werden nicht erzwungen: Der Pin belegt fünf weniger
+  auswählbare Skills; Supportstufen werden als getrennte Records geführt.
+- Importierte Supports werden nur bei expliziter
+  `recommended_supports`-Referenz positiv gerankt. Andernfalls bleiben sie
+  auswählbar, aber `insufficient-semantic-evidence`.
+- Keine Icons, Medien, Beschreibungen, Effekttabellen, Stat-IDs,
+  Runtimequelle oder Rohspiegel.
+- Neuer enger Scope: `poe2-repoe-skill-support-catalog`,
+  `conditionally-approved` durch ausdrückliche Projektentscheidung mit
+  offengelegter externer Rechteunsicherheit.
+
 ## Live-Suche für Fertigkeiten und sichtbare Supportplätze (2026-07-24)
 
 - Fokus oder Antippen der Fertigkeitssuche öffnet unmittelbar eine sichtbare,
@@ -8,12 +32,10 @@
   Fallback.
 - Jede leere Fertigkeitskarte zeigt fünf Supportplätze. Nach der Skillwahl
   besitzt jeder Platz eine eigene live-filternde Supportauswahl.
-- Der produktive Bestand bleibt bei 12 Fertigkeiten und 13 Unterstützungen.
-  Umfangreichere lokale RePoE-/Parserbestände sind für Skills und Supports im
-  maßgeblichen Approval weiterhin `blocked` und wurden nicht stillschweigend
-  importiert.
-- Nächster Datenauftrag: gesonderter gepinnter Skill-/Support-Scope mit
-  Feld-, Provenienz- und Distributionsentscheidung.
+- Historischer Stand dieses UI-Zwischenschritts: 12 Fertigkeiten und 13
+  Unterstützungen. Dieser Stand wurde am 24. Juli 2026 durch den gesondert
+  gepinnten und freigegebenen RePoE-Auswahlkatalog (241/463 in der
+  Produktoberfläche) abgelöst.
 
 ## Deutsche Normal-Affix-Anzeigeschicht (2026-07-24)
 

@@ -12,8 +12,8 @@ const initialCharacter: CharacterConfiguration = { classId: 'class-official-6', 
 
 describe('Build Assistant V1.1 semantic expansion', () => {
   it('expands productive candidate breadth without fixtures', () => {
-    expect(buildAssistantCandidates.skills.length).toBe(12)
-    expect(buildAssistantCandidates.supports.length).toBe(13)
+    expect(buildAssistantCandidates.skills.length).toBe(241)
+    expect(buildAssistantCandidates.supports.length).toBe(463)
     expect(buildAssistantCandidates.jewels.length).toBe(13)
     expect(buildAssistantCandidates.skills.some(item => item.id.startsWith('fixture:'))).toBe(false)
   })
