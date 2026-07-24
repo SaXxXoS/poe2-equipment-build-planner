@@ -10,6 +10,7 @@ import { createInitialCharacterConfiguration } from '../features/character/initi
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
 import { AffixDialog } from './AffixDialog'
+import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
   it('zeigt kompakte deutsche Charakterauswahlen und nur unterstützte Klassen', () => {
@@ -79,5 +80,11 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(html).toContain('Screenshot wählen')
     expect(html).toContain('capture="environment"')
     expect(html).toContain('Das Bild bleibt auf deinem Gerät')
+  })
+  it('wählt ein sicher erkanntes Unique für die Übernahme automatisch aus',()=>{
+    expect(automaticallySelectedOcrIds({
+      rawText:'THE ORDAINED',rarity:'unique',affixes:[],warnings:[],
+      unique:{uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',uniqueName:'The Ordained',confidence:100,resolutionStatus:'auto-selected',observedLines:['GRANTS SKILL: SPEAR THROW']},
+    })).toEqual(['pob2:src/Data/Uniques/spear.lua#4'])
   })
 })

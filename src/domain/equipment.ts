@@ -30,4 +30,5 @@ export interface EquipmentEntry {
   defences?: EquipmentDefences
   uniqueItemId?: EntityId
   uniqueVariantId?: EntityId
+  observedUniqueLines?: string[]
 }

@@ -146,7 +146,13 @@ function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined
   const best=candidates[0]
   if(!best||best.score<.7)return
   const confidence=Math.round(best.score*100)
-  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required'}
+  const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
+  const requirementsIndex=lines.findIndex(line=>/^(?:Requires|Erfordert)\s+(?:Level|Stufe)\b/i.test(line))
+  const lastHeaderIndex=lines.reduce((last,line,index)=>/^(?:Physical Damage|Lightning Damage|Cold Damage|Fire Damage|Chaos Damage|Critical Hit Chance|Attacks per Second|Range|Quality|Armour|Evasion Rating|Energy Shield)\s*:/i.test(line)?index:last,-1)
+  const propertiesStart=Math.max(requirementsIndex,lastHeaderIndex)+1
+  const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert)$/i.test(line))
+  const observedLines=propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex).filter(line=>!/^[-=]{3,}$/.test(line))
+  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required',observedLines}
 }
 
 export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
@@ -157,12 +163,12 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const {quality,defences}=itemHeaderValues(text)
   const windows=windowsFor(lines)
   const classes=itemClassesForSlot(slotId)
-  const matches=classes.flatMap(itemClass=>['prefix','suffix','implicit'].flatMap(side=>affixesFor(itemClass.itemClassId,side as 'prefix'|'suffix'|'implicit',itemLevel).map(affix=>bestAffixCandidate(affix,windows,itemClass.itemClassId)).filter((value):value is OcrAffixCandidate=>Boolean(value))))
+  const unique=uniqueCandidate(text,slotId)
+  if(unique&&unique.resolutionStatus==='auto-selected')rarity='unique'
+  const matches=rarity==='unique'?[]:classes.flatMap(itemClass=>['prefix','suffix','implicit'].flatMap(side=>affixesFor(itemClass.itemClassId,side as 'prefix'|'suffix'|'implicit',itemLevel).map(affix=>bestAffixCandidate(affix,windows,itemClass.itemClassId)).filter((value):value is OcrAffixCandidate=>Boolean(value))))
   const classScores=classes.map(itemClass=>({id:itemClass.itemClassId,score:matches.filter(match=>match.itemClassId===itemClass.itemClassId&&match.resolutionStatus==='auto-selected').reduce((sum,match)=>sum+match.confidence,0)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id))
   const itemClassId=classScores[0]?.score?classScores[0].id:classes.length===1?classes[0].itemClassId:undefined
   let affixes=dedupeAffixes(itemClassId?matches.filter(match=>match.itemClassId===itemClassId):matches)
-  const unique=uniqueCandidate(text,slotId)
-  if(unique&&unique.resolutionStatus==='auto-selected')rarity='unique'
   if(!rarity&&!unique){
     const recognizedSourceLines=new Set(affixes.filter(value=>value.resolutionStatus==='auto-selected').map(value=>normalizeOcrText(value.sourceText)))
     if(recognizedSourceLines.size>=3)rarity='rare'

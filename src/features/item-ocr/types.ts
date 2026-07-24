@@ -18,6 +18,7 @@ export interface OcrUniqueCandidate {
   uniqueName: string
   confidence: number
   resolutionStatus: OcrResolutionStatus
+  observedLines: string[]
 }
 
 export interface ItemOcrResult {

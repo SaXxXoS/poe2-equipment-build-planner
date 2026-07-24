@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ItemImageMode, ItemOcrResult } from '../features/item-ocr'
 import { recognizeItemImage } from '../features/item-ocr'
+import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 const progressText:Record<string,string>={
   'loading tesseract core':'OCR-Kern wird geladen',
@@ -9,7 +10,6 @@ const progressText:Record<string,string>={
   'initializing api':'Texterkennung wird gestartet',
   'recognizing text':'Gegenstandstext wird erkannt',
 }
-
 export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:ItemOcrResult,selectedAffixIds:Set<string>)=>void}){
   const photoInput=useRef<HTMLInputElement>(null),screenshotInput=useRef<HTMLInputElement>(null)
   const [mode,setMode]=useState<ItemImageMode>()
@@ -26,7 +26,7 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
     setPreview(URL.createObjectURL(file));setMode(nextMode);setResult(undefined);setError('');setProgress(0);setStatus('Bild wird vorbereitet')
     try{
       const next=await recognizeItemImage(file,slotId,value=>{setStatus(progressText[value.status]??value.status);setProgress(Math.round(value.progress*100))})
-      setResult(next);setSelected(new Set(next.affixes.filter(value=>value.resolutionStatus==='auto-selected').map(value=>value.affixId)));setStatus('Erkennung abgeschlossen')
+      setResult(next);setSelected(new Set(automaticallySelectedOcrIds(next)));setStatus('Erkennung abgeschlossen')
     }catch(reason){
       setError(reason instanceof Error?reason.message:'Das Bild konnte nicht erkannt werden.');setStatus('')
     }
@@ -59,7 +59,7 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
       {result.affixes.length?<div className="ocr-match-list">{result.affixes.map(match=>{const blocked=match.resolutionStatus==='review-required'&&!match.values.length;return <label className="ocr-match" data-review={match.resolutionStatus==='review-required'} key={match.affixId}><input type="checkbox" disabled={blocked} checked={selected.has(match.affixId)} onChange={event=>setSelected(current=>{const next=new Set(current);if(event.target.checked)next.add(match.affixId);else next.delete(match.affixId);return next})}/><span><b>{match.displayText}</b><small>{match.affixSide} · Werte {match.values.length?match.values.join(' / '):'nicht sicher erkannt'} · {match.confidence} %</small><em>Bildtext: {match.sourceText}</em></span></label>})}</div>:<p>Keine normalen Affixe sicher zugeordnet.</p>}
       {result.warnings.map(value=><p className="warning" key={value}>{value}</p>)}
       <details><summary>Erkannten Rohtext anzeigen</summary><pre className="ocr-raw-text">{result.rawText||'Kein Text erkannt'}</pre></details>
-      <button disabled={!result.unique&&!selected.size&&result.quality===undefined&&!result.defences} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
+      <button disabled={!selected.size&&result.quality===undefined&&!result.defences} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
     </div>}
   </section>
 }

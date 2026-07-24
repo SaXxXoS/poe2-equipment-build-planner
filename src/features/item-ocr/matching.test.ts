@@ -22,6 +22,39 @@ Bloodstone Amulet`,'slot-amulet')
     expect(result.unique).toMatchObject({uniqueName:'The Anvil',resolutionStatus:'auto-selected'})
     expect(result).not.toHaveProperty('unique.variantId')
   })
+  it('erkennt The Ordained im Waffenslot eindeutig als produktives PoB2-Unique',()=>{
+    const result=matchItemOcr(`THE ORDAINED
+GRAND SPEAR
+SPEAR: ITEM LEVEL 84
+QUALITY: +20%
+PHYSICAL DAMAGE: 264-396
+LIGHTNING DAMAGE: 1-406
+CRITICAL HIT CHANCE: 5.00%
+ATTACKS PER SECOND: 1.40
+RANGE: 15
+REQUIRES LEVEL 84, 68 STR, 109 DEX
+GAIN 5% OF DAMAGE AS EXTRA DAMAGE OF ALL ELEMENTS
+GRANTS SKILL: SPEAR THROW
+25% INCREASED MELEE STRIKE RANGE WITH THIS WEAPON
+294% INCREASED PHYSICAL DAMAGE
+ADDS 1 TO 339 LIGHTNING DAMAGE
++7.52% TO CRITICAL HIT CHANCE
+LIFE LEECH RECOVERS BASED ON YOUR LIGHTNING DAMAGE AS WELL AS PHYSICAL DAMAGE
+CREATE A FRAGMENT OF DIVINITY IN YOUR PRESENCE EVERY 4 SECONDS
+CORRUPTED`,'slot-weapon-set-1-left')
+    expect(result).toMatchObject({rarity:'unique',itemLevel:84,quality:20,baseDisplayName:'GRAND SPEAR'})
+    expect(result.unique).toMatchObject({
+      uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',
+      uniqueName:'The Ordained',
+      resolutionStatus:'auto-selected',
+    })
+    expect(result.unique?.observedLines).toEqual(expect.arrayContaining([
+      'GAIN 5% OF DAMAGE AS EXTRA DAMAGE OF ALL ELEMENTS',
+      'GRANTS SKILL: SPEAR THROW',
+      '294% INCREASED PHYSICAL DAMAGE',
+      'CREATE A FRAGMENT OF DIVINITY IN YOUR PRESENCE EVERY 4 SECONDS',
+    ]))
+  },30000)
   it('lässt unlesbaren oder mehrdeutigen Text ungeklärt',()=>{
     const result=matchItemOcr('xx 11 ?? unreadable','slot-helmet')
     expect(result.affixes.filter(value=>value.resolutionStatus==='auto-selected')).toHaveLength(0)

@@ -38,6 +38,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   const [uniqueSearch, setUniqueSearch] = useState('')
   const [uniqueItemId, setUniqueItemId] = useState(entry.uniqueItemId ?? '')
   const [uniqueVariantId, setUniqueVariantId] = useState(entry.uniqueVariantId ?? '')
+  const [observedUniqueLines,setObservedUniqueLines]=useState(entry.observedUniqueLines??[])
   const baseItems = baseItemsFor(itemClassId)
   const chosenUnique = localizedPob2UniquesDe.find(item => item.id === uniqueItemId)
   const chosenUniqueLines = chosenUnique ? localizedPob2LinesForVariant(chosenUnique, uniqueVariantId) : undefined
@@ -54,9 +55,9 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
 
   function chooseRarity(value: ItemRarity) { setRarity(value); setStep('editor'); setPicker(undefined) }
   function applyOcr(result:ItemOcrResult,selectedIds:Set<string>){
-    setQuality(result.quality);setArmour(result.defences?.armour);setEvasion(result.defences?.evasion);setEnergyShield(result.defences?.energyShield)
+    setItemLevel(result.itemLevel);setQuality(result.quality);setArmour(result.defences?.armour);setEvasion(result.defences?.evasion);setEnergyShield(result.defences?.energyShield)
     if(result.unique&&selectedIds.has(result.unique.uniqueItemId)){
-      setRarity('unique');setUniqueItemId(result.unique.uniqueItemId);setUniqueVariantId('');setAdded([]);setStep('editor');return
+      setRarity('unique');setUniqueItemId(result.unique.uniqueItemId);setUniqueVariantId('');setObservedUniqueLines(result.unique.observedLines);setAdded([]);setStep('editor');return
     }
     const nextRarity=result.rarity&&result.rarity!=='unique'?result.rarity:'rare'
     const nextClass=result.itemClassId??itemClassId
@@ -82,7 +83,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
     const limits = RARITY_LIMITS[rarity]
     const defences=armour===undefined&&evasion===undefined&&energyShield===undefined?undefined:{armour,evasion,energyShield}
     const normalModifiers = rarity === 'unique' ? [] : added.filter(value => value.affixSide === 'implicit' || value.affixSide === 'prefix' && modifiersFor({ ...entry, modifierValues: added }, 'prefix').indexOf(value) < limits.prefix || value.affixSide === 'suffix' && modifiersFor({ ...entry, modifierValues: added }, 'suffix').indexOf(value) < limits.suffix)
-    onSave(rarity === 'unique' ? { ...entry, rarity, uniqueItemId, uniqueVariantId: uniqueVariantId || undefined, modifierValues: [], itemClassId: undefined, itemDefinitionId: undefined, baseDisplayName: undefined, itemLevel, quality, defences, sockets } : { ...entry, rarity, uniqueItemId: undefined, uniqueVariantId: undefined, itemClassId, itemDefinitionId: baseItemId || undefined, baseDisplayName: baseDisplayName.trim() || undefined, itemLevel, quality, defences, modifierValues: normalModifiers, sockets })
+    onSave(rarity === 'unique' ? { ...entry, rarity, uniqueItemId, uniqueVariantId: uniqueVariantId || undefined, observedUniqueLines, modifierValues: [], itemClassId: undefined, itemDefinitionId: undefined, baseDisplayName: undefined, itemLevel, quality, defences, sockets } : { ...entry, rarity, uniqueItemId: undefined, uniqueVariantId: undefined, observedUniqueLines:undefined, itemClassId, itemDefinitionId: baseItemId || undefined, baseDisplayName: baseDisplayName.trim() || undefined, itemLevel, quality, defences, modifierValues: normalModifiers, sockets })
     onClose()
   }
   return <div className="modal-backdrop" onMouseDown={event => event.target === event.currentTarget && onClose()}><div className="modal item-editor" role="dialog" aria-modal="true">
@@ -100,6 +101,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
           {chosenUniqueLines.implicits.length > 0 && <div><h4>Implizite Eigenschaften</h4><ul className="unique-editor-lines">{chosenUniqueLines.implicits.map(line => <li key={line.id}>{line.text}</li>)}</ul></div>}
           <div><h4>Einzigartige Eigenschaften</h4>{chosenUniqueLines.modifiers.length > 0 ? <ul className="unique-editor-lines">{chosenUniqueLines.modifiers.map(line => <li key={line.id}>{line.text}</li>)}</ul> : <p className="muted">Keine Eigenschaften für diese Variante aufgelöst.</p>}</div>
         </>}
+        {observedUniqueLines.length>0&&<div><h4>Im Bild erkannte Eigenschaften</h4><ul className="unique-editor-lines">{observedUniqueLines.map((line,index)=><li key={`${index}-${line}`}>{line}</li>)}</ul><p className="warning">Diese konkreten Bildwerte bleiben am ausgerüsteten Gegenstand erhalten. Nicht im gepinnten PoB2-Datensatz belegte Zeilen werden angezeigt, aber nicht als technische GGG-Mods ausgegeben.</p></div>}
         <div className="form-grid compact"><label>Qualität (%)<input type="number" min="0" value={quality ?? ''} onChange={event=>setQuality(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Rüstung<input type="number" min="0" value={armour ?? ''} onChange={event=>setArmour(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Ausweichwert<input type="number" min="0" value={evasion ?? ''} onChange={event=>setEvasion(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Energieschild<input type="number" min="0" value={energyShield ?? ''} onChange={event=>setEnergyShield(event.target.value===''?undefined:Number(event.target.value))}/></label></div>
         <small>PoB2-Planerdaten; normale Affixe bleiben getrennt.</small>
       </div>}</> : <>
