@@ -83,7 +83,7 @@ function bestAffixCandidate(affix:TechnicalAffix,windows:string[],itemClassId:st
   const values=fittingValues(affix.statLines,numericValues(best.text))
   const valueSafe=affix.statLines.every(line=>line.valueType==='fixed')||values.length===affix.statLines.length
   const confidence=Math.round(best.score*100)
-  return{affixId:affix.affixId,affixSide:affix.affixSide as OcrAffixCandidate['affixSide'],itemClassId,sourceText:best.text,displayText:affixDisplayName(affix),values,confidence,resolutionStatus:confidence>=78&&valueSafe?'auto-selected':'review-required'}
+  return{affixId:affix.affixId,affixSide:affix.affixSide as OcrAffixCandidate['affixSide'],itemClassId,sourceText:best.text,displayText:affixDisplayName(affix),values,confidence,resolutionStatus:confidence>=90&&valueSafe?'auto-selected':'review-required'}
 }
 function dedupeAffixes(values:OcrAffixCandidate[]){
   const selected=new Map<string,OcrAffixCandidate>()
@@ -92,6 +92,38 @@ function dedupeAffixes(values:OcrAffixCandidate[]){
     if(!selected.has(affixKey))selected.set(affixKey,value)
   }
   return [...selected.values()].sort((a,b)=>a.affixSide.localeCompare(b.affixSide)||b.confidence-a.confidence||a.affixId.localeCompare(b.affixId))
+}
+function resolveAmbiguousAffixSides(values:OcrAffixCandidate[],rarity:ItemRarity|undefined){
+  const limits=rarity==='rare'?{prefix:3,suffix:3}:rarity==='magic'?{prefix:1,suffix:1}:{prefix:3,suffix:3}
+  const automatic=values.filter(value=>value.resolutionStatus==='auto-selected'&&value.affixSide!=='implicit')
+  const groups=new Map<string,OcrAffixCandidate[]>()
+  for(const value of automatic){
+    const key=normalizeOcrText(value.sourceText)
+    groups.set(key,[...(groups.get(key)??[]),value])
+  }
+  const chosen=new Map<string,OcrAffixCandidate>()
+  const used={prefix:0,suffix:0}
+  for(const [key,candidates] of groups){
+    const sides=new Set(candidates.map(value=>value.affixSide))
+    if(sides.size!==1)continue
+    const best=[...candidates].sort((a,b)=>b.confidence-a.confidence||a.affixId.localeCompare(b.affixId))[0]
+    chosen.set(key,best)
+    if(best.affixSide==='prefix'||best.affixSide==='suffix')used[best.affixSide]++
+  }
+  for(const [key,candidates] of groups){
+    if(chosen.has(key))continue
+    const best=[...candidates].sort((a,b)=>{
+      const aSpace=a.affixSide==='prefix'||a.affixSide==='suffix'?limits[a.affixSide]-used[a.affixSide]:0
+      const bSpace=b.affixSide==='prefix'||b.affixSide==='suffix'?limits[b.affixSide]-used[b.affixSide]:0
+      return bSpace-aSpace||b.confidence-a.confidence||a.affixId.localeCompare(b.affixId)
+    })[0]
+    chosen.set(key,best)
+    if(best.affixSide==='prefix'||best.affixSide==='suffix')used[best.affixSide]++
+  }
+  return values.map(value=>{
+    if(value.resolutionStatus!=='auto-selected'||value.affixSide==='implicit')return value
+    return chosen.get(normalizeOcrText(value.sourceText))===value?value:{...value,resolutionStatus:'review-required' as const}
+  })
 }
 function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined{
   const allowedSlot=slotId.includes('helmet')?'helmet':slotId.includes('body')?'body-armour':slotId.includes('gloves')?'gloves':slotId.includes('boots')?'boots':slotId.includes('amulet')?'amulet':slotId.includes('ring')?'ring':slotId.includes('belt')?'belt':slotId.includes('weapon')?'weapon':slotId.includes('jewel')?'jewel':'special'
@@ -113,7 +145,7 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const matches=classes.flatMap(itemClass=>['prefix','suffix','implicit'].flatMap(side=>affixesFor(itemClass.itemClassId,side as 'prefix'|'suffix'|'implicit',itemLevel).map(affix=>bestAffixCandidate(affix,windows,itemClass.itemClassId)).filter((value):value is OcrAffixCandidate=>Boolean(value))))
   const classScores=classes.map(itemClass=>({id:itemClass.itemClassId,score:matches.filter(match=>match.itemClassId===itemClass.itemClassId&&match.resolutionStatus==='auto-selected').reduce((sum,match)=>sum+match.confidence,0)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id))
   const itemClassId=classScores[0]?.score?classScores[0].id:classes.length===1?classes[0].itemClassId:undefined
-  const affixes=dedupeAffixes(itemClassId?matches.filter(match=>match.itemClassId===itemClassId):matches)
+  let affixes=dedupeAffixes(itemClassId?matches.filter(match=>match.itemClassId===itemClassId):matches)
   const unique=uniqueCandidate(text,slotId)
   if(unique&&unique.resolutionStatus==='auto-selected')rarity='unique'
   if(!rarity&&!unique){
@@ -121,6 +153,7 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
     if(recognizedSourceLines.size>=3)rarity='rare'
     else if(recognizedSourceLines.size>=1)rarity='magic'
   }
+  affixes=resolveAmbiguousAffixSides(affixes,rarity)
   const warnings:string[]=[]
   if(!text)warnings.push('Es wurde kein lesbarer Text erkannt.')
   if(rarity==='unique'&&!unique)warnings.push('Der Unique-Name konnte nicht sicher zugeordnet werden.')

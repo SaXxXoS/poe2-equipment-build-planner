@@ -46,8 +46,47 @@ ERFORDERT STUFE 80, INTELLIGENZ 115
     expect(result.rarity).toBe('rare')
     expect(result.itemLevel).toBe(82)
     expect(result.baseDisplayName).toBe('AHNENTIARA')
-    expect(result.affixes.find(value=>value.affixId==='IncreasedLife9')).toMatchObject({values:[120],resolutionStatus:'auto-selected'})
-    expect(result.affixes.find(value=>value.values.includes(45))?.resolutionStatus).toBe('auto-selected')
-    expect(result.affixes.filter(value=>value.resolutionStatus==='auto-selected').length).toBeGreaterThanOrEqual(5)
+    const automatic=result.affixes.filter(value=>value.resolutionStatus==='auto-selected')
+    expect(automatic).toEqual(expect.arrayContaining([
+      expect.objectContaining({affixId:'LocalIncreasedEnergyShield8',affixSide:'prefix',values:[73]}),
+      expect.objectContaining({affixId:'LocalIncreasedEnergyShieldPercent7_',affixSide:'prefix',values:[95]}),
+      expect.objectContaining({affixId:'IncreasedLife9',affixSide:'prefix',values:[120]}),
+      expect.objectContaining({affixId:'ItemFoundRarityIncrease3',affixSide:'suffix',values:[16]}),
+      expect.objectContaining({affixId:'CriticalStrikeChance5',affixSide:'suffix',values:[32]}),
+      expect.objectContaining({affixId:'FireResist8',affixSide:'suffix',values:[45]}),
+    ]))
+    expect(automatic.filter(value=>value.affixSide==='prefix')).toHaveLength(3)
+    expect(automatic.filter(value=>value.affixSide==='suffix')).toHaveLength(3)
+  })
+  it('übernimmt alle sechs Affixe aus dem englischen Screenshot variantengenau in drei Prefixe und drei Suffixe',()=>{
+    const result=matchItemOcr(`DOOM CREST
+ANCESTRAL TIARA
+HELMET: ITEM LEVEL 82
+QUALITY: +20%
+ENERGY SHIELD: 424
+REQUIRES LEVEL 80, 115 INT.
+ALLOCATES ZAROKH'S GIFT
+RAVEN-TOUCHED
+16% INCREASED RARITY OF ITEMS FOUND
++73 TO MAXIMUM ENERGY SHIELD
+95% INCREASED ENERGY SHIELD
++120 TO MAXIMUM LIFE
+32% INCREASED CRITICAL HIT CHANCE
++45% TO FIRE RESISTANCE`,'slot-helmet')
+    const automatic=result.affixes.filter(value=>value.resolutionStatus==='auto-selected')
+    expect(result).toMatchObject({rarity:'rare',itemLevel:82,baseDisplayName:'ANCESTRAL TIARA'})
+    expect(automatic).toEqual(expect.arrayContaining([
+      expect.objectContaining({affixId:'LocalIncreasedEnergyShield8',affixSide:'prefix',values:[73]}),
+      expect.objectContaining({affixId:'LocalIncreasedEnergyShieldPercent7_',affixSide:'prefix',values:[95]}),
+      expect.objectContaining({affixId:'IncreasedLife9',affixSide:'prefix',values:[120]}),
+      expect.objectContaining({affixId:'ItemFoundRarityIncrease3',affixSide:'suffix',values:[16]}),
+      expect.objectContaining({affixId:'CriticalStrikeChance5',affixSide:'suffix',values:[32]}),
+      expect.objectContaining({affixId:'FireResist8',affixSide:'suffix',values:[45]}),
+    ]))
+    expect(automatic.filter(value=>value.affixSide==='prefix')).toHaveLength(3)
+    expect(automatic.filter(value=>value.affixSide==='suffix')).toHaveLength(3)
+    expect(automatic).not.toEqual(expect.arrayContaining([
+      expect.objectContaining({affixId:'ItemFoundRarityIncreasePrefix3'}),
+    ]))
   })
 })
