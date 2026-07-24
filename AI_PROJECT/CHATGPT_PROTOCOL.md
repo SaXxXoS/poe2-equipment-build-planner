@@ -1203,3 +1203,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Passive Planner `5G-1.2.0`, reale Passive-Pipeline `5H-1.1.0`.
 - Baumquelle, Produktdaten, Datenpins, Analyzerarchitektur und
   Waffen-Set-Regel bleiben unverändert.
+
+# Rückkopplung der Passive-Skalierungen
+
+- Die bisherige Integrationslücke ist geschlossen: belegte normale Passiv-
+  und Aszendenzknoten beeinflussen jetzt die nachfolgenden Analyzer.
+- Die feste Reihenfolge lautet Equipmentprofil, Aszendenzplan,
+  Aszendenzwirkung, gemeinsamer Passivplan, gemeinsame Wirkung,
+  Waffen-Set-Pläne und nachgelagerte Analyzer.
+- Gemeinsame Passiv- und Aszendenzwirkungen werden in beide getrennten
+  Waffen-Set-Profile übernommen; die Set-Pfade bleiben weiterhin getrennt.
+- Verwendet werden ausschließlich vorhandene semantische Profilfelder,
+  Knotenklassifikationen und Passive-Zielregeln.
+- Unbekannte oder nicht sicher klassifizierbare Knotenzeilen erzeugen keine
+  Skalierung.
+- Die Passive-Ansicht weist die Zahl der berücksichtigten Aszendenz- und
+  gemeinsamen Baumknoten aus.
+- Das Ergebnis ist eine deterministische semantische Rückkopplung und keine
+  exakte DPS- oder Charakterwertsimulation.
