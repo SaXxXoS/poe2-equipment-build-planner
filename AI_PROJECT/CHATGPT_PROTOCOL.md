@@ -1,5 +1,17 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Deutsche Normal-Affix-Anzeigeschicht (2026-07-24)
+
+- Alle 2.255 produktiven normalen Affixe besitzen nun einen deutschen Anzeigetext.
+- 2.169 Anzeigen werden über den gepinnten lokalen deutschen CSD-Bestand und technische Stat-ID-/Werteketten aufgelöst.
+- 86 Hybrid- und Sonderzeilen verwenden eine separat gekennzeichnete deterministische App-Anzeigeübersetzung.
+- `translation-missing`: 0.
+- Englische technische Produktdaten, Stat-/Mod-IDs, Affixwerte, Analyzer, Datenpins und Unique-Daten bleiben unverändert.
+- Generator: `scripts/poe2-affix-german-display/generate.mjs`.
+- Anzeigeschicht: `generated/localization/de/poe2-affixes.json`.
+- Coverage: `docs/audits/poe2-german-affix-display-coverage.json`.
+- Nächster Schwerpunkt aus der Auftraggeberliste: automatische Befüllung leerer Fertigkeitskarten nach der Analyse beziehungsweise vollständigerer Skill-/Supportbestand.
+
 ## Hauptaufgabe V1.2 – funktionale Vollständigkeit
 
 - Ausgangscommit: `1242dd78f0bb4eedacaeb03505390704aefa78d1`.

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "totalAffixes": 2255,
+  "verifiedLocalSource": 2169,
+  "reviewedAppTranslation": 86,
+  "translationMissing": 0,
+  "germanDisplayCoveragePercent": 100,
+  "appTranslationStatIds": [
+    "accuracy_rating",
+    "accuracy_rating_+%",
+    "base_life_leech_from_physical_attack_damage_permyriad",
+    "base_maximum_mana",
+    "chance_to_fork_extra_projectile_%",
+    "light_radius_+%",
+    "local_accuracy_rating",
+    "local_charges_used_+%",
+    "local_display_grants_spear_throw_skill",
+    "local_hand_wraps_energy_shield_per_level",
+    "local_hand_wraps_evasion_rating_per_level",
+    "local_hand_wraps_player_level_to_use",
+    "local_hand_wraps_ward_per_level",
+    "local_jewel_display_radius_change",
+    "local_jewel_effect_base_radius",
+    "local_level_requirement_override",
+    "local_physical_damage_+%",
+    "local_weapon_implicit_hidden_%_base_damage_is_chaos",
+    "local_weapon_implicit_hidden_%_base_damage_is_cold",
+    "local_weapon_implicit_hidden_%_base_damage_is_fire",
+    "local_weapon_implicit_hidden_%_base_damage_is_lightning",
+    "local_weapon_implicit_hidden_added_maximum_chaos_damage",
+    "local_weapon_implicit_hidden_added_maximum_lightning_damage",
+    "local_weapon_implicit_hidden_added_minimum_chaos_damage",
+    "local_weapon_implicit_hidden_added_minimum_lightning_damage",
+    "spell_damage_+%",
+    "trap_damage_+%",
+    "trap_throwing_speed_+%"
+  ],
+  "sourceProductFiles": [
+    "generated/poe2-affixes/technical-affixes.json",
+    "generated/poe2-items/jewel-mods.json",
+    "generated/poe2-items/charm-mods.json",
+    "generated/poe2-items/life-flask-mods.json",
+    "generated/poe2-items/mana-flask-mods.json"
+  ],
+  "sourcePin": {
+    "contentSha256": "a917a56f89ae631f1a93e0dd9a3ea169f08e826e07927c0083a01c6e68a18e28",
+    "csdManifestSha256": "976a428f088618b24dad7779440413b9f296a9c906c5563659e446d4fd19b11d"
+  },
+  "generatedFileSha256": "9a56e06e35157f716f48a516b505d6585be328e8769b7a5f71fe53d69d3a8d24",
+  "limitations": [
+    "Only unambiguous stat-ID-chain and value-limit matches are localized.",
+    "Records without an unambiguous local CSD rendering use a separately labelled deterministic German app-display translation.",
+    "Technical affix records, IDs, ranges and analyzer semantics remain unchanged."
+  ]
+}

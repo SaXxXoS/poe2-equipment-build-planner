@@ -1,5 +1,6 @@
 import type { TechnicalAffix } from '../../affixes/model'
 import { classifyTechnicalAffix } from '../../affixes/analyzer-semantics'
+import { germanAffixDisplay } from '../../localization/poe2-affixes-de'
 
 const aliases: Record<string, string> = {
   life: 'Leben', mana: 'Mana', fire: 'Feuer', cold: 'Kälte', lightning: 'Blitz',
@@ -28,7 +29,8 @@ export function cleanAffixText(value: string) {
 }
 
 export function affixDisplayName(affix: TechnicalAffix) {
-  return cleanAffixText(affix.technicalText || affix.technicalName || 'Nicht auflösbares Affix')
+  const german = germanAffixDisplay(affix.affixId)
+  return german?.text || cleanAffixText(affix.technicalText || affix.technicalName || 'Nicht auflösbares Affix')
 }
 
 export function affixGroupName(affix: TechnicalAffix) {
