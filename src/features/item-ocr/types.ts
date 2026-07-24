@@ -19,6 +19,7 @@ export interface OcrUniqueCandidate {
   confidence: number
   resolutionStatus: OcrResolutionStatus
   observedLines: string[]
+  observedImplicitLines: string[]
 }
 
 export interface ItemOcrResult {

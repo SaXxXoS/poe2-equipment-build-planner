@@ -37,4 +37,5 @@ export interface EquipmentEntry {
   uniqueVariantId?: EntityId
   observedUniqueLines?: string[]
   observedItemLines?: string[]
+  observedImplicitLines?: string[]
 }

@@ -84,7 +84,7 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
   it('wählt ein sicher erkanntes Unique für die Übernahme automatisch aus',()=>{
     expect(automaticallySelectedOcrIds({
       rawText:'THE ORDAINED',rarity:'unique',observedLines:[],affixes:[],warnings:[],
-      unique:{uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',uniqueName:'The Ordained',confidence:100,resolutionStatus:'auto-selected',observedLines:['GRANTS SKILL: SPEAR THROW']},
+      unique:{uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',uniqueName:'The Ordained',confidence:100,resolutionStatus:'auto-selected',observedLines:['GRANTS SKILL: SPEAR THROW'],observedImplicitLines:[]},
     })).toEqual(['pob2:src/Data/Uniques/spear.lua#4'])
   })
 })

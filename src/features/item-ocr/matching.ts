@@ -5,7 +5,12 @@ import type { ItemRarity } from '../../domain'
 import { affixDisplayName, cleanAffixText } from '../equipment-editor/affix-display'
 import type { ItemOcrResult, OcrAffixCandidate, OcrUniqueCandidate } from './types'
 
-interface ProductUnique { sourceId:string; name:string; slot:string }
+interface ProductUnique {
+  sourceId:string
+  name:string
+  slot:string
+  implicits:Array<{ sourceLineId:string; normalizedPlannerLine:string }>
+}
 const productUniques=uniqueProduct.items as ProductUnique[]
 
 export function normalizeOcrText(value:string){
@@ -154,7 +159,9 @@ function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined
   const best=candidates[0]
   if(!best||best.score<.7)return
   const confidence=Math.round(best.score*100)
-  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required',observedLines:observedPropertyLines(text)}
+  const observedLines=observedPropertyLines(text)
+  const observedImplicitLines=observedLines.filter(line=>best.item.implicits.some(implicit=>similarity(line,implicit.normalizedPlannerLine)>=.88))
+  return{uniqueItemId:best.item.sourceId,uniqueName:best.item.name,confidence,resolutionStatus:confidence>=88?'auto-selected':'review-required',observedLines,observedImplicitLines}
 }
 
 export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{

@@ -54,6 +54,11 @@ CORRUPTED`,'slot-weapon-set-1-left')
       '294% INCREASED PHYSICAL DAMAGE',
       'CREATE A FRAGMENT OF DIVINITY IN YOUR PRESENCE EVERY 4 SECONDS',
     ]))
+    expect(result.unique?.observedImplicitLines).toEqual([
+      '25% INCREASED MELEE STRIKE RANGE WITH THIS WEAPON',
+      '294% INCREASED PHYSICAL DAMAGE',
+      'ADDS 1 TO 339 LIGHTNING DAMAGE',
+    ])
     expect(result.observedLines).toEqual(result.unique?.observedLines)
   },30000)
   it('lässt unlesbaren oder mehrdeutigen Text ungeklärt',()=>{
