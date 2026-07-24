@@ -1262,3 +1262,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   gemeinsamen Baumknoten aus.
 - Das Ergebnis ist eine deterministische semantische Rückkopplung und keine
   exakte DPS- oder Charakterwertsimulation.
+
+# Dynamische Gegenstandseigenschaften
+
+- Auf ausdrückliche Auftraggeberentscheidung besitzt der Item-Editor keine
+  sichtbare feste Anzahl von Affix-, Implicit- oder Sockelplätzen mehr.
+- Technisch bekannte Prefixe, Suffixe und Implicits werden dynamisch über
+  Plus/Minus verwaltet; sämtliche eingegebenen `statValues` gelangen weiterhin
+  unverändert in BuildProfile, Equipment Analyzer und Schadensreferenz.
+- Foto- und Screenshotzeilen werden ohne Anzahlbegrenzung als bearbeitbare
+  Eigenschaften übernommen.
+- Freie Eigenschaften speichern Art, Originaltext, tatsächliche Zahlenwerte,
+  Quelle und Nutzerbestätigung. Unterstützte Arten umfassen Sockeleffekt,
+  Unique-Eigenschaft, Verzauberung und gewährte Fertigkeit.
+- Frühere konkrete Sockeleffekte werden rückwärtskompatibel in die dynamische
+  Eigenschaftsliste migriert; die separate sichtbare Sockelplatzbedienung ist
+  entfallen.
+- Unbekannte Freitextzeilen bleiben vollständig erhalten, erzeugen aber ohne
+  sichere technische Zuordnung keinen erfundenen Analyzer-Score.
+- Keine Datenquelle, kein Produktpin und keine Analyzerarchitektur wurde
+  ersetzt.

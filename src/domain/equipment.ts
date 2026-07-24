@@ -15,6 +15,15 @@ export interface EquipmentDefences {
   evasion?: number
   energyShield?: number
 }
+export type ItemPropertyKind = 'prefix' | 'suffix' | 'implicit' | 'socket-effect' | 'unique-property' | 'enchantment' | 'granted-skill' | 'unknown'
+export interface ItemProperty {
+  id: EntityId
+  kind: ItemPropertyKind
+  text: string
+  values: number[]
+  source: 'ocr' | 'manual'
+  confirmed: boolean
+}
 
 export interface EquipmentSlotDefinition extends GameDataMetadata {
   weaponSet: WeaponSet
@@ -38,4 +47,5 @@ export interface EquipmentEntry {
   observedUniqueLines?: string[]
   observedItemLines?: string[]
   observedImplicitLines?: string[]
+  properties?: ItemProperty[]
 }

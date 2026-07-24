@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { EquipmentEntry } from '../../domain'
-import { appliedModifierId, inferItemRarity, migrateEquipmentEntry, modifiersFor, RARITY_LIMITS } from './model'
+import { appliedModifierId, createManualProperty, inferItemRarity, migrateEquipmentEntry, modifiersFor, numericPropertyValues, RARITY_LIMITS } from './model'
 import { cleanAffixText } from './affix-display'
 
 const entry = (values: EquipmentEntry['modifierValues'] = []): EquipmentEntry => ({ id:'equipment-slot-helmet', slotId:'slot-helmet', modifierValues:values })
@@ -25,6 +25,17 @@ describe('V1.3 equipment editor model', () => {
   it('migrates former entries deterministically without losing actual values', () => {
     const legacy = entry([{ id:'', modifierId:'legacy', value:42, affixSide:'prefix', statValues:[{ statId:'stat', value:42 }] }])
     expect(migrateEquipmentEntry(legacy)).toMatchObject({ rarity:'magic', modifierValues:[{ id:'equipment-slot-helmet:prefix:1', statValues:[{ value:42 }] }] })
+  })
+  it('migrates all observed image lines into editable dynamic properties',()=>{
+    const migrated=migrateEquipmentEntry({...entry(),observedItemLines:['+120 TO MAXIMUM LIFE','95% INCREASED ENERGY SHIELD'],observedImplicitLines:['95% INCREASED ENERGY SHIELD']})
+    expect(migrated.properties).toEqual([
+      expect.objectContaining({kind:'unknown',text:'+120 TO MAXIMUM LIFE',values:[120],source:'ocr',confirmed:false}),
+      expect.objectContaining({kind:'implicit',text:'95% INCREASED ENERGY SHIELD',values:[95],source:'ocr',confirmed:false}),
+    ])
+  })
+  it('supports arbitrary manual properties and actual numeric values',()=>{
+    expect(numericPropertyValues('Adds 12 to 45 Fire Damage')).toEqual([12,45])
+    expect(createManualProperty('item',7)).toEqual({id:'item:manual:8',kind:'unknown',text:'',values:[],source:'manual',confirmed:true})
   })
   it('removes parser separators from visible text', () => {
     expect(cleanAffixText('[Accuracy|Accuracy|]')).not.toContain('|')

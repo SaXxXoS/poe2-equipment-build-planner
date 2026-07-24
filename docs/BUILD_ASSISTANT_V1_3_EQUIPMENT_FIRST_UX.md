@@ -120,3 +120,29 @@ Bekannte Grenzen:
 Der vorhandene Charakter kann mit getrennten Raritäten, mehreren Affixen, tatsächlichen Werten, Implicits, Sockelanzahl, Waffensets und bearbeitbaren Fertigkeitskarten abgebildet werden. Die Eingaben laufen durch die bestehende Build-Engine; keine zweite Engine und keine neue Quelle wurden eingeführt.
 
 Der nächste sinnvolle Auftrag ist ein eng begrenzter V1.3.1-Praxistest und UX-Feinschliff mit den tatsächlich gewünschten Referenzbildern als lokal bereitgestellte Dateien, insbesondere für Sockelregeln, Dialognavigation und sprachliche Affixdarstellung.
+
+## Dynamische Gegenstandseigenschaften
+
+Die spätere Auftraggeberentscheidung ersetzt die sichtbare feste Anzahl von
+Prefix-, Suffix-, Implicit- und Sockelplätzen durch eine dynamische
+Eigenschaftsliste:
+
+- Technisch bekannte Prefixe, Suffixe und Implicits können beliebig oft über
+  Plus ergänzt und einzeln über Minus entfernt werden.
+- Foto- und Screenshotzeilen werden vollständig als bearbeitbare Eigenschaften
+  übernommen; es gibt keine Übernahmegrenze nach der Anzahl gefundener Zeilen.
+- Jede freie Eigenschaft besitzt Art, Originaltext, beliebig viele tatsächliche
+  Zahlenwerte, Quelle und Bestätigungsstatus.
+- Mögliche Arten sind Prefix, Suffix, Implicit, Sockeleffekt,
+  Unique-Eigenschaft, Verzauberung, gewährte Fertigkeit und Unbekannt.
+- Frühere Sockelzuordnungen werden deterministisch als Eigenschaften des Typs
+  `socket-effect` migriert. Die bisherigen sichtbaren Sockelplätze entfallen.
+- Nur technisch zugeordnete Affixe erzeugen Analyzerwirkung. Ihre tatsächlichen
+  `statValues` bleiben vollständig im BuildProfile erhalten. Freie oder
+  unbekannte Zeilen werden gespeichert und angezeigt, aber nicht mit erfundener
+  Wirkung bewertet.
+
+Damit kann der Nutzer fehlende OCR-Zeilen ergänzen, falsche Kategorien
+korrigieren und die tatsächlich auf seinem Gegenstand vorhandenen Werte
+manuell eintragen. Dies erhöht die Genauigkeit der vorhandenen semantischen
+Analyse, ist jedoch weiterhin keine vollständige DPS-Simulation.

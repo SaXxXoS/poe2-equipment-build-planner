@@ -1,4 +1,4 @@
-import type { AppliedModifier, EquipmentEntry, ItemRarity } from '../../domain'
+import type { AppliedModifier, EquipmentEntry, ItemProperty, ItemPropertyKind, ItemRarity } from '../../domain'
 import type { TechnicalAffix } from '../../affixes/model'
 
 export const RARITY_LIMITS: Record<ItemRarity, { prefix: number; suffix: number }> = {
@@ -34,7 +34,44 @@ export function migrateEquipmentEntry(entry: EquipmentEntry): EquipmentEntry {
     ...modifier,
     id: modifier.id || appliedModifierId(entry.id, modifier.affixSide ?? 'unknown', index),
   }))
-  return { ...entry, modifierValues, rarity: inferItemRarity({ ...entry, modifierValues }) }
+  const existingProperties=entry.properties??[]
+  const knownTexts=new Set(existingProperties.map(value=>value.text))
+  const legacyLines=entry.observedItemLines??entry.observedUniqueLines??[]
+  const socketLines=(entry.sockets??[]).map(value=>value.observedEffectText).filter((value):value is string=>Boolean(value))
+  const properties:ItemProperty[]=[
+    ...existingProperties,
+    ...legacyLines.filter(text=>!knownTexts.has(text)).map((text,index)=>({
+      id:`${entry.id}:observed:${index+1}`,
+      kind:propertyKindForObservedLine(text,entry.observedImplicitLines??[]),
+      text,
+      values:numericPropertyValues(text),
+      source:'ocr' as const,
+      confirmed:false,
+    })),
+    ...socketLines.filter(text=>!knownTexts.has(text)&&!legacyLines.includes(text)).map((text,index)=>({
+      id:`${entry.id}:socket-effect:${index+1}`,
+      kind:'socket-effect' as const,
+      text,
+      values:numericPropertyValues(text),
+      source:'ocr' as const,
+      confirmed:true,
+    })),
+  ]
+  return { ...entry, modifierValues, properties, rarity: inferItemRarity({ ...entry, modifierValues }) }
+}
+
+export function numericPropertyValues(text:string){
+  return [...text.matchAll(/[+-]?\d+(?:[.,]\d+)?/g)].map(match=>Number(match[0].replace(',','.'))).filter(Number.isFinite)
+}
+
+export function propertyKindForObservedLine(text:string,implicitLines:string[]=[]):ItemPropertyKind{
+  if(implicitLines.includes(text))return'implicit'
+  if(/^GRANTS SKILL\s*:|^GEWÄHRT (?:DIE )?FERTIGKEIT\s*:/i.test(text))return'granted-skill'
+  return'unknown'
+}
+
+export function createManualProperty(entryId:string,index:number):ItemProperty{
+  return{id:`${entryId}:manual:${index+1}`,kind:'unknown',text:'',values:[],source:'manual',confirmed:true}
 }
 
 export function clearItem(entry: EquipmentEntry): EquipmentEntry {
