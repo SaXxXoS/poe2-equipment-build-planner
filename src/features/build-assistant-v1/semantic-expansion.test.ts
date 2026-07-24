@@ -59,6 +59,7 @@ describe('Build Assistant V1.1 semantic expansion', () => {
     expect(pob2UniqueAnalyzerCandidates).toHaveLength(product.recordCount)
     expect(pob2UniqueAnalyzerCandidates.some(item => item.tags.length > 0)).toBe(true)
     expect(pob2UniqueAnalyzerCandidates.every(item => !('gggModId' in item) && !('gggStatId' in item))).toBe(true)
+    expect(pob2UniqueAnalyzerCandidates.flatMap(item => item.variantSemantics ?? [])).toHaveLength(product.variantCount)
   })
 
   it('remains deterministic', () => {

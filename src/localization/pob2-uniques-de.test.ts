@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import product from '../../generated/pob2/uniques.json'
 import germanDisplay from '../../generated/localization/de/pob2-uniques.json'
-import { localizedPob2UniquesDe, pob2GermanDisplayMetadata, resolvePob2GermanDisplay } from './pob2-uniques-de'
+import { localizedPob2LinesForVariant, localizedPob2UniquesDe, pob2GermanDisplayMetadata, resolvePob2GermanDisplay } from './pob2-uniques-de'
 
 describe('PoB2 German display layer', () => {
   it('joins every item, variant and line by stable IDs', () => {
@@ -26,5 +26,17 @@ describe('PoB2 German display layer', () => {
     expect(product.generatedDataHash).toBe('a5a7e7bac84bb5d921002a83efa6a16e96fec794bead9664dbf7de0bd7f04329')
     expect(pob2GermanDisplayMetadata.sourceProductHash).toBe('db3837b51c18fcae5e01572ef437a0f67186183f715402ac9cddb372c19a2452')
     expect(germanDisplay.coverage.statusCounts['translation-missing']).toBe(0)
+  })
+
+  it('resolves exact modifier sets by stable variant ID', () => {
+    const item = localizedPob2UniquesDe.find(value => value.variants.length > 1)!
+    const first = localizedPob2LinesForVariant(item, item.variants[0].id)
+    const second = localizedPob2LinesForVariant(item, item.variants[1].id)
+    const common = localizedPob2LinesForVariant(item)
+    expect(first.exactVariant).toBe(true)
+    expect(second.exactVariant).toBe(true)
+    expect(common.exactVariant).toBe(false)
+    expect(first.modifiers.length + first.implicits.length).toBeGreaterThanOrEqual(common.modifiers.length + common.implicits.length)
+    expect(new Set([...first.modifiers, ...first.implicits].map(line => line.id))).not.toEqual(new Set([...second.modifiers, ...second.implicits].map(line => line.id)))
   })
 })

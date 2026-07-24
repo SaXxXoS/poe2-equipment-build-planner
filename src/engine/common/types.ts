@@ -130,6 +130,15 @@ export interface UniqueCandidate extends UniqueItemDefinition {
   ascendancyIds: EntityId[]
   buildEnabler?: boolean
   semanticEvidence?: 'structured-exact' | 'structured-derived' | 'text-pattern-exact' | 'text-pattern-ambiguous' | 'unresolved'
+  variantSemantics?: Array<{
+    variantId: EntityId
+    tags: MechanicTag[]
+    semanticEvidence: 'structured-exact' | 'structured-derived' | 'text-pattern-exact' | 'text-pattern-ambiguous' | 'unresolved'
+    evidenceLineIds: EntityId[]
+    tradeOffs: string[]
+    buildEnabler: boolean
+    requiredWeaponTypes: SyntheticWeaponType[]
+  }>
 }
 export interface EngineCandidates { skills: SkillGemDefinition[]; supports: SupportGemDefinition[]; passives: PassiveCandidate[]; jewels: AnyJewelDefinition[]; uniques: UniqueCandidate[] }
 export interface BuildAnalysis { equipmentAnalysis: EquipmentAnalysis; buildProfile: BuildProfile; skillAnalysis: SkillAnalysis; skillRecommendations: SkillRecommendation[]; supportAnalysis: SupportAnalysis; supportRecommendations: SupportRecommendation[]; passiveAnalysis: PassiveAnalysis; passiveRecommendations: PassiveRecommendation[]; jewelAnalysis: JewelAnalysis; jewelRecommendations: JewelRecommendation[]; uniqueAnalysis: UniqueAnalysis; uniqueRecommendations: UniqueRecommendation[]; rotationAnalysis: RotationAnalysis; mappingRotation: MappingRotation; bossRotation: BossRotation; explanations: ExplanationResult; warnings: ConstraintViolation[]; status: EngineStatus; engineVersion: string; moduleTrace: string[]; realPassivePlanning?:RealPassivePlanningIntegrationResult }

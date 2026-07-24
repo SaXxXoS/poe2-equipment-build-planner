@@ -1055,3 +1055,28 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Pixel. Amulett sowie die auf gleicher Höhe liegenden Ringe behalten ihre
   festgelegten Positionen.
 - Kein horizontaler Überlauf; Browserkonsole ohne Fehler oder Warnungen.
+
+## Folgekorrekturen – Arbeitspaket 1: Unique-Eigenschaften und Varianten
+
+- Die sieben vom Auftraggeber bestätigten Folgekorrekturen werden
+  nacheinander bearbeitet. Begonnen wurde mit der vollständigen sichtbaren
+  Unique-Eigenschaftsdarstellung und der variantengenauen Analyzerwirkung.
+- Der bestehende englische PoB2-Produktbestand und die getrennte deutsche
+  Anzeigeschicht bleiben unverändert. Der Editor verbindet beide weiterhin
+  ausschließlich über stabile Unique-, Varianten- und Zeilen-IDs.
+- Der Unique-Editor zeigt nun benötigtes Level, Implicits und sämtliche für
+  die gewählte Variante geltenden Unique-Eigenschaften. Bei mehreren
+  Varianten ist eine konkrete Auswahl erforderlich; ohne Auswahl werden nur
+  gemeinsame Eigenschaften angezeigt und Speichern bleibt gesperrt.
+- Die Analyzer-Registry enthält für alle 579 Varianten getrennte
+  Evidenzdaten. Ist ein Unique mit Varianten-ID ausgerüstet, verwendet der
+  Unique Analyzer dessen Tags, Einschränkungen, Trade-offs, Enablerstatus und
+  Waffenanforderungen statt der vorsichtigen itemweiten Schnittmenge.
+- Es werden weiterhin keine technischen GGG-Mod-/Stat-IDs behauptet und
+  normale Affixe bleiben vollständig getrennt.
+- Mobile Browserprüfung 390 × 844: sechs aufgelöste Zeilen für die aktuelle
+  Variante des Ambosses, Dialogbreite rund 364 Pixel, kein horizontaler
+  Überlauf, Speichern erst nach Variantenwahl, keine Konsolenfehler oder
+  -warnungen.
+- Nächster Arbeitspunkt: vollständigerer produktiver Skill- und
+  Supportbestand.

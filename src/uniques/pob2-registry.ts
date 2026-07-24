@@ -12,6 +12,7 @@ export interface Pob2UniquePlannerRecord {
   requiredLevel: number | null
   variants: Array<{ sourceVariantId: string; currentOrLegacy: string; modifierSet: string[] }>
   visibleModifiers: Array<{ sourceLineId: string; normalizedPlannerLine: string }>
+  implicits: Array<{ sourceLineId: string; normalizedPlannerLine: string }>
   provenance: {
     sourceKind: 'pob2-planner-data'
     sourceRepository: string
@@ -27,7 +28,20 @@ const records = product.items as Pob2UniquePlannerRecord[]
 export const pob2UniquePlannerRegistry = Object.freeze(records)
 
 export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item => {
-  const semantics = classifyPob2Unique(item)
+  const semanticRecord = { ...item, visibleModifiers: [...item.visibleModifiers, ...item.implicits] }
+  const semantics = classifyPob2Unique(semanticRecord)
+  const variantSemantics = item.variants.map(variant => {
+    const value = classifyPob2Unique({ ...semanticRecord, variants: [variant] })
+    return {
+      variantId: variant.sourceVariantId,
+      tags: value.tags,
+      semanticEvidence: value.evidence,
+      evidenceLineIds: value.evidenceLineIds,
+      tradeOffs: value.tradeOffs,
+      buildEnabler: value.buildEnabler,
+      requiredWeaponTypes: value.requiredWeaponTypes,
+    }
+  })
   return ({
   id: item.sourceId,
   displayNameDe: 'translation-missing',
@@ -57,6 +71,7 @@ export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item 
   tradeOffs: semantics.tradeOffs,
   buildEnabler: semantics.buildEnabler,
   requiredWeaponTypes: semantics.requiredWeaponTypes,
+  variantSemantics,
 })})
 
 if (new Set(pob2UniqueAnalyzerCandidates.map(item => item.id)).size !== pob2UniqueAnalyzerCandidates.length) throw new Error('Duplicate PoB2 Unique planner IDs')
