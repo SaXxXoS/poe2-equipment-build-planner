@@ -1,5 +1,26 @@
 # Build-Assistent V1.3.1 – UX-Korrektur
 
+## Nachtrag: Fertigkeits- und Supportauswahl
+
+Die Fertigkeitssuche ist keine Kombination aus Suchfeld und geschlossenem
+Browser-Select mehr. Fokus oder Antippen öffnet unmittelbar eine sichtbare,
+scrollbare Trefferliste. Jede Eingabe filtert deutsche Namen und englische
+Fallbacknamen live; die Auswahl übernimmt den Treffer direkt in die Karte.
+
+Jede leere Fertigkeitskarte zeigt fünf klar erkennbare Supportplätze mit dem
+Hinweis, zuerst eine Fertigkeit zu wählen. Nach der Fertigkeitswahl sind die
+fünf Plätze einzeln bedienbar. Ein leerer Platz öffnet eine ebenfalls
+live-filternde Supportauswahl; gewählte Supports bleiben der jeweiligen
+Fertigkeitskarte zugeordnet.
+
+Der produktive Kandidatenbestand bleibt vorerst bei 12 Fertigkeiten und 13
+Unterstützungen. Die lokal vorhandenen umfangreicheren RePoE-/Parserbestände
+sind für Skills und Supports im maßgeblichen Approval ausdrücklich
+`blocked`. Sie wurden deshalb nicht stillschweigend produktiv importiert.
+Für einen vollständigen Spielbestand ist als nächster Datenauftrag ein
+gesonderter, gepinnter Skill-/Support-Scope mit Feld-, Provenienz- und
+Distributionsentscheidung erforderlich.
+
 ## 1. Ziel und Ausgangsstand
 
 Ausgangspunkt ist Commit `020ec87f9bc81f9938a5108ef6369153f43fef49`.

@@ -1,5 +1,20 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Live-Suche für Fertigkeiten und sichtbare Supportplätze (2026-07-24)
+
+- Fokus oder Antippen der Fertigkeitssuche öffnet unmittelbar eine sichtbare,
+  scrollbare Trefferliste.
+- Die Liste filtert während der Eingabe nach deutschem Namen und englischem
+  Fallback.
+- Jede leere Fertigkeitskarte zeigt fünf Supportplätze. Nach der Skillwahl
+  besitzt jeder Platz eine eigene live-filternde Supportauswahl.
+- Der produktive Bestand bleibt bei 12 Fertigkeiten und 13 Unterstützungen.
+  Umfangreichere lokale RePoE-/Parserbestände sind für Skills und Supports im
+  maßgeblichen Approval weiterhin `blocked` und wurden nicht stillschweigend
+  importiert.
+- Nächster Datenauftrag: gesonderter gepinnter Skill-/Support-Scope mit
+  Feld-, Provenienz- und Distributionsentscheidung.
+
 ## Deutsche Normal-Affix-Anzeigeschicht (2026-07-24)
 
 - Alle 2.255 produktiven normalen Affixe besitzen nun einen deutschen Anzeigetext.
