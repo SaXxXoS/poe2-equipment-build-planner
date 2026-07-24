@@ -89,6 +89,23 @@ erkannt und korrekt in `Prefix 1` des geöffneten Helm-Slots übernommen. Ein
 nur ähnlich passender Hybridkandidat blieb deaktiviert. Bei 390 × 844 gab es
 keinen horizontalen Seitenüberlauf.
 
+Ein zweiter Regressionstest bildet einen echten deutschen Ingame-Tooltip ab:
+`DOOM CREST`, Basis `AHNENTIARA`, Gegenstandsstufe 82 sowie sechs sichtbare
+deutsche Affixzeilen. Dafür berücksichtigt der Matcher nun die im Spiel
+sichtbaren deutschen Flexions- und Formulierungsvarianten, unter anderem:
+
+- `zum maximalen` ↔ `zu maximalem`
+- `bis maximales` ↔ `zu maximalem`
+- `erhöhte`, `erhöhter` und `erhöhten`
+- `Feuerbeständigkeit` ↔ `Feuerwiderstand`
+
+Fehlt eine ausdrückliche Seltenheitszeile, wird `Magisch` oder `Selten`
+ausschließlich aus der Zahl sicher erkannter normaler Affixzeilen abgeleitet.
+Der Basistyp kann außerdem aus der zweiten Titelzeile vor der sichtbaren
+Gegenstandsstufe gelesen werden. Damit werden beim genannten Helm Seltenheit,
+Gegenstandsstufe, `AHNENTIARA`, das korrekte Leben-Tier für `+120` und
+mindestens fünf Affixe sicher erkannt.
+
 ## Grenzen
 
 - OCR-Qualität hängt von Schärfe, Kontrast, Skalierung und vollständiger

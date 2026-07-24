@@ -22,6 +22,14 @@
 - Mobile Prüfung bei 390 × 844: Dialogbreite 363,8 px bei 390 px Viewport,
   kein horizontaler Seitenüberlauf.
 - Dokumentation: `docs/ITEM_PHOTO_AND_SCREENSHOT_OCR.md`.
+- Nach Nutzerprüfung mit einem deutschen seltenen Ingame-Helm wurde die
+  Zuordnung erweitert: deutsche Flexionen, `bis`/`zu`, die
+  Beständigkeit-/Widerstand-Terminologie, Titelzeilen ohne `Rarity:`-Header
+  und Seltenheitsableitung aus sicher erkannten Affixen werden jetzt
+  unterstützt.
+- Regression `DOOM CREST`/`AHNENTIARA`, Gegenstandsstufe 82: Basis,
+  Seltenheit, `+120` Leben mit korrektem Tier und mindestens fünf sichtbare
+  Affixe werden deterministisch erkannt.
 
 ## Numerische Schadensberechnung V1 (2026-07-24)
 

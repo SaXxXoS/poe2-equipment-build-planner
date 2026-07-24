@@ -30,4 +30,24 @@ Bloodstone Amulet`,'slot-amulet')
   it('normalisiert OCR-Typografie deterministisch',()=>{
     expect(normalizeOcrText('  +10   to Life — Test  ')).toBe('+10 to Life - Test')
   })
+  it('erkennt einen deutschen seltenen Ingame-Tooltip mit flektierten Affixtexten',()=>{
+    const result=matchItemOcr(`DOOM CREST
+AHNENTIARA
+HELM: GEGENSTANDSSTUFE 82
+QUALITÄT: +20%
+ENERGIESCHILD: 424
+ERFORDERT STUFE 80, INTELLIGENZ 115
+16% ERHÖHTE SELTENHEIT DER GEFUNDENEN GEGENSTÄNDE
++73 ZUM MAXIMALEN ENERGIESCHILD
+95% ERHÖHTER ENERGIESCHILD
++120 BIS MAXIMALES LEBEN
+32% ERHÖHTE CHANCE AUF KRITISCHE TREFFER
++45% FEUERBESTÄNDIGKEIT`,'slot-helmet')
+    expect(result.rarity).toBe('rare')
+    expect(result.itemLevel).toBe(82)
+    expect(result.baseDisplayName).toBe('AHNENTIARA')
+    expect(result.affixes.find(value=>value.affixId==='IncreasedLife9')).toMatchObject({values:[120],resolutionStatus:'auto-selected'})
+    expect(result.affixes.find(value=>value.values.includes(45))?.resolutionStatus).toBe('auto-selected')
+    expect(result.affixes.filter(value=>value.resolutionStatus==='auto-selected').length).toBeGreaterThanOrEqual(5)
+  })
 })

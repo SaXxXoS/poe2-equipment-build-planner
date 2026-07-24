@@ -16,6 +16,15 @@ function comparable(value:string){
     .replace(/\([^)]*\d[^)]*\)/g,' ')
     .replace(/[+-]?\d+(?:[.,]\d+)?(?:\s*-\s*[+-]?\d+(?:[.,]\d+)?)?/g,' ')
     .replace(/[#%:;,.()[\]{}|/+]/g,' ')
+    .replace(/\b(?:zum|zur)\b/g,'zu')
+    .replace(/\bbis\s+(?=maximal)/g,'zu ')
+    .replace(/\bmaximal(?:e|en|er|es|em)?\b/g,'maximal')
+    .replace(/\berhöht(?:e|en|er|es|em)?\b/g,'erhöht')
+    .replace(/\bverringert(?:e|en|er|es|em)?\b/g,'verringert')
+    .replace(/\bfeuerbeständigkeit\b/g,'feuerwiderstand')
+    .replace(/\bkältebeständigkeit\b/g,'kältewiderstand')
+    .replace(/\bblitzbeständigkeit\b/g,'blitzwiderstand')
+    .replace(/\bchaosbeständigkeit\b/g,'chaoswiderstand')
     .replace(/\s+/g,' ').trim()
 }
 function bigrams(value:string){
@@ -53,8 +62,10 @@ function itemLevelFrom(text:string){
 }
 function baseNameFrom(lines:string[]){
   const rarityIndex=lines.findIndex(line=>/^(?:Rarity|Seltenheit)\s*:/i.test(line))
-  if(rarityIndex<0)return undefined
-  const header=lines.slice(rarityIndex+1).filter(line=>line&&!/^-{3,}$/.test(line)).slice(0,2)
+  const itemLevelIndex=lines.findIndex(line=>/(?:Item\s*Level|Gegenstandsstufe|Item-Level)\s*:?\s*\d{1,3}/i.test(line))
+  const start=rarityIndex>=0?rarityIndex+1:0
+  const end=itemLevelIndex>=0?itemLevelIndex:Math.min(lines.length,start+2)
+  const header=lines.slice(start,end).filter(line=>line&&!/^-{3,}$/.test(line)&&!/^Spielversion\s*:/i.test(line)).slice(0,2)
   return header[1]??header[0]
 }
 function windowsFor(lines:string[]){
@@ -95,7 +106,7 @@ function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined
 export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const text=normalizeOcrText(rawText)
   const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
-  const rarity=rarityFrom(text)
+  let rarity=rarityFrom(text)
   const itemLevel=itemLevelFrom(text)
   const windows=windowsFor(lines)
   const classes=itemClassesForSlot(slotId)
@@ -103,7 +114,13 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const classScores=classes.map(itemClass=>({id:itemClass.itemClassId,score:matches.filter(match=>match.itemClassId===itemClass.itemClassId&&match.resolutionStatus==='auto-selected').reduce((sum,match)=>sum+match.confidence,0)})).sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id))
   const itemClassId=classScores[0]?.score?classScores[0].id:classes.length===1?classes[0].itemClassId:undefined
   const affixes=dedupeAffixes(itemClassId?matches.filter(match=>match.itemClassId===itemClassId):matches)
-  const unique=rarity==='unique'?uniqueCandidate(text,slotId):undefined
+  const unique=uniqueCandidate(text,slotId)
+  if(unique&&unique.resolutionStatus==='auto-selected')rarity='unique'
+  if(!rarity&&!unique){
+    const recognizedSourceLines=new Set(affixes.filter(value=>value.resolutionStatus==='auto-selected').map(value=>normalizeOcrText(value.sourceText)))
+    if(recognizedSourceLines.size>=3)rarity='rare'
+    else if(recognizedSourceLines.size>=1)rarity='magic'
+  }
   const warnings:string[]=[]
   if(!text)warnings.push('Es wurde kein lesbarer Text erkannt.')
   if(rarity==='unique'&&!unique)warnings.push('Der Unique-Name konnte nicht sicher zugeordnet werden.')
