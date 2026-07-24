@@ -21,7 +21,7 @@ export interface BuildProfile {
   defence: { lifeAffinity: number; armourAffinity: number; evasionAffinity: number; energyShieldAffinity: number; resistanceNeed: number; generalDefenceNeed: number }
   requirements: { strengthNeed: number; dexterityNeed: number; intelligenceNeed: number; resourceNeed: number }
   goals: { mappingWeight: number; bossWeight: number; defenceWeight: number; damageWeight: number }
-  technicalItems?: { slotId:string; itemClassId?:string; baseItemId?:string; itemLevel?:number; sourceVersion?:string; dataStatus:string; modifiers:{modifierId:string;tierId?:string;statValues:{statId:string;value:number}[]}[] }[]
+  technicalItems?: { slotId:string; itemClassId?:string; baseItemId?:string; itemLevel?:number; quality?:number; defences?:{armour?:number;evasion?:number;energyShield?:number}; sourceVersion?:string; dataStatus:string; modifiers:{modifierId:string;tierId?:string;statValues:{statId:string;value:number}[]}[] }[]
 }
 export type DamageType = keyof BuildProfile['damageTypes']
 export type MechanicType = keyof BuildProfile['mechanics']

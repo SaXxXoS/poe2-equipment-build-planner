@@ -1,4 +1,4 @@
-import type { ItemRarity } from '../../domain'
+import type { EquipmentDefences, ItemRarity } from '../../domain'
 
 export type ItemImageMode = 'photo' | 'screenshot'
 export type OcrResolutionStatus = 'auto-selected' | 'review-required'
@@ -24,6 +24,8 @@ export interface ItemOcrResult {
   rawText: string
   rarity?: ItemRarity
   itemLevel?: number
+  quality?: number
+  defences?: EquipmentDefences
   baseDisplayName?: string
   itemClassId?: string
   affixes: OcrAffixCandidate[]

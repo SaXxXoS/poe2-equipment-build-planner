@@ -60,6 +60,20 @@ function itemLevelFrom(text:string){
   const match=text.match(/(?:Item\s*Level|Gegenstandsstufe|Item-Level)\s*:?\s*(\d{1,3})/i)
   return match?Number(match[1]):undefined
 }
+function itemHeaderValues(text:string){
+  const numberAfter=(pattern:RegExp)=>{
+    const match=text.match(pattern)
+    return match?Number(match[1].replace(',','.')):undefined
+  }
+  return{
+    quality:numberAfter(/(?:Quality|Qualität)\s*:\s*\+?(\d+(?:[.,]\d+)?)\s*%/i),
+    defences:{
+      armour:numberAfter(/(?:Armour|Rüstung)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+      evasion:numberAfter(/(?:Evasion Rating|Ausweichwert)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+      energyShield:numberAfter(/(?:Energy Shield|Energieschild)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+    },
+  }
+}
 function baseNameFrom(lines:string[]){
   const rarityIndex=lines.findIndex(line=>/^(?:Rarity|Seltenheit)\s*:/i.test(line))
   const itemLevelIndex=lines.findIndex(line=>/(?:Item\s*Level|Gegenstandsstufe|Item-Level)\s*:?\s*\d{1,3}/i.test(line))
@@ -140,6 +154,7 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
   let rarity=rarityFrom(text)
   const itemLevel=itemLevelFrom(text)
+  const {quality,defences}=itemHeaderValues(text)
   const windows=windowsFor(lines)
   const classes=itemClassesForSlot(slotId)
   const matches=classes.flatMap(itemClass=>['prefix','suffix','implicit'].flatMap(side=>affixesFor(itemClass.itemClassId,side as 'prefix'|'suffix'|'implicit',itemLevel).map(affix=>bestAffixCandidate(affix,windows,itemClass.itemClassId)).filter((value):value is OcrAffixCandidate=>Boolean(value))))
@@ -159,5 +174,6 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   if(rarity==='unique'&&!unique)warnings.push('Der Unique-Name konnte nicht sicher zugeordnet werden.')
   if(rarity!=='unique'&&!affixes.some(value=>value.resolutionStatus==='auto-selected'))warnings.push('Kein Affix wurde sicher genug für eine automatische Übernahme erkannt.')
   if(!itemClassId&&classes.length>1)warnings.push('Die Waffen- oder Offhandklasse muss vor dem Speichern geprüft werden.')
-  return{rawText:text,rarity,itemLevel,baseDisplayName:baseNameFrom(lines),itemClassId,affixes,unique,warnings}
+  const recognizedDefences=Object.values(defences).some(value=>value!==undefined)?defences:undefined
+  return{rawText:text,rarity,itemLevel,quality,defences:recognizedDefences,baseDisplayName:baseNameFrom(lines),itemClassId,affixes,unique,warnings}
 }

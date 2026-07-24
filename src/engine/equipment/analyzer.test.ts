@@ -22,6 +22,14 @@ describe('regelbasierter synthetischer Equipment Analyzer', () => {
   it('niedrige Widerstände erhöhen resistanceNeed', () => expect(analysis(fixtureD).combinedProfile.defence.resistanceNeed).toBeGreaterThan(80))
   it('hohe Widerstände senken resistanceNeed', () => { const input = syntheticInput(['fire', 'cold', 'lightning', 'chaos'].map(name => ({ modifierId: `fixture-${name}-resistance`, value: 40 }))); const result = equipmentAnalyzer.analyze({ input, candidates: engineCandidatesFixture }, context(), engineModifierFixtures); expect(result.value.buildProfile.defence.resistanceNeed).toBe(0) })
   it('defensive Schwäche erhöht generalDefenceNeed', () => expect(analysis(fixtureD).combinedProfile.defence.generalDefenceNeed).toBeGreaterThan(80))
+  it('wertet die endgültigen Verteidigungswerte des Gegenstands aus, ohne sie als Affixe auszugeben',()=>{
+    const fixture={...fixtureD,input:{...fixtureD.input,equipment:[{id:'body',slotId:'slot-body-armour',rarity:'rare' as const,itemClassId:'Body Armours',quality:27,defences:{evasion:2084,energyShield:621},modifierValues:[]}]}}
+    const result=equipmentAnalyzer.analyze(fixture,context(),engineModifierFixtures).value
+    expect(result.buildProfile.defence.evasionAffinity).toBeGreaterThan(0)
+    expect(result.buildProfile.defence.energyShieldAffinity).toBeGreaterThan(0)
+    expect(result.buildProfile.technicalItems?.[0]).toMatchObject({quality:27,defences:{evasion:2084,energyShield:621},modifiers:[]})
+    expect(result.equipmentAnalysis.reasons.map(value=>value.code)).toEqual(expect.arrayContaining(['equipment-final-evasion','equipment-final-energy-shield']))
+  })
   it('Attribute und künstliche Anforderungen werden getrennt analysiert', () => { const result = analyze('fixture-strength', 40); expect(result.buildProfile.requirements.strengthNeed).toBe(20); expect(result.equipmentAnalysis.recognizedRequirements).toContain('dexterityNeed') })
   it('Waffen-Sets werden getrennt analysiert', () => { const result = analysis(fixtureE); expect(result.profileSet1.damageTypes.lightning).toBeGreaterThan(0); expect(result.profileSet2.mechanics.debuff).toBeGreaterThan(0) })
   it('dominantes Waffen-Set wird stabil bestimmt', () => expect(analysis(fixtureE).dominantWeaponSet).toBe('set-1'))

@@ -75,6 +75,7 @@ RAVEN-TOUCHED
 +45% TO FIRE RESISTANCE`,'slot-helmet')
     const automatic=result.affixes.filter(value=>value.resolutionStatus==='auto-selected')
     expect(result).toMatchObject({rarity:'rare',itemLevel:82,baseDisplayName:'ANCESTRAL TIARA'})
+    expect(result).toMatchObject({quality:20,defences:{energyShield:424}})
     expect(automatic).toEqual(expect.arrayContaining([
       expect.objectContaining({affixId:'LocalIncreasedEnergyShield8',affixSide:'prefix',values:[73]}),
       expect.objectContaining({affixId:'LocalIncreasedEnergyShieldPercent7_',affixSide:'prefix',values:[95]}),
@@ -88,5 +89,20 @@ RAVEN-TOUCHED
     expect(automatic).not.toEqual(expect.arrayContaining([
       expect.objectContaining({affixId:'ItemFoundRarityIncreasePrefix3'}),
     ]))
+  })
+  it('erkennt Qualität, Ausweichwert und Energieschild als getrennte endgültige Gegenstandswerte',()=>{
+    const result=matchItemOcr(`PLAGUE KEEP
+SLEEK JACKET
+BODY ARMOUR: ITEM LEVEL 82
+QUALITY: +27%
+EVASION RATING: 2084
+ENERGY SHIELD: 621`,'slot-body-armour')
+    expect(result).toMatchObject({
+      itemLevel:82,
+      quality:27,
+      defences:{evasion:2084,energyShield:621},
+      baseDisplayName:'SLEEK JACKET',
+    })
+    expect(result.defences?.armour).toBeUndefined()
   })
 })

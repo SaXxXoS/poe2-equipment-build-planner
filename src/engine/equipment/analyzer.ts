@@ -58,6 +58,35 @@ function analyzeProfile(values: DefinitionValue[], goal: EngineRequest['input'][
   return { profile, reasons, contributions, tags, attributes, resistanceTotal }
 }
 
+function applyFinalItemDefences(result:ProfileResult,equipment:EquipmentEntry[],config:EquipmentAnalyzerConfig){
+  const totals=equipment.reduce((sum,item)=>({
+    armour:sum.armour+(item.defences?.armour??0),
+    evasion:sum.evasion+(item.defences?.evasion??0),
+    energyShield:sum.energyShield+(item.defences?.energyShield??0),
+  }),{armour:0,evasion:0,energyShield:0})
+  const fields=[
+    ['armour','armourAffinity','armour'] as const,
+    ['evasion','evasionAffinity','evasion'] as const,
+    ['energyShield','energyShieldAffinity','energy-shield'] as const,
+  ]
+  for(const [totalKey,profileKey,tag] of fields){
+    const rawValue=totals[totalKey]
+    if(rawValue<=0)continue
+    const contribution=normalizeContribution(rawValue,.5,config.affinityMax,config)
+    result.profile.defence[profileKey]=Math.max(result.profile.defence[profileKey],contribution)
+    result.tags.add('defensive')
+    result.reasons.push({code:`equipment-final-${tag}`,category:'defence',messageKey:`engine.equipment.final.${tag}`,impact:contribution,polarity:'positive',sourceType:'equipment',affectedTags:['defensive'],details:{rawValue,contribution,evidenceType:'displayed-final-item-value'}})
+  }
+  const defenceTotal=result.profile.defence.lifeAffinity+result.profile.defence.armourAffinity+result.profile.defence.evasionAffinity+result.profile.defence.energyShieldAffinity
+  result.profile.defence.generalDefenceNeed=normalizeAffinity((config.defenceTarget-defenceTotal)/config.defenceTarget*config.affinityMax,config)
+  const needReason=result.reasons.find(value=>value.code==='equipment-general-defence-need')
+  if(needReason){
+    needReason.impact=-result.profile.defence.generalDefenceNeed
+    needReason.polarity=result.profile.defence.generalDefenceNeed>config.affinityMax/2?'negative':'neutral'
+    needReason.details={syntheticTarget:config.defenceTarget,defenceTotal,result:result.profile.defence.generalDefenceNeed}
+  }
+}
+
 function ranked<T extends string>(values: Record<T, number>): T[] { return (Object.entries(values) as [T, number][]).sort(([idA, scoreA], [idB, scoreB]) => scoreB - scoreA || idA.localeCompare(idB)).map(([id]) => id) }
 const dominant = <T extends string>(values: Record<T, number>): T | undefined => { const result = ranked(values); return result.length && values[result[0]] > 0 ? result[0] : undefined }
 const flatProfile = (profile: BuildProfile): Record<string, number> => ({ ...Object.fromEntries(Object.entries(profile.damageTypes).map(([key, value]) => [`damageTypes.${key}`, value])), ...Object.fromEntries(Object.entries(profile.mechanics).map(([key, value]) => [`mechanics.${key}`, value])), ...Object.fromEntries(Object.entries(profile.speed).map(([key, value]) => [`speed.${key}`, value])), ...Object.fromEntries(Object.entries(profile.defence).map(([key, value]) => [`defence.${key}`, value])) })
@@ -75,9 +104,10 @@ export const equipmentAnalyzer: EquipmentAnalyzer = { analyze({ input }, context
   const unknownIds = new Set<string>()
   const values: DefinitionValue[] = input.equipment.flatMap(entry => entry.modifierValues.flatMap(applied => { const definition = definitions.get(applied.modifierId); if (!definition) { unknownIds.add(applied.modifierId); return [] } return [{ applied, definition, rawValue: numericValue(applied.value), entry }] }))
   const combined = analyzeProfile(values, input.goalProfile, config)
+  applyFinalItemDefences(combined,input.equipment,config)
   const set1 = analyzeProfile(values.filter(value => setForSlot(value.entry.slotId) === 'set-1'), input.goalProfile, config)
   const set2 = analyzeProfile(values.filter(value => setForSlot(value.entry.slotId) === 'set-2'), input.goalProfile, config)
-  combined.profile.technicalItems=input.equipment.filter(entry=>entry.itemClassId||entry.itemDefinitionId||entry.modifierValues.length).map(entry=>({slotId:entry.slotId,itemClassId:entry.itemClassId,baseItemId:entry.itemDefinitionId,itemLevel:entry.itemLevel,sourceVersion:entry.modifierValues.find(value=>value.sourceVersion)?.sourceVersion,dataStatus:entry.modifierValues.some(value=>value.dataStatus==='legacy-unresolved')?'legacy-unresolved':entry.itemClassId==='Jewels'?'partially-supported':'transport-only',modifiers:entry.modifierValues.map(value=>({modifierId:value.modifierId,tierId:value.tierId,statValues:value.statValues??[]}))}))
+  combined.profile.technicalItems=input.equipment.filter(entry=>entry.itemClassId||entry.itemDefinitionId||entry.modifierValues.length||entry.quality!==undefined||entry.defences).map(entry=>({slotId:entry.slotId,itemClassId:entry.itemClassId,baseItemId:entry.itemDefinitionId,itemLevel:entry.itemLevel,quality:entry.quality,defences:entry.defences,sourceVersion:entry.modifierValues.find(value=>value.sourceVersion)?.sourceVersion,dataStatus:entry.modifierValues.some(value=>value.dataStatus==='legacy-unresolved')?'legacy-unresolved':entry.itemClassId==='Jewels'?'partially-supported':'transport-only',modifiers:entry.modifierValues.map(value=>({modifierId:value.modifierId,tierId:value.tierId,statValues:value.statValues??[]}))}))
   const reasons = [...combined.reasons]
   const violations: ConstraintViolation[] = [...unknownIds].sort().map(id => ({ code: 'unknown-modifier', severity: 'error', messageKey: 'engine.constraint.unknownModifier', sourceId: id, relatedIds: [id], blocking: true }))
   const warnings: ConstraintViolation[] = []

@@ -48,6 +48,10 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
       <dl>
         <div><dt>Seltenheit</dt><dd>{result.rarity??'Nicht erkannt'}</dd></div>
         <div><dt>Item-Level</dt><dd>{result.itemLevel??'Nicht erkannt'}</dd></div>
+        <div><dt>Qualität</dt><dd>{result.quality===undefined?'Nicht erkannt':`${result.quality} %`}</dd></div>
+        <div><dt>Rüstung</dt><dd>{result.defences?.armour??'Nicht erkannt'}</dd></div>
+        <div><dt>Ausweichwert</dt><dd>{result.defences?.evasion??'Nicht erkannt'}</dd></div>
+        <div><dt>Energieschild</dt><dd>{result.defences?.energyShield??'Nicht erkannt'}</dd></div>
         <div><dt>Basis</dt><dd>{result.baseDisplayName??'Nicht erkannt'}</dd></div>
         <div><dt>Itemklasse</dt><dd>{result.itemClassId??'Prüfung erforderlich'}</dd></div>
       </dl>
@@ -55,7 +59,7 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
       {result.affixes.length?<div className="ocr-match-list">{result.affixes.map(match=>{const blocked=match.resolutionStatus==='review-required'&&!match.values.length;return <label className="ocr-match" data-review={match.resolutionStatus==='review-required'} key={match.affixId}><input type="checkbox" disabled={blocked} checked={selected.has(match.affixId)} onChange={event=>setSelected(current=>{const next=new Set(current);if(event.target.checked)next.add(match.affixId);else next.delete(match.affixId);return next})}/><span><b>{match.displayText}</b><small>{match.affixSide} · Werte {match.values.length?match.values.join(' / '):'nicht sicher erkannt'} · {match.confidence} %</small><em>Bildtext: {match.sourceText}</em></span></label>})}</div>:<p>Keine normalen Affixe sicher zugeordnet.</p>}
       {result.warnings.map(value=><p className="warning" key={value}>{value}</p>)}
       <details><summary>Erkannten Rohtext anzeigen</summary><pre className="ocr-raw-text">{result.rawText||'Kein Text erkannt'}</pre></details>
-      <button disabled={!result.unique&&!selected.size} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
+      <button disabled={!result.unique&&!selected.size&&result.quality===undefined&&!result.defences} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
     </div>}
   </section>
 }
