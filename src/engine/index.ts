@@ -1,4 +1,5 @@
 export * from './common/types'
+export * from './damage-estimation'
 export * from './common/scoring'
 export * from './equipment/analyzer'
 export * from './skills/analyzer'

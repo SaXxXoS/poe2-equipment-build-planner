@@ -1,5 +1,15 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Numerische Schadensberechnung V1 (2026-07-24)
+
+- Auftraggeberentscheidung: Schaden der tatsächlich eingegebenen Ausrüstung numerisch darstellen und Builds vergleichbar machen.
+- Referenz: lokale statische PoB2-Skill- und Waffenbasisdateien am Pin `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`; kein Runtime-Netzwerk und keine Lua-Laufzeit.
+- Neuer enger Scope: `poe2-pob2-damage-calculation-reference`, Projektentscheidung mit offengelegter Rechteunsicherheit; keine PoB2-/GGG-Genehmigung wird behauptet.
+- Produktreferenz: `generated/pob2/damage-reference.json`, 337 Skillrecords, 354 Waffenbasen, Hash `193e1be36e90f6a130fa14e6c737302a41a63aabdcdae5e32e6fb4f3adfc3e22`.
+- V1 berechnet Schaden pro Treffer, Aktionen pro Sekunde und begrenzten Trefferschaden pro Sekunde für eindeutig auflösbare Trefferangriffe und -zauber.
+- Supports, Passive-/Aszendenzwerte, Krit, Gegnerabwehr, Ailments/DoT, Minions, Mehrfachtreffer und bedingte Effekte fehlen noch. Nicht auflösbare Fälle bleiben `nicht verfügbar`.
+- Nächster Ausbau: numerische Supporteffekte, ausgewählte Baum-/Aszendenzstats, Gegnerprofile und Vergleich gespeicherter Ausgangs-/Zielstände.
+
 ## Vollständigerer Skill-/Supportkatalog (2026-07-24)
 
 - Ausgangsbestand: 12 kuratierte Skills und 13 kuratierte Supports.

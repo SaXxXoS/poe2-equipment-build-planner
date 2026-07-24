@@ -1,5 +1,11 @@
 # Third-Party Notices
 
+## Begrenzte PoB2-Schadensreferenz
+
+Die App verwendet für eine reduzierte, offline erzeugte Trefferschaden-Schätzung statische Skill- und Waffenbasisfelder aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Der PoB2-Programmcode steht dort unter MIT; die Quelldateien kennzeichnen Spieldaten separat als Grinding-Gear-Games-Inhalte. Es wurde keine einzelne Genehmigung von PoB2 oder GGG eingeholt und keine solche Genehmigung wird behauptet.
+
+Ausgeliefert wird kein Lua-Quellspiegel und keine PoB-Laufzeit, sondern nur eine deterministisch reduzierte numerische Referenz. Die erste Rechenstufe ist keine Path-of-Building-Parität: Krit, Gegnerabwehr, Supports, Passive und Aszendenz, Ailments, DoT, Minions, Mehrfachtreffer und bedingte Effekte fehlen noch. Path of Exile, Grinding Gear Games und Path of Building sind nicht mit dieser App verbunden und billigen sie nicht.
+
 ## RePoE-PoE2 Skill- und Supportkatalog
 
 Die App verteilt einen reduzierten englischen Auswahlkatalog aus

@@ -25,6 +25,7 @@ const evidenceText: Record<string, string> = {
   'text-pattern-ambiguous': 'Datenlage eingeschränkt',
   unresolved: 'Semantik nicht verfügbar',
 }
+const formatDamage=(value:number|undefined)=>value==null?'Nicht verfügbar':new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(value)
 const issueText = (issue: ConstraintViolation) => {
   const known: Record<string, string> = {
     'skill-wrong-weapon': 'Die gewählte Fertigkeit passt nicht zur erkannten Waffenart.',
@@ -113,7 +114,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   return <section id="result" className="result build-assistant-result">
     <div className="placeholder">BUILD-ASSISTENT V1 · ECHTE ANALYZER-AUSWERTUNG</div>
     <h2>Build-Vorschlag</h2>
-    <article className="build-summary"><h3>Zusammenfassung · Build-Eignung: {fitCategory}</h3><p className="muted">Orientierung aus Profilklarheit, Waffen-/Skillkompatibilität, Konflikten und Analyzer-Sicherheit – keine DPS-Zahl.</p><dl className="summary-grid">
+    <article className="build-summary"><h3>Zusammenfassung · Build-Eignung: {fitCategory}</h3><p className="muted">Die Eignung bewertet die fachliche Passung. Der getrennte Schadenswert darunter zeigt nur den aktuell sicher berechenbaren Trefferschaden.</p><dl className="summary-grid">
       <div><dt>Zielprofil</dt><dd>{goalText[analysis.buildProfile.goals.mappingWeight > analysis.buildProfile.goals.bossWeight ? 'mapping' : analysis.buildProfile.goals.bossWeight > analysis.buildProfile.goals.mappingWeight ? 'boss' : 'balanced']}</dd></div>
       <div><dt>Hauptschaden</dt><dd>{dominantDamage ? damageText[dominantDamage] : 'Unbekannt'}</dd></div>
       <div><dt>Mechanik</dt><dd>{dominantMechanic ? mechanicText[dominantMechanic] : 'Unbekannt'}</dd></div>
@@ -121,6 +122,21 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
       <div><dt>Stärke</dt><dd>{dominantDamage ? `Klarster Schwerpunkt: ${damageText[dominantDamage]}` : 'Noch kein klarer Schwerpunkt'}</dd></div>
       <div><dt>Schwäche</dt><dd>{emptySlots.length ? `${emptySlots.length} leere Slots begrenzen die Aussagekraft` : analysis.warnings.length ? `${analysis.warnings.length} Konflikte oder Warnungen` : 'Keine deutliche Schwäche erkannt'}</dd></div>
     </dl></article>
+    <details open><summary>Schaden und Build-Vergleich</summary><div className="result-panel damage-estimate">
+      {analysis.damageEstimate?.status==='unavailable'?<><h3>Numerischer Schaden: nicht verfügbar</h3><p>{analysis.damageEstimate.warnings.join(' ')}</p></>:<>
+        <h3>Berechenbarer Trefferschaden · {analysis.damageEstimate?.skillName??'Hauptfertigkeit'}</h3>
+        <dl className="summary-grid">
+          <div><dt>Schaden pro Treffer</dt><dd>{formatDamage(analysis.damageEstimate?.hitDamage?.minimum)}–{formatDamage(analysis.damageEstimate?.hitDamage?.maximum)}</dd></div>
+          <div><dt>Ø pro Treffer</dt><dd>{formatDamage(analysis.damageEstimate?.hitDamage?.average)}</dd></div>
+          <div><dt>Aktionen pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate?.actionsPerSecond)}</dd></div>
+          <div><dt>Trefferschaden pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate?.hitDamagePerSecond)}</dd></div>
+        </dl>
+        <p><b>Enthalten:</b> {analysis.damageEstimate?.included.join(', ')}</p>
+        <p><b>Noch nicht enthalten:</b> {analysis.damageEstimate?.excluded.join(', ')}</p>
+        <p className="warning">{analysis.damageEstimate?.warnings.join(' ')}</p>
+      </>}
+      <p className="muted">Vergleiche zwei Builds nur, wenn bei beiden dieselbe Fertigkeit, Gemmenstufe und dieselben ausgeschlossenen Mechaniken gelten. Der Wert ist keine vollständige Path-of-Building-DPS.</p>
+    </div></details>
     <details open><summary>Affixskalierung</summary><div className="result-panel"><div className="affix-scaling-grid"><div><h4>Stark passend</h4>{strongAffixes.length ? <ul>{strongAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine starke, belegte Skalierung erkannt.</p>}</div><div><h4>Teilweise hilfreich</h4>{partialAffixes.length ? <ul>{partialAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine teilweise genutzten Affixe.</p>}</div><div><h4>Konflikte oder unpassend</h4>{unsuitableAffixes.length ? <ul>{unsuitableAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine eindeutigen Affixkonflikte erkannt.</p>}</div></div><p><b>Fehlende Grundlage:</b> {analysis.buildProfile.defence.resistanceNeed > 0 ? 'Widerstände ' : ''}{analysis.buildProfile.defence.generalDefenceNeed > 0 ? 'Leben oder eine belastbare Verteidigungsschicht' : 'Keine eindeutige defensive Lücke'}</p></div></details>
     <details open><summary>Ausrüstung</summary><div className="result-panel"><p>{equipment.length - emptySlots.length} von {equipment.length} Slots enthalten Daten. {emptySlots.length ? 'Die Analyse bleibt möglich, besitzt aber geringere Sicherheit.' : 'Alle Slots wurden erfasst.'}</p>
       {equippedUniques.length > 0 && <><h4>Ausgerüstete Uniques</h4><ul>{equippedUniques.map(({ entry, unique }) => <li key={entry.id}>{unique?.name ?? entry.uniqueItemId} · {equipmentSlotDefinitions.find(slot => slot.id === entry.slotId)?.displayNameDe ?? entry.slotId}{entry.uniqueVariantId ? ` · Variante ${entry.uniqueVariantId}` : ''}</li>)}</ul></>}

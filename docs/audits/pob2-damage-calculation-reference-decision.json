@@ -1,0 +1,25 @@
+{
+  "scopeId": "poe2-pob2-damage-calculation-reference",
+  "decisionDate": "2026-07-24",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "projectOwnerDecision": "approved-with-disclosed-uncertainty",
+  "externalPermissionStatus": "not-requested-not-obtained-not-required-by-project-policy",
+  "uncertaintyStatus": "unresolved-external-rights-disclosed-and-accepted-by-project-owner",
+  "allowedSourceFiles": [
+    "src/Data/Skills/act_str.lua",
+    "src/Data/Skills/act_dex.lua",
+    "src/Data/Skills/act_int.lua",
+    "src/Data/Bases/*.lua"
+  ],
+  "allowedOutput": "generated/pob2/damage-reference.json",
+  "allowedPurpose": "bounded-offline-hit-damage-estimate",
+  "forbiddenPurposes": [
+    "full-pob-parity-claim",
+    "technical-ggg-identity-claim",
+    "raw-lua-mirror",
+    "runtime-network",
+    "media-distribution"
+  ],
+  "externalApprovalClaimed": false
+}

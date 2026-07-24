@@ -210,3 +210,7 @@ Die 435 englischen PoB2-Uniques besitzen nun eine getrennte, ID-verknüpfte deut
 Der bisher statische Test-Build ist durch einen echten, deterministischen End-to-End-Fluss ersetzt. Klasse, Aszendenz, Ausrüstung, Affixe, ausgewählte PoB2-Uniques samt Variante, Hauptangriff und Zielprofil werden in das vorhandene BuildProfile und die Analyzer-Orchestrierung übertragen.
 
 Das deutsche Ergebnis umfasst Ausrüstung, Hauptangriff, Supports, passive Schwerpunkte, Juwelen, fachlich belegbare Uniques, Mapping, Boss, Rotationsstatus, Konflikte, Confidence und nächste Schritte. Leere optionale Slots bleiben zulässig; nicht belegbare Aussagen werden klar als unbekannt oder nicht verfügbar angezeigt. Details: [`docs/BUILD_ASSISTANT_V1_END_TO_END.md`](docs/BUILD_ASSISTANT_V1_END_TO_END.md).
+
+## Begrenzte Schadensberechnung
+
+Für eindeutig zugeordnete Trefferfertigkeiten zeigt der Build-Assistent nun einen deterministischen Teilwert aus Schaden pro Treffer, Aktionen pro Sekunde und Trefferschaden pro Sekunde. Grundlage ist eine offline erzeugte, gepinnte PoB2-Referenz. Der Wert ist ausdrücklich keine vollständige PoB-DPS: Supports, Passive-/Aszendenzwerte, Gegnerdefensiven, kritische Treffer, Ailments, Mehrfachtreffer und bedingte Mechaniken sind noch nicht vollständig eingerechnet. Details und Vergleichsgrenzen: [`docs/DAMAGE_CALCULATION_V1.md`](docs/DAMAGE_CALCULATION_V1.md).

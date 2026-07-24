@@ -24,6 +24,7 @@
     "generate:poe2-affix-german-display": "node scripts/poe2-affix-german-display/generate.mjs",
     "generate:poe2-gem-catalog": "node scripts/poe2-gem-catalog/generate.mjs",
     "generate:poe2-gem-german-display": "node scripts/poe2-gem-german-display/generate.mjs",
+    "generate:pob2-damage-reference": "node scripts/pob2-damage-reference/generate.mjs",
     "import:pob2-uniques": "node scripts/pob2-unique-import/index.mjs",
     "check:poe2-tree-update": "node scripts/poe2-tree-import.mjs check"
   },
