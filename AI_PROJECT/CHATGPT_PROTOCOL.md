@@ -1282,3 +1282,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   sichere technische Zuordnung keinen erfundenen Analyzer-Score.
 - Keine Datenquelle, kein Produktpin und keine Analyzerarchitektur wurde
   ersetzt.
+
+# Foto-OCR-Nachkorrektur
+
+- Monitorfotos verwenden einen eigenen OCR-Pfad mit stärkerer Vergrößerung,
+  leichter Moiré-Glättung, zwei Kontrastvarianten und automatischer
+  Schräglagenkorrektur. Der Screenshot-Pfad bleibt getrennt.
+- Beide Fotodurchläufe werden deterministisch zeilenweise zusammengeführt.
+  Typische OCR-Ersatzformen deutscher Umlaute werden nur für die technische
+  Zuordnung gleichbehandelt.
+- Ohne sichtbares Item-Level wird ein Gegenstand mit mindestens drei
+  Eigenschaftszeilen nicht mehr fälschlich als magisch klassifiziert.
+- `QUALITAT`, `KORPERRUSTUNG`, `VERDERBT` und nachfolgende Bedienhinweise
+  werden robust behandelt.
+- Reale Browserprüfung mit dem Auftraggeberfoto: Seltenheit, Basis, Qualität
+  27 %, Ausweichwert 2085, Energieschild 622 und sämtliche zehn sichtbaren
+  Eigenschaftszeilen wurden gelesen.

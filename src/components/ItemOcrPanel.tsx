@@ -25,7 +25,7 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
     if(preview)URL.revokeObjectURL(preview)
     setPreview(URL.createObjectURL(file));setMode(nextMode);setResult(undefined);setError('');setProgress(0);setStatus('Bild wird vorbereitet')
     try{
-      const next=await recognizeItemImage(file,slotId,value=>{setStatus(progressText[value.status]??value.status);setProgress(Math.round(value.progress*100))})
+      const next=await recognizeItemImage(file,slotId,value=>{setStatus(progressText[value.status]??value.status);setProgress(Math.round(value.progress*100))},nextMode)
       setResult(next);setSelected(new Set(automaticallySelectedOcrIds(next)));setStatus('Erkennung abgeschlossen')
     }catch(reason){
       setError(reason instanceof Error?reason.message:'Das Bild konnte nicht erkannt werden.');setStatus('')

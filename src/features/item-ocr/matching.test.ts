@@ -149,4 +149,40 @@ ENERGY SHIELD: 621`,'slot-body-armour')
     })
     expect(result.defences?.armour).toBeUndefined()
   })
+  it('wertet einen bereinigten deutschen Monitor-Fototext ohne Item-Level vollständig aus',()=>{
+    const result=matchItemOcr(`GESCHMEIDIGER ROCK
+KORPERRUSTUNG
+QUALITAT: +27%
+AUSWEICHWERT: 2085
+ENERGIESCHILD: 622
+ERFORDERT: STUFE 65, 67 GES, 67 INT
+80% ERHOHTE RUSTUNG, AUSWEICHEN UND ENERGIESCHILD
+109% ERHOHTER ENERGIESCHILD UND AUSWEICHEN
++50 ZU AUSWEICHWERT
++14 ZU MAXIMALEM ENERGIESCHILD
+42% ERHOHTER ENERGIESCHILD UND AUSWEICHEN
++42% ZU FEUERWIDERSTAND
++43% ZU KALTEWIDERSTAND
++42% ZU BLITZWIDERSTAND
++161 ZU AUSWEICHWERT
++47 ZU MAXIMALEM ENERGIESCHILD
+VERDERBT
+AUSGERUSTET`,'slot-body-armour')
+    const automatic=result.affixes.filter(value=>value.resolutionStatus==='auto-selected')
+    expect(result).toMatchObject({
+      rarity:'rare',
+      quality:27,
+      defences:{evasion:2085,energyShield:622},
+      baseDisplayName:'GESCHMEIDIGER ROCK',
+    })
+    expect(automatic).toEqual(expect.arrayContaining([
+      expect.objectContaining({affixId:'LocalIncreasedArmourAndEvasionAndEnergyShield6',values:[80]}),
+      expect.objectContaining({affixId:'LocalIncreasedEvasionAndEnergyShield8',values:[109]}),
+      expect.objectContaining({affixId:'FireResist8',values:[42]}),
+      expect.objectContaining({affixId:'ColdResist8',values:[43]}),
+      expect.objectContaining({affixId:'LightningResist8',values:[42]}),
+    ]))
+    expect(result.observedLines).toHaveLength(10)
+    expect(result.observedLines).not.toContain('AUSGERUSTET')
+  })
 })

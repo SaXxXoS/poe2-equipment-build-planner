@@ -146,3 +146,18 @@ Damit kann der Nutzer fehlende OCR-Zeilen ergänzen, falsche Kategorien
 korrigieren und die tatsächlich auf seinem Gegenstand vorhandenen Werte
 manuell eintragen. Dies erhöht die Genauigkeit der vorhandenen semantischen
 Analyse, ist jedoch weiterhin keine vollständige DPS-Simulation.
+
+### Fotoerkennung von Monitoraufnahmen
+
+Foto- und Screenshotmodus besitzen getrennte Vorverarbeitung. Fotos eines
+Monitors werden stärker vergrößert, leicht gegen Moiré geglättet und in zwei
+Kontrastvarianten mit automatischer Schräglagenkorrektur gelesen. Die
+Ergebnisse werden deterministisch zeilenweise zusammengeführt. Dadurch
+bleiben auch Eigenschaften erhalten, die nur einer der Durchläufe sauber
+erkennt.
+
+Typische deutsche OCR-Abweichungen bei Umlauten werden ausschließlich für
+die technische Textzuordnung normalisiert. Gegenstandswerte werden nicht
+erfunden. `VERDERBT`, `AUSGERÜSTET` und nachfolgende Bedienhinweise begrenzen
+den Gegenstandstext, damit Hintergrund- und Menütext nicht als Eigenschaften
+übernommen werden.

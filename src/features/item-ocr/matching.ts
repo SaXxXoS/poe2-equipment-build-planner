@@ -17,19 +17,19 @@ export function normalizeOcrText(value:string){
   return value.normalize('NFKC').replace(/[‐‑‒–—]/g,'-').replace(/[“”„]/g,'"').replace(/[‘’]/g,"'").replace(/[ \t]+/g,' ').trim()
 }
 function comparable(value:string){
-  return normalizeOcrText(cleanAffixText(value)).toLocaleLowerCase('en')
+  return normalizeOcrText(cleanAffixText(value)).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('en')
     .replace(/\([^)]*\d[^)]*\)/g,' ')
     .replace(/[+-]?\d+(?:[.,]\d+)?(?:\s*-\s*[+-]?\d+(?:[.,]\d+)?)?/g,' ')
     .replace(/[#%:;,.()[\]{}|/+]/g,' ')
     .replace(/\b(?:zum|zur)\b/g,'zu')
     .replace(/\bbis\s+(?=maximal)/g,'zu ')
     .replace(/\bmaximal(?:e|en|er|es|em)?\b/g,'maximal')
-    .replace(/\berhöht(?:e|en|er|es|em)?\b/g,'erhöht')
+    .replace(/\berhoht(?:e|en|er|es|em)?\b/g,'erhoht')
     .replace(/\bverringert(?:e|en|er|es|em)?\b/g,'verringert')
-    .replace(/\bfeuerbeständigkeit\b/g,'feuerwiderstand')
-    .replace(/\bkältebeständigkeit\b/g,'kältewiderstand')
-    .replace(/\bblitzbeständigkeit\b/g,'blitzwiderstand')
-    .replace(/\bchaosbeständigkeit\b/g,'chaoswiderstand')
+    .replace(/\bfeuerbestandigkeit\b/g,'feuerwiderstand')
+    .replace(/\bkaltebestandigkeit\b/g,'kaltewiderstand')
+    .replace(/\bblitzbestandigkeit\b/g,'blitzwiderstand')
+    .replace(/\bchaosbestandigkeit\b/g,'chaoswiderstand')
     .replace(/\s+/g,' ').trim()
 }
 function bigrams(value:string){
@@ -71,9 +71,9 @@ function itemHeaderValues(text:string){
     return match?Number(match[1].replace(',','.')):undefined
   }
   return{
-    quality:numberAfter(/(?:Quality|Qualität)\s*:\s*\+?(\d+(?:[.,]\d+)?)\s*%/i),
+    quality:numberAfter(/(?:Quality|Qualit.t)\s*:\s*\+?(\d+(?:[.,]\d+)?)\s*%/i),
     defences:{
-      armour:numberAfter(/(?:Armour|Rüstung)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+      armour:numberAfter(/(?:Armour|R.stung)\s*:\s*(\d+(?:[.,]\d+)?)/i),
       evasion:numberAfter(/(?:Evasion Rating|Ausweichwert)\s*:\s*(\d+(?:[.,]\d+)?)/i),
       energyShield:numberAfter(/(?:Energy Shield|Energieschild)\s*:\s*(\d+(?:[.,]\d+)?)/i),
     },
@@ -82,6 +82,8 @@ function itemHeaderValues(text:string){
 function baseNameFrom(lines:string[]){
   const rarityIndex=lines.findIndex(line=>/^(?:Rarity|Seltenheit)\s*:/i.test(line))
   const itemLevelIndex=lines.findIndex(line=>/(?:Item\s*Level|Gegenstandsstufe|Item-Level)\s*:?\s*\d{1,3}/i.test(line))
+  const itemClassIndex=lines.findIndex(line=>/^(?:Body Armour|K.rperr.stung|Helmet|Helm|Gloves|Handschuhe|Boots|Schuhe|Belt|G.rtel|Amulet|Amulett|Ring|Spear|Speer|Bow|Bogen|Staff|Stab|Wand|Zauberstab)\b/i.test(line))
+  if(itemClassIndex>0)return lines[itemClassIndex-1]
   const start=rarityIndex>=0?rarityIndex+1:0
   const end=itemLevelIndex>=0?itemLevelIndex:Math.min(lines.length,start+2)
   const header=lines.slice(start,end).filter(line=>line&&!/^-{3,}$/.test(line)&&!/^Spielversion\s*:/i.test(line)).slice(0,2)
@@ -146,11 +148,12 @@ function resolveAmbiguousAffixSides(values:OcrAffixCandidate[],rarity:ItemRarity
 }
 function observedPropertyLines(text:string){
   const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
-  const requirementsIndex=lines.findIndex(line=>/^(?:Requires|Erfordert)\s+(?:Level|Stufe)\b/i.test(line))
+  const requirementsIndex=lines.findIndex(line=>/^(?:Requires|Erfordert)\s*:?\s*(?:Level|Stufe)\b/i.test(line))
   const lastHeaderIndex=lines.reduce((last,line,index)=>/^(?:Physical Damage|Lightning Damage|Cold Damage|Fire Damage|Chaos Damage|Critical Hit Chance|Attacks per Second|Range|Quality|Qualität|Armour|Rüstung|Evasion Rating|Ausweichwert|Energy Shield|Energieschild)\s*:/i.test(line)?index:last,-1)
   const propertiesStart=Math.max(requirementsIndex,lastHeaderIndex)+1
-  const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert)$/i.test(line))
-  return propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex).filter(line=>!/^[-=]{3,}$/.test(line))
+  const corruptedIndex=lines.findIndex((line,index)=>index>=propertiesStart&&/^(?:Corrupted|Korrumpiert|Ve\s*rderbt|Ausger.stet|Entfernen)$/i.test(line))
+  return propertiesStart<=0?[]:lines.slice(propertiesStart,corruptedIndex<0?lines.length:corruptedIndex)
+    .filter(line=>line.length>4&&!/^\d+$/.test(line)&&!/^[-=]{3,}$/.test(line))
 }
 function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined{
   const allowedSlot=slotId.includes('helmet')?'helmet':slotId.includes('body')?'body-armour':slotId.includes('gloves')?'gloves':slotId.includes('boots')?'boots':slotId.includes('amulet')?'amulet':slotId.includes('ring')?'ring':slotId.includes('belt')?'belt':slotId.includes('weapon')?'weapon':slotId.includes('jewel')?'jewel':'special'
@@ -180,7 +183,8 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   let affixes=dedupeAffixes(itemClassId?matches.filter(match=>match.itemClassId===itemClassId):matches)
   if(!rarity&&!unique){
     const recognizedSourceLines=new Set(affixes.filter(value=>value.resolutionStatus==='auto-selected').map(value=>normalizeOcrText(value.sourceText)))
-    if(recognizedSourceLines.size>=3)rarity='rare'
+    const observedLineCount=observedPropertyLines(text).length
+    if(recognizedSourceLines.size>=3||observedLineCount>=3)rarity='rare'
     else if(recognizedSourceLines.size>=1)rarity='magic'
   }
   affixes=resolveAmbiguousAffixSides(affixes,rarity)
