@@ -1,6 +1,6 @@
 import type { BuildInput, CharacterConfiguration, EquipmentEntry, MechanicTag, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import { clusterJewelDefinitions, jewelDefinitions, modifierDefinitions, passiveNodeDefinitions, skillDefinitions, supportDefinitions, uniqueClusterJewelDefinitions } from '../../data'
-import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type PassiveCandidate } from '../../engine'
+import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type EngineRequest, type PassiveCandidate, type RealPassivePlanningIntegrationResult } from '../../engine'
 import { localizedPob2UniquesDe } from '../../localization/pob2-uniques-de'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
 import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
@@ -119,7 +119,7 @@ export function deriveWeaponContext(equipment: EquipmentEntry[]) {
   }
 }
 
-export function createBuildAssistantRequest(input: BuildAssistantInput) {
+export function createBuildAssistantRequest(input: BuildAssistantInput): EngineRequest & { weaponContext: NonNullable<EngineRequest['weaponContext']> } {
   const buildInput: BuildInput = {
     character: input.character,
     equipment: input.equipment.map(migrateEquipmentEntry),
@@ -130,9 +130,11 @@ export function createBuildAssistantRequest(input: BuildAssistantInput) {
   return { input: buildInput, candidates: buildAssistantCandidates, weaponContext: deriveWeaponContext(input.equipment) }
 }
 
-export function runBuildAssistantV1(input: BuildAssistantInput): BuildAnalysis {
+export function runBuildAssistantV1(input: BuildAssistantInput, precomputedRealPassivePlanning?: RealPassivePlanningIntegrationResult): BuildAnalysis {
+  const request = createBuildAssistantRequest(input)
+  request.precomputedRealPassivePlanning = precomputedRealPassivePlanning
   return analyzeBuild(
-    createBuildAssistantRequest(input),
+    request,
     { engineVersion: BUILD_ASSISTANT_V1_VERSION, fixtureMode: true },
     modifierDefinitions,
   )

@@ -146,6 +146,7 @@ export interface EngineRequest {
   input: BuildInput
   candidates: EngineCandidates
   realPassivePlanning?: RealPassivePlanningConfiguration
+  precomputedRealPassivePlanning?: RealPassivePlanningIntegrationResult
   weaponContext?: {
     availableWeaponTypes: SyntheticWeaponType[]
     availableWeaponSets: ('set-1' | 'set-2')[]

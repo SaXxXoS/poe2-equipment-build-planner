@@ -115,7 +115,7 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
 
   it('rendert einen zusammenhÃ¤ngenden deutschen Ergebnisbericht mit allen V1-Bereichen', () => {
     const html = renderToStaticMarkup(<BuildAssistantResultSection analysis={runBuildAssistantV1(input())} equipment={equipment()}/>)
-    for (const heading of ['Zusammenfassung', 'Ausrüstung', 'Hauptangriff und Supports', 'Passive Schwerpunkte', 'Juwelen und Cluster', 'Passende Uniques', 'Mapping', 'Boss', 'Nächste Verbesserungen']) expect(html).toContain(heading)
+    for (const heading of ['Zusammenfassung', 'Beste Schadensskalierungen', 'Ausrüstung', 'Hauptangriff und Supports', 'Passive Schwerpunkte', 'Juwelen und Cluster', 'Passende Uniques', 'Mapping', 'Boss', 'Nächste Verbesserungen']) expect(html).toContain(heading)
     expect(html).not.toContain('FESTE PLATZHALTERDATEN')
     expect(html).toContain('Mapping-Ranglisten')
     expect(html).toContain('Boss-Ranglisten')

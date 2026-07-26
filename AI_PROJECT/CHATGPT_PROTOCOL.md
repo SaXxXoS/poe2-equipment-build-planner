@@ -1352,3 +1352,40 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Weg und Zielreihenfolge werden gemeinsam angezeigt.
 - Der getrennte Aszendenzplan ist violett. Gemeinsam, Waffenset 1 und
   Waffenset 2 bleiben gelb, rot und grün.
+
+# Equipment-first-DPS-Orchestrierung
+
+- Vorhandene Ausrüstung bleibt die erste Grundlage. Waffenarten, Affixe,
+  tatsächliche Werte, Uniques und Waffensets bestimmen das Ausgangsprofil.
+- Ohne gewählte Hauptfertigkeit setzt die bestehende Skillanalyse eine
+  belegte Hauptfertigkeit ein und ergänzt die fünf bestbewerteten
+  kompatiblen Supports.
+- Der zentrale Build-Button führt anschließend auch die reale
+  Passive-Planung aus. Normale Punkte, Waffensetpläne und bis zu acht
+  gewählte Aszendenzpunkte werden über die vorhandene Profilrückkopplung
+  erneut in Skill-, Support-, Juwel- und Unique-Bewertungen eingespeist.
+- Der Worker behält seinen kompakten Analysevertrag. Das errechnete
+  Passive-Ergebnis wird danach mit den vollständigen produktiven
+  Skill-, Support- und Unique-Katalogen im bestehenden Orchestrator
+  ausgewertet.
+- Ohne Ausrüstung entsteht aus Klasse, Aszendenz, Zielprofil und belegten
+  Fertigkeitsmerkmalen ein deterministischer schadensorientierter
+  Startbuild. Unbekannte Waffen- oder Mechanikabhängigkeiten werden nicht
+  erfunden.
+- Die Ergebnisansicht nennt belegte Skalierungen für Schadensart,
+  Angriff/Zauber, Geschwindigkeit, Projektil/Fläche und Kritisch. Kritische
+  Skalierung wird ohne belegtes Skillmerkmal nicht positiv vorausgesetzt.
+- Der numerische Schadenswert bleibt ein begrenzter Trefferschadenvergleich.
+  Passive-, Support- und komplexe Mechanikwerte werden erst dann als exakte
+  DPS eingerechnet, wenn strukturierte quantitative Daten dafür vorliegen.
+# Gemeinsame Passivbaumdarstellung und korrigierte Waffenset-Semantik
+
+- Waffenset-Passivpunkte werden ausdrücklich als Teil des normalen Passivpunktebudgets behandelt, nicht als zusätzliche Punkte: Bis zu 24 normale Punkte können für Set 1 und Set 2 unterschiedlich belegt sein.
+- Bei 24 umschaltbaren Punkten besitzt Set 1 bis zu 24 set-spezifische Belegungen und Set 2 bis zu 24 alternative Belegungen; aktiv ist jeweils nur die zum aktiven Set gehörende Variante. Es entstehen keine 48 gleichzeitig aktiven Zusatzpunkte.
+- Der Baum zeigt nach einer Analyse alle Ebenen gleichzeitig, ohne Darstellungsumschalter:
+  - Gelb: in beiden Waffensets gemeinsam belegter normaler Pfad
+  - Rot: ausschließlich für Waffenset 1 abweichende Belegung
+  - Grün: ausschließlich für Waffenset 2 abweichende Belegung
+  - Violett: separat geplante Aszendenzpunkte
+- Die Set-Overlays ziehen den gemeinsamen Pfad ab. Dadurch wird der gemeinsame Stamm nicht mehr irreführend vollständig rot oder grün dargestellt.
+- Der Aszendenzplan wird gleichzeitig im eingebetteten Baum der gewählten Aszendenz angezeigt und verwendet weiterhin ausschließlich den separaten Auftraggeberwert von höchstens acht Aszendenzpunkten.

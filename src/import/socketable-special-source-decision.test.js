@@ -104,12 +104,12 @@ const immutableFiles = {
   '../../src/affixes/registry.ts': '8fb686c14f5e69bb69067d143d030059ee079863bb54b2c59fbbd2ade0aa6ef0',
   // V1.3 explicitly authorizes the backwards-compatible equipment editor expansion.
   '../../src/components/AffixDialog.tsx': '05ed2a0be0e163d474f24baaab798a48ec088f38395aeab72e1ba0a123b8f4d9',
-  '../../src/engine/common/types.ts': 'c205092ddcdae2fa483ef78421185c84c009a9195e99763beb23970166736c78',
+  '../../src/engine/common/types.ts': 'd8f4d897da619e090b7c8ff2f297753105b9e7b6cda4d447a0cd5c301ebc12a3',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
-  '../../src/engine/orchestration/analyze-build.ts': 'bde73e58adac5cc3cde6d7d7e907a876e9e7077f6f48d7f40d1833ca21cedcab',
+  '../../src/engine/orchestration/analyze-build.ts': 'e94776f0aafb8592d15f4fed375d3c5c69ea61b9d0c61e159fe219c622485def',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',
 }
