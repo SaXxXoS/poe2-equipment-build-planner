@@ -1389,3 +1389,31 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   - Violett: separat geplante Aszendenzpunkte
 - Die Set-Overlays ziehen den gemeinsamen Pfad ab. Dadurch wird der gemeinsame Stamm nicht mehr irreführend vollständig rot oder grün dargestellt.
 - Der Aszendenzplan wird gleichzeitig im eingebetteten Baum der gewählten Aszendenz angezeigt und verwendet weiterhin ausschließlich den separaten Auftraggeberwert von höchstens acht Aszendenzpunkten.
+
+# Korrektur überlappender Waffenset- und Aszendenzpfade
+
+- Waffenset-Punkte ersetzen einen entsprechenden Anteil normaler
+  Passivpunkte durch zwei umschaltbare Belegungen. Die App erzeugt daher
+  weiterhin je Set höchstens den eingestellten Anteil; die beiden
+  Alternativen sind nicht gleichzeitig aktiv.
+- Belegen Set 1 und Set 2 denselben Knoten oder dieselbe Verbindung, wird
+  diese Überlappung jetzt gelb als „in beiden Waffensets aktiv“ gezeichnet.
+  Zuvor lag die grüne Ebene über der roten Ebene und ließ Set 1 fälschlich
+  verschwinden.
+- Rot und Grün werden ausschließlich für tatsächlich voneinander
+  abweichende Set-Belegungen verwendet. Ohne set-spezifische Ausrüstung oder
+  Skill-Evidenz erfindet die App keine künstliche Abweichung.
+- Die Planverbindungen aller vier Ebenen besitzen jetzt eine explizite,
+  deutlich stärkere Strichbreite. Dadurch ist auch der violette
+  Aszendenzpfad im verkleinerten eingebetteten Aszendenzbaum sichtbar.
+- Ein Regressionstest führt die offizielle Stormweaver-Aszendenz
+  (`Sorceress1`) gegen den gepinnten Baum aus und prüft, dass ein echter,
+  ausschließlich zur gewählten Aszendenz gehörender Pfad entsteht.
+- Nachprüfung im produktiven mobilen Ablauf: Die passende
+  Aszendenzsynergie fließt nun sowohl in den fachlichen Gesamtwert als auch
+  in die ausschließlich für Aszendenzen geltende Kandidatenbewertung ein.
+  Ein schwaches oder noch leeres Profil bleibt damit nicht mehr
+  fälschlicherweise am Aszendenzstart stehen.
+- Sind beide Waffensetpläne mangels set-spezifischer Unterschiede identisch,
+  erklärt die Baumansicht ausdrücklich, warum nur der gemeinsame gelbe Pfad
+  und keine rote oder grüne Abweichung sichtbar ist.

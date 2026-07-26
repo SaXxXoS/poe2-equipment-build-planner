@@ -14,9 +14,10 @@ function dominantCategory(value:PassiveTargetRecommendation):string {
 export function baseValueComponents(input:PassivePlanningInput,value:PassiveTargetRecommendation) {
   const targetValue=value.totalScore, profileValue=value.profileSynergyScore
   const modeValue=input.targetProfile==='mapping'?value.mappingScore:input.targetProfile==='boss'?value.bossScore:(value.mappingScore+value.bossScore)/2
-  const weighted=targetValue*PASSIVE_PLANNING_CONFIG.valueWeights.target+profileValue*PASSIVE_PLANNING_CONFIG.valueWeights.profile+modeValue*PASSIVE_PLANNING_CONFIG.valueWeights.mode
+  const ascendancyValue=input.planningScope==='ascendancy'?value.ascendancySynergyScore:0
+  const weighted=targetValue*PASSIVE_PLANNING_CONFIG.valueWeights.target+profileValue*PASSIVE_PLANNING_CONFIG.valueWeights.profile+modeValue*PASSIVE_PLANNING_CONFIG.valueWeights.mode+ascendancyValue
   const confidenceAdjustedValue=weighted*PASSIVE_PLANNING_CONFIG.confidenceMultiplier[value.confidence]
-  const conflictPenalty=(value.conflictingTags.length+value.conflictingProfileFields.length+value.conflictingNodeIds.length)*PASSIVE_PLANNING_CONFIG.penalties.conflict
+  const conflictPenalty=input.planningScope==='ascendancy'?0:(value.conflictingTags.length+value.conflictingProfileFields.length+value.conflictingNodeIds.length)*PASSIVE_PLANNING_CONFIG.penalties.conflict
   const unresolvedPenalty=value.unresolvedStatCount*PASSIVE_PLANNING_CONFIG.penalties.unresolved
   const reoptimizationPenalty=value.requiresReoptimization?PASSIVE_PLANNING_CONFIG.penalties.reoptimization:0
   return {targetValue,profileValue,modeValue,confidenceAdjustedValue,conflictPenalty,unresolvedPenalty,reoptimizationPenalty,redundancyPenalty:0,effectiveValue:confidenceAdjustedValue-conflictPenalty-unresolvedPenalty-reoptimizationPenalty}
