@@ -11,10 +11,11 @@ export const PASSIVE_PLANNING_CONFIG = Object.freeze({
   valueWeights: { target: 0.45, profile: 0.25, mode: 0.3 },
   penalties: { conflict: 7, unresolved: 3, reoptimization: 18, redundancy: 24, strongRedundancy: 42 },
   modeWeights: {
-    'value-first': { value: 1, efficiency: 0.08, reuse: 2, cost: 0.05 },
-    'efficiency-first': { value: 0.25, efficiency: 1, reuse: 8, cost: 0.5 },
-    balanced: { value: 0.65, efficiency: 0.55, reuse: 5, cost: 0.25 },
-  } satisfies Record<PassivePlanningMode, { value:number; efficiency:number; reuse:number; cost:number }>,
+    'damage-first': { value: 0.7, efficiency: 0.12, reuse: 2, cost: 0.05, damage: 1.35 },
+    'value-first': { value: 1, efficiency: 0.08, reuse: 2, cost: 0.05, damage: 0 },
+    'efficiency-first': { value: 0.25, efficiency: 1, reuse: 8, cost: 0.5, damage: 0 },
+    balanced: { value: 0.65, efficiency: 0.55, reuse: 5, cost: 0.25, damage: 0 },
+  } satisfies Record<PassivePlanningMode, { value:number; efficiency:number; reuse:number; cost:number; damage:number }>,
   zeroCostDivisor: 1,
   strongRedundancyThreshold: 2,
 })

@@ -1417,3 +1417,25 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Sind beide Waffensetpläne mangels set-spezifischer Unterschiede identisch,
   erklärt die Baumansicht ausdrücklich, warum nur der gemeinsame gelbe Pfad
   und keine rote oder grüne Abweichung sichtbar ist.
+# Vollständiger schadensorientierter Analyseablauf
+
+- Der Knopf in der realen Passive-Analyse startet nun den gesamten
+  Build-Ablauf. Er umgeht nicht mehr die Skill-, Support- und
+  Ergebnisaggregation.
+- Ist noch keine Fertigkeit gewählt, wird ein deterministischer
+  Hauptskill nach dem sicher modellierbaren Schaden ausgewählt. Ohne
+  Ausrüstung darf dabei ein Skill mit noch fehlender Waffenanforderung als
+  Aufbauempfehlung dienen; die fehlende Waffe bleibt als Konflikt sichtbar.
+- Die fünf Supports werden erst nach der Wahl dieses Hauptskills erneut
+  analysiert und ausschließlich aus dessen kompatibler Rangliste übernommen.
+- Der neue Standardmodus `damage-first` bevorzugt belegte
+  Schadenswirkungen im Passivbaum. Die Planung bleibt heuristisch und
+  behauptet kein mathematisch globales DPS-Optimum.
+- Für die gewählte Aszendenz werden alle eingegebenen Punkte bis maximal
+  acht vergeben, sofern im offiziellen Aszendenzbaum genügend erreichbare
+  Knoten vorhanden sind. Stormweaver ist mit 8/8 Punkten gegen den
+  gepinnten offiziellen Baum getestet.
+- Der gemeinsam genutzte Passive-Worker bleibt im React-Strict-Mode aktiv.
+  Dadurch kann die vollständige Analyse nach einem einzigen Knopfdruck
+  Skillkarten, Supports, normale Pfade, Waffensetpfade und Aszendenzpfad
+  zusammen erzeugen.

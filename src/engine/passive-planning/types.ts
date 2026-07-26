@@ -2,7 +2,7 @@ import type { AnalyzerContext, BuildProfile, Confidence } from '../common/types'
 import type { PassiveGraph } from '../passive-pathfinding/types'
 import type { PassiveTargetAnalysis, PassiveTargetNodeType, PassiveTargetRecommendation } from '../passive-targeting/types'
 
-export type PassivePlanningMode = 'value-first' | 'efficiency-first' | 'balanced'
+export type PassivePlanningMode = 'damage-first' | 'value-first' | 'efficiency-first' | 'balanced'
 export type PassivePlanningScope = 'normal' | 'ascendancy'
 export type PassivePlanningStatus = 'complete' | 'partial' | 'blocked' | 'no-eligible-targets' | 'budget-exhausted' | 'required-target-unreachable' | 'required-target-over-budget' | 'invalid-input'
 

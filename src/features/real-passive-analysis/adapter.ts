@@ -6,7 +6,7 @@ import { clusterJewelDefinitions,jewelDefinitions,modifierDefinitions as allModi
 export const REAL_PASSIVE_UI_SOURCE_VERSION='0.5.2'
 export const REAL_PASSIVE_UI_TREE_IDENTITY='fnv1a32-bedf8404'
 export const REAL_PASSIVE_UI_MAXIMUM_POINT_BUDGET=123
-export type PassivePlanningMode='value-first'|'efficiency-first'|'balanced'
+export type PassivePlanningMode='damage-first'|'value-first'|'efficiency-first'|'balanced'
 export interface PassiveAnalysisUiInput {character:CharacterConfiguration;equipment:EquipmentEntry[];setups:SkillSetup[];pointBudget:number;weaponSetPointBudget?:number;ascendancyPointBudget?:number;planningMode:PassivePlanningMode}
 export interface PassiveAnalysisAdapterResult {signature:string;payload?:AnalyzePayload;errors:string[];classStartNodeId?:string}
 const stable=(value:unknown):string=>JSON.stringify(value,(_key,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.entries(item).sort(([a],[b])=>a.localeCompare(b))):item)

@@ -48,7 +48,7 @@ function redundancy(candidate:PassivePlanCandidate,selected:PassivePlanCandidate
 function evaluate(input:PassivePlanningInput,candidate:PassivePlanCandidate,path:PassivePlanCachedPath,selected:PassivePlanCandidate[]):Evaluation {
  const red=redundancy(candidate,selected),base=baseValueComponents(input,candidate.recommendation),components={...base,redundancyPenalty:red.penalty,effectiveValue:base.effectiveValue-red.penalty}
  const divisor=Math.max(path.pointCost,PASSIVE_PLANNING_CONFIG.zeroCostDivisor),valuePerPoint=components.effectiveValue/divisor,reuse=path.pathNodeIds.length?path.reusedNodeIds.length/path.pathNodeIds.length:0,w=PASSIVE_PLANNING_CONFIG.modeWeights[input.planningMode]
- const score=components.effectiveValue*w.value+valuePerPoint*w.efficiency+reuse*w.reuse-path.pointCost*w.cost
+ const score=components.effectiveValue*w.value+valuePerPoint*w.efficiency+reuse*w.reuse-path.pointCost*w.cost+candidate.recommendation.damageScore*w.damage
  return{candidate,path,components,effectiveValue:components.effectiveValue,valuePerPoint,score,redundancyCodes:red.codes,conflictCodes:[...candidate.recommendation.conflictingTags,...candidate.recommendation.conflictingProfileFields,...candidate.recommendation.conflictingNodeIds].map(String)}
 }
 function compareEvaluation(a:Evaluation,b:Evaluation){return b.score-a.score||b.candidate.recommendation.totalScore-a.candidate.recommendation.totalScore||confidenceNumber[b.candidate.recommendation.confidence]-confidenceNumber[a.candidate.recommendation.confidence]||a.path.pointCost-b.path.pointCost||a.path.pathLength-b.path.pathLength||compareId(a.candidate.recommendation.nodeId,b.candidate.recommendation.nodeId)}
@@ -83,7 +83,8 @@ export function planPassiveTargets(input:PassivePlanningInput):PassivePlanResult
   for(const candidate of candidates){
    if(state.selected.has(candidate.recommendation.nodeId)||candidate.required)continue
    const base=baseValueComponents(input,candidate.recommendation)
-   if(base.effectiveValue<=0||candidate.recommendation.conflictingTags.length||candidate.recommendation.conflictingProfileFields.length||candidate.recommendation.conflictingNodeIds.length)continue
+   const hasBlockingConflict=input.planningScope!=='ascendancy'&&(candidate.recommendation.conflictingTags.length>0||candidate.recommendation.conflictingProfileFields.length>0||candidate.recommendation.conflictingNodeIds.length>0)
+   if(base.effectiveValue<=0||hasBlockingConflict)continue
    const path=incrementalPath(input,candidate.recommendation.nodeId,state,cache)
    if(!path||path.pointCost<=0||state.used+path.pointCost>input.pointBudget)continue
    const evaluated=evaluate(input,candidate,path,[])

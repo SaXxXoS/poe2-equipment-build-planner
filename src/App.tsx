@@ -35,7 +35,6 @@ export default function App() {
     }, 250)
     return () => window.clearTimeout(timer)
   }, [character, equipment, setups])
-  useEffect(() => () => { void passiveController.dispose() }, [passiveController])
   function invalidateResult() {
     setAnalysis(null)
     setCalculationState('idle')
@@ -65,6 +64,7 @@ export default function App() {
           const mainCandidates = [
             ...result.skillAnalysis.topMainCandidates,
             ...result.skillAnalysis.eligibleCandidates.filter(value => value.possibleRoles.includes('main')),
+            ...result.skillAnalysis.allCandidates.filter(value => value.possibleRoles.includes('main')),
           ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
           const recommendation = mainCandidates.map(candidate => {
             const trialSetup = { ...setups[0], skillId: candidate.skillId, role: 'main' as const, supportGemIds: [] }
@@ -72,14 +72,19 @@ export default function App() {
             return { candidate, modeledDps: estimate.hitDamagePerSecond ?? -1 }
           }).sort((a, b) => b.modeledDps - a.modeledDps || b.candidate.damageScore - a.candidate.damageScore || b.candidate.totalScore - a.candidate.totalScore || a.candidate.skillId.localeCompare(b.candidate.skillId))[0]?.candidate
           if (recommendation) {
-            const recommendedSupports = result.supportAnalysis.topCandidates.slice(0, 5).map(value => value.supportId)
-            const nextSetups = setups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: recommendedSupports } : value)
-            effectiveSetups = nextSetups
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
+            const provisionalSetups = setups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
+            const provisionalResult = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: provisionalSetups })
+            const recommendedSupports = provisionalResult.supportAnalysis.topCandidates.filter(value => value.skillId === recommendation.skillId).slice(0, 5).map(value => value.supportId)
+            const nextSetups = provisionalSetups.map((value, index) => index === 0 ? { ...value, supportGemIds: recommendedSupports } : value)
+            effectiveSetups = nextSetups
             setSetups(nextSetups)
             setCharacter(effectiveCharacter)
             result = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: nextSetups })
           }
+        }
+        if (effectiveSetups !== setups || effectiveCharacter !== character) {
+          await new Promise<void>(resolve => window.setTimeout(resolve, 0))
         }
         const pointBudget = Math.max(1, Math.min(REAL_PASSIVE_UI_MAXIMUM_POINT_BUDGET, Math.trunc(effectiveCharacter.level) - 1 + Math.max(0, Math.trunc(effectiveCharacter.additionalPassivePoints ?? 0))))
         const passiveInput: PassiveAnalysisUiInput = {
@@ -89,7 +94,7 @@ export default function App() {
           pointBudget,
           weaponSetPointBudget: Math.min(24, pointBudget),
           ascendancyPointBudget: effectiveCharacter.ascendancyPassivePoints ?? 0,
-          planningMode: 'value-first',
+          planningMode: 'damage-first',
         }
         if (passiveController.getState().status === 'uninitialized') await passiveController.initialize()
         await passiveController.analyze(passiveInput)
@@ -137,7 +142,7 @@ export default function App() {
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResults={passivePlan.results} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
-      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} controller={passiveController} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan}/>
+      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} controller={passiveController} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan} onBuildAnalyze={calculate}/>
       <section className="calculate">
         <h2>7. Build auswerten</h2>
         <p>Leere optionale Ausrüstungsslots sind erlaubt. Sie senken lediglich die Sicherheit der Empfehlung.</p>
