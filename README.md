@@ -221,3 +221,11 @@ Das deutsche Ergebnis umfasst Ausrüstung, Hauptangriff, Supports, passive Schwe
 ## Begrenzte Schadensberechnung
 
 Für eindeutig zugeordnete Trefferfertigkeiten zeigt der Build-Assistent nun einen deterministischen Teilwert aus Schaden pro Treffer, Aktionen pro Sekunde und Trefferschaden pro Sekunde. Grundlage ist eine offline erzeugte, gepinnte PoB2-Referenz. Der Wert ist ausdrücklich keine vollständige PoB-DPS: Supports, Passive-/Aszendenzwerte, Gegnerdefensiven, kritische Treffer, Ailments, Mehrfachtreffer und bedingte Mechaniken sind noch nicht vollständig eingerechnet. Details und Vergleichsgrenzen: [`docs/DAMAGE_CALCULATION_V1.md`](docs/DAMAGE_CALCULATION_V1.md).
+# Lokaler Buildspeicher und gepinnter Gemmenbestand
+
+Eingaben werden versioniert ausschließlich im lokalen Browser gespeichert.
+Die Produktoberfläche nutzt den gepinnten Bestand von 235 aktiven/Spirit-
+Skills und 451 Support-Tier-Einträgen mit technisch verknüpfter lokaler
+deutscher Spielanzeige. Passive Planpfade sind als gemeinsamer Plan (gelb),
+Waffenset 1 (rot) und Waffenset 2 (grün) unterscheidbar. Details:
+[`docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md`](docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md).

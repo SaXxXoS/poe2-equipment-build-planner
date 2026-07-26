@@ -7,16 +7,31 @@ import { jewelAnalyzer } from '../jewels/analyzer'
 import { uniqueAnalyzer } from '../uniques/analyzer'
 import { rotationGenerator } from '../rotations/generator'
 import { explanationGenerator } from '../explanations/generator'
-import type { AnalyzerContext, BuildAnalysis, EngineRequest } from '../common/types'
+import type { AnalyzerContext, BuildAnalysis, BuildProfile, EngineRequest } from '../common/types'
 import { runRealPassivePlanningIntegration } from './real-passive-integration'
 import { estimateHitDamage } from '../damage-estimation'
 export const ENGINE_VERSION = '0.1.0-placeholder'
+const damageKeys=['physical','fire','cold','lightning','chaos'] as const
+const mechanicKeys=['attack','spell','projectile','melee','area','critical','damage-over-time','minion','movement','buff','debuff','defensive'] as const
+function applySkillDriver(profile:BuildProfile,request:EngineRequest):BuildProfile{
+  const selectedId=request.input.character.desiredMainSkillId??request.input.skillSetups.find(value=>value.role==='main'&&value.skillId)?.skillId
+  const skill=request.candidates.skills.find(value=>value.id===selectedId)
+  if(!skill)return profile
+  const result:BuildProfile=structuredClone(profile)
+  for(const tag of skill.tags){
+    if((damageKeys as readonly string[]).includes(tag))result.damageTypes[tag as typeof damageKeys[number]]=Math.max(result.damageTypes[tag as typeof damageKeys[number]],80)
+    if((mechanicKeys as readonly string[]).includes(tag))result.mechanics[tag as typeof mechanicKeys[number]]=Math.max(result.mechanics[tag as typeof mechanicKeys[number]],80)
+  }
+  return result
+}
 export function analyzeBuild(request: EngineRequest, context: AnalyzerContext = { engineVersion: ENGINE_VERSION, fixtureMode: true }, modifiers: ModifierDefinition[] = []): BuildAnalysis {
   const orchestratorStarted=performance.now(),moduleTrace: string[] = []; const runtime = { ...context, trace: moduleTrace }; const equipment = equipmentAnalyzer.analyze(request, runtime, modifiers)
   const weaponTypes=request.weaponContext?.availableWeaponTypes??['any']; const weaponSets=request.weaponContext?.availableWeaponSets??['set-1']
-  const realPassivePlanning=runRealPassivePlanningIntegration(request.realPassivePlanning,equipment.value.buildProfile,runtime,undefined,{'set-1':equipment.value.equipmentAnalysis.profileSet1,'set-2':equipment.value.equipmentAnalysis.profileSet2})
-  const buildProfile=realPassivePlanning?.profileFeedback?.effectiveBuildProfile??equipment.value.buildProfile
-  const equipmentAnalysis=realPassivePlanning?.profileFeedback?{...equipment.value.equipmentAnalysis,combinedProfile:buildProfile,profileSet1:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-1'],profileSet2:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-2']}:equipment.value.equipmentAnalysis
+  const skillDrivenProfile=applySkillDriver(equipment.value.buildProfile,request)
+  const skillDrivenSetProfiles={'set-1':applySkillDriver(equipment.value.equipmentAnalysis.profileSet1,request),'set-2':applySkillDriver(equipment.value.equipmentAnalysis.profileSet2,request)}
+  const realPassivePlanning=runRealPassivePlanningIntegration(request.realPassivePlanning,skillDrivenProfile,runtime,undefined,skillDrivenSetProfiles)
+  const buildProfile=realPassivePlanning?.profileFeedback?.effectiveBuildProfile??skillDrivenProfile
+  const equipmentAnalysis=realPassivePlanning?.profileFeedback?{...equipment.value.equipmentAnalysis,combinedProfile:buildProfile,profileSet1:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-1'],profileSet2:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-2']}:{...equipment.value.equipmentAnalysis,combinedProfile:buildProfile,profileSet1:skillDrivenSetProfiles['set-1'],profileSet2:skillDrivenSetProfiles['set-2']}
   const skillAnalysis = skillAnalyzer.analyzeRanked(buildProfile, request.candidates.skills, runtime, { equipmentAnalysis, character: request.input.character, goalProfile: request.input.goalProfile, availableWeaponTypes: weaponTypes }); const skills = skillAnalysis.allCandidates; const desiredSkillId=request.input.character.desiredMainSkillId; const selectedRecommendation = skills.find(item=>item.skillId===desiredSkillId)??skills.find(item => item.valid); const selectedSkill = request.candidates.skills.find(item => item.id === selectedRecommendation?.skillId) ?? request.candidates.skills[0]
   const supportAnalysis = selectedSkill ? supportAnalyzer.analyzeRanked(selectedSkill, buildProfile, request.candidates.supports, runtime, { skillRecommendation: selectedRecommendation, equipmentAnalysis, character: request.input.character, goalProfile: request.input.goalProfile, availableWeaponTypes: weaponTypes }) : { allCandidates: [], eligibleCandidates: [], blockedCandidates: [], topCandidates: [], topDamageSupports: [], topMappingSupports: [], topBossSupports: [], topUtilitySupports: [], topDefensiveSupports: [], status: 'placeholder' as const, analyzerVersion: 'none' }; const supports = supportAnalysis.allCandidates
   const selectedSupports = supportAnalysis.topCandidates; const passiveAnalysis = passiveAnalyzer.analyzeRanked(buildProfile, request.candidates.passives, runtime, { equipmentAnalysis, skillRecommendation: selectedRecommendation, supportRecommendations: selectedSupports, character: request.input.character, goalProfile: request.input.goalProfile }); const passives = passiveAnalysis.allCandidates

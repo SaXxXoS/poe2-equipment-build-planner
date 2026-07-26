@@ -26,10 +26,11 @@ const classesBySlot: Record<string, string[]> = {
   'slot-amulet':['Amulets'],'slot-ring-1':['Rings'],'slot-ring-2':['Rings'],
   'slot-jewel-1':['Jewels'],'slot-jewel-2':['Jewels'],'slot-charm-1':['Charms'],'slot-charm-2':['Charms'],'slot-charm-3':['Charms'],'slot-life-flask':['Life Flasks'],'slot-mana-flask':['Mana Flasks'],
 }
+const germanItemClassNames:Record<string,string>={Bows:'Bögen',Bucklers:'Faustschilde',Claws:'Klauen',Crossbows:'Armbrüste',Daggers:'Dolche',Flails:'Flegel',Foci:'Foki','One Hand Axes':'Einhandäxte','One Hand Maces':'Einhandstreitkolben','One Hand Swords':'Einhandschwerter',Quarterstaves:'Kampfstäbe',Quivers:'Köcher',Sceptres:'Zepter',Shields:'Schilde',Spears:'Speere',Staves:'Stäbe','Two Hand Axes':'Zweihandäxte','Two Hand Maces':'Zweihandstreitkolben','Two Hand Swords':'Zweihandschwerter',Wands:'Zauberstäbe',Helmets:'Helme','Body Armours':'Körperrüstungen',Gloves:'Handschuhe',Boots:'Schuhe',Amulets:'Amulette',Rings:'Ringe',Belts:'Gürtel',Jewels:'Juwelen',Charms:'Talismane','Life Flasks':'Lebensfläschchen','Mana Flasks':'Manafläschchen'}
 export const baseItemsFor=(itemClassId:string)=>technicalBaseItems.filter(value=>value.itemClassId===itemClassId)
 export function itemClassesForSlot(slotId: string): TechnicalItemClass[] {
   const allowed = classesBySlot[slotId] ?? (slotId.startsWith('slot-jewel-') ? ['Jewels'] : undefined)
-  return technicalItemClasses.filter(value => allowed ? allowed.includes(value.itemClassId) : value.slotType === 'weapon' || value.slotType === 'offhand')
+  return technicalItemClasses.filter(value => allowed ? allowed.includes(value.itemClassId) : value.slotType === 'weapon' || value.slotType === 'offhand').map(value=>({...value,technicalName:germanItemClassNames[value.itemClassId]??value.technicalName}))
 }
 export function affixesFor(itemClassId: string, side: 'prefix'|'suffix'|'implicit', itemLevel?: number): TechnicalAffix[] {
   return (itemClassAffixIndex[itemClassId]?.[side] ?? []).map(id => technicalAffixById.get(id)).filter((value): value is TechnicalAffix => Boolean(value)).filter(value => itemLevel == null || value.requiredItemLevel == null || value.requiredItemLevel <= itemLevel)

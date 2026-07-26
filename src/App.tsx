@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './styles.css'
 import './domain.css'
 import type { CharacterConfiguration } from './domain'
@@ -13,17 +13,27 @@ import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
 import { RealPassiveAnalysis, type PassivePlanPresentation } from './features/real-passive-analysis'
 import { runBuildAssistantV1, validateBuildAssistantInput } from './features/build-assistant-v1'
+import { clearStoredBuild, loadStoredBuild, saveStoredBuild } from './features/build-storage'
 
 export default function App() {
-  const [character, setCharacter] = useState<CharacterConfiguration>(createInitialCharacterConfiguration)
-  const [equipment, setEquipment] = useState(initialEquipment)
-  const [setups, setSetups] = useState(createEmptySkillSetups)
+  const [initial] = useState(loadStoredBuild)
+  const [character, setCharacter] = useState<CharacterConfiguration>(() => initial?.character ?? createInitialCharacterConfiguration())
+  const [equipment, setEquipment] = useState(() => initial?.equipment ?? initialEquipment)
+  const [setups, setSetups] = useState(() => initial?.setups ?? createEmptySkillSetups())
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])
   const [passivePlan, setPassivePlan] = useState<PassivePlanPresentation>({ result: null, status: 'uninitialized', activePlan: 'shared' })
   const [planVisible, setPlanVisible] = useState(true)
   const [focusPlanRequest, setFocusPlanRequest] = useState(0)
+  const [saveStatus, setSaveStatus] = useState(initial ? 'Gespeicherter Build geladen' : 'Noch nicht gespeichert')
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      saveStoredBuild({ character, equipment, setups })
+      setSaveStatus('Automatisch gespeichert')
+    }, 250)
+    return () => window.clearTimeout(timer)
+  }, [character, equipment, setups])
   function invalidateResult() {
     setAnalysis(null)
     setCalculationState('idle')
@@ -46,7 +56,19 @@ export default function App() {
     setCalculationState('running')
     setTimeout(() => {
       try {
-        setAnalysis(runBuildAssistantV1(input))
+        let result = runBuildAssistantV1(input)
+        const hasSelectedSkill = setups.some(value => value.skillId)
+        if (!hasSelectedSkill) {
+          const recommendation = result.skillAnalysis.topMainCandidates[0]
+          if (recommendation) {
+            const recommendedSupports = result.supportAnalysis.topCandidates.slice(0, 5).map(value => value.supportId)
+            const nextSetups = setups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: recommendedSupports } : value)
+            setSetups(nextSetups)
+            setCharacter(current => ({ ...current, desiredMainSkillId: recommendation.skillId }))
+            result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: recommendation.skillId }, equipment, setups: nextSetups })
+          }
+        }
+        setAnalysis(result)
         setCalculationState('completed')
         setTimeout(() => document.querySelector('#result')?.scrollIntoView({ behavior: 'smooth' }), 0)
       } catch {
@@ -54,6 +76,15 @@ export default function App() {
         setCalculationErrors(['Die Build-Auswertung konnte nicht abgeschlossen werden. Bitte prüfe die Eingaben.'])
       }
     }, 0)
+  }
+  function resetBuild() {
+    clearStoredBuild()
+    setCharacter(createInitialCharacterConfiguration())
+    setEquipment(initialEquipment)
+    setSetups(createEmptySkillSetups())
+    setPassivePlan({ result: null, status: 'uninitialized', activePlan: 'shared' })
+    invalidateResult()
+    setSaveStatus('Build zurückgesetzt')
   }
   function recommendSupports(setupId: string) {
     const setup = setups.find(value => value.id === setupId)
@@ -70,10 +101,11 @@ export default function App() {
       <p>Wähle Charakter, Ausrüstung, Hauptangriff und Zielprofil. Die vorhandenen Analyzer verbinden diese Eingaben zu einem nachvollziehbaren deutschen Build-Vorschlag.</p>
     </header>
     <main>
+      <section className="build-storage"><div><b>Lokaler Buildspeicher</b><p className="muted">{saveStatus}. Die Daten bleiben ausschließlich in diesem Browser.</p></div><div className="row"><button className="secondary" onClick={() => { saveStoredBuild({ character, equipment, setups }); setSaveStatus('Manuell gespeichert') }}>Jetzt speichern</button><button className="danger" onClick={resetBuild}>Alles zurücksetzen</button></div></section>
       <CharacterSection value={character} onChange={value => { setCharacter(value); invalidateResult() }}/>
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
-      <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResult={passivePlan.result} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
+      <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResult={passivePlan.result} planStatus={passivePlan.status} activePlan={passivePlan.activePlan} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
       <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan}/>
       <section className="calculate">
         <h2>7. Build auswerten</h2>

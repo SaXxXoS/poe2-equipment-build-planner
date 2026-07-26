@@ -39,8 +39,7 @@ const mapTags = (values: string[]): MechanicTag[] =>
 const mapWeaponTypes = (values: string[]): SyntheticWeaponType[] | undefined => {
   const types = new Set<SyntheticWeaponType>()
   for (const value of values.map(item => item.toLowerCase())) {
-    if (['bow', 'crossbow', 'wand'].includes(value)) types.add('ranged-weapon')
-    if (['claw', 'dagger', 'flail', 'mace', 'quarterstaff', 'spear', 'sword', 'axe'].includes(value)) types.add('melee-weapon')
+    if (['bow', 'crossbow', 'wand', 'claw', 'dagger', 'flail', 'mace', 'quarterstaff', 'spear', 'sword', 'axe'].includes(value)) types.add(value as SyntheticWeaponType)
     if (value === 'focus') types.add('focus')
   }
   return types.size ? [...types].sort() : undefined

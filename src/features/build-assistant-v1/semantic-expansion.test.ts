@@ -12,20 +12,25 @@ const initialCharacter: CharacterConfiguration = { classId: 'class-official-6', 
 
 describe('Build Assistant V1.1 semantic expansion', () => {
   it('expands productive candidate breadth without fixtures', () => {
-    expect(buildAssistantCandidates.skills.length).toBe(241)
-    expect(buildAssistantCandidates.supports.length).toBe(463)
+    expect(buildAssistantCandidates.skills.length).toBe(235)
+    expect(buildAssistantCandidates.supports.length).toBe(451)
     expect(buildAssistantCandidates.jewels.length).toBe(13)
     expect(buildAssistantCandidates.skills.some(item => item.id.startsWith('fixture:'))).toBe(false)
   })
 
   it('keeps hard support compatibility rules', () => {
+    const contagionId = buildAssistantCandidates.skills.find(item => item.nameEn === 'Contagion')!.id
+    const brutalityId = buildAssistantCandidates.supports.find(item => item.nameEn === 'Brutality I')!.id
+    const contagion = buildAssistantCandidates.skills.find(item => item.id === contagionId)!
     const result = runBuildAssistantV1({
-      character: { ...initialCharacter, desiredMainSkillId: 'skill-contagion' },
+      character: { ...initialCharacter, desiredMainSkillId: contagionId },
       equipment: initialEquipment,
       setups: skillSetups,
     })
-    expect(result.supportAnalysis.blockedCandidates.find(item => item.supportId === 'support-brutality')).toBeDefined()
-    expect(result.supportAnalysis.eligibleCandidates.some(item => item.supportId === 'support-swift-affliction')).toBe(true)
+    expect(result.supportAnalysis.blockedCandidates.find(item => item.supportId === brutalityId)).toBeDefined()
+    expect(contagion.recommendedSupportIds).toBeDefined()
+    expect(contagion.recommendedSupportIds).not.toContain(brutalityId)
+    expect(contagion.recommendedSupportIds!.every(id => buildAssistantCandidates.supports.some(item => item.id === id))).toBe(true)
   })
 
   it('classifies technical affixes from stat IDs and leaves ambiguity unresolved', () => {

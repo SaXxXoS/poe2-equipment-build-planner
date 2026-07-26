@@ -101,17 +101,17 @@ describe('5M.1B.0C Approval-Entscheidung', () => {
 
 const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
-  '../../src/affixes/registry.ts': '268760739aa233052060962bfd9a034d4cd351e13078964df92b9962e73f7d1d',
+  '../../src/affixes/registry.ts': '8fb686c14f5e69bb69067d143d030059ee079863bb54b2c59fbbd2ade0aa6ef0',
   // V1.3 explicitly authorizes the backwards-compatible equipment editor expansion.
-  '../../src/components/AffixDialog.tsx': '45bcda48ae138661f0b3239a73a720f2032d027aae31b249d8f6dbce86d0723b',
-  '../../src/engine/common/types.ts': '95f7ac64646c6322a0eb43cffd8550b69d706dc0757e13c311934ae465912971',
+  '../../src/components/AffixDialog.tsx': '05ed2a0be0e163d474f24baaab798a48ec088f38395aeab72e1ba0a123b8f4d9',
+  '../../src/engine/common/types.ts': 'c205092ddcdae2fa483ef78421185c84c009a9195e99763beb23970166736c78',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
-  '../../src/engine/equipment/analyzer.ts': 'b2cdfa2a4b521d7c8bbc59df73837d6b8ae991572895fd359bd399110c2a4fca',
+  '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
-  '../../src/engine/uniques/analyzer.ts': 'b4e9071fbf1a44f1763aed9c8a4db27268ae6c2b837af2a87a1bcf1be19247ac',
-  '../../src/engine/orchestration/analyze-build.ts': '1a01596e5fd4535bcddc2c473771acbc4d0507b3b9c6e2829279f3c52e30ba59',
+  '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
+  '../../src/engine/orchestration/analyze-build.ts': 'bde73e58adac5cc3cde6d7d7e907a876e9e7077f6f48d7f40d1833ca21cedcab',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
-  '../../src/tree-view/plan-visualization.ts': 'b8bc73e99da77878d092162281335b70b0be104f1fb4db34e1fe65b324eab04d',
+  '../../src/tree-view/plan-visualization.ts': 'add7e0d3c0e0806a7f37f9e784f88af5349605f54d9212ad03c105fba379abb1',
 }
 
 describe('5M.1B.0C Produktgrenzen', () => {

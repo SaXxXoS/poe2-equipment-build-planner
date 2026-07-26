@@ -39,7 +39,7 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       </article>
 
       const supportQuery = supportSearches[setup.id] ?? ''
-      const availableSupports = buildAssistantCandidates.supports.filter(item => !setup.supportGemIds.includes(item.id) && `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(supportQuery.toLocaleLowerCase('de')))
+      const availableSupports = buildAssistantCandidates.supports.filter(item => skill.recommendedSupportIds?.includes(item.id) && !setup.supportGemIds.includes(item.id) && `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(supportQuery.toLocaleLowerCase('de')))
       return <article className="skill-card populated-skill-card" key={setup.id}>
         <div className="skill-card-head"><span className="skill-art" aria-hidden="true">{skill.displayNameDe.slice(0, 2)}</span><div><h3>{skill.displayNameDe}</h3><small>{originLabels[setup.origin ?? 'manual']}</small></div>{index >= 6 && !setup.locked && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
         <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>

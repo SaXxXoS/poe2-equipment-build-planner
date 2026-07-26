@@ -15,8 +15,16 @@ const localizedUniqueNames = new Map(localizedPob2UniquesDe.map(item => [item.id
 const damageTags = new Set<MechanicTag>(['physical', 'fire', 'cold', 'lightning', 'chaos'])
 
 const curatedSkills = [...skillDefinitions, ...expandedSkillCandidates]
-const curatedSkillNames = new Set(curatedSkills.flatMap(item => [item.displayNameDe, item.nameEn].filter(Boolean).map(name => name!.toLocaleLowerCase('en'))))
-const skills: SkillGemDefinition[] = [...curatedSkills, ...repoeSkillCatalog.filter(item => !curatedSkillNames.has(item.nameEn?.toLocaleLowerCase('en') ?? ''))].map(skill => ({
+const curatedSkillByEnglishName = new Map(curatedSkills.filter(item => item.nameEn).map(item => [item.nameEn!.toLocaleLowerCase('en'), item]))
+const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
+  const curated = curatedSkillByEnglishName.get(imported.nameEn?.toLocaleLowerCase('en') ?? '')
+  return {
+    ...curated,
+    ...imported,
+    requiredWeaponTypes: imported.requiredWeaponTypes ?? curated?.requiredWeaponTypes,
+    recommendedSupportIds: imported.recommendedSupportIds ?? curated?.recommendedSupportIds,
+  }
+}).map(skill => ({
   ...skill,
   damageTypes: skill.tags.filter(tag => damageTags.has(tag)) as SkillGemDefinition['damageTypes'],
   possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility'] : skill.tags.includes('buff') ? ['utility'] : ['main', 'secondary'],
@@ -26,12 +34,24 @@ const skills: SkillGemDefinition[] = [...curatedSkills, ...repoeSkillCatalog.fil
 }))
 
 const curatedSupports = [...supportDefinitions, ...expandedSupportCandidates]
-const curatedSupportNames = new Set(curatedSupports.flatMap(item => [item.displayNameDe, item.nameEn].filter(Boolean).map(name => name!.toLocaleLowerCase('en'))))
-const supports: SupportGemDefinition[] = [...curatedSupports, ...repoeSupportCatalog.filter(item => !curatedSupportNames.has(item.nameEn?.toLocaleLowerCase('en') ?? ''))].map(support => ({
+const curatedSupportByEnglishName = new Map(curatedSupports.filter(item => item.nameEn).map(item => [item.nameEn!.toLocaleLowerCase('en'), item]))
+const supports: SupportGemDefinition[] = repoeSupportCatalog.map(imported => {
+  const englishName = imported.nameEn?.replace(/\s+[IVX]+$/u, '').toLocaleLowerCase('en') ?? ''
+  const curated = curatedSupportByEnglishName.get(englishName)
+  return {
+    ...curated,
+    ...imported,
+    requiredTags: curated?.requiredTags ?? imported.requiredTags,
+    excludedTags: curated?.excludedTags ?? imported.excludedTags,
+    requiredWeaponTypes: curated?.requiredWeaponTypes ?? imported.requiredWeaponTypes,
+    supportedDamageTypes: curated?.supportedDamageTypes ?? imported.supportedDamageTypes,
+    supportedMechanics: curated?.supportedMechanics ?? imported.supportedMechanics,
+  }
+}).map(support => ({
   ...support,
-  ownTags: support.requiredTags,
-  supportedMechanics: support.requiredTags,
-  mappingBase: support.requiredTags.includes('projectile') ? 70 : 55,
+  ownTags: support.ownTags ?? support.requiredTags,
+  supportedMechanics: support.supportedMechanics ?? support.requiredTags,
+  mappingBase: (support.ownTags ?? support.requiredTags).includes('projectile') ? 70 : 55,
   bossBase: support.id.includes('penetration') || support.id.includes('critical') ? 70 : 55,
   utilityBase: 10,
   enabled: true,
@@ -70,8 +90,7 @@ const isOccupied = (entry: EquipmentEntry) =>
 
 const syntheticWeaponType = (technicalName: string): SyntheticWeaponType | undefined => {
   const value = technicalName.toLowerCase()
-  if (value.includes('bow') || value.includes('crossbow') || value.includes('wand')) return 'ranged-weapon'
-  if (['claw', 'dagger', 'flail', 'mace', 'quarterstaff', 'spear', 'sword', 'axe'].some(token => value.includes(token))) return 'melee-weapon'
+  for(const type of ['crossbow','quarterstaff','bow','wand','claw','dagger','flail','mace','spear','sword','axe'] as const)if(value.includes(type))return type
   if (value.includes('focus')) return 'focus'
   return undefined
 }

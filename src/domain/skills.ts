@@ -5,7 +5,7 @@ export type SkillWeaponSet = 'set-1' | 'set-2' | 'both'
 export type SkillOrigin = 'manual' | 'recommended' | 'ascendancy' | 'equipment'
 export type RotationDurationCategory = 'short' | 'medium' | 'long' | 'persistent'
 
-export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'any'
+export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'bow' | 'crossbow' | 'wand' | 'claw' | 'dagger' | 'flail' | 'mace' | 'quarterstaff' | 'spear' | 'sword' | 'axe' | 'any'
 export interface SkillAttributeRequirements { strength?: number; dexterity?: number; intelligence?: number }
 export interface SkillGemDefinition extends GameDataMetadata {
   damageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]

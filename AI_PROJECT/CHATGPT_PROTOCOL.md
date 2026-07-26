@@ -1322,3 +1322,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Rückwärtskompatibilitätsmigration entfernt. Manuell bestätigte
   Sondereigenschaften bleiben erhalten, erzeugen ohne technische Zuordnung
   aber keinen Analyzer-Score.
+# Buildspeicher, aktueller Gemmenbestand und Passive-Farben
+
+- Charakter, Ausrüstung, tatsächliche Affixwerte, Fertigkeitskarten und
+  Supports werden mit Schema 1 ausschließlich im lokalen Browser gespeichert.
+- Der Produktbestand enthält ausschließlich den gepinnten RePoE-/Clientstand
+  `4.5.4.4.4`: 235 aktive/Spirit-Skills und 451 Support-Tier-Einträge.
+- Deutsche Gemmennamen stammen per technischer ID aus der lokalen
+  Clientversion `4.5.4.53018`; `Spark` heißt dort `Funken`.
+- Sichtbare Itemklassen sind deutsch. Die PoB2-Unique-Anzeigeschicht bleibt
+  eine App-Übersetzung, nicht pauschal bestätigter offizieller GGG-Text.
+- Konkrete Waffenarten ersetzen die frühere grobe Sammelkategorie.
+- Ohne gewählte Fertigkeit befüllt erst die gestartete Analyse die erste
+  leere Karte und passende Supportplätze.
+- Gemeinsame Passivpfade sind gelb, Waffenset 1 rot und Waffenset 2 grün.
+  Set-Pläne starten mit bis zu 24 unterschiedlich belegbaren Punkten.
+- Der Hauptskill erreicht die reale Passivplanung; `Höchster Nutzen`
+  priorisiert belegte Schadens- und Mechanikknoten.
+- Details: `docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md`.
