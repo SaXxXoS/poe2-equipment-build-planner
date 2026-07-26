@@ -26,12 +26,9 @@ describe('V1.3 equipment editor model', () => {
     const legacy = entry([{ id:'', modifierId:'legacy', value:42, affixSide:'prefix', statValues:[{ statId:'stat', value:42 }] }])
     expect(migrateEquipmentEntry(legacy)).toMatchObject({ rarity:'magic', modifierValues:[{ id:'equipment-slot-helmet:prefix:1', statValues:[{ value:42 }] }] })
   })
-  it('migrates all observed image lines into editable dynamic properties',()=>{
+  it('does not migrate unresolved normal OCR text into apparently effective properties',()=>{
     const migrated=migrateEquipmentEntry({...entry(),observedItemLines:['+120 TO MAXIMUM LIFE','95% INCREASED ENERGY SHIELD'],observedImplicitLines:['95% INCREASED ENERGY SHIELD']})
-    expect(migrated.properties).toEqual([
-      expect.objectContaining({kind:'unknown',text:'+120 TO MAXIMUM LIFE',values:[120],source:'ocr',confirmed:false}),
-      expect.objectContaining({kind:'implicit',text:'95% INCREASED ENERGY SHIELD',values:[95],source:'ocr',confirmed:false}),
-    ])
+    expect(migrated.properties).toEqual([])
   })
   it('supports arbitrary manual properties and actual numeric values',()=>{
     expect(numericPropertyValues('Adds 12 to 45 Fire Damage')).toEqual([12,45])

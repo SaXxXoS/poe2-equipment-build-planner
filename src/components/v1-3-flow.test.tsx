@@ -90,4 +90,9 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
   it('blockiert reale Mehrfachwerte nicht durch technische Konfliktgruppen',()=>{
     expect(affixConflictGroupsBlockObservedEquipment).toBe(false)
   })
+  it('kennzeichnet Waffen-Editoren ohne Rüstungs-Eingabebereich',()=>{
+    const weapon=initialEquipment.find(value=>value.slotId==='slot-weapon-set-1-left')!
+    const html=renderToStaticMarkup(<AffixDialog entry={weapon} slotName="Waffe Set 1 links" onSave={()=>undefined} onClose={()=>undefined}/>)
+    expect(html).toContain('weapon-item-editor')
+  })
 })

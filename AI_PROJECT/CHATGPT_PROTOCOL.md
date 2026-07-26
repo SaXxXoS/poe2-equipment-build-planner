@@ -1304,3 +1304,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Reale Browserprüfung mit dem Auftraggeberfoto: Seltenheit, Basis, Qualität
   27 %, Ausweichwert 2085, Energieschild 622 und sämtliche zehn sichtbaren
   Eigenschaftszeilen wurden gelesen.
+
+# OCR-Editor-Korrektur nach Auftraggeberfeedback
+
+- Technisch zugeordnete Affixe werden im Editor in derselben Reihenfolge wie
+  im erkannten Foto beziehungsweise Screenshot dargestellt.
+- Unbekannte OCR-Fragmente werden nicht mehr als nummerierte freie
+  Eigenschaften in den Gegenstand übernommen.
+- Nur technisch zugeordnete Affixe und ihre tatsächlichen Werte erreichen
+  BuildProfile und Equipment Analyzer.
+- Item-Level bleibt ein internes optionales Filtermerkmal und beeinflusst
+  weder Build-Ranking noch Schadenswert.
+- Waffen-Editoren zeigen keine Felder für Rüstung, Ausweichwert oder
+  Energieschild; diese Endwerte sind auf passende Rüstungs- und defensive
+  Offhandklassen begrenzt.
+- Frühere unbekannte OCR-Freieigenschaften werden bei der
+  Rückwärtskompatibilitätsmigration entfernt. Manuell bestätigte
+  Sondereigenschaften bleiben erhalten, erzeugen ohne technische Zuordnung
+  aber keinen Analyzer-Score.

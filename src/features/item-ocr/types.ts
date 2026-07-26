@@ -12,6 +12,7 @@ export interface OcrAffixCandidate {
   values: number[]
   confidence: number
   resolutionStatus: OcrResolutionStatus
+  sourceOrder?: number
 }
 export interface OcrUniqueCandidate {
   uniqueItemId: string

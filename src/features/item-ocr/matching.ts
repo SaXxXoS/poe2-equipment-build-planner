@@ -95,20 +95,24 @@ function baseNameFrom(lines:string[]){
 }
 function windowsFor(lines:string[]){
   const usable=lines.filter(line=>line.length>2&&!/^(?:Item Class|Rarity|Seltenheit|Requirements|Anforderungen|Item Level|Gegenstandsstufe|Sockets?|Quality|Qualität)\s*:/i.test(line)&&!/^[-=]{3,}$/.test(line))
-  return usable.flatMap((line,index)=>[line,[line,usable[index+1]].filter(Boolean).join(' '),[line,usable[index+1],usable[index+2]].filter(Boolean).join(' ')])
+  return usable.flatMap((line,index)=>[
+    {text:line,sourceOrder:index},
+    {text:[line,usable[index+1]].filter(Boolean).join(' '),sourceOrder:index},
+    {text:[line,usable[index+1],usable[index+2]].filter(Boolean).join(' '),sourceOrder:index},
+  ])
 }
-function bestAffixCandidate(affix:TechnicalAffix,windows:string[],itemClassId:string):OcrAffixCandidate|undefined{
+function bestAffixCandidate(affix:TechnicalAffix,windows:{text:string;sourceOrder:number}[],itemClassId:string):OcrAffixCandidate|undefined{
   const templates=[affixDisplayName(affix),affix.technicalText,affix.technicalName].filter(Boolean)
-  let best={score:0,text:''}
-  for(const sourceText of windows)for(const template of templates){
-    const score=similarity(sourceText,template)
-    if(score>best.score)best={score,text:sourceText}
+  let best={score:0,text:'',sourceOrder:Number.MAX_SAFE_INTEGER}
+  for(const source of windows)for(const template of templates){
+    const score=similarity(source.text,template)
+    if(score>best.score)best={score,text:source.text,sourceOrder:source.sourceOrder}
   }
   if(best.score<0.56)return
   const values=fittingValues(affix.statLines,numericValues(best.text))
   const valueSafe=affix.statLines.every(line=>line.valueType==='fixed')||values.length===affix.statLines.length
   const confidence=Math.round(best.score*100)
-  return{affixId:affix.affixId,affixSide:affix.affixSide as OcrAffixCandidate['affixSide'],itemClassId,sourceText:best.text,displayText:affixDisplayName(affix),values,confidence,resolutionStatus:confidence>=90&&valueSafe?'auto-selected':'review-required'}
+  return{affixId:affix.affixId,affixSide:affix.affixSide as OcrAffixCandidate['affixSide'],itemClassId,sourceText:best.text,displayText:affixDisplayName(affix),values,confidence,resolutionStatus:confidence>=90&&valueSafe?'auto-selected':'review-required',sourceOrder:best.sourceOrder}
 }
 function dedupeAffixes(values:OcrAffixCandidate[]){
   const selected=new Map<string,OcrAffixCandidate>()
@@ -178,7 +182,7 @@ function conciseAffixCandidates(values:OcrAffixCandidate[]){
     reviewGroups.set(key,[...(reviewGroups.get(key)??[]),value])
   }
   const review=[...reviewGroups.values()].flatMap(group=>group.sort((a,b)=>b.confidence-a.confidence||a.affixId.localeCompare(b.affixId)).slice(0,1))
-  return [...automatic,...review].sort((a,b)=>a.affixSide.localeCompare(b.affixSide)||b.confidence-a.confidence||a.affixId.localeCompare(b.affixId))
+  return [...automatic,...review].sort((a,b)=>(a.sourceOrder??Number.MAX_SAFE_INTEGER)-(b.sourceOrder??Number.MAX_SAFE_INTEGER)||b.confidence-a.confidence||a.affixId.localeCompare(b.affixId))
 }
 function uniqueCandidate(text:string,slotId:string):OcrUniqueCandidate|undefined{
   const allowedSlot=slotId.includes('helmet')?'helmet':slotId.includes('body')?'body-armour':slotId.includes('gloves')?'gloves':slotId.includes('boots')?'boots':slotId.includes('amulet')?'amulet':slotId.includes('ring')?'ring':slotId.includes('belt')?'belt':slotId.includes('weapon')?'weapon':slotId.includes('jewel')?'jewel':'special'

@@ -34,9 +34,9 @@ export function migrateEquipmentEntry(entry: EquipmentEntry): EquipmentEntry {
     ...modifier,
     id: modifier.id || appliedModifierId(entry.id, modifier.affixSide ?? 'unknown', index),
   }))
-  const existingProperties=entry.properties??[]
+  const existingProperties=(entry.properties??[]).filter(value=>value.source!=='ocr'||value.kind!=='unknown')
   const knownTexts=new Set(existingProperties.map(value=>value.text))
-  const legacyLines=entry.observedItemLines??entry.observedUniqueLines??[]
+  const legacyLines=entry.observedUniqueLines??[]
   const socketLines=(entry.sockets??[]).map(value=>value.observedEffectText).filter((value):value is string=>Boolean(value))
   const properties:ItemProperty[]=[
     ...existingProperties,

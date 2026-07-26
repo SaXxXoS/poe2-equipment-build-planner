@@ -184,6 +184,8 @@ AUSGERUSTET`,'slot-body-armour')
     ]))
     expect(result.observedLines).toHaveLength(10)
     expect(result.observedLines).not.toContain('AUSGERUSTET')
+    const ordered=result.affixes.filter(value=>value.resolutionStatus==='auto-selected').map(value=>value.sourceOrder??Number.MAX_SAFE_INTEGER)
+    expect(ordered).toEqual([...ordered].sort((left,right)=>left-right))
   })
   it('verwirft OCR-Menütext und unverständliche Fragmente statt sie als Eigenschaften zu importieren',()=>{
     const result=matchItemOcr(`INVENTAR

@@ -32,4 +32,5 @@ export interface AppliedModifier {
   isHybrid?: boolean
   sourceVersion?: string
   dataStatus?: string
+  sourceOrder?: number
 }

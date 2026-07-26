@@ -77,6 +77,9 @@ body:has(.modal-backdrop){overflow:hidden}
 .dynamic-property-actions button{min-width:0;padding:.65rem .35rem}
 .free-property{display:grid;gap:.5rem;padding:.75rem;margin:.6rem 0;border:1px solid #42506a;border-radius:10px;background:#172231}
 .free-property-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.weapon-item-editor .form-grid.compact label:nth-child(n+2){display:none}
+.weapon-item-editor .form-grid.compact + .muted{display:none}
+.weapon-item-editor details>label:has(input[min="1"]){display:none}
 .property-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;align-items:end}
 .property-values>span{grid-column:1/-1;font-weight:700;color:#f1cf94}
 @media(max-width:520px){.dynamic-property-actions{grid-template-columns:1fr}.property-values{grid-template-columns:1fr}}

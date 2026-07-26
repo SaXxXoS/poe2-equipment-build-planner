@@ -19,6 +19,7 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
   const [error,setError]=useState('')
   const [result,setResult]=useState<ItemOcrResult>()
   const [selected,setSelected]=useState<Set<string>>(new Set())
+  const showDefences=result?.itemClassId?['Helmets','Body Armours','Gloves','Boots','Shields','Bucklers','Foci'].includes(result.itemClassId):!slotId.includes('weapon')
   useEffect(()=>()=>{if(preview)URL.revokeObjectURL(preview)},[preview])
   async function process(file:File|undefined,nextMode:ItemImageMode){
     if(!file)return
@@ -47,11 +48,10 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
       <h4>Erkannte Daten prüfen</h4>
       <dl>
         <div><dt>Seltenheit</dt><dd>{result.rarity??'Nicht erkannt'}</dd></div>
-        <div><dt>Item-Level</dt><dd>{result.itemLevel??'Nicht erkannt'}</dd></div>
         <div><dt>Qualität</dt><dd>{result.quality===undefined?'Nicht erkannt':`${result.quality} %`}</dd></div>
-        <div><dt>Rüstung</dt><dd>{result.defences?.armour??'Nicht erkannt'}</dd></div>
+        {showDefences&&<><div><dt>Rüstung</dt><dd>{result.defences?.armour??'Nicht erkannt'}</dd></div>
         <div><dt>Ausweichwert</dt><dd>{result.defences?.evasion??'Nicht erkannt'}</dd></div>
-        <div><dt>Energieschild</dt><dd>{result.defences?.energyShield??'Nicht erkannt'}</dd></div>
+        <div><dt>Energieschild</dt><dd>{result.defences?.energyShield??'Nicht erkannt'}</dd></div></>}
         <div><dt>Basis</dt><dd>{result.baseDisplayName??'Nicht erkannt'}</dd></div>
         <div><dt>Itemklasse</dt><dd>{result.itemClassId??'Prüfung erforderlich'}</dd></div>
       </dl>

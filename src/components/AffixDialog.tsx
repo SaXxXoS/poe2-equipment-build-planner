@@ -3,7 +3,7 @@ import { affixesFor, baseItemsFor, itemClassesForSlot, technicalAffixById } from
 import type { AppliedModifier, EquipmentEntry, ItemPropertyKind, ItemRarity } from '../domain'
 import { localizedPob2LinesForVariant, localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
 import { affixDisplayName, affixGroupName, affixSearchText } from '../features/equipment-editor/affix-display'
-import { appliedModifierId, clearItem, createAppliedModifier, createManualProperty, inferItemRarity, migrateEquipmentEntry, numericPropertyValues, propertyKindForObservedLine } from '../features/equipment-editor/model'
+import { appliedModifierId, clearItem, createAppliedModifier, inferItemRarity, migrateEquipmentEntry } from '../features/equipment-editor/model'
 import type { ItemOcrResult } from '../features/item-ocr'
 import { ItemOcrPanel } from './ItemOcrPanel'
 
@@ -42,6 +42,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   const [uniqueVariantId, setUniqueVariantId] = useState(entry.uniqueVariantId ?? '')
   const [observedItemLines,setObservedItemLines]=useState(entry.observedItemLines??entry.observedUniqueLines??[])
   const [observedImplicitLines,setObservedImplicitLines]=useState(entry.observedImplicitLines??[])
+  const supportsDefences=['Helmets','Body Armours','Gloves','Boots','Shields','Bucklers','Foci'].includes(itemClassId)
   const baseItems = baseItemsFor(itemClassId)
   const chosenUnique = localizedPob2UniquesDe.find(item => item.id === uniqueItemId)
   const chosenUniqueLines = chosenUnique ? localizedPob2LinesForVariant(chosenUnique, uniqueVariantId) : undefined
@@ -56,25 +57,21 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   // Reale Gegenstände können dieselbe Statfamilie mehrfach besitzen, etwa
   // durch Sockeleffekte, Verzauberungen, Verderbnis oder Hybrid-Eigenschaften.
   const blocked = affixConflictGroupsBlockObservedEquipment
+  const orderedAdded=[...added].sort((left,right)=>(left.sourceOrder??Number.MAX_SAFE_INTEGER)-(right.sourceOrder??Number.MAX_SAFE_INTEGER)||['implicit','prefix','suffix'].indexOf(left.affixSide??'')-['implicit','prefix','suffix'].indexOf(right.affixSide??''))
   const nextModifierIndex=(side:'prefix'|'suffix'|'implicit')=>{
     let index=0
     while(added.some(value=>value.id===appliedModifierId(entry.id,side,index)))index++
     return index
   }
-  const nextPropertyIndex=()=>{
-    let index=0
-    while(properties.some(value=>value.id===`${entry.id}:manual:${index+1}`))index++
-    return index
-  }
 
   function chooseRarity(value: ItemRarity) { setRarity(value); setStep('editor'); setPicker(undefined) }
   function applyOcr(result:ItemOcrResult,selectedIds:Set<string>){
-    setItemLevel(result.itemLevel);setQuality(result.quality);setArmour(result.defences?.armour);setEvasion(result.defences?.evasion);setEnergyShield(result.defences?.energyShield)
+    const ocrClass=result.itemClassId??itemClassId
+    const ocrSupportsDefences=['Helmets','Body Armours','Gloves','Boots','Shields','Bucklers','Foci'].includes(ocrClass)
+    setItemLevel(result.itemLevel);setQuality(result.quality);setArmour(ocrSupportsDefences?result.defences?.armour:undefined);setEvasion(ocrSupportsDefences?result.defences?.evasion:undefined);setEnergyShield(ocrSupportsDefences?result.defences?.energyShield:undefined)
     setObservedItemLines(result.observedLines)
     setObservedImplicitLines(result.unique?.observedImplicitLines??result.affixes.filter(match=>match.affixSide==='implicit'&&selectedIds.has(match.affixId)).map(match=>match.sourceText))
-    const implicitLines=result.unique?.observedImplicitLines??result.affixes.filter(match=>match.affixSide==='implicit'&&selectedIds.has(match.affixId)).map(match=>match.sourceText)
-    const selectedSourceLines=new Set(result.affixes.filter(match=>selectedIds.has(match.affixId)).map(match=>match.sourceText))
-    setProperties(result.observedLines.filter(line=>!selectedSourceLines.has(line)).map((text,index)=>({id:`${entry.id}:observed:${index+1}`,kind:propertyKindForObservedLine(text,implicitLines),text,values:numericPropertyValues(text),source:'ocr',confirmed:false})))
+    setProperties(current=>current.filter(value=>value.source==='manual'||value.kind!=='unknown'))
     if(result.unique&&selectedIds.has(result.unique.uniqueItemId)){
       setRarity('unique');setUniqueItemId(result.unique.uniqueItemId);setUniqueVariantId('');setAdded([]);setStep('editor');return
     }
@@ -86,7 +83,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
       if(!affix)return[]
       const sameSide=selectedAffixes.filter(value=>value.affixSide===match.affixSide)
       const index=sameSide.indexOf(match)
-      return[createAppliedModifier(entry.id,affix,match.affixSide,index,match.values,nextClass)]
+      return[{...createAppliedModifier(entry.id,affix,match.affixSide,index,match.values,nextClass),sourceOrder:match.sourceOrder}]
     })
     setRarity(nextRarity);setItemClassId(nextClass);setItemLevel(result.itemLevel);setBaseDisplayName(result.baseDisplayName??'');setAdded(next);setStep('editor');setPicker(undefined)
   }
@@ -97,11 +94,11 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
     setAdded([...added.filter(value => value.id !== next.id), next]); setPicker(undefined); setSelected(''); setValues([]); setSearch('')
   }
   function save() {
-    const defences=armour===undefined&&evasion===undefined&&energyShield===undefined?undefined:{armour,evasion,energyShield}
+    const defences=!supportsDefences||armour===undefined&&evasion===undefined&&energyShield===undefined?undefined:{armour,evasion,energyShield}
     onSave(rarity === 'unique' ? { ...entry, rarity, uniqueItemId, uniqueVariantId: uniqueVariantId || undefined, observedUniqueLines:observedItemLines, observedItemLines, observedImplicitLines, properties, sockets:undefined, modifierValues: [], itemClassId: undefined, itemDefinitionId: undefined, baseDisplayName: undefined, itemLevel, quality, defences } : { ...entry, rarity, uniqueItemId: undefined, uniqueVariantId: undefined, observedUniqueLines:undefined, observedItemLines, observedImplicitLines, properties, sockets:undefined, itemClassId, itemDefinitionId: baseItemId || undefined, baseDisplayName: baseDisplayName.trim() || undefined, itemLevel, quality, defences, modifierValues: added })
     onClose()
   }
-  return <div className="modal-backdrop" onMouseDown={event => event.target === event.currentTarget && onClose()}><div className="modal item-editor" role="dialog" aria-modal="true">
+  return <div className="modal-backdrop" onMouseDown={event => event.target === event.currentTarget && onClose()}><div className={`modal item-editor ${entry.slotId.includes('weapon')?'weapon-item-editor':''}`} role="dialog" aria-modal="true">
     <header className="dialog-header"><button className="text-button" onClick={() => picker ? setPicker(undefined) : step === 'editor' ? setStep(existingRarity ? 'action' : 'rarity') : onClose()}>← Zurück</button><h2>{slotName}</h2><button className="icon" aria-label="Dialog schließen" onClick={onClose}>×</button></header>
     <div className="dialog-scroll">
       {step === 'action' && <><div className="rarity-choice"><button onClick={() => setStep('editor')}>Gegenstand bearbeiten</button><button onClick={() => setStep('rarity')}>Gegenstand ersetzen</button><button className="danger" onClick={() => { onSave(clearItem(entry)); onClose() }}>Gegenstand entfernen</button></div><ItemOcrPanel slotId={entry.slotId} onApply={applyOcr}/></>}
@@ -122,7 +119,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
         <details open><summary>Grunddaten · {rarityText[rarity]}</summary><label>Itemklasse<select value={itemClassId} onChange={event => { setItemClassId(event.target.value); setBaseItemId('') }}>{classes.map(value => <option value={value.itemClassId} key={value.itemClassId}>{value.technicalName}</option>)}</select></label>{baseItems.length > 0 ? <label>Basistyp<select value={baseItemId} onChange={event => setBaseItemId(event.target.value)}><option value="">Bitte wählen</option>{baseItems.map(value => <option key={value.baseItemId} value={value.baseItemId}>{value.baseItemId}</option>)}</select></label> : <label>Basistyp (Anzeige)<input value={baseDisplayName} onChange={event => setBaseDisplayName(event.target.value)} placeholder="z. B. Experten-Kettenhaube"/></label>}<label>Item-Level (nur zum technischen Filtern)<input type="number" min="1" value={itemLevel ?? ''} onChange={event => setItemLevel(event.target.value ? Number(event.target.value) : undefined)}/></label><div className="form-grid compact"><label>Qualität (%)<input type="number" min="0" value={quality ?? ''} onChange={event=>setQuality(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Rüstung<input type="number" min="0" value={armour ?? ''} onChange={event=>setArmour(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Ausweichwert<input type="number" min="0" value={evasion ?? ''} onChange={event=>setEvasion(event.target.value===''?undefined:Number(event.target.value))}/></label><label>Energieschild<input type="number" min="0" value={energyShield ?? ''} onChange={event=>setEnergyShield(event.target.value===''?undefined:Number(event.target.value))}/></label></div><p className="muted">Diese endgültigen Gegenstandswerte werden getrennt von den Affixen gespeichert und defensiv ausgewertet.</p></details>
       </>}
       <details open><summary>Eigenschaften · {added.length+properties.length}</summary>
-        {rarity!=='unique'&&<>{(['implicit','prefix','suffix'] as const).flatMap(side=>added.filter(value=>value.affixSide===side).map((value,index)=><AppliedSlot key={value.id} side={side} index={index} value={value} onChoose={()=>setPicker({side,index:Number(value.id.split(':').at(-1)??index+1)-1})} onRemove={()=>setAdded(current=>current.filter(candidate=>candidate.id!==value.id))}/>))}
+        {rarity!=='unique'&&<>{orderedAdded.filter((value):value is AppliedModifier&{affixSide:'prefix'|'suffix'|'implicit'}=>value.affixSide==='prefix'||value.affixSide==='suffix'||value.affixSide==='implicit').map(value=><AppliedSlot key={value.id} side={value.affixSide} index={added.filter(candidate=>candidate.affixSide===value.affixSide).findIndex(candidate=>candidate.id===value.id)} value={value} onChoose={()=>setPicker({side:value.affixSide,index:Number(value.id.split(':').at(-1)??1)-1})} onRemove={()=>setAdded(current=>current.filter(candidate=>candidate.id!==value.id))}/>)}
         <div className="dynamic-property-actions"><button onClick={()=>setPicker({side:'prefix',index:nextModifierIndex('prefix')})}>＋ Prefix</button><button onClick={()=>setPicker({side:'suffix',index:nextModifierIndex('suffix')})}>＋ Suffix</button><button onClick={()=>setPicker({side:'implicit',index:nextModifierIndex('implicit')})}>＋ Implicit</button></div></>}
         {properties.map((property,index)=><div className="free-property" key={property.id}>
           <div className="free-property-head"><b>Eigenschaft {added.length+index+1}</b><button className="danger compact-action" aria-label="Eigenschaft entfernen" onClick={()=>setProperties(current=>current.filter(value=>value.id!==property.id))}>−</button></div>
@@ -131,8 +128,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
           <div className="property-values"><span>Tatsächliche Werte</span>{property.values.map((value,valueIndex)=><label key={valueIndex}>Wert {valueIndex+1}<input type="number" value={value} onChange={event=>setProperties(current=>current.map(item=>item.id===property.id?{...item,values:item.values.map((currentValue,currentIndex)=>currentIndex===valueIndex?Number(event.target.value):currentValue),confirmed:true}:item))}/></label>)}<button onClick={()=>setProperties(current=>current.map(value=>value.id===property.id?{...value,values:[...value.values,0],confirmed:true}:value))}>＋ Wert</button><button disabled={!property.values.length} onClick={()=>setProperties(current=>current.map(value=>value.id===property.id?{...value,values:value.values.slice(0,-1),confirmed:true}:value))}>− Wert</button></div>
           {!property.confirmed&&<small className="warning">Aus dem Bild übernommen – bitte Art und Werte prüfen.</small>}
         </div>)}
-        <button onClick={()=>setProperties(current=>[...current,createManualProperty(entry.id,nextPropertyIndex())])}>＋ Freie Eigenschaft</button>
-        <p className="muted">Technisch zugeordnete Eigenschaften wirken mit den eingegebenen Werten direkt in der Analyse. Freie oder unbekannte Zeilen bleiben vollständig erhalten, erzeugen aber erst nach einer sicheren technischen Zuordnung eine berechnete Wirkung.</p>
+        <p className="muted">Nur technisch zugeordnete Eigenschaften mit den erkannten tatsächlichen Werten fließen in die Buildberechnung ein. Unbekannter OCR-Text wird nicht als scheinbar wirksame Eigenschaft gespeichert.</p>
       </details></>}
       {picker && <><h3>{picker.side === 'prefix' ? 'Prefix' : picker.side === 'suffix' ? 'Suffix' : 'Implicit'} auswählen</h3><label>Affix suchen<input autoFocus type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="z. B. Leben, Feuer, Angriff"/></label><div className="affix-groups">{grouped.map(([group, affixes]) => <details open key={group}><summary>{group} · {affixes?.length ?? 0}</summary>{affixes?.map(affix => <button className={chosen?.affixId === affix.affixId ? 'selected' : ''} key={affix.affixId} onClick={() => { setSelected(affix.affixId); setValues([]) }}><span>{affixDisplayName(affix)}</span><small>Benötigtes Item-Level {affix.requiredItemLevel ?? 'Unbekannt'}</small></button>)}</details>)}</div>{chosen && <div className="affix-values"><h4>{affixDisplayName(chosen)}</h4>{chosen.statLines.map((line, index) => line.valueType === 'fixed' ? <p key={`${line.statId}-${index}`}>Fester Wert: <b>{line.minimum}{line.isPercent ? ' %' : ''}</b></p> : <label key={`${line.statId}-${index}`}>{chosen.statLines.length === 2 ? index === 0 ? 'Minimum' : 'Maximum' : `Wert ${index + 1}`} ({line.minimum}–{line.maximum}{line.isPercent ? ' %' : ''})<input type="number" min={line.minimum} max={line.maximum} step={line.step ?? (line.numericType === 'integer' ? 1 : 'any')} value={values[index] ?? line.minimum} onChange={event => setValues(current => Object.assign([...current], { [index]: Number(event.target.value) }))}/></label>)}{blocked && <p className="warning">Konfliktgruppe bereits belegt.</p>}<button disabled={blocked || chosen.statLines.some((line, index) => { const value = line.valueType === 'fixed' ? line.minimum : values[index] ?? line.minimum; return !Number.isFinite(value) || value < line.minimum || value > line.maximum }) || chosen.statLines.length === 2 && (values[0] ?? chosen.statLines[0].minimum) > (values[1] ?? chosen.statLines[1].minimum)} onClick={applyAffix}>Affix übernehmen</button></div>}</>}
     </div>{step === 'editor' && !picker && <div className="dialog-actions"><button className="secondary" onClick={onClose}>Abbrechen</button><button disabled={rarity === 'unique' ? !uniqueItemId || Boolean(chosenUnique && chosenUnique.variants.length > 1 && !uniqueVariantId) : !itemClassId || baseItems.length > 0 && !baseItemId} onClick={save}>Speichern</button></div>}

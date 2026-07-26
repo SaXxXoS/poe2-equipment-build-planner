@@ -130,3 +130,18 @@ Foto und Screenshot sind nun slotbezogene, lokale Eingabewege. Sie erkennen
 Affixkandidaten und tatsächliche Werte, lassen den Nutzer die Ergebnisse
 prüfen und führen bestätigte Daten in den bestehenden Item-Editor und
 Analyzertransport über.
+
+## Korrigierte Editor- und Analyzergrenze
+
+- Die Reihenfolge sicher zugeordneter Affixe folgt ihrer sichtbaren
+  Quellenreihenfolge im Foto beziehungsweise Screenshot.
+- Unbekannte OCR-Zeilen werden nicht mehr als freie, scheinbar wirksame
+  Eigenschaften in den Gegenstand gespeichert. Sie bleiben nur im
+  Prüfkontext beziehungsweise Rohtext sichtbar.
+- Ausschließlich technisch einem vorhandenen Affix zugeordnete Zeilen mit
+  bestätigten tatsächlichen Werten gelangen in die Build-Auswertung.
+- Gegenstandsstufe bleibt intern nur ein optionales Hilfsmerkmal zum Filtern
+  technisch möglicher Affixstufen. Sie ist kein Build- oder Schadenswert.
+- Rüstung, Ausweichwert und Energieschild werden nur für passende
+  Rüstungs- und defensive Offhandklassen angeboten. In normalen
+  Waffen-Slots werden diese Felder weder angezeigt noch gespeichert.
