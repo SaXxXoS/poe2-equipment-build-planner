@@ -111,7 +111,7 @@ const immutableFiles = {
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
   '../../src/engine/orchestration/analyze-build.ts': 'bde73e58adac5cc3cde6d7d7e907a876e9e7077f6f48d7f40d1833ca21cedcab',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
-  '../../src/tree-view/plan-visualization.ts': 'add7e0d3c0e0806a7f37f9e784f88af5349605f54d9212ad03c105fba379abb1',
+  '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',
 }
 
 describe('5M.1B.0C Produktgrenzen', () => {

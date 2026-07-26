@@ -1340,3 +1340,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Hauptskill erreicht die reale Passivplanung; `Höchster Nutzen`
   priorisiert belegte Schadens- und Mechanikknoten.
 - Details: `docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md`.
+
+# Sichtbarkeit des Aszendenzplans
+
+- Der offizielle Baumexport kennzeichnet bestimmte Aszendenzverbindungen mit
+  `hideInDefaultState`.
+- Diese Verbindungen wurden zuvor ausgefiltert, bevor der sichtbare
+  Plan-Overlay sie zeichnen konnte, obwohl der Planner sie korrekt belegt
+  hatte.
+- Belegte Planknoten aktivieren diese offiziellen Verbindungen jetzt; Knoten,
+  Weg und Zielreihenfolge werden gemeinsam angezeigt.
+- Der getrennte Aszendenzplan ist violett. Gemeinsam, Waffenset 1 und
+  Waffenset 2 bleiben gelb, rot und grün.
