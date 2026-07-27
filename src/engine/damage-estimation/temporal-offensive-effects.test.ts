@@ -96,6 +96,31 @@ describe('zeitabhängige offensive Wirkungen', () => {
     expect(result.blockedEffects[0]?.detail).toContain('Stufenzahl')
   })
 
+  it.each([
+    ['Arctic Armour', 'stationäre Dauer'],
+    ['Arctic Howl', 'Warcry-Power'],
+    ['Charge Regulation', 'Ladungsarten'],
+    ['Charged Staff', 'Ladungszahl'],
+    ['Elemental Conflux', 'aktives Element'],
+    ['Emergency Reload', 'Zielmunition'],
+    ['Infernal Cry', 'Folgeangriff'],
+    ['Mana Tempest', 'Manadauer'],
+    ['Mantra of Destruction', 'Combozustand'],
+    ['Trinity', 'Resonanz'],
+    ['Lunar Blessing', 'Buffdauer'],
+  ])('erklärt die unvollständige Wirkungskette von %s', (nameEn, expectedReason) => {
+    const main = skill('main', 'Arc', ['spell'])
+    const candidate = skill('candidate', nameEn)
+    const result = collectTemporalOffensiveEffects({
+      setups: [setup('main-setup', main.id, 'main'), setup('candidate-setup', candidate.id, 'utility')],
+      skills: [main, candidate],
+      mainSkill: main,
+      rotationAnalysis: rotation(candidate.id),
+    })
+    expect(result.appliedEffects).toEqual([])
+    expect(result.blockedEffects[0]?.detail).toContain(expectedReason)
+  })
+
   it('liefert bei identischer Eingabe identische Ergebnisse', () => {
     const main = skill('main', 'Lightning Arrow', ['attack'])
     const banner = skill('banner', 'War Banner')

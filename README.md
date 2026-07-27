@@ -1,5 +1,11 @@
 # PoE2 Equipment Build Planner
 
+> **Vollständige Wirkungsketten:** Strukturierte Buff-, Trigger- und
+> Stapelwerte werden nur angewandt, wenn auch Zustand, Ziel, Verbrauch und
+> Wirkfenster belegt sind. Zwölf unvollständige Kandidaten werden mit
+> konkretem Grund blockiert, statt einen erfundenen Schadensbonus zu erzeugen.
+> [Details](docs/BUILD_ASSISTANT_EFFECT_CHAIN_COVERAGE_STEP_13.md)
+
 > **Zeitabhängige Offensivwirkungen:** Vollständig belegte Bufffenster werden
 > automatisch als getrennter Schadenswert ausgewiesen. War Banner wirkt bei
 > Angriffen für 9,8 Sekunden mit seinen strukturierten Schadens- und

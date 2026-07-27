@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelVersion": "1.1.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "productiveEffects": [
+    {
+      "skill": "War Banner",
+      "status": "active-window",
+      "appliesTo": "attack",
+      "activationTimeMs": 500,
+      "durationMs": 9800,
+      "effects": [
+        "25% more attack damage",
+        "25% increased attack speed"
+      ]
+    }
+  ],
+  "blockedCandidates": [
+    {
+      "skill": "Arctic Armour",
+      "missingEvidence": ["stationary duration", "triggered hit identity"]
+    },
+    {
+      "skill": "Arctic Howl",
+      "missingEvidence": ["actual warcry power", "power cap", "affected follow-up attack"]
+    },
+    {
+      "skill": "Charge Regulation",
+      "missingEvidence": ["available charge types", "charge uptime"]
+    },
+    {
+      "skill": "Charged Staff",
+      "missingEvidence": ["consumed charge count", "buff duration", "affected staff attacks"]
+    },
+    {
+      "skill": "Elemental Conflux",
+      "missingEvidence": ["active element", "switch timing", "damage-type match"]
+    },
+    {
+      "skill": "Emergency Reload",
+      "missingEvidence": ["target ammunition", "single-use consumption", "repeat frequency"]
+    },
+    {
+      "skill": "Infernal Cry",
+      "missingEvidence": ["actual warcry power", "charge consumption", "affected follow-up attack"]
+    },
+    {
+      "skill": "Lunar Blessing",
+      "missingEvidence": ["buff duration", "form condition", "maintainable window"]
+    },
+    {
+      "skill": "Mana Tempest",
+      "missingEvidence": ["mana-supported duration", "end condition", "reliable active window"]
+    },
+    {
+      "skill": "Mantra of Destruction",
+      "missingEvidence": ["combo state", "consumption rule", "duration"]
+    },
+    {
+      "skill": "Sigil of Power",
+      "missingEvidence": ["reached stage count", "stage build-up timing"]
+    },
+    {
+      "skill": "Trinity",
+      "missingEvidence": ["simultaneous elemental resonance", "resonance uptime"]
+    }
+  ],
+  "summary": {
+    "productiveSkillCount": 1,
+    "blockedCandidateCount": 12,
+    "inventedValues": 0,
+    "newUserSettings": 0
+  }
+}

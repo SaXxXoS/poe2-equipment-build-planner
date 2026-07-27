@@ -1,5 +1,28 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Vollständige Offensiv-Wirkungsketten – Schritt 13 (2026-07-27)
+
+- Zwölf weitere Buff-, Trigger- und Stapelkandidaten wurden im gepinnten
+  Schadensdatensatz vollständig inventarisiert.
+- Ein vorhandener Einzelwert reicht nicht für einen Schadensbonus. Betrag,
+  Ziel, Zustand, Verbrauch beziehungsweise Stapelzahl und Wirkfenster müssen
+  gemeinsam belegt sein.
+- Arctic Armour, Arctic Howl, Charge Regulation, Charged Staff, Elemental
+  Conflux, Emergency Reload, Infernal Cry, Lunar Blessing, Mana Tempest,
+  Mantra of Destruction, Sigil of Power und Trinity bleiben fail-closed
+  blockiert.
+- Bei Auswahl nennt die Ergebnisansicht den konkreten fehlenden Teil der
+  Wirkungskette.
+- War Banner bleibt die einzige vollständig belegte allgemeine
+  zeitabhängige Offensivwirkung.
+- Keine neue Nutzereinstellung, kein erfundener Bonus und keine Übertragung
+  von Minion- oder Defensivwerten auf die Spielerhauptfertigkeit.
+- Modellversion: `1.1.0`.
+- Bericht:
+  `docs/audits/build-assistant-temporal-offensive-effects-step-13.json`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_EFFECT_CHAIN_COVERAGE_STEP_13.md`.
+
 ## Zeitabhängige Offensivwirkungen – Schritt 12 (2026-07-27)
 
 - Betrag, Ziel, Aktivierungsregel und Wirkzeit müssen gemeinsam strukturiert

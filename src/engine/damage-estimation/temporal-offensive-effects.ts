@@ -4,7 +4,7 @@ import type { RotationAnalysis } from '../common/types'
 import type { RotationStepTiming } from '../rotations/timing'
 import type { DamageComponent } from './types'
 
-export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.0.0'
+export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.1.0'
 export interface TemporalOffensiveEffect {
   sourceId: string
   label: string
@@ -34,6 +34,56 @@ for (const skill of reference.skills) {
   if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) byName.set(key, skill)
 }
 const timingOf = (value: unknown) => (value as { timing?: RotationStepTiming } | undefined)?.timing
+const blockedCandidates: Record<string, { sourceReferences: string[]; detail: string }> = {
+  'Arctic Armour': {
+    sourceReferences: ['arctic_armour_minimum_added_cold_damage_per_stack', 'arctic_armour_maximum_added_cold_damage_per_stack', 'maximum_number_of_arctic_armour_stationary_stacks', 'base_active_skill_buff_stack_gain_frequency_ms'],
+    detail: 'Schaden pro stationärem Stapel, Stapelmaximum und Aufbauintervall sind belegt; tatsächliche stationäre Dauer und ausgelöster Treffer bleiben unbekannt.',
+  },
+  'Arctic Howl': {
+    sourceReferences: ['wolf_warcry_buff_cold_damage_min_per_5_power_up_to_cap', 'wolf_warcry_buff_cold_damage_max_per_5_power_up_to_cap'],
+    detail: 'Kälteschaden pro fünf Warcry-Power ist belegt; tatsächliche Power, Obergrenze und betroffener Folgeangriff sind nicht vollständig aufgelöst.',
+  },
+  'Charge Regulation': {
+    sourceReferences: ['charge_mastery_skill_speed_+%_with_frenzy_charges', 'charge_mastery_crit_chance_+%_final_with_power_charges', 'consume_frenzy_power_and_endurance_charge_every_x_ms'],
+    detail: 'Die Effekte je Ladungsart sind belegt; vorhandene Ladungsarten und ihre verlässliche Aufrechterhaltung sind im Buildzustand unbekannt.',
+  },
+  'Charged Staff': {
+    sourceReferences: ['charged_staff_attack_minimum_added_lightning_damage_per_stack', 'charged_staff_attack_maximum_added_lightning_damage_per_stack'],
+    detail: 'Zusätzlicher Blitzschaden pro verbrauchter Power Charge ist belegt; tatsächliche Ladungszahl, Buffdauer und betroffene Stabangriffe sind nicht vollständig belegt.',
+  },
+  'Elemental Conflux': {
+    sourceReferences: ['skill_elemental_conflux_active_element_damage_+%_final'],
+    detail: 'Der Bonus des aktiven Elements ist belegt; aktives Element, Wechselzeitpunkt und Übereinstimmung mit der Hauptschadensart sind nicht aufgelöst.',
+  },
+  'Emergency Reload': {
+    sourceReferences: ['emergency_reload_damage_+%_final'],
+    detail: 'Der Schadensbonus ist belegt, gilt aber für die nächste nachgeladene Armbrustmunition. Zielmunition, Einmalverbrauch und Wiederholungsfrequenz sind nicht vollständig belegt.',
+  },
+  'Infernal Cry': {
+    sourceReferences: ['infernal_cry_exerted_attack_all_damage_%_to_gain_as_fire_%'],
+    detail: 'Der Feuergewinn des exerted Angriffs ist belegt; Warcry-Power, Ladungsverbrauch und der konkret betroffene Folgeangriff sind nicht vollständig belegt.',
+  },
+  'Lunar Blessing': {
+    sourceReferences: ['wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage'],
+    detail: 'Der Kältegewinn ist belegt; Buffdauer, Formbedingung und aufrechterhaltbares Aktivierungsfenster sind unbekannt.',
+  },
+  'Mana Tempest': {
+    sourceReferences: ['non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff'],
+    detail: 'Der Blitzgewinn für Zauber ist belegt; tatsächliche Manadauer, Abbruchbedingung und verlässliche Wirkzeit sind nicht vollständig belegt.',
+  },
+  'Mantra of Destruction': {
+    sourceReferences: ['mantra_of_destruction_grant_all_damage_%_to_gain_as_chaos_with_attacks'],
+    detail: 'Der Chaosgewinn für Angriffe ist belegt; erforderlicher Combozustand, Verbrauch und Wirkzeit sind nicht vollständig belegt.',
+  },
+  'Sigil of Power': {
+    sourceReferences: ['circle_of_power_spell_damage_+%_final_per_stage'],
+    detail: 'Der Bonus pro Stufe ist belegt, aber die tatsächlich erreichte Stufenzahl und Aufbauzeit sind nicht vollständig belegt.',
+  },
+  Trinity: {
+    sourceReferences: ['trinity_damage_+%_final_to_grant_per_50_resonance', 'trinity_resonance_to_grant'],
+    detail: 'Bonus und Resonanzgewinn sind belegt; tatsächlich gleichzeitig verfügbare Resonanz je Element und Uptime sind nicht vollständig belegt.',
+  },
+}
 
 export function collectTemporalOffensiveEffects(input: {
   setups: SkillSetup[]
@@ -87,12 +137,13 @@ export function collectTemporalOffensiveEffects(input: {
           : 'Aktivierungsregel und Wirkzeit sind nicht gemeinsam in der gewählten Bossrotation belegt.',
       })
     }
-    if (definition.nameEn === 'Sigil of Power' && Number.isFinite(stats['circle_of_power_spell_damage_+%_final_per_stage'])) effects.push({
+    const blocked = definition.nameEn ? blockedCandidates[definition.nameEn] : undefined
+    if (blocked && blocked.sourceReferences.some(key => Number.isFinite(stats[key]))) effects.push({
       sourceId: definition.id, label: definition.displayNameDe, target: 'player', kind: 'blocked',
-      appliesTo: ['spell'], activationTimeMs: timing?.activationTimeMs, durationMs: timing?.effectDurationMs,
+      appliesTo: ['attack', 'spell'], activationTimeMs: timing?.activationTimeMs, durationMs: timing?.effectDurationMs,
       status: 'blocked', evidence: 'unresolved',
-      sourceReferences: ['circle_of_power_spell_damage_+%_final_per_stage'],
-      detail: 'Der Bonus pro Stufe ist belegt, aber die tatsächlich erreichte Stufenzahl und Aufbauzeit sind nicht vollständig belegt.',
+      sourceReferences: blocked.sourceReferences,
+      detail: blocked.detail,
     })
   }
   const appliedEffects = effects.filter(effect => effect.status === 'active-window')
