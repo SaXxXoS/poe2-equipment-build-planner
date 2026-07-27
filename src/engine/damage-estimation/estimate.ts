@@ -1,5 +1,8 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup } from '../../domain'
+import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
+import type { RealPassiveTree } from '../real-passive-pipeline/types'
+import { applyConversions, applyDamageModifiers, collectQuantitativeEffects } from './quantitative-effects'
 import type { DamageComponent, DamageEstimate } from './types'
 
 type NumericSkill=(typeof reference.skills)[number]
@@ -17,7 +20,6 @@ const weaponsByName=new Map(reference.weaponBases.map(value=>[value.name.toLocal
 const types=['physical','fire','cold','lightning','chaos'] as const
 const round=(value:number,digits=2)=>Number(value.toFixed(digits))
 const valueFor=(entry:EquipmentEntry,pattern:RegExp)=>entry.modifierValues.flatMap(mod=>mod.statValues??[]).filter(stat=>pattern.test(stat.statId)).reduce((sum,stat)=>sum+stat.value,0)
-const globalValue=(equipment:EquipmentEntry[],pattern:RegExp)=>equipment.flatMap(entry=>entry.modifierValues).flatMap(mod=>mod.statValues??[]).filter(stat=>pattern.test(stat.statId)).reduce((sum,stat)=>sum+stat.value,0)
 const component=(type:DamageComponent['type'],minimum:number,maximum:number):DamageComponent=>({type,minimum:round(minimum),maximum:round(maximum)})
 
 function spellComponents(skill:NumericSkill):DamageComponent[] {
@@ -51,28 +53,20 @@ function weaponComponents(weapon:WeaponBase|undefined,entry:EquipmentEntry):Dama
     return minimum||maximum?[component(type,minimum,maximum)]:[]
   })
 }
-function componentIncrease(equipment:EquipmentEntry[],skillKind:NumericSkill['kind'],type:DamageComponent['type']){
-  const generic=globalValue(equipment,/^(?:global_)?damage_\+%$/)
-  const skillKindIncrease=globalValue(equipment,skillKind==='attack'?/^(?:global_)?attack_damage_\+%$/:/^(?:global_)?spell_damage_\+%$/)
-  const typed=globalValue(equipment,new RegExp(`^(?:global_)?${type}_damage_\\+%$`))
-  const elemental=type==='fire'||type==='cold'||type==='lightning'
-    ?globalValue(equipment,/^(?:global_)?elemental_damage_\+%$/)
-    :0
-  return generic+skillKindIncrease+typed+elemental
-}
-
 export function estimateHitDamage(input:{
   equipment:EquipmentEntry[]
   setups:SkillSetup[]
   skills:SkillGemDefinition[]
   fallbackSkillId?:string
+  passiveTree?:RealPassiveTree
+  realPassivePlanning?:RealPassivePlanningIntegrationResult
 }):DamageEstimate {
   const setup=input.setups.find(value=>value.role==='main'&&value.skillId)||input.setups.find(value=>value.skillId)
   const skillId=setup?.skillId||input.fallbackSkillId
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'1.0.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.0.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -92,7 +86,8 @@ export function estimateHitDamage(input:{
     ].some(Boolean))
     if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
-    actionsPerSecond=(weaponEntry.weaponStats?.attacksPerSecond??weapon!.attacksPerSecond)*(1+skill.attackSpeedMultiplier/100)
+    const localAttackSpeed=weaponEntry.weaponStats?0:valueFor(weaponEntry,/local_attack_speed_\+%|attack_speed_\+%_local/)
+    actionsPerSecond=(weaponEntry.weaponStats?.attacksPerSecond??weapon!.attacksPerSecond)*(1+localAttackSpeed/100)*(1+skill.attackSpeedMultiplier/100)
     included.push(weaponEntry.weaponStats?'eingegebene endgültige Waffenschadenswerte':'Waffenbasis','Angriffsmultiplikator',weaponEntry.weaponStats?.attacksPerSecond?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
     if(weaponEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Waffenbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
   }else{
@@ -100,25 +95,41 @@ export function estimateHitDamage(input:{
     included.push('Zauber-Basisschaden','Basis-Zauberzeit')
   }
   if(!components.length)return{...base,status:'unavailable',warnings:['Die primäre Schadenskomponente ist nicht eindeutig strukturiert verfügbar.']}
-  const speedIncrease=globalValue(input.equipment,skill.kind==='attack'?/attack_speed_\+%/:/cast_speed_\+%/)
-  const increases=components.map(value=>componentIncrease(input.equipment,skill.kind,value.type))
-  components=components.map((value,index)=>{
-    const multiplier=1+increases[index]/100
-    return component(value.type,value.minimum*multiplier,value.maximum*multiplier)
-  })
+  const baseComponents=components.map(value=>({...value}))
+  const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet})
+  const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
+  components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers).map(value=>component(value.type,value.minimum,value.maximum))
+  const speedIncrease=quantitative.speedModifiers.reduce((sum,effect)=>sum+effect.percent,0)
   actionsPerSecond*=1+speedIncrease/100
-  if(increases.some(Boolean))included.push('passende globale Schadenssteigerungen je Schadenskomponente')
-  if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit':'Zaubergeschwindigkeit')
+  if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
+  if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
+  if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
+  if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)
   const average=(minimum+maximum)/2
+  const activeWeapon=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`))
+  const baseCriticalChance=skill.kind==='attack'?activeWeapon?.weaponStats?.criticalHitChance:undefined
+  const criticalChanceIncrease=quantitative.criticalChanceModifiers.reduce((sum,effect)=>sum+effect.percent,0)
+  const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*(1+criticalChanceIncrease/100))
   return{
-    ...base,status:'partial',components,
+    ...base,status:'partial',components,baseComponents,
+    stages:[
+      {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
+      {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
+      {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components},
+      {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
+    ],
+    appliedDamageEffects:quantitative.damageModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
+    appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
+    confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
+    ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
+    ...(quantitative.criticalMultiplierModifiers.length?{criticalDamageBonus:round(quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0))}:{}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:['kritische Treffer','Gegnerwiderstände und Rüstung','Supports','Passive und Aszendenzwerte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
-    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.'],
+    excluded:['kritische Treffer im Erwartungsschaden','Gegnerwiderstände und Rüstung','numerische Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...quantitative.warnings],
   }
 }

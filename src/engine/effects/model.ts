@@ -74,9 +74,14 @@ function equipmentEffects(input: BuildEffectModelInput): BuildEffect[] {
       result.push({ id: `equipment:${entry.id}:defence:${key}`, source: 'equipment', sourceId: entry.id, weaponSet: 'not-applicable', domain: 'defence', kind: 'defence', tags: ['defensive'], value, evidence: 'structured-exact', productive: true, explanation: `${label} ist ein defensiver Endwert und erzeugt keinen Waffenschaden.` })
     }
     for (const applied of entry.modifierValues) {
+      const conversions = (applied.statValues ?? []).flatMap(stat => {
+        const match = stat.statId.match(/^(physical|fire|cold|lightning|chaos)_damage_%_to_convert_to_(physical|fire|cold|lightning|chaos)$/)
+        return match && stat.value ? [{ from: match[1] as MechanicTag, to: match[2] as MechanicTag, percent: stat.value }] : []
+      })
+      for (const conversion of conversions) result.push({ id: `equipment:${entry.id}:conversion:${applied.id}:${conversion.from}:${conversion.to}`, source: 'equipment', sourceId: applied.modifierId, weaponSet, domain: 'offence', kind: 'conversion', tags: [conversion.from, conversion.to], conversion, evidence: 'structured-exact', productive: true, explanation: `${conversion.percent} % ${damageNames[conversion.from]} werden bestätigt in ${damageNames[conversion.to]} umgewandelt.` })
       const definition = definitions.get(applied.modifierId)
       if (!definition) {
-        result.push({ id: `equipment:${entry.id}:modifier:${applied.id}`, source: 'equipment', sourceId: applied.modifierId, weaponSet, domain: 'utility', kind: 'restriction', tags: [], evidence: 'unresolved', productive: false, explanation: 'Für dieses Affix fehlt eine bestätigte technische Wirkung.' })
+        if (conversions.length === 0) result.push({ id: `equipment:${entry.id}:modifier:${applied.id}`, source: 'equipment', sourceId: applied.modifierId, weaponSet, domain: 'utility', kind: 'restriction', tags: [], evidence: 'unresolved', productive: false, explanation: 'Für dieses Affix fehlt eine bestätigte technische Wirkung.' })
         continue
       }
       const tags = uniqueSorted(definition.relevantTags)
@@ -151,6 +156,7 @@ export function createBuildEffectModel(input: BuildEffectModelInput): BuildEffec
   const mainSkill = input.skills.find(value => value.id === mainSkillId)
   const tags = new Set<string>([...(mainSkill?.tags ?? []), ...(mainSkill?.damageTypes ?? [])])
   const unresolvedEffects = effects.filter(effect => !effect.productive || effect.evidence === 'unresolved')
+  const hasConfirmedConversion = effects.some(effect => effect.kind === 'conversion' && effect.productive)
   return {
     version: BUILD_EFFECT_MODEL_VERSION,
     effects,
@@ -162,7 +168,7 @@ export function createBuildEffectModel(input: BuildEffectModelInput): BuildEffec
     activeMechanics: uniqueSorted([...tags].filter(value => (mechanicTags as readonly string[]).includes(value)) as MechanicTag[]),
     scalingAdvice: scalingAdvice(effects, tags),
     warnings: [
-      'Keine bestätigte Schadensumwandlung vorhanden; Schadensarten werden nicht automatisch miteinander verrechnet.',
+      ...(hasConfirmedConversion ? [] : ['Keine bestätigte Schadensumwandlung vorhanden; Schadensarten werden nicht automatisch miteinander verrechnet.']),
       ...(unresolvedEffects.length ? [`${unresolvedEffects.length} Wirkungen bleiben ohne produktiven Bonus ungelöst oder inkompatibel.`] : []),
     ],
   }

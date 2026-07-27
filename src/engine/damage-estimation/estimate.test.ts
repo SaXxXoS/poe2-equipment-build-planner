@@ -49,7 +49,7 @@ describe('begrenzte Trefferschadenberechnung',()=>{
   it('weist nicht enthaltene komplexe Mechaniken aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
     expect(result.excluded).toContain('Mehrfachtreffer, Projektile und situationsabhängige Effekte')
-    expect(result.excluded).toContain('Passive und Aszendenzwerte')
+    expect(result.excluded).toContain('bedingte Passive- und Aszendenzeffekte')
   })
   it('wendet elementare Steigerungen nur auf die passende Schadenskomponente an',()=>{
     const fireItem:EquipmentEntry={id:'fire',slotId:'slot-helmet',itemClassId:'Helmets',rarity:'rare',modifierValues:[{
@@ -57,5 +57,14 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     }]}
     const result=estimateHitDamage({equipment:[fireItem],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
     expect(result.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
+  })
+  it('wendet einen technisch belegten passenden Schadenswert numerisch an und dokumentiert ihn',()=>{
+    const lightningItem:EquipmentEntry={id:'lightning',slotId:'slot-helmet',itemClassId:'Helmets',rarity:'rare',modifierValues:[{
+      id:'applied-lightning-damage',modifierId:'lightning-damage',value:100,statValues:[{statId:'lightning_damage_+%',value:100}],
+    }]}
+    const result=estimateHitDamage({equipment:[lightningItem],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
+    expect(result.hitDamage).toMatchObject({minimum:12,maximum:210,average:111})
+    expect(result.appliedDamageEffects).toEqual([expect.objectContaining({source:'equipment',value:100})])
+    expect(result.stages?.map(stage=>stage.id)).toEqual(['base','conversion','increased-damage','speed'])
   })
 })

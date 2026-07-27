@@ -77,6 +77,31 @@ describe('einheitliches Build-Wirkungsmodell', () => {
     expect(result.scalingAdvice.some(value => value.startsWith('Feuerschaden'))).toBe(false)
   })
 
+  it('übernimmt ausschließlich eine technisch bestätigte Schadensumwandlung', () => {
+    const request = structuredClone(fixtureA)
+    request.input.equipment = [{
+      id: 'ring',
+      slotId: 'slot-ring-left',
+      itemClassId: 'Rings',
+      modifierValues: [{
+        id: 'conversion',
+        modifierId: 'confirmed-conversion',
+        value: 25,
+        statValues: [{ statId: 'physical_damage_%_to_convert_to_fire', value: 25 }],
+      }],
+    }]
+    request.input.character.desiredMainSkillId = 'fixture-main'
+    request.input.skillSetups = [{ id: 'main', skillId: 'fixture-main', role: 'main', weaponSet: 'set-1', supportGemIds: [] }]
+    const result = analyzeBuild(request, context, engineModifierFixtures).effectModel!
+    expect(result.offenceEffects).toContainEqual(expect.objectContaining({
+      kind: 'conversion',
+      conversion: { from: 'physical', to: 'fire', percent: 25 },
+      evidence: 'structured-exact',
+      productive: true,
+    }))
+    expect(result.warnings).not.toContain('Keine bestätigte Schadensumwandlung vorhanden; Schadensarten werden nicht automatisch miteinander verrechnet.')
+  })
+
   it('liefert bei identischer Eingabe eine deterministisch identische Wirkungskette', () => {
     const first = analyzeBuild(fixtureA, context, engineModifierFixtures).effectModel
     const second = analyzeBuild(fixtureA, context, engineModifierFixtures).effectModel

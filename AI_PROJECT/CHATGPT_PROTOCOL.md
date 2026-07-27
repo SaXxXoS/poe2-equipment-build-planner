@@ -1,5 +1,30 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Quantitative Wirkungskette – Schritt 4 (2026-07-27)
+
+- Das Wirkungsmodell aus Schritt 3 besitzt jetzt eine getrennte,
+  deterministische Zahlenkette.
+- Berechnet werden strukturierter Grundschaden, bestätigte einstufige
+  Umwandlungen, passende additive Schadenserhöhungen und belegte
+  Angriffs-/Zaubergeschwindigkeit.
+- Numerisch eindeutige Originalzeilen tatsächlich belegter Passive- und
+  Aszendenzknoten werden einbezogen. Semantische Analyzergewichte werden
+  ausdrücklich nicht als Prozentwerte missbraucht.
+- Waffenset-spezifische Knoten wirken nur auf das aktive Skillset.
+- Umgewandelter Schaden berücksichtigt belegte Skalierungen der Ausgangs- und
+  Zielschadensart. Über 100 Prozent liegende Summen werden begrenzt und
+  gemeldet.
+- Lokale Waffenaffixe werden bei eingegebenen finalen Waffenwerten nicht
+  doppelt angewandt.
+- Kritische Grundchance und bestätigte Erhöhungen werden angezeigt, aber noch
+  nicht ohne vollständige Grundlage in eine scheinpräzise Gesamt-DPS
+  eingerechnet.
+- Numerische Supporteffekte, Gegnerabwehr, DoT/Ailments, Mehrfachtreffer,
+  Trigger, Minions und bedingte Effekte bleiben offen.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_QUANTITATIVE_EFFECTS_STEP_4.md`.
+- Nächster Schritt: strukturierte Supporteffekte und explizite Gegnerprofile.
+
 ## Tatsächliche Waffen-Grundwerte (2026-07-27)
 
 - Waffen speichern ihre endgültigen angezeigten Grundwerte jetzt getrennt
