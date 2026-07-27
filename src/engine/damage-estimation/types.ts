@@ -1,6 +1,18 @@
 export type DamageEstimateStatus = 'available' | 'partial' | 'unavailable'
 export interface DamageComponent { type:'physical'|'fire'|'cold'|'lightning'|'chaos'; minimum:number; maximum:number }
-export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation';label:string;components:DamageComponent[];value?:number }
+export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
+export interface EnemyMitigationProfile {
+  id:string
+  label:string
+  source:'manual-comparison-profile'
+  armour?:number
+  armourBreak?:number
+  resistances?:Partial<Record<EnemyResistanceType,number>>
+  penetration?:Partial<Record<EnemyResistanceType,number>>
+  resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
+}
+export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
+export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface DamageEstimate {
   status:DamageEstimateStatus
@@ -13,6 +25,10 @@ export interface DamageEstimate {
   hitDamagePerSecond?:number
   expectedCriticalHitDamage?:number
   expectedCriticalHitDamagePerSecond?:number
+  enemyProfile?:EnemyMitigationProfile
+  mitigatedComponents?:MitigatedDamageComponent[]
+  expectedDamageAfterMitigation?:number
+  expectedDamagePerSecondAfterMitigation?:number
   baseComponents?:DamageComponent[]
   components:DamageComponent[]
   stages?:DamageCalculationStage[]

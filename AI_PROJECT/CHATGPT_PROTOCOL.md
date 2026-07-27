@@ -1,5 +1,25 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Gegnerabwehr und Vergleichsprofile – Schritt 6 (2026-07-27)
+
+- Die numerische Trefferschadenkette besitzt jetzt ein getrenntes
+  `EnemyMitigationProfile`.
+- Verarbeitet werden explizite Widerstände, Widerstandsreduktion,
+  Trefferdurchdringung, Rüstung und Rüstungsbruch.
+- Elementare und Chaosschadenskomponenten bleiben getrennt. Rüstung wirkt
+  standardmäßig ausschließlich auf physische Treffer.
+- PoE2-Durchdringung wird nach Widerstandsänderungen angewandt und senkt den
+  Widerstand standardmäßig nicht unter null.
+- Ohne Vergleichsprofil wird keinerlei Gegnerabwehr erfunden; Mapping und
+  Boss bleiben fachliche Zielprofile und keine versteckten Zahlenpresets.
+- Die Ergebnisansicht unterscheidet ausdrücklich zwischen dem Wert vor
+  Gegnerabwehr und dem Wert eines expliziten Vergleichsprofils.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_ENEMY_MITIGATION_STEP_6.md`.
+- Nächster Schritt: persistente Vergleichsgegner-Eingabe und strukturierte
+  automatische Zuführung belegter Fluch-, Expositions-, Durchdringungs- und
+  Rüstungsbruchwerte.
+
 ## Quantitative Wirkungskette – Schritt 4 (2026-07-27)
 
 - Das Wirkungsmodell aus Schritt 3 besitzt jetzt eine getrennte,

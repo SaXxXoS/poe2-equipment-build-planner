@@ -93,4 +93,38 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.appliedSupportEffects).toEqual([])
     expect(result.warnings.join(' ')).toContain('keinen strukturierten numerischen Effekt')
   })
+  it('wendet ein explizites Gegnerprofil getrennt nach Schadensart an',()=>{
+    const result=estimateHitDamage({
+      equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')],
+      enemyProfile:{id:'manual-test',label:'Manueller Testgegner',source:'manual-comparison-profile',resistances:{lightning:50},penetration:{lightning:10},resistanceReduction:{lightning:5}},
+    })
+    expect(result.enemyProfile?.id).toBe('manual-test')
+    expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:35,mitigationPercent:35})
+    expect(result.expectedDamagePerSecondAfterMitigation).toBeCloseTo(result.expectedCriticalHitDamagePerSecond!*0.65,1)
+    expect(result.stages?.at(-1)?.id).toBe('enemy-mitigation')
+  })
+  it('wendet Rüstung und Rüstungsbruch nur auf physischen Trefferschaden an',()=>{
+    const observed={...weapon('Gezackter Speer'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}
+    const result=estimateHitDamage({
+      equipment:[observed],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')],
+      enemyProfile:{id:'armour-test',label:'Rüstungstest',source:'manual-comparison-profile',armour:2000,armourBreak:1000},
+    })
+    const physical=result.mitigatedComponents?.find(value=>value.type==='physical')
+    expect(physical?.effectiveDefence).toBe(1000)
+    expect(physical?.mitigationPercent).toBeGreaterThan(0)
+    expect(result.expectedDamagePerSecondAfterMitigation).toBeLessThan(result.expectedCriticalHitDamagePerSecond!)
+  })
+  it('erfindet ohne Profil keine Gegnerabwehr',()=>{
+    const result=estimateHitDamage({equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')]})
+    expect(result.enemyProfile).toBeUndefined()
+    expect(result.expectedDamagePerSecondAfterMitigation).toBeUndefined()
+    expect(result.warnings.join(' ')).toContain('kein Vergleichsgegner')
+  })
+  it('lässt Durchdringung den Widerstand standardmäßig nicht unter null drücken',()=>{
+    const result=estimateHitDamage({
+      equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')],
+      enemyProfile:{id:'penetration-floor',label:'Durchdringungsgrenze',source:'manual-comparison-profile',resistances:{lightning:10},penetration:{lightning:30}},
+    })
+    expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:0})
+  })
 })

@@ -1,4 +1,5 @@
 export * from './types'
 export * from './estimate'
+export * from './enemy-mitigation'
 export * from './quantitative-effects'
 export * from './quantitative-supports'
