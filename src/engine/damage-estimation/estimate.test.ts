@@ -1,5 +1,5 @@
 import { describe,expect,it } from 'vitest'
-import type { EquipmentEntry,SkillGemDefinition,SkillSetup } from '../../domain'
+import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
 import { estimateHitDamage } from './estimate'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,displayNameDe:nameEn,nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
@@ -65,6 +65,32 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     const result=estimateHitDamage({equipment:[lightningItem],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
     expect(result.hitDamage).toMatchObject({minimum:12,maximum:210,average:111})
     expect(result.appliedDamageEffects).toEqual([expect.objectContaining({source:'equipment',value:100})])
-    expect(result.stages?.map(stage=>stage.id)).toEqual(['base','conversion','increased-damage','speed'])
+    expect(result.stages?.map(stage=>stage.id)).toEqual(['base','conversion','increased-damage','support-more-damage','speed','critical-expectation'])
+  })
+  it('berechnet bei Zaubern den belegten kritischen Erwartungswert mit +100 Prozent Basisbonus',()=>{
+    const result=estimateHitDamage({equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')]})
+    expect(result.criticalChance).toMatchObject({base:9,effective:9})
+    expect(result.criticalDamageBonus).toBe(100)
+    expect(result.criticalExpectationMultiplier).toBe(1.09)
+    expect(result.expectedCriticalHitDamagePerSecond).toBeGreaterThan(result.hitDamagePerSecond!)
+  })
+  it('wendet nur explizit strukturierte Supporteffekte numerisch an',()=>{
+    const support:SupportGemDefinition={
+      id:'support-exact',displayNameDe:'Exakter Support',tags:[],dataVersion:'test',source:'local-placeholder',status:'verified',
+      requiredTags:[],excludedTags:[],ownTags:[],
+      quantitativeEffects:[{kind:'more-damage',percent:25,evidence:'structured-exact',sourceReference:'fixture:effect'}],
+    }
+    const selected={...setup('arc'),supportGemIds:[support.id]}
+    const without=estimateHitDamage({equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')],supports:[support]})
+    const withSupport=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('arc','Arc')],supports:[support]})
+    expect(withSupport.hitDamagePerSecond).toBeCloseTo(without.hitDamagePerSecond!*1.25,1)
+    expect(withSupport.appliedSupportEffects).toEqual([expect.objectContaining({sourceId:'support-exact',value:25})])
+  })
+  it('warnt bei Supports ohne strukturierten Effekt und verändert den Wert nicht',()=>{
+    const support:SupportGemDefinition={id:'support-unresolved',displayNameDe:'Unbelegt',tags:[],dataVersion:'test',source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[]}
+    const selected={...setup('arc'),supportGemIds:[support.id]}
+    const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('arc','Arc')],supports:[support]})
+    expect(result.appliedSupportEffects).toEqual([])
+    expect(result.warnings.join(' ')).toContain('keinen strukturierten numerischen Effekt')
   })
 })

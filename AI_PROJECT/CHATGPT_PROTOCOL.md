@@ -1629,3 +1629,22 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   nennt belegte Quellen.
 - Ausführliche Dokumentation:
   `docs/BUILD_ASSISTANT_EFFECT_MODEL_STEP_3.md`.
+# Abschluss Schritt 5 – Kritische Treffer und quantitative Support-Schnittstelle
+
+- Ausgangscommit: `daf239a84e22945f622e94422a77b36d5e0207d6`
+- Kritische Treffer werden als deterministischer Erwartungswert berechnet.
+- Zauber verwenden ihre strukturierte Basis-Kritchance; Angriffe verwenden
+  den eingegebenen endgültigen Waffenwert.
+- Der PoE2-Basis-Kritschadensbonus beträgt `+100 %`.
+- Belegte Kritchance und Kritschadensboni aus Ausrüstung, Passivbaum und
+  Aszendenz werden berücksichtigt.
+- Supportdefinitionen besitzen eine fail-closed quantitative
+  Effektschnittstelle.
+- Mehrere bestätigte `more-damage`-Effekte werden multiplikativ angewandt.
+- Supports ohne strukturierten numerischen Effekt verändern den Schadenswert
+  nicht und werden sichtbar als unbelegt ausgewiesen.
+- Aus Supportnamen, Tags oder Übersetzungen werden keine Werte erfunden.
+- Gegnerwiderstände, Rüstung, DoT, Ailments, Mehrfachtreffer, Trigger und
+  Buff-Uptime bleiben Folgeaufgaben.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_CRITICAL_AND_SUPPORT_EFFECTS_STEP_5.md`

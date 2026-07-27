@@ -69,6 +69,20 @@ export interface SupportGemDefinition extends GameDataMetadata {
   enabled?: boolean
   experimental?: boolean
   selectionOnly?: boolean
+  /**
+   * Numerische Wirkung nur aus einer ausdrücklich versionierten technischen
+   * Quelle. Fehlende Werte dürfen nicht aus Name, Tags oder Beschreibung
+   * geschätzt werden.
+   */
+  quantitativeEffects?: SupportQuantitativeEffect[]
+}
+
+export interface SupportQuantitativeEffect {
+  kind: 'more-damage' | 'action-speed' | 'more-critical-chance' | 'critical-damage-bonus'
+  percent: number
+  damageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]
+  evidence: 'structured-exact'
+  sourceReference: string
 }
 
 export const supportFamilyKey = (

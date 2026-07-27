@@ -1,8 +1,9 @@
 import reference from '../../../generated/pob2/damage-reference.json'
-import type { EquipmentEntry, SkillGemDefinition, SkillSetup } from '../../domain'
+import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { applyConversions, applyDamageModifiers, collectQuantitativeEffects } from './quantitative-effects'
+import { applyQuantitativeSupports } from './quantitative-supports'
 import type { DamageComponent, DamageEstimate } from './types'
 
 type NumericSkill=(typeof reference.skills)[number]
@@ -57,6 +58,7 @@ export function estimateHitDamage(input:{
   equipment:EquipmentEntry[]
   setups:SkillSetup[]
   skills:SkillGemDefinition[]
+  supports?:SupportGemDefinition[]
   fallbackSkillId?:string
   passiveTree?:RealPassiveTree
   realPassivePlanning?:RealPassivePlanningIntegrationResult
@@ -66,7 +68,7 @@ export function estimateHitDamage(input:{
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.0.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.1.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -99,37 +101,50 @@ export function estimateHitDamage(input:{
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet})
   const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
   components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers).map(value=>component(value.type,value.minimum,value.maximum))
+  const increasedComponents=components.map(value=>({...value}))
+  const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
+  components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedIncrease=quantitative.speedModifiers.reduce((sum,effect)=>sum+effect.percent,0)
   actionsPerSecond*=1+speedIncrease/100
+  actionsPerSecond*=supportEffects.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
   if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
   if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
+  if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)
   const average=(minimum+maximum)/2
   const activeWeapon=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`))
-  const baseCriticalChance=skill.kind==='attack'?activeWeapon?.weaponStats?.criticalHitChance:undefined
+  const baseCriticalChance=skill.kind==='attack'?activeWeapon?.weaponStats?.criticalHitChance:skill.critChance
   const criticalChanceIncrease=quantitative.criticalChanceModifiers.reduce((sum,effect)=>sum+effect.percent,0)
-  const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*(1+criticalChanceIncrease/100))
+  const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*(1+criticalChanceIncrease/100)*supportEffects.criticalChanceMultiplier)
+  const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus
+  const totalCriticalDamageBonus=100+additionalCriticalDamageBonus
+  const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
+  const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:average*criticalExpectationMultiplier
+  const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
   return{
     ...base,status:'partial',components,baseComponents,
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
-      {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components},
+      {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components:increasedComponents},
+      {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
+      ...(expectedCriticalHitDamagePerSecond==null?[]:[{id:'critical-expectation' as const,label:'Erwartungswert einschließlich kritischer Treffer',components:[],value:round(expectedCriticalHitDamagePerSecond)}]),
     ],
     appliedDamageEffects:quantitative.damageModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
+    appliedSupportEffects:supportEffects.appliedEffects,
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
-    ...(quantitative.criticalMultiplierModifiers.length?{criticalDamageBonus:round(quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0))}:{}),
+    ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:['kritische Treffer im Erwartungsschaden','Gegnerwiderstände und Rüstung','numerische Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
-    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...quantitative.warnings],
+    excluded:['Gegnerwiderstände und Rüstung','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...quantitative.warnings],
   }
 }
