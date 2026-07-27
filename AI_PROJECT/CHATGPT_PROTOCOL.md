@@ -1,5 +1,24 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Automatisches Zeit- und Aufrechterhaltungsmodell – Schritt 10 (2026-07-27)
+
+- Die berechnete Aktionsfrequenz des Hauptskills wird automatisch mit
+  strukturiertem Rüstungsbruch pro Treffer verbunden.
+- Trefferzahl und Zeit bis zum vollständigen Rüstungsbruch werden gegen das
+  belegte 12-Sekunden-Fenster geprüft.
+- Vollständig gebrochene Rüstung wird nur als aufrechterhaltbarer Vollzustand
+  verwendet, wenn der Hauptskill ihn innerhalb der Wirkzeit erreicht und durch
+  fortgesetzte Treffer halten kann.
+- Die Ergebnisansicht unterscheidet `permanent`, `maintainable`, `windowed`,
+  `ramping` und `unresolved`.
+- Fluchwirkzeit und Wirkzeitpunkt werden angezeigt. Ohne Rotationsbeleg wird
+  keine prozentuale Wiederholungsfrequenz oder Uptime behauptet.
+- Unbelegte Expositionsbeträge, Buff-Uptime und Triggerfrequenzen erzeugen
+  weiterhin keinen Bonus.
+- Zeitmodellversion: `1.0.0`; Schadenteilrechner: `2.2.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_TEMPORAL_EFFECTS_STEP_10.md`.
+
 ## Automatisches Debuff-Zustandsmodell – Schritt 9 (2026-07-27)
 
 - Mapping und Allround verwenden automatisch einen seltenen

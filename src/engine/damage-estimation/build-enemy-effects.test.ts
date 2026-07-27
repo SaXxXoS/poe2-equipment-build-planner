@@ -12,7 +12,10 @@ describe('automatische belegte Gegnerwirkungen',()=>{
   it('übernimmt Elemental Weakness aus dem strukturierten Skillwert',()=>{
     const result=applyBuildEnemyEffects({profile,setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['lightning'],weaponSet:'set-1'})
     expect(result.resistanceReduction).toEqual({fire:59,cold:59,lightning:59})
-    expect(result.appliedEffects).toEqual([expect.objectContaining({sourceId:'weakness',kind:'resistance-reduction',value:59,evidence:'structured-exact',durationMs:7400,state:'assumed-active'})])
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      sourceId:'weakness',kind:'resistance-reduction',value:59,evidence:'structured-exact',
+      durationMs:7400,activationTimeMs:700,uptimeStatus:'windowed',state:'assumed-active',
+    })])
   })
 
   it('wendet die belegte verringerte Fluchwirkung für seltene und einzigartige Ziele an',()=>{
@@ -64,6 +67,36 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(building.hitsToFullyBreakArmour).toBe(3)
     expect(building.fullyBrokenArmour).toBeUndefined()
     expect(building.appliedEffects?.[0].state).toBe('building')
+  })
+
+  it('verbindet den Rüstungsbruch des Hauptskills mit seiner belegten Trefferfrequenz',()=>{
+    const sustained=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique',armour:10000},
+      setups:[setup('breaker','breaker')],skills:[skill('breaker','Armour Breaker')],
+      activeDamageTypes:['physical'],weaponSet:'set-1',
+      primarySkillId:'breaker',primaryActionsPerSecond:2,
+    })
+    expect(sustained).toMatchObject({
+      hitsToFullyBreakArmour:3,timeToFullyBreakArmourMs:1500,
+      fullyBrokenArmour:true,temporalModelVersion:'1.0.0',
+    })
+    expect(sustained.appliedEffects?.[0]).toMatchObject({
+      state:'fully-active',uptimeStatus:'maintainable',
+      applicationRatePerSecond:2,timeToFullEffectMs:1500,estimatedUptime:1,
+    })
+  })
+
+  it('behauptet keinen vollständigen Rüstungsbruch, wenn der Aufbau vor Ablauf verfällt',()=>{
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique',armour:10000},
+      setups:[setup('breaker','breaker')],skills:[skill('breaker','Armour Breaker')],
+      activeDamageTypes:['physical'],weaponSet:'set-1',
+      primarySkillId:'breaker',primaryActionsPerSecond:0.1,
+    })
+    expect(result.timeToFullyBreakArmourMs).toBe(30000)
+    expect(result.fullyBrokenArmour).toBeUndefined()
+    expect(result.appliedEffects?.[0]).toMatchObject({state:'building',uptimeStatus:'unresolved'})
+    expect(result.limitations?.join(' ')).toContain('reicht nicht aus')
   })
 
   it('übernimmt nur unbedingte, exakt lesbare Durchdringung aus belegten Baumknoten',()=>{

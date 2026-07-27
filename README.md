@@ -1,5 +1,11 @@
 # PoE2 Equipment Build Planner
 
+> **Automatisches Zeitmodell:** Die Trefferfrequenz des Hauptskills bestimmt
+> jetzt den Aufbau und die Aufrechterhaltbarkeit von Rüstungsbruch. Permanente,
+> zeitlich begrenzte, aufrechterhaltbare und unbekannte Wirkungen werden
+> getrennt angezeigt; eine unbelegte Fluch-, Buff- oder Trigger-Uptime wird
+> nicht erfunden. [Details](docs/BUILD_ASSISTANT_TEMPORAL_EFFECTS_STEP_10.md)
+
 > **Debuff-Zustände:** Die App berücksichtigt automatisch Zielseltenheit,
 > Fluchwirkzeit, verringerte Fluchwirkung, Rüstungsbruchdauer und – bei
 > bekannter Zielrüstung – vollständig gebrochene Rüstung. Es entstehen keine

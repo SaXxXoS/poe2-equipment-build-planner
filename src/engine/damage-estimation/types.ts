@@ -2,6 +2,7 @@ export type DamageEstimateStatus = 'available' | 'partial' | 'unavailable'
 export interface DamageComponent { type:'physical'|'fire'|'cold'|'lightning'|'chaos'; minimum:number; maximum:number }
 export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
 export type EnemyTargetRarity='normal'|'magic'|'rare'|'unique'
+export type TemporalEffectUptimeStatus='permanent'|'maintainable'|'windowed'|'ramping'|'unresolved'
 export interface AppliedEnemyMitigationEffect {
   source:'skill'|'passive'|'ascendancy'
   sourceId:string
@@ -13,6 +14,11 @@ export interface AppliedEnemyMitigationEffect {
   sourceReference:string
   conditional:boolean
   durationMs?:number
+  activationTimeMs?:number
+  applicationRatePerSecond?:number
+  timeToFullEffectMs?:number
+  estimatedUptime?:number
+  uptimeStatus:TemporalEffectUptimeStatus
   effectiveValue?:number
   state:'permanent'|'assumed-active'|'building'|'fully-active'
   stateDetail?:string
@@ -32,6 +38,8 @@ export interface EnemyMitigationProfile {
   appliedEffects?:AppliedEnemyMitigationEffect[]
   fullyBrokenArmour?:boolean
   hitsToFullyBreakArmour?:number
+  timeToFullyBreakArmourMs?:number
+  temporalModelVersion?:string
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
 export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }

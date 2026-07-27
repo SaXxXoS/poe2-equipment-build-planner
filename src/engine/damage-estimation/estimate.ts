@@ -71,7 +71,7 @@ export function estimateHitDamage(input:{
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.1.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.2.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -130,6 +130,7 @@ export function estimateHitDamage(input:{
   const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
     profile:input.enemyProfile,setups:input.setups,skills:input.skills,
     activeDamageTypes:components.map(value=>value.type),weaponSet:activeSet,
+    primarySkillId:skillId,primaryActionsPerSecond:actionsPerSecond,
     passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
   }):undefined
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
@@ -144,7 +145,7 @@ export function estimateHitDamage(input:{
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
       ...(expectedCriticalHitDamagePerSecond==null?[]:[{id:'critical-expectation' as const,label:'Erwartungswert einschließlich kritischer Treffer',components:[],value:round(expectedCriticalHitDamagePerSecond)}]),
-      ...(expectedDamagePerSecondAfterMitigation==null?[]:[{id:'enemy-mitigation' as const,label:`Nach Gegnerabwehr: ${resolvedEnemyProfile!.label}`,components:enemyMitigation!.components,value:round(expectedDamagePerSecondAfterMitigation)}]),
+      ...(expectedDamagePerSecondAfterMitigation==null?[]:[{id:'enemy-mitigation' as const,label:`Nach Gegnerabwehr${resolvedEnemyProfile!.fullyBrokenArmour?' im aufrechterhaltbaren Vollzustand':''}: ${resolvedEnemyProfile!.label}`,components:enemyMitigation!.components,value:round(expectedDamagePerSecondAfterMitigation)}]),
     ],
     appliedDamageEffects:quantitative.damageModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
@@ -157,7 +158,7 @@ export function estimateHitDamage(input:{
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Fluchlimits, Debuff-Wirkzeit und Rüstungsbruch-Aufbau','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','tatsächliche Fluch-Wiederholungsfrequenz ohne Rotationsbeleg','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

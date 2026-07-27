@@ -136,7 +136,11 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.enemyProfile?.resistanceReduction?.lightning).toBe(59)
     expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:-19})
-    expect(result.enemyProfile?.appliedEffects?.[0]).toMatchObject({sourceId:'curse',kind:'resistance-reduction'})
+    expect(result.enemyProfile?.appliedEffects?.[0]).toMatchObject({
+      sourceId:'curse',kind:'resistance-reduction',durationMs:7400,
+      activationTimeMs:700,uptimeStatus:'windowed',
+    })
+    expect(result.enemyProfile?.temporalModelVersion).toBe('1.0.0')
   })
   it('wendet den belegten 20-Prozent-Zustand vollständig gebrochener Rüstung an',()=>{
     const observed={...weapon('Gezackter Speer'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}
