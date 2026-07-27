@@ -45,6 +45,8 @@ export interface MitigatedDamageComponent extends DamageComponent { effectiveDef
 export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
+export interface AppliedChargeState { type:'power'|'frenzy'|'endurance';label:string;availability:'unavailable'|'conditional-unresolved'|'available-window';count?:number;detail:string }
+export interface AppliedChargeConsumption { sourceId:string;label:string;chargeTypes:Array<'power'|'frenzy'|'endurance'>;intervalMs?:number;detail:string }
 export interface DamageEstimate {
   status:DamageEstimateStatus
   skillId?:string
@@ -69,6 +71,7 @@ export interface DamageEstimate {
   appliedSpeedEffects?:AppliedQuantitativeEffect[]
   appliedSupportEffects?:AppliedQuantitativeEffect[]
   temporalOffensiveEffects?:AppliedTemporalOffensiveEffect[]
+  chargeState?:{modelVersion:string;productive:boolean;states:AppliedChargeState[];consumptions:AppliedChargeConsumption[]}
   confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number

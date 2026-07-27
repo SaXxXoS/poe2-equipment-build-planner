@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0.0",
+  "task": "Build Assistant charge-state model step 14",
+  "modelVersion": "1.0.0",
+  "source": {
+    "scope": "poe2-pob2-damage-calculation-reference",
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0"
+  },
+  "chargeTypes": [
+    "power",
+    "frenzy",
+    "endurance"
+  ],
+  "structuredFindings": [
+    {
+      "skill": "Charge Regulation",
+      "status": "consumption-exact-generation-unresolved",
+      "intervalMs": 10000,
+      "chargeTypes": [
+        "frenzy",
+        "power",
+        "endurance"
+      ],
+      "sourceReference": "consume_frenzy_power_and_endurance_charge_every_x_ms"
+    },
+    {
+      "skill": "Charged Staff",
+      "status": "effect-per-charge-exact-charge-state-unresolved",
+      "chargeTypes": [
+        "power"
+      ],
+      "sourceReferences": [
+        "charged_staff_attack_minimum_added_lightning_damage_per_stack",
+        "charged_staff_attack_maximum_added_lightning_damage_per_stack"
+      ]
+    },
+    {
+      "skill": "Disengage",
+      "status": "conditional-generation-exact-prerequisite-unresolved",
+      "chargeTypes": [
+        "frenzy"
+      ],
+      "count": 3,
+      "sourceReference": "consume_parry_debuff_on_hit_to_gain_X_frenzy_charges",
+      "missingEvidence": [
+        "parry-debuff-generation",
+        "parry-debuff-availability",
+        "repeatable-uptime"
+      ]
+    }
+  ],
+  "productiveChargeStates": 0,
+  "blockedPositiveEffects": [
+    "Charge Regulation",
+    "Charged Staff"
+  ],
+  "newUserSettings": 0,
+  "inventedChargeCounts": 0,
+  "decision": "fail-closed-until-generation-and-uptime-chain-is-complete",
+  "nextTask": "model-next-skill-and-exerted-attack-relations"
+}

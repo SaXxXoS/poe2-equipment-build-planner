@@ -3,6 +3,7 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis } from '../common/types'
 import type { RotationStepTiming } from '../rotations/timing'
 import type { DamageComponent } from './types'
+import { resolveChargeState, type ChargeStateResult } from './charge-state'
 
 export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.1.0'
 export interface TemporalOffensiveEffect {
@@ -25,6 +26,7 @@ export interface TemporalOffensiveEffectResult {
   blockedEffects: TemporalOffensiveEffect[]
   damageMultiplier: number
   actionSpeedMultiplier: number
+  chargeState: ChargeStateResult
 }
 
 const byName = new Map<string, (typeof reference.skills)[number]>()
@@ -92,6 +94,7 @@ export function collectTemporalOffensiveEffects(input: {
   rotationAnalysis?: RotationAnalysis
 }): TemporalOffensiveEffectResult {
   const effects: TemporalOffensiveEffect[] = []
+  const chargeState = resolveChargeState({ setups: input.setups, skills: input.skills })
   const selected = new Set(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => setup.skillId))
   const bossSteps = input.rotationAnalysis?.bossRotation.steps ?? []
   for (const definition of input.skills.filter(skill => selected.has(skill.id))) {
@@ -143,7 +146,11 @@ export function collectTemporalOffensiveEffects(input: {
       appliesTo: ['attack', 'spell'], activationTimeMs: timing?.activationTimeMs, durationMs: timing?.effectDurationMs,
       status: 'blocked', evidence: 'unresolved',
       sourceReferences: blocked.sourceReferences,
-      detail: blocked.detail,
+      detail: definition.nameEn === 'Charge Regulation'
+        ? `${blocked.detail} ${chargeState.consumptions.find(value => value.sourceId === definition.id)?.detail ?? ''}`.trim()
+        : definition.nameEn === 'Charged Staff'
+          ? `${blocked.detail} ${chargeState.states.find(value => value.type === 'power')?.detail ?? ''}`.trim()
+          : blocked.detail,
     })
   }
   const appliedEffects = effects.filter(effect => effect.status === 'active-window')
@@ -153,6 +160,7 @@ export function collectTemporalOffensiveEffects(input: {
     blockedEffects: effects.filter(effect => effect.status === 'blocked'),
     damageMultiplier: appliedEffects.filter(effect => effect.kind === 'more-damage').reduce((value, effect) => value * (1 + effect.percent! / 100), 1),
     actionSpeedMultiplier: 1 + appliedEffects.filter(effect => effect.kind === 'increased-action-speed').reduce((sum, effect) => sum + effect.percent!, 0) / 100,
+    chargeState,
   }
 }
 

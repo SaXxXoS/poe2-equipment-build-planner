@@ -96,6 +96,34 @@ describe('zeitabhängige offensive Wirkungen', () => {
     expect(result.blockedEffects[0]?.detail).toContain('Stufenzahl')
   })
 
+  it('verknüpft Charge Regulation mit dem automatisch ermittelten Verbrauchszustand', () => {
+    const main = skill('main', 'Arc', ['spell'])
+    const regulation = skill('regulation', 'Charge Regulation')
+    const result = collectTemporalOffensiveEffects({
+      setups: [setup('main-setup', main.id, 'main'), setup('regulation-setup', regulation.id, 'utility')],
+      skills: [main, regulation],
+      mainSkill: main,
+      rotationAnalysis: rotation(regulation.id),
+    })
+    expect(result.appliedEffects).toEqual([])
+    expect(result.chargeState.productive).toBe(false)
+    expect(result.chargeState.consumptions[0]?.intervalMs).toBe(10_000)
+    expect(result.blockedEffects[0]?.detail).toContain('alle 10 Sekunden')
+  })
+
+  it('erklärt Charged Staff mit dem fehlenden Power-Charge-Zustand', () => {
+    const main = skill('main', 'Quarterstaff Strike', ['attack'])
+    const chargedStaff = skill('charged-staff', 'Charged Staff')
+    const result = collectTemporalOffensiveEffects({
+      setups: [setup('main-setup', main.id, 'main'), setup('staff-setup', chargedStaff.id, 'utility')],
+      skills: [main, chargedStaff],
+      mainSkill: main,
+      rotationAnalysis: rotation(chargedStaff.id),
+    })
+    expect(result.appliedEffects).toEqual([])
+    expect(result.blockedEffects[0]?.detail).toContain('Keine vollständig belegte Erzeugung von Power Charges')
+  })
+
   it.each([
     ['Arctic Armour', 'stationäre Dauer'],
     ['Arctic Howl', 'Warcry-Power'],

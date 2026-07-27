@@ -1,5 +1,10 @@
 # PoE2 Equipment Build Planner
 
+> **Automatische Ladungszustände:** Power-, Frenzy- und Endurance Charges
+> werden getrennt erfasst. Verbrauch und bedingte Quellen sind sichtbar;
+> ohne vollständig belegte Erzeugung und Uptime entsteht kein Schadensbonus.
+> [Details](docs/BUILD_ASSISTANT_CHARGE_STATE_STEP_14.md)
+
 > **Vollständige Wirkungsketten:** Strukturierte Buff-, Trigger- und
 > Stapelwerte werden nur angewandt, wenn auch Zustand, Ziel, Verbrauch und
 > Wirkfenster belegt sind. Zwölf unvollständige Kandidaten werden mit

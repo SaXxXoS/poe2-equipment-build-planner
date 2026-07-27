@@ -1,5 +1,23 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Automatisches Ladungszustandsmodell – Schritt 14 (2026-07-27)
+
+- Power-, Frenzy- und Endurance-Charge-Zustände werden getrennt und
+  automatisch geführt.
+- Charge Regulation: Verbrauch aller drei Ladungsarten alle zehn Sekunden
+  belegt; Erzeugung nicht belegt.
+- Charged Staff: Blitzschaden pro Power Charge belegt; Anzahl, Verbrauch und
+  Buffdauer nicht vollständig belegt.
+- Disengage: drei Frenzy Charges nach Verbrauch eines Parry-Debuffs belegt;
+  die vorgelagerte Debuff-Kette bleibt unresolved.
+- Bedingte oder fehlende Ladungen erzeugen keinen positiven Bonus.
+- Keine neue Nutzereinstellung und keine erfundene Ladungszahl.
+- Modellversion: `1.0.0`.
+- Bericht:
+  `docs/audits/build-assistant-charge-state-step-14.json`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_CHARGE_STATE_STEP_14.md`.
+
 ## Vollständige Offensiv-Wirkungsketten – Schritt 13 (2026-07-27)
 
 - Zwölf weitere Buff-, Trigger- und Stapelkandidaten wurden im gepinnten
