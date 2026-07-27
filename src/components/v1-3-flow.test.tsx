@@ -10,7 +10,7 @@ import { createInitialCharacterConfiguration } from '../features/character/initi
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
 import { AffixDialog, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
-import { itemSupportsDefenceValues } from '../features/equipment-editor/item-stat-fields'
+import { itemSupportsDefenceValues, weaponStatsAreValid } from '../features/equipment-editor/item-stat-fields'
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
@@ -59,6 +59,11 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(html).toContain('placeholder="0 bis 8"')
     expect(html).toContain('Aszendenzpunkte')
     expect(html).not.toContain('value="0"')
+  })
+  it('validiert tatsächliche Waffenbereiche und Angriffsgeschwindigkeit',()=>{
+    expect(weaponStatsAreValid({physicalDamage:{minimum:46,maximum:91},criticalHitChance:6,attacksPerSecond:1.5})).toBe(true)
+    expect(weaponStatsAreValid({physicalDamage:{minimum:91,maximum:46}})).toBe(false)
+    expect(weaponStatsAreValid({attacksPerSecond:0})).toBe(false)
   })
   it('ordnet die Hauptausrüstung zusammenhängend und schaltet nur Waffenplätze', () => {
     const html = renderToStaticMarkup(<EquipmentSection entries={initialEquipment} setEntries={() => undefined}/>)

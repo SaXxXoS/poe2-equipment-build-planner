@@ -42,7 +42,19 @@ ADDS 1 TO 339 LIGHTNING DAMAGE
 LIFE LEECH RECOVERS BASED ON YOUR LIGHTNING DAMAGE AS WELL AS PHYSICAL DAMAGE
 CREATE A FRAGMENT OF DIVINITY IN YOUR PRESENCE EVERY 4 SECONDS
 CORRUPTED`,'slot-weapon-set-1-left')
-    expect(result).toMatchObject({rarity:'unique',itemLevel:84,quality:20,baseDisplayName:'GRAND SPEAR'})
+    expect(result).toMatchObject({
+      rarity:'unique',
+      itemLevel:84,
+      quality:20,
+      baseDisplayName:'GRAND SPEAR',
+      weaponStats:{
+        physicalDamage:{minimum:264,maximum:396},
+        lightningDamage:{minimum:1,maximum:406},
+        criticalHitChance:5,
+        attacksPerSecond:1.4,
+        range:15,
+      },
+    })
     expect(result.unique).toMatchObject({
       uniqueItemId:'pob2:src/Data/Uniques/spear.lua#4',
       uniqueName:'The Ordained',

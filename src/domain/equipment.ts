@@ -15,6 +15,21 @@ export interface EquipmentDefences {
   evasion?: number
   energyShield?: number
 }
+export interface EquipmentDamageRange {
+  minimum: number
+  maximum: number
+}
+export interface EquipmentWeaponStats {
+  physicalDamage?: EquipmentDamageRange
+  fireDamage?: EquipmentDamageRange
+  coldDamage?: EquipmentDamageRange
+  lightningDamage?: EquipmentDamageRange
+  chaosDamage?: EquipmentDamageRange
+  unresolvedElementalDamage?: EquipmentDamageRange[]
+  criticalHitChance?: number
+  attacksPerSecond?: number
+  range?: number
+}
 export type ItemPropertyKind = 'prefix' | 'suffix' | 'implicit' | 'socket-effect' | 'unique-property' | 'enchantment' | 'granted-skill' | 'unknown'
 export interface ItemProperty {
   id: EntityId
@@ -42,6 +57,7 @@ export interface EquipmentEntry {
   itemLevel?: number
   quality?: number
   defences?: EquipmentDefences
+  weaponStats?: EquipmentWeaponStats
   uniqueItemId?: EntityId
   uniqueVariantId?: EntityId
   observedUniqueLines?: string[]

@@ -70,12 +70,35 @@ function itemHeaderValues(text:string){
     const match=text.match(pattern)
     return match?Number(match[1].replace(',','.')):undefined
   }
+  const rangeAfter=(pattern:RegExp)=>{
+    const match=text.match(pattern)
+    if(!match)return
+    const minimum=Number(match[1].replace(',','.')),maximum=Number(match[2].replace(',','.'))
+    return Number.isFinite(minimum)&&Number.isFinite(maximum)?{minimum,maximum}:undefined
+  }
+  const unresolvedElementalDamage=text.match(/(?:Elemental Damage|Elementarschaden)\s*:\s*([^\n\r]+)/i)?.[1]
+    ?.match(/[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/g)
+    ?.flatMap(value=>{
+      const match=value.match(/[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/)
+      return match?[{minimum:Number(match[1].replace(',','.')),maximum:Number(match[2].replace(',','.'))}]:[]
+    })
   return{
     quality:numberAfter(/(?:Quality|Qualit.t)\s*:\s*\+?(\d+(?:[.,]\d+)?)\s*%/i),
     defences:{
       armour:numberAfter(/(?:Armour|R.stung)\s*:\s*(\d+(?:[.,]\d+)?)/i),
       evasion:numberAfter(/(?:Evasion Rating|Ausweichwert)\s*:\s*(\d+(?:[.,]\d+)?)/i),
       energyShield:numberAfter(/(?:Energy Shield|Energieschild)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+    },
+    weaponStats:{
+      physicalDamage:rangeAfter(/(?:Physical Damage|Physischer Schaden)\s*:\s*[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/i),
+      fireDamage:rangeAfter(/(?:Fire Damage|Feuerschaden)\s*:\s*[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/i),
+      coldDamage:rangeAfter(/(?:Cold Damage|Kälteschaden|Kaelteschaden)\s*:\s*[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/i),
+      lightningDamage:rangeAfter(/(?:Lightning Damage|Blitzschaden)\s*:\s*[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/i),
+      chaosDamage:rangeAfter(/(?:Chaos Damage|Chaosschaden)\s*:\s*[+-]?(\d+(?:[.,]\d+)?)\s*-\s*[+-]?(\d+(?:[.,]\d+)?)/i),
+      unresolvedElementalDamage,
+      criticalHitChance:numberAfter(/(?:Critical Hit Chance|Kritische Trefferchance)\s*:\s*(\d+(?:[.,]\d+)?)\s*%/i),
+      attacksPerSecond:numberAfter(/(?:Attacks per Second|Angriffe pro Sekunde)\s*:\s*(\d+(?:[.,]\d+)?)/i),
+      range:numberAfter(/(?:Range|Reichweite)\s*:\s*(\d+(?:[.,]\d+)?)/i),
     },
   }
 }
@@ -201,7 +224,7 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   const lines=text.split(/\r?\n/).map(normalizeOcrText).filter(Boolean)
   let rarity=rarityFrom(text)
   const itemLevel=itemLevelFrom(text)
-  const {quality,defences}=itemHeaderValues(text)
+  const {quality,defences,weaponStats}=itemHeaderValues(text)
   const windows=windowsFor(lines)
   const classes=itemClassesForSlot(slotId)
   const unique=uniqueCandidate(text,slotId)
@@ -224,5 +247,6 @@ export function matchItemOcr(rawText:string,slotId:string):ItemOcrResult{
   if(rarity!=='unique'&&!affixes.some(value=>value.resolutionStatus==='auto-selected'))warnings.push('Kein Affix wurde sicher genug für eine automatische Übernahme erkannt.')
   if(!itemClassId&&classes.length>1)warnings.push('Die Waffen- oder Offhandklasse muss vor dem Speichern geprüft werden.')
   const recognizedDefences=Object.values(defences).some(value=>value!==undefined)?defences:undefined
-  return{rawText:text,rarity,itemLevel,quality,defences:recognizedDefences,baseDisplayName:baseNameFrom(lines),itemClassId,observedLines:observedPropertyLines(text),affixes,unique,warnings}
+  const recognizedWeaponStats=Object.values(weaponStats).some(value=>value!==undefined)?weaponStats:undefined
+  return{rawText:text,rarity,itemLevel,quality,defences:recognizedDefences,weaponStats:recognizedWeaponStats,baseDisplayName:baseNameFrom(lines),itemClassId,observedLines:observedPropertyLines(text),affixes,unique,warnings}
 }

@@ -54,13 +54,21 @@ export function ItemOcrPanel({slotId,onApply}:{slotId:string;onApply:(result:Ite
         <div><dt>Energieschild</dt><dd>{result.defences?.energyShield??'Nicht erkannt'}</dd></div></>}
         <div><dt>Basis</dt><dd>{result.baseDisplayName??'Nicht erkannt'}</dd></div>
         <div><dt>Itemklasse</dt><dd>{result.itemClassId??'Prüfung erforderlich'}</dd></div>
+        {slotId.includes('weapon')&&<><div><dt>Physischer Schaden</dt><dd>{result.weaponStats?.physicalDamage?`${result.weaponStats.physicalDamage.minimum}–${result.weaponStats.physicalDamage.maximum}`:'Nicht erkannt'}</dd></div>
+        <div><dt>Feuerschaden</dt><dd>{result.weaponStats?.fireDamage?`${result.weaponStats.fireDamage.minimum}–${result.weaponStats.fireDamage.maximum}`:'Nicht erkannt'}</dd></div>
+        <div><dt>Kälteschaden</dt><dd>{result.weaponStats?.coldDamage?`${result.weaponStats.coldDamage.minimum}–${result.weaponStats.coldDamage.maximum}`:'Nicht erkannt'}</dd></div>
+        <div><dt>Blitzschaden</dt><dd>{result.weaponStats?.lightningDamage?`${result.weaponStats.lightningDamage.minimum}–${result.weaponStats.lightningDamage.maximum}`:'Nicht erkannt'}</dd></div>
+        <div><dt>Chaosschaden</dt><dd>{result.weaponStats?.chaosDamage?`${result.weaponStats.chaosDamage.minimum}–${result.weaponStats.chaosDamage.maximum}`:'Nicht erkannt'}</dd></div>
+        <div><dt>Kritische Trefferchance</dt><dd>{result.weaponStats?.criticalHitChance===undefined?'Nicht erkannt':`${result.weaponStats.criticalHitChance} %`}</dd></div>
+        <div><dt>Angriffe pro Sekunde</dt><dd>{result.weaponStats?.attacksPerSecond??'Nicht erkannt'}</dd></div>
+        <div><dt>Reichweite</dt><dd>{result.weaponStats?.range??'Nicht erkannt'}</dd></div></>}
       </dl>
       {result.unique&&<label className="ocr-match"><input type="checkbox" checked={selected.has(result.unique.uniqueItemId)} onChange={event=>setSelected(current=>{const next=new Set(current);if(event.target.checked)next.add(result.unique!.uniqueItemId);else next.delete(result.unique!.uniqueItemId);return next})}/><span><b>{result.unique.uniqueName}</b><small>{result.unique.confidence} % · {result.unique.resolutionStatus==='auto-selected'?'sicher erkannt':'Prüfung erforderlich'}</small></span></label>}
       {result.unique?.observedImplicitLines.length?<div><h4>Als Implicit erkannt</h4><ul>{result.unique.observedImplicitLines.map(line=><li key={line}>{line}</li>)}</ul></div>:null}
       {result.affixes.length?<div className="ocr-match-list">{result.affixes.map(match=>{const blocked=match.resolutionStatus==='review-required'&&!match.values.length;const sideLabel=match.affixSide==='implicit'?'Implizit':match.affixSide==='prefix'?'Prefix':'Suffix';return <label className="ocr-match" data-review={match.resolutionStatus==='review-required'} key={match.affixId}><input type="checkbox" disabled={blocked} checked={selected.has(match.affixId)} onChange={event=>setSelected(current=>{const next=new Set(current);if(event.target.checked)next.add(match.affixId);else next.delete(match.affixId);return next})}/><span><b>{match.displayText}</b><small>{sideLabel} · Werte {match.values.length?match.values.join(' / '):'nicht sicher erkannt'} · {match.confidence} %</small><em>Bildtext: {match.sourceText}</em></span></label>})}</div>:<p>Keine normalen Affixe sicher zugeordnet.</p>}
       {result.warnings.map(value=><p className="warning" key={value}>{value}</p>)}
       <details><summary>Erkannten Rohtext anzeigen</summary><pre className="ocr-raw-text">{result.rawText||'Kein Text erkannt'}</pre></details>
-      <button disabled={!selected.size&&result.quality===undefined&&!result.defences} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
+      <button disabled={!selected.size&&result.quality===undefined&&!result.defences&&!result.weaponStats} onClick={()=>onApply(result,selected)}>Auswahl in den Slot übernehmen</button>
     </div>}
   </section>
 }

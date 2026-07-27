@@ -1,4 +1,4 @@
-import type { EquipmentDefences, ItemRarity } from '../../domain'
+import type { EquipmentDefences, EquipmentWeaponStats, ItemRarity } from '../../domain'
 
 export type ItemImageMode = 'photo' | 'screenshot'
 export type OcrResolutionStatus = 'auto-selected' | 'review-required'
@@ -29,6 +29,7 @@ export interface ItemOcrResult {
   itemLevel?: number
   quality?: number
   defences?: EquipmentDefences
+  weaponStats?: EquipmentWeaponStats
   baseDisplayName?: string
   itemClassId?: string
   observedLines: string[]

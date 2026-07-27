@@ -1,5 +1,31 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Tatsächliche Waffen-Grundwerte (2026-07-27)
+
+- Waffen speichern ihre endgültigen angezeigten Grundwerte jetzt getrennt
+  von normalen Affixen: physischer, Feuer-, Kälte-, Blitz- und Chaosschaden,
+  kritische Trefferchance, Angriffe pro Sekunde und Reichweite.
+- Der Item-Editor bietet diese Werte in allen Waffenplätzen manuell an.
+  Bereichswerte werden als Minimum und Maximum eingegeben und vor dem
+  Speichern validiert.
+- Foto- und Screenshot-OCR übernimmt eindeutig beschriftete deutsche und
+  englische Waffenwerte. Nur farbcodierte, im OCR-Text aber nicht benannte
+  Elementarbereiche bleiben als ungeklärte Bereiche erhalten; ihre
+  Schadensart wird nicht geraten.
+- Eingegebene beziehungsweise erkannte endgültige Waffenschadenswerte und
+  Angriffe pro Sekunde haben Vorrang vor der gepinnten Waffenbasis in der
+  begrenzten Trefferschadenberechnung. Dadurch funktionieren auch deutsche
+  oder nicht direkt auflösbare Basistypanzeigen, sofern vollständige
+  tatsächliche Werte vorliegen.
+- Kritische Trefferchance und Reichweite werden bereits vollständig
+  transportiert. Ihre weitergehende numerische Wirkung gehört zum folgenden
+  einheitlichen Wirkungsmodell; eine vollständige PoB-DPS wird noch nicht
+  behauptet.
+- Verifikation: 63 fokussierte OCR-, Waffenwert-, Equipment-, Schadens- und
+  UI-Tests, Typecheck, Lint und Pages-Produktionsbuild erfolgreich.
+- Nächster Schritt: einheitliches Wirkungsmodell für Ausrüstung, Skills,
+  Supports, Passive Tree, Aszendenz und Waffensets.
+
 ## Harte Supportpaket- und Set-2-Validierung (2026-07-27)
 
 - Automatische Supportvorschläge werden nicht mehr nur einzeln bewertet,

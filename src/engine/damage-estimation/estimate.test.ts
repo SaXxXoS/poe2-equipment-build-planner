@@ -27,6 +27,25 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.status).toBe('unavailable')
     expect(result.hitDamagePerSecond).toBeUndefined()
   })
+  it('verwendet manuell oder per OCR erfasste endgültige Waffenwerte auch bei deutscher Basis',()=>{
+    const observed={...weapon('Gezackter Speer'),weaponStats:{
+      physicalDamage:{minimum:46,maximum:91},
+      fireDamage:{minimum:28,maximum:44},
+      coldDamage:{minimum:29,maximum:35},
+      criticalHitChance:6,
+      attacksPerSecond:1.5,
+      range:15,
+    }}
+    const result=estimateHitDamage({equipment:[observed],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
+    expect(result.status).toBe('partial')
+    expect(result.components).toEqual([
+      {type:'physical',minimum:115,maximum:227.5},
+      {type:'fire',minimum:70,maximum:110},
+      {type:'cold',minimum:72.5,maximum:87.5},
+    ])
+    expect(result.actionsPerSecond).toBe(1.35)
+    expect(result.included).toContain('eingegebene endgültige Waffenschadenswerte')
+  })
   it('weist nicht enthaltene komplexe Mechaniken aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
     expect(result.excluded).toContain('Mehrfachtreffer, Projektile und situationsabhängige Effekte')

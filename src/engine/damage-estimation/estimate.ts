@@ -27,7 +27,19 @@ function spellComponents(skill:NumericSkill):DamageComponent[] {
     return Number.isFinite(minimum)&&Number.isFinite(maximum)?[component(type,Number(minimum),Number(maximum))]:[]
   })
 }
-function weaponComponents(weapon:WeaponBase,entry:EquipmentEntry):DamageComponent[] {
+function weaponComponents(weapon:WeaponBase|undefined,entry:EquipmentEntry):DamageComponent[] {
+  if(entry.weaponStats){
+    const observed=[
+      ['physical',entry.weaponStats.physicalDamage],
+      ['fire',entry.weaponStats.fireDamage],
+      ['cold',entry.weaponStats.coldDamage],
+      ['lightning',entry.weaponStats.lightningDamage],
+      ['chaos',entry.weaponStats.chaosDamage],
+    ] as const
+    const resolved=observed.flatMap(([type,range])=>range?[component(type,range.minimum,range.maximum)]:[])
+    if(resolved.length)return resolved
+  }
+  if(!weapon)return[]
   return types.flatMap(type=>{
     const baseMin=Number(weapon[`${type}Min` as keyof WeaponBase]??0)
     const baseMax=Number(weapon[`${type}Max` as keyof WeaponBase]??0)
@@ -71,10 +83,18 @@ export function estimateHitDamage(input:{
     const weaponEntry=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`)&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
     const weaponName=weaponEntry?.baseDisplayName??weaponEntry?.itemDefinitionId
     const weapon=weaponName?weaponsByName.get(weaponName.toLocaleLowerCase('en')):undefined
-    if(!weaponEntry||!weapon)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden.']}
+    const hasObservedWeaponBasis=Boolean(weaponEntry?.weaponStats?.attacksPerSecond&&[
+      weaponEntry.weaponStats.physicalDamage,
+      weaponEntry.weaponStats.fireDamage,
+      weaponEntry.weaponStats.coldDamage,
+      weaponEntry.weaponStats.lightningDamage,
+      weaponEntry.weaponStats.chaosDamage,
+    ].some(Boolean))
+    if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
-    actionsPerSecond=weapon.attacksPerSecond*(1+skill.attackSpeedMultiplier/100)
-    included.push('Waffenbasis','lokaler Waffenschaden','Angriffsmultiplikator','Basis-Angriffsgeschwindigkeit')
+    actionsPerSecond=(weaponEntry.weaponStats?.attacksPerSecond??weapon!.attacksPerSecond)*(1+skill.attackSpeedMultiplier/100)
+    included.push(weaponEntry.weaponStats?'eingegebene endgültige Waffenschadenswerte':'Waffenbasis','Angriffsmultiplikator',weaponEntry.weaponStats?.attacksPerSecond?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
+    if(weaponEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Waffenbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
   }else{
     components=spellComponents(skill)
     included.push('Zauber-Basisschaden','Basis-Zauberzeit')
