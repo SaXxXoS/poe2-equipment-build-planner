@@ -1,5 +1,22 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Supportkategorien pro Fertigkeit (2026-07-27)
+
+- Aktuelle PoE2-Regel: Mehrere Exemplare beziehungsweise Stufen derselben
+  Supportkategorie dürfen auf verschiedene Fertigkeiten verteilt werden, aber
+  nicht gleichzeitig dieselbe Fertigkeit unterstützen.
+- Die 451 getrennten Supportstufen bleiben als eigenständige Records erhalten.
+  Zusätzlich verbindet `supportFamilyId` alle Stufen derselben technischen
+  Supportkategorie ohne Namensheuristik über die gepinnte Record-ID.
+- Automatische Empfehlungen und alle zielprofilspezifischen Supportranglisten
+  liefern pro Fertigkeit höchstens eine Stufe jeder Supportfamilie.
+- Die manuelle Auswahl blendet eine bereits belegte Supportfamilie aus und
+  prüft sie zusätzlich beim Übernehmen.
+- Gespeicherte Altstände mit zwei Stufen derselben Supportfamilie werden beim
+  Laden deterministisch bereinigt; die zuerst gespeicherte Stufe bleibt bestehen.
+- Keine globale Sperre: Dieselbe Supportfamilie darf weiterhin bei einer
+  anderen Fertigkeit verwendet werden.
+
 ## Foto- und Screenshotmodus je Ausrüstungsslot (2026-07-24)
 
 - Jeder Ausrüstungsslot bietet `Foto aufnehmen` und `Screenshot wählen`.

@@ -55,6 +55,8 @@ const provenance = (sourceRecordId: string) => ({
 })
 
 const germanNameById = new Map(germanDisplay.items.map(item => [item.id, item.nameDe]))
+const supportFamilyId = (sourceRecordId: string) =>
+  `repoe-support-family:${sourceRecordId.replace(/(?:Two|Three|Four|Five)$/, '')}`
 
 export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item => {
   const tags = mapTags(item.tags)
@@ -89,6 +91,7 @@ export const repoeSupportCatalog: SupportGemDefinition[] = catalog.supports.map(
     status: 'imported',
     tags,
     provenance: provenance(item.sourceRecordId),
+    supportFamilyId: supportFamilyId(item.sourceRecordId),
     requiredTags: [],
     excludedTags: [],
     ownTags: tags,

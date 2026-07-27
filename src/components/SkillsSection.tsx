@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { SkillOrigin, SkillRole, SkillSetup, SkillWeaponSet } from '../domain'
+import { supportFamilyKey, type SkillOrigin, type SkillRole, type SkillSetup, type SkillWeaponSet } from '../domain'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import { emptySkillSetup } from '../features/skills/initial-state'
 
@@ -39,7 +39,11 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       </article>
 
       const supportQuery = supportSearches[setup.id] ?? ''
-      const availableSupports = buildAssistantCandidates.supports.filter(item => skill.recommendedSupportIds?.includes(item.id) && !setup.supportGemIds.includes(item.id) && `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(supportQuery.toLocaleLowerCase('de')))
+      const selectedFamilies = new Set(setup.supportGemIds.flatMap(id => {
+        const definition = buildAssistantCandidates.supports.find(item => item.id === id)
+        return definition ? [supportFamilyKey(definition)] : []
+      }))
+      const availableSupports = buildAssistantCandidates.supports.filter(item => skill.recommendedSupportIds?.includes(item.id) && !selectedFamilies.has(supportFamilyKey(item)) && `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(supportQuery.toLocaleLowerCase('de')))
       return <article className="skill-card populated-skill-card" key={setup.id}>
         <div className="skill-card-head"><span className="skill-art" aria-hidden="true">{skill.displayNameDe.slice(0, 2)}</span><div><h3>{skill.displayNameDe}</h3><small>{originLabels[setup.origin ?? 'manual']}</small></div>{index >= 6 && !setup.locked && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
         <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>
@@ -53,7 +57,7 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
               ? <span className="support-chip" key={id}><span className="support-art" aria-hidden="true">{support.displayNameDe.slice(0, 2)}</span><span><small>Support {supportIndex + 1}</small>{support.displayNameDe}</span><button aria-label={`${support.displayNameDe} entfernen`} onClick={() => update(setup.id, { supportGemIds: setup.supportGemIds.filter(value => value !== id) })}>−</button></span>
               : <button type="button" className="empty-support-slot" key={`empty-${supportIndex}`} onClick={() => setOpenSupportPicker(openSupportPicker === setup.id ? null : setup.id)}>＋ Support {supportIndex + 1}</button>
           })}</div>
-          {openSupportPicker === setup.id && <div className="support-picker"><label htmlFor={`support-search-${setup.id}`}>Unterstützung suchen</label><input id={`support-search-${setup.id}`} type="search" value={supportQuery} placeholder="Unterstützung suchen" autoComplete="off" onChange={event => setSupportSearches(current => ({ ...current, [setup.id]: event.target.value }))}/><div className="picker-panel inline" role="listbox" aria-label={`Unterstützungen für ${skill.displayNameDe}`}><small>{availableSupports.length} Unterstützungen</small>{availableSupports.length ? availableSupports.map(item => <button type="button" role="option" aria-selected="false" key={item.id} onClick={() => { update(setup.id, { supportGemIds: [...new Set([...setup.supportGemIds, item.id])] }); setOpenSupportPicker(null); setSupportSearches(current => ({ ...current, [setup.id]: '' })) }}><strong>{item.displayNameDe}</strong>{item.nameEn && item.nameEn !== item.displayNameDe && <span>{item.nameEn}</span>}</button>) : <p>Keine passende Unterstützung gefunden.</p>}</div></div>}
+          {openSupportPicker === setup.id && <div className="support-picker"><label htmlFor={`support-search-${setup.id}`}>Unterstützung suchen</label><input id={`support-search-${setup.id}`} type="search" value={supportQuery} placeholder="Unterstützung suchen" autoComplete="off" onChange={event => setSupportSearches(current => ({ ...current, [setup.id]: event.target.value }))}/><div className="picker-panel inline" role="listbox" aria-label={`Unterstützungen für ${skill.displayNameDe}`}><small>{availableSupports.length} Unterstützungen</small>{availableSupports.length ? availableSupports.map(item => <button type="button" role="option" aria-selected="false" key={item.id} onClick={() => { if (!selectedFamilies.has(supportFamilyKey(item))) update(setup.id, { supportGemIds: [...setup.supportGemIds, item.id] }); setOpenSupportPicker(null); setSupportSearches(current => ({ ...current, [setup.id]: '' })) }}><strong>{item.displayNameDe}</strong>{item.nameEn && item.nameEn !== item.displayNameDe && <span>{item.nameEn}</span>}</button>) : <p>Keine passende Unterstützung gefunden.</p>}</div></div>}
         </div>
       </article>
     })}</div>

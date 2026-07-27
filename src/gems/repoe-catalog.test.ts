@@ -43,6 +43,7 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
     const bleed = repoeSupportCatalog.filter(item => item.nameEn?.startsWith('Bleed '))
     expect(bleed.map(item => item.nameEn)).toEqual(expect.arrayContaining(['Bleed I', 'Bleed II', 'Bleed III', 'Bleed IV']))
     expect(new Set(bleed.map(item => item.id)).size).toBe(bleed.length)
+    expect(new Set(bleed.map(item => item.supportFamilyId)).size).toBe(1)
   })
 
   it('löst die gepinnten Recommended-Support-Referenzen ohne Namensheuristik auf', () => {

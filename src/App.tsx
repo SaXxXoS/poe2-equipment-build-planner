@@ -8,6 +8,7 @@ import { CharacterSection } from './components/CharacterSection'
 import { EquipmentSection } from './components/EquipmentSection'
 import { SkillsSection } from './components/SkillsSection'
 import { createEmptySkillSetups } from './features/skills/initial-state'
+import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
@@ -19,7 +20,7 @@ export default function App() {
   const [initial] = useState(loadStoredBuild)
   const [character, setCharacter] = useState<CharacterConfiguration>(() => initial?.character ?? createInitialCharacterConfiguration())
   const [equipment, setEquipment] = useState(() => initial?.equipment ?? initialEquipment)
-  const [setups, setSetups] = useState(() => initial?.setups ?? createEmptySkillSetups())
+  const [setups, setSetups] = useState(() => removeDuplicateSupportFamilies(initial?.setups ?? createEmptySkillSetups(), buildAssistantCandidates.supports))
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])

@@ -43,6 +43,16 @@ describe('regelbasierter synthetischer Support Analyzer', () => {
   it('gleiche Scores werden nach Support-ID sortiert', () => { const values = setup(fixtureD, syntheticSkillFixtures[4], [support('support-z'), support('support-a')]).allCandidates; expect(values.map(item => item.supportId)).toEqual(['support-a', 'support-z']) })
   it('gleiche Eingabe erzeugt identische Ausgabe', () => expect(setup(fixtureE)).toEqual(setup(fixtureE)))
   it('mindestens fünf gültige Top-Kandidaten werden ausgegeben', () => expect(setup().topCandidates).toHaveLength(5))
+  it('empfiehlt pro Fertigkeit nur eine Stufe derselben Supportfamilie', () => {
+    const family = [
+      support('support-family-i', [], { supportFamilyId: 'support-family' }),
+      support('support-family-ii', [], { supportFamilyId: 'support-family' }),
+      support('support-other', [], { supportFamilyId: 'support-other' }),
+    ]
+    const result = setup(fixtureD, syntheticSkillFixtures[4], family)
+    expect(result.allCandidates).toHaveLength(3)
+    expect(result.topCandidates.filter(item => item.supportId.startsWith('support-family-'))).toHaveLength(1)
+  })
   it('keine Bewertung verwendet path-efficiency', () => expect(setup().allCandidates.flatMap(item => item.reasons).some(item => item.category === 'path-efficiency')).toBe(false))
   it('Orchestrator funktioniert weiterhin', () => { const value = analyzeBuild(fixtureA, context(), engineModifierFixtures); expect(value.supportAnalysis.allCandidates).toEqual(value.supportRecommendations); expect(value.moduleTrace[2]).toBe('supports') })
 })

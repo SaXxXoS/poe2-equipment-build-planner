@@ -40,6 +40,8 @@ export interface SkillGemDefinition extends GameDataMetadata {
 }
 
 export interface SupportGemDefinition extends GameDataMetadata {
+  /** Gemeinsame Support-Kategorie über alle Stufen hinweg (z. B. Mystizismus I/II). */
+  supportFamilyId?: EntityId
   requiredTags: MechanicTag[]
   excludedTags: MechanicTag[]
   ownTags: MechanicTag[]
@@ -67,6 +69,10 @@ export interface SupportGemDefinition extends GameDataMetadata {
   experimental?: boolean
   selectionOnly?: boolean
 }
+
+export const supportFamilyKey = (
+  support: Pick<SupportGemDefinition, 'id' | 'supportFamilyId'>,
+): EntityId => support.supportFamilyId ?? support.id
 
 export interface SkillSetup {
   id: EntityId
