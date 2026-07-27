@@ -20,6 +20,7 @@ import { BuildAssistantResultSection } from './components/BuildAssistantResultSe
 import { RealPassiveAnalysis, createPassiveAnalysisController, REAL_PASSIVE_UI_MAXIMUM_POINT_BUDGET, type PassiveAnalysisUiInput, type PassivePlanPresentation } from './features/real-passive-analysis'
 import { buildAssistantCandidates, runBuildAssistantV1, validateBuildAssistantInput } from './features/build-assistant-v1'
 import { clearStoredBuild, loadStoredBuild, saveStoredBuild } from './features/build-storage'
+import { createEquipmentSlotSuggestions } from './features/equipment-editor/recommendations'
 
 export default function App() {
   const [initial] = useState(loadStoredBuild)
@@ -35,6 +36,16 @@ export default function App() {
   const [focusPlanRequest, setFocusPlanRequest] = useState(0)
   const [passiveController] = useState(createPassiveAnalysisController)
   const [saveStatus, setSaveStatus] = useState(initial ? 'Gespeicherter Build geladen' : 'Noch nicht gespeichert')
+  const equipmentSuggestions=analysis?createEquipmentSlotSuggestions({
+    equipment,
+    optimization:variantOptimization,
+    uniqueRecommendations:[
+      ...analysis.uniqueAnalysis.topCurrentBuildUniques,
+      ...analysis.uniqueAnalysis.topDamageUniques,
+      ...analysis.uniqueAnalysis.topDefensiveUniques,
+    ],
+    uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
+  }):[]
   useEffect(() => {
     const timer = window.setTimeout(() => {
       saveStoredBuild({ character, equipment, setups })
@@ -252,7 +263,7 @@ export default function App() {
     <main>
       <section className="build-storage"><div><b>Lokaler Buildspeicher</b><p className="muted">{saveStatus}. Die Daten bleiben ausschließlich in diesem Browser.</p></div><div className="row"><button className="secondary" onClick={() => { saveStoredBuild({ character, equipment, setups }); setSaveStatus('Manuell gespeichert') }}>Jetzt speichern</button><button className="danger" onClick={resetBuild}>Alles zurücksetzen</button></div></section>
       <CharacterSection value={character} onChange={value => { setCharacter(value); invalidateResult() }}/>
-      <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }}/>
+      <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }} suggestions={equipmentSuggestions}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResults={passivePlan.results} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
       <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} controller={passiveController} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan} onBuildAnalyze={calculate}/>

@@ -14,6 +14,26 @@ import { itemSupportsDefenceValues } from '../features/equipment-editor/item-sta
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
+  it('zeigt einen Planvorschlag direkt im passenden leeren Ausrüstungsslot', () => {
+    const html = renderToStaticMarkup(
+      <EquipmentSection
+        entries={initialEquipment}
+        setEntries={() => undefined}
+        suggestions={[
+          {
+            slotId: 'slot-helmet',
+            title: 'Beispielhelm',
+            detail: 'Passt zur belegten Schadensskalierung.',
+            source: 'unique-analyzer',
+          },
+        ]}
+      />,
+    )
+    expect(html).toContain('Planvorschlag')
+    expect(html).toContain('Beispielhelm')
+    expect(html).toContain('suggested-slot')
+  })
+
   it('zeigt kompakte deutsche Charakterauswahlen und nur unterstützte Klassen', () => {
     const html = renderToStaticMarkup(<CharacterSection value={{ classId:'', ascendancyId:'', level:0, goalProfile:'balanced' }} onChange={() => undefined}/>)
     expect(html).toContain('<select aria-label="Klasse"')

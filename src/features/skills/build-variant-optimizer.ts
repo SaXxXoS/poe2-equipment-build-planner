@@ -35,6 +35,9 @@ const weaponLabels: Record<SyntheticWeaponType, string> = {
   any: 'Keine belegte Waffenbindung',
 }
 
+export const weaponLabelFor = (weapon: SyntheticWeaponType): string =>
+  weaponLabels[weapon]
+
 const meleeWeapons = new Set<SyntheticWeaponType>(['axe', 'claw', 'dagger', 'flail', 'mace', 'quarterstaff', 'spear', 'sword'])
 const rangedWeapons = new Set<SyntheticWeaponType>(['bow', 'crossbow', 'wand'])
 
@@ -246,7 +249,7 @@ export function optimizeBuildVariants(input: {
       return [{
         skillId: skill.id,
         weaponType: weapon,
-        weaponLabel: weaponLabels[weapon],
+        weaponLabel: weaponLabelFor(weapon),
         mainWeaponSet,
         setupSkillId: usableSetup?.skillId,
         setupWeaponType: usableSetup ? setupWeaponType : undefined,
