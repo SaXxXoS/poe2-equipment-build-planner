@@ -55,7 +55,18 @@ const uniqueRecommendations = (analysis: BuildAnalysis) => {
 }
 function Rotation({ plan }: { plan: RotationPlan }) {
   if (!plan.steps.length || plan.missingRoles.includes('main-damage')) return <p>Noch nicht vollständig verfügbar: Es fehlt eine belastbare Hauptschadensfolge.</p>
-  return <ol>{plan.steps.map(step => <li key={step.stepId}><b>{step.actionType === 'switch-weapon-set' ? `Zu ${step.nextWeaponSet === 'set-2' ? 'Waffenset 2' : 'Waffenset 1'} wechseln` : step.skillId ? definitionName(step.skillId) : 'Nächsten Schritt ausführen'}</b><br/><span>{step.weaponSet === 'set-1' ? 'Waffenset 1' : step.weaponSet === 'set-2' ? 'Waffenset 2' : 'Beide Waffensets'} · {confidenceText[step.confidence]}</span></li>)}</ol>
+  const timingLabel = (step: RotationPlan['steps'][number]) => {
+    const timing = step.timing
+    if (!timing) return ''
+    const values = [
+      timing.activationTimeMs ? `Aktivierung ${timing.activationTimeMs / 1000} s` : '',
+      timing.effectDurationMs ? `Wirkzeit ${timing.effectDurationMs / 1000} s` : '',
+      timing.cooldownMs ? `Abklingzeit ${timing.cooldownMs / 1000} s` : '',
+      timing.triggerIntervalMs ? `Triggerintervall ${timing.triggerIntervalMs / 1000} s` : '',
+    ].filter(Boolean)
+    return values.length ? `${values.join(' · ')}. ${timing.detail}` : timing.detail
+  }
+  return <ol>{plan.steps.map(step => <li key={step.stepId}><b>{step.actionType === 'switch-weapon-set' ? `Zu ${step.nextWeaponSet === 'set-2' ? 'Waffenset 2' : 'Waffenset 1'} wechseln` : step.skillId ? definitionName(step.skillId) : 'Nächsten Schritt ausführen'}</b><br/><span>{step.weaponSet === 'set-1' ? 'Waffenset 1' : step.weaponSet === 'set-2' ? 'Waffenset 2' : 'Beide Waffensets'} · {confidenceText[step.confidence]}</span>{timingLabel(step) ? <><br/><small>{timingLabel(step)}</small></> : null}</li>)}</ol>
 }
 function RecommendationList({ values, name }: { values: Array<{ targetId: string; totalScore: number; confidence: Confidence; reasons: Array<{ code: string }>; violations: ConstraintViolation[] }>; name: (id: string) => string }) {
   return values.length ? <ol>{values.slice(0, 5).map(value => <li key={value.targetId}><b>{name(value.targetId)}</b> · Rangwert {value.totalScore} · {confidenceText[value.confidence]}<br/><span>{value.reasons.length ? `${value.reasons.length} belegte Bewertungssignale` : 'Nutzen derzeit nur eingeschränkt bestimmbar'}{value.violations.length ? ` · ${value.violations.map(issueText).join(' ')}` : ''}</span></li>)}</ol> : <p>Keine geeignete Empfehlung verfügbar.</p>

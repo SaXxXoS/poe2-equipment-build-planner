@@ -1744,3 +1744,25 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   gewählten Profil bleiben getrennt sichtbar.
 - Nächster Schritt: belegte Fluch-, Expositions-, Durchdringungs- und
   Rüstungsbruchwerte automatisch aus der Wirkungskette übernehmen.
+## Automatische Rotations- und Triggerfenster – Schritt 11 (2026-07-27)
+
+- Die bestehende Mapping- und Bossrotation nutzt jetzt automatisch die am
+  gepinnten PoB2-Datensatz belegten Aktivierungszeiten, Wirkzeiten,
+  Abklingzeiten und Triggerintervalle.
+- Jeder Fertigkeitsschritt besitzt einen strukturierten Zeitstatus:
+  `permanent`, `maintainable`, `windowed`, `cooldown-limited`,
+  `trigger-limited` oder `unresolved`.
+- Ein geplantes Aktualisierungsintervall entsteht nur bei Fertigkeiten, die
+  bereits durch die bestehende Rotation als aufrechterhaltbar oder
+  aktualisierungspflichtig klassifiziert sind.
+- Bekannte Wirkzeit allein wird nicht als vollständige Uptime ausgegeben.
+  Bekannte Abklingzeit allein wird nicht als automatische Nutzung direkt
+  nach Ablauf behandelt.
+- Die Ergebnisansicht zeigt die belegten Zeitwerte und ihre Grenze auf
+  Deutsch bei Mapping- und Bossrotation.
+- Das Modell ist deterministisch, besitzt Version `1.0.0` und benötigt keine
+  neue Nutzereinstellung.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_ROTATION_TIMING_STEP_11.md`.
+- Nächster Schritt: nur vollständig belegte numerische Buff-, Debuff- und
+  Triggerwirkungen in die zeitabhängige Schadensrechnung aufnehmen.
