@@ -15,6 +15,6 @@ describe('Passive-Targeting-Modulgrenzen', () => {
   it('lässt Pfadsuche, Passive Analyzer und Orchestrator unverändert', () => {
     expect(hash('src/engine/passive-pathfinding/pathfinder.ts')).toBe('f318ebb2c62ed80fba84f190ce93eb9d2a95fd93ebfdf2db5e7e3d6fc0bfb41f')
     expect(hash('src/engine/passives/analyzer.ts')).toBe('28d8432549c7bf0bf33a1a078d8ab2386006a93428018fe56b4a5801fe176a67')
-    expect(hash('src/engine/orchestration/analyze-build.ts')).toBe('293cd507c67ea999dae231d6fba1df4620e91bea1e8cd7da81f5a999ac6d7fbe')
+    expect(hash('src/engine/orchestration/analyze-build.ts')).toBe('f3fc207b7a54f2b44d644319cb41059394c158d5a8ccae82cc1bc4783bf572c3')
   })
 })

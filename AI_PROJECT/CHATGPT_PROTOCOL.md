@@ -1668,3 +1668,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Buff-Uptime bleiben Folgeaufgaben.
 - Hauptdokument:
   `docs/BUILD_ASSISTANT_CRITICAL_AND_SUPPORT_EFFECTS_STEP_5.md`
+
+# Schritt 7 – automatische Gegnervergleichsprofile
+
+- Es gibt keine zusätzliche Nutzereinstellung für Gegnerwiderstände oder
+  Rüstung.
+- Der Build-Ablauf wählt anhand des vorhandenen Zielprofils automatisch
+  `Allround`, `Mapping` oder `Boss (anhaltender Kampf)`.
+- Die Profile sind deterministisch und als
+  `automatic-season-reference` / `poe2-0.4-reference-v1` versioniert.
+- Der belegte Standardwiderstand ist null. Nicht allgemein belegte
+  Monster- beziehungsweise Bossrüstung wird nicht erfunden.
+- Die nicht numerisch belegte, zeitlich abklingende Boss-Anti-Burst-Reduktion
+  bleibt als sichtbare Grenze dokumentiert.
+- Rohschaden vor Gegnerabwehr und Vergleichswert nach dem automatisch
+  gewählten Profil bleiben getrennt sichtbar.
+- Nächster Schritt: belegte Fluch-, Expositions-, Durchdringungs- und
+  Rüstungsbruchwerte automatisch aus der Wirkungskette übernehmen.

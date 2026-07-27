@@ -38,6 +38,24 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(result.uniqueAnalysis.allCandidates).toHaveLength(435)
   })
 
+  it.each([
+    ['balanced', 'automatic-allround'],
+    ['mapping', 'automatic-mapping'],
+    ['boss', 'automatic-boss-sustained'],
+  ] as const)('wÃ¤hlt fÃ¼r %s automatisch das Vergleichsgegnerprofil', (goal, profileId) => {
+    const skillId = realSkillId('Spark')
+    const result = runBuildAssistantV1({
+      character: character(goal, skillId),
+      equipment: equipment(),
+      setups: [{ id: 'automatic-profile-test', skillId, role: 'main', weaponSet: 'both', supportGemIds: [] }],
+    })
+    expect(result.damageEstimate?.enemyProfile).toMatchObject({
+      id: profileId,
+      source: 'automatic-season-reference',
+      sourceVersion: 'poe2-0.4-reference-v1',
+    })
+  })
+
   it('verwendet den gewÃ¤hlten Hauptangriff als Support-Treiber', () => {
     const skillId = realSkillId('Ball Lightning')
     const result = runBuildAssistantV1(input('mapping', skillId))

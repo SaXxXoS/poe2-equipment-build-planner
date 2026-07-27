@@ -1,4 +1,4 @@
-# Gegnerabwehr und Vergleichsprofile – Schritt 6
+# Gegnerabwehr und automatische Vergleichsprofile – Schritte 6 und 7
 
 ## Ziel
 
@@ -54,9 +54,32 @@ Abgedeckt sind Widerstand, Widerstandsreduktion, Durchdringungsgrenze,
 Rüstung, Rüstungsbruch, Schadensarttrennung, deterministischer Profilbetrieb
 und der unveränderte Zustand ohne Profil.
 
+## Automatische Auswahl im Hintergrund
+
+Der Nutzer muss kein Gegnerprofil einstellen. Der normale Build-Ablauf wählt
+deterministisch anhand des bereits vorhandenen Zielprofils:
+
+- `Allround` → neutraler Allround-Grundvergleich,
+- `Mapping` → Mapping-Grundvergleich,
+- `Boss` → Vergleich für einen anhaltenden Bosskampf.
+
+Die Auswahl ist als `automatic-season-reference` mit der Version
+`poe2-0.4-reference-v1` gekennzeichnet und wird im Ergebnis sichtbar genannt.
+Bei gleicher Eingabe wird dasselbe Profil verwendet.
+
+Der belegte Standardwiderstand beträgt null. Ein universeller aktueller
+Rüstungswert für alle Monster oder Bosse sowie ein numerischer allgemeiner
+Wert der zeitlich abklingenden Boss-Anti-Burst-Reduktion sind in den
+gepinnten Projektdaten nicht vorhanden. Deshalb unterscheiden sich die
+Profile derzeit durch Einsatzzweck und offen ausgewiesene Grenzen, nicht
+durch erfundene Abwehrwerte.
+
+Der unveränderte Rohwert vor Gegnerabwehr bleibt zusätzlich sichtbar. Damit
+ist ein Vergleich nicht von einer versteckten oder vom Nutzer zu erratenden
+Einstellung abhängig.
+
 ## Nächster Schritt
 
-Das Vergleichsprofil wird als persistente, klar beschriftete Eingabe in die
-App integriert. Anschließend können belegte Fluch-, Expositions-,
-Durchdringungs- und Rüstungsbruchwerte aus Skills, Supports, Passiven und
-Aszendenz automatisch in dasselbe Modell gespeist werden.
+Belegte Fluch-, Expositions-, Durchdringungs- und Rüstungsbruchwerte aus
+Skills, Supports, Passiven und Aszendenz werden automatisch aus der
+gemeinsamen Wirkungskette in dasselbe Gegnerabwehrmodell gespeist.

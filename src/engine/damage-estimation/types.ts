@@ -4,7 +4,9 @@ export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
 export interface EnemyMitigationProfile {
   id:string
   label:string
-  source:'manual-comparison-profile'
+  source:'manual-comparison-profile'|'automatic-season-reference'
+  sourceVersion?:string
+  limitations?:string[]
   armour?:number
   armourBreak?:number
   resistances?:Partial<Record<EnemyResistanceType,number>>
