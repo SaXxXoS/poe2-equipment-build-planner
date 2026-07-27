@@ -1,5 +1,5 @@
 import {
-  supportFamilyKey,
+  supportExclusiveKeys,
   type EquipmentEntry,
   type SkillGemDefinition,
   type SkillSetup,
@@ -114,8 +114,12 @@ function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof
 
 function supportCompatible(skill: SkillGemDefinition, support: SupportGemDefinition, weapon: SyntheticWeaponType) {
   if (support.enabled === false) return false
+  if (support.selectionOnly && !skill.recommendedSupportIds?.includes(support.id)) return false
   if (support.requiredTags.some(tag => !skill.tags.includes(tag))) return false
   if (support.excludedTags.some(tag => skill.tags.includes(tag))) return false
+  if (support.supportedDamageTypes?.some(tag => !skill.tags.includes(tag))) return false
+  if (support.supportedMechanics?.some(tag => !skill.tags.includes(tag))) return false
+  if (support.excludedDamageTypes?.some(tag => skill.tags.includes(tag))) return false
   if (support.requiredWeaponTypes?.length && !weaponMatches(support.requiredWeaponTypes, weapon)) return false
   if (support.excludedWeaponTypes?.some(type => weaponMatches([type], weapon))) return false
   if (support.allowedSkillRoles?.length && !support.allowedSkillRoles.includes('main')) return false
@@ -194,12 +198,12 @@ export function optimizeBuildVariants(input: {
               .filter(tag => skill.tags.includes(tag)).length
           return overlap(right) - overlap(left) || left.id.localeCompare(right.id)
         })
-      const usedSupportFamilies = new Set<string>()
+      const usedSupportKeys = new Set<string>()
       const supportIds = compatibleSupports
         .filter(support => {
-          const family = supportFamilyKey(support)
-          if (usedSupportFamilies.has(family)) return false
-          usedSupportFamilies.add(family)
+          const keys = supportExclusiveKeys(support)
+          if (keys.some(key => usedSupportKeys.has(key))) return false
+          keys.forEach(key => usedSupportKeys.add(key))
           return true
         })
         .slice(0, 5)

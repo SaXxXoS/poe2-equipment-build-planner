@@ -58,6 +58,18 @@ const germanNameById = new Map(germanDisplay.items.map(item => [item.id, item.na
 const supportFamilyId = (sourceRecordId: string) =>
   `repoe-support-family:${sourceRecordId.replace(/(?:Two|Three|Four|Five)$/, '')}`
 
+const masterySupportRecords = new Set([
+  'Metadata/Items/Gems/SupportGemChaosMastery',
+  'Metadata/Items/Gems/SupportGemColdMastery',
+  'Metadata/Items/Gems/SupportGemFireMastery',
+  'Metadata/Items/Gems/SupportGemLightningMastery',
+  'Metadata/Items/Gems/SupportGemMinionMastery',
+  'Metadata/Items/Gems/SupportGemPhysicalMastery',
+])
+
+const supportCategoryIds = (sourceRecordId: string) =>
+  masterySupportRecords.has(sourceRecordId) ? ['poe2-support-category:mastery'] : undefined
+
 export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item => {
   const tags = mapTags(item.tags)
   return {
@@ -92,6 +104,7 @@ export const repoeSupportCatalog: SupportGemDefinition[] = catalog.supports.map(
     tags,
     provenance: provenance(item.sourceRecordId),
     supportFamilyId: supportFamilyId(item.sourceRecordId),
+    supportCategoryIds: supportCategoryIds(item.sourceRecordId),
     requiredTags: [],
     excludedTags: [],
     ownTags: tags,

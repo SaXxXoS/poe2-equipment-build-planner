@@ -36,6 +36,25 @@ produktive Variante besteht aus:
 
 ## Grenzen
 
+### Supportpakete
+
+Die fünf Supportplätze werden nach der Einzelbewertung noch einmal gemeinsam
+validiert. Dabei gelten sowohl die technische Supportfamilie (verschiedene
+Stufen derselben Unterstützung) als auch spielseitige Ausschlusskategorien.
+Kälte-, Feuer-, Blitz-, Chaos-, physische und Minion-Beherrschung gehören
+beispielsweise gemeinsam zur Kategorie `mastery`; pro Fertigkeit darf daraus
+nur ein Kandidat in das Paket gelangen.
+
+Ein Support muss außerdem die belegte Schadensart, Mechanik und Waffenart des
+Skills erfüllen. Eine reine Feuerfertigkeit erhält daher weder
+Kältebeherrschung noch Blitzbeherrschung.
+
+### Set-2-Beziehungen
+
+Eine Set-2-Fertigkeit benötigt eine explizit modellierte Beziehung zum
+Hauptskill. `Orb of Storms` ist nur bei einem Blitzzauber eine bestätigte
+Vorbereitung. Ein gemeinsames allgemeines Elementar-Tag reicht nicht aus.
+
 Die Variantenzahl ist eine relative, nachvollziehbare Projektbewertung und
 keine behauptete vollständige Path-of-Building-DPS. Fehlende strukturierte
 Zusammenhänge bleiben unbekannt und erzeugen keinen Bonus. Eine manuell

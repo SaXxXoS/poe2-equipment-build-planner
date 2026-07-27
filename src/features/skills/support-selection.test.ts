@@ -29,4 +29,17 @@ describe('Supportfamilien pro Fertigkeit', () => {
     )
     expect(migrated[0].supportGemIds).toEqual(['mysticism-i', 'other'])
   })
+  it('entfernt gespeicherte Supports derselben Spielkategorie', () => {
+    const setup: SkillSetup = {
+      id: 'setup',
+      skillId: 'skill',
+      role: 'main',
+      weaponSet: 'both',
+      supportGemIds: ['cold-mastery', 'fire-mastery', 'other'],
+    }
+    const cold = { ...definition('cold-mastery', 'cold-mastery'), supportCategoryIds: ['mastery'] }
+    const fire = { ...definition('fire-mastery', 'fire-mastery'), supportCategoryIds: ['mastery'] }
+    expect(removeDuplicateSupportFamilies([setup], [cold, fire, definition('other', 'other')])[0].supportGemIds)
+      .toEqual(['cold-mastery', 'other'])
+  })
 })

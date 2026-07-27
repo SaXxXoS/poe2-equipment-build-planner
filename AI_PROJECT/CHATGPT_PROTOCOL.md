@@ -1,5 +1,26 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Harte Supportpaket- und Set-2-Validierung (2026-07-27)
+
+- Automatische Supportvorschläge werden nicht mehr nur einzeln bewertet,
+  sondern zusätzlich als vollständiges Paket auf gegenseitige
+  Ausschlusskategorien geprüft.
+- Die sechs technisch gepinnten Beherrschungs-Supports teilen die
+  spielseitige Ausschlusskategorie `mastery`. Pro Fertigkeit kann deshalb
+  höchstens eine Beherrschung verwendet werden.
+- Verschiedene Stufen derselben Supportfamilie bleiben ebenfalls gegenseitig
+  ausgeschlossen. Gespeicherte Altstände werden deterministisch bereinigt.
+- Der Build-Variantenoptimierer verwendet jetzt dieselben harten Prüfungen für
+  Schadensart, Mechanik, Waffenart, Ausschlüsse und freigegebene
+  Recommended-Support-Referenzen wie die nachgelagerte Empfehlung.
+- Die manuelle Supportauswahl blendet bereits durch Familie oder Kategorie
+  ausgeschlossene Kandidaten aus.
+- `Orb of Storms` bleibt ausschließlich für einen belegten Blitzzauber eine
+  direkte Set-2-Vorbereitung. Für `Flameblast` beziehungsweise andere reine
+  Feuerzauber wird diese Beziehung nicht erzeugt.
+- Regression: 56 fokussierte Prüfungen für Support-Analyzer, gespeicherte
+  Setups, RePoE-Katalog, Variantenoptimierer und Skill-Synergien erfolgreich.
+
 ## Zusammenhängende Skill- und Waffensetplanung (2026-07-27)
 
 - Die produktive Oberfläche startet nun mit neun statt sechs Fertigkeitsplätzen.

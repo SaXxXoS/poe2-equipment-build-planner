@@ -54,5 +54,15 @@ describe('regelbasierter synthetischer Support Analyzer', () => {
     expect(result.topCandidates.filter(item => item.supportId.startsWith('support-family-'))).toHaveLength(1)
   })
   it('keine Bewertung verwendet path-efficiency', () => expect(setup().allCandidates.flatMap(item => item.reasons).some(item => item.category === 'path-efficiency')).toBe(false))
+  it('empfiehlt pro Fertigkeit nur einen Support derselben Spielkategorie', () => {
+    const category = [
+      support('cold-mastery', [], { supportFamilyId: 'cold-mastery', supportCategoryIds: ['mastery'] }),
+      support('fire-mastery', [], { supportFamilyId: 'fire-mastery', supportCategoryIds: ['mastery'] }),
+      support('area-support', [], { supportFamilyId: 'area-support' }),
+    ]
+    const result = setup(fixtureD, syntheticSkillFixtures[4], category)
+    expect(result.topCandidates.filter(item => item.supportId.endsWith('mastery'))).toHaveLength(1)
+    expect(result.topCandidates.map(item => item.supportId)).toContain('area-support')
+  })
   it('Orchestrator funktioniert weiterhin', () => { const value = analyzeBuild(fixtureA, context(), engineModifierFixtures); expect(value.supportAnalysis.allCandidates).toEqual(value.supportRecommendations); expect(value.moduleTrace[2]).toBe('supports') })
 })

@@ -46,6 +46,16 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
     expect(new Set(bleed.map(item => item.supportFamilyId)).size).toBe(1)
   })
 
+  it('ordnet Beherrschungen derselben spielseitigen Ausschlusskategorie zu', () => {
+    const masteries = repoeSupportCatalog.filter(item => item.nameEn?.endsWith('Mastery'))
+    expect(masteries.map(item => item.nameEn)).toEqual(expect.arrayContaining([
+      'Cold Mastery', 'Fire Mastery', 'Lightning Mastery', 'Physical Mastery',
+    ]))
+    expect(new Set(masteries.flatMap(item => item.supportCategoryIds ?? []))).toEqual(
+      new Set(['poe2-support-category:mastery']),
+    )
+  })
+
   it('löst die gepinnten Recommended-Support-Referenzen ohne Namensheuristik auf', () => {
     const supportIds = new Set(repoeSupportCatalog.map(item => item.id))
     const references = repoeSkillCatalog.flatMap(item => item.recommendedSupportIds ?? [])

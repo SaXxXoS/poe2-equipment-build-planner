@@ -24,6 +24,7 @@ const skill = (
 const support = (
   id: string,
   requiredTags: SupportGemDefinition['requiredTags'],
+  extra: Partial<SupportGemDefinition> = {},
 ): SupportGemDefinition => ({
   id,
   nameEn: id,
@@ -36,6 +37,7 @@ const support = (
   excludedTags: [],
   ownTags: requiredTags,
   enabled: true,
+  ...extra,
 })
 
 const score = (skillId: string, totalScore = 10): VariantSkillScore => ({
@@ -98,6 +100,31 @@ describe('vollständige Build-Variantenoptimierung', () => {
     })
 
     expect(result.selected).toMatchObject({ skillId: 'physical', weaponType: 'mace' })
+  })
+
+  it('validiert die gesamte Supportkombination nach Schadensart und Ausschlusskategorie', () => {
+    const elemental = skill('elemental', ['spell', 'area', 'fire', 'cold', 'lightning'], {
+      recommendedSupportIds: ['cold-mastery', 'fire-mastery', 'lightning-mastery', 'area'],
+    })
+    const mastery = { supportCategoryIds: ['mastery'], selectionOnly: true }
+    const result = optimizeBuildVariants({
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      equipment: initialEquipment,
+      setups: createEmptySkillSetups(),
+      skills: [elemental],
+      supports: [
+        support('cold-mastery', [], { ...mastery, supportedDamageTypes: ['cold'] }),
+        support('fire-mastery', [], { ...mastery, supportedDamageTypes: ['fire'] }),
+        support('lightning-mastery', [], { ...mastery, supportedDamageTypes: ['lightning'] }),
+        support('area', [], { selectionOnly: true, supportedMechanics: ['area'] }),
+        support('attack-only', [], { selectionOnly: true, supportedMechanics: ['attack'] }),
+      ],
+      skillScores: [score('elemental')],
+    })
+    expect(result.selected?.compatibleSupportIds.filter(id => id.endsWith('mastery'))).toHaveLength(1)
+    expect(result.selected?.compatibleSupportIds).toContain('area')
+    expect(result.selected?.compatibleSupportIds).not.toContain('attack-only')
   })
 
   it('bleibt bei gleicher Eingabe deterministisch', () => {
