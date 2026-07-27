@@ -19,12 +19,34 @@ const auxiliaryTags = new Set(['buff', 'debuff', 'defensive', 'movement'])
 const shared = (left: string[], right: string[]) => left.filter(value => right.includes(value))
 
 function directSetupScore(main: SkillGemDefinition, candidate: SkillGemDefinition) {
-  if (candidate.nameEn === 'Orb of Storms' && main.tags.includes('spell')) {
+  if (candidate.nameEn === 'Orb of Storms' && main.tags.includes('spell') && main.tags.includes('lightning')) {
     return {
-      score: 1_000 + (main.tags.includes('lightning') ? 100 : 0),
-      reason: main.tags.includes('lightning')
-        ? 'Die anhaltende Kugel löst beim Wirken des Blitzzaubers zusätzliche Entladungen aus.'
-        : 'Die anhaltende Kugel löst beim Wirken des Zaubers zusätzliche Entladungen aus.',
+      score: 1_100,
+      reason: 'Die anhaltende Kugel löst beim Wirken des Blitzzaubers zusätzliche Entladungen aus.',
+    }
+  }
+  if (candidate.nameEn === 'Elemental Weakness' && main.tags.some(tag => ['fire', 'cold'].includes(tag))) {
+    return {
+      score: 1_050,
+      reason: 'Der Fluch senkt die Elementarwiderstände des Ziels und bereitet den Elementarzauber aus Waffenset 1 vor.',
+    }
+  }
+  if (candidate.nameEn === 'Vulnerability' && main.tags.includes('physical')) {
+    return {
+      score: 1_050,
+      reason: 'Der Fluch bereitet das Ziel für den belegten physischen Hauptschaden vor.',
+    }
+  }
+  if (candidate.nameEn === 'Despair' && main.tags.includes('chaos')) {
+    return {
+      score: 1_050,
+      reason: 'Der Fluch bereitet das Ziel für den belegten Chaosschaden des Hauptskills vor.',
+    }
+  }
+  if (candidate.nameEn === 'Voltaic Mark' && main.tags.includes('attack') && main.tags.includes('lightning')) {
+    return {
+      score: 1_050,
+      reason: 'Die Blitzmarkierung bereitet das Ziel für den belegten Blitzangriff aus Waffenset 1 vor.',
     }
   }
   return null

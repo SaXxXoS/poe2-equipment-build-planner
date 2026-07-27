@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition } from '../../domain'
+import { buildAssistantCandidates } from '../build-assistant-v1'
 import { planSynergisticSkills } from './synergy-planner'
 
 const skill = (id: string, nameEn: string, tags: SkillGemDefinition['tags'], extra: Partial<SkillGemDefinition> = {}): SkillGemDefinition => ({
@@ -35,6 +36,21 @@ describe('zusammenhängende Skillplanung', () => {
     expect(planSynergisticSkills(spark, [spark, unrelated], [{ skillId: 'fire-attack', totalScore: 999, damageScore: 999 }], 8)).toEqual([])
   })
 
+  it('verknüpft Kugel der Stürme nicht mit einem Feuerzauber', () => {
+    const flameblast = skill('flameblast', 'Flameblast', ['spell', 'area', 'fire'])
+    const orb = skill('orb', 'Orb of Storms', ['spell', 'area', 'lightning'])
+    expect(planSynergisticSkills(flameblast, [flameblast, orb], [], 8)).toEqual([])
+  })
+
+  it('plant einen passenden Fluch als Set-2-Vorbereitung', () => {
+    const flameblast = skill('flameblast', 'Flameblast', ['spell', 'area', 'fire'])
+    const weakness = skill('weakness', 'Elemental Weakness', ['spell', 'fire', 'cold', 'debuff'])
+    expect(planSynergisticSkills(flameblast, [flameblast, weakness], [], 8)[0]).toMatchObject({
+      skillId: 'weakness',
+      weaponSet: 'set-2',
+    })
+  })
+
   it('lässt Slots leer, wenn keine belegte Synergie vorhanden ist', () => {
     const main = skill('main', 'Main', ['attack', 'physical'])
     expect(planSynergisticSkills(main, [main], [], 8)).toEqual([])
@@ -47,5 +63,16 @@ describe('zusammenhängende Skillplanung', () => {
       skill('move-a', 'Move A', ['movement']),
     ]
     expect(planSynergisticSkills(main, [main, ...candidates], [], 8)).toEqual(planSynergisticSkills(main, [main, ...candidates], [], 8))
+  })
+
+  it('findet im produktiven Katalog für Blitz und Feuer jeweils eine verbundene Set-2-Vorbereitung', () => {
+    const spark = buildAssistantCandidates.skills.find(value => value.nameEn === 'Spark')!
+    const flameblast = buildAssistantCandidates.skills.find(value => value.nameEn === 'Flameblast')!
+    const sparkPlan = planSynergisticSkills(spark, buildAssistantCandidates.skills, [], 8)
+    const firePlan = planSynergisticSkills(flameblast, buildAssistantCandidates.skills, [], 8)
+    expect(sparkPlan[0]).toMatchObject({ weaponSet: 'set-2' })
+    expect(buildAssistantCandidates.skills.find(value => value.id === sparkPlan[0].skillId)?.nameEn).toBe('Orb of Storms')
+    expect(firePlan[0]).toMatchObject({ weaponSet: 'set-2' })
+    expect(buildAssistantCandidates.skills.find(value => value.id === firePlan[0].skillId)?.nameEn).toBe('Elemental Weakness')
   })
 })

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import './styles.css'
 import './domain.css'
 import type { CharacterConfiguration } from './domain'
-import { estimateHitDamage, type BuildAnalysis } from './engine'
+import type { BuildAnalysis } from './engine'
 import { initialEquipment } from './data'
 import { CharacterSection } from './components/CharacterSection'
 import { EquipmentSection } from './components/EquipmentSection'
@@ -11,6 +11,7 @@ import { createEmptySkillSetups } from './features/skills/initial-state'
 import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
+import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
@@ -70,11 +71,14 @@ export default function App() {
             ...result.skillAnalysis.eligibleCandidates.filter(value => value.possibleRoles.includes('main')),
             ...result.skillAnalysis.allCandidates.filter(value => value.possibleRoles.includes('main')),
           ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
-          const recommendation = mainCandidates.map(candidate => {
-            const trialSetup = { ...preparedSetups[0], skillId: candidate.skillId, role: 'main' as const, supportGemIds: [] }
-            const estimate = estimateHitDamage({ equipment, setups: [trialSetup], skills: buildAssistantCandidates.skills, fallbackSkillId: candidate.skillId })
-            return { candidate, modeledDps: estimate.hitDamagePerSecond ?? -1 }
-          }).sort((a, b) => b.modeledDps - a.modeledDps || b.candidate.damageScore - a.candidate.damageScore || b.candidate.totalScore - a.candidate.totalScore || a.candidate.skillId.localeCompare(b.candidate.skillId))[0]?.candidate
+          const recommendation = selectAutomaticMainSkill({
+            candidates: mainCandidates,
+            definitions: buildAssistantCandidates.skills,
+            equipment,
+            setups: preparedSetups,
+            classId: character.classId,
+            ascendancyId: character.ascendancyId,
+          })
           if (recommendation) {
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
             const provisionalSetups = preparedSetups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)

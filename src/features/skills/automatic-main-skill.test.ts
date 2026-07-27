@@ -1,0 +1,42 @@
+import { describe, expect, it } from 'vitest'
+import type { SkillGemDefinition } from '../../domain'
+import { initialEquipment } from '../../data'
+import { createEmptySkillSetups } from './initial-state'
+import { selectAutomaticMainSkill } from './automatic-main-skill'
+
+const definition = (id: string, tags: SkillGemDefinition['tags']): SkillGemDefinition => ({
+  id,
+  displayNameDe: id,
+  nameEn: id,
+  dataVersion: 'test',
+  source: 'local-placeholder',
+  status: 'placeholder',
+  tags,
+  enabled: true,
+})
+const candidate = (skillId: string) => ({ skillId, damageScore: 0, totalScore: 0 })
+
+describe('Automatische Hauptskillwahl', () => {
+  it('erzeugt für Sturmweberin und Titan unterschiedliche, passende Hauptskills', () => {
+    const definitions = [
+      definition('lightning-spell', ['spell', 'lightning']),
+      definition('physical-melee', ['attack', 'melee', 'physical']),
+    ]
+    const common = {
+      candidates: definitions.map(value => candidate(value.id)),
+      definitions,
+      equipment: initialEquipment,
+      setups: createEmptySkillSetups(),
+    }
+    expect(selectAutomaticMainSkill({
+      ...common,
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+    })?.skillId).toBe('lightning-spell')
+    expect(selectAutomaticMainSkill({
+      ...common,
+      classId: 'class-official-6',
+      ascendancyId: 'ascendancy-official-Warrior1',
+    })?.skillId).toBe('physical-melee')
+  })
+})
