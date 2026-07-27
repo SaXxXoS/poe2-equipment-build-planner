@@ -104,13 +104,13 @@ const immutableFiles = {
   '../../src/affixes/registry.ts': '8fb686c14f5e69bb69067d143d030059ee079863bb54b2c59fbbd2ade0aa6ef0',
   // V1.3 authorizes the editor expansion; the later item-type correction keeps
   // defensive totals out of weapon and jewellery editors.
-  '../../src/components/AffixDialog.tsx': '93bb5eb54580a52a631d5dfdbada09ea087fe1be5ad3294646a2d7da7af46fde',
-  '../../src/engine/common/types.ts': 'd8f4d897da619e090b7c8ff2f297753105b9e7b6cda4d447a0cd5c301ebc12a3',
+  '../../src/components/AffixDialog.tsx': 'd81e43c05f0b9bb0b768ac672738ef9cd202264ad6016391bab0618cbe6e0171',
+  '../../src/engine/common/types.ts': 'ae1657637df03da215ae79eacf81e11e977c2e2cf9e2121138bd210043dcf2d2',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
-  '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',
+  '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
-  '../../src/engine/orchestration/analyze-build.ts': '06e4181a7930eeb6cdc3057df9b0dff2afae0d5a0cd0da6548787b6be19098da',
+  '../../src/engine/orchestration/analyze-build.ts': 'b89e18285c927e42e87f46754d8299e118f32df07d514b719dc1755802bc9060',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',
 }

@@ -1,6 +1,7 @@
 export * from './common'
 export * from './character'
 export * from './equipment'
+export * from './equipment-rules'
 export * from './modifiers'
 export * from './skills'
 export * from './jewels'

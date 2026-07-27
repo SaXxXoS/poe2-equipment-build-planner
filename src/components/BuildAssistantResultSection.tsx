@@ -92,7 +92,6 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   const strongestField = <T extends string>(values: Record<T, number>) =>
     (Object.entries(values) as [T, number][]).filter(([, value]) => value > 0).sort(([a, av], [b, bv]) => bv - av || a.localeCompare(b))[0]?.[0]
   const selectedSkillDefinition = buildAssistantCandidates.skills.find(item => item.id === desiredSkill?.skillId)
-  const selectedSkillTags = new Set(selectedSkillDefinition?.tags ?? [])
   const selectedDamageTypes = selectedSkillDefinition?.damageTypes ?? []
   const dominantDamage = selectedDamageTypes
     .slice()
@@ -100,16 +99,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
     ?? analysis.equipmentAnalysis.dominantDamageType
     ?? strongestField(analysis.buildProfile.damageTypes)
   const dominantMechanic = analysis.equipmentAnalysis.dominantMechanic ?? strongestField(analysis.buildProfile.mechanics)
-  const scalingAdvice = [
-    ...([...selectedSkillTags].filter(tag => damageText[tag]).map(tag => `${damageText[tag]} skaliert die gewählte Hauptfertigkeit.`)),
-    ...(selectedSkillTags.has('attack') ? ['Angriffsschaden und Angriffsgeschwindigkeit sind passende offensive Skalierungen.'] : []),
-    ...(selectedSkillTags.has('spell') ? ['Zauberschaden und Zaubergeschwindigkeit sind passende offensive Skalierungen.'] : []),
-    ...(selectedSkillTags.has('projectile') ? ['Projektilschaden passt zur Hauptfertigkeit.'] : []),
-    ...(selectedSkillTags.has('area') ? ['Flächenschaden passt zur Hauptfertigkeit.'] : []),
-    ...(selectedSkillTags.has('critical')
-      ? ['Kritische Trefferchance und kritischer Multiplikator sind für diese Fertigkeit belegt relevant.']
-      : ['Kritische Skalierung ist für diese Fertigkeit derzeit nicht ausreichend belegt und wird nicht positiv vorausgesetzt.']),
-  ]
+  const scalingAdvice = analysis.effectModel?.scalingAdvice ?? []
   const appliedAffixes = equipment.flatMap(entry => entry.modifierValues)
   const weakIds = new Set([...analysis.equipmentAnalysis.weaklyUsedModifierIds, ...analysis.equipmentAnalysis.unusedModifierIds])
   const conflictIds = new Set(analysis.equipmentAnalysis.conflictingModifierIds)
@@ -174,7 +164,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
       <p className="muted">Vergleiche zwei Builds nur, wenn bei beiden dieselbe Fertigkeit, Gemmenstufe und dieselben ausgeschlossenen Mechaniken gelten. Der Wert ist keine vollständige Path-of-Building-DPS.</p>
     </div></details>
     <details open><summary>Affixskalierung</summary><div className="result-panel"><div className="affix-scaling-grid"><div><h4>Stark passend</h4>{strongAffixes.length ? <ul>{strongAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine starke, belegte Skalierung erkannt.</p>}</div><div><h4>Teilweise hilfreich</h4>{partialAffixes.length ? <ul>{partialAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine teilweise genutzten Affixe.</p>}</div><div><h4>Konflikte oder unpassend</h4>{unsuitableAffixes.length ? <ul>{unsuitableAffixes.map(id => <li key={id}>{affixLabel(id)}</li>)}</ul> : <p>Keine eindeutigen Affixkonflikte erkannt.</p>}</div></div><p><b>Fehlende Grundlage:</b> {analysis.buildProfile.defence.resistanceNeed > 0 ? 'Widerstände ' : ''}{analysis.buildProfile.defence.generalDefenceNeed > 0 ? 'Leben oder eine belastbare Verteidigungsschicht' : 'Keine eindeutige defensive Lücke'}</p></div></details>
-    <details open><summary>Beste Schadensskalierungen</summary><div className="result-panel">{scalingAdvice.length ? <ul>{scalingAdvice.map(value => <li key={value}>{value}</li>)}</ul> : <p>Für die gewählte Fertigkeit sind noch keine belastbaren Schadensskalierungen verfügbar.</p>}<p className="muted">Diese Hinweise stammen aus den strukturierten Fertigkeitsmerkmalen und den tatsächlich belegten Passive-, Aszendenz- und Waffensetwirkungen. Unbekannte Zusammenhänge erzeugen keinen Bonus.</p></div></details>
+    <details open><summary>Beste Schadensskalierungen</summary><div className="result-panel">{scalingAdvice.length ? <ul>{scalingAdvice.map(value => <li key={value}>{value}</li>)}</ul> : <p>Für die gewählte Fertigkeit sind noch keine belastbaren Schadensskalierungen verfügbar.</p>}<p><b>Wirkungsmodell:</b> {analysis.effectModel?.offenceEffects.filter(value => value.productive).length ?? 0} offensive, {analysis.effectModel?.defenceEffects.filter(value => value.productive).length ?? 0} defensive und {analysis.effectModel?.unresolvedEffects.length ?? 0} ungelöste Wirkungen.</p>{analysis.effectModel?.warnings.length ? <ul className="warning-list">{analysis.effectModel.warnings.map(value => <li key={value}>{value}</li>)}</ul> : null}<p className="muted">Diese Hinweise stammen aus der gemeinsamen Wirkungskette für Ausrüstung, Fertigkeiten, Supports, Passive, Waffensets und Aszendenz. Defensive Werte erzeugen keinen offensiven Bonus; unbekannte Zusammenhänge erzeugen keinen Bonus.</p></div></details>
     <details open><summary>Ausrüstung</summary><div className="result-panel"><p>{equipment.length - emptySlots.length} von {equipment.length} Slots enthalten Daten. {emptySlots.length ? 'Die Analyse bleibt möglich, besitzt aber geringere Sicherheit.' : 'Alle Slots wurden erfasst.'}</p>
       {equippedUniques.length > 0 && <><h4>Ausgerüstete Uniques</h4><ul>{equippedUniques.map(({ entry, unique }) => <li key={entry.id}>{unique?.name ?? entry.uniqueItemId} · {equipmentSlotDefinitions.find(slot => slot.id === entry.slotId)?.displayNameDe ?? entry.slotId}{entry.uniqueVariantId ? ` · Variante ${entry.uniqueVariantId}` : ''}</li>)}</ul></>}
       <p><b>Waffensets:</b> {analysis.equipmentAnalysis.dominantWeaponSet === 'balanced' ? 'Beide Sets sind ähnlich gewichtet.' : `${analysis.equipmentAnalysis.dominantWeaponSet === 'set-1' ? 'Set 1' : 'Set 2'} ist stärker ausgeprägt.`}</p>

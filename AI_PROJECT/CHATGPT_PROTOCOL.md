@@ -1581,3 +1581,26 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   dedupliziert.
 - Die Bewertung bleibt eine relative Projektoptimierung und keine Behauptung
   einer vollständigen Path-of-Building-DPS-Simulation.
+
+# Schritt 3: einheitliches Wirkungsmodell
+
+- Ausrüstung, Fertigkeiten, Unterstützungen, normale Passive,
+  Waffenset-Spezialisierungen und Aszendenz laufen nun in einer gemeinsamen
+  deterministischen Wirkungskette zusammen.
+- Jede Wirkung besitzt Quelle, Quell-ID, Waffenset, Wirkungsbereich,
+  Mechanik-Tags, Evidenzklasse, produktiven Status und Erklärung.
+- Tatsächlicher Waffen-Grundschaden, Angriffe pro Sekunde und kritische
+  Basis-Trefferchance sind offensiv. Rüstung, Ausweichen und Energieschild
+  sind strikt defensiv und erzeugen keinen offensiven Bonus.
+- Waffenklassen mit angezeigten Rüstungs-, Ausweich- oder
+  Energieschild-Endwerten werden blockiert und nicht eingerechnet.
+- Supports werden nur als produktive Wirkung übernommen, wenn ihre
+  strukturierten Voraussetzungen zum konkreten Skill-Setup passen.
+- Gemeinsame Passive, Waffenset 1, Waffenset 2 und Aszendenz bleiben getrennt
+  nachvollziehbar.
+- Ohne bestätigte strukturierte Umwandlung werden Schadensarten nicht
+  miteinander verrechnet. Unbekannte Zusammenhänge erzeugen keinen Bonus.
+- „Beste Schadensskalierungen“ verwendet die gemeinsame Wirkungskette und
+  nennt belegte Quellen.
+- Ausführliche Dokumentation:
+  `docs/BUILD_ASSISTANT_EFFECT_MODEL_STEP_3.md`.

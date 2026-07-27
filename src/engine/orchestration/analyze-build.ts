@@ -10,6 +10,7 @@ import { explanationGenerator } from '../explanations/generator'
 import type { AnalyzerContext, BuildAnalysis, BuildProfile, EngineRequest } from '../common/types'
 import { runRealPassivePlanningIntegration } from './real-passive-integration'
 import { estimateHitDamage } from '../damage-estimation'
+import { createBuildEffectModel } from '../effects/model'
 export const ENGINE_VERSION = '0.1.0-placeholder'
 const damageKeys=['physical','fire','cold','lightning','chaos'] as const
 const mechanicKeys=['attack','spell','projectile','melee','area','critical','damage-over-time','minion','movement','buff','debuff','defensive'] as const
@@ -57,5 +58,6 @@ export function analyzeBuild(request: EngineRequest, context: AnalyzerContext = 
   const displayNames = Object.fromEntries([...request.candidates.skills, ...request.candidates.supports, ...request.candidates.jewels, ...request.candidates.uniques, ...request.candidates.passives.flatMap(item => [...(item.nodes ?? []), ...(item.cluster ? [{ id: item.cluster.clusterId, displayNameDe: item.cluster.clusterId }] : [])])].map(item => [item.id, item.displayNameDe])); const explanations = explanationGenerator.generate({ reasons: [...equipment.reasons, ...allRecommendations.flatMap(item => item.reasons)], violations: warnings, equipmentAnalysis, skillAnalysis, supportAnalysis, passiveAnalysis, jewelAnalysis, uniqueAnalysis, rotationAnalysis, displayNames }, runtime)
   if(realPassivePlanning?.performance)realPassivePlanning.performance.orchestratorDurationMs=performance.now()-orchestratorStarted
   const damageEstimate=estimateHitDamage({equipment:request.input.equipment,setups:request.input.skillSetups,skills:request.candidates.skills,fallbackSkillId:selectedRecommendation?.skillId})
-  return { equipmentAnalysis, buildProfile, skillAnalysis, skillRecommendations: skills, supportAnalysis, supportRecommendations: supports, passiveAnalysis, passiveRecommendations: passives, jewelAnalysis, jewelRecommendations: jewels, uniqueAnalysis, uniqueRecommendations: uniques, ...rotations, explanations, warnings, status: 'placeholder', engineVersion: context.engineVersion, moduleTrace, damageEstimate, ...(realPassivePlanning?{realPassivePlanning}:{}) }
+  const effectModel=createBuildEffectModel({input:request.input,skills:request.candidates.skills,supports:request.candidates.supports,modifiers,buildProfile,realPassivePlanning})
+  return { equipmentAnalysis, buildProfile, skillAnalysis, skillRecommendations: skills, supportAnalysis, supportRecommendations: supports, passiveAnalysis, passiveRecommendations: passives, jewelAnalysis, jewelRecommendations: jewels, uniqueAnalysis, uniqueRecommendations: uniques, ...rotations, explanations, warnings, status: 'placeholder', engineVersion: context.engineVersion, moduleTrace, damageEstimate, effectModel, ...(realPassivePlanning?{realPassivePlanning}:{}) }
 }

@@ -73,10 +73,10 @@ const immutableFiles = {
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
   '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
   // V1.3 explicitly authorizes rarity/socket transport; source separation remains guarded below.
-  '../../src/domain/equipment.ts': '7355d900a14730f46a11d085d554379cb0b53131183f6eca539976698546eb20',
-  '../../src/engine/orchestration/analyze-build.ts': '06e4181a7930eeb6cdc3057df9b0dff2afae0d5a0cd0da6548787b6be19098da',
+  '../../src/domain/equipment.ts': '03dc2aa677a14ad920a540a2af062a8031be9c26f7bb5a47b906ebb22f595a08',
+  '../../src/engine/orchestration/analyze-build.ts': 'b89e18285c927e42e87f46754d8299e118f32df07d514b719dc1755802bc9060',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
-  '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',
+  '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
 }
 

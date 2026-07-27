@@ -1,4 +1,4 @@
-import type { AppliedModifier, EquipmentEntry, MechanicTag, ModifierDefinition } from '../../domain'
+import { supportsDisplayedDefences, type AppliedModifier, type EquipmentEntry, type MechanicTag, type ModifierDefinition } from '../../domain'
 import type { AnalyzerContext, AnalyzerResult, BuildProfile, ConstraintViolation, DamageType, DefenceType, EngineRequest, EquipmentAnalysis, ScoreReason, SpeedType, WeaponSetDifference } from '../common/types'
 import { blankProfile, scored } from '../common/scoring'
 import { SYNTHETIC_EQUIPMENT_CONFIG, type EquipmentAnalyzerConfig } from './config'
@@ -59,7 +59,7 @@ function analyzeProfile(values: DefinitionValue[], goal: EngineRequest['input'][
 }
 
 function applyFinalItemDefences(result:ProfileResult,equipment:EquipmentEntry[],config:EquipmentAnalyzerConfig){
-  const totals=equipment.reduce((sum,item)=>({
+  const totals=equipment.filter(item=>supportsDisplayedDefences(item.itemClassId)).reduce((sum,item)=>({
     armour:sum.armour+(item.defences?.armour??0),
     evasion:sum.evasion+(item.defences?.evasion??0),
     energyShield:sum.energyShield+(item.defences?.energyShield??0),
@@ -110,6 +110,7 @@ export const equipmentAnalyzer: EquipmentAnalyzer = { analyze({ input }, context
   combined.profile.technicalItems=input.equipment.filter(entry=>entry.itemClassId||entry.itemDefinitionId||entry.modifierValues.length||entry.quality!==undefined||entry.defences||entry.weaponStats).map(entry=>({slotId:entry.slotId,itemClassId:entry.itemClassId,baseItemId:entry.itemDefinitionId,itemLevel:entry.itemLevel,quality:entry.quality,defences:entry.defences,weaponStats:entry.weaponStats,sourceVersion:entry.modifierValues.find(value=>value.sourceVersion)?.sourceVersion,dataStatus:entry.modifierValues.some(value=>value.dataStatus==='legacy-unresolved')?'legacy-unresolved':entry.itemClassId==='Jewels'?'partially-supported':'transport-only',modifiers:entry.modifierValues.map(value=>({modifierId:value.modifierId,tierId:value.tierId,statValues:value.statValues??[]}))}))
   const reasons = [...combined.reasons]
   const violations: ConstraintViolation[] = [...unknownIds].sort().map(id => ({ code: 'unknown-modifier', severity: 'error', messageKey: 'engine.constraint.unknownModifier', sourceId: id, relatedIds: [id], blocking: true }))
+  for(const entry of input.equipment.filter(item=>!supportsDisplayedDefences(item.itemClassId)&&item.defences&&Object.values(item.defences).some(value=>(value??0)>0)))violations.push({code:'weapon-cannot-provide-displayed-defences',severity:'error',messageKey:'engine.constraint.weaponDisplayedDefences',sourceId:entry.id,relatedIds:[entry.id],blocking:true})
   const warnings: ConstraintViolation[] = []
   const conflictingIds = new Set<string>()
   const idsFor = (predicate: (definition: ModifierDefinition) => boolean) => values.filter(value => predicate(value.definition)).map(value => value.definition.id)
