@@ -1,5 +1,11 @@
 # PoE2 Equipment Build Planner
 
+> **Automatische Gegnerwirkungen:** Belegte Flüche, Rüstungsbruchwerte und
+> unbedingte Durchdringung aus gewählten Fertigkeiten und vergebenen
+> Baumknoten werden ohne zusätzliche Regler im Gegnervergleich berücksichtigt.
+> Unbelegte Expositionshöhen und bedingte Zustände bleiben ausgeschlossen.
+> [Details](docs/BUILD_ASSISTANT_AUTOMATIC_ENEMY_EFFECTS_STEP_8.md)
+
 > **Foto- und Screenshotmodus:** Jeder Ausrüstungsslot kann einen lokal
 > aufgenommenen oder ausgewählten Gegenstandsscreenshot auswerten. Die
 > browserlokale OCR gleicht erkannte Zeilen und tatsächliche Werte gegen den

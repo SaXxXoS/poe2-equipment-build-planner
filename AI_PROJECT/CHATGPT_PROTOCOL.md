@@ -1,5 +1,27 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Automatische Gegnerwirkungen – Schritt 8 (2026-07-27)
+
+- Gewählte Fertigkeiten und tatsächlich belegte normale beziehungsweise
+  Aszendenzknoten speisen ihre eindeutig numerischen Gegnerwirkungen
+  automatisch in das Vergleichsprofil.
+- Elemental Weakness (`-59 %` Elementarwiderstände) und Despair (`-49 %`
+  Chaoswiderstand) stammen aus strukturierten Werten der gepinnten
+  PoB2-Schadensreferenz.
+- Das normale Fluchlimit wird fail-closed behandelt: Es wird höchstens ein
+  für die verursachten Schadensarten relevanter Fluch angesetzt.
+- Strukturierter Rüstungsbruch pro Treffer wird nicht zwischen mehreren
+  Fertigkeiten addiert. Aufbau, Wirkzeit und vollständig gebrochene Rüstung
+  bleiben außerhalb der aktuellen Teilberechnung.
+- Nur unbedingte, exakt lesbare Durchdringung aus vergebenen Baumknoten wird
+  addiert. Bedingte Zeilen erzeugen keinen Bonus.
+- Frost Bomb wird nicht als numerische Exposition behandelt, weil der Pin
+  keinen sicheren Expositionsbetrag enthält.
+- Die Ergebnisansicht nennt jede automatisch angewandte Gegnerwirkung samt
+  Wert und Bedingungsstatus.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_AUTOMATIC_ENEMY_EFFECTS_STEP_8.md`.
+
 ## Gegnerabwehr und Vergleichsprofile – Schritt 6 (2026-07-27)
 
 - Die numerische Trefferschadenkette besitzt jetzt ein getrenntes

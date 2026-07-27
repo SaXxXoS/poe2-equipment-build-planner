@@ -127,4 +127,15 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:0})
   })
+  it('berücksichtigt einen gewählten strukturierten Fluch automatisch im Vergleichsprofil',()=>{
+    const curseSetup:SkillSetup={id:'curse',skillId:'curse',role:'utility',weaponSet:'both',supportGemIds:[]}
+    const result=estimateHitDamage({
+      equipment:[],setups:[setup('arc'),curseSetup],
+      skills:[skill('arc','Arc'),skill('curse','Elemental Weakness')],
+      enemyProfile:{id:'automatic',label:'Automatischer Gegner',source:'automatic-season-reference',resistances:{lightning:40}},
+    })
+    expect(result.enemyProfile?.resistanceReduction?.lightning).toBe(59)
+    expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:-19})
+    expect(result.enemyProfile?.appliedEffects?.[0]).toMatchObject({sourceId:'curse',kind:'resistance-reduction'})
+  })
 })

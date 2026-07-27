@@ -5,6 +5,7 @@ import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { applyConversions, applyDamageModifiers, collectQuantitativeEffects } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
+import { applyBuildEnemyEffects } from './build-enemy-effects'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
 type NumericSkill=(typeof reference.skills)[number]
@@ -126,7 +127,12 @@ export function estimateHitDamage(input:{
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
   const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:average*criticalExpectationMultiplier
   const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
-  const enemyMitigation=input.enemyProfile?applyEnemyMitigation(components,input.enemyProfile):undefined
+  const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
+    profile:input.enemyProfile,setups:input.setups,skills:input.skills,
+    activeDamageTypes:components.map(value=>value.type),weaponSet:activeSet,
+    passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
+  }):undefined
+  const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
   return{
@@ -138,7 +144,7 @@ export function estimateHitDamage(input:{
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
       ...(expectedCriticalHitDamagePerSecond==null?[]:[{id:'critical-expectation' as const,label:'Erwartungswert einschließlich kritischer Treffer',components:[],value:round(expectedCriticalHitDamagePerSecond)}]),
-      ...(expectedDamagePerSecondAfterMitigation==null?[]:[{id:'enemy-mitigation' as const,label:`Nach Gegnerabwehr: ${input.enemyProfile!.label}`,components:enemyMitigation!.components,value:round(expectedDamagePerSecondAfterMitigation)}]),
+      ...(expectedDamagePerSecondAfterMitigation==null?[]:[{id:'enemy-mitigation' as const,label:`Nach Gegnerabwehr: ${resolvedEnemyProfile!.label}`,components:enemyMitigation!.components,value:round(expectedDamagePerSecondAfterMitigation)}]),
     ],
     appliedDamageEffects:quantitative.damageModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
@@ -146,12 +152,12 @@ export function estimateHitDamage(input:{
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
     ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
-    ...(input.enemyProfile&&enemyMitigation?{enemyProfile:input.enemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
+    ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Fluch-, Expositions-, Durchdringungs- und Rüstungsbruchwerte ohne explizites Vergleichsprofil','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Fluchlimits, Debuff-Wirkzeit und Rüstungsbruch-Aufbau','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

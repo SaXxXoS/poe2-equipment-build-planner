@@ -1,6 +1,17 @@
 export type DamageEstimateStatus = 'available' | 'partial' | 'unavailable'
 export interface DamageComponent { type:'physical'|'fire'|'cold'|'lightning'|'chaos'; minimum:number; maximum:number }
 export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
+export interface AppliedEnemyMitigationEffect {
+  source:'skill'|'passive'|'ascendancy'
+  sourceId:string
+  label:string
+  kind:'resistance-reduction'|'penetration'|'armour-break'
+  damageTypes:Array<DamageComponent['type']>
+  value:number
+  evidence:'structured-exact'|'text-pattern-exact'
+  sourceReference:string
+  conditional:boolean
+}
 export interface EnemyMitigationProfile {
   id:string
   label:string
@@ -12,6 +23,7 @@ export interface EnemyMitigationProfile {
   resistances?:Partial<Record<EnemyResistanceType,number>>
   penetration?:Partial<Record<EnemyResistanceType,number>>
   resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
+  appliedEffects?:AppliedEnemyMitigationEffect[]
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
 export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
