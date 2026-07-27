@@ -109,7 +109,7 @@ const immutableFiles = {
   '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
-  '../../src/engine/orchestration/analyze-build.ts': 'e94776f0aafb8592d15f4fed375d3c5c69ea61b9d0c61e159fe219c622485def',
+  '../../src/engine/orchestration/analyze-build.ts': '06e4181a7930eeb6cdc3057df9b0dff2afae0d5a0cd0da6548787b6be19098da',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',
 }

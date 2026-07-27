@@ -9,6 +9,7 @@ import { EquipmentSection } from './components/EquipmentSection'
 import { SkillsSection } from './components/SkillsSection'
 import { createEmptySkillSetups } from './features/skills/initial-state'
 import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
+import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
@@ -51,16 +52,17 @@ export default function App() {
     setTimeout(() => document.querySelector('.tree-viewport')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 0)
   }, [])
   async function calculate() {
-    const input = { character, equipment, setups }
+    const preparedSetups = assignRecommendedWeaponSets(setups)
+    const input = { character, equipment, setups: preparedSetups }
     const errors = validateBuildAssistantInput(input)
     setCalculationErrors(errors)
     if (errors.length) return
     setCalculationState('running')
     try {
         let result = runBuildAssistantV1(input)
-        let effectiveSetups = setups
+        let effectiveSetups = preparedSetups
         let effectiveCharacter = character
-        const hasSelectedSkill = setups.some(value => value.skillId)
+        const hasSelectedSkill = preparedSetups.some(value => value.skillId)
         if (!hasSelectedSkill) {
           const mainCandidates = [
             ...result.skillAnalysis.topMainCandidates,
@@ -68,13 +70,13 @@ export default function App() {
             ...result.skillAnalysis.allCandidates.filter(value => value.possibleRoles.includes('main')),
           ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
           const recommendation = mainCandidates.map(candidate => {
-            const trialSetup = { ...setups[0], skillId: candidate.skillId, role: 'main' as const, supportGemIds: [] }
+            const trialSetup = { ...preparedSetups[0], skillId: candidate.skillId, role: 'main' as const, supportGemIds: [] }
             const estimate = estimateHitDamage({ equipment, setups: [trialSetup], skills: buildAssistantCandidates.skills, fallbackSkillId: candidate.skillId })
             return { candidate, modeledDps: estimate.hitDamagePerSecond ?? -1 }
           }).sort((a, b) => b.modeledDps - a.modeledDps || b.candidate.damageScore - a.candidate.damageScore || b.candidate.totalScore - a.candidate.totalScore || a.candidate.skillId.localeCompare(b.candidate.skillId))[0]?.candidate
           if (recommendation) {
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
-            const provisionalSetups = setups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
+            const provisionalSetups = preparedSetups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
             const provisionalResult = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: provisionalSetups })
             const rankedSkills = [
               recommendation,
@@ -108,7 +110,7 @@ export default function App() {
                 weaponSet: definition.preferredWeaponSet ?? 'both' as const,
               })),
             ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
-            const populatedSetups = provisionalSetups.map(value => {
+            const populatedSetups = assignRecommendedWeaponSets(provisionalSetups.map(value => {
               if (value.skillId) return value
               const candidate = skillQueue.shift()
               if (!candidate) return value
@@ -120,7 +122,7 @@ export default function App() {
                 origin: 'recommended' as const,
                 supportGemIds: [],
               }
-            })
+            }))
             const nextSetups = populatedSetups.map(value => {
               if (!value.skillId) return value
               const skillResult = runBuildAssistantV1({
@@ -143,6 +145,7 @@ export default function App() {
           }
         }
         if (effectiveSetups !== setups || effectiveCharacter !== character) {
+          if (effectiveSetups !== setups) setSetups(effectiveSetups)
           await new Promise<void>(resolve => window.setTimeout(resolve, 0))
         }
         const pointBudget = Math.max(1, Math.min(REAL_PASSIVE_UI_MAXIMUM_POINT_BUDGET, Math.trunc(effectiveCharacter.level) - 1 + Math.max(0, Math.trunc(effectiveCharacter.additionalPassivePoints ?? 0))))

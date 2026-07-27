@@ -24,11 +24,26 @@ function applySkillDriver(profile:BuildProfile,request:EngineRequest):BuildProfi
   }
   return result
 }
+function applyWeaponSetSkillDrivers(profile:BuildProfile,request:EngineRequest,weaponSet:'set-1'|'set-2'):BuildProfile{
+  const result:BuildProfile=structuredClone(profile)
+  const skillIds=request.input.skillSetups
+    .filter(setup=>setup.skillId&&(setup.weaponSet===weaponSet||setup.weaponSet==='both'))
+    .map(setup=>setup.skillId)
+  for(const skillId of skillIds){
+    const skill=request.candidates.skills.find(value=>value.id===skillId)
+    if(!skill)continue
+    for(const tag of skill.tags){
+      if((damageKeys as readonly string[]).includes(tag))result.damageTypes[tag as typeof damageKeys[number]]=Math.max(result.damageTypes[tag as typeof damageKeys[number]],80)
+      if((mechanicKeys as readonly string[]).includes(tag))result.mechanics[tag as typeof mechanicKeys[number]]=Math.max(result.mechanics[tag as typeof mechanicKeys[number]],80)
+    }
+  }
+  return result
+}
 export function analyzeBuild(request: EngineRequest, context: AnalyzerContext = { engineVersion: ENGINE_VERSION, fixtureMode: true }, modifiers: ModifierDefinition[] = []): BuildAnalysis {
   const orchestratorStarted=performance.now(),moduleTrace: string[] = []; const runtime = { ...context, trace: moduleTrace }; const equipment = equipmentAnalyzer.analyze(request, runtime, modifiers)
   const weaponTypes=request.weaponContext?.availableWeaponTypes??['any']; const weaponSets=request.weaponContext?.availableWeaponSets??['set-1']
   const skillDrivenProfile=applySkillDriver(equipment.value.buildProfile,request)
-  const skillDrivenSetProfiles={'set-1':applySkillDriver(equipment.value.equipmentAnalysis.profileSet1,request),'set-2':applySkillDriver(equipment.value.equipmentAnalysis.profileSet2,request)}
+  const skillDrivenSetProfiles={'set-1':applyWeaponSetSkillDrivers(equipment.value.equipmentAnalysis.profileSet1,request,'set-1'),'set-2':applyWeaponSetSkillDrivers(equipment.value.equipmentAnalysis.profileSet2,request,'set-2')}
   const realPassivePlanning=request.precomputedRealPassivePlanning??runRealPassivePlanningIntegration(request.realPassivePlanning,skillDrivenProfile,runtime,undefined,skillDrivenSetProfiles)
   const buildProfile=realPassivePlanning?.profileFeedback?.effectiveBuildProfile??skillDrivenProfile
   const equipmentAnalysis=realPassivePlanning?.profileFeedback?{...equipment.value.equipmentAnalysis,combinedProfile:buildProfile,profileSet1:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-1'],profileSet2:realPassivePlanning.profileFeedback.effectiveWeaponSetProfiles['set-2']}:{...equipment.value.equipmentAnalysis,combinedProfile:buildProfile,profileSet1:skillDrivenSetProfiles['set-1'],profileSet2:skillDrivenSetProfiles['set-2']}

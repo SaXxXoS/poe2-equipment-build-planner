@@ -89,10 +89,15 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   const confidence = topConfidence(analysis)
   const strongestField = <T extends string>(values: Record<T, number>) =>
     (Object.entries(values) as [T, number][]).filter(([, value]) => value > 0).sort(([a, av], [b, bv]) => bv - av || a.localeCompare(b))[0]?.[0]
-  const dominantDamage = analysis.equipmentAnalysis.dominantDamageType ?? strongestField(analysis.buildProfile.damageTypes)
-  const dominantMechanic = analysis.equipmentAnalysis.dominantMechanic ?? strongestField(analysis.buildProfile.mechanics)
   const selectedSkillDefinition = buildAssistantCandidates.skills.find(item => item.id === desiredSkill?.skillId)
   const selectedSkillTags = new Set(selectedSkillDefinition?.tags ?? [])
+  const selectedDamageTypes = selectedSkillDefinition?.damageTypes ?? []
+  const dominantDamage = selectedDamageTypes
+    .slice()
+    .sort((a, b) => analysis.buildProfile.damageTypes[b] - analysis.buildProfile.damageTypes[a] || a.localeCompare(b))[0]
+    ?? analysis.equipmentAnalysis.dominantDamageType
+    ?? strongestField(analysis.buildProfile.damageTypes)
+  const dominantMechanic = analysis.equipmentAnalysis.dominantMechanic ?? strongestField(analysis.buildProfile.mechanics)
   const scalingAdvice = [
     ...([...selectedSkillTags].filter(tag => damageText[tag]).map(tag => `${damageText[tag]} skaliert die gewählte Hauptfertigkeit.`)),
     ...(selectedSkillTags.has('attack') ? ['Angriffsschaden und Angriffsgeschwindigkeit sind passende offensive Skalierungen.'] : []),

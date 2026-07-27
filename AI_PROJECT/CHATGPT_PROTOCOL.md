@@ -17,6 +17,28 @@
 - Keine globale Sperre: Dieselbe Supportfamilie darf weiterhin bei einer
   anderen Fertigkeit verwendet werden.
 
+## Waffenset-Skilltreiber und Hauptschadensanzeige (2026-07-27)
+
+- Korrektur nach Auftraggeberprüfung: Automatisch erzeugte
+  Schadensfertigkeiten werden bei fehlender Set-Evidenz nicht mehr pauschal
+  alle auf `Beide` gesetzt.
+- Der automatisch gewählte Hauptskill beginnt auf Waffenset 1; die erste
+  zusätzliche Schadensfertigkeit wird Waffenset 2 zugeordnet. Weitere
+  Schadensfertigkeiten wechseln deterministisch zwischen beiden Sets.
+- Utility-, Bewegungs- und Defensivfertigkeiten dürfen weiterhin `Beide`
+  verwenden. Manuelle Setzuordnungen und bereits ausdrücklich set-spezifische
+  Empfehlungen werden nicht überschrieben.
+- Die Passive-Planung erhält für Set 1 und Set 2 nur noch die jeweiligen
+  set-spezifischen beziehungsweise gemeinsamen Fertigkeiten. Ein Skill auf
+  `Beide` wirkt weiterhin korrekt in beiden Profilen.
+- Die Ergebniszusammenfassung leitet `Hauptschaden` vorrangig aus der
+  tatsächlich gewählten Hauptfertigkeit ab. Passive- oder
+  Aszendenznebenwerte dürfen die sichtbare Hauptschadensart nicht mehr
+  überschreiben.
+- Regression: `Flammenexplosion` wird als Feuerschaden angezeigt; ein
+  Feuer-Hauptskill auf Set 1 und `Funken` auf Set 2 erzeugen getrennte
+  Feuer-/Blitz-Skillprofile.
+
 ## Foto- und Screenshotmodus je Ausrüstungsslot (2026-07-24)
 
 - Jeder Ausrüstungsslot bietet `Foto aufnehmen` und `Screenshot wählen`.

@@ -44,6 +44,24 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(result.supportAnalysis.allCandidates.every(item => item.skillId === skillId)).toBe(true)
   })
 
+  it('trennt die Skilltreiber der beiden Waffensets', () => {
+    const fire = realSkillId('Flameblast')
+    const lightning = realSkillId('Spark')
+    const setups = [
+      { id: 'fire-main', skillId: fire, role: 'main' as const, weaponSet: 'set-1' as const, supportGemIds: [] },
+      { id: 'lightning-secondary', skillId: lightning, role: 'secondary' as const, weaponSet: 'set-2' as const, supportGemIds: [] },
+    ]
+    const result = runBuildAssistantV1({
+      character: character('balanced', fire),
+      equipment: structuredClone(initialEquipment),
+      setups,
+    })
+    expect(result.equipmentAnalysis.profileSet1.damageTypes.fire).toBeGreaterThan(0)
+    expect(result.equipmentAnalysis.profileSet1.damageTypes.lightning).toBe(0)
+    expect(result.equipmentAnalysis.profileSet2.damageTypes.lightning).toBeGreaterThan(0)
+    expect(result.equipmentAnalysis.profileSet2.damageTypes.fire).toBe(0)
+  })
+
   it('Ã¼bertrÃ¤gt Klasse, Aszendenz, AusrÃ¼stung, Unique und Variante verlustfrei', () => {
     const values = equipment()
     values[0] = { ...values[0], uniqueItemId: buildAssistantCandidates.uniques[0].id, uniqueVariantId: 'variant:test', modifierValues: [] }
@@ -120,5 +138,13 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(html).toContain('Mapping-Ranglisten')
     expect(html).toContain('Boss-Ranglisten')
     expect(html).toContain('Konkreter Pfad noch nicht berechnet')
+  })
+
+  it('zeigt die Schadensart der gewÃ¤hlten Hauptfertigkeit statt eines fremden Baumprofils', () => {
+    const fire = realSkillId('Flameblast')
+    const values = input('balanced', fire)
+    values.setups = [{ id: 'fire-main', skillId: fire, role: 'main', weaponSet: 'set-1', supportGemIds: [] }]
+    const html = renderToStaticMarkup(<BuildAssistantResultSection analysis={runBuildAssistantV1(values)} equipment={values.equipment}/>)
+    expect(html).toContain('<dt>Hauptschaden</dt><dd>Feuerschaden</dd>')
   })
 })
