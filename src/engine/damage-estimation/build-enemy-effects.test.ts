@@ -12,7 +12,15 @@ describe('automatische belegte Gegnerwirkungen',()=>{
   it('übernimmt Elemental Weakness aus dem strukturierten Skillwert',()=>{
     const result=applyBuildEnemyEffects({profile,setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['lightning'],weaponSet:'set-1'})
     expect(result.resistanceReduction).toEqual({fire:59,cold:59,lightning:59})
-    expect(result.appliedEffects).toEqual([expect.objectContaining({sourceId:'weakness',kind:'resistance-reduction',value:59,evidence:'structured-exact'})])
+    expect(result.appliedEffects).toEqual([expect.objectContaining({sourceId:'weakness',kind:'resistance-reduction',value:59,evidence:'structured-exact',durationMs:7400,state:'assumed-active'})])
+  })
+
+  it('wendet die belegte verringerte Fluchwirkung für seltene und einzigartige Ziele an',()=>{
+    const rare=applyBuildEnemyEffects({profile:{...profile,targetRarity:'rare'},setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['fire'],weaponSet:'set-1'})
+    const uniqueTarget=applyBuildEnemyEffects({profile:{...profile,targetRarity:'unique'},setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['fire'],weaponSet:'set-1'})
+    expect(rare.resistanceReduction?.fire).toBe(41.3)
+    expect(uniqueTarget.resistanceReduction?.fire).toBe(29.5)
+    expect(uniqueTarget.appliedEffects?.[0].effectiveValue).toBe(29.5)
   })
 
   it('wählt wegen des normalen Fluchlimits nur den stärksten relevanten Fluch',()=>{
@@ -35,6 +43,27 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.armourBreak).toBe(4918)
     expect(result.appliedEffects).toEqual([expect.objectContaining({sourceId:'breaker',kind:'armour-break',value:4918})])
     expect(result.resistanceReduction).toBeUndefined()
+  })
+
+  it('berechnet Rüstungsbruch-Multiplikator, benötigte Treffer und vollständig gebrochene Rüstung',()=>{
+    const oneHit=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'magic',armour:9000},
+      setups:[setup('breaker','breaker')],skills:[skill('breaker','Armour Breaker')],
+      activeDamageTypes:['physical'],weaponSet:'set-1',
+    })
+    expect(oneHit.armourBreak).toBe(9836)
+    expect(oneHit.hitsToFullyBreakArmour).toBe(1)
+    expect(oneHit.fullyBrokenArmour).toBe(true)
+    expect(oneHit.appliedEffects?.[0]).toMatchObject({durationMs:12000,state:'fully-active'})
+
+    const building=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique',armour:10000},
+      setups:[setup('breaker','breaker')],skills:[skill('breaker','Armour Breaker')],
+      activeDamageTypes:['physical'],weaponSet:'set-1',
+    })
+    expect(building.hitsToFullyBreakArmour).toBe(3)
+    expect(building.fullyBrokenArmour).toBeUndefined()
+    expect(building.appliedEffects?.[0].state).toBe('building')
   })
 
   it('übernimmt nur unbedingte, exakt lesbare Durchdringung aus belegten Baumknoten',()=>{

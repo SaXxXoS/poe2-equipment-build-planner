@@ -1,5 +1,10 @@
 # PoE2 Equipment Build Planner
 
+> **Debuff-Zustände:** Die App berücksichtigt automatisch Zielseltenheit,
+> Fluchwirkzeit, verringerte Fluchwirkung, Rüstungsbruchdauer und – bei
+> bekannter Zielrüstung – vollständig gebrochene Rüstung. Es entstehen keine
+> zusätzlichen Nutzereinstellungen. [Details](docs/BUILD_ASSISTANT_DEBUFF_STATE_STEP_9.md)
+
 > **Automatische Gegnerwirkungen:** Belegte Flüche, Rüstungsbruchwerte und
 > unbedingte Durchdringung aus gewählten Fertigkeiten und vergebenen
 > Baumknoten werden ohne zusätzliche Regler im Gegnervergleich berücksichtigt.

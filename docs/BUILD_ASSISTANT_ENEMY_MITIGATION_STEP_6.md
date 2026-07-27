@@ -64,7 +64,7 @@ deterministisch anhand des bereits vorhandenen Zielprofils:
 - `Boss` → Vergleich für einen anhaltenden Bosskampf.
 
 Die Auswahl ist als `automatic-season-reference` mit der Version
-`poe2-0.4-reference-v1` gekennzeichnet und wird im Ergebnis sichtbar genannt.
+`poe2-0.4-reference-v2` gekennzeichnet und wird im Ergebnis sichtbar genannt.
 Bei gleicher Eingabe wird dasselbe Profil verwendet.
 
 Der belegte Standardwiderstand beträgt null. Ein universeller aktueller

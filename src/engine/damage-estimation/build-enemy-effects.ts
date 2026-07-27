@@ -2,12 +2,14 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition,SkillSetup } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import type { AppliedEnemyMitigationEffect,DamageComponent,EnemyMitigationProfile,EnemyResistanceType } from './types'
+import type { AppliedEnemyMitigationEffect,DamageComponent,EnemyMitigationProfile,EnemyResistanceType,EnemyTargetRarity } from './types'
 
 const elemental:EnemyResistanceType[]=['fire','cold','lightning']
 const skillsByName=new Map(reference.skills.map(skill=>[skill.name.toLocaleLowerCase('en'),skill]))
 const stripMarkup=(value:string)=>value.replace(/\[[^|\]]+\|([^\]]+)\]/g,'$1').replace(/\s+/g,' ').trim()
 const unique=<T>(values:T[])=>[...new Set(values)]
+const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magic'?0.85:rarity==='rare'?0.7:rarity==='unique'?0.5:1
+const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 
 function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'){
   const selected=planning?.weaponSetPlanning?.[weaponSet]??planning?.pipelineResult
@@ -27,18 +29,21 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementarwiderstände`,
       kind:'resistance-reduction',damageTypes:elemental,value:Math.abs(elementalCurse),
       evidence:'structured-exact',sourceReference:'base_skill_buff_all_elements_resistance_%_to_apply',conditional:true,
+      durationMs:Number(numericStats.base_skill_effect_duration)||undefined,state:'assumed-active',
     })
     const chaosCurse=numericStats['base_skill_buff_chaos_damage_resistance_%_to_apply']
     if(Number.isFinite(chaosCurse)&&chaosCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Chaoswiderstand`,
       kind:'resistance-reduction',damageTypes:['chaos'],value:Math.abs(chaosCurse),
       evidence:'structured-exact',sourceReference:'base_skill_buff_chaos_damage_resistance_%_to_apply',conditional:true,
+      durationMs:Number(numericStats.base_skill_effect_duration)||undefined,state:'assumed-active',
     })
     const armourBreak=numericStats.apply_X_armour_break_on_hit
     if(Number.isFinite(armourBreak)&&armourBreak>0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Rüstungsbruch pro Treffer`,
       kind:'armour-break',damageTypes:['physical'],value:armourBreak,
       evidence:'structured-exact',sourceReference:'apply_X_armour_break_on_hit',conditional:true,
+      durationMs:12000,state:'building',
     })
   }
   const curses=candidates.filter(value=>value.kind==='resistance-reduction')
@@ -65,6 +70,7 @@ function passiveEffects(tree:RealPassiveTree|undefined,planning:RealPassivePlann
       effects.push({
         source,sourceId:nodeId,label:text,kind:'penetration',damageTypes,value:Number(match[1]),
         evidence:'text-pattern-exact',sourceReference:stat.sourceText??text,conditional:false,
+        state:'permanent',
       })
     }
   }
@@ -84,22 +90,40 @@ export function applyBuildEnemyEffects(input:{
     ...skillEffects(input.setups,input.skills,input.activeDamageTypes),
     ...passiveEffects(input.passiveTree,input.realPassivePlanning,input.weaponSet),
   ]
+  const rarity=input.profile.targetRarity
+  for(const effect of effects){
+    if(effect.kind==='resistance-reduction'){
+      effect.effectiveValue=Number((effect.value*curseEffectMultiplier(rarity)).toFixed(2))
+      effect.stateDetail=rarity&&rarity!=='normal'?`Auf ${rarity} Gegner angewandte verringerte Fluchwirkung.`:'Volle Fluchwirkung.'
+    }else if(effect.kind==='armour-break'){
+      effect.effectiveValue=effect.value*armourBreakMultiplier(rarity)
+      effect.stateDetail='Der Betrag wird mit weiteren Treffern innerhalb der Wirkzeit aufgebaut.'
+    }else effect.effectiveValue=effect.value
+  }
   const penetration={...(input.profile.penetration??{})}
   const resistanceReduction={...(input.profile.resistanceReduction??{})}
   for(const effect of effects){
-    if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+effect.value
-    if(effect.kind==='resistance-reduction')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))resistanceReduction[type]=Math.max(resistanceReduction[type]??0,effect.value)
+    if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+(effect.effectiveValue??effect.value)
+    if(effect.kind==='resistance-reduction')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))resistanceReduction[type]=Math.max(resistanceReduction[type]??0,effect.effectiveValue??effect.value)
   }
-  const armourBreak=Math.max(input.profile.armourBreak??0,...effects.filter(value=>value.kind==='armour-break').map(value=>value.value))
+  const armourBreak=Math.max(input.profile.armourBreak??0,...effects.filter(value=>value.kind==='armour-break').map(value=>value.effectiveValue??value.value))
+  const hitsToFullyBreakArmour=input.profile.armour&&armourBreak?Math.ceil(input.profile.armour/armourBreak):undefined
+  const fullyBrokenArmour=Boolean(hitsToFullyBreakArmour===1)
+  if(fullyBrokenArmour)for(const effect of effects.filter(value=>value.kind==='armour-break')){
+    effect.state='fully-active'
+    effect.stateDetail='Ein belegter Treffer reicht für vollständig gebrochene Rüstung.'
+  }
   const limitations=[...(input.profile.limitations??[])]
-  if(effects.some(value=>value.kind==='resistance-reduction'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein für den verursachten Schaden relevanter Fluch; Anwendung, Fluchlimit, Gegnerstufe und Wirkzeit werden vorausgesetzt.')
-  if(effects.some(value=>value.kind==='armour-break'))limitations.push('Rüstungsbruch ist als belegter Betrag pro Treffer erfasst; Aufbau, Wirkzeit und vollständig gebrochene Rüstung werden noch nicht zeitlich simuliert.')
+  if(effects.some(value=>value.kind==='resistance-reduction'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; Anwendung während seiner strukturierten Wirkzeit wird für den Vergleich vorausgesetzt.')
+  if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
   return{
     ...input.profile,
     ...(Object.keys(penetration).length?{penetration}:{}),
     ...(Object.keys(resistanceReduction).length?{resistanceReduction}:{}),
     ...(armourBreak?{armourBreak}:{}),
     appliedEffects:effects,
+    ...(hitsToFullyBreakArmour?{hitsToFullyBreakArmour}:{}),
+    ...(fullyBrokenArmour?{fullyBrokenArmour:true}:{}),
     limitations:unique(limitations),
   }
 }

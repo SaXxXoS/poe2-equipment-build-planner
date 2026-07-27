@@ -1,6 +1,7 @@
 export type DamageEstimateStatus = 'available' | 'partial' | 'unavailable'
 export interface DamageComponent { type:'physical'|'fire'|'cold'|'lightning'|'chaos'; minimum:number; maximum:number }
 export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
+export type EnemyTargetRarity='normal'|'magic'|'rare'|'unique'
 export interface AppliedEnemyMitigationEffect {
   source:'skill'|'passive'|'ascendancy'
   sourceId:string
@@ -11,12 +12,17 @@ export interface AppliedEnemyMitigationEffect {
   evidence:'structured-exact'|'text-pattern-exact'
   sourceReference:string
   conditional:boolean
+  durationMs?:number
+  effectiveValue?:number
+  state:'permanent'|'assumed-active'|'building'|'fully-active'
+  stateDetail?:string
 }
 export interface EnemyMitigationProfile {
   id:string
   label:string
   source:'manual-comparison-profile'|'automatic-season-reference'
   sourceVersion?:string
+  targetRarity?:EnemyTargetRarity
   limitations?:string[]
   armour?:number
   armourBreak?:number
@@ -24,6 +30,8 @@ export interface EnemyMitigationProfile {
   penetration?:Partial<Record<EnemyResistanceType,number>>
   resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
   appliedEffects?:AppliedEnemyMitigationEffect[]
+  fullyBrokenArmour?:boolean
+  hitsToFullyBreakArmour?:number
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
 export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }

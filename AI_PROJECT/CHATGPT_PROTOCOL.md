@@ -1,5 +1,23 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Automatisches Debuff-Zustandsmodell – Schritt 9 (2026-07-27)
+
+- Mapping und Allround verwenden automatisch einen seltenen
+  Vergleichsgegner; Boss verwendet einen einzigartigen Gegner.
+- Flüche besitzen ihre strukturierte Wirkzeit von 7,4 Sekunden.
+- Die aktuelle Seltenheitsreduktion der Fluchwirkung wird automatisch
+  angewandt: 15 % weniger auf magischen, 30 % weniger auf seltenen und
+  50 % weniger auf einzigartigen Gegnern.
+- Rüstungsbruch besitzt 12 Sekunden Wirkzeit, wird gegen normale Gegner
+  verdreifacht und gegen magische Gegner verdoppelt.
+- Bei bekannter Zielrüstung werden benötigte Treffer bis vollständig
+  gebrochener Rüstung berechnet.
+- Vollständig gebrochene Rüstung liefert ausschließlich im belegten
+  Vollzustand 20 % mehr physischen Trefferschaden.
+- Ohne Zielrüstung, Expositionsbetrag oder aktiv belegten bedingten Zustand
+  wird kein Wert erfunden.
+- Hauptdokument: `docs/BUILD_ASSISTANT_DEBUFF_STATE_STEP_9.md`.
+
 ## Automatische Gegnerwirkungen – Schritt 8 (2026-07-27)
 
 - Gewählte Fertigkeiten und tatsächlich belegte normale beziehungsweise
@@ -1698,7 +1716,7 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Build-Ablauf wählt anhand des vorhandenen Zielprofils automatisch
   `Allround`, `Mapping` oder `Boss (anhaltender Kampf)`.
 - Die Profile sind deterministisch und als
-  `automatic-season-reference` / `poe2-0.4-reference-v1` versioniert.
+  `automatic-season-reference` / `poe2-0.4-reference-v2` versioniert.
 - Der belegte Standardwiderstand ist null. Nicht allgemein belegte
   Monster- beziehungsweise Bossrüstung wird nicht erfunden.
 - Die nicht numerisch belegte, zeitlich abklingende Boss-Anti-Burst-Reduktion

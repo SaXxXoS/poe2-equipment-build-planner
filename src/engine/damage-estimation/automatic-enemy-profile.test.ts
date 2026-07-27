@@ -16,5 +16,7 @@ describe('automatische Gegnervergleichsprofile',()=>{
     expect(boss.armour).toBeUndefined()
     expect(boss.resistances).toEqual({fire:0,cold:0,lightning:0,chaos:0})
     expect(boss.limitations?.join(' ')).toContain('Anti-Burst')
+    expect(boss.targetRarity).toBe('unique')
+    expect(automaticEnemyProfile('mapping').targetRarity).toBe('rare')
   })
 })

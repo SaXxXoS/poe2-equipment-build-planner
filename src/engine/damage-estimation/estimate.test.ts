@@ -138,4 +138,15 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:-19})
     expect(result.enemyProfile?.appliedEffects?.[0]).toMatchObject({sourceId:'curse',kind:'resistance-reduction'})
   })
+  it('wendet den belegten 20-Prozent-Zustand vollständig gebrochener Rüstung an',()=>{
+    const observed={...weapon('Gezackter Speer'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}
+    const breakerSetup:SkillSetup={id:'breaker',skillId:'breaker',role:'utility',weaponSet:'both',supportGemIds:[]}
+    const result=estimateHitDamage({
+      equipment:[observed],setups:[setup('arrow'),breakerSetup],
+      skills:[skill('arrow','Lightning Arrow'),skill('breaker','Armour Breaker')],
+      enemyProfile:{id:'magic',label:'Magisches Ziel',source:'manual-comparison-profile',targetRarity:'magic',armour:9000},
+    })
+    expect(result.enemyProfile).toMatchObject({fullyBrokenArmour:true,hitsToFullyBreakArmour:1})
+    expect(result.mitigatedComponents?.find(value=>value.type==='physical')?.minimum).toBe(300)
+  })
 })

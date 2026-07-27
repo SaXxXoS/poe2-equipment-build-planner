@@ -16,10 +16,11 @@ export function applyEnemyMitigation(components:DamageComponent[],profile:EnemyM
   const warnings:string[]=[]
   const mitigated=components.map(component=>{
     if(component.type==='physical'){
-      const armour=Math.max(0,finiteNonNegative(profile.armour)-finiteNonNegative(profile.armourBreak))
+      const armour=profile.fullyBrokenArmour?0:Math.max(0,finiteNonNegative(profile.armour)-finiteNonNegative(profile.armourBreak))
       const averageRaw=(component.minimum+component.maximum)/2
       const mitigation=armour>0&&averageRaw>0?Math.min(0.9,armour/(armour+10*averageRaw)):0
-      return{...component,minimum:round(physicalAfterArmour(component.minimum,armour)),maximum:round(physicalAfterArmour(component.maximum,armour)),effectiveDefence:round(armour),mitigationPercent:round(mitigation*100)}
+      const fullyBrokenMultiplier=profile.fullyBrokenArmour?1.2:1
+      return{...component,minimum:round(physicalAfterArmour(component.minimum,armour)*fullyBrokenMultiplier),maximum:round(physicalAfterArmour(component.maximum,armour)*fullyBrokenMultiplier),effectiveDefence:round(armour),mitigationPercent:round(mitigation*100)}
     }
     const resistance=profile.resistances?.[component.type]??0
     const reduction=finiteNonNegative(profile.resistanceReduction?.[component.type])
