@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { supportFamilyKey, type SkillOrigin, type SkillRole, type SkillSetup, type SkillWeaponSet } from '../domain'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
-import { emptySkillSetup } from '../features/skills/initial-state'
+import { DEFAULT_SKILL_SLOT_COUNT, emptySkillSetup } from '../features/skills/initial-state'
 
 const roleLabels: Record<SkillRole, string> = { main: 'Hauptschaden', secondary: 'Zusatzschaden', utility: 'Utility', movement: 'Bewegung', defensive: 'Defensive' }
 const originLabels: Record<SkillOrigin, string> = { manual: 'Manuell gewählt', recommended: 'Von der App empfohlen', ascendancy: 'Durch Aszendenz', equipment: 'Durch Ausrüstung verfügbar' }
@@ -13,7 +13,7 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
   const [supportSearches, setSupportSearches] = useState<Record<string, string>>({})
   const [openSkillPicker, setOpenSkillPicker] = useState<string | null>(null)
   const [openSupportPicker, setOpenSupportPicker] = useState<string | null>(null)
-  const visible = setups.length >= 6 ? setups : [...setups, ...Array.from({ length: 6 - setups.length }, (_, i) => emptySkillSetup(setups.length + i))]
+  const visible = setups.length >= DEFAULT_SKILL_SLOT_COUNT ? setups : [...setups, ...Array.from({ length: DEFAULT_SKILL_SLOT_COUNT - setups.length }, (_, i) => emptySkillSetup(setups.length + i))]
   const update = (id: string, patch: Partial<SkillSetup>) => onChange(visible.map(value => value.id === id ? { ...value, ...patch } : value))
   const chooseSkill = (setupId: string, skillId: string) => {
     update(setupId, { skillId, origin: 'manual', supportGemIds: [] })
@@ -22,14 +22,14 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
   }
 
   return <section id="skills">
-    <div className="section-heading"><div><h2>3. Fertigkeiten und Unterstützungen</h2><p className="muted">Sechs leere Startplätze; weitere Plätze sind optional.</p></div><button aria-label="Fertigkeitsslot hinzufügen" onClick={() => onChange([...visible, emptySkillSetup(visible.length)])}>＋ Slot</button></div>
+    <div className="section-heading"><div><h2>3. Fertigkeiten und Unterstützungen</h2><p className="muted">Neun Startplätze; nicht belegbar zusammenhängende Empfehlungen bleiben leer.</p></div><button aria-label="Fertigkeitsslot hinzufügen" onClick={() => onChange([...visible, emptySkillSetup(visible.length)])}>＋ Slot</button></div>
     <div className="skills-grid">{visible.map((setup, index) => {
       const skill = buildAssistantCandidates.skills.find(item => item.id === setup.skillId)
       const query = searches[setup.id] ?? ''
       const filtered = buildAssistantCandidates.skills.filter(item => `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(query.toLocaleLowerCase('de')))
 
       if (!skill) return <article className="skill-card empty-skill-card" key={setup.id}>
-        <div className="skill-card-head"><span className="skill-art" aria-hidden="true">＋</span><div><h3>Fertigkeit {index + 1}</h3><small>Keine Fertigkeit ausgewählt</small></div>{index >= 6 && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
+        <div className="skill-card-head"><span className="skill-art" aria-hidden="true">＋</span><div><h3>Fertigkeit {index + 1}</h3><small>Keine Fertigkeit ausgewählt</small></div>{index >= DEFAULT_SKILL_SLOT_COUNT && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
         <div className="picker-field">
           <label htmlFor={`skill-search-${setup.id}`}>Fertigkeit suchen</label>
           <input id={`skill-search-${setup.id}`} type="search" value={query} placeholder="Fertigkeit suchen" autoComplete="off" aria-expanded={openSkillPicker === setup.id} aria-controls={`skill-results-${setup.id}`} onFocus={() => setOpenSkillPicker(setup.id)} onClick={() => setOpenSkillPicker(setup.id)} onChange={event => { setSearches({ ...searches, [setup.id]: event.target.value }); setOpenSkillPicker(setup.id) }}/>
@@ -45,7 +45,8 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       }))
       const availableSupports = buildAssistantCandidates.supports.filter(item => skill.recommendedSupportIds?.includes(item.id) && !selectedFamilies.has(supportFamilyKey(item)) && `${item.displayNameDe} ${item.nameEn ?? ''}`.toLocaleLowerCase('de').includes(supportQuery.toLocaleLowerCase('de')))
       return <article className="skill-card populated-skill-card" key={setup.id}>
-        <div className="skill-card-head"><span className="skill-art" aria-hidden="true">{skill.displayNameDe.slice(0, 2)}</span><div><h3>{skill.displayNameDe}</h3><small>{originLabels[setup.origin ?? 'manual']}</small></div>{index >= 6 && !setup.locked && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
+        <div className="skill-card-head"><span className="skill-art" aria-hidden="true">{skill.displayNameDe.slice(0, 2)}</span><div><h3>{skill.displayNameDe}</h3><small>{originLabels[setup.origin ?? 'manual']}</small></div>{index >= DEFAULT_SKILL_SLOT_COUNT && !setup.locked && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
+        {setup.synergyReason && <p className="skill-synergy-reason"><b>Zusammenhang:</b> {setup.synergyReason}</p>}
         <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>
         <div className="form-grid compact"><label>Rolle<select value={setup.role} onChange={event => update(setup.id, { role: event.target.value as SkillRole })}>{Object.entries(roleLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label>Waffenset<select value={setup.weaponSet} onChange={event => update(setup.id, { weaponSet: event.target.value as SkillWeaponSet })}>{Object.entries(setLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label></div>
         <div className="support-editor">

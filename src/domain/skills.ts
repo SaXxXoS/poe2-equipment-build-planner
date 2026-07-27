@@ -83,4 +83,6 @@ export interface SkillSetup {
   origin?: SkillOrigin
   level?: number
   locked?: boolean
+  /** Sichtbare, regelbasierte Begründung einer automatischen Synergiezuordnung. */
+  synergyReason?: string
 }

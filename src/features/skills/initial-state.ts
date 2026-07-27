@@ -8,4 +8,5 @@ export const emptySkillSetup = (index: number): SkillSetup => ({
   supportGemIds: [],
   origin: 'manual',
 })
-export const createEmptySkillSetups = () => Array.from({ length: 6 }, (_, index) => emptySkillSetup(index))
+export const DEFAULT_SKILL_SLOT_COUNT = 9
+export const createEmptySkillSetups = () => Array.from({ length: DEFAULT_SKILL_SLOT_COUNT }, (_, index) => emptySkillSetup(index))

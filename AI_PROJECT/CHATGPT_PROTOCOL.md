@@ -1,5 +1,24 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Zusammenhängende Skill- und Waffensetplanung (2026-07-27)
+
+- Die produktive Oberfläche startet nun mit neun statt sechs Fertigkeitsplätzen.
+- Automatische Buildvorschläge füllen freie Plätze nicht mehr mit lediglich
+  ähnlich bewerteten Schadensfertigkeiten. Ohne belegte Beziehung bleibt ein
+  Platz leer.
+- Eine vorhandene manuelle Hauptfertigkeit bleibt maßgeblich. Die App ergänzt
+  freie Plätze nach der Analyse ausschließlich mit regelbasiert verbundenen
+  Vorbereitungs-, Debuff-, Buff-, Bewegungs- oder Defensivfertigkeiten.
+- Exakt belegtes erstes Kombinationsmodell: `Orb of Storms` wird für Zauber,
+  insbesondere Blitzzauber wie `Spark`, als anhaltende Vorbereitung auf
+  Waffenset 2 geplant; der Hauptschaden bleibt auf Waffenset 1.
+- Skills, Supports und Passive-Spezialisierungen bleiben getrennt berechnet.
+  Ein Hauptskill erbt keine Eigenschaften des Vorbereitungsskills; die
+  gemeinsame Wirkung entsteht über die belegte Ablaufbeziehung.
+- Automatisch ergänzte Karten zeigen eine deutsche Zusammenhangsbegründung.
+- Unverbundene Zweit-Schadensskills erhalten keinen Füllplatz und keinen
+  positiven Synergiebonus.
+
 ## Supportkategorien pro Fertigkeit (2026-07-27)
 
 - Aktuelle PoE2-Regel: Mehrere Exemplare beziehungsweise Stufen derselben

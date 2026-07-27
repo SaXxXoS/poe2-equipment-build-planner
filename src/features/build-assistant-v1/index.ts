@@ -24,14 +24,30 @@ const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
     requiredWeaponTypes: imported.requiredWeaponTypes ?? curated?.requiredWeaponTypes,
     recommendedSupportIds: imported.recommendedSupportIds ?? curated?.recommendedSupportIds,
   }
-}).map(skill => ({
+}).map((skill): SkillGemDefinition => ({
   ...skill,
   damageTypes: skill.tags.filter(tag => damageTags.has(tag)) as SkillGemDefinition['damageTypes'],
   possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility'] : skill.tags.includes('buff') ? ['utility'] : ['main', 'secondary'],
   mappingBase: skill.tags.some(tag => ['projectile', 'area', 'movement'].includes(tag)) ? 65 : 50,
   bossBase: skill.tags.includes('debuff') ? 70 : 55,
   enabled: true,
-}))
+})).map(skill => {
+  if (skill.nameEn === 'Orb of Storms') return {
+    ...skill,
+    possibleRoles: ['utility'] as SkillGemDefinition['possibleRoles'],
+    rotationRoles: ['setup'] as SkillGemDefinition['rotationRoles'],
+    preferredWeaponSet: 'set-2' as const,
+    persistsAfterWeaponSwap: true,
+    durationCategory: 'long' as const,
+    affectsTarget: true,
+  }
+  if (skill.nameEn === 'Spark') return {
+    ...skill,
+    rotationRoles: ['main-damage'] as SkillGemDefinition['rotationRoles'],
+    preferredWeaponSet: 'set-1' as const,
+  }
+  return skill
+})
 
 const curatedSupports = [...supportDefinitions, ...expandedSupportCandidates]
 const curatedSupportByEnglishName = new Map(curatedSupports.filter(item => item.nameEn).map(item => [item.nameEn!.toLocaleLowerCase('en'), item]))
