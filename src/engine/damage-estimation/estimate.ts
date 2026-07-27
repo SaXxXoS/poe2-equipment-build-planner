@@ -6,6 +6,8 @@ import { applyConversions, applyDamageModifiers, collectQuantitativeEffects } fr
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
+import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
+import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
 type NumericSkill=(typeof reference.skills)[number]
@@ -65,13 +67,14 @@ export function estimateHitDamage(input:{
   passiveTree?:RealPassiveTree
   realPassivePlanning?:RealPassivePlanningIntegrationResult
   enemyProfile?:EnemyMitigationProfile
+  rotationAnalysis?:RotationAnalysis
 }):DamageEstimate {
   const setup=input.setups.find(value=>value.role==='main'&&value.skillId)||input.setups.find(value=>value.skillId)
   const skillId=setup?.skillId||input.fallbackSkillId
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.2.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.3.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -110,6 +113,9 @@ export function estimateHitDamage(input:{
   const speedIncrease=quantitative.speedModifiers.reduce((sum,effect)=>sum+effect.percent,0)
   actionsPerSecond*=1+speedIncrease/100
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
+  const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
+  const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
+  const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
   if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
   if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
@@ -127,6 +133,12 @@ export function estimateHitDamage(input:{
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
   const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:average*criticalExpectationMultiplier
   const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
+  const temporalMinimum=temporalComponents.reduce((sum,value)=>sum+value.minimum,0)
+  const temporalMaximum=temporalComponents.reduce((sum,value)=>sum+value.maximum,0)
+  const temporalAverage=(temporalMinimum+temporalMaximum)/2
+  const activeWindowDamagePerSecond=temporal.appliedEffects.length
+    ? temporalAverage*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
+    : undefined
   const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
     profile:input.enemyProfile,setups:input.setups,skills:input.skills,
     activeDamageTypes:components.map(value=>value.type),weaponSet:activeSet,
@@ -136,6 +148,10 @@ export function estimateHitDamage(input:{
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
+  const temporalEnemyMitigation=resolvedEnemyProfile&&temporal.appliedEffects.length?applyEnemyMitigation(temporalComponents,resolvedEnemyProfile):undefined
+  const activeWindowDamagePerSecondAfterMitigation=temporalEnemyMitigation
+    ? temporalEnemyMitigation.average*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
+    : undefined
   return{
     ...base,status:'partial',components,baseComponents,
     stages:[
@@ -143,6 +159,7 @@ export function estimateHitDamage(input:{
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
       {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components:increasedComponents},
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
+      ...(activeWindowDamagePerSecond==null?[]:[{id:'temporal-active-window' as const,label:'Im belegten aktiven Bufffenster',components:temporalComponents,value:round(activeWindowDamagePerSecond)}]),
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
       ...(expectedCriticalHitDamagePerSecond==null?[]:[{id:'critical-expectation' as const,label:'Erwartungswert einschließlich kritischer Treffer',components:[],value:round(expectedCriticalHitDamagePerSecond)}]),
       ...(expectedDamagePerSecondAfterMitigation==null?[]:[{id:'enemy-mitigation' as const,label:`Nach Gegnerabwehr${resolvedEnemyProfile!.fullyBrokenArmour?' im aufrechterhaltbaren Vollzustand':''}: ${resolvedEnemyProfile!.label}`,components:enemyMitigation!.components,value:round(expectedDamagePerSecondAfterMitigation)}]),
@@ -150,15 +167,18 @@ export function estimateHitDamage(input:{
     appliedDamageEffects:quantitative.damageModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSupportEffects:supportEffects.appliedEffects,
+    temporalOffensiveEffects:temporal.effects.map(value=>({sourceId:value.sourceId,label:value.label,kind:value.kind,percent:value.percent,activationTimeMs:value.activationTimeMs,durationMs:value.durationMs,status:value.status,detail:value.detail})),
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
     ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
+    ...(activeWindowDamagePerSecond==null?{}:{activeWindowDamagePerSecond:round(activeWindowDamagePerSecond)}),
+    ...(activeWindowDamagePerSecondAfterMitigation==null?{}:{activeWindowDamagePerSecondAfterMitigation:round(activeWindowDamagePerSecondAfterMitigation)}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','tatsächliche Fluch-Wiederholungsfrequenz ohne Rotationsbeleg','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Buff- und Triggerwirkungen ohne vollständige Aktivierungs- und Zahlenkette','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte','Ailments und Schaden über Zeit','Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

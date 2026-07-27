@@ -42,8 +42,9 @@ export interface EnemyMitigationProfile {
   temporalModelVersion?:string
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
-export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
+export interface DamageCalculationStage { id:'base'|'conversion'|'increased-damage'|'support-more-damage'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
+export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
 export interface DamageEstimate {
   status:DamageEstimateStatus
   skillId?:string
@@ -59,12 +60,15 @@ export interface DamageEstimate {
   mitigatedComponents?:MitigatedDamageComponent[]
   expectedDamageAfterMitigation?:number
   expectedDamagePerSecondAfterMitigation?:number
+  activeWindowDamagePerSecond?:number
+  activeWindowDamagePerSecondAfterMitigation?:number
   baseComponents?:DamageComponent[]
   components:DamageComponent[]
   stages?:DamageCalculationStage[]
   appliedDamageEffects?:AppliedQuantitativeEffect[]
   appliedSpeedEffects?:AppliedQuantitativeEffect[]
   appliedSupportEffects?:AppliedQuantitativeEffect[]
+  temporalOffensiveEffects?:AppliedTemporalOffensiveEffect[]
   confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number

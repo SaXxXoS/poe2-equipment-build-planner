@@ -1,5 +1,23 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Zeitabhängige Offensivwirkungen – Schritt 12 (2026-07-27)
+
+- Betrag, Ziel, Aktivierungsregel und Wirkzeit müssen gemeinsam strukturiert
+  belegt sein; andernfalls bleibt die Wirkung blockiert.
+- Der dauerhafte Vergleichswert bleibt unverändert. Zeitlich begrenzte
+  Wirkungen erscheinen als getrennter Wert „Im belegten Bufffenster“.
+- War Banner liefert einer Angriffshauptfertigkeit im belegten
+  9,8-Sekunden-Fenster 25 % mehr Angriffsschaden und 25 % erhöhte
+  Angriffsgeschwindigkeit; Aktivierungszeit: 0,5 Sekunden.
+- War Banner wirkt nicht auf Zauber.
+- Sigil of Power bleibt numerisch blockiert, weil Bonus pro Stufe vorhanden,
+  erreichte Stufenzahl und Aufbauzeit aber nicht vollständig belegt sind.
+- Defensive Wirkungen und Gegnerwirkungen werden nicht doppelt als
+  Spieler-Offensivbuff gezählt.
+- Modellversion: `1.0.0`; Schadenteilrechner: `2.3.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_TEMPORAL_OFFENSIVE_EFFECTS_STEP_12.md`.
+
 ## Automatisches Zeit- und Aufrechterhaltungsmodell – Schritt 10 (2026-07-27)
 
 - Die berechnete Aktionsfrequenz des Hauptskills wird automatisch mit

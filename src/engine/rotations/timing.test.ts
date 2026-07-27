@@ -30,6 +30,14 @@ describe('belegtes Rotations-Zeitmodell', () => {
   it('übernimmt Wither-Dauer und Aktivierungszeit', () => {
     expect(resolveRotationTiming(skill('Wither'))).toMatchObject({ activationTimeMs: 250, effectDurationMs: 2950, timingStatus: 'windowed' })
   })
+  it('bevorzugt bei gleichnamigen Referenzen den strukturierten War-Banner-Datensatz', () => {
+    expect(resolveRotationTiming(skill('War Banner'))).toMatchObject({
+      activationTimeMs: 500,
+      effectDurationMs: 9800,
+      timingStatus: 'windowed',
+      evidence: 'structured-exact',
+    })
+  })
   it('lässt unbekannte Zeitdaten ungelöst', () => {
     expect(resolveRotationTiming(skill('Nicht vorhandene Fertigkeit'))).toMatchObject({ timingStatus: 'unresolved', evidence: 'unresolved', sourceReferences: [] })
   })

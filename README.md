@@ -1,5 +1,12 @@
 # PoE2 Equipment Build Planner
 
+> **Zeitabhängige Offensivwirkungen:** Vollständig belegte Bufffenster werden
+> automatisch als getrennter Schadenswert ausgewiesen. War Banner wirkt bei
+> Angriffen für 9,8 Sekunden mit seinen strukturierten Schadens- und
+> Geschwindigkeitswerten; unvollständige Ketten wie Sigil of Power ohne
+> belegte Stufenzahl bleiben blockiert.
+> [Details](docs/BUILD_ASSISTANT_TEMPORAL_OFFENSIVE_EFFECTS_STEP_12.md)
+
 > **Automatisches Zeitmodell:** Die Trefferfrequenz des Hauptskills bestimmt
 > jetzt den Aufbau und die Aufrechterhaltbarkeit von Rüstungsbruch. Permanente,
 > zeitlich begrenzte, aufrechterhaltbare und unbekannte Wirkungen werden

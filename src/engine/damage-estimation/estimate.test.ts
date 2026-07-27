@@ -1,5 +1,6 @@
 import { describe,expect,it } from 'vitest'
 import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
+import type { RotationAnalysis } from '../common/types'
 import { estimateHitDamage } from './estimate'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,displayNameDe:nameEn,nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
@@ -152,5 +153,19 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.enemyProfile).toMatchObject({fullyBrokenArmour:true,hitsToFullyBreakArmour:1})
     expect(result.mitigatedComponents?.find(value=>value.type==='physical')?.minimum).toBe(300)
+  })
+  it('weist einen belegten War-Banner-Bonus getrennt als aktives Schadensfenster aus',()=>{
+    const main={...skill('arrow','Lightning Arrow'),tags:['attack'] as SkillGemDefinition['tags']}
+    const banner=skill('banner','War Banner')
+    const observed={...weapon('Gezackter Speer'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}
+    const bannerSetup:SkillSetup={id:'banner-setup',skillId:'banner',role:'utility',weaponSet:'set-1',supportGemIds:[]}
+    const rotationAnalysis={bossRotation:{steps:[{
+      skillId:'banner',activationCondition:'once',
+      timing:{activationTimeMs:500,effectDurationMs:9800,timingStatus:'windowed',evidence:'structured-exact',sourceReferences:['castTime','base_skill_effect_duration'],detail:'Belegt.'},
+    }]}} as unknown as RotationAnalysis
+    const result=estimateHitDamage({equipment:[observed],setups:[setup('arrow'),bannerSetup],skills:[main,banner],rotationAnalysis})
+    expect(result.activeWindowDamagePerSecond).toBeCloseTo(result.hitDamagePerSecond!*1.5625,1)
+    expect(result.temporalOffensiveEffects?.filter(effect=>effect.status==='active-window')).toHaveLength(2)
+    expect(result.stages?.map(stage=>stage.id)).toContain('temporal-active-window')
   })
 })

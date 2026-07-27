@@ -9,7 +9,12 @@ declare module '../common/types' {
 }
 
 export const ROTATION_TIMING_MODEL_VERSION = '1.0.0'
-const byName = new Map(reference.skills.map(skill => [skill.name.toLocaleLowerCase('en'), skill]))
+const byName = new Map<string, (typeof reference.skills)[number]>()
+for (const skill of reference.skills) {
+  const key = skill.name.toLocaleLowerCase('en')
+  const current = byName.get(key)
+  if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) byName.set(key, skill)
+}
 const positive = (value: unknown) => Number.isFinite(Number(value)) && Number(value) > 0 ? Number(value) : undefined
 
 export function resolveRotationTiming(definition: SkillGemDefinition): RotationStepTiming {
