@@ -1518,3 +1518,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Für jede automatisch befüllte Fertigkeitskarte wird die Supportanalyse
   erneut mit genau dieser Fertigkeit als Treiber ausgeführt. Pro Karte werden
   bis zu fünf kompatible Unterstützungen übernommen.
+# Aktueller Zusatz: kombinierte Build-Variantenoptimierung
+
+- Die automatische Buildwahl prüft Klasse/Aszendenz, alle produktiv
+  rankbaren Hauptskills, belegte Waffenarten, Supports, Set-2-Synergien und
+  Tree-Affinitäten als gemeinsame Varianten.
+- Vorhandene Ausrüstung bleibt vorrangig. Ohne Ausrüstung werden keine
+  unbelegten Waffenbindungen erfunden.
+- Nur die gewählte vollständige Variante wird anschließend durch die
+  bestehende reale Passive-Pfadplanung gerechnet; es existiert keine zweite
+  Build- oder Tree-Engine.
+- Die Ergebnisansicht nennt Hauptskill, Waffenempfehlung, Set-2-Ergänzung,
+  geprüfte Kombinationen, Gründe und belegte Alternativen.
+- Mehrere Stufen derselben Supportfamilie werden innerhalb einer Variante
+  dedupliziert.
+- Die Bewertung bleibt eine relative Projektoptimierung und keine Behauptung
+  einer vollständigen Path-of-Building-DPS-Simulation.

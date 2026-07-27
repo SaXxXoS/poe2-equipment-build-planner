@@ -6,6 +6,7 @@ import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import type { PassivePlanPresentation } from '../features/real-passive-analysis'
 import { technicalAffixById } from '../affixes/registry'
 import { affixDisplayName } from '../features/equipment-editor/affix-display'
+import type { BuildVariantOptimization } from '../features/skills/build-variant-optimizer'
 
 const confidenceText: Record<Confidence, string> = { high: 'Hohe Sicherheit', medium: 'Mittlere Sicherheit', low: 'Niedrige Sicherheit' }
 const goalText = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
@@ -75,10 +76,11 @@ function ProfileRecommendations({ title, supports, passives, jewels, uniques }: 
   </div>
 }
 
-export function BuildAssistantResultSection({ analysis, equipment, passivePlan, onShowPassivePlan }: {
+export function BuildAssistantResultSection({ analysis, equipment, passivePlan, variantOptimization, onShowPassivePlan }: {
   analysis: BuildAnalysis
   equipment: EquipmentEntry[]
   passivePlan?: PassivePlanPresentation
+  variantOptimization?: BuildVariantOptimization | null
   onShowPassivePlan?: () => void
 }) {
   const desiredSkillId = analysis.supportAnalysis.allCandidates[0]?.skillId ?? analysis.skillAnalysis.topMainCandidates[0]?.skillId
@@ -141,6 +143,21 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
       <div><dt>Stärke</dt><dd>{dominantDamage ? `Klarster Schwerpunkt: ${damageText[dominantDamage]}` : 'Noch kein klarer Schwerpunkt'}</dd></div>
       <div><dt>Schwäche</dt><dd>{emptySlots.length ? `${emptySlots.length} leere Slots begrenzen die Aussagekraft` : analysis.warnings.length ? `${analysis.warnings.length} Konflikte oder Warnungen` : 'Keine deutliche Schwäche erkannt'}</dd></div>
     </dl></article>
+    <details open><summary>Optimierte Waffen- und Fertigkeitskombination</summary><div className="result-panel">
+      {variantOptimization?.selected ? <>
+        <h3>Beste belegte Kombination im lokalen Datenbestand</h3>
+        <dl className="summary-grid">
+          <div><dt>Hauptfertigkeit</dt><dd>{definitionName(variantOptimization.selected.skillId)}</dd></div>
+          <div><dt>Waffe</dt><dd>{variantOptimization.selected.weaponLabel}</dd></div>
+          <div><dt>Haupt-Waffenset</dt><dd>{variantOptimization.selected.mainWeaponSet === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dd></div>
+          <div><dt>Set-2-Setup</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
+        </dl>
+        <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>
+        <ul>{variantOptimization.selected.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul>
+        {variantOptimization.alternatives.length > 0 && <><h4>Belegte Alternativen</h4><ol>{variantOptimization.alternatives.slice(0, 3).map(candidate => <li key={`${candidate.skillId}-${candidate.weaponType}`}><b>{definitionName(candidate.skillId)}</b> mit {candidate.weaponLabel} · Variantenwert {candidate.totalScore}</li>)}</ol></>}
+        <p className="muted">Die Auswahl ist eine deterministische Optimierung aus vorhandenen Skill-, Waffen-, Support-, Aszendenz- und Tree-Signalen. Sie behauptet keine vollständige Path-of-Building-DPS-Simulation; der tatsächlich berechnete Passive-Pfad bleibt die abschließende Pfadprüfung.</p>
+      </> : <p>Keine vollständig kompatible und belegte Skill-Waffen-Kombination gefunden. Unbekannte Zusammenhänge wurden nicht erfunden.</p>}
+    </div></details>
     <details open><summary>Schaden und Build-Vergleich</summary><div className="result-panel damage-estimate">
       {analysis.damageEstimate?.status==='unavailable'?<><h3>Numerischer Schaden: nicht verfügbar</h3><p>{analysis.damageEstimate.warnings.join(' ')}</p></>:<>
         <h3>Berechenbarer Trefferschaden · {analysis.damageEstimate?.skillName??'Hauptfertigkeit'}</h3>

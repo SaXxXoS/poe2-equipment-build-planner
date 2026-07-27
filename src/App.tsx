@@ -12,6 +12,7 @@ import { removeDuplicateSupportFamilies } from './features/skills/support-select
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
+import { optimizeBuildVariants, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
@@ -25,6 +26,7 @@ export default function App() {
   const [equipment, setEquipment] = useState(() => initial?.equipment ?? initialEquipment)
   const [setups, setSetups] = useState(() => removeDuplicateSupportFamilies(initial?.setups ?? createEmptySkillSetups(), buildAssistantCandidates.supports))
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
+  const [variantOptimization, setVariantOptimization] = useState<BuildVariantOptimization | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])
   const [passivePlan, setPassivePlan] = useState<PassivePlanPresentation>({ results: { shared: null, 'set-1': null, 'set-2': null, ascendancy: null }, status: 'uninitialized' })
@@ -41,6 +43,7 @@ export default function App() {
   }, [character, equipment, setups])
   function invalidateResult() {
     setAnalysis(null)
+    setVariantOptimization(null)
     setCalculationState('idle')
     setCalculationErrors([])
   }
@@ -71,7 +74,17 @@ export default function App() {
             ...result.skillAnalysis.eligibleCandidates.filter(value => value.possibleRoles.includes('main')),
             ...result.skillAnalysis.allCandidates.filter(value => value.possibleRoles.includes('main')),
           ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
-          const recommendation = selectAutomaticMainSkill({
+          const optimization = optimizeBuildVariants({
+            classId: character.classId,
+            ascendancyId: character.ascendancyId,
+            equipment,
+            setups: preparedSetups,
+            skills: buildAssistantCandidates.skills,
+            supports: buildAssistantCandidates.supports,
+            skillScores: result.skillAnalysis.allCandidates,
+          })
+          setVariantOptimization(optimization)
+          const recommendation = mainCandidates.find(value => value.skillId === optimization.selected?.skillId) ?? selectAutomaticMainSkill({
             candidates: mainCandidates,
             definitions: buildAssistantCandidates.skills,
             equipment,
@@ -81,7 +94,9 @@ export default function App() {
           })
           if (recommendation) {
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
-            const provisionalSetups = preparedSetups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
+            const preferredWeaponSet = optimization.selected?.mainWeaponSet
+              ?? (recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet)
+            const provisionalSetups = preparedSetups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
             const provisionalResult = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: provisionalSetups })
             const rankedSkills = [
               recommendation,
@@ -100,6 +115,10 @@ export default function App() {
               rankedSkills,
               provisionalSetups.length - 1,
             ) : []
+            if (optimization.selected?.setupSkillId) {
+              const selectedSetupIndex = skillQueue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
+              if (selectedSetupIndex > 0) skillQueue.unshift(...skillQueue.splice(selectedSetupIndex, 1))
+            }
             const populatedSetups = assignRecommendedWeaponSets(provisionalSetups.map(value => {
               if (value.skillId) return value
               const candidate = skillQueue.shift()
@@ -141,6 +160,17 @@ export default function App() {
           if (mainSetup && mainDefinition) {
             const scores = [...result.skillAnalysis.eligibleCandidates, ...result.skillAnalysis.allCandidates]
               .filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
+            setVariantOptimization(optimizeBuildVariants({
+              classId: character.classId,
+              ascendancyId: character.ascendancyId,
+              equipment,
+              setups: preparedSetups,
+              skills: buildAssistantCandidates.skills,
+              supports: buildAssistantCandidates.supports,
+              skillScores: scores.map(value => value.skillId === mainDefinition.id
+                ? value
+                : { ...value, valid: false }),
+            }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length)
               .filter(value => !existingIds.has(value.skillId))
@@ -246,7 +276,7 @@ export default function App() {
         <button className="calculate-btn" disabled={calculationState === 'running'} onClick={calculate}>{calculationState === 'running' ? 'Berechnung läuft …' : 'Build-Vorschlag erstellen'}</button>
         <p className="calculation-status" aria-live="polite">{calculationState === 'completed' ? 'Ergebnis vorhanden' : calculationState === 'error' ? 'Fehler bei der Berechnung' : calculationState === 'running' ? 'Analyzer werden ausgeführt' : 'Bereit zur Auswertung'}</p>
       </section>
-      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment} passivePlan={passivePlan} onShowPassivePlan={showPassivePlan}/>}
+      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment} passivePlan={passivePlan} variantOptimization={variantOptimization} onShowPassivePlan={showPassivePlan}/>}
     </main>
     <footer>Lokale, deterministische Build-Auswertung · Keine Runtime-Verbindung zu externen Datenquellen</footer>
   </>
