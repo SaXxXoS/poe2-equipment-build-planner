@@ -10,6 +10,7 @@ import { createInitialCharacterConfiguration } from '../features/character/initi
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
 import { AffixDialog, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
+import { itemSupportsDefenceValues } from '../features/equipment-editor/item-stat-fields'
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
 describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
@@ -94,5 +95,10 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     const weapon=initialEquipment.find(value=>value.slotId==='slot-weapon-set-1-left')!
     const html=renderToStaticMarkup(<AffixDialog entry={weapon} slotName="Waffe Set 1 links" onSave={()=>undefined} onClose={()=>undefined}/>)
     expect(html).toContain('weapon-item-editor')
+    expect(itemSupportsDefenceValues('Bows')).toBe(false)
+    expect(itemSupportsDefenceValues('Wands')).toBe(false)
+    expect(itemSupportsDefenceValues(undefined,'spear')).toBe(false)
+    expect(itemSupportsDefenceValues('Body Armours')).toBe(true)
+    expect(itemSupportsDefenceValues(undefined,'shield')).toBe(true)
   })
 })

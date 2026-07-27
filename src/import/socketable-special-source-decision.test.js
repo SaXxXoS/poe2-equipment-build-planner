@@ -102,8 +102,9 @@ describe('5M.1B.0C Approval-Entscheidung', () => {
 const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
   '../../src/affixes/registry.ts': '8fb686c14f5e69bb69067d143d030059ee079863bb54b2c59fbbd2ade0aa6ef0',
-  // V1.3 explicitly authorizes the backwards-compatible equipment editor expansion.
-  '../../src/components/AffixDialog.tsx': '05ed2a0be0e163d474f24baaab798a48ec088f38395aeab72e1ba0a123b8f4d9',
+  // V1.3 authorizes the editor expansion; the later item-type correction keeps
+  // defensive totals out of weapon and jewellery editors.
+  '../../src/components/AffixDialog.tsx': '93bb5eb54580a52a631d5dfdbada09ea087fe1be5ad3294646a2d7da7af46fde',
   '../../src/engine/common/types.ts': 'd8f4d897da619e090b7c8ff2f297753105b9e7b6cda4d447a0cd5c301ebc12a3',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': '3b6a09e06f765f0e183715344ffe823f078f3439475943a8e56868f4dc3051f8',

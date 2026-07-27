@@ -11,6 +11,7 @@ import { createEmptySkillSetups } from './features/skills/initial-state'
 import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
+import { fillRecommendedSupportSlots } from './features/skills/automatic-supports'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
 import { optimizeBuildVariants, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
@@ -64,6 +65,19 @@ export default function App() {
     if (errors.length) return
     setCalculationState('running')
     try {
+        const addRecommendedSupports = (setupsToFill:typeof setups, characterForAnalysis:CharacterConfiguration) => setupsToFill.map(value => {
+          if (!value.skillId) return value
+          const skillResult = runBuildAssistantV1({
+            character: { ...characterForAnalysis, desiredMainSkillId: value.skillId },
+            equipment,
+            setups: setupsToFill,
+          })
+          return fillRecommendedSupportSlots(
+            value,
+            skillResult.supportAnalysis.topCandidates,
+            buildAssistantCandidates.supports,
+          )
+        })
         let result = runBuildAssistantV1(input)
         let effectiveSetups = preparedSetups
         let effectiveCharacter = character
@@ -133,21 +147,7 @@ export default function App() {
                 synergyReason: candidate.reason,
               }
             }))
-            const nextSetups = populatedSetups.map(value => {
-              if (!value.skillId) return value
-              const skillResult = runBuildAssistantV1({
-                character: { ...effectiveCharacter, desiredMainSkillId: value.skillId },
-                equipment,
-                setups: populatedSetups,
-              })
-              return {
-                ...value,
-                supportGemIds: skillResult.supportAnalysis.topCandidates
-                  .filter(candidate => candidate.skillId === value.skillId)
-                  .slice(0, 5)
-                  .map(candidate => candidate.supportId),
-              }
-            })
+            const nextSetups = addRecommendedSupports(populatedSetups, effectiveCharacter)
             effectiveSetups = nextSetups
             setSetups(nextSetups)
             setCharacter(effectiveCharacter)
@@ -187,22 +187,9 @@ export default function App() {
                 synergyReason: candidate.reason,
               } : value
             })
-            if (populated.some((value, index) => value.skillId !== preparedSetups[index].skillId)) {
-              effectiveSetups = populated.map(value => {
-                if (!value.skillId || value.origin !== 'recommended') return value
-                const skillResult = runBuildAssistantV1({
-                  character: { ...effectiveCharacter, desiredMainSkillId: value.skillId },
-                  equipment,
-                  setups: populated,
-                })
-                return {
-                  ...value,
-                  supportGemIds: skillResult.supportAnalysis.topCandidates
-                    .filter(candidate => candidate.skillId === value.skillId)
-                    .slice(0, 5)
-                    .map(candidate => candidate.supportId),
-                }
-              })
+            const populatedWithSupports = addRecommendedSupports(populated, effectiveCharacter)
+            if (populatedWithSupports.some((value, index) => value !== preparedSetups[index])) {
+              effectiveSetups = populatedWithSupports
               setSetups(effectiveSetups)
               result = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: effectiveSetups })
             }
