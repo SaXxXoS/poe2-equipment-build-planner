@@ -1400,9 +1400,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   diese Überlappung jetzt gelb als „in beiden Waffensets aktiv“ gezeichnet.
   Zuvor lag die grüne Ebene über der roten Ebene und ließ Set 1 fälschlich
   verschwinden.
-- Rot und Grün werden ausschließlich für tatsächlich voneinander
-  abweichende Set-Belegungen verwendet. Ohne set-spezifische Ausrüstung oder
-  Skill-Evidenz erfindet die App keine künstliche Abweichung.
+- Rot und Grün werden ausschließlich für voneinander abweichende
+  Set-Belegungen verwendet. Ohne set-spezifische Ausrüstung erzeugt die App
+  zwei deterministische, getrennte schadensorientierte Alternativpfade; ein
+  bereits für Set 1 gewähltes Ziel wird bei der Zielauswahl für Set 2
+  ausgeschlossen. Das ist eine Aufbauempfehlung, keine Behauptung einer
+  bereits vorhandenen Ausrüstungsskalierung.
 - Die Planverbindungen aller vier Ebenen besitzen jetzt eine explizite,
   deutlich stärkere Strichbreite. Dadurch ist auch der violette
   Aszendenzpfad im verkleinerten eingebetteten Aszendenzbaum sichtbar.
@@ -1439,3 +1442,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Dadurch kann die vollständige Analyse nach einem einzigen Knopfdruck
   Skillkarten, Supports, normale Pfade, Waffensetpfade und Aszendenzpfad
   zusammen erzeugen.
+
+# Vollständige Vorschlagsbefüllung ohne Ausrüstung
+
+- Die Analyse erzeugt nun auch ohne Ausrüstung beide Waffensetpläne. Bei 24
+  eingestellten Set-Punkten weist die Ergebnisansicht ausdrücklich
+  `Waffenset 1: 24/24` und `Waffenset 2: 24/24` aus.
+- Für Geistwandlerin (`Huntress2`) und Sturmweberin (`Sorceress1`) ist gegen
+  den gepinnten offiziellen Baum geprüft, dass alle acht angeforderten
+  Aszendenzpunkte belegt und ausschließlich im jeweiligen Aszendenzbaum
+  gezeichnet werden.
+- Ist beim Start keine Fertigkeit gewählt, werden nach der Analyse alle sechs
+  Startkarten deterministisch befüllt. Die erste Karte bleibt der
+  schadensorientierte Hauptskill; weitere Karten verwenden kompatible
+  Schadensarten oder belegte Buff-, Debuff-, Bewegungs- und
+  Defensivfunktionen.
+- Für jede automatisch befüllte Fertigkeitskarte wird die Supportanalyse
+  erneut mit genau dieser Fertigkeit als Treiber ausgeführt. Pro Karte werden
+  bis zu fünf kompatible Unterstützungen übernommen.

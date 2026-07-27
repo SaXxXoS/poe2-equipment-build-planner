@@ -75,8 +75,66 @@ export default function App() {
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
             const provisionalSetups = setups.map((value, index) => index === 0 ? { ...value, skillId: recommendation.skillId, role: 'main' as const, weaponSet: recommendation.preferredWeaponSet === 'none' ? 'both' as const : recommendation.preferredWeaponSet, origin: 'recommended' as const, supportGemIds: [] } : value)
             const provisionalResult = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: provisionalSetups })
-            const recommendedSupports = provisionalResult.supportAnalysis.topCandidates.filter(value => value.skillId === recommendation.skillId).slice(0, 5).map(value => value.supportId)
-            const nextSetups = provisionalSetups.map((value, index) => index === 0 ? { ...value, supportGemIds: recommendedSupports } : value)
+            const rankedSkills = [
+              recommendation,
+              ...provisionalResult.skillAnalysis.eligibleCandidates,
+              ...provisionalResult.skillAnalysis.allCandidates.filter(value => value.valid),
+            ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
+            const mainDefinition = buildAssistantCandidates.skills.find(value => value.id === recommendation.skillId)
+            const mainDamageTypes = new Set(mainDefinition?.damageTypes ?? [])
+            const compatibleDefinitions = buildAssistantCandidates.skills.filter(definition => {
+              if (definition.enabled === false || definition.id === recommendation.skillId) return false
+              if (definition.requiredClassId && definition.requiredClassId !== character.classId) return false
+              if (definition.excludedClassIds?.includes(character.classId)) return false
+              if (definition.allowedAscendancyIds?.length && !definition.allowedAscendancyIds.includes(character.ascendancyId)) return false
+              if (definition.excludedAscendancyIds?.includes(character.ascendancyId)) return false
+              const auxiliary = definition.tags.some(tag => ['buff', 'debuff', 'defensive', 'movement'].includes(tag))
+              return auxiliary || !mainDamageTypes.size || definition.damageTypes?.some(type => mainDamageTypes.has(type))
+            })
+            const rankedSkillIds = new Set(rankedSkills.map(value => value.skillId))
+            const skillQueue = [
+              ...rankedSkills.slice(1).map(candidate => ({
+                skillId: candidate.skillId,
+                role: candidate.recommendedRole === 'main' ? 'secondary' as const : candidate.recommendedRole,
+                weaponSet: candidate.preferredWeaponSet === 'none' ? 'both' as const : candidate.preferredWeaponSet,
+              })),
+              ...compatibleDefinitions.filter(definition => !rankedSkillIds.has(definition.id)).map(definition => ({
+                skillId: definition.id,
+                role: definition.tags.includes('movement') ? 'movement' as const
+                  : definition.tags.includes('defensive') ? 'defensive' as const
+                    : definition.tags.some(tag => ['buff', 'debuff'].includes(tag)) ? 'utility' as const
+                      : 'secondary' as const,
+                weaponSet: definition.preferredWeaponSet ?? 'both' as const,
+              })),
+            ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
+            const populatedSetups = provisionalSetups.map(value => {
+              if (value.skillId) return value
+              const candidate = skillQueue.shift()
+              if (!candidate) return value
+              return {
+                ...value,
+                skillId: candidate.skillId,
+                role: candidate.role,
+                weaponSet: candidate.weaponSet,
+                origin: 'recommended' as const,
+                supportGemIds: [],
+              }
+            })
+            const nextSetups = populatedSetups.map(value => {
+              if (!value.skillId) return value
+              const skillResult = runBuildAssistantV1({
+                character: { ...effectiveCharacter, desiredMainSkillId: value.skillId },
+                equipment,
+                setups: populatedSetups,
+              })
+              return {
+                ...value,
+                supportGemIds: skillResult.supportAnalysis.topCandidates
+                  .filter(candidate => candidate.skillId === value.skillId)
+                  .slice(0, 5)
+                  .map(candidate => candidate.supportId),
+              }
+            })
             effectiveSetups = nextSetups
             setSetups(nextSetups)
             setCharacter(effectiveCharacter)
