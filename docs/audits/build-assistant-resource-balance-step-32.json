@@ -1,0 +1,30 @@
+{
+  "step": 32,
+  "scope": "build-assistant-resource-balance",
+  "status": "implemented",
+  "display": {
+    "perSkill": [
+      "base-cost",
+      "support-adjusted-cost",
+      "resource-adjusted-cost",
+      "action-frequency",
+      "mana-demand-per-second",
+      "effective-minimum-mana",
+      "effective-mana-regeneration",
+      "support-cost-factor",
+      "passive-ascendancy-cost-factor",
+      "confirmed-spirit-contribution",
+      "sustain-status"
+    ],
+    "perWeaponSet": [
+      "planning-spirit-capacity",
+      "effective-spirit-reservation",
+      "remaining-spirit"
+    ]
+  },
+  "unknownPolicy": "visible-fail-closed",
+  "newDataSource": false,
+  "newUserSetting": false,
+  "runtimeNetwork": false,
+  "nextStep": 33
+}

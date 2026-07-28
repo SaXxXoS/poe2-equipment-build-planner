@@ -1,5 +1,26 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Ressourcenbilanz je Fertigkeit und Waffenset – Schritt 32 (2026-07-28)
+
+- Die Ergebnisansicht zeigt die belegte Ressourcenbilanz jetzt getrennt je
+  Fertigkeitssetup und Waffenset.
+- Sichtbar sind Kosten pro Nutzung beziehungsweise Sekunde, Aktionsfrequenz,
+  Mana-Bedarf pro Sekunde, bestätigter Mindestpool, Regeneration,
+  Support-Kostenfaktor sowie der Kostenfaktor aus vergebenem Passivbaum und
+  Aszendenz.
+- Geistkapazität, Reservierung und verbleibender Geist werden getrennt für
+  Waffenset 1 und Waffenset 2 ausgewiesen.
+- Levelbasierter Quest-Geist bleibt sichtbar als Planungsschätzung markiert.
+- Fehlende Kostenketten, Frequenzen, Pools oder Reservierungen bleiben
+  `Unbekannt`; es werden keine Werte ergänzt oder geschätzt.
+- Keine neue Datenquelle, Nutzereinstellung oder Runtime-Netzwerkabhängigkeit.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_RESOURCE_BALANCE_STEP_32.md`.
+- Audit:
+  `docs/audits/build-assistant-resource-balance-step-32.json`.
+- Nächster Schritt: direkter Ressourcen-Vorher-/Nachher-Vergleich der
+  geprüften Buildvarianten.
+
 ## Passive-, Aszendenz- und Waffenset-Ressourcen – Schritt 26 (2026-07-28)
 
 - Ausgangscommit: `7e2f587bd9575de653a36a72fffe68f8dab4bd66`.
