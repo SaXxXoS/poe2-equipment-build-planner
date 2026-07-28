@@ -5,8 +5,8 @@ import { resolveResourceSpiritModel } from './resource-spirit-model'
 const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   id, nameEn, displayNameDe: nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
 })
-const setup = (skillId: string, supportGemIds: string[] = []): SkillSetup => ({
-  id: skillId, skillId, role: 'main', weaponSet: 'both', supportGemIds,
+const setup = (skillId: string, supportGemIds: string[] = [], weaponSet: SkillSetup['weaponSet'] = 'both'): SkillSetup => ({
+  id: skillId, skillId, role: 'main', weaponSet, supportGemIds,
 })
 
 describe('fail-closed Ressourcen- und Geistmodell', () => {
@@ -67,7 +67,7 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       baseCostStatus: 'structured-exact-level-20',
       supportMultiplierStatus: 'structured-exact-no-supports',
       combinedSupportMultiplier: 1,
-      baseCosts: [{ resource: 'mana', cadence: 'per-use', baseAmount: 81, supportAdjustedAmount: 81, sourceResource: 'Mana' }],
+      baseCosts: [{ resource: 'mana', cadence: 'per-use', baseAmount: 81, supportAdjustedAmount: 81, resourceAdjustedAmount: 81, sourceResource: 'Mana' }],
       poolStatus: 'blocked-missing-character-level',
       sustainStatus: 'blocked-missing-character-level',
     })])
@@ -140,6 +140,110 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       sustainStatus: 'blocked-missing-exact-cost-chain',
     })
     expect(model.exactSkillCostsKnown).toBe(false)
+  })
+  it('wendet unbedingte Mana- und Kostenwirkungen vergebener Passive exakt an', () => {
+    const definition = skill('arc', 'Arc')
+    const passiveTree = {
+      metadata: { releaseTag: 'test' },
+      connections: [],
+      nodes: [
+        { id: 'flat', stats: [{ sourceText: '+30 to maximum Mana' }], ascendancyId: null },
+        { id: 'maximum', stats: [{ sourceText: '20% increased maximum Mana' }], ascendancyId: null },
+        { id: 'regen', stats: [{ sourceText: '25% increased Mana Regeneration Rate' }], ascendancyId: null },
+        { id: 'cost', stats: [{ sourceText: '10% increased Mana Cost of Skills' }], ascendancyId: null },
+      ],
+    } as never
+    const realPassivePlanning = {
+      pipelineResult: { allocatedNodeIds: ['flat', 'maximum', 'regen', 'cost'] },
+      ascendancyPlanning: { allocatedNodeIds: [] },
+    } as never
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+      passiveTree,
+      realPassivePlanning,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      effectiveManaPool: 660,
+      effectiveManaRegenerationPerSecond: 33,
+      combinedResourceCostMultiplier: 1.1,
+      manaDemandPerSecond: 80.91,
+      poolStatus: 'confirmed-pool-with-passive-effects',
+      baseCosts: [{ supportAdjustedAmount: 81, resourceAdjustedAmount: 89 }],
+    })
+    expect(model.skillCostChains[0].passiveResourceEffects).toHaveLength(4)
+  })
+  it('trennt Waffenset-Passive und verbindet Aszendenzwirkungen mit beiden Sets', () => {
+    const definition = skill('arc', 'Arc')
+    const passiveTree = {
+      metadata: { releaseTag: 'test' },
+      connections: [],
+      nodes: [
+        { id: 'shared', stats: [{ sourceText: '+20 to maximum Mana' }], ascendancyId: null },
+        { id: 'set-1', stats: [{ sourceText: '20% increased Mana Regeneration Rate' }], ascendancyId: null },
+        { id: 'set-2', stats: [{ sourceText: '15% increased Mana Cost of Skills' }], ascendancyId: null },
+        { id: 'asc', stats: [{ sourceText: '+10 to Spirit' }], ascendancyId: 'Stormweaver' },
+      ],
+    } as never
+    const realPassivePlanning = {
+      pipelineResult: { allocatedNodeIds: ['shared'] },
+      weaponSetPlanning: {
+        set1: { allocatedNodeIds: ['shared', 'set-1'] },
+        set2: { allocatedNodeIds: ['shared', 'set-2'] },
+      },
+      ascendancyPlanning: { allocatedNodeIds: ['asc'] },
+    } as never
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id, [], 'set-1'), { ...setup(definition.id, [], 'set-2'), id: 'arc-set-2' }],
+      skills: [definition],
+      supports: [],
+      passiveTree,
+      realPassivePlanning,
+    })
+    expect(model.skillCostChains[0].passiveResourceEffects.map(effect => effect.sourceNodeId)).toEqual(['asc', 'set-1', 'shared'])
+    expect(model.skillCostChains[1].passiveResourceEffects.map(effect => effect.sourceNodeId)).toEqual(['asc', 'set-2', 'shared'])
+    expect(model.skillCostChains[0].combinedResourceCostMultiplier).toBe(1)
+    expect(model.skillCostChains[1].combinedResourceCostMultiplier).toBe(1.15)
+  })
+  it('ignoriert bedingte Ressourcenwirkungen weiterhin fail-closed', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [{ id: 'conditional', stats: [{ sourceText: '25% increased Mana Regeneration Rate if you have Shocked an Enemy Recently' }], ascendancyId: null }],
+      } as never,
+      realPassivePlanning: { pipelineResult: { allocatedNodeIds: ['conditional'] }, ascendancyPlanning: { allocatedNodeIds: [] } } as never,
+    })
+    expect(model.skillCostChains[0].passiveResourceEffects).toEqual([])
+    expect(model.skillCostChains[0].effectiveManaRegenerationPerSecond).toBe(20.8)
+  })
+  it('blockiert eine Manafertigkeit bei einem vergebenen Knoten mit bestätigt null Mana', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [{ id: 'blood-magic', stats: [{ sourceText: 'You have no Mana' }], ascendancyId: null }],
+      } as never,
+      realPassivePlanning: { pipelineResult: { allocatedNodeIds: ['blood-magic'] }, ascendancyPlanning: { allocatedNodeIds: [] } } as never,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      effectiveManaPool: 0,
+      effectiveManaRegenerationPerSecond: 0,
+      sustainStatus: 'unusable-confirmed-zero-mana',
+    })
   })
   it('ignoriert ähnlich benannte, aber nicht freigegebene Ressourcen-Stat-IDs', () => {
     const definition = skill('arc', 'Arc')

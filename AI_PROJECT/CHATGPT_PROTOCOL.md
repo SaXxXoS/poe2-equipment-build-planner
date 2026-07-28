@@ -1,5 +1,29 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Passive-, Aszendenz- und Waffenset-Ressourcen – Schritt 26 (2026-07-28)
+
+- Ausgangscommit: `7e2f587bd9575de653a36a72fffe68f8dab4bd66`.
+- Tatsächlich vergebene gemeinsame, set-spezifische und Aszendenzknoten
+  speisen die Ressourcenbilanz automatisch.
+- Set 1 verwendet gemeinsam + Set 1 + Aszendenz; Set 2 verwendet gemeinsam +
+  Set 2 + Aszendenz; `Beide` verwendet gemeinsam + Aszendenz.
+- Exakt verarbeitet werden unbedingtes maximales Mana, Manaregeneration,
+  Manakosten und Geist. 95 enge Quellmuster sind im gepinnten Baum vorhanden,
+  davon 14 auf Aszendenzknoten.
+- Bedingungen, freie Ähnlichkeit, Mana-Kosteneffizienz ohne geschlossene
+  Formel und unvollständige Geistreservierung bleiben blockiert.
+- `You have no Mana` blockiert bestätigte Manafertigkeiten; aus einem bloßen
+  konservativen Mindestdefizit wird kein endgültiges negatives Urteil
+  erfunden.
+- Keine neue Nutzereinstellung, Datenquelle oder Runtime-Netzwerkabhängigkeit.
+- Ressourcenmodell `5.0.0`, Schadensrechner `3.5.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_RESOURCE_EFFECTS_STEP_26.md`.
+- Audit:
+  `docs/audits/build-assistant-passive-resource-effects-step-26.json`.
+- Nächster Schritt: Mana-Kosteneffizienz, Geistgrundkapazität und konkrete
+  Reservierungsbeträge schließen.
+
 ## Automatisches Ladungszustandsmodell – Schritt 14 (2026-07-27)
 
 - Power-, Frenzy- und Endurance-Charge-Zustände werden getrennt und

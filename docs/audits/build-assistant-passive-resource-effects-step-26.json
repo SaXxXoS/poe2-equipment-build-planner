@@ -1,0 +1,36 @@
+{
+  "task": "build-assistant-passive-resource-effects-step-26",
+  "sourceTree": "generated/poe2-tree/tree.json",
+  "sourcePinsChanged": false,
+  "newDataSource": false,
+  "runtimeNetwork": false,
+  "resourceModelVersion": "5.0.0",
+  "damageCalculatorVersion": "3.5.0",
+  "exactSourcePatternCount": 95,
+  "exactAscendancySourcePatternCount": 14,
+  "patternCoverage": {
+    "flatMana": 3,
+    "flatSpirit": 1,
+    "manaCostIncreased": 3,
+    "manaRegenerationIncreased": 73,
+    "maximumManaIncreased": 6,
+    "maximumManaLess": 1,
+    "maximumManaReduced": 4,
+    "noInherentManaRegeneration": 1,
+    "spiritPercent": 3
+  },
+  "weaponSetHandling": {
+    "set1": "shared-plus-set1-plus-ascendancy",
+    "set2": "shared-plus-set2-plus-ascendancy",
+    "both": "shared-plus-ascendancy"
+  },
+  "blockedMethods": [
+    "conditional-state-assumption",
+    "fuzzy-text-matching",
+    "mana-cost-efficiency-without-closed-formula",
+    "spirit-reservation-without-capacity-and-amount",
+    "negative-sustain-claim-from-conservative-minimum-only"
+  ],
+  "decision": "productive-for-exact-unconditional-allocated-effects",
+  "nextTask": "step-27-cost-efficiency-spirit-capacity-and-reservations"
+}

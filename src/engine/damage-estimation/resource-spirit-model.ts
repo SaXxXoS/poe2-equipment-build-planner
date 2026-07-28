@@ -1,8 +1,10 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
+import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
+import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '4.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '5.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -44,13 +46,18 @@ interface SkillResourceCostChain {
   weaponSet: SkillSetup['weaponSet']
   selectedSupportIds: string[]
   semanticSupportCostHints: number[]
-  baseCosts: Array<{ resource:'mana'|'mana-percent'|'rage';cadence:'per-use'|'per-second';baseAmount:number;supportAdjustedAmount:number;sourceResource:string }>
+  baseCosts: Array<{ resource:'mana'|'mana-percent'|'rage';cadence:'per-use'|'per-second';baseAmount:number;supportAdjustedAmount:number;resourceAdjustedAmount:number;sourceResource:string }>
   supportCostMultipliers: Array<{ supportId:string;supportName:string;multiplierPercent:number;sourceReference:string }>
+  passiveResourceEffects: PassiveResourceEffect[]
   combinedSupportMultiplier: number | null
+  combinedResourceCostMultiplier: number
+  effectiveManaPool: number | null
+  effectiveManaRegenerationPerSecond: number | null
+  confirmedFlatSpiritContribution: number
   baseCostStatus: 'structured-exact-level-20' | 'structured-exact-zero-cost' | 'blocked-missing-exact-base-cost'
   supportMultiplierStatus: 'structured-exact-all-selected-supports' | 'structured-exact-no-supports' | 'blocked-missing-exact-support-cost-multipliers'
-  poolStatus: 'confirmed-minimum-pool' | 'blocked-missing-character-level'
-  sustainStatus: 'sustainable-on-confirmed-minimum' | 'burst-affordable-on-confirmed-minimum' | 'blocked-missing-action-frequency' | 'blocked-missing-character-level' | 'blocked-missing-exact-cost-chain'
+  poolStatus: 'confirmed-minimum-pool' | 'confirmed-pool-with-passive-effects' | 'blocked-missing-character-level'
+  sustainStatus: 'sustainable-on-confirmed-minimum' | 'burst-affordable-on-confirmed-minimum' | 'unusable-confirmed-zero-mana' | 'blocked-missing-action-frequency' | 'blocked-missing-character-level' | 'blocked-missing-exact-cost-chain'
   actionFrequencyPerSecond: number | null
   manaDemandPerSecond: number | null
 }
@@ -95,6 +102,66 @@ const costDescriptor = (sourceResource: string) => {
 }
 
 const floorFour = (value: number) => Math.floor(value * 10_000) / 10_000
+type PassiveResourceEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['passiveResourceEffects'][number]
+const stripMarkup = (value: string) => value.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').replace(/\[([^\]]+)\]/g, '$1').replace(/\s+/g, ' ').trim()
+const unique = <T>(values: T[]) => [...new Set(values)]
+
+const allocatedNodeIds = (planning: RealPassivePlanningIntegrationResult | undefined, weaponSet: SkillSetup['weaponSet']) => {
+  const normal = weaponSet === 'set-1'
+    ? planning?.weaponSetPlanning?.set1 ?? planning?.pipelineResult
+    : weaponSet === 'set-2'
+      ? planning?.weaponSetPlanning?.set2 ?? planning?.pipelineResult
+      : planning?.pipelineResult
+  return unique([...(normal?.allocatedNodeIds ?? []), ...(planning?.ascendancyPlanning?.allocatedNodeIds ?? [])])
+}
+
+function passiveResourceEffects(
+  tree: RealPassiveTree | undefined,
+  planning: RealPassivePlanningIntegrationResult | undefined,
+  weaponSet: SkillSetup['weaponSet'],
+): PassiveResourceEffect[] {
+  if (!tree || !planning) return []
+  const nodes = new Map(tree.nodes.map(node => [node.id, node]))
+  const effects: PassiveResourceEffect[] = []
+  const add = (nodeId: string, sourceText: string, kind: PassiveResourceEffect['kind'], value: number) => {
+    const node = nodes.get(nodeId)
+    effects.push({ source: node?.ascendancyId ? 'ascendancy' : 'passive', sourceNodeId: nodeId, sourceText, kind, value, evidence: 'text-pattern-exact' })
+  }
+  for (const nodeId of allocatedNodeIds(planning, weaponSet)) {
+    const node = nodes.get(nodeId)
+    if (!node) continue
+    for (const stat of node.stats) {
+      if (!stat.sourceText) continue
+      const text = stripMarkup(stat.sourceText)
+      if (/\b(?:while|when|if|per|for every|during|on kill|recently|stationary|moving|full life|low mana)\b/i.test(text)) continue
+      let match = text.match(/^\+(\d+(?:\.\d+)?) to maximum Mana$/i)
+      if (match) { add(nodeId, text, 'flat-mana', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased maximum Mana$/i)
+      if (match) { add(nodeId, text, 'maximum-mana-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% reduced maximum Mana$/i)
+      if (match) { add(nodeId, text, 'maximum-mana-reduced', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% less maximum Mana$/i)
+      if (match) { add(nodeId, text, 'maximum-mana-less', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased Mana Regeneration Rate$/i)
+      if (match) { add(nodeId, text, 'mana-regeneration-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased Mana Cost of Skills$/i)
+      if (match) { add(nodeId, text, 'mana-cost-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% more Mana Cost of Skills$/i)
+      if (match) { add(nodeId, text, 'mana-cost-more', Number(match[1])); continue }
+      if (/^Mana Costs are Doubled$/i.test(text)) { add(nodeId, text, 'mana-cost-doubled', 100); continue }
+      match = text.match(/^\+(\d+(?:\.\d+)?) to (?:maximum )?Spirit$/i)
+      if (match) { add(nodeId, text, 'flat-spirit', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|less) Spirit$/i)
+      if (match) {
+        add(nodeId, text, match[2].toLowerCase() === 'increased' ? 'spirit-increased' : match[2].toLowerCase() === 'reduced' ? 'spirit-reduced' : 'spirit-less', Number(match[1]))
+        continue
+      }
+      if (/^No inherent Mana Regeneration$/i.test(text)) { add(nodeId, text, 'no-inherent-mana-regeneration', 1); continue }
+      if (/^You have no Mana$/i.test(text)) add(nodeId, text, 'no-mana', 1)
+    }
+  }
+  return effects.sort((a, b) => a.sourceNodeId.localeCompare(b.sourceNodeId) || a.sourceText.localeCompare(b.sourceText))
+}
 
 export function resolveResourceSpiritModel(input: {
   equipment?: EquipmentEntry[]
@@ -102,6 +169,8 @@ export function resolveResourceSpiritModel(input: {
   skills: SkillGemDefinition[]
   supports: SupportGemDefinition[]
   characterLevel?: number
+  passiveTree?: RealPassiveTree
+  realPassivePlanning?: RealPassivePlanningIntegrationResult
 }): ResourceSpiritModel {
   const sources: ResolvedResourceSpiritSource[] = []
   for (const setup of input.setups) {
@@ -219,33 +288,61 @@ export function resolveResourceSpiritModel(input: {
             cadence: descriptor.cadence,
             baseAmount,
             supportAdjustedAmount: Math.floor(baseAmount * combinedSupportMultiplier),
+            resourceAdjustedAmount: Math.floor(baseAmount * combinedSupportMultiplier),
             sourceResource,
           }]
         }).sort((a, b) => a.sourceResource.localeCompare(b.sourceResource))
         : []
       const exactCostChain = baseCostStatus !== 'blocked-missing-exact-base-cost'
         && supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'
+      const appliedPassiveEffects = passiveResourceEffects(input.passiveTree, input.realPassivePlanning, setup.weaponSet)
+      const flatPassiveMana = appliedPassiveEffects.filter(effect => effect.kind === 'flat-mana').reduce((sum, effect) => sum + effect.value, 0)
+      const maximumManaIncrease = appliedPassiveEffects.filter(effect => effect.kind === 'maximum-mana-increased').reduce((sum, effect) => sum + effect.value, 0)
+        - appliedPassiveEffects.filter(effect => effect.kind === 'maximum-mana-reduced').reduce((sum, effect) => sum + effect.value, 0)
+      const maximumManaLessMultiplier = appliedPassiveEffects.filter(effect => effect.kind === 'maximum-mana-less').reduce((value, effect) => value * (1 - effect.value / 100), 1)
+      const passiveManaRegenIncrease = appliedPassiveEffects.filter(effect => effect.kind === 'mana-regeneration-increased').reduce((sum, effect) => sum + effect.value, 0)
+      const noMana = appliedPassiveEffects.some(effect => effect.kind === 'no-mana')
+      const noInherentManaRegeneration = appliedPassiveEffects.some(effect => effect.kind === 'no-inherent-mana-regeneration')
+      const confirmedFlatSpiritContribution = appliedPassiveEffects.filter(effect => effect.kind === 'flat-spirit').reduce((sum, effect) => sum + effect.value, 0)
+      const combinedResourceCostMultiplier = floorFour(
+        (1 + appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-increased').reduce((sum, effect) => sum + effect.value, 0) / 100)
+        * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-more').reduce((value, effect) => value * (1 + effect.value / 100), 1)
+        * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-doubled').reduce(value => value * 2, 1),
+      )
+      const effectiveManaPool = confirmedMinimumPools
+        ? noMana ? 0 : Math.max(0, Math.floor((confirmedMinimumPools.mana + flatPassiveMana) * (1 + maximumManaIncrease / 100) * maximumManaLessMultiplier))
+        : null
+      const effectiveManaRegenerationPerSecond = effectiveManaPool == null
+        ? null
+        : noInherentManaRegeneration || noMana
+          ? 0
+          : Number((effectiveManaPool * (reference.resourceConstants.inherentManaRegenerationPercentPerMinute / 60 / 100) * (1 + (manaRegenIncrease + passiveManaRegenIncrease) / 100)).toFixed(2))
+      for (const cost of baseCosts) cost.resourceAdjustedAmount = cost.resource === 'mana' || cost.resource === 'mana-percent'
+        ? Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier)
+        : cost.supportAdjustedAmount
       const actionFrequencyPerSecond = record?.kind === 'spell' && record.castTime > 0
         ? Number((1 / record.castTime).toFixed(4))
         : record?.kind === 'other' ? 1 : null
-      const manaDemandPerSecond = exactCostChain && confirmedMinimumPools
+      const manaDemandPerSecond = exactCostChain && effectiveManaPool != null
         ? baseCosts.reduce<number | null>((sum, cost) => {
           if (sum == null || cost.resource === 'rage') return sum
-          if (cost.resource === 'mana-percent') return sum + confirmedMinimumPools.mana * cost.supportAdjustedAmount / 100
-          if (cost.cadence === 'per-second') return sum + cost.supportAdjustedAmount
-          return actionFrequencyPerSecond == null ? null : sum + cost.supportAdjustedAmount * actionFrequencyPerSecond
+          if (cost.resource === 'mana-percent') return sum + effectiveManaPool * cost.resourceAdjustedAmount / 100
+          if (cost.cadence === 'per-second') return sum + cost.resourceAdjustedAmount
+          return actionFrequencyPerSecond == null ? null : sum + cost.resourceAdjustedAmount * actionFrequencyPerSecond
         }, 0)
         : null
-      const largestManaCost = Math.max(0, ...baseCosts.filter(cost => cost.resource === 'mana').map(cost => cost.supportAdjustedAmount))
+      const largestManaCost = Math.max(0, ...baseCosts.filter(cost => cost.resource === 'mana').map(cost => cost.resourceAdjustedAmount))
       const sustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
         : !confirmedMinimumPools
           ? 'blocked-missing-character-level' as const
+          : noMana && baseCosts.some(cost => cost.resource === 'mana' || cost.resource === 'mana-percent')
+            ? 'unusable-confirmed-zero-mana' as const
           : manaDemandPerSecond == null
             ? 'blocked-missing-action-frequency' as const
-            : manaDemandPerSecond <= confirmedMinimumPools.manaRegenerationPerSecond
+            : manaDemandPerSecond <= (effectiveManaRegenerationPerSecond ?? 0)
               ? 'sustainable-on-confirmed-minimum' as const
-              : largestManaCost <= confirmedMinimumPools.mana
+              : largestManaCost <= (effectiveManaPool ?? 0)
                 ? 'burst-affordable-on-confirmed-minimum' as const
                 : 'blocked-missing-action-frequency' as const
       return {
@@ -259,10 +356,17 @@ export function resolveResourceSpiritModel(input: {
           .sort((a, b) => a - b),
         baseCosts,
         supportCostMultipliers,
+        passiveResourceEffects: appliedPassiveEffects,
         combinedSupportMultiplier,
+        combinedResourceCostMultiplier,
+        effectiveManaPool,
+        effectiveManaRegenerationPerSecond,
+        confirmedFlatSpiritContribution,
         baseCostStatus,
         supportMultiplierStatus,
-        poolStatus: confirmedMinimumPools ? 'confirmed-minimum-pool' as const : 'blocked-missing-character-level' as const,
+        poolStatus: confirmedMinimumPools
+          ? appliedPassiveEffects.length ? 'confirmed-pool-with-passive-effects' as const : 'confirmed-minimum-pool' as const
+          : 'blocked-missing-character-level' as const,
         sustainStatus,
         actionFrequencyPerSecond,
         manaDemandPerSecond: manaDemandPerSecond == null ? null : Number(manaDemandPerSecond.toFixed(2)),
@@ -287,7 +391,7 @@ export function resolveResourceSpiritModel(input: {
       'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
       'Der gepinnte Fertigkeitsbestand enthält Reservierungsmarker, aber keine allgemeine geschlossene Kette aus Reservierungsbetrag und verfügbarer Geistkapazität.',
       'Fertigkeits-Grundkosten auf Stufe 20 und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Kostenketten bleiben blockiert.',
-      'Die supportangepassten Werte enthalten noch keine passiven, Aszendenz-, Ausrüstungs- oder situativen Kostenänderungen.',
+      'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten- und Geistwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte Texte und Kosten-Effizienz bleiben fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
     ],
   }
@@ -309,6 +413,7 @@ export const resourceSpiritOutput = (
     semanticSupportCostHints: [...value.semanticSupportCostHints],
     baseCosts: value.baseCosts.map(cost => ({ ...cost })),
     supportCostMultipliers: value.supportCostMultipliers.map(multiplier => ({ ...multiplier })),
+    passiveResourceEffects: value.passiveResourceEffects.map(effect => ({ ...effect })),
   })),
   semanticSupportCostHints: model.semanticSupportCostHints.map(value => ({ ...value })),
   limitations: [...model.limitations],
