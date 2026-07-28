@@ -49,6 +49,7 @@ export interface AppliedNextSkillEffect { sourceId:string;sourceLabel:string;tar
 export interface AppliedDamageOverTimeEffect { sourceRecordId:string;sourceLabel:string;damageType:DamageComponent['type'];kind:'native-damage-over-time';status:'single-application-window';damagePerSecond:number;durationMs:number;totalDamagePerApplication:number;stackCount:1;detail:string }
 export interface BlockedDamageOverTimeEffect { sourceRecordId:string;sourceLabel:string;kind:'native-damage-over-time'|'ignite'|'poison'|'bleeding';status:'blocked';detail:string }
 export interface ProjectileHitMechanic { kind:'projectiles-per-action'|'chain-count'|'pierce-count'|'maximum-hit-cap';value:number;sourceReference:string;evidence:'structured-exact';damageUse:'coverage-only'|'blocked-as-damage-multiplier';detail:string }
+export interface TriggerRepeatSource { sourceSkillId:string;sourceSkillName:string;kind:'meta-trigger'|'inbuilt-trigger'|'repeat-interval';condition?:string;intervalMs?:number;targetSkillId?:string;status:'blocked-missing-target'|'blocked-missing-trigger-source'|'interval-only';evidence:'structured-exact';sourceReferences:string[];detail:string }
 export interface AppliedChargeState { type:'power'|'frenzy'|'endurance';label:string;availability:'unavailable'|'conditional-unresolved'|'available-window';count?:number;detail:string }
 export interface AppliedChargeConsumption { sourceId:string;label:string;chargeTypes:Array<'power'|'frenzy'|'endurance'>;intervalMs?:number;detail:string }
 export interface DamageEstimate {
@@ -80,6 +81,7 @@ export interface DamageEstimate {
   nextSkillEffects?:{modelVersion:string;effects:AppliedNextSkillEffect[]}
   damageOverTime?:{modelVersion:string;effects:AppliedDamageOverTimeEffect[];blockedEffects:BlockedDamageOverTimeEffect[];totalSingleApplicationDamagePerSecond?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
+  triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:false;sources:TriggerRepeatSource[];limitations:string[]}
   chargeState?:{modelVersion:string;productive:boolean;states:AppliedChargeState[];consumptions:AppliedChargeConsumption[]}
   confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}

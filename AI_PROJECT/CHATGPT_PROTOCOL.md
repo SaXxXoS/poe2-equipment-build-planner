@@ -1900,3 +1900,27 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-projectile-hits-step-17.json`.
 - Nächster Schritt: Trigger und Wiederholungen nur mit belegtem Auslöser,
   Intervall und Zielbezug modellieren.
+
+## Trigger und Wiederholungen – Schritt 18 (2026-07-28)
+
+- Ausgangscommit: `0d2d7db16ab128ec69848920932e8a5262d0e416`.
+- Das neue Modell `trigger-repeat-model` trennt `Triggerable` von tatsächlich
+  `Triggered` beziehungsweise `InbuiltTrigger`.
+- Inventar am gepinnten Referenzstand: 19 eingebaute Triggerdatensätze,
+  16 Triggerquellen und drei generische strukturierte Wiederholungsintervalle.
+- Eine Auslösung wird nur produktiv, wenn Quelle, Bedingung, Ziel und Intervall
+  gemeinsam belegt sind. Der aktuelle BuildProfile-Transport enthält keine
+  vollständige solche Kette; produktive Triggerketten bleiben daher null.
+- Eingebaute Triggerfertigkeiten erhalten nicht länger eine erfundene normale
+  Wirkfrequenz aus Castzeit oder Angriffsgeschwindigkeit.
+- `Cast on Critical` und andere eindeutig identifizierte Meta-Fertigkeiten
+  dürfen ihre Bedingung anzeigen; ohne Ziel und Intervall verändern sie den
+  Schadenswert nicht.
+- Energieerzeugungsboni werden nicht als Auslösefrequenz interpretiert.
+- Modellversion `1.0.0`, Schadensrechner `2.7.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_TRIGGER_REPEAT_STEP_18.md`.
+- Audit:
+  `docs/audits/build-assistant-trigger-repeat-step-18.json`.
+- Nächster Schritt: Minions und Begleiter mit belegten Anzahlen,
+  Angriffsraten und Wirkungsquellen.

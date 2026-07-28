@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 18,
+  "modelVersion": "1.0.0",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "inventory": {
+    "inbuiltTriggeredRecords": 19,
+    "triggerSourceRecords": 16,
+    "exactGenericRepeatIntervalRecords": 3,
+    "completeSourceConditionTargetIntervalChains": 0
+  },
+  "rules": {
+    "triggerableIsActiveTrigger": false,
+    "inbuiltTriggeredUsesCastTimeAsRate": false,
+    "energyGenerationBonusIsTriggerRate": false,
+    "requiresCompleteChainForDamage": true
+  },
+  "productiveTriggerChains": 0,
+  "decision": "fail-closed-no-trigger-dps-without-complete-chain",
+  "nextStep": "minion-and-companion-model"
+}

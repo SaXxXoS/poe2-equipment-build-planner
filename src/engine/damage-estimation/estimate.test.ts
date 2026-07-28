@@ -49,8 +49,34 @@ describe('begrenzte Trefferschadenberechnung',()=>{
   })
   it('weist nicht enthaltene komplexe Mechaniken aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
-    expect(result.excluded).toContain('nicht belegte Projektilüberlappung, Fork-, Rückkehr- und Wiederholungstreffer')
+    expect(result.excluded).toContain('nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer')
+    expect(result.excluded).toContain('Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette')
     expect(result.excluded).toContain('bedingte Passive- und Aszendenzeffekte')
+  })
+  it('erfindet für eine eingebaute Triggerfertigkeit keine normale Wirkfrequenz',()=>{
+    const result=estimateHitDamage({equipment:[],setups:[setup('blood')],skills:[skill('blood','Blood Explosion')]})
+    expect(result.status).toBe('unavailable')
+    expect(result.actionsPerSecond).toBeUndefined()
+    expect(result.hitDamagePerSecond).toBeUndefined()
+    expect(result.triggerRepeatModel).toMatchObject({
+      primarySkillTriggered:true,
+      productive:false,
+      sources:[{kind:'inbuilt-trigger',status:'blocked-missing-trigger-source'}],
+    })
+  })
+  it('zeigt eine konfigurierte Triggerquelle, rechnet sie aber ohne Ziel und Intervall nicht ein',()=>{
+    const main=skill('arc','Arc')
+    const trigger=skill('coc','Cast on Critical')
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup(main.id),{...setup(trigger.id),id:'trigger',role:'utility'}],
+      skills:[main,trigger],
+    })
+    expect(result.status).toBe('partial')
+    expect(result.triggerRepeatModel?.sources).toContainEqual(expect.objectContaining({
+      sourceSkillId:'coc',condition:'bei einem kritischen Treffer',status:'blocked-missing-target',
+    }))
+    expect(result.triggerRepeatModel?.productive).toBe(false)
   })
   it('weist Spark-Projektile als Mapping-Abdeckung aus, ohne den Boss-DPS zu vervielfachen',()=>{
     const spark=estimateHitDamage({equipment:[],setups:[setup('spark')],skills:[skill('spark','Spark')]})
