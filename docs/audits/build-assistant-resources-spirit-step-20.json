@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "step": 20,
+  "scope": "build-assistant-resource-spirit-model",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "totalSkillRecords": 337,
+  "hasReservationRecords": 82,
+  "multipleReservationRecords": 9,
+  "numericManaInteractionFields": 6,
+  "generalExactSkillCostsAvailable": false,
+  "manaPoolTransported": false,
+  "lifePoolTransported": false,
+  "spiritCapacityTransported": false,
+  "regenerationTransported": false,
+  "semanticSupportCostIsExactCost": false,
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "2.9.0",
+  "productiveResourceSustainCalculations": 0,
+  "status": "fail-closed-partial-model",
+  "nextStep": "gem-level-and-quality-model"
+}

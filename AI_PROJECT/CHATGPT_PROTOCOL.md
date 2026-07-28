@@ -1951,3 +1951,24 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-minions-companions-step-19.json`.
 - Nächster Schritt: Ressourcen- und Geistmodell mit belegten Kosten,
   Reservierungen, Kapazitäten und Aufrechterhaltbarkeit.
+
+## Ressourcen und Geist – Schritt 20 (2026-07-28)
+
+- Ausgangscommit: `7fa4429d54c8cbeeff5d5c9c8cb05cc867f86b29`.
+- Neues fail-closed Modell `resource-spirit-model`, Version `1.0.0`;
+  Schadensrechner `2.9.0`.
+- Inventar: 337 Fertigkeitsdatensätze, 82 mit `HasReservation`, 9 mit
+  `MultipleReservation` und 6 einzelne strukturierte Mana-Spezialfelder.
+- Allgemeine exakte Fertigkeitskosten, Mana-/Lebenspool, Geistkapazität und
+  Regeneration sind im aktuellen Buildtransport nicht geschlossen vorhanden.
+- Reservierungsmarker werden sichtbar ausgewiesen, aber weder als Betrag noch
+  als verfügbare Geistkapazität interpretiert.
+- Semantische Support-Ressourcenwerte bleiben Rankinghinweise und werden nicht
+  als technische Mana- oder Lebenskosten ausgegeben.
+- Ohne Kosten, Ressourcenpool und Wiederherstellung verändert das Modell
+  weder Wirkfrequenz noch Schaden oder Uptime.
+- Keine neue Nutzereinstellung, keine neue Datenquelle und keine Änderung
+  bestehender Produktpins.
+- Hauptdokument: `docs/BUILD_ASSISTANT_RESOURCES_SPIRIT_STEP_20.md`.
+- Audit: `docs/audits/build-assistant-resources-spirit-step-20.json`.
+- Nächster Schritt: Gemmenstufen und Qualität mit belegten Wirkungen.
