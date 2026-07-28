@@ -1,8 +1,8 @@
 import reference from '../../../generated/pob2/damage-reference.json'
-import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
+import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '1.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '2.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -28,6 +28,28 @@ export interface ResolvedResourceSpiritSource {
   detail: string
 }
 
+interface EquipmentResourceContribution {
+  resource: 'life' | 'mana' | 'spirit' | 'mana-regeneration'
+  value: number
+  sourceItemId: string
+  sourceModifierId: string
+  sourceStatId: string
+  status: 'partial-contribution-only'
+}
+
+interface SkillResourceCostChain {
+  setupId: string
+  skillId: string
+  skillName: string
+  weaponSet: SkillSetup['weaponSet']
+  selectedSupportIds: string[]
+  semanticSupportCostHints: number[]
+  baseCostStatus: 'blocked-missing-exact-base-cost'
+  supportMultiplierStatus: 'blocked-missing-exact-support-cost-multipliers'
+  poolStatus: 'blocked-missing-complete-character-pool'
+  sustainStatus: 'blocked-incomplete-cost-pool-and-recovery-chain'
+}
+
 export interface ResourceSpiritModel {
   modelVersion: string
   productive: false
@@ -36,11 +58,22 @@ export interface ResourceSpiritModel {
   spiritCapacityKnown: false
   exactSkillCostsKnown: false
   sources: ResolvedResourceSpiritSource[]
+  equipmentContributions: EquipmentResourceContribution[]
+  skillCostChains: SkillResourceCostChain[]
   semanticSupportCostHints: Array<{ supportId: string; value: number }>
   limitations: string[]
 }
 
+const resourceForStat = (statId: string): EquipmentResourceContribution['resource'] | undefined => {
+  if (/^(?:base_)?maximum_life$/.test(statId)) return 'life'
+  if (/^(?:base_)?maximum_mana$/.test(statId)) return 'mana'
+  if (/^(?:base_)?maximum_spirit$|^spirit_?\+?$/.test(statId)) return 'spirit'
+  if (/^mana_regeneration_rate_\+%$/.test(statId)) return 'mana-regeneration'
+  return undefined
+}
+
 export function resolveResourceSpiritModel(input: {
+  equipment?: EquipmentEntry[]
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
   supports: SupportGemDefinition[]
@@ -84,6 +117,46 @@ export function resolveResourceSpiritModel(input: {
     .filter(support => selectedSupportIds.has(support.id) && Number.isFinite(support.resourceCost))
     .map(support => ({ supportId: support.id, value: Number(support.resourceCost) }))
     .sort((a, b) => a.supportId.localeCompare(b.supportId))
+  const equipmentContributions = (input.equipment ?? []).flatMap(item =>
+    item.modifierValues.flatMap(modifier =>
+      (modifier.statValues ?? []).flatMap(stat => {
+        const resource = resourceForStat(stat.statId)
+        return resource && Number.isFinite(stat.value) ? [{
+          resource,
+          value: stat.value,
+          sourceItemId: item.id,
+          sourceModifierId: modifier.modifierId,
+          sourceStatId: stat.statId,
+          status: 'partial-contribution-only' as const,
+        }] : []
+      }),
+    ),
+  ).sort((a, b) =>
+    a.sourceItemId.localeCompare(b.sourceItemId)
+    || a.sourceModifierId.localeCompare(b.sourceModifierId)
+    || a.sourceStatId.localeCompare(b.sourceStatId),
+  )
+  const supportHintById = new Map(semanticSupportCostHints.map(value => [value.supportId, value.value]))
+  const skillCostChains = input.setups
+    .filter(setup => Boolean(setup.skillId))
+    .map(setup => {
+      const definition = input.skills.find(value => value.id === setup.skillId)
+      return {
+        setupId: setup.id,
+        skillId: setup.skillId,
+        skillName: definition?.displayNameDe ?? definition?.nameEn ?? setup.skillId,
+        weaponSet: setup.weaponSet,
+        selectedSupportIds: [...setup.supportGemIds].sort(),
+        semanticSupportCostHints: setup.supportGemIds
+          .flatMap(id => supportHintById.has(id) ? [supportHintById.get(id)!] : [])
+          .sort((a, b) => a - b),
+        baseCostStatus: 'blocked-missing-exact-base-cost' as const,
+        supportMultiplierStatus: 'blocked-missing-exact-support-cost-multipliers' as const,
+        poolStatus: 'blocked-missing-complete-character-pool' as const,
+        sustainStatus: 'blocked-incomplete-cost-pool-and-recovery-chain' as const,
+      }
+    })
+    .sort((a, b) => a.setupId.localeCompare(b.setupId))
   return {
     modelVersion: RESOURCE_SPIRIT_MODEL_VERSION,
     productive: false,
@@ -92,12 +165,14 @@ export function resolveResourceSpiritModel(input: {
     spiritCapacityKnown: false,
     exactSkillCostsKnown: false,
     sources,
+    equipmentContributions,
+    skillCostChains,
     semanticSupportCostHints,
     limitations: [
-      'Der BuildProfile-Transport enthält keine vollständigen aktuellen Mana-, Lebens- oder Geistkapazitäten und keine Regenerationsraten.',
+      'Belegte Ausrüstungsbeiträge werden einzeln transportiert, ergeben ohne Charaktergrundwert, Attribute und weitere globale Wirkungen aber keinen vollständigen Lebens-, Mana- oder Geistpool.',
       'Der gepinnte Fertigkeitsbestand enthält Reservierungsmarker, aber keine allgemeine geschlossene Kette aus Reservierungsbetrag und verfügbarer Geistkapazität.',
-      'Semantische Support-Ressourcenkosten steuern ausschließlich das bestehende Ranking und werden nicht als Mana- oder Lebenskosten ausgegeben.',
-      'Ohne exakte Kosten, Ressourcenpool und Wiederherstellung verändert dieses Modell weder Wirkfrequenz noch Schaden pro Sekunde.',
+      'Semantische Support-Ressourcenkosten steuern ausschließlich das bestehende Ranking und werden nicht als Mana-, Lebens- oder Geistkosten ausgegeben.',
+      'Ohne exakte Grundkosten, Support-Kostenmultiplikatoren, vollständigen Ressourcenpool und Wiederherstellung verändert dieses Modell weder Wirkfrequenz noch Schaden pro Sekunde.',
     ],
   }
 }
@@ -110,6 +185,12 @@ export const resourceSpiritOutput = (
     ...source,
     numericEffects: source.numericEffects.map(effect => ({ ...effect })),
     sourceReferences: [...source.sourceReferences],
+  })),
+  equipmentContributions: model.equipmentContributions.map(value => ({ ...value })),
+  skillCostChains: model.skillCostChains.map(value => ({
+    ...value,
+    selectedSupportIds: [...value.selectedSupportIds],
+    semanticSupportCostHints: [...value.semanticSupportCostHints],
   })),
   semanticSupportCostHints: model.semanticSupportCostHints.map(value => ({ ...value })),
   limitations: [...model.limitations],

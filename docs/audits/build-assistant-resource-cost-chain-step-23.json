@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": "23",
+  "model": "resource-spirit-model",
+  "modelVersion": "2.0.0",
+  "calculatorVersion": "3.2.0",
+  "sourceInventory": {
+    "pob2SkillRecords": 337,
+    "hasReservationRecords": 82,
+    "multipleReservationRecords": 9,
+    "recordsWithResourceNumericStats": 6,
+    "approvedEquipmentResourceStatLines": 165
+  },
+  "transportedEvidence": [
+    "equipment-resource-contributions-with-item-modifier-and-stat-identity",
+    "reservation-markers",
+    "structured-resource-numeric-effects",
+    "one-cost-chain-per-selected-skill-setup",
+    "semantic-support-cost-ranking-hints"
+  ],
+  "blockedClaims": [
+    "complete-life-pool",
+    "complete-mana-pool",
+    "complete-spirit-capacity",
+    "exact-skill-base-cost",
+    "exact-support-cost-multiplier",
+    "exact-reservation-amount",
+    "sustainable-cast-rate",
+    "resource-adjusted-dps"
+  ],
+  "decision": "partial-evidence-transported-cost-chain-remains-fail-closed",
+  "nextTask": "audit-pinned-skill-base-cost-and-support-cost-multiplier-chain"
+}

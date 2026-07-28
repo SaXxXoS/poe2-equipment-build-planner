@@ -2019,3 +2019,31 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-item-value-scope-step-22.json`.
 - Nächster Schritt: geschlossener Charakterwerttransport für Ressourcenpools
   und Fertigkeitskosten, sobald exakte gepinnte Quellen vorliegen.
+## Schritt 23 – geschlossene Ressourcen- und Fertigkeitskostenkette
+
+- Ausgangscommit: `05eb5d41c694e7c71a8e780644a1ca2be1769fd2`.
+- Das vorhandene `resource-spirit-model` wurde auf Version `2.0.0`
+  erweitert; Rechnerversion `3.2.0`.
+- 337 gepinnte PoB2-Fertigkeitsdatensätze wurden inventarisiert: 82 mit
+  `HasReservation`, 9 mit `MultipleReservation` und 6 mit einzelnen
+  strukturierten Ressourcen-Zahlenfeldern.
+- 165 technische Affix-Statzeilen entsprechen der engen Allowlist für
+  maximales Leben, maximales Mana, Geist oder Manaregeneration.
+- Belegte Ausrüstungsbeiträge werden mit Gegenstands-, Modifikator- und
+  Stat-Identität transportiert, aber ohne Charaktergrundwert nicht als
+  vollständiger Pool ausgegeben.
+- Jede belegte Fertigkeit besitzt eine getrennte deterministische
+  Kostenkettenprüfung. Grundkosten, Support-Kostenmultiplikatoren,
+  vollständiger Pool und Wiederherstellung bleiben beim aktuellen Pin
+  fail-closed.
+- Semantische `resourceCost`-Werte der Supports bleiben Rankinghinweise und
+  werden nicht als reale Mana-, Lebens- oder Geistkosten bezeichnet.
+- Es wurde keine zusätzliche Benutzereinstellung, keine neue Datenquelle und
+  keine geschätzte Ressourcen- oder DPS-Wirkung eingeführt.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_RESOURCE_COST_CHAIN_STEP_23.md`.
+- Audit:
+  `docs/audits/build-assistant-resource-cost-chain-step-23.json`.
+- Nächster Schritt: gepinnte lokale Quellen auf eine vollständige,
+  stufengenaue Kette für Fertigkeitsgrundkosten und
+  Support-Kostenmultiplikatoren prüfen.

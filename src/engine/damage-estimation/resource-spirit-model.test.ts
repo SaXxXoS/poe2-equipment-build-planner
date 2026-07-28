@@ -36,6 +36,58 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     expect(model.semanticSupportCostHints).toEqual([{ supportId: support.id, value: 30 }])
     expect(model.exactSkillCostsKnown).toBe(false)
   })
+  it('transportiert belegte Ausrüstungsbeiträge ohne einen vollständigen Pool zu behaupten', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({
+      equipment: [{
+        id: 'helmet',
+        slotId: 'slot-helmet',
+        modifierValues: [{
+          id: 'applied-mana',
+          modifierId: 'mana-mod',
+          value: 42,
+          statValues: [{ statId: 'base_maximum_mana', value: 42 }],
+        }],
+      }],
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.equipmentContributions).toEqual([
+      expect.objectContaining({ resource: 'mana', value: 42, sourceItemId: 'helmet' }),
+    ])
+    expect(model.manaPoolKnown).toBe(false)
+    expect(model.productive).toBe(false)
+  })
+  it('klassifiziert jede belegte Fertigkeit als unvollständige Kostenkette', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })
+    expect(model.skillCostChains).toEqual([expect.objectContaining({
+      skillId: definition.id,
+      baseCostStatus: 'blocked-missing-exact-base-cost',
+      poolStatus: 'blocked-missing-complete-character-pool',
+      sustainStatus: 'blocked-incomplete-cost-pool-and-recovery-chain',
+    })])
+  })
+  it('ignoriert ähnlich benannte, aber nicht freigegebene Ressourcen-Stat-IDs', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({
+      equipment: [{
+        id: 'helmet',
+        slotId: 'slot-helmet',
+        modifierValues: [{
+          id: 'unknown',
+          modifierId: 'unknown',
+          value: 999,
+          statValues: [{ statId: 'maximum_mana_guess', value: 999 }],
+        }],
+      }],
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.equipmentContributions).toEqual([])
+  })
   it('bleibt deterministisch', () => {
     const definition = skill('barkskin', 'Barkskin')
     const input = { setups: [setup(definition.id)], skills: [definition], supports: [] }
