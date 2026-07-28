@@ -1,0 +1,38 @@
+{
+  "step": 25,
+  "status": "implemented-conservative-minimum-sustain",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "resourceConstantsSourceFile": "src/Data/Misc.lua",
+  "resourceConstantsSourceSha256": "51d8a307fee31054a82b831485f22772a239c836f5fb40454055602f32a0af8f",
+  "damageReferenceContentHash": "be839fd2192566bc7977ac3d4d98da7c32b98244675f5cab9b1a6f9986b8be88",
+  "resourceConstants": {
+    "lifePerLevel": 12,
+    "lifeLevelOffset": 16,
+    "manaPerLevel": 4,
+    "manaLevelOffset": 30,
+    "inherentManaRegenerationPercentPerMinute": 240
+  },
+  "automaticInputs": [
+    "character-level",
+    "exact-flat-life-equipment-stats",
+    "exact-flat-mana-equipment-stats",
+    "exact-increased-mana-regeneration-equipment-stats",
+    "level-20-skill-cost",
+    "selected-support-cost-multipliers",
+    "structured-spell-cast-time"
+  ],
+  "positiveSustainClaim": "only-when-confirmed-minimum-regeneration-covers-demand",
+  "negativeSustainClaim": "forbidden-with-incomplete-positive-contributions",
+  "newUserSettings": 0,
+  "runtimeNetwork": false,
+  "productPinsChanged": false,
+  "limitations": [
+    "passive-resource-effects-not-yet-complete",
+    "ascendancy-resource-effects-not-yet-complete",
+    "attack-frequency-needs-complete-weapon-basis",
+    "spirit-reservation-amounts-unresolved",
+    "conditional-recovery-leech-recoup-and-flasks-unresolved"
+  ],
+  "nextStep": "integrate-confirmed-passive-and-ascendancy-resource-effects"
+}

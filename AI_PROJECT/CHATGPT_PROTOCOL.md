@@ -2084,3 +2084,31 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Überlauf und keine neuen Browserfehler oder -warnungen.
 - Nächster Schritt: vollständigen Charakter-Ressourcenpool und belegte
   Wiederherstellung anbinden, um Kosten gegen reale Verfügbarkeit zu prüfen.
+
+## Schritt 25 – automatische Ressourcen-Nachhaltigkeit
+
+- Ausgangscommit: `67ba6ce4b99b5ef4dff7bd97be6ee763f1e0f8a6`.
+- Das `resource-spirit-model` wurde auf Version `4.0.0`, der Schadensrechner
+  auf Version `3.4.0` erweitert.
+- `src/Data/Misc.lua` am unveränderten PoB2-Pin liefert Leben
+  `12 × (Level + 16)`, Mana `4 × (Level + 30)` und natürliche
+  Manaregeneration `240 %/Minute`.
+- Die Prüfung läuft automatisch im Hintergrund. Es wurde keine neue
+  Nutzereinstellung hinzugefügt.
+- Der bestätigte Mindestpool ergänzt eindeutige flache Lebens-/Manawerte und
+  erhöhte Manaregeneration aus der vorhandenen Ausrüstung.
+- Supportangepasste Kosten werden für Zauber mit der strukturierten Wirkzeit
+  in Mana pro Sekunde umgerechnet.
+- „Dauerhaft gedeckt“ wird nur ausgegeben, wenn schon der konservative
+  Mindestwert genügt. Aus einem nicht genügenden Mindestwert wird kein
+  negatives Spielbarkeitsurteil erfunden.
+- Passive-, Aszendenz-, Geist-, Leech-, Recoup-, Fläschchen- und bedingte
+  Wiederherstellungswirkungen bleiben sichtbar begrenzt.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_RESOURCE_SUSTAIN_STEP_25.md`.
+- Audit:
+  `docs/audits/build-assistant-resource-sustain-step-25.json`.
+- Prüfstatus vor Commit: 1.244 Tests in 97 Testdateien, Lint, Typecheck,
+  Produktions-Build, Pages-Build und JSON-Validierung erfolgreich.
+- Nächster Schritt: technisch bestätigte Passive- und Aszendenzwirkungen auf
+  Ressourcen in denselben Pooltransport integrieren.

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -10,6 +10,15 @@
     "ManaPerMinute": 60,
     "ManaPercentPerMinute": 60,
     "RagePerMinute": 60
+  },
+  "resourceConstantsSourceFile": "src/Data/Misc.lua",
+  "resourceConstantsSourceSha256": "51d8a307fee31054a82b831485f22772a239c836f5fb40454055602f32a0af8f",
+  "resourceConstants": {
+    "lifePerLevel": 12,
+    "lifeLevelOffset": 16,
+    "manaPerLevel": 4,
+    "manaLevelOffset": 30,
+    "inherentManaRegenerationPercentPerMinute": 240
   },
   "limitations": [
     "Bounded hit estimate; not Path of Building parity.",
@@ -15589,5 +15598,5 @@
       "sourceFile": "src/Data/Bases/mace.lua"
     }
   ],
-  "contentHash": "9d6e5d0a183a688d41c288b44ac99fc0d111dd289ea134868d92347d08d21b5b"
+  "contentHash": "be839fd2192566bc7977ac3d4d98da7c32b98244675f5cab9b1a6f9986b8be88"
 }

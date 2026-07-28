@@ -10,6 +10,9 @@ const skillFiles = ['act_str.lua', 'act_dex.lua', 'act_int.lua']
 const costsRelative = 'src/Data/Costs.lua'
 const costsBytes = fs.readFileSync(path.join(repo, costsRelative))
 const costsText = costsBytes.toString('utf8')
+const miscRelative = 'src/Data/Misc.lua'
+const miscBytes = fs.readFileSync(path.join(repo, miscRelative))
+const miscText = miscBytes.toString('utf8')
 const expectedCostDivisors = { Mana: 1, ManaPerMinute: 60, ManaPercentPerMinute: 60, RagePerMinute: 60 }
 const costDivisors = Object.fromEntries(Object.entries(expectedCostDivisors).map(([resource, expected]) => {
   const blockMatch = new RegExp(`Resource\\s*=\\s*"${resource}"[\\s\\S]*?Divisor\\s*=\\s*(\\d+)`).exec(costsText)
@@ -17,6 +20,19 @@ const costDivisors = Object.fromEntries(Object.entries(expectedCostDivisors).map
   if (actual !== expected) throw new Error(`PoB2 cost divisor mismatch for ${resource}: expected ${expected}, received ${actual}`)
   return [resource, actual]
 }))
+const characterConstant = (name, expected) => {
+  const match = new RegExp(`\\["${name}"\\]\\s*=\\s*(-?[\\d.]+)`).exec(miscText)
+  const actual = match ? Number(match[1]) : undefined
+  if (actual !== expected) throw new Error(`PoB2 character constant mismatch for ${name}: expected ${expected}, received ${actual}`)
+  return actual
+}
+const resourceConstants = {
+  lifePerLevel: characterConstant('life_per_level', 12),
+  lifeLevelOffset: 16,
+  manaPerLevel: characterConstant('mana_per_level', 4),
+  manaLevelOffset: 30,
+  inherentManaRegenerationPercentPerMinute: characterConstant('character_inherent_mana_regeneration_rate_per_minute_%', 240),
+}
 const baseDir = path.join(repo, 'src', 'Data', 'Bases')
 const gitDir = path.join(repo, '.git')
 const head = fs.readFileSync(path.join(gitDir, 'HEAD'), 'utf8').trim()
@@ -149,13 +165,16 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
   costsSourceFile: costsRelative,
   costsSourceSha256: crypto.createHash('sha256').update(costsBytes).digest('hex'),
   costDivisors,
+  resourceConstantsSourceFile: miscRelative,
+  resourceConstantsSourceSha256: crypto.createHash('sha256').update(miscBytes).digest('hex'),
+  resourceConstants,
   limitations: [
     'Bounded hit estimate; not Path of Building parity.',
     'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',

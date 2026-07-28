@@ -68,9 +68,45 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       supportMultiplierStatus: 'structured-exact-no-supports',
       combinedSupportMultiplier: 1,
       baseCosts: [{ resource: 'mana', cadence: 'per-use', baseAmount: 81, supportAdjustedAmount: 81, sourceResource: 'Mana' }],
-      poolStatus: 'blocked-missing-complete-character-pool',
-      sustainStatus: 'blocked-missing-pool-and-recovery',
+      poolStatus: 'blocked-missing-character-level',
+      sustainStatus: 'blocked-missing-character-level',
     })])
+  })
+  it('berechnet den gepinnten Mindestpool und die natürliche Regeneration automatisch aus dem Charakterlevel', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({ characterLevel: 100, setups: [setup(definition.id)], skills: [definition], supports: [] })
+    expect(model.confirmedMinimumPools).toEqual({
+      characterLevel: 100,
+      baseLife: 1392,
+      baseMana: 520,
+      life: 1392,
+      mana: 520,
+      manaRegenerationPerSecond: 20.8,
+      status: 'confirmed-minimum-only',
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      actionFrequencyPerSecond: 0.9091,
+      manaDemandPerSecond: 73.64,
+      poolStatus: 'confirmed-minimum-pool',
+      sustainStatus: 'burst-affordable-on-confirmed-minimum',
+    })
+  })
+  it('bestätigt dauerhafte Nutzbarkeit nur wenn bereits der konservative Mindestwert reicht', () => {
+    const definition = skill('arc', 'Arc')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      equipment: [{
+        id: 'ring',
+        slotId: 'slot-ring-left',
+        modifierValues: [{ id: 'regen', modifierId: 'regen', value: 300, statValues: [{ statId: 'mana_regeneration_rate_+%', value: 300 }] }],
+      }],
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.confirmedMinimumPools?.manaRegenerationPerSecond).toBe(83.2)
+    expect(model.skillCostChains[0].sustainStatus).toBe('sustainable-on-confirmed-minimum')
+    expect(model.productive).toBe(true)
   })
   it('verknüpft alle belegten Supportmultiplikatoren deterministisch', () => {
     const definition = skill('arc', 'Arc')

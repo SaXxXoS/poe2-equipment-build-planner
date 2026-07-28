@@ -10,8 +10,11 @@ Seit Schritt 24 enthält die Referenz außerdem die strukturierten
 Stufe-20-Grundkosten und die gepinnten Kostendivisoren. Aus dem bestehenden
 RePoE-Gemkatalog werden ausschließlich technisch ID-verknüpfte
 Support-Kostenmultiplikatoren ergänzt. Kosten pro Einsatz sind dadurch
-belegbar; dauerhafte Nutzbarkeit bleibt ohne vollständigen Pool und
-Wiederherstellung blockiert.
+belegbar. Seit Schritt 25 enthält dieselbe Referenz außerdem die gepinnten
+Charaktergrundwerte aus `src/Data/Misc.lua`. Die App bildet daraus ohne neue
+Nutzereinstellung einen konservativen Mindestpool und die natürliche
+Manaregeneration. Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn
+bereits dieser Mindestwert den belegten Verbrauch deckt.
 
 Der Scope `poe2-pob2-damage-calculation-reference` ist eine ausdrückliche Projektentscheidung mit offengelegter Rechteunsicherheit. Keine PoB2- oder GGG-Genehmigung und keine technische GGG-ID-Kette werden behauptet.
 

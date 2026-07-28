@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '3.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '4.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -49,17 +49,28 @@ interface SkillResourceCostChain {
   combinedSupportMultiplier: number | null
   baseCostStatus: 'structured-exact-level-20' | 'structured-exact-zero-cost' | 'blocked-missing-exact-base-cost'
   supportMultiplierStatus: 'structured-exact-all-selected-supports' | 'structured-exact-no-supports' | 'blocked-missing-exact-support-cost-multipliers'
-  poolStatus: 'blocked-missing-complete-character-pool'
-  sustainStatus: 'blocked-missing-pool-and-recovery' | 'blocked-missing-exact-cost-chain'
+  poolStatus: 'confirmed-minimum-pool' | 'blocked-missing-character-level'
+  sustainStatus: 'sustainable-on-confirmed-minimum' | 'burst-affordable-on-confirmed-minimum' | 'blocked-missing-action-frequency' | 'blocked-missing-character-level' | 'blocked-missing-exact-cost-chain'
+  actionFrequencyPerSecond: number | null
+  manaDemandPerSecond: number | null
 }
 
 export interface ResourceSpiritModel {
   modelVersion: string
-  productive: false
+  productive: boolean
   manaPoolKnown: false
   lifePoolKnown: false
   spiritCapacityKnown: false
   exactSkillCostsKnown: boolean
+  confirmedMinimumPools?: {
+    characterLevel: number
+    baseLife: number
+    baseMana: number
+    life: number
+    mana: number
+    manaRegenerationPerSecond: number
+    status: 'confirmed-minimum-only'
+  }
   sources: ResolvedResourceSpiritSource[]
   equipmentContributions: EquipmentResourceContribution[]
   skillCostChains: SkillResourceCostChain[]
@@ -90,6 +101,7 @@ export function resolveResourceSpiritModel(input: {
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
   supports: SupportGemDefinition[]
+  characterLevel?: number
 }): ResourceSpiritModel {
   const sources: ResolvedResourceSpiritSource[] = []
   for (const setup of input.setups) {
@@ -150,6 +162,23 @@ export function resolveResourceSpiritModel(input: {
     || a.sourceStatId.localeCompare(b.sourceStatId),
   )
   const supportHintById = new Map(semanticSupportCostHints.map(value => [value.supportId, value.value]))
+  const level = Number.isInteger(input.characterLevel) && Number(input.characterLevel) >= 1
+    ? Math.min(100, Number(input.characterLevel))
+    : undefined
+  const flatLife = equipmentContributions.filter(value => value.resource === 'life').reduce((sum, value) => sum + value.value, 0)
+  const flatMana = equipmentContributions.filter(value => value.resource === 'mana').reduce((sum, value) => sum + value.value, 0)
+  const manaRegenIncrease = equipmentContributions
+    .filter(value => value.resource === 'mana-regeneration' && /^mana_regeneration_rate_\+%$/.test(value.sourceStatId))
+    .reduce((sum, value) => sum + value.value, 0)
+  const confirmedMinimumPools = level == null ? undefined : (() => {
+    const baseLife = reference.resourceConstants.lifePerLevel * (level + reference.resourceConstants.lifeLevelOffset)
+    const baseMana = reference.resourceConstants.manaPerLevel * (level + reference.resourceConstants.manaLevelOffset)
+    const life = Math.max(1, baseLife + flatLife)
+    const mana = Math.max(0, baseMana + flatMana)
+    const inherentPercentPerSecond = reference.resourceConstants.inherentManaRegenerationPercentPerMinute / 60 / 100
+    const manaRegenerationPerSecond = Number((mana * inherentPercentPerSecond * (1 + manaRegenIncrease / 100)).toFixed(2))
+    return { characterLevel: level, baseLife, baseMana, life, mana, manaRegenerationPerSecond, status: 'confirmed-minimum-only' as const }
+  })()
   const skillCostChains = input.setups
     .filter(setup => Boolean(setup.skillId))
     .map(setup => {
@@ -196,6 +225,29 @@ export function resolveResourceSpiritModel(input: {
         : []
       const exactCostChain = baseCostStatus !== 'blocked-missing-exact-base-cost'
         && supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'
+      const actionFrequencyPerSecond = record?.kind === 'spell' && record.castTime > 0
+        ? Number((1 / record.castTime).toFixed(4))
+        : record?.kind === 'other' ? 1 : null
+      const manaDemandPerSecond = exactCostChain && confirmedMinimumPools
+        ? baseCosts.reduce<number | null>((sum, cost) => {
+          if (sum == null || cost.resource === 'rage') return sum
+          if (cost.resource === 'mana-percent') return sum + confirmedMinimumPools.mana * cost.supportAdjustedAmount / 100
+          if (cost.cadence === 'per-second') return sum + cost.supportAdjustedAmount
+          return actionFrequencyPerSecond == null ? null : sum + cost.supportAdjustedAmount * actionFrequencyPerSecond
+        }, 0)
+        : null
+      const largestManaCost = Math.max(0, ...baseCosts.filter(cost => cost.resource === 'mana').map(cost => cost.supportAdjustedAmount))
+      const sustainStatus = !exactCostChain
+        ? 'blocked-missing-exact-cost-chain' as const
+        : !confirmedMinimumPools
+          ? 'blocked-missing-character-level' as const
+          : manaDemandPerSecond == null
+            ? 'blocked-missing-action-frequency' as const
+            : manaDemandPerSecond <= confirmedMinimumPools.manaRegenerationPerSecond
+              ? 'sustainable-on-confirmed-minimum' as const
+              : largestManaCost <= confirmedMinimumPools.mana
+                ? 'burst-affordable-on-confirmed-minimum' as const
+                : 'blocked-missing-action-frequency' as const
       return {
         setupId: setup.id,
         skillId: setup.skillId,
@@ -210,30 +262,33 @@ export function resolveResourceSpiritModel(input: {
         combinedSupportMultiplier,
         baseCostStatus,
         supportMultiplierStatus,
-        poolStatus: 'blocked-missing-complete-character-pool' as const,
-        sustainStatus: exactCostChain ? 'blocked-missing-pool-and-recovery' as const : 'blocked-missing-exact-cost-chain' as const,
+        poolStatus: confirmedMinimumPools ? 'confirmed-minimum-pool' as const : 'blocked-missing-character-level' as const,
+        sustainStatus,
+        actionFrequencyPerSecond,
+        manaDemandPerSecond: manaDemandPerSecond == null ? null : Number(manaDemandPerSecond.toFixed(2)),
       }
     })
     .sort((a, b) => a.setupId.localeCompare(b.setupId))
   return {
     modelVersion: RESOURCE_SPIRIT_MODEL_VERSION,
-    productive: false,
+    productive: Boolean(confirmedMinimumPools && skillCostChains.some(chain => chain.sustainStatus === 'sustainable-on-confirmed-minimum')),
     manaPoolKnown: false,
     lifePoolKnown: false,
     spiritCapacityKnown: false,
     exactSkillCostsKnown: skillCostChains.length > 0 && skillCostChains.every(chain =>
       chain.baseCostStatus !== 'blocked-missing-exact-base-cost'
       && chain.supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'),
+    ...(confirmedMinimumPools ? { confirmedMinimumPools } : {}),
     sources,
     equipmentContributions,
     skillCostChains,
     semanticSupportCostHints,
     limitations: [
-      'Belegte Ausrüstungsbeiträge werden einzeln transportiert, ergeben ohne Charaktergrundwert, Attribute und weitere globale Wirkungen aber keinen vollständigen Lebens-, Mana- oder Geistpool.',
+      'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
       'Der gepinnte Fertigkeitsbestand enthält Reservierungsmarker, aber keine allgemeine geschlossene Kette aus Reservierungsbetrag und verfügbarer Geistkapazität.',
       'Fertigkeits-Grundkosten auf Stufe 20 und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Kostenketten bleiben blockiert.',
       'Die supportangepassten Werte enthalten noch keine passiven, Aszendenz-, Ausrüstungs- oder situativen Kostenänderungen.',
-      'Ohne vollständigen Ressourcenpool und Wiederherstellung verändert dieses Modell weder Wirkfrequenz noch Schaden pro Sekunde und behauptet keine dauerhafte Nutzbarkeit.',
+      'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
     ],
   }
 }
