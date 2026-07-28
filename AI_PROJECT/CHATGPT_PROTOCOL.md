@@ -2402,3 +2402,41 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Hauptdokument: `docs/BUILD_ASSISTANT_CURRENT_META_REFERENCE.md`.
 - Nächster Schritt: 10 bis 20 konkrete, korrelierte Charakterprofile je
   Aszendenz als versionierte Referenzpakete prüfen.
+
+## Korrelierte Meta-Build-Pakete (2026-07-28)
+
+- Ausgangscommit: `21e3118b58d0fc1ae4dcf216f4af40729f9714ae`.
+- Die von poe.ninja selbst verwendete öffentliche Profilantwort wurde auf
+  den exakten Snapshot `1924-20260728-10654`, Snapshot
+  `runes-of-aldur`, Passivbaum `PassiveTree-0.5` gepinnt.
+- Der lokale Generator
+  `scripts/poe2-meta-build-packages/generate.mjs` reduziert Profile auf
+  Aszendenz, höchste modellierte Schadensfertigkeit, gemeinsam gesockelte
+  Supports und aktive Fertigkeiten, Waffenkategorien sowie Passivpunktzahlen.
+- Kontonamen, Charakternamen, vollständige Items, vollständige Passivbäume
+  und Path-of-Building-Exporte werden nicht im Produkt gespeichert.
+- Der erste kontrollierte Lauf validierte `53/460` Profile. `407` bleiben
+  wegen HTTP-429-Schutzgrenzen oder unvollständiger Korrelation blockiert;
+  nicht belegbare Angaben sind `Unbekannt`.
+- Aus der belegten Teilstichprobe entstanden `10` produktive Pakete mit
+  mindestens zwei korrelierten Profilen. Einzelbeobachtungen bleiben
+  Audit-only.
+- Die produktive Wirkung ist ein begrenzter sekundärer Bonus nach allen
+  harten Skill-, Waffen-, Support-, Equipment-first- und Ressourcenregeln.
+  Die frühere unkorrelierte Übersicht wurde in ihrer Gewichtung reduziert.
+- poe.ninja-/PoB-DPS wird nicht als App-DPS, Garantie oder globale
+  Optimalität übernommen.
+- Audit:
+  `docs/audits/poe2-current-meta-build-profile-validation.json`.
+- Reduziertes Produkt:
+  `generated/meta/poe2-build-packages.json`.
+- Produktdatei SHA-256:
+  `2e59d2208d3defa8e1f04c7b9a8cc1e3b4480fab7234c3380f4622e760051444`.
+- Coverage ist derzeit partiell (Infernalist, Blood Mage und Lich in der
+  ersten erreichbaren Stichprobe). Der Generator kann denselben Snapshot
+  gedrosselt und inkrementell fortsetzen.
+- Abschlussprüfung: fokussierte Meta- und Variantenoptimierungstests `11/11`,
+  reguläre Suite `1275/1279`; die vier ausschließlich zeitkritisch
+  fehlgeschlagenen Vollbaum-/Lokalisierungstests anschließend seriell
+  `50/50` erfolgreich. Lint, Typecheck, Produktions-Build, Pages-Build,
+  JSON-Validierung (`161` Dateien) und `git diff --check` erfolgreich.

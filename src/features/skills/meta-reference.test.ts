@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition } from '../../domain'
 import { ascendancyMetaReferences, metaReferenceSnapshot, scoreMetaReference } from './meta-reference'
 import profileReferences from '../../../docs/audits/poe2-current-meta-reference-profiles.json'
+import profileValidation from '../../../docs/audits/poe2-current-meta-build-profile-validation.json'
+import correlatedPackages from '../../../generated/meta/poe2-build-packages.json'
 
 const skill = (nameEn: string): SkillGemDefinition => ({
   id: `skill:${nameEn}`,
@@ -22,6 +24,7 @@ describe('seasonal meta reference', () => {
     expect(metaReferenceSnapshot).toMatchObject({
       league: 'Runes of Aldur',
       patchFamily: '0.5.x',
+      exactVersion: '1924-20260728-10654',
       population: 124306,
     })
   })
@@ -47,6 +50,51 @@ describe('seasonal meta reference', () => {
     expect(observed.observedSkillShare).toBe(94)
     expect(observed.score).toBeGreaterThan(unobserved.score)
     expect(observed.score).toBeLessThanOrEqual(100)
+  })
+
+  it('uses only multi-profile correlated packages as additional evidence', () => {
+    expect(correlatedPackages.packages.length).toBeGreaterThan(0)
+    expect(correlatedPackages.packages.every(item =>
+      item.productive
+      && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
+    )).toBe(true)
+    const first = correlatedPackages.packages[0]
+    const result = scoreMetaReference(
+      skill(first.mainSkill),
+      first.weapon as Parameters<typeof scoreMetaReference>[1],
+      first.ascendancyId,
+    )
+    expect(result.correlatedProfileCount).toBe(first.profileCount)
+    expect(result.correlatedPackageScore).toBeGreaterThan(0)
+  })
+
+  it('keeps correlated profile evidence anonymized and reduced', () => {
+    expect(profileValidation).toMatchObject({
+      requestedProfiles: 460,
+      validatedProfiles: 53,
+      blockedProfiles: 407,
+    })
+    expect(profileValidation.policy).toMatchObject({
+      rawProfilesStored: false,
+      accountNamesStored: false,
+      characterNamesStored: false,
+      pathOfBuildingExportsStored: false,
+    })
+    for (const observation of profileValidation.observations) {
+      expect(observation.profileId).toMatch(/^[a-f0-9]{20}$/)
+      expect(observation).not.toHaveProperty('account')
+      expect(observation).not.toHaveProperty('name')
+      expect(observation).not.toHaveProperty('url')
+      expect(observation).not.toHaveProperty('pathOfBuildingExport')
+    }
+  })
+
+  it('does not create a package bonus for an uncorrelated pair', () => {
+    expect(scoreMetaReference(
+      skill('Nicht beobachtete Fertigkeit'),
+      'wand',
+      'ascendancy-official-Sorceress1',
+    ).correlatedPackageScore).toBe(0)
   })
 
   it('never creates evidence for an unknown ascendancy', () => {

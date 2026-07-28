@@ -1,10 +1,12 @@
 import type { SkillGemDefinition, SyntheticWeaponType } from '../../domain'
+import correlatedPackages from '../../../generated/meta/poe2-build-packages.json'
 
 export const metaReferenceSnapshot = {
   source: 'poe.ninja',
   league: 'Runes of Aldur',
   patchFamily: '0.5.x',
   snapshotDate: '2026-07-28',
+  exactVersion: correlatedPackages.source.version,
   population: 124306,
 } as const
 
@@ -162,9 +164,33 @@ export function scoreMetaReference(
   const reference = ascendancyMetaReferences[ascendancyId]
   const observedSkill = reference?.mainSkills.find(item => item.name === skill.nameEn)
   const observedWeapon = reference?.weapons.find(item => item.name === weaponName[weapon])
-  const score = Math.round((observedSkill?.share ?? 0) * 0.8 + (observedWeapon?.share ?? 0) * 0.2)
+  const correlatedPackage = correlatedPackages.packages.find(item =>
+    item.ascendancyId === ascendancyId
+    && item.mainSkill === skill.nameEn
+    && item.weapon === weapon,
+  )
+  /*
+   * Die getrennten Übersichtsanteile bleiben nur ein schwaches Signal.
+   * Der zusätzliche Paketbonus entsteht ausschließlich, wenn Fertigkeit und
+   * Waffe in mindestens zwei Profilen derselben Aszendenz gemeinsam belegt
+   * sind. Harte Kompatibilitätsregeln werden weiterhin vorher geprüft.
+   */
+  const overviewScore = Math.round(
+    (observedSkill?.share ?? 0) * 0.32
+    + (observedWeapon?.share ?? 0) * 0.08,
+  )
+  const correlatedPackageScore = correlatedPackage
+    ? Math.min(30, correlatedPackage.profileCount * 3)
+    : 0
+  const score = Math.min(70, overviewScore + correlatedPackageScore)
   return {
     score,
+    overviewScore,
+    correlatedPackageScore,
+    correlatedProfileCount: correlatedPackage?.profileCount ?? 0,
+    correlatedEvidenceClass: correlatedPackage?.evidenceClass,
+    observedSupports: correlatedPackage?.supports ?? [],
+    observedLinkedActiveSkills: correlatedPackage?.linkedActiveSkills ?? [],
     observedSkillShare: observedSkill?.share,
     observedWeaponShare: observedWeapon?.share,
     sampleSize: reference?.characterCount ?? 0,

@@ -279,6 +279,9 @@ export function optimizeBuildVariants(input: {
         ...(metaReference.observedSkillShare !== undefined
           ? [`Aktuelle Meta-Referenz: ${skill.nameEn ?? skill.displayNameDe} erscheint bei ${metaReference.observedSkillShare} % von ${metaReference.sampleSize} erfassten Charakteren dieser Aszendenz.`]
           : []),
+        ...(metaReference.correlatedProfileCount > 0
+          ? [`Validiertes Build-Paket: ${skill.nameEn ?? skill.displayNameDe} und ${weaponLabels[weapon]} sind in ${metaReference.correlatedProfileCount} Profilen derselben Aszendenz gemeinsam belegt.`]
+          : []),
         resourceStatus === 'confirmed-usable'
           ? 'Die belegte Ressourcenbilanz deckt die Kombination dauerhaft.'
           : resourceStatus === 'usable-with-limited-sustain'

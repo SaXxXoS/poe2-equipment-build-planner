@@ -27,6 +27,42 @@ ersten 20 DPS-sortierten Charakterprofile. Diese 460 Links sind korrelierte
 Ausgangspunkte für die nachfolgende Paketprüfung, aber noch keine direkten
 Ranking-Eingaben.
 
+## Korrelierte Paketprüfung
+
+Die öffentliche Profilansicht verwendet für den kontrollierten Abruf den
+exakten Snapshot `1924-20260728-10654` (`runes-of-aldur`,
+`PassiveTree-0.5`). Der lokale Generator
+`scripts/poe2-meta-build-packages/generate.mjs` reduziert jedes erreichbare
+Profil auf:
+
+- Aszendenz,
+- höchste modellierte Schadensfertigkeit,
+- Supports derselben Gemmengruppe,
+- weitere aktive Fertigkeiten derselben Gemmengruppe,
+- strukturiert erkennbare Waffenkategorien,
+- zusammengefasste normale, Aszendenz- und Waffenset-Punktzahlen.
+
+Nicht gespeichert werden Kontonamen, Charakternamen, vollständige Items,
+vollständige Passivbäume oder Path-of-Building-Exporte.
+
+Der erste kontrollierte Lauf konnte `53` von `460` Profilen vollständig
+validieren. `407` Profile bleiben wegen der öffentlichen API-Schutzgrenze
+beziehungsweise unvollständiger Korrelation blockiert. Damit ist die
+Paketabdeckung derzeit **partiell** und nicht für jede Aszendenz verfügbar.
+Nicht validierte Profile werden ausdrücklich nicht geschätzt oder durch
+andere Profile ersetzt.
+
+Aus den `53` validierten Profilen entstanden `10` mehrfach beobachtete
+Pakete. Ein Paket wird nur ab zwei Profilen als produktive sekundäre Evidenz
+verwendet. Einzelbeobachtungen bleiben Audit-only. Maßgeblich sind:
+
+- `docs/audits/poe2-current-meta-build-profile-validation.json`
+- `generated/meta/poe2-build-packages.json`
+
+Der Generator ist inkrementell und gedrosselt. Folgeläufe desselben
+Snapshots verwenden bereits validierte reduzierte Beobachtungen wieder und
+prüfen nur noch offene Profile.
+
 ## Verwendungsregel
 
 Die Meta-Referenz ist ausschließlich ein begrenzter Tie-Breaker, nachdem ein
@@ -41,8 +77,10 @@ Kandidat bereits alle folgenden Prüfungen bestanden hat:
 7. Ressourcenblocker.
 
 Ein häufiger Skill erhält höchstens einen begrenzten Zusatzwert. Eine häufige
-Waffenkategorie liefert nur einen kleineren Zusatzwert. Unbekannte
-Waffenkonfigurationen von poe.ninja erzeugen keinen Bonus.
+Waffenkategorie liefert nur einen kleineren Zusatzwert. Ein zusätzlicher,
+ebenfalls begrenzter Paketwert entsteht nur, wenn Fertigkeit und Waffe in
+mindestens zwei Profilen derselben Aszendenz gemeinsam vorkommen. Unbekannte
+Waffenkonfigurationen und Einzelprofile erzeugen keinen Paketbonus.
 
 ## Wichtige Einschränkung
 
@@ -53,9 +91,10 @@ auf beliebige Skills an. Nur lokal bereits als Hauptskill zugelassene
 Kandidaten können davon profitieren.
 
 Die aggregierte Häufigkeit eines Skills und einer Waffe beweist außerdem
-nicht, dass beide im selben Charakter zusammen verwendet wurden. Deshalb ist
-die Referenz kein harter Kombinationsbeleg und darf keine Kompatibilitätsregel
-erzeugen.
+nicht, dass beide im selben Charakter zusammen verwendet wurden. Deshalb
+bleibt der Aggregatanteil schwach. Der neue Paketanteil besitzt diese
+Korrelation, bleibt aber ebenfalls nur sekundäre Evidenz und darf keine harte
+Kompatibilitätsregel erzeugen.
 
 ## Referenzschwerpunkte
 
@@ -94,9 +133,15 @@ Spielregeln bleiben vorrangig.
 
 ## Noch offen
 
-Der korrelierte Ausgangsdatensatz enthält bereits 20 Profile je Aszendenz.
-Als nächstes müssen diese Profile als vollständige Pakete geprüft werden:
-Hauptskill, Setup-Skills, Supports, beide Waffensets, Keystones,
-Aszendenzknoten, Ausrüstung und Ressourcen. Erst diese inhaltliche Prüfung
-darf konkrete Meta-Pakete validieren. Reine Aggregatwerte und bloße
-DPS-Sortierung dürfen das ausdrücklich nicht.
+Die offene Rate-Limit-Stichprobe muss in gedrosselten Folgeläufen auf die
+restlichen Aszendenzen erweitert werden. Zusätzlich sind die folgenden
+Punkte noch nicht als Produktregeln freigegeben:
+
+- poe.ninja-DPS als exakter oder garantierter Schaden,
+- einzelne Passive- und Aszendenzknoten,
+- bloße Skill-Koexistenz als kausale Rotation,
+- vollständige Ausrüstungskopien,
+- Profile mit nur einer Beobachtung.
+
+Der nächste Lauf darf die Coverage erweitern, aber weiterhin keine
+Kompatibilität, Rotation oder DPS-Wahrheit aus Popularität ableiten.
