@@ -21,6 +21,8 @@ import { RealPassiveAnalysis, createPassiveAnalysisController, REAL_PASSIVE_UI_M
 import { buildAssistantCandidates, runBuildAssistantV1, validateBuildAssistantInput } from './features/build-assistant-v1'
 import { clearStoredBuild, loadStoredBuild, saveStoredBuild } from './features/build-storage'
 import { createEquipmentSlotSuggestions } from './features/equipment-editor/recommendations'
+import { rebalanceSupportsAfterPassivePlanning, type PostPassiveResourceRebalanceResult } from './features/skills/post-passive-resource-rebalance'
+import officialPassiveTree from '../generated/poe2-tree/tree.json'
 
 export default function App() {
   const [initial] = useState(loadStoredBuild)
@@ -29,6 +31,7 @@ export default function App() {
   const [setups, setSetups] = useState(() => removeDuplicateSupportFamilies(initial?.setups ?? createEmptySkillSetups(), buildAssistantCandidates.supports))
   const [analysis, setAnalysis] = useState<BuildAnalysis | null>(null)
   const [variantOptimization, setVariantOptimization] = useState<BuildVariantOptimization | null>(null)
+  const [resourceRebalance, setResourceRebalance] = useState<PostPassiveResourceRebalanceResult | null>(null)
   const [calculationState, setCalculationState] = useState<'idle' | 'running' | 'completed' | 'error'>('idle')
   const [calculationErrors, setCalculationErrors] = useState<string[]>([])
   const [passivePlan, setPassivePlan] = useState<PassivePlanPresentation>({ results: { shared: null, 'set-1': null, 'set-2': null, ascendancy: null }, status: 'uninitialized' })
@@ -56,6 +59,7 @@ export default function App() {
   function invalidateResult() {
     setAnalysis(null)
     setVariantOptimization(null)
+    setResourceRebalance(null)
     setCalculationState('idle')
     setCalculationErrors([])
   }
@@ -236,6 +240,29 @@ export default function App() {
         await passiveController.analyze(passiveInput)
         const passiveAwareResult = passiveController.getState().result
         if (passiveAwareResult?.realPassivePlanning) {
+          const rankedSupports = effectiveSetups.flatMap(value => {
+            if (!value.skillId) return []
+            return runBuildAssistantV1({
+              character: { ...effectiveCharacter, desiredMainSkillId: value.skillId },
+              equipment,
+              setups: effectiveSetups,
+            }).supportAnalysis.topCandidates
+          })
+          const postPassiveRebalance = rebalanceSupportsAfterPassivePlanning({
+            equipment,
+            setups: effectiveSetups,
+            skills: buildAssistantCandidates.skills,
+            supports: buildAssistantCandidates.supports,
+            rankedSupports,
+            characterLevel: effectiveCharacter.level || undefined,
+            passiveTree: officialPassiveTree,
+            realPassivePlanning: passiveAwareResult.realPassivePlanning,
+          })
+          setResourceRebalance(postPassiveRebalance)
+          if (postPassiveRebalance.adjustedSetupIds.length) {
+            effectiveSetups = postPassiveRebalance.setups
+            setSetups(effectiveSetups)
+          }
           result = runBuildAssistantV1(
             { character: effectiveCharacter, equipment, setups: effectiveSetups },
             passiveAwareResult.realPassivePlanning,
@@ -297,7 +324,7 @@ export default function App() {
         <button className="calculate-btn" disabled={calculationState === 'running'} onClick={calculate}>{calculationState === 'running' ? 'Berechnung läuft …' : 'Build-Vorschlag erstellen'}</button>
         <p className="calculation-status" aria-live="polite">{calculationState === 'completed' ? 'Ergebnis vorhanden' : calculationState === 'error' ? 'Fehler bei der Berechnung' : calculationState === 'running' ? 'Analyzer werden ausgeführt' : 'Bereit zur Auswertung'}</p>
       </section>
-      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment} passivePlan={passivePlan} variantOptimization={variantOptimization} onShowPassivePlan={showPassivePlan}/>}
+      {analysis && <BuildAssistantResultSection analysis={analysis} equipment={equipment} passivePlan={passivePlan} variantOptimization={variantOptimization} resourceRebalance={resourceRebalance} onShowPassivePlan={showPassivePlan}/>}
     </main>
     <footer>Lokale, deterministische Build-Auswertung · Keine Runtime-Verbindung zu externen Datenquellen</footer>
   </>

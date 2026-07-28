@@ -7,6 +7,7 @@ import type { PassivePlanPresentation } from '../features/real-passive-analysis'
 import { technicalAffixById } from '../affixes/registry'
 import { affixDisplayName } from '../features/equipment-editor/affix-display'
 import type { BuildVariantOptimization } from '../features/skills/build-variant-optimizer'
+import type { PostPassiveResourceRebalanceResult } from '../features/skills/post-passive-resource-rebalance'
 
 const confidenceText: Record<Confidence, string> = { high: 'Hohe Sicherheit', medium: 'Mittlere Sicherheit', low: 'Niedrige Sicherheit' }
 const goalText = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
@@ -87,11 +88,12 @@ function ProfileRecommendations({ title, supports, passives, jewels, uniques }: 
   </div>
 }
 
-export function BuildAssistantResultSection({ analysis, equipment, passivePlan, variantOptimization, onShowPassivePlan }: {
+export function BuildAssistantResultSection({ analysis, equipment, passivePlan, variantOptimization, resourceRebalance, onShowPassivePlan }: {
   analysis: BuildAnalysis
   equipment: EquipmentEntry[]
   passivePlan?: PassivePlanPresentation
   variantOptimization?: BuildVariantOptimization | null
+  resourceRebalance?: PostPassiveResourceRebalanceResult | null
   onShowPassivePlan?: () => void
 }) {
   const desiredSkillId = analysis.supportAnalysis.allCandidates[0]?.skillId ?? analysis.skillAnalysis.topMainCandidates[0]?.skillId
@@ -136,6 +138,8 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   return <section id="result" className="result build-assistant-result">
     <div className="placeholder">BUILD-ASSISTENT V1 · ECHTE ANALYZER-AUSWERTUNG</div>
     <h2>Build-Vorschlag</h2>
+    {resourceRebalance?.adjustedSetupIds.length ? <p className="analysis-note"><b>Ressourcenprüfung:</b> {resourceRebalance.adjustedSetupIds.length} automatisch erzeugte Supportkombination(en) wurden nach der realen Passiv- und Aszendenzplanung auf eine tragfähigere Kombination umgestellt.</p> : null}
+    {resourceRebalance?.manualConflictSetupIds.length ? <p className="analysis-warning"><b>Manuelle Auswahl beibehalten:</b> Bei {resourceRebalance.manualConflictSetupIds.length} Fertigkeitssetup(s) ist eine bestätigte Ressourcenunterdeckung vorhanden. Die Nutzerwahl wurde nicht automatisch verändert.</p> : null}
     <article className="build-summary"><h3>Zusammenfassung · Build-Eignung: {fitCategory}</h3><p className="muted">Die Eignung bewertet die fachliche Passung. Der getrennte Schadenswert darunter zeigt nur den aktuell sicher berechenbaren Trefferschaden.</p><dl className="summary-grid">
       <div><dt>Zielprofil</dt><dd>{goalText[analysis.buildProfile.goals.mappingWeight > analysis.buildProfile.goals.bossWeight ? 'mapping' : analysis.buildProfile.goals.bossWeight > analysis.buildProfile.goals.mappingWeight ? 'boss' : 'balanced']}</dd></div>
       <div><dt>Hauptschaden</dt><dd>{dominantDamage ? damageText[dominantDamage] : 'Unbekannt'}</dd></div>

@@ -6,6 +6,7 @@ import {
   type SupportGemDefinition,
 } from '../../domain'
 import { resolveResourceSpiritModel } from '../../engine/damage-estimation/resource-spirit-model'
+import type { RealPassivePlanningIntegrationResult, RealPassiveTree } from '../../engine'
 
 export interface RankedSupportForSkill {
   skillId: string
@@ -17,14 +18,21 @@ export interface ResourceAwareSupportContext {
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
   characterLevel?: number
+  passiveTree?: RealPassiveTree
+  realPassivePlanning?: RealPassivePlanningIntegrationResult
 }
 
-function resourceRisk(
+export interface SupportResourceRisk {
+  hardBlocked: boolean
+  penalty: number
+}
+
+export function supportResourceRisk(
   setup: SkillSetup,
   supportIds: string[],
   definitions: SupportGemDefinition[],
   context: ResourceAwareSupportContext,
-) {
+): SupportResourceRisk {
   const trialSetups = context.setups.map(value =>
     value.id === setup.id ? { ...value, supportGemIds: supportIds } : value,
   )
@@ -34,6 +42,8 @@ function resourceRisk(
     skills: context.skills,
     supports: definitions,
     characterLevel: context.characterLevel,
+    passiveTree: context.passiveTree,
+    realPassivePlanning: context.realPassivePlanning,
   })
   const chain = model.skillCostChains.find(value => value.setupId === setup.id)
   const relevantSets = setup.weaponSet === 'both' ? ['set-1', 'set-2'] : [setup.weaponSet]
@@ -87,7 +97,7 @@ export function fillRecommendedSupportSlots(
       const keys = supportExclusiveKeys(definition)
       if (keys.some(key => usedKeys.has(key))) return []
       const risk = resourceContext
-        ? resourceRisk(setup, [...selected, candidate.supportId], definitions, resourceContext)
+        ? supportResourceRisk(setup, [...selected, candidate.supportId], definitions, resourceContext)
         : { hardBlocked: false, penalty: 0 }
       return [{ candidate, definition, keys, rankIndex, ...risk }]
     }).sort((left, right) =>

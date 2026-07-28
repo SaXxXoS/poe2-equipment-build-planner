@@ -2244,3 +2244,28 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Nächster Schritt: Ressourcenbilanz nach der realen Passiv- und
   Aszendenzplanung erneut prüfen und bei bestätigter Unterdeckung eine
   belegte alternative Supportkombination anbieten.
+
+## Schritt 30 – Ressourcen-Nachprüfung nach der realen Planung
+
+- Ausgangscommit: `2f61c8ae0fb214bc8b66cd60ba8cf72edc4435a9`.
+- Der abschließende Build-Lauf erhält neben dem kompakten Planungsergebnis
+  nun auch wieder den gepinnten offiziellen Passivbaum. Dadurch können die
+  tatsächlich vergebenen normalen, Waffenset- und Aszendenzknoten in der
+  Ressourcenrechnung ausgewertet werden.
+- Automatisch erzeugte Supportkombinationen werden nach dem realen
+  Passivlauf erneut geprüft und nur bei belegter Verbesserung auf eine
+  tragfähigere kompatible Kombination umgestellt.
+- Manuelle Supportentscheidungen bleiben unverändert. Eine bestätigte
+  Unterdeckung wird sichtbar gewarnt.
+- Keine neue Nutzereinstellung, keine Datenpinänderung und kein
+  Runtime-Netzwerk.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_POST_PASSIVE_RESOURCE_REBALANCE_STEP_30.md`.
+- Audit:
+  `docs/audits/build-assistant-post-passive-resource-rebalance-step-30.json`.
+- Prüfstatus vor Commit: 25 fokussierte Tests und 1.257 Tests in 98
+  Testdateien erfolgreich. Typecheck, Lint, Produktions-Build, Pages-Build,
+  Validierung von 156 JSON-Dateien, `git diff --check` und
+  Git-Sicherheitsprüfung sind erfolgreich.
+- Nächster Schritt: bei bestätigter Unterdeckung kontrolliert prüfen, ob ein
+  belegter Ressourcenknoten als alternatives Passivziel besser ist.

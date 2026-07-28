@@ -8,6 +8,7 @@ import { technicalItemClasses } from '../../affixes/registry'
 import { repoeSkillCatalog, repoeSupportCatalog } from '../../gems/repoe-catalog'
 import type { SyntheticWeaponType } from '../../domain'
 import { migrateEquipmentEntry } from '../equipment-editor/model'
+import officialPassiveTree from '../../../generated/poe2-tree/tree.json'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
 
@@ -155,6 +156,12 @@ export function createBuildAssistantRequest(input: BuildAssistantInput): EngineR
 export function runBuildAssistantV1(input: BuildAssistantInput, precomputedRealPassivePlanning?: RealPassivePlanningIntegrationResult): BuildAnalysis {
   const request = createBuildAssistantRequest(input)
   request.precomputedRealPassivePlanning = precomputedRealPassivePlanning
+  if (precomputedRealPassivePlanning) {
+    request.realPassivePlanning = {
+      enabled: true,
+      passiveTree: officialPassiveTree,
+    }
+  }
   return analyzeBuild(
     request,
     { engineVersion: BUILD_ASSISTANT_V1_VERSION, fixtureMode: true },

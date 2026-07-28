@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "step": 30,
+  "sourceCommit": "2f61c8ae0fb214bc8b66cd60ba8cf72edc4435a9",
+  "resourceModelVersion": "7.0.0",
+  "officialPassiveTreeForwardedToFinalAnalysis": true,
+  "postPlanningInputs": [
+    "shared-passive-plan",
+    "weapon-set-1-plan",
+    "weapon-set-2-plan",
+    "ascendancy-plan",
+    "selected-skills",
+    "selected-supports",
+    "equipment",
+    "character-level"
+  ],
+  "automaticAdjustmentPolicy": {
+    "recommendedSetupsOnly": true,
+    "requiresProvenImprovement": true,
+    "preservesSupportCompatibility": true,
+    "preservesSupportFamilies": true,
+    "maximumSupportsPerSetup": 5
+  },
+  "manualSelectionPolicy": {
+    "automaticallyChanged": false,
+    "confirmedConflictProducesWarning": true
+  },
+  "unknownDataPolicy": "fail-closed-without-invented-exclusion",
+  "runtimeNetwork": false,
+  "dataPinsChanged": false
+}
