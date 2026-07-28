@@ -1849,3 +1849,28 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-next-skill-effects-step-15.json`.
 - Nächster Schritt: getrenntes Schaden-über-Zeit- und Ailmentmodell mit
   belegter Basis, Dauer, Auslösebedingung und Stapelregel.
+
+## Schaden über Zeit und Ailments – Schritt 16 (2026-07-28)
+
+- Ausgangscommit: `762a02fb7c5464e72d7e365ec7a5c3f911c9e0ae`.
+- Schaden über Zeit besitzt einen eigenen Ergebniskanal und wird nicht zum
+  Trefferschaden pro Sekunde addiert.
+- Der gepinnte Bestand enthält fünf Fertigkeiten mit eindeutig typisiertem
+  DoT-Grundwert pro Minute. Nur Flame Wall besitzt zusätzlich eine gemeinsam
+  strukturierte Wirkungsdauer.
+- Flame Wall wird als einzelne belegte Anwendung mit `59,58` Feuerschaden
+  pro Sekunde, `6,4 s` Wirkfenster und `381,33` Gesamtschaden ausgewiesen.
+- Contagion, Incinerate, Profane Ritual und Tornado bleiben wegen fehlender
+  geschlossener Dauerketten fail-closed.
+- Entzünden, Gift und Blutung erzeugen weiterhin keinen Zahlenbonus, weil
+  Basis, Auslösung, Dauer und Stapelverhalten nicht gemeinsam belegt sind.
+- Keine neue Nutzereinstellung, keine neue Datenquelle und keine Änderung
+  der Produktpins.
+- Modellversion: `damage-over-time 1.0.0`.
+- Rechnerversion: `2.5.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_DAMAGE_OVER_TIME_STEP_16.md`.
+- Audit:
+  `docs/audits/build-assistant-damage-over-time-step-16.json`.
+- Nächster Schritt: Mehrfachtreffer und Projektile nur mit belegter
+  Trefferzahl, Überlappungsbedingung und Zielannahme modellieren.

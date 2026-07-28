@@ -52,6 +52,20 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.excluded).toContain('Mehrfachtreffer, Projektile und situationsabhängige Effekte')
     expect(result.excluded).toContain('bedingte Passive- und Aszendenzeffekte')
   })
+  it('weist Flammenwand-DoT getrennt vom Trefferschaden als Einzelanwendung aus',()=>{
+    const result=estimateHitDamage({equipment:[],setups:[setup('wall')],skills:[skill('wall','Flame Wall')]})
+    expect(result.damageOverTime?.effects[0]).toMatchObject({
+      damageType:'fire',damagePerSecond:59.58,durationMs:6400,totalDamagePerApplication:381.33,stackCount:1,
+    })
+    expect(result.hitDamagePerSecond).toBe(226)
+    expect(result.damageOverTime?.totalSingleApplicationDamagePerSecond).toBe(59.58)
+    expect(result.excluded.join(' ')).toContain('Entzünden')
+  })
+  it('blockiert einen unvollständigen nativen DoT statt einen DPS zu erfinden',()=>{
+    const result=estimateHitDamage({equipment:[],setups:[setup('contagion')],skills:[skill('contagion','Contagion')]})
+    expect(result.status).toBe('unavailable')
+    expect(result.hitDamagePerSecond).toBeUndefined()
+  })
   it('wendet elementare Steigerungen nur auf die passende Schadenskomponente an',()=>{
     const fireItem:EquipmentEntry={id:'fire',slotId:'slot-helmet',itemClassId:'Helmets',rarity:'rare',modifierValues:[{
       id:'applied-fire-damage',modifierId:'fire-damage',value:100,statValues:[{statId:'fire_damage_+%',value:100}],

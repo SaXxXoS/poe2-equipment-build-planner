@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "step": 16,
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "2.5.0",
+  "sourceScope": "poe2-pob2-damage-reference",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "recordsWithTypedBaseDamagePerMinute": 5,
+  "recordsWithTypedBaseDamageAndDuration": 1,
+  "productiveSingleApplicationRecords": [
+    {
+      "sourceRecordId": "FlameWallPlayer",
+      "name": "Flame Wall",
+      "damageType": "fire",
+      "baseDamagePerMinute": 3575,
+      "damagePerSecond": 59.58,
+      "durationMs": 6400,
+      "totalDamagePerApplication": 381.33,
+      "stackCountClaimed": 1
+    }
+  ],
+  "blockedRecords": [
+    { "name": "Contagion", "reason": "missing-structured-duration" },
+    { "name": "Incinerate", "reason": "missing-structured-duration" },
+    { "name": "Profane Ritual", "reason": "missing-structured-duration" },
+    { "name": "Tornado", "reason": "missing-structured-duration" }
+  ],
+  "blockedAilments": ["ignite", "poison", "bleeding"],
+  "forbiddenInferences": [
+    "damage-type-alone-implies-ailment",
+    "skill-name-implies-ailment",
+    "display-text-matching",
+    "unknown-duration-default",
+    "unknown-stack-count-default",
+    "projectile-count-as-hit-multiplier"
+  ],
+  "runtimeNetwork": false,
+  "newUserSetting": false,
+  "dataPinsChanged": false,
+  "nextStep": "17-multiple-hit-and-projectile-mechanics"
+}
