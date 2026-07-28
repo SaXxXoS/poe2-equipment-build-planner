@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { SkillSetup, SupportGemDefinition } from '../../domain'
+import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import { fillRecommendedSupportSlots } from './automatic-supports'
 
 const setup: SkillSetup = {
@@ -43,5 +43,33 @@ describe('automatische Supportbefüllung',()=>{
       {skillId:'skill-main',supportId:'other'},
     ],definitions)
     expect(result.supportGemIds).toEqual(['family-i','other'])
+  })
+
+  it('bevorzugt bei gleicher fachlicher Eignung die belegbar tragbare Kostenkette',()=>{
+    const costly = support('costly')
+    costly.costMultiplierPercent = 300
+    const efficient = support('efficient')
+    efficient.costMultiplierPercent = 100
+    const skillDefinition:SkillGemDefinition = {
+      id:'skill-main',nameEn:'Ancestral Cry',displayNameDe:'Ahnenschrei',
+      dataVersion:'test',source:'local-placeholder',status:'placeholder',
+      tags:['buff'],enabled:true,
+    }
+    const result=fillRecommendedSupportSlots(
+      {...setup,supportGemIds:[]},
+      [
+        {skillId:'skill-main',supportId:'costly'},
+        {skillId:'skill-main',supportId:'efficient'},
+      ],
+      [costly,efficient],
+      1,
+      {
+        equipment:[],
+        setups:[{...setup,supportGemIds:[]}],
+        skills:[skillDefinition],
+        characterLevel:1,
+      },
+    )
+    expect(result.supportGemIds).toEqual(['efficient'])
   })
 })

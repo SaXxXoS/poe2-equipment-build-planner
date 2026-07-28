@@ -1,0 +1,39 @@
+{
+  "step": 29,
+  "scope": "build-assistant-resource-aware-automatic-selection",
+  "status": "implemented",
+  "selectionStages": [
+    "automatic-main-skill",
+    "automatic-support-fill",
+    "manual-best-support-action",
+    "skill-weapon-support-variant-optimization"
+  ],
+  "inputs": [
+    "exact-skill-base-costs",
+    "exact-support-cost-multipliers",
+    "confirmed-minimum-mana-pool",
+    "confirmed-minimum-mana-regeneration",
+    "exact-spirit-reservations",
+    "level-derived-quest-spirit-upper-bound",
+    "weapon-set-assignment"
+  ],
+  "hardBlocks": [
+    "confirmed-zero-mana-with-mana-cost",
+    "spirit-reservation-exceeds-level-derived-upper-bound"
+  ],
+  "softRisks": [
+    "burst-affordable-not-sustain-confirmed",
+    "missing-action-frequency",
+    "exceeds-confirmed-spirit-minimum",
+    "requires-level-derived-quest-spirit"
+  ],
+  "failClosed": [
+    "unknown-cost-chain-does-not-create-positive-bonus",
+    "unknown-cost-chain-does-not-create-invented-block",
+    "manual-supports-are-preserved"
+  ],
+  "deterministic": true,
+  "runtimeNetwork": false,
+  "productPinsChanged": false,
+  "nextStep": 30
+}

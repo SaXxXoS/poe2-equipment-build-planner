@@ -39,4 +39,22 @@ describe('Automatische Hauptskillwahl', () => {
       ascendancyId: 'ascendancy-official-Warrior1',
     })?.skillId).toBe('physical-melee')
   })
+
+  it('stellt eine sicher nicht deckbare Geistreservierung nicht vor eine nutzbare Alternative', () => {
+    const blocked = definition('blocked-spirit', ['spell', 'lightning'])
+    blocked.spiritReservation = 200
+    const usable = definition('usable-skill', ['spell', 'lightning'])
+    expect(selectAutomaticMainSkill({
+      candidates: [
+        { skillId: blocked.id, damageScore: 100, totalScore: 100 },
+        { skillId: usable.id, damageScore: 10, totalScore: 10 },
+      ],
+      definitions: [blocked, usable],
+      equipment: initialEquipment,
+      setups: createEmptySkillSetups(),
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      characterLevel: 100,
+    })?.skillId).toBe(usable.id)
+  })
 })

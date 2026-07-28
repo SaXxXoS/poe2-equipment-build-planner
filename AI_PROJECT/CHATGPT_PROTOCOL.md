@@ -2213,3 +2213,34 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Nächster Schritt: automatische Skill- und Supportauswahl anhand der
   belegten Kosten-, Nachhaltigkeits- und Geistbilanz ressourcenbewusst
   optimieren.
+
+## Schritt 29 – Ressourcenbewusste automatische Auswahl
+
+- Ausgangscommit: `d4791ec6cdda32c0e1919c772584590638bbd877`.
+- Automatische Hauptskills, Supportbefüllung, die manuelle Aktion
+  „Beste vorschlagen“ und die gemeinsame Buildvariantenoptimierung verwenden
+  die belegte Ressourcen- und Geistbilanz bereits während des Rankings.
+- Bestätigtes Null-Mana mit Manakosten und eine Geistreservierung oberhalb
+  selbst der levelbasierten Quest-Obergrenze blockieren die betreffende
+  automatische Kombination.
+- Nur kurzfristig bezahlbare Kosten, fehlende Aktionsfrequenz und lediglich
+  geschätzte Quest-Geistdeckung werden als deterministische Risiken
+  berücksichtigt.
+- Unbekannte Kostenketten erzeugen weder einen positiven Bonus noch einen
+  erfundenen Ausschluss.
+- Manuelle Supportentscheidungen bleiben erhalten; Supportfamilien und harte
+  Kompatibilitätsregeln bleiben vorrangig.
+- Keine neue Nutzereinstellung, keine Datenpinänderung und kein
+  Runtime-Netzwerk.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_RESOURCE_AWARE_SELECTION_STEP_29.md`.
+- Audit:
+  `docs/audits/build-assistant-resource-aware-selection-step-29.json`.
+- Prüfstatus vor Commit: 1.255 Tests in 97 Testdateien fachlich erfolgreich;
+  ein im parallelen Gesamtlauf zeitbedingt abgebrochener Lokalisierungsaudit
+  wurde anschließend seriell erfolgreich bestätigt. 29 fokussierte Tests und
+  Typecheck, Lint, Produktions-Build, Pages-Build, JSON-Validierung,
+  `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich.
+- Nächster Schritt: Ressourcenbilanz nach der realen Passiv- und
+  Aszendenzplanung erneut prüfen und bei bestätigter Unterdeckung eine
+  belegte alternative Supportkombination anbieten.

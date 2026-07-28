@@ -1,5 +1,4 @@
 import {
-  supportExclusiveKeys,
   type EquipmentEntry,
   type SkillGemDefinition,
   type SkillSetup,
@@ -10,6 +9,7 @@ import { estimateHitDamage } from '../../engine'
 import { technicalItemClasses } from '../../affixes/registry'
 import { planSynergisticSkills, type SkillSynergyScore } from './synergy-planner'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
+import { fillRecommendedSupportSlots } from './automatic-supports'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
@@ -54,6 +54,8 @@ export interface BuildVariantCandidate {
   passiveAffinityScore: number
   analyzerScore: number
   modeledDps: number | null
+  resourceStatus?: 'confirmed-usable' | 'usable-with-limited-sustain' | 'resource-chain-unknown'
+  resourcePenalty?: number
   totalScore: number
   reasons: string[]
 }
@@ -162,6 +164,7 @@ export function optimizeBuildVariants(input: {
   skills: SkillGemDefinition[]
   supports: SupportGemDefinition[]
   skillScores: VariantSkillScore[]
+  characterLevel?: number
 }): BuildVariantOptimization {
   const equipped = equipmentWeaponSets(input.equipment)
   const equipmentFirst = equipped['set-1'].size + equipped['set-2'].size > 0
@@ -189,6 +192,8 @@ export function optimizeBuildVariants(input: {
       }
       const score = scores.get(skill.id)!
       const affinity = scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId)
+      const mainSetup = input.setups.find(value => value.role === 'main') ?? input.setups[0]
+      if (!mainSetup) return []
       const compatibleSupports = input.supports
         .filter(support =>
           supportCompatible(skill, support, weapon)
@@ -201,16 +206,18 @@ export function optimizeBuildVariants(input: {
               .filter(tag => skill.tags.includes(tag)).length
           return overlap(right) - overlap(left) || left.id.localeCompare(right.id)
         })
-      const usedSupportKeys = new Set<string>()
-      const supportIds = compatibleSupports
-        .filter(support => {
-          const keys = supportExclusiveKeys(support)
-          if (keys.some(key => usedSupportKeys.has(key))) return false
-          keys.forEach(key => usedSupportKeys.add(key))
-          return true
-        })
-        .slice(0, 5)
-        .map(value => value.id)
+      const supportIds = fillRecommendedSupportSlots(
+        { ...mainSetup, skillId: skill.id, role: 'main', supportGemIds: [] },
+        compatibleSupports.map(support => ({ skillId: skill.id, supportId: support.id })),
+        input.supports,
+        5,
+        {
+          equipment: input.equipment,
+          setups: input.setups,
+          skills: input.skills,
+          characterLevel: input.characterLevel,
+        },
+      ).supportGemIds
       const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1)[0]
       const setupDefinition = characterSkills.find(value => value.id === setup?.skillId)
       const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped)
@@ -219,15 +226,33 @@ export function optimizeBuildVariants(input: {
         ? setup
         : undefined
       const mainWeaponSet = preferredSet(weapon, equipped)
-      const mainSetup = input.setups.find(value => value.role === 'main') ?? input.setups[0]
-      if (!mainSetup) return []
       const estimate = estimateHitDamage({
         equipment: input.equipment,
         setups: [{ ...mainSetup, skillId: skill.id, role: 'main', weaponSet: mainWeaponSet, supportGemIds: supportIds }],
         skills: input.skills,
         fallbackSkillId: skill.id,
+        characterLevel: input.characterLevel,
       })
       const modeledDps = estimate.hitDamagePerSecond ?? null
+      const resourceModel = estimate.resourceSpiritModel
+      const costChain = resourceModel?.skillCostChains.find(value => value.setupId === mainSetup.id)
+      const capacityState = resourceModel?.spiritCapacityByWeaponSet.find(value => value.weaponSet === mainWeaponSet)
+      const resourceBlocked = costChain?.sustainStatus === 'unusable-confirmed-zero-mana'
+        || capacityState?.status === 'exceeds-level-derived-quest-estimate'
+      if (resourceBlocked) {
+        blockedCombinationCount += 1
+        return []
+      }
+      const resourcePenalty = (costChain?.sustainStatus === 'burst-affordable-on-confirmed-minimum' ? 20 : 0)
+        + (costChain?.sustainStatus === 'blocked-missing-action-frequency' ? 8 : 0)
+        + (capacityState?.status === 'exceeds-confirmed-minimum' ? 12 : 0)
+        + (capacityState?.status === 'fits-level-derived-quest-estimate' ? 4 : 0)
+      const resourceStatus = costChain?.sustainStatus === 'sustainable-on-confirmed-minimum'
+        && (!capacityState || capacityState.status === 'fits-confirmed-minimum' || capacityState.status === 'no-reservations')
+        ? 'confirmed-usable' as const
+        : costChain?.sustainStatus === 'burst-affordable-on-confirmed-minimum'
+          ? 'usable-with-limited-sustain' as const
+          : 'resource-chain-unknown' as const
       const passiveAffinityScore = affinity.score
       const weaponEvidenceScore = skill.requiredWeaponTypes?.length ? 80 : skill.tags.includes('spell') && weapon === 'wand' ? 25 : 0
       const setupScore = usableSetup ? 35 : 0
@@ -238,13 +263,19 @@ export function optimizeBuildVariants(input: {
         + weaponEvidenceScore
         + supportIds.length * 4
         + setupScore
-        + Math.min(250, modeledDps ?? 0),
+        + Math.min(250, modeledDps ?? 0)
+        - resourcePenalty,
       )
       const reasons = [
         `${weaponLabels[weapon]} ist mit der Fertigkeit technisch kompatibel.`,
         ...(affinity.classMatches.length ? [`Klassenbezug: ${affinity.classMatches.join(', ')}.`] : []),
         ...(affinity.ascendancyMatches.length ? [`Aszendenzbezug: ${affinity.ascendancyMatches.join(', ')}.`] : []),
         ...(usableSetup ? [`Waffenset 2: ${usableSetup.reason}`] : []),
+        resourceStatus === 'confirmed-usable'
+          ? 'Die belegte Ressourcenbilanz deckt die Kombination dauerhaft.'
+          : resourceStatus === 'usable-with-limited-sustain'
+            ? 'Die Kombination ist einsetzbar; dauerhafte Ressourcendeckung ist noch nicht belegt.'
+            : 'Die Ressourcenwirkung ist unvollständig belegt und erzeugt keinen positiven Bonus.',
       ]
       return [{
         skillId: skill.id,
@@ -259,6 +290,8 @@ export function optimizeBuildVariants(input: {
         passiveAffinityScore,
         analyzerScore: score.totalScore,
         modeledDps,
+        resourceStatus,
+        resourcePenalty,
         totalScore,
         reasons,
       }]

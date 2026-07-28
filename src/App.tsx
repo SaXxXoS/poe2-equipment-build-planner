@@ -76,19 +76,28 @@ export default function App() {
     if (errors.length) return
     setCalculationState('running')
     try {
-        const addRecommendedSupports = (setupsToFill:typeof setups, characterForAnalysis:CharacterConfiguration) => setupsToFill.map(value => {
-          if (!value.skillId) return value
-          const skillResult = runBuildAssistantV1({
-            character: { ...characterForAnalysis, desiredMainSkillId: value.skillId },
-            equipment,
-            setups: setupsToFill,
-          })
-          return fillRecommendedSupportSlots(
-            value,
-            skillResult.supportAnalysis.topCandidates,
-            buildAssistantCandidates.supports,
-          )
-        })
+        const addRecommendedSupports = (setupsToFill:typeof setups, characterForAnalysis:CharacterConfiguration) =>
+          setupsToFill.reduce<typeof setups>((filled, value) => {
+            const currentSetups = [...filled, ...setupsToFill.slice(filled.length)]
+            if (!value.skillId) return [...filled, value]
+            const skillResult = runBuildAssistantV1({
+              character: { ...characterForAnalysis, desiredMainSkillId: value.skillId },
+              equipment,
+              setups: currentSetups,
+            })
+            return [...filled, fillRecommendedSupportSlots(
+              value,
+              skillResult.supportAnalysis.topCandidates,
+              buildAssistantCandidates.supports,
+              5,
+              {
+                equipment,
+                setups: currentSetups,
+                skills: buildAssistantCandidates.skills,
+                characterLevel: characterForAnalysis.level || undefined,
+              },
+            )]
+          }, [])
         let result = runBuildAssistantV1(input)
         let effectiveSetups = preparedSetups
         let effectiveCharacter = character
@@ -107,6 +116,7 @@ export default function App() {
             skills: buildAssistantCandidates.skills,
             supports: buildAssistantCandidates.supports,
             skillScores: result.skillAnalysis.allCandidates,
+            characterLevel: character.level || undefined,
           })
           setVariantOptimization(optimization)
           const recommendation = mainCandidates.find(value => value.skillId === optimization.selected?.skillId) ?? selectAutomaticMainSkill({
@@ -116,6 +126,7 @@ export default function App() {
             setups: preparedSetups,
             classId: character.classId,
             ascendancyId: character.ascendancyId,
+            characterLevel: character.level || undefined,
           })
           if (recommendation) {
             effectiveCharacter = { ...character, desiredMainSkillId: recommendation.skillId }
@@ -181,6 +192,7 @@ export default function App() {
               skillScores: scores.map(value => value.skillId === mainDefinition.id
                 ? value
                 : { ...value, valid: false }),
+              characterLevel: character.level || undefined,
             }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length)
@@ -250,8 +262,19 @@ export default function App() {
     const setup = setups.find(value => value.id === setupId)
     if (!setup?.skillId || !character.classId) return
     const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups })
-    const supportGemIds = result.supportAnalysis.topCandidates.slice(0, 5).map(value => value.supportId)
-    setSetups(setups.map(value => value.id === setupId ? { ...value, supportGemIds } : value))
+    const filled = fillRecommendedSupportSlots(
+      setup,
+      result.supportAnalysis.topCandidates,
+      buildAssistantCandidates.supports,
+      5,
+      {
+        equipment,
+        setups,
+        skills: buildAssistantCandidates.skills,
+        characterLevel: character.level || undefined,
+      },
+    )
+    setSetups(setups.map(value => value.id === setupId ? filled : value))
     invalidateResult()
   }
   return <>
