@@ -2382,3 +2382,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   unbelegt bleiben.
 - Fachliche Dokumentation:
   `docs/BUILD_ASSISTANT_CORRECTNESS_GATE.md`.
+
+## Saisonale Meta-Referenz pro Aszendenz (2026-07-28)
+
+- Ausgangscommit: `9cd0901968d76f34bda5b0b9c8bb391b380f1adf`.
+- Aktueller poe.ninja-Snapshot: `Runes of Aldur`, Patchfamilie `0.5.x`,
+  124306 Charaktere.
+- Alle 23 produktiv belegten Aszendenzen besitzen eine getrennte Referenz aus
+  den drei häufigsten Main-Skill-Einträgen und zwei häufigsten technisch
+  auflösbaren Waffenkategorien.
+- Zusätzlich wurden 460 konkrete, DPS-sortierte Profilreferenzen erfasst:
+  20 je Aszendenz. Sie bleiben bis zur vollständigen Paketprüfung Auditbelege.
+- Die Referenz wirkt ausschließlich als begrenzter Tie-Breaker nach allen
+  harten Skill-, Waffen-, Support-, Equipment-first- und Ressourcenprüfungen.
+- poe.ninja-`MAIN SKILLS` werden nicht blind als Hauptschaden interpretiert;
+  Heralds, Flüche, Meta- und Setup-Skills können darin enthalten sein.
+- Aggregierte Skill- und Waffenhäufigkeiten werden nicht als korrelierter
+  Buildbeleg ausgegeben.
+- Hauptdokument: `docs/BUILD_ASSISTANT_CURRENT_META_REFERENCE.md`.
+- Nächster Schritt: 10 bis 20 konkrete, korrelierte Charakterprofile je
+  Aszendenz als versionierte Referenzpakete prüfen.

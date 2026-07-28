@@ -1,0 +1,2892 @@
+{
+  "schemaVersion": "1.0.0",
+  "source": {
+    "provider": "poe.ninja",
+    "league": "Runes of Aldur",
+    "patchFamily": "0.5.x",
+    "snapshotDate": "2026-07-28",
+    "sort": "dps",
+    "caveat": "poe.ninja DPS is modeled and is not treated as ground truth"
+  },
+  "ascendancyCount": 23,
+  "profilesPerAscendancy": 20,
+  "totalProfileReferences": 460,
+  "usageStatus": "audit-reference-not-direct-ranking-input",
+  "ascendancies": [
+    {
+      "ascendancy": "Infernalist",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "แฉะปล่อยใน",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dekkakza-4456/%E0%B9%81%E0%B8%89%E0%B8%B0%E0%B8%9B%E0%B8%A5%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B9%83%E0%B8%99?i=0&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "GabrieLVRFA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/a9687772010-3504/GabrieLVRFA?i=1&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Icutdeep",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/RJW19753147-6712/Icutdeep?i=2&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "RasengunSuriken",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KHAZ-4713/RasengunSuriken?i=3&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "UniqueShe",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Eason-5951/UniqueShe?i=4&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Satyr_Trickster",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/5k_Money-6101/Satyr_Trickster?i=5&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "nUzos",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Ekko-1347/nUzos?i=6&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "KOSW",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KOS9II-3142/KOSW?i=7&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "Zikkmon_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Zikk_-6805/Zikkmon_?i=8&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "nospellneeded",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/xHypa-9205/nospellneeded?i=9&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Aelaba",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Azurel85-8146/Aelaba?i=10&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "des_infernalist",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/desolatelee-8856/des_infernalist?i=11&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "ЛысаяНатура",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NyanLammi-2295/%D0%9B%D1%8B%D1%81%D0%B0%D1%8F%D0%9D%D0%B0%D1%82%D1%83%D1%80%D0%B0?i=12&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "StevieDroops",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SteveTheStove-1805/StevieDroops?i=13&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "HelloGrandmom",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Glizzaw-2420/HelloGrandmom?i=14&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "쳇바퀴일상",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Woo-4796/%EC%B3%87%EB%B0%94%ED%80%B4%EC%9D%BC%EC%83%81?i=15&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "RichBichx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/przygodny_zoolog-9951/RichBichx?i=16&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "helenwongbot",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/milfhunter420-2849/helenwongbot?i=17&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Меркуша",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Merk-8998/%D0%9C%D0%B5%D1%80%D0%BA%D1%83%D1%88%D0%B0?i=18&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Shunryuken",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MidnightSun-0773/Shunryuken?i=19&search=class%3DInfernalist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Blood Mage",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "DaNega",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/drgvszi-3994/DaNega?i=0&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "e_mcxs",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/hellcat9-0088/e_mcxs?i=1&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Deamaris",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Scorch-8506/Deamaris?i=2&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "DoT_Witch_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Marginal-4694/DoT_Witch_RoA?i=3&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "sandWITCHesh",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bb48-3978/sandWITCHesh?i=4&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Jocke_cocs",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/jocke91-3084/Jocke_cocs?i=5&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "조용한데시끄러움",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/happy-6273/%EC%A1%B0%EC%9A%A9%ED%95%9C%EB%8D%B0%EC%8B%9C%EB%81%84%EB%9F%AC%EC%9B%80?i=6&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "mocky_XII",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/mocky-0195/mocky_XII?i=7&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "Revihss",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ShiverD-6766/Revihss?i=8&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "PiklePucca",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PuccaGTS-3515/PiklePucca?i=9&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Convicts_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Thong-7285/Convicts_?i=10&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "SKYRAY_ALDUR",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/skyrayfox-6806/SKYRAY_ALDUR?i=11&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "IMABLEEDUTEEHEE",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Papalupa023-0554/IMABLEEDUTEEHEE?i=12&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "CektopLiminal",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Skolon-2717/CektopLiminal?i=13&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "ReapingThatAss",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/HellionMorningstar-1139/ReapingThatAss?i=14&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "MenstrualBluhBich",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Kirilsen-5919/MenstrualBluhBich?i=15&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Marobi",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Marobi-6647/Marobi?i=16&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "TheBraxten",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Braxten_99-8383/TheBraxten?i=17&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Sarnlayn",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Velonicia-3546/Sarnlayn?i=18&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "roonofwitch",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Exxile-0202/roonofwitch?i=19&search=class%3DBlood%2BMage%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Lich",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Wicked_wingsss",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Morse-3138/Wicked_wingsss?i=0&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Соня_Рыжая_Растыка",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Televizor171-1022/%D0%A1%D0%BE%D0%BD%D1%8F_%D0%A0%D1%8B%D0%B6%D0%B0%D1%8F_%D0%A0%D0%B0%D1%81%D1%82%D1%8B%D0%BA%D0%B0?i=1&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "FlickerFranchesca",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/viezl-4003/FlickerFranchesca?i=2&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "dappydap",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DaAwesomePwner-0916/dappydap?i=3&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Blessu_Gardener",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/modybless-5506/Blessu_Gardener?i=4&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "ChaosRevealsFate",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ybtjs-4416/ChaosRevealsFate?i=5&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "FlickerButBetter",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Ex%C3%B3di%C3%A1-1342/FlickerButBetter?i=6&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "clefjjjjj",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Clefkk-0186/clefjjjjj?i=7&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "AaaCccc",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/lixiaol-0574/AaaCccc?i=8&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "SojuZ",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/wolfcub-3394/SojuZ?i=9&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "xddlmfao",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/essencevox-6239/xddlmfao?i=10&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "润口二八威严满满",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Rinkore28-3465/%E6%B6%A6%E5%8F%A3%E4%BA%8C%E5%85%AB%E5%A8%81%E4%B8%A5%E6%BB%A1%E6%BB%A1?i=11&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "MageLeadTheWay",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/loong2309-3515/MageLeadTheWay?i=12&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Felaryae",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/T1meVo1d-3644/Felaryae?i=13&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Tawa_Lich_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Tawa-8410/Tawa_Lich_RoA?i=14&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Pytoobciagaczka",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/inQ200-1280/Pytoobciagaczka?i=15&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "RoALowLifeMeta",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/jmrk-0492/RoALowLifeMeta?i=16&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "AigooAish",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Aigoo_Aish-4728/AigooAish?i=17&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Warpgsomgsom",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MightyGsom-2575/Warpgsomgsom?i=18&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "馮寶寶",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Mr-FengW-5484/%E9%A6%AE%E5%AF%B6%E5%AF%B6?i=19&search=class%3DLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Abyssal Lich",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Hyper_Lich",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/BuDiu-0138/Hyper_Lich?i=0&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Caffelich",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/VikkiZ-1361/Caffelich?i=1&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Monogram",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/CAKE-4700/Monogram?i=2&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "GradeusRA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Gradeus-8004/GradeusRA?i=3&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "herbaltwister",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/HerbalTi-9120/herbaltwister?i=4&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "SpatacuZ_Twist",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Chatriposayanon-0779/SpatacuZ_Twist?i=5&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "KillaACEPlant",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KillaACE-0860/KillaACEPlant?i=6&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Syndecat",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Boss-9643/Syndecat?i=7&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "ЯЭтиАктыВрот",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Raidwole-4611/%D0%AF%D0%AD%D1%82%D0%B8%D0%90%D0%BA%D1%82%D1%8B%D0%92%D1%80%D0%BE%D1%82?i=8&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "virtuoza",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Virtuoso-8103/virtuoza?i=9&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "努力打工啊",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Tsundere-9674/%E5%8A%AA%E5%8A%9B%E6%89%93%E5%B7%A5%E5%95%8A?i=10&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Tamara_W_III",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/RomeoWhite-1654/Tamara_W_III?i=11&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "植物植えます",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/menoura10-2770/%E6%A4%8D%E7%89%A9%E6%A4%8D%E3%81%88%E3%81%BE%E3%81%99?i=12&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "じゃがいも少年",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/potato-1684/%E3%81%98%E3%82%83%E3%81%8C%E3%81%84%E3%82%82%E5%B0%91%E5%B9%B4?i=13&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Jvmesxxx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/jaero1-6973/Jvmesxxx?i=14&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "DirtyPervster",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Dirtyperv-6732/DirtyPervster?i=15&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "AbyssRich_Taetic",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/jkcc76-6576/AbyssRich_Taetic?i=16&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "SivyLim",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Siv-7803/SivyLim?i=17&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "สมอลลี่",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dioangle83-3213/%E0%B8%AA%E0%B8%A1%E0%B8%AD%E0%B8%A5%E0%B8%A5%E0%B8%B5%E0%B9%88?i=18&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "peepisspants",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/harcasm-5281/peepisspants?i=19&search=class%3DAbyssal%2BLich%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Deadeye",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Vegolassa",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/valuDe-4459/Vegolassa?i=0&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Mirabellllosa",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sunlighttaker-5019/Mirabellllosa?i=1&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "BowChorDown",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Chordyatix-2419/BowChorDown?i=2&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Fraest",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DMTZILLAKAMI-3949/Fraest?i=3&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "nohjihye",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/GoneSoYoung-3189/nohjihye?i=4&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Runawayp",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/isylskp-6028/Runawayp?i=5&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "IcyColdBeach",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ChimmyChungus-8041/IcyColdBeach?i=6&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Serenaie",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Astarael-0285/Serenaie?i=7&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "daadeye",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%E6%AD%B4%E6%88%A6%E7%8E%8B%E3%82%A4%E3%83%B4%E3%82%A7%E3%83%AB%E3%82%AB%E3%83%BC%E3%83%8A-6314/daadeye?i=8&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "ice__R",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/excel1111111-2962/ice__R?i=9&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "МужикДэдай",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Hirin-7658/%D0%9C%D1%83%D0%B6%D0%B8%D0%BA%D0%94%D1%8D%D0%B4%D0%B0%D0%B9?i=10&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "JoeAldur",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JoeDaiki-2729/JoeAldur?i=11&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "CatTheRaider",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Elenes-3779/CatTheRaider?i=12&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "月のない空",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/GosStalker-5641/%E6%9C%88%E3%81%AE%E3%81%AA%E3%81%84%E7%A9%BA?i=13&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "WhozWhere",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/EpsiIon-3923/WhozWhere?i=14&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "IceAsMyEx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/vp1980-4036/IceAsMyEx?i=15&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Zvia",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sfeshok-7394/Zvia?i=16&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Criatsp",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/azotsp-5842/Criatsp?i=17&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "TITENGDEADEYE",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tumitite-2346/TITENGDEADEYE?i=18&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "nizbowoww",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nizee-6691/nizbowoww?i=19&search=class%3DDeadeye%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Pathfinder",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Aventues",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%96%B4%EB%B2%A4%ED%88%AC%EC%8A%A4-7060/Aventues?i=0&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "GrabMyAshe",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KarmaChameIeon-3675/GrabMyAshe?i=1&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "stillAengus",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Aengus-2685/stillAengus?i=2&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "BADASS_X",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/No1_R-2604/BADASS_X?i=3&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "StewyBowman",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/StewyOwnsYou-5088/StewyBowman?i=4&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Sens_Aldur",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KimmyKim-5099/Sens_Aldur?i=5&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "wintersniper",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/LazyFisherman-7467/wintersniper?i=6&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "VitaminArtoria",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/khainguyen-6777/VitaminArtoria?i=7&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "icy_zoo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/icyphish-5590/icy_zoo?i=8&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "GrimmyLALALA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/GrimmyQuebraPedras-5975/GrimmyLALALA?i=9&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "AnsonM",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Anson-7975/AnsonM?i=10&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "melonzzz",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Magie-6438/melonzzz?i=11&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "鸣上悠",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SAKHWS-0857/%E9%B8%A3%E4%B8%8A%E6%82%A0?i=12&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "DpSeArr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DpSe-6568/DpSeArr?i=13&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "老三打游戏",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/414419691-0526/%E8%80%81%E4%B8%89%E6%89%93%E6%B8%B8%E6%88%8F?i=14&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Daymannsers",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Njewken-7356/Daymannsers?i=15&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "ShatteringSpree",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PethAvenfield-1159/ShatteringSpree?i=16&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "拿皮崙",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/kenny0211-1210/%E6%8B%BF%E7%9A%AE%E5%B4%99?i=17&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "DOVEY_E",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/LOVEY-8755/DOVEY_E?i=18&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Techno_IceShot",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/BrandNew-9781/Techno_IceShot?i=19&search=class%3DPathfinder%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Titan",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "병진이형",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%9D%B4%EB%AF%B8%EC%82%AC%EC%9A%A9%EC%A4%91%EC%9E%85%EB%8B%88%EB%8B%A4-3835/%EB%B3%91%EC%A7%84%EC%9D%B4%ED%98%95?i=0&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "PlsSword",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ToxiBoyLp-5984/PlsSword?i=1&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "대재난지원금이십오만원",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%84%9C%EB%95%80%EC%9A%B0-2537/%EB%8C%80%EC%9E%AC%EB%82%9C%EC%A7%80%EC%9B%90%EA%B8%88%EC%9D%B4%EC%8B%AD%EC%98%A4%EB%A7%8C%EC%9B%90?i=2&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "幽冥逐风使",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bthans8888-8288/%E5%B9%BD%E5%86%A5%E9%80%90%E9%A3%8E%E4%BD%BF?i=3&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "남자의땀내",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dkflgkssha-9665/%EB%82%A8%EC%9E%90%EC%9D%98%EB%95%80%EB%82%B4?i=4&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "페이샤",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%8B%9D%EB%AC%BC%EC%9B%90-2079/%ED%8E%98%EC%9D%B4%EC%83%A4?i=5&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "풀풀워리어",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%ED%97%A4%EB%9D%BC%EC%9A%B0%EC%8A%A4-6686/%ED%92%80%ED%92%80%EC%9B%8C%EB%A6%AC%EC%96%B4?i=6&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Mr_Pivozavr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SHARD3214241-5477/Mr_Pivozavr?i=7&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "글레타이탄",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EB%8B%A4%EC%9D%B4%EC%B9%98-3938/%EA%B8%80%EB%A0%88%ED%83%80%EC%9D%B4%ED%83%84?i=8&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "UltimateRay",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/M18B1-8199/UltimateRay?i=9&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "풍부한",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%9D%B4%ED%95%B4_-5668/%ED%92%8D%EB%B6%80%ED%95%9C?i=10&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "병진이형동생김제니제바아알",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/soora1-1766/%EB%B3%91%EC%A7%84%EC%9D%B4%ED%98%95%EB%8F%99%EC%83%9D%EA%B9%80%EC%A0%9C%EB%8B%88%EC%A0%9C%EB%B0%94%EC%95%84%EC%95%8C?i=11&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "DarknessShield",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Sayonara666-6554/DarknessShield?i=12&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Publicwar",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/pblick-0399/Publicwar?i=13&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "TitanCarl",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Carl-3517/TitanCarl?i=14&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "kwarriorx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/wonki121-0018/kwarriorx?i=15&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "뚱따당",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%BF%A0%EC%95%84%EC%95%99-7345/%EB%9A%B1%EB%94%B0%EB%8B%B9?i=16&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "LiTLiesh",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/AlieshaMacD-3014/LiTLiesh?i=17&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "ThunderW",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%8A%A4%ED%85%8C%EB%A6%AC-4518/ThunderW?i=18&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "ВарионДац",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/zahar20000-1872/%D0%92%D0%B0%D1%80%D0%B8%D0%BE%D0%BD%D0%94%D0%B0%D1%86?i=19&search=class%3DTitan%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Warbringer",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "RoAWarriorFB",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SwagMage-1287/RoAWarriorFB?i=0&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "IcastBlockAss",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/craiduser-4979/IcastBlockAss?i=1&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "pukkllo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/pululutio-6973/pukkllo?i=2&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "TeixieraDasilva",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%E0%B9%91fap%E0%B9%91-5076/TeixieraDasilva?i=3&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "BLUEFIRSTBLOOD",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/fengyunfei-6536/BLUEFIRSTBLOOD?i=4&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "lizaquaseven",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/holid829-5108/lizaquaseven?i=5&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Brakus_Immortal_Plague",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DrDShep-6260/Brakus_Immortal_Plague?i=6&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Cue_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Cue-6837/Cue_RoA?i=7&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "Flocohada",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ThisIsSemahede-1268/Flocohada?i=8&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Bigbrownnclock",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/BigBrownClock-9453/Bigbrownnclock?i=9&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "STEEL_RAT___",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Fixoid-3479/STEEL_RAT___?i=10&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Chernigiv",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/isoterix-6415/Chernigiv?i=11&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Cosmo_War",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tahbuntata-5036/Cosmo_War?i=12&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Peekboyyyyy",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/peekboyshop-2877/Peekboyyyyy?i=13&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "SzékletKúró",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Fortitude890-6344/Sz%C3%A9kletK%C3%BAr%C3%B3?i=14&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "chikaFullmetalGreymon",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Chikabambam2-3401/chikaFullmetalGreymon?i=15&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Itstimetochangetheworld",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SQUIRLeatsNOOBS-4210/Itstimetochangetheworld?i=16&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Qwanli",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Qwanli-7954/Qwanli?i=17&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "YuriBonkk",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/YuriAi-0829/YuriBonkk?i=18&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "HarDasROCKy",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/CatalinSrb-4221/HarDasROCKy?i=19&search=class%3DWarbringer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Smith of Kitava",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "thegoogler",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sourtimer-2112/thegoogler?i=0&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Atlant_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Atlantas-3280/Atlant_RoA?i=1&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "矛盾矛抜き",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/misshitsu902-4876/%E7%9F%9B%E7%9B%BE%E7%9F%9B%E6%8A%9C%E3%81%8D?i=2&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "__piring__",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/piringpiring-1019/__piring__?i=3&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Konflicated",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Konflicated-5104/Konflicated?i=4&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Nethermir_RUNES",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Nethermir-1889/Nethermir_RUNES?i=5&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Almanfi",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SpacePenguin-6042/Almanfi?i=6&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Joucks",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JoaquiBea-4817/Joucks?i=7&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "RotACharsmithy",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/charlie_OF-9625/RotACharsmithy?i=8&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "hawkzira",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/subsonic_ftw-0860/hawkzira?i=9&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "GuardianGL",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/khanhtuan2025-6737/GuardianGL?i=10&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "GupxSmith",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Gupx_UK-9157/GupxSmith?i=11&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Cuteburger",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tossy10230-6886/Cuteburger?i=12&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "BigBoyCentral",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DrArcho-3064/BigBoyCentral?i=13&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "copperwireenjoyer",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/gicaboy91-0218/copperwireenjoyer?i=14&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Lorob_Warrior_B",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Lorob70-6855/Lorob_Warrior_B?i=15&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "VolcanicMam",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Themam-2028/VolcanicMam?i=16&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "___Ryosuke___",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/p_Ryo_suke_q-0116/___Ryosuke___?i=17&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Zahofall",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/zaho27-0469/Zahofall?i=18&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "CommenceTheJiggling",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/EruErufu-3602/CommenceTheJiggling?i=19&search=class%3DSmith%2Bof%2BKitava%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Stormweaver",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "NightIFall",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/AgGressiff29-8631/NightIFall?i=0&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "thehoreofthenorth",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DA_REALEST_TO_EVA_DO_IT-4320/thehoreofthenorth?i=1&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "XxSmokeyBwitchxX",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/EnzoDArab-6910/XxSmokeyBwitchxX?i=2&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "whoneed_adorned_for_top",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/spoon-7710/whoneed_adorned_for_top?i=3&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Voltzzzzz",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/FlayThing-9401/Voltzzzzz?i=4&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Flyin_high",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/RJW19753147-6712/Flyin_high?i=5&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "TheGodStorm",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JohnWixDog25-1353/TheGodStorm?i=6&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "SVS_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dizerwa-2520/SVS_RoA?i=7&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "Kiska_____",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Xima1984-9812/Kiska_____?i=8&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "CritneySpheres_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/paulking39-8856/CritneySpheres_?i=9&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Qarinahla",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KokuyoTraizen-1981/Qarinahla?i=10&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Бич_с_Ваал_стрит",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Neratololz-2101/%D0%91%D0%B8%D1%87_%D1%81_%D0%92%D0%B0%D0%B0%D0%BB_%D1%81%D1%82%D1%80%D0%B8%D1%82?i=11&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Электробезопасность",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Picknix-1047/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C?i=12&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Khagark",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Khagar91-5768/Khagark?i=13&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Humilitys",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/rageface1355-6368/Humilitys?i=14&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "SchinBlacK",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SchinBlacK-7582/SchinBlacK?i=15&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Xullall",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/xullal-4038/Xullall?i=16&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "TARHUGAISBACK",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Hugs24-1768/TARHUGAISBACK?i=17&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "NAPF",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/a1pkfh-0106/NAPF?i=18&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Merilin",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Aea-7046/Merilin?i=19&search=class%3DStormweaver%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Chronomancer",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Wenshu_V",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/WENWENSHU-4213/Wenshu_V?i=0&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Zelon",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Zelonblake-3971/Zelon?i=1&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Пусяфа",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DashaMuls-6188/%D0%9F%D1%83%D1%81%D1%8F%D1%84%D0%B0?i=2&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "LKOwl",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/L0k1_th4_great-4219/LKOwl?i=3&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Cynderrr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/chakachat-9590/Cynderrr?i=4&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Tempyx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/WizKid-3673/Tempyx?i=5&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "HektikHabiby",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Toodle-4433/HektikHabiby?i=6&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "เบิ้มเบิ้มมม",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KATUAAA-2759/%E0%B9%80%E0%B8%9A%E0%B8%B4%E0%B9%89%E0%B8%A1%E0%B9%80%E0%B8%9A%E0%B8%B4%E0%B9%89%E0%B8%A1%E0%B8%A1%E0%B8%A1?i=7&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "FlameBlastTN",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SrPotato-6255/FlameBlastTN?i=8&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Krierg",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Krierg-1232/Krierg?i=9&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Comic_Comic",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/fanspeed5-6667/Comic_Comic?i=10&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "KvIII",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KV23-4526/KvIII?i=11&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Westgrove",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Logicwins-6055/Westgrove?i=12&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "LilithVigil",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/elesstearz-0231/LilithVigil?i=13&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "SonLoooo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sailrennguyen-7508/SonLoooo?i=14&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "ptrax",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/petex-5643/ptrax?i=15&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "picturesque",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ladykiped-7539/picturesque?i=16&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "stealyourgirlfriend",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/YUKIPEDIAJP-6385/stealyourgirlfriend?i=17&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "yamadalter_RoA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/yamadalter-5918/yamadalter_RoA?i=18&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Ramses_RoA_Widowmaker",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Ramses-2133/Ramses_RoA_Widowmaker?i=19&search=class%3DChronomancer%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Disciple of Varashta",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "JustFunAndNoMore",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PacificHunter-4693/JustFunAndNoMore?i=0&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Волшебница_Бейсер",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MyEnvy1997-9820/%D0%92%D0%BE%D0%BB%D1%88%D0%B5%D0%B1%D0%BD%D0%B8%D1%86%D0%B0_%D0%91%D0%B5%D0%B9%D1%81%D0%B5%D1%80?i=1&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "BaggageclaimCoochyrash",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/LegnaHB-0418/BaggageclaimCoochyrash?i=2&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Figfrog",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Figfrog-2152/Figfrog?i=3&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "KvMiracle",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Kvardz-0476/KvMiracle?i=4&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "KRB_Karo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/kierobird-2066/KRB_Karo?i=5&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Ivenova",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Pollux-8872/Ivenova?i=6&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "诺斯菲",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Nosfy-8058/%E8%AF%BA%E6%96%AF%E8%8F%B2?i=7&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "LabyrinthPlant",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Labyrinthes-6592/LabyrinthPlant?i=8&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "LaCampañaMeAburre",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/TryHardMod-6996/LaCampa%C3%B1aMeAburre?i=9&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Sand_Job",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/eKustom-9138/Sand_Job?i=10&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Palakantoten",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dblrnthng-7560/Palakantoten?i=11&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "ЙениферАльдура",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/fankipelova23-3568/%D0%99%D0%B5%D0%BD%D0%B8%D1%84%D0%B5%D1%80%D0%90%D0%BB%D1%8C%D0%B4%D1%83%D1%80%D0%B0?i=12&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "XanaduAndQueen",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Zan4du-8162/XanaduAndQueen?i=13&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Droxcoba",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Cybotor-7567/Droxcoba?i=14&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "山茶逝酒",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/18727291933-3989/%E5%B1%B1%E8%8C%B6%E9%80%9D%E9%85%92?i=15&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "SomethingToTest",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/547506-7262/SomethingToTest?i=16&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "CassandraROA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Noeh83-4704/CassandraROA?i=17&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Cryselda",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Stillframe-1919/Cryselda?i=18&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Akaishi__",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Terrantink-6018/Akaishi__?i=19&search=class%3DDisciple%2Bof%2BVarashta%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Amazon",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Kochano",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Mazurskiy-6737/Kochano?i=0&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "KazeWxz",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KazeSenko-8338/KazeWxz?i=1&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Amamazonya",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/AM%E0%B9%80%E0%B8%A5%E0%B8%B4%E0%B8%9F-5522/Amamazonya?i=2&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Kaethalur",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/StephanLogan-6314/Kaethalur?i=3&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "김연아",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/DS7-0370/%EA%B9%80%EC%97%B0%EC%95%84?i=4&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "李舜生",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Real1player-0406/%E6%9D%8E%E8%88%9C%E7%94%9F?i=5&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "上古回歸_嘆氣獵人",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/o0931060781-1022/%E4%B8%8A%E5%8F%A4%E5%9B%9E%E6%AD%B8_%E5%98%86%E6%B0%A3%E7%8D%B5%E4%BA%BA?i=6&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "GoodLoose",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/GoodLoose-2223/GoodLoose?i=7&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "AkakuKasumu",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/AkakuKasumi-8459/AkakuKasumu?i=8&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "FiveCostcoHotDogs",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Chuckios-7558/FiveCostcoHotDogs?i=9&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "아저씨다하이",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%95%84%EC%A0%80%EC%94%A8%EB%8B%A4-7844/%EC%95%84%EC%A0%80%EC%94%A8%EB%8B%A4%ED%95%98%EC%9D%B4?i=10&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Kerznersha",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Skaymen93-6520/Kerznersha?i=11&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Shrillanin",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Petenoodles-9307/Shrillanin?i=12&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "翻滾的韭菜水餃",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/BargainHub-7304/%E7%BF%BB%E6%BB%BE%E7%9A%84%E9%9F%AD%E8%8F%9C%E6%B0%B4%E9%A4%83?i=13&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "快樂滴阿菈蕾",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sage_niklas-4035/%E5%BF%AB%E6%A8%82%E6%BB%B4%E9%98%BF%E8%8F%88%E8%95%BE?i=14&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Vhnarch",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Vhnarch01-4373/Vhnarch?i=15&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "diablomanson",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/cyper_h-7890/diablomanson?i=16&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Crocochpoker",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/crocodroller-4836/Crocochpoker?i=17&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Valkyrie_Zed",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/FamilyManZed-6883/Valkyrie_Zed?i=18&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "스크럼",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EA%B8%80%EB%A6%BF-3162/%EC%8A%A4%ED%81%AC%EB%9F%BC?i=19&search=class%3DAmazon%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Spirit Walker",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "LeideAne",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/TabacoDinega-8072/LeideAne?i=0&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "MetaSlaveTwister",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Torvahn-1255/MetaSlaveTwister?i=1&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "davidofftwo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/crazyskills95-3227/davidofftwo?i=2&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Zoidbergg",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Hydrathus-5143/Zoidbergg?i=3&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "光頭家瑋小旋風",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/benny0625-0820/%E5%85%89%E9%A0%AD%E5%AE%B6%E7%91%8B%E5%B0%8F%E6%97%8B%E9%A2%A8?i=4&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "hairyyjane",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ZeusBiBo-5238/hairyyjane?i=5&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "otaish",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/maf2023-1446/otaish?i=6&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "ลิงกูอยู่ไหน",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ss4vitvitvit-3904/%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B8%B9%E0%B8%AD%E0%B8%A2%E0%B8%B9%E0%B9%88%E0%B9%84%E0%B8%AB%E0%B8%99?i=7&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "masamuneROA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sastra1985-1821/masamuneROA?i=8&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "ShawlinaMatadoraDePorco",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SprayIT-6850/ShawlinaMatadoraDePorco?i=9&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "plaznado",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/plazma-4045/plaznado?i=10&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "KKRS",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sly-7642/KKRS?i=11&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "GAEZ_SPM",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/gaez-3054/GAEZ_SPM?i=12&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "LXJ_THREE",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/LXJ_EVELYN-3368/LXJ_THREE?i=13&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "上海德鲁伊",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Bbdk25-2495/%E4%B8%8A%E6%B5%B7%E5%BE%B7%E9%B2%81%E4%BC%8A?i=14&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "JoeLeBorgne",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PapaMsx-8046/JoeLeBorgne?i=15&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "hanikoh",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/GwapitoMoreno-3387/hanikoh?i=16&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Huntouk",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/TGTouka-5647/Huntouk?i=17&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Feliciteee",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MiamiNice-7856/Feliciteee?i=18&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "conlocxoay",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tonylg84-2824/conlocxoay?i=19&search=class%3DSpirit%2BWalker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Ritualist",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "阿兹莫里最邪恶的卓玛",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/yangdadio126-4193/%E9%98%BF%E5%85%B9%E8%8E%AB%E9%87%8C%E6%9C%80%E9%82%AA%E6%81%B6%E7%9A%84%E5%8D%93%E7%8E%9B?i=0&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "PINKDIAMOND",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%E6%9C%9D%E6%9C%9D%E6%9A%AE%E6%9A%AE-9769/PINKDIAMOND?i=1&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "NexusRitualist",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nxsgmr-2756/NexusRitualist?i=2&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "ProstaThot",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/YourPronounsSuck-2713/ProstaThot?i=3&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "克己慎独",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/powan-9181/%E5%85%8B%E5%B7%B1%E6%85%8E%E7%8B%AC?i=4&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Tungtungsgahur",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Sadsmile3-0369/Tungtungsgahur?i=5&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "ASTRIXXX",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/alairqu-8463/ASTRIXXX?i=6&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Einlessly",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Tuffi-1773/Einlessly?i=7&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "NueAndConfused",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NicknKickn-1961/NueAndConfused?i=8&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Lopiasd_Ancients",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Lopiasd-9093/Lopiasd_Ancients?i=9&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Zlevin",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/aehzio99-4280/Zlevin?i=10&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "crrrrazyiceshot",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/CashewNut890-6651/crrrrazyiceshot?i=11&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "NessRarity",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NessThor-7805/NessRarity?i=12&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "zzGNARLSzz",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Gnarls-5998/zzGNARLSzz?i=13&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Green_life",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Lesnoy-1-4036/Green_life?i=14&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "我是要成为动物园园长的男人",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/keyiwushiwoma-4864/%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E5%8A%A8%E7%89%A9%E5%9B%AD%E5%9B%AD%E9%95%BF%E7%9A%84%E7%94%B7%E4%BA%BA?i=15&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "mikomikochan",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/melonpanex-5782/mikomikochan?i=16&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Veterstorm",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tam0jikito-9499/Veterstorm?i=17&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "부엉뉨",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EB%B6%80%EC%97%89%EB%BF%8C%EC%97%89-6899/%EB%B6%80%EC%97%89%EB%89%A8?i=18&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "NameisnotName",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NameisName-2232/NameisnotName?i=19&search=class%3DRitualist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Tactician",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "IvanGunvov",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Everesk-1201/IvanGunvov?i=0&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "a__j__s__",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/oOAbo0odEOo-1709/a__j__s__?i=1&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Reyestressiete",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Iscariote37-8083/Reyestressiete?i=2&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Exoxit_PooTwo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Exoxit-0276/Exoxit_PooTwo?i=3&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "rumeee",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/meru-2564/rumeee?i=4&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "BobInTheLoo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Happy_2_EZ-0509/BobInTheLoo?i=5&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "ChipaZavali",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ofe-8281/ChipaZavali?i=6&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "OngGiaMercenary",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/OngGiaChanTrau-2868/OngGiaMercenary?i=7&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "hoshinomiraich",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/hirilyusan-7103/hoshinomiraich?i=8&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "ImperfectSnipe",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Dunjan-0570/ImperfectSnipe?i=9&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Tact__dr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/IndoorPhoenix47-8247/Tact__dr?i=10&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Mrmerck",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ASpaceman-2040/Mrmerck?i=11&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "dubblealpha",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sunnyjizzles-1004/dubblealpha?i=12&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "rivafps",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Rivaldin-5941/rivafps?i=13&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Dan_El",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Kuromukuro28-3189/Dan_El?i=14&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "vampeccross",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/vampec-2503/vampeccross?i=15&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Скуфиндий",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Henry_Cavill-5655/%D0%A1%D0%BA%D1%83%D1%84%D0%B8%D0%BD%D0%B4%D0%B8%D0%B9?i=16&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "GemDan",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/playerdan-0500/GemDan?i=17&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "BigMattyFlicks",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Supacubano-3700/BigMattyFlicks?i=18&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "FinalityDirective",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Tsunamiie-5144/FinalityDirective?i=19&search=class%3DTactician%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Witchhunter",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "HACPAJIUBPYKY",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KOKCAKEP228-2286/HACPAJIUBPYKY?i=0&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "_Twizted_Mindz_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/RubyFuzzball221-6954/_Twizted_Mindz_?i=1&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "getbacktothechoppa",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Araknyal-0860/getbacktothechoppa?i=2&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "KKNDTHAI",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/OKA007-0386/KKNDTHAI?i=3&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Тап_ок",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/grigor4ak-5993/%D0%A2%D0%B0%D0%BF_%D0%BE%D0%BA?i=4&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Moukarba",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/letoasterfou-0943/Moukarba?i=5&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Gwaii_ROA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Gwaii-0706/Gwaii_ROA?i=6&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "BigBubele",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/KappaAddiction-6991/BigBubele?i=7&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "hru_hru_neya",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/QuQU-3800/hru_hru_neya?i=8&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Vrazen",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/arlima1973-9353/Vrazen?i=9&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Cysron",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Cysero-2722/Cysron?i=10&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "nummerzes",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/killowns92-0332/nummerzes?i=11&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "spidercide",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/spidercide-3000/spidercide?i=12&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "เศษkยะ",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nathanki-1109/%E0%B9%80%E0%B8%A8%E0%B8%A9k%E0%B8%A2%E0%B8%B0?i=13&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Ohmlander",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Bandann-7301/Ohmlander?i=14&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "КартошкаКрофка",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MamaTrager-0225/%D0%9A%D0%B0%D1%80%D1%82%D0%BE%D1%88%D0%BA%D0%B0%D0%9A%D1%80%D0%BE%D1%84%D0%BA%D0%B0?i=15&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "ЗлойАнгел",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Tolikk2152-6377/%D0%97%D0%BB%D0%BE%D0%B9%D0%90%D0%BD%D0%B3%D0%B5%D0%BB?i=16&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "HUNTERCDK",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tilestra-6353/HUNTERCDK?i=17&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "Kalebrimbore",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nXXo-7489/Kalebrimbore?i=18&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "mercenoob_RA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nor7753-4685/mercenoob_RA?i=19&search=class%3DWitchhunter%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Gemling Legionnaire",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "二营长张大彪",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/extended123-1458/%E4%BA%8C%E8%90%A5%E9%95%BF%E5%BC%A0%E5%A4%A7%E5%BD%AA?i=0&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "TheGemlingMiracles",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/The7Miracles-3374/TheGemlingMiracles?i=1&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "ZyBas",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Aways-0283/ZyBas?i=2&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Gritardo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/pablocav-3714/Gritardo?i=3&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "OP_Explosive",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/OPJUST-8714/OP_Explosive?i=4&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "卡卡西靈",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/raysss0225-0175/%E5%8D%A1%E5%8D%A1%E8%A5%BF%E9%9D%88?i=5&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "RazorkRAG",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Azarotth-8351/RazorkRAG?i=6&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "하버드어린이",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/feinlee-5545/%ED%95%98%EB%B2%84%EB%93%9C%EC%96%B4%EB%A6%B0%EC%9D%B4?i=7&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "Riggbuh",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Sendium-2433/Riggbuh?i=8&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "幽光无明者",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bthans8888-8288/%E5%B9%BD%E5%85%89%E6%97%A0%E6%98%8E%E8%80%85?i=9&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "ตั้งใจทำ",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Topfy-1463/%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B9%83%E0%B8%88%E0%B8%97%E0%B8%B3?i=10&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "CrymzTotem",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Crymz-2902/CrymzTotem?i=11&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "manasuckerrrr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/darkestsouler-2564/manasuckerrrr?i=12&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "킹라텔__",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%ED%82%B9%EB%9D%BC%ED%85%94-5501/%ED%82%B9%EB%9D%BC%ED%85%94__?i=13&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "모리한",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/LEO-3588/%EB%AA%A8%EB%A6%AC%ED%95%9C?i=14&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Daphaq",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Daphaq-0412/Daphaq?i=15&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "뭘해야할지모르겠다고로자유를찾겠다",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EB%B3%84%EC%9D%B4%EB%B9%9B%EB%82%98%EB%8A%94%EB%B0%A4%EB%B0%94%EB%8B%A4-4771/%EB%AD%98%ED%95%B4%EC%95%BC%ED%95%A0%EC%A7%80%EB%AA%A8%EB%A5%B4%EA%B2%A0%EB%8B%A4%EA%B3%A0%EB%A1%9C%EC%9E%90%EC%9C%A0%EB%A5%BC%EC%B0%BE%EA%B2%A0%EB%8B%A4?i=16&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "等离子大王",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bangoing88-4558/%E7%AD%89%E7%A6%BB%E5%AD%90%E5%A4%A7%E7%8E%8B?i=17&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "到底有沒有鏡子",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/a04171108-4713/%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%92%E6%9C%89%E9%8F%A1%E5%AD%90?i=18&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "SumTingFast",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JesusLuvsYew-4201/SumTingFast?i=19&search=class%3DGemling%2BLegionnaire%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Martial Artist",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "MonksAreTrashTier",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/duhphatphuck-5978/MonksAreTrashTier?i=0&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "PoopTits",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PoopTitties-7975/PoopTits?i=1&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "五轮净地护法",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bthans8888-8288/%E4%BA%94%E8%BD%AE%E5%87%80%E5%9C%B0%E6%8A%A4%E6%B3%95?i=2&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "Pocketcorrups",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Pocketsean-7344/Pocketcorrups?i=3&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "ReddFlickerrr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nerlete-6955/ReddFlickerrr?i=4&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Moesliiss",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Moesli-8316/Moesliiss?i=5&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Celina_Gomes___",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Milao_Gomes-5008/Celina_Gomes___?i=6&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Funky_Monk_RA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Boondock777-5758/Funky_Monk_RA?i=7&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "ThunderstrikeMonk",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EB%B2%84%EC%84%AF%ED%91%B8-5656/ThunderstrikeMonk?i=8&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "CNZGGGGGG",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/ufoandjuly0402-4293/CNZGGGGGG?i=9&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Aohrus",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Dev-1975/Aohrus?i=10&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Doooofuus",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Seabook91-4330/Doooofuus?i=11&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Кудзикири",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Temjin-0174/%D0%9A%D1%83%D0%B4%D0%B7%D0%B8%D0%BA%D0%B8%D1%80%D0%B8?i=12&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "YashyM",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Yashyx-5605/YashyM?i=13&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "biggysmallv",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Arcdbiggy-6162/biggysmallv?i=14&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Fallingz",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Armmotion-2497/Fallingz?i=15&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "RoA_Zanna",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Zannawith0424-0497/RoA_Zanna?i=16&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Bumblebang",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Fardinj-4107/Bumblebang?i=17&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "napisimiusnetvoje",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Rywnii-7841/napisimiusnetvoje?i=18&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "AoshinFlick",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/FarkYou-0528/AoshinFlick?i=19&search=class%3DMartial%2BArtist%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Invoker",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "ICBMdatmonk",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/stripedtriangle1-3885/ICBMdatmonk?i=0&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "TempestadZen",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nej_2000-1981/TempestadZen?i=1&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "YangJingYi",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/tanchuan-8897/YangJingYi?i=2&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "WoodmanHard",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Amigos_razor-3618/WoodmanHard?i=3&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "GrimmInTheNorth____",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/xJxGRIMMx-8438/GrimmInTheNorth____?i=4&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "SchmediumGup",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/HighImBlade-7071/SchmediumGup?i=5&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Pierii",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Pierii-3514/Pierii?i=6&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "diddyoilgaming",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/armarosdagon-3255/diddyoilgaming?i=7&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "ZlLEAN",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Jawiemm-5660/ZlLEAN?i=8&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Sheridan_ROA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/WiseMaster1-5393/Sheridan_ROA?i=9&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Blackbeltjones",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PHARM32212-8929/Blackbeltjones?i=10&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "Zbutawiezdza",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Mikey-7427/Zbutawiezdza?i=11&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "ТемныйДрунда",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/xXxTankREDxXx-0512/%D0%A2%D0%B5%D0%BC%D0%BD%D1%8B%D0%B9%D0%94%D1%80%D1%83%D0%BD%D0%B4%D0%B0?i=12&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Манивалопиструн",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/firekids00700800-6040/%D0%9C%D0%B0%D0%BD%D0%B8%D0%B2%D0%B0%D0%BB%D0%BE%D0%BF%D0%B8%D1%81%D1%82%D1%80%D1%83%D0%BD?i=13&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "FlippyNippert",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Renesco-3487/FlippyNippert?i=14&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "Doker_hub",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%D0%92%D0%B0%D0%B0%D0%BD-4944/Doker_hub?i=15&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "SchriKerr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SchriKer-3632/SchriKerr?i=16&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Lebananam",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/bananam-9346/Lebananam?i=17&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "UNBOUND_ARAKOK",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Malevi4-5248/UNBOUND_ARAKOK?i=18&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "Komyoji",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/thespazticbear-8041/Komyoji?i=19&search=class%3DInvoker%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Acolyte of Chayula",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "ПодвальныйЧервь",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/TakNado-8425/%D0%9F%D0%BE%D0%B4%D0%B2%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%D0%A7%D0%B5%D1%80%D0%B2%D1%8C?i=0&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "shinmiri",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Akr1sh-7314/shinmiri?i=1&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "ChaoticChud",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/nevrozac-5980/ChaoticChud?i=2&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "DeathByTripping",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JohnDoe-9525/DeathByTripping?i=3&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "Aleksandr_Podlinov_Wb",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Dreikk3p-7943/Aleksandr_Podlinov_Wb?i=4&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "MAXIPES_FIK",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MAKUNDa-1594/MAXIPES_FIK?i=5&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "Lolovich",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Da4nick-6654/Lolovich?i=6&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "Milk_the_Creamer",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/iananox-7559/Milk_the_Creamer?i=7&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "PinhaPorLaCara",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/AnunnakIG1n-6451/PinhaPorLaCara?i=8&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Хуюй",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Dimostrazzjo-1259/%D0%A5%D1%83%D1%8E%D0%B9?i=9&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Jackie_boy",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/SteppenWolf69-3046/Jackie_boy?i=10&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "KOONG_LHAO",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/yalwaysg-4925/KOONG_LHAO?i=11&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Zywotnik",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Carek1991-3391/Zywotnik?i=12&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "Slimfistin",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/PraiseXD-0646/Slimfistin?i=13&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "她说他叫某某",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/2323127684-6213/%E5%A5%B9%E8%AF%B4%E4%BB%96%E5%8F%AB%E6%9F%90%E6%9F%90?i=14&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "아구몬",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EC%95%8C%EB%94%B4-1796/%EC%95%84%EA%B5%AC%EB%AA%AC?i=15&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "NoxLeer",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NoxLeer-9541/NoxLeer?i=16&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Tutankh_Aamon",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/casperaia-8540/Tutankh_Aamon?i=17&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "BlueCubesOfChayula",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Neerhom-0628/BlueCubesOfChayula?i=18&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "朝你的大夸捏一把",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/zyl991125-2887/%E6%9C%9D%E4%BD%A0%E7%9A%84%E5%A4%A7%E5%A4%B8%E6%8D%8F%E4%B8%80%E6%8A%8A?i=19&search=class%3DAcolyte%2Bof%2BChayula%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Oracle",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "西哥的狗三號",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/hxebnrrey-9775/%E8%A5%BF%E5%93%A5%E7%9A%84%E7%8B%97%E4%B8%89%E8%99%9F?i=0&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Neverdie_ROA",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/neverdie-7318/Neverdie_ROA?i=1&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "Акбакстер",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Baxter-6805/%D0%90%D0%BA%D0%B1%D0%B0%D0%BA%D1%81%D1%82%D0%B5%D1%80?i=2&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "AlangGg",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Alang-8665/AlangGg?i=3&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "SimonLaughton",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Orlok-2191/SimonLaughton?i=4&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Runes_Druid_X",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/JokerXannibal-4210/Runes_Druid_X?i=5&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "NeverCasting",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/edel-7720/NeverCasting?i=6&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "CupsBlink",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Cupsbythecomputer-3675/CupsBlink?i=7&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "eto_vilka_tempo",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/lnkognito-8702/eto_vilka_tempo?i=8&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "Oracle_Balerion",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/BlackKnight5460-0322/Oracle_Balerion?i=9&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "Сын_Собаки_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Zyzy-7102/%D0%A1%D1%8B%D0%BD_%D0%A1%D0%BE%D0%B1%D0%B0%D0%BA%D0%B8_?i=10&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "我家熊會後空翻",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/a94615-7778/%E6%88%91%E5%AE%B6%E7%86%8A%E6%9C%83%E5%BE%8C%E7%A9%BA%E7%BF%BB?i=11&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "Ashimar_DoNotCopyBuild",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Ashimar-9418/Ashimar_DoNotCopyBuild?i=12&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "druidahum",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/iPosh-5909/druidahum?i=13&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Mandiioka",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Fallvs-4763/Mandiioka?i=14&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "_Life_Is_Life_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/stal071-5322/_Life_Is_Life_?i=15&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "Mihke",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Meeyumi-3397/Mihke?i=16&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "truekingxx",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/sokol35ss-0555/truekingxx?i=17&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "YANI_NEKO",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/dice-6336/YANI_NEKO?i=18&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "ЧёрныйДельфин",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/kin13779-9533/%D0%A7%D1%91%D1%80%D0%BD%D1%8B%D0%B9%D0%94%D0%B5%D0%BB%D1%8C%D1%84%D0%B8%D0%BD?i=19&search=class%3DOracle%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    },
+    {
+      "ascendancy": "Shaman",
+      "profiles": [
+        {
+          "rank": 1,
+          "characterName": "Seul_Druid",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/IsMin-4155/Seul_Druid?i=0&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 2,
+          "characterName": "Noagerr",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Noahger-5178/Noagerr?i=1&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 3,
+          "characterName": "MetaGesangGmbH",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MonkeyDNoxl-7479/MetaGesangGmbH?i=2&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 4,
+          "characterName": "_小雷_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Killuasuke-7261/_%E5%B0%8F%E9%9B%B7_?i=3&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 5,
+          "characterName": "DrinkMoreMana",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/RJP-7377/DrinkMoreMana?i=4&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 6,
+          "characterName": "Inurface",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Totto-1048/Inurface?i=5&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 7,
+          "characterName": "AFKImGebüsch",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/OptimusBrian93-7150/AFKImGeb%C3%BCsch?i=6&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 8,
+          "characterName": "DottiehottieX",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/atcdani-1334/DottiehottieX?i=7&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 9,
+          "characterName": "MiniFubbY",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/i5o%20Karezza-8919/MiniFubbY?i=8&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 10,
+          "characterName": "DontPullOut",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/MisterKak-1213/DontPullOut?i=9&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 11,
+          "characterName": "알망_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/%EB%B3%B4%EB%B3%B4-9037/%EC%95%8C%EB%A7%9D_?i=10&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 12,
+          "characterName": "ViktorsLegacy",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/a11micha11-7391/ViktorsLegacy?i=11&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 13,
+          "characterName": "BlinBlau",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/NiteElMike-4662/BlinBlau?i=12&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 14,
+          "characterName": "SaltyDarts",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/CptnSalty-4065/SaltyDarts?i=13&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 15,
+          "characterName": "Khalid_Shaman",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Shadowlool-4107/Khalid_Shaman?i=14&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 16,
+          "characterName": "_VoidShaman_",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Vreed-2268/_VoidShaman_?i=15&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 17,
+          "characterName": "ATTAYEBDD",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Attayeb-0644/ATTAYEBDD?i=16&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 18,
+          "characterName": "Bakitim",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Bakitim-0110/Bakitim?i=17&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 19,
+          "characterName": "DRUIDOBILI",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/poopycrappants-6471/DRUIDOBILI?i=18&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        },
+        {
+          "rank": 20,
+          "characterName": "HaveMirror",
+          "url": "https://poe.ninja/poe2/builds/runesofaldur/character/Classic-9681/HaveMirror?i=19&search=class%3DShaman%26sort%3Ddps",
+          "validationStatus": "unvalidated-correlated-profile"
+        }
+      ]
+    }
+  ]
+}

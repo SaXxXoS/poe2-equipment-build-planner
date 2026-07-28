@@ -10,6 +10,7 @@ import { technicalItemClasses } from '../../affixes/registry'
 import { planSynergisticSkills, type SkillSynergyScore } from './synergy-planner'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
 import { fillRecommendedSupportSlots } from './automatic-supports'
+import { scoreMetaReference } from './meta-reference'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
@@ -57,6 +58,7 @@ export interface BuildVariantCandidate {
   resourceStatus?: 'confirmed-usable' | 'usable-with-limited-sustain' | 'resource-chain-unknown'
   resourcePenalty?: number
   totalScore: number
+  metaReferenceScore?: number
   reasons: string[]
 }
 
@@ -255,6 +257,7 @@ export function optimizeBuildVariants(input: {
           ? 'usable-with-limited-sustain' as const
           : 'resource-chain-unknown' as const
       const passiveAffinityScore = affinity.score
+      const metaReference = scoreMetaReference(skill, weapon, input.ascendancyId)
       const weaponEvidenceScore = skill.requiredWeaponTypes?.length ? 80 : skill.tags.includes('spell') && weapon === 'wand' ? 25 : 0
       const setupScore = usableSetup ? 35 : 0
       const totalScore = Math.round(
@@ -265,6 +268,7 @@ export function optimizeBuildVariants(input: {
         + supportIds.length * 4
         + setupScore
         + Math.min(250, modeledDps ?? 0)
+        + metaReference.score
         - resourcePenalty,
       )
       const reasons = [
@@ -272,6 +276,9 @@ export function optimizeBuildVariants(input: {
         ...(affinity.classMatches.length ? [`Klassenbezug: ${affinity.classMatches.join(', ')}.`] : []),
         ...(affinity.ascendancyMatches.length ? [`Aszendenzbezug: ${affinity.ascendancyMatches.join(', ')}.`] : []),
         ...(usableSetup ? [`Waffenset 2: ${usableSetup.reason}`] : []),
+        ...(metaReference.observedSkillShare !== undefined
+          ? [`Aktuelle Meta-Referenz: ${skill.nameEn ?? skill.displayNameDe} erscheint bei ${metaReference.observedSkillShare} % von ${metaReference.sampleSize} erfassten Charakteren dieser Aszendenz.`]
+          : []),
         resourceStatus === 'confirmed-usable'
           ? 'Die belegte Ressourcenbilanz deckt die Kombination dauerhaft.'
           : resourceStatus === 'usable-with-limited-sustain'
@@ -294,6 +301,7 @@ export function optimizeBuildVariants(input: {
         resourceStatus,
         resourcePenalty,
         totalScore,
+        metaReferenceScore: metaReference.score,
         reasons,
       }]
     })
