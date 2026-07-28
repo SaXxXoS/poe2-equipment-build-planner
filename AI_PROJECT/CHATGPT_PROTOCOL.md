@@ -1924,3 +1924,30 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-trigger-repeat-step-18.json`.
 - Nächster Schritt: Minions und Begleiter mit belegten Anzahlen,
   Angriffsraten und Wirkungsquellen.
+
+## Minions und Begleiter – Schritt 19 (2026-07-28)
+
+- Ausgangscommit: `0dc6b86f5933fdd29fe5497a4f9704cd60dc141b`.
+- Das neue Modell `minion-companion-model` trennt Minion- und
+  Begleiterwirkungen vollständig vom Trefferschaden des Spielers.
+- Inventar am gepinnten Referenzstand: 27 minion- oder begleiterbezogene
+  Fertigkeitsdatensätze, davon 5 Companion-Datensätze, 2 mit strukturierter
+  Maximalanzahl, 2 mit strukturierter Dauer, 1 mit Minion-Schaden-/Tempobonus
+  und 19 mit Reservierungsmerkmal.
+- Keine Quelle enthält die vollständige Kette aus Kreaturenbasis, eigener
+  Angriffsrate, aktiver Anzahl, Uptime, angewandten Wirkungen und Geistbilanz.
+  Produktive Minion-DPS bleibt deshalb null.
+- Bekannte Einzelwerte wie 20 Skelettkonstrukte, 6 Wölfe, 11,8 Sekunden
+  Begleiterdauer sowie Pain Offerings 58 % Schaden und 29 % Tempo werden
+  sichtbar, aber nicht als vollständiger Schadensmultiplikator verwendet.
+- Minion-Hauptfertigkeiten werden nicht mehr mit Spielerwaffenschaden oder
+  Spieler-Wirktempo berechnet.
+- Maximalanzahl wird nicht als aktive Anzahl und Reservierung nicht als
+  vorhandene Geistkapazität interpretiert.
+- Modellversion `1.0.0`, Schadensrechner `2.8.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_MINIONS_COMPANIONS_STEP_19.md`.
+- Audit:
+  `docs/audits/build-assistant-minions-companions-step-19.json`.
+- Nächster Schritt: Ressourcen- und Geistmodell mit belegten Kosten,
+  Reservierungen, Kapazitäten und Aufrechterhaltbarkeit.

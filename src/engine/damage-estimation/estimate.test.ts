@@ -78,6 +78,35 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     }))
     expect(result.triggerRepeatModel?.productive).toBe(false)
   })
+  it('berechnet eine Minion-Hauptfertigkeit nicht fälschlich mit Spielerwaffe und Spielertempo',()=>{
+    const result=estimateHitDamage({
+      equipment:[weapon('Crude Bow')],
+      setups:[setup('raging')],
+      skills:[skill('raging','Raging Spirits')],
+    })
+    expect(result.status).toBe('unavailable')
+    expect(result.hitDamagePerSecond).toBeUndefined()
+    expect(result.actionsPerSecond).toBeUndefined()
+    expect(result.minionCompanionModel).toMatchObject({
+      primarySkillMinion:true,
+      productive:false,
+      sources:[{kind:'minion',status:'blocked-missing-count-and-uptime'}],
+    })
+  })
+  it('zeigt einen belegten Offering-Bonus, addiert ihn aber ohne Minion-Ziel nicht zum Spielerschaden',()=>{
+    const main=skill('arc','Arc')
+    const offering=skill('offering','Pain Offering')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(main.id)],skills:[main,offering]})
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup(main.id),{...setup(offering.id),id:'offering',role:'utility'}],
+      skills:[main,offering],
+    })
+    expect(result.hitDamagePerSecond).toBe(baseline.hitDamagePerSecond)
+    expect(result.minionCompanionModel?.sources).toContainEqual(expect.objectContaining({
+      sourceSkillId:'offering',kind:'offering',damageBonusPercent:58,speedBonusPercent:29,status:'support-only',
+    }))
+  })
   it('weist Spark-Projektile als Mapping-Abdeckung aus, ohne den Boss-DPS zu vervielfachen',()=>{
     const spark=estimateHitDamage({equipment:[],setups:[setup('spark')],skills:[skill('spark','Spark')]})
     expect(spark.projectileHitModel).toMatchObject({

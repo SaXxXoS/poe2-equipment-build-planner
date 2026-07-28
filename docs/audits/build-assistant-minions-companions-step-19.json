@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "step": "19",
+  "scope": "build-assistant-minions-companions",
+  "source": {
+    "path": "generated/pob2/damage-reference.json",
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0"
+  },
+  "inventory": {
+    "totalSkillRecords": 337,
+    "minionOrCompanionRelatedRecords": 27,
+    "companionRelatedRecords": 5,
+    "recordsWithStructuredMaximumCount": 2,
+    "recordsWithStructuredDuration": 2,
+    "recordsWithStructuredMinionDamageOrSpeedBonus": 1,
+    "recordsWithReservationMarker": 19,
+    "completeProductiveMinionDamageChains": 0
+  },
+  "model": {
+    "version": "1.0.0",
+    "calculatorVersion": "2.8.0",
+    "productive": false,
+    "requiredChain": [
+      "creature-identity",
+      "base-offence",
+      "own-action-rate",
+      "active-count",
+      "uptime",
+      "applied-build-effects",
+      "resource-or-spirit-sustain"
+    ]
+  },
+  "structuredExamples": [
+    {
+      "skill": "Unearth",
+      "maximumCount": 20,
+      "status": "blocked-missing-offence"
+    },
+    {
+      "skill": "Summon Wolf",
+      "maximumCount": 6,
+      "status": "blocked-missing-offence"
+    },
+    {
+      "skill": "Tame Beast",
+      "durationMs": 11800,
+      "status": "blocked-missing-count-and-uptime"
+    },
+    {
+      "skill": "Pain Offering",
+      "damageBonusPercent": 58,
+      "speedBonusPercent": 29,
+      "status": "support-only"
+    }
+  ],
+  "guards": {
+    "playerWeaponIsNotMinionBase": true,
+    "playerActionRateIsNotMinionActionRate": true,
+    "maximumCountIsNotActiveCount": true,
+    "reservationIsNotActiveCount": true,
+    "offeringWithoutTargetAddsNoDamage": true,
+    "noRuntimeNetwork": true,
+    "noNewSource": true
+  },
+  "decision": "partial-evidence-visible-no-productive-minion-dps",
+  "nextStep": "20-resource-and-spirit-model"
+}
