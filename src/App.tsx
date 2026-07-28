@@ -48,6 +48,7 @@ export default function App() {
       ...analysis.uniqueAnalysis.topDefensiveUniques,
     ],
     uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
+    uniqueItemCategories:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.itemType])),
   }):[]
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -101,6 +102,7 @@ export default function App() {
                 skills: buildAssistantCandidates.skills,
                 characterLevel: characterForAnalysis.level || undefined,
               },
+              true,
             )]
           }, [])
         let result = runBuildAssistantV1(input)

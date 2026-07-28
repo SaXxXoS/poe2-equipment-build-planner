@@ -2334,3 +2334,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   gezählt; die sichtbare Problemliste enthält nur blockierende Violations.
 - Datenpins, Produktdaten, Analyzerregeln und Runtime-Netzwerk bleiben
   unverändert.
+- Unmittelbare Auftraggeberkorrektur: Das nicht verlangte sichtbare Feld
+  `Reichweite` wurde wieder aus dem Waffen-Editor entfernt.
+- Automatisch befüllte Fertigkeitskarten verwenden nun ebenfalls den
+  kontrollierten Support-Fallback der ausdrücklichen Aktion
+  `Beste vorschlagen`; harte fachliche Inkompatibilitäten bleiben gesperrt.
+- Waffen-Uniques werden vor der sichtbaren Empfehlung zusätzlich gegen die
+  konkret optimierte Waffenart geprüft. Ein Bogen wird deshalb nicht mehr
+  für einen auf Zauberstab optimierten Zerschlagen-Build vorgeschlagen.
+- Unique-Details ohne getrennte PoB2-Varianten zeigen ihre itemweiten
+  Eigenschaften direkt. Rohe interne `engine.unique.reason.*`-Schlüssel
+  wurden durch verständliche deutsche Begründungen ersetzt.

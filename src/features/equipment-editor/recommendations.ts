@@ -15,6 +15,24 @@ export interface EquipmentSlotSuggestion {
   tradeOffs?: string[]
 }
 
+const mechanicText:Record<string,string>={
+  fire:'Feuerschaden',cold:'Kälteschaden',lightning:'Blitzschaden',
+  physical:'physischer Schaden',chaos:'Chaosschaden',attack:'Angriff',
+  spell:'Zauber',projectile:'Projektil',melee:'Nahkampf',area:'Flächenschaden',
+  critical:'kritische Treffer',defensive:'Verteidigung',resistance:'Widerstände',
+}
+
+function visibleReasons(recommendation:UniqueRecommendation):string[]{
+  const matches=(recommendation.matchedSkillTags??[]).map(tag=>mechanicText[tag]??tag)
+  const effects=(recommendation.gainedMechanics??[]).map(tag=>mechanicText[tag]??tag)
+  return [
+    ...(matches.length?[`Passt zu: ${matches.join(', ')}`]:[]),
+    ...(effects.length?[`Belegte Wirkung: ${effects.join(', ')}`]:[]),
+    ...(recommendation.buildEnabler?['Vom Analyzer als Build-Enabler bewertet.']:[]),
+    ...(recommendation.preferredWeaponSet&&recommendation.preferredWeaponSet!=='none'?[`Bevorzugtes Waffenset: ${recommendation.preferredWeaponSet==='set-1'?'1':recommendation.preferredWeaponSet==='set-2'?'2':'beide'}`]:[]),
+  ].slice(0,4)
+}
+
 const weaponSlot = (set:'set-1'|'set-2') => `slot-weapon-${set}-left`
 const offhandSlot = (set:'set-1'|'set-2') => `slot-weapon-${set}-right`
 
@@ -43,6 +61,7 @@ export function createEquipmentSlotSuggestions(input:{
   optimization?:BuildVariantOptimization|null
   uniqueRecommendations:UniqueRecommendation[]
   uniqueNames:Map<string,string>
+  uniqueItemCategories?:Map<string,string>
 }):EquipmentSlotSuggestion[]{
   const suggestions:EquipmentSlotSuggestion[]=[]
   const selected=input.optimization?.selected
@@ -72,6 +91,11 @@ export function createEquipmentSlotSuggestions(input:{
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
     if(!recommendation.valid||recommendation.totalScore<=0||seenUniqueIds.has(recommendation.uniqueId))continue
+    const itemCategory=input.uniqueItemCategories?.get(recommendation.uniqueId)
+    if(recommendation.itemSlot==='weapon'&&selected&&(
+      selected.weaponType==='any'
+      || itemCategory!==selected.weaponType
+    ))continue
     seenUniqueIds.add(recommendation.uniqueId)
     const slotId=firstEmptySlot(
       uniqueTargetSlots(recommendation.itemSlot,mainSet).filter(value=>!occupied.has(value)),
@@ -84,7 +108,7 @@ export function createEquipmentSlotSuggestions(input:{
       detail:recommendation.buildEnabler?'Build-Enabler':'Passender Unique-Kandidat',
       source:'unique-analyzer',
       uniqueItemId:recommendation.uniqueId,
-      reasons:(recommendation.reasons??[]).slice(0,4).map(reason=>reason.messageKey),
+      reasons:visibleReasons(recommendation),
       tradeOffs:(recommendation.tradeOffs??[]).slice(0,4),
     })
     occupied.add(slotId)
