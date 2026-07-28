@@ -87,6 +87,9 @@ export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item =
     requiredWeaponTypes: mapWeaponTypes(item.craftingTypes),
     attributeRequirements: item.requirements,
     recommendedSupportIds: item.recommendedSupportIds,
+    spiritReservation: item.spiritReservationStatus === 'structured-exact' && item.spiritReservation != null
+      ? item.spiritReservation
+      : undefined,
     enabled: true,
   }
 })

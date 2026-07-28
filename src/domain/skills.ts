@@ -37,6 +37,8 @@ export interface SkillGemDefinition extends GameDataMetadata {
   affectsPlayer?: boolean
   blockedForRotation?: boolean
   recommendedSupportIds?: EntityId[]
+  /** Exakte Geistreservierung aus der gepinnten Gem-zu-Fertigkeit-Kette. */
+  spiritReservation?: number
 }
 
 export interface SupportGemDefinition extends GameDataMetadata {

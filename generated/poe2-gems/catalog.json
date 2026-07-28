@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "sourceScope": "poe2-repoe-skill-support-catalog",
   "sourceRepository": "repoe-fork/repod-data",
   "sourceCommit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
@@ -26,6 +26,7 @@
     "skills": 235,
     "activeSkills": 219,
     "spiritSkills": 16,
+    "skillsWithExactSpiritReservation": 51,
     "supports": 451
   },
   "limitations": [
@@ -33,7 +34,7 @@
     "Tags are mapped only through a closed exact allowlist; unknown tags remain unresolved.",
     "Support tiers remain separate source records.",
     "No icons, media, descriptions, stat IDs or runtime source access are included.",
-    "The only numerical support field is the exact cost multiplier reached through the pinned gem-to-granted-skill chain."
+    "Numerical support cost multipliers and skill Spirit reservations are included only through exact pinned gem-to-granted-skill chains."
   ],
   "skills": [
     {
@@ -66,7 +67,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "AlchemistsBoonPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemAncestralCry",
@@ -111,7 +117,14 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "AncestralCryPlayer",
+        "AncestralCryProjectilePlayer",
+        "AncestralCryShockwavePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemArchmage",
@@ -144,7 +157,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ArchmagePlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemArmourPiercingRounds",
@@ -185,7 +203,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ArmourPiercingBoltsAmmoPlayer",
+        "ArmourPiercingBoltsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemAttrition",
@@ -217,7 +241,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "AttritionPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBarkskin",
@@ -254,7 +283,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "BarkskinPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBearFuryOfTheMountain",
@@ -300,7 +334,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "BearFuryOfTheMountainPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBerserk",
@@ -331,7 +370,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "BerserkPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBlink",
@@ -364,7 +408,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BlinkPlayer",
+        "BlinkReservationPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBloodhoundsMark",
@@ -405,7 +455,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "BloodhoundsMarkExplosionPlayer",
+        "BloodhoundsMarkPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBoneCage",
@@ -446,7 +502,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BoneCagePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemBonestorm",
@@ -487,7 +548,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BonestormPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemChargeInfusion",
@@ -520,7 +586,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "ChargeRegulationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemClusterGrenade",
@@ -562,7 +633,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ClusterGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemColdSnap",
@@ -605,7 +681,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SnapPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemCombatFrenzy",
@@ -638,7 +719,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "CombatFrenzyPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemConvalescence",
@@ -674,7 +760,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ConvalescenceActivePlayer",
+        "ConvalescencePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemCullTheWeak",
@@ -713,7 +805,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "CullTheWeakPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemDarkEffigy",
@@ -754,7 +851,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "DarkEffigyPlayer",
+        "DarkEffigyProjectilePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemDefianceBanner",
@@ -792,7 +895,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "DefianceBannerPlayer",
+        "DefianceBannerReservationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemDetonatingArrow",
@@ -836,7 +945,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "DetonatingArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemDreadBanner",
@@ -875,7 +989,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "DreadBannerPlayer",
+        "DreadBannerReservationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemElectrocutingArrow",
@@ -915,7 +1035,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ElectrocutingArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemElementalConflux",
@@ -952,7 +1077,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ElementalConfluxPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemElementalInvocation",
@@ -993,7 +1123,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MetaElementalInvocationPlayer",
+        "SupportElementalInvocationPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemElementalSundering",
@@ -1037,7 +1173,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ElementalSunderingPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemElementalWeakness",
@@ -1076,7 +1217,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ElementalWeaknessPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemEmergencyReload",
@@ -1107,7 +1253,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "EmergencyReloadPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemEntangle",
@@ -1151,7 +1302,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "EntanglePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemExplosiveGrenade",
@@ -1194,7 +1350,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ExplosiveGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemExplosiveShot",
@@ -1237,7 +1398,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ExplosiveShotAmmoPlayer",
+        "ExplosiveShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemExplosiveSpear",
@@ -1280,7 +1447,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ExplosiveSpearPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFangsOfFrost",
@@ -1320,7 +1492,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "FangsOfFrostPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFeralInvocation",
@@ -1358,7 +1535,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MetaFeralInvocationPlayer",
+        "SupportFeralInvocationPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFireball",
@@ -1399,7 +1582,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FireballPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFlashGrenade",
@@ -1440,7 +1628,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "FlashGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemForgeHammer",
@@ -1482,7 +1675,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ForgeHammerPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFortifyingCry",
@@ -1526,7 +1724,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "FortifyingCryPlayer",
+        "FortifyingCryShockwavePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFragmentationRounds",
@@ -1568,7 +1772,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "FragmentationRoundsAmmoPlayer",
+        "FragmentationRoundsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFreezingMark",
@@ -1606,7 +1816,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FreezingMarkPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFreezingSalvo",
@@ -1647,7 +1862,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "FreezingSalvoPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFrostDarts",
@@ -1687,7 +1907,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FrostDartsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemFrozenLocus",
@@ -1726,7 +1951,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FrozenLocusPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGalvanicShards",
@@ -1769,7 +1999,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "GalvanicShardsAmmoPlayer",
+        "GalvanicShardsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGasArrow",
@@ -1812,7 +2048,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "GasArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGasGrenade",
@@ -1855,7 +2096,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ToxicGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGatheringStorm",
@@ -1899,7 +2145,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "GatheringStormPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGlacialBolt",
@@ -1942,7 +2193,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "GlacialBoltAmmoPlayer",
+        "GlacialBoltPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemGrimFeast",
@@ -1974,7 +2231,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "GrimFeastPlayer",
+        "GrimFeastResummonPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHailstormRounds",
@@ -2015,7 +2278,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HailstormRoundsAmmoPlayer",
+        "HailstormRoundsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHammerOfTheGods",
@@ -2057,7 +2326,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HammerOfTheGodsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHandOfChayula",
@@ -2095,7 +2369,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "HandOfChayulaPlayer",
+        "SupportHandOfChayulaPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHeraldOfBlood",
@@ -2133,7 +2413,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HeraldOfBloodPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHeraldOfPlague",
@@ -2167,7 +2452,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HeraldOfPlaguePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemHighVelocityRounds",
@@ -2210,7 +2500,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HighVelocityRoundsAmmoPlayer",
+        "HighVelocityRoundsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemIceShards",
@@ -2253,7 +2549,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "IceShardsAmmoPlayer",
+        "IceShardsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemIceShot",
@@ -2293,7 +2595,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "IceShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemIceTippedArrows",
@@ -2336,7 +2643,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "IceTippedArrowsIceFragmentPlayer",
+        "IceTippedArrowsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemIncendiaryShot",
@@ -2379,7 +2692,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "IncendiaryShotAmmoPlayer",
+        "IncendiaryShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemIronWard",
@@ -2415,7 +2734,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "IronWardNovaPlayer",
+        "IronWardPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemLightningRod",
@@ -2457,7 +2782,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "LightningRodPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemLivingBombPlayer",
@@ -2496,7 +2826,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "LivingBombPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemLunarAssault",
@@ -2540,7 +2875,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "LunarAssaultPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMagmaBarrier",
@@ -2583,7 +2923,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "MagmaBarrierPlayer",
+        "MagmaSprayPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMagneticSalvo",
@@ -2623,7 +2969,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "MagneticSalvoPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemManaRemnants",
@@ -2655,7 +3006,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ManaRemnantsPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMantraOfDestruction",
@@ -2687,7 +3043,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MantraOfDestructionPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMirageArcher",
@@ -2722,7 +3083,14 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "MetaMirageArcherPlayer",
+        "MirageArcherSpawnPlayer",
+        "SupportMirageArcherPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMoltenBlast",
@@ -2762,7 +3130,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "MoltenBlastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemMortarCannon",
@@ -2793,7 +3166,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "MetaMortarCannonPlayer",
+        "SupportMortarCannonPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemOilBarrage",
@@ -2837,7 +3216,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "OilBarragePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemOilGrenade",
@@ -2880,7 +3264,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "OilGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemOverwhelmingPresence",
@@ -2914,7 +3303,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "OverwhelmingPresencePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemPerfectStrike",
@@ -2956,7 +3350,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PerfectStrikePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemPermafrostBolts",
@@ -2998,7 +3397,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PermafrostBoltsAmmoPlayer",
+        "PermafrostBoltsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemPlasmaBlast",
@@ -3040,7 +3445,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PlasmaBlastAmmoPlayer",
+        "PlasmaBlastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemPoisonBurstArrow",
@@ -3082,7 +3493,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PoisonBurstArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemPrimalStrikes",
@@ -3123,7 +3539,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PrimalStrikesPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemProfaneRitual",
@@ -3161,7 +3582,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ProfaneRitualPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemRagingSpirits",
@@ -3197,7 +3623,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "RagingSpiritsPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemRake",
@@ -3238,7 +3669,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RakePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemRapidShot",
@@ -3278,7 +3714,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RapidShotAmmoPlayer",
+        "RapidShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemRavenousSwarm",
@@ -3316,7 +3758,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "RavenousSwarmPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemReapersInvocation",
@@ -3351,7 +3798,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MetaReapersInvocationPlayer",
+        "SupportReapersInvocationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemResonatingShield",
@@ -3394,7 +3847,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ResonatingShieldPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSacrifice",
@@ -3427,7 +3885,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SacrificePlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemScavengedPlating",
@@ -3461,7 +3924,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ScavengedPlatingPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemShardScavenger",
@@ -3500,7 +3968,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShardScavengerPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemShieldWall",
@@ -3540,7 +4013,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShieldWallPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemShockburstRounds",
@@ -3583,7 +4061,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShockburstRoundsAmmoPlayer",
+        "ShockburstRoundsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemShockchainArrow",
@@ -3622,7 +4106,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShockchainArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSiegeCascade",
@@ -3662,7 +4151,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SiegeCascadeAmmoPlayer",
+        "SiegeCascadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSiphonElements",
@@ -3699,7 +4194,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SiphonElementsPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSiphoningStrike",
@@ -3742,7 +4242,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "SiphoningStrikePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSnipe",
@@ -3785,7 +4290,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SnipePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSoulOffering",
@@ -3819,7 +4329,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SoulOfferingPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemSpearOfSolaris",
@@ -3861,7 +4376,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SpearOfSolarisPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemStampede",
@@ -3902,7 +4422,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "StampedePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemStormblastBolts",
@@ -3942,7 +4467,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "StormblastBoltsAmmoPlayer",
+        "StormblastBoltsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemStormcallerArrow",
@@ -3982,7 +4513,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "StormcallerArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemStormLance",
@@ -4022,7 +4558,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "StormLancePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemStormWave",
@@ -4061,7 +4602,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "StormWavePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTameBeast",
@@ -4085,7 +4631,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "TameBeastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTempestBell",
@@ -4128,7 +4679,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "TempestBellPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemThrashingVines",
@@ -4171,7 +4727,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "ThrashingVinesPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemThunderousLeap",
@@ -4213,7 +4774,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ThunderousLeapPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTimeOfNeed",
@@ -4248,7 +4814,12 @@
         "strength": 75,
         "dexterity": 0,
         "intelligence": 25
-      }
+      },
+      "grantedSkillIds": [
+        "TimeOfNeedPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTornadoShot",
@@ -4288,7 +4859,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "TornadoShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemToxicDomain",
@@ -4331,7 +4907,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ToxicDomainPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemToxicGrowth",
@@ -4372,7 +4953,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ToxicGrowthPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTrinity",
@@ -4410,7 +4996,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "TrinityPlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemTwister",
@@ -4451,7 +5042,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "TwisterPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemUnearth",
@@ -4493,7 +5089,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "UnearthPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemVaultingImpact",
@@ -4538,7 +5139,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "VaultingImpactPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemVineArrow",
@@ -4579,7 +5185,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "VineArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemVoltaicMark",
@@ -4615,7 +5226,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "VoltaicMarkPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWarBanner",
@@ -4653,7 +5269,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "WarBannerPlayer",
+        "WarBannerReservationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWhirlwindLance",
@@ -4692,7 +5314,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "WhirlwindLancePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWindDancer",
@@ -4731,7 +5358,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "TriggeredWindDancerPlayer",
+        "WindDancerPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWindSerpentsFury",
@@ -4773,7 +5406,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "WindSerpentsFuryPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWingBlast",
@@ -4814,7 +5452,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WingBlastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWitheringPresence",
@@ -4849,7 +5492,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "WitheringPresencePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWolfArcticHowl",
@@ -4893,7 +5541,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WolfArcticHowlPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWolfCrossSlash",
@@ -4935,7 +5588,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WolfCrossSlashPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWolfLunarBlessing",
@@ -4981,7 +5639,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WolfLunarBlessingBeamAttackPlayer",
+        "WolfLunarBlessingPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWyvernDevour",
@@ -5024,7 +5688,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WyvernDevourPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gem/SkillGemWyvernFlameBreath",
@@ -5070,7 +5739,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WyvernFlameBreathPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemAncestralWarriorTotem",
@@ -5107,7 +5781,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "AncestralWarriorTotemPlayer",
+        "SupportAncestralWarriorTotemPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemArc",
@@ -5148,7 +5828,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ArcPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemArcticArmour",
@@ -5184,7 +5869,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ArcticArmourPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemArmourBreaker",
@@ -5226,7 +5916,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ArmourBreakerPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemArtilleryBallista",
@@ -5271,7 +5966,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SiegeBallistaPlayer",
+        "SiegeBallistaProjectilePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBallLightning",
@@ -5313,7 +6014,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BallLightningPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBarrage",
@@ -5347,7 +6053,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "BarragePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBarrierInvocation",
@@ -5384,7 +6095,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MetaBarrierInvocationPlayer",
+        "SupportBarrierInvocationPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBearRampage",
@@ -5430,7 +6147,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "BearRampagePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBindSpectre",
@@ -5452,7 +6174,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BindSpectrePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBlasphemy",
@@ -5486,7 +6213,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BlasphemyPlayer",
+        "SupportBlasphemyPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBloodHunt",
@@ -5525,7 +6258,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "BloodHuntPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBoneOffering",
@@ -5563,7 +6301,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "BoneOfferingPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBoneshatter",
@@ -5603,7 +6346,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "BoneshatterPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemBriarpatch",
@@ -5647,7 +6395,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "BriarpatchPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemCastOnCritical",
@@ -5680,7 +6433,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "MetaCastOnCritPlayer",
+        "SupportMetaCastOnCritPlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemCastOnDodge",
@@ -5714,7 +6473,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "MetaCastOnDodgePlayer",
+        "SupportMetaCastOnDodgePlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemCastOnElementalAilment",
@@ -5752,7 +6517,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "MetaCastOnElementalAilmentPlayer",
+        "SupportMetaCastOnElementalAilmentPlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemCastOnMinionDeath",
@@ -5787,7 +6558,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "MetaCastOnMinionDeathPlayer",
+        "SupportMetaCastOnMinionDeathPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemChargedStaff",
@@ -5831,7 +6608,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "ChargedStaffPlayer",
+        "ChargedStaffShockwavePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemComet",
@@ -5868,7 +6651,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CometPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemContagion",
@@ -5906,7 +6694,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ContagionPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemDespair",
@@ -5945,7 +6738,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "DespairPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemDetonateDead",
@@ -5985,7 +6783,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "DetonateDeadPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemDisengage",
@@ -6026,7 +6829,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "DisengagePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEarthquake",
@@ -6067,7 +6875,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "EarthquakePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEarthshatter",
@@ -6108,7 +6921,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "EarthshatterPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEmberFusillade",
@@ -6146,7 +6964,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "EmberFusilladePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEnfeeble",
@@ -6183,7 +7006,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "EnfeeblePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEscapeShot",
@@ -6223,7 +7051,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "EscapeShotIceFragmentPlayer",
+        "EscapeShotPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEssenceDrain",
@@ -6262,7 +7096,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "EssenceDrainPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEternalRage",
@@ -6297,7 +7136,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "EternalRagePlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemEyeOfWinter",
@@ -6335,7 +7179,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "EyeOfWinterPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFallingThunder",
@@ -6378,7 +7227,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FallingThunderPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFerociousRoar",
@@ -6419,7 +7273,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FerociousRoarMetaPlayer",
+        "SupportFerociousRoarPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFirestorm",
@@ -6460,7 +7320,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FirestormPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFlameblast",
@@ -6502,7 +7367,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FlameblastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFlameWall",
@@ -6540,7 +7410,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FlameWallPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFlickerStrike",
@@ -6580,7 +7455,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FlickerStrikePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFrostbolt",
@@ -6619,7 +7499,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FrostboltPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFrostBomb",
@@ -6661,7 +7546,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FrostBombPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFrostWall",
@@ -6700,7 +7590,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "FrostWallPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemFuriousSlam",
@@ -6743,7 +7638,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "FuriousSlamPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemGhostDance",
@@ -6778,7 +7678,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "GhostDancePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemGlacialCascade",
@@ -6819,7 +7724,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "GlacialCascadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemGlacialLance",
@@ -6860,7 +7770,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "GlacialLancePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemHeraldOfAsh",
@@ -6897,7 +7812,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HeraldOfAshPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemHeraldOfIce",
@@ -6937,7 +7857,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "HeraldOfIcePlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemHeraldOfThunder",
@@ -6978,7 +7903,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "HeraldOfThunderPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemHexblast",
@@ -7016,7 +7946,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "HexblastPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemIceNova",
@@ -7056,7 +7991,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "IceNovaPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemIceStrike",
@@ -7098,7 +8038,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "IceStrikePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemIncinerate",
@@ -7139,7 +8084,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "IncineratePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemInfernalCry",
@@ -7181,7 +8131,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "InfernalCryCorpseExplosionPlayer",
+        "InfernalCryPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemKillingPalm",
@@ -7222,7 +8178,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "KillingPalmPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLeapSlam",
@@ -7264,7 +8225,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "LeapSlamPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLightningArrow",
@@ -7306,7 +8272,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "LightningArrowPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLightningConduit",
@@ -7343,7 +8314,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "LightningConduitPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLightningSpear",
@@ -7383,7 +8359,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "LightningSpearPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLightningWarp",
@@ -7424,7 +8405,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "LightningWarpPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemLingeringIllusion",
@@ -7459,7 +8445,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "LingeringIllusionPlayer",
+        "LingeringIllusionSpawnPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemManaTempest",
@@ -7491,7 +8483,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "ManaTempestPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemOrbOfStorms",
@@ -7534,7 +8531,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "OrbOfStormsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemPainOffering",
@@ -7567,7 +8569,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "PainOfferingPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemPlagueBearer",
@@ -7605,7 +8612,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "PlagueBearerNovaPlayer",
+        "PlagueBearerPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRainOfArrows",
@@ -7645,7 +8658,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RainOfArrowsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRaiseZombie",
@@ -7683,7 +8701,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "RaiseZombiePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRapidAssault",
@@ -7725,7 +8748,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RapidAssaultPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRhoaMount",
@@ -7763,7 +8791,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RhoaMountPlayer"
+      ],
+      "spiritReservation": 100,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRipwireBallista",
@@ -7806,7 +8839,13 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ArtilleryBallistaPlayer",
+        "ArtilleryBallistaProjectilePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRollingMagma",
@@ -7850,7 +8889,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "RollingMagmaPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemRollingSlam",
@@ -7890,7 +8934,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "RollingSlamPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSavageFury",
@@ -7927,7 +8976,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "SavageFuryActivePlayer",
+        "SavageFuryPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSeismicCry",
@@ -7967,7 +9022,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SeismicCryPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemShatteringPalm",
@@ -8006,7 +9066,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "ShatteringPalmExplosionPlayer",
+        "ShatteringPalmPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemShieldCharge",
@@ -8048,7 +9114,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShieldChargePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemShockwaveTotem",
@@ -8093,7 +9164,13 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShockwaveTotemPlayer",
+        "ShockwaveTotemQuakePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalArsonist",
@@ -8133,7 +9210,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalArsonistPlayer",
+        "SummonSkeletalArsonistsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalBrute",
@@ -8173,7 +9256,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalBrutesPlayer",
+        "SummonSkeletalBrutesPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalCleric",
@@ -8204,7 +9293,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SummonSkeletalClericsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalFrostMage",
@@ -8243,7 +9337,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalFrostMagePlayer",
+        "SummonSkeletalFrostMagesPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalReaver",
@@ -8282,7 +9382,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalReaversPlayer",
+        "SummonSkeletalReaversPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalSniper",
@@ -8321,7 +9427,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalSniperPlayer",
+        "SummonSkeletalSnipersPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSkeletalStormMage",
@@ -8360,7 +9472,13 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "CommandSkeletalStormMagePlayer",
+        "SummonSkeletalStormMagesPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSnipersMark",
@@ -8393,7 +9511,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SnipersMarkPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSpark",
@@ -8434,7 +9557,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "SparkPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSpearfield",
@@ -8476,7 +9604,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SpearfieldPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSpellTotem",
@@ -8517,7 +9650,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "SummonMetaTotemSpellTotemPlayer",
+        "SupportMetaTotemSpellTotemPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSpiralVolley",
@@ -8556,7 +9695,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SpiralVolleyPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemStaggeringPalm",
@@ -8602,7 +9746,13 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "StaggeringPalmPlayer",
+        "StaggeringPalmProjectilePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSunder",
@@ -8644,7 +9794,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SunderPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemSuperchargedSlam",
@@ -8686,7 +9841,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "SuperchargedSlamPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemTempestFlurry",
@@ -8728,7 +9888,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "TempestFlurryPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemTemporalChains",
@@ -8763,7 +9928,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "TemporalChainsPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemThunderstorm",
@@ -8806,7 +9976,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "ThunderstormPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemTornado",
@@ -8849,7 +10024,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "TornadoPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemTrailOfCaltrops",
@@ -8889,7 +10069,13 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "TrailOfCaltropsPlayer",
+        "TriggeredTrailOfCaltropsPlayer"
+      ],
+      "spiritReservation": 30,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemVolcanicFissure",
@@ -8932,7 +10118,12 @@
         "strength": 100,
         "dexterity": 0,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "VolcanicFissurePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemVolcano",
@@ -8976,7 +10167,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "VolcanoPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemVoltaicGrenade",
@@ -9019,7 +10215,12 @@
         "strength": 50,
         "dexterity": 50,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "ShockGrenadePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemVulnerability",
@@ -9058,7 +10259,12 @@
         "strength": 0,
         "dexterity": 0,
         "intelligence": 100
-      }
+      },
+      "grantedSkillIds": [
+        "VulnerabilityPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWalkingCalamity",
@@ -9104,7 +10310,13 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WalkingCalamityMeteorPlayer",
+        "WalkingCalamityPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWaveOfFrost",
@@ -9144,7 +10356,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WaveOfFrostPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWhirlingAssault",
@@ -9185,7 +10402,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WhirlingAssaultPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWhirlingSlash",
@@ -9225,7 +10447,12 @@
         "strength": 0,
         "dexterity": 100,
         "intelligence": 0
-      }
+      },
+      "grantedSkillIds": [
+        "WhirlingSlashPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWindBlast",
@@ -9266,7 +10493,12 @@
         "strength": 0,
         "dexterity": 50,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "GaleStrikePlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWolfPack",
@@ -9307,7 +10539,12 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "WolfPackPlayer"
+      ],
+      "spiritReservation": 60,
+      "spiritReservationStatus": "structured-exact"
     },
     {
       "id": "repoe:Metadata/Items/Gems/SkillGemWolfPounce",
@@ -9356,7 +10593,15 @@
         "strength": 50,
         "dexterity": 0,
         "intelligence": 50
-      }
+      },
+      "grantedSkillIds": [
+        "SupportWolfPouncePlayer",
+        "WolfPounceMarkPlayer",
+        "WolfPouncePlayer",
+        "WolfPounceSummonWolfPlayer"
+      ],
+      "spiritReservation": null,
+      "spiritReservationStatus": "not-present"
     }
   ],
   "supports": [

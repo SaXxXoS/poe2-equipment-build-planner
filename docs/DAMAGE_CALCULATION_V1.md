@@ -9,6 +9,21 @@ Bedingte Wirkungen, Mana-Kosteneffizienz und unvollständige
 Geistreservierungen bleiben fail-closed. Details:
 `BUILD_ASSISTANT_PASSIVE_RESOURCE_EFFECTS_STEP_26.md`.
 
+## Schritt 27: Exakte Geistreservierungen
+
+Der produktive Gemmenkatalog verbindet die gepinnten Gemmen- und
+Fertigkeitsrecords nun bis zum exakten Feld `static.reservations.spirit`.
+Für 51 produktive Fertigkeiten liegt damit ein eindeutiger
+Reservierungsbetrag vor. Die App bilanziert Reservierungen und bestätigte
+Mindestkapazität getrennt für beide Waffensets; eine Fertigkeit mit
+Waffensetzuordnung `Beide` belastet beide Bilanzen.
+
+Quest-Geist ist im aktuellen BuildProfile nicht vollständig transportiert.
+Ein durch die bestätigte Mindestkapazität gedeckter Bedarf ist daher positiv
+belegt. Eine rechnerische Unterdeckung ist dagegen nur eine sichtbare
+Warnung, kein endgültiges Unspielbarkeitsurteil. Details:
+`BUILD_ASSISTANT_SPIRIT_RESERVATION_STEP_27.md`.
+
 Die App besitzt einen ersten deterministischen numerischen Rechenkern. Für unterstützte Trefferfertigkeiten zeigt er Schaden pro Treffer, Aktionen pro Sekunde und den daraus abgeleiteten Trefferschaden pro Sekunde. Das ist ein transparenter Teilwert, keine vollständige Path-of-Building-Gesamt-DPS.
 
 ## Quelle und Pin

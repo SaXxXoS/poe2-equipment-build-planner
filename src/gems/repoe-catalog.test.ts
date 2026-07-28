@@ -16,7 +16,7 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
   })
 
   it('klassifiziert alle sicher herstellbaren Gem-Datensätze', () => {
-    expect(repoeGemCatalogCoverage).toEqual({ skills: 235, activeSkills: 219, spiritSkills: 16, supports: 451 })
+    expect(repoeGemCatalogCoverage).toEqual({ skills: 235, activeSkills: 219, spiritSkills: 16, skillsWithExactSpiritReservation: 51, supports: 451 })
     expect(repoeSkillCatalog).toHaveLength(235)
     expect(repoeSupportCatalog).toHaveLength(451)
     expect(repoeSkillCatalog.every(item => item.id.startsWith('repoe:'))).toBe(true)
@@ -47,13 +47,20 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
   })
 
   it('übernimmt Kostenmultiplikatoren nur über die gepinnte Gem-zu-Skill-Kette', () => {
-    expect(catalog.schemaVersion).toBe(2)
+    expect(catalog.schemaVersion).toBe(3)
     expect(catalog.supportingSourceFile).toBe('data/skills.json')
     expect(catalog.supportingSourceSha256).toBe('1a83f007c1015c1d2fc0e3e22503dc8deb2debed0e3ea450cf64bc3714f378c7')
     expect(catalog.supports.filter(item => item.costMultiplierStatus === 'structured-exact')).toHaveLength(450)
     expect(repoeSupportCatalog.filter(item => item.costMultiplierPercent != null)).toHaveLength(450)
     expect(repoeSupportCatalog.find(item => item.nameEn === 'Abiding Hex')?.costMultiplierPercent).toBe(100)
     expect(repoeSupportCatalog.find(item => item.nameEn === 'Perpetual Charge')?.costMultiplierPercent).toBeUndefined()
+  })
+
+  it('übernimmt Geistreservierungen nur über die gepinnte Gem-zu-Skill-Kette', () => {
+    expect(catalog.skills.filter(item => item.spiritReservationStatus === 'structured-exact')).toHaveLength(51)
+    expect(repoeSkillCatalog.find(item => item.nameEn === 'Archmage')?.spiritReservation).toBe(100)
+    expect(repoeSkillCatalog.find(item => item.nameEn === 'Barkskin')?.spiritReservation).toBe(30)
+    expect(repoeSkillCatalog.find(item => item.nameEn === 'Arc')?.spiritReservation).toBeUndefined()
   })
 
   it('ordnet Beherrschungen derselben spielseitigen Ausschlusskategorie zu', () => {

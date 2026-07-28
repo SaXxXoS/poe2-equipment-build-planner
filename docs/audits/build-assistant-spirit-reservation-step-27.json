@@ -1,0 +1,42 @@
+{
+  "task": "build-assistant-spirit-reservation-step-27",
+  "sourcePinsChanged": false,
+  "newDataSource": false,
+  "runtimeNetwork": false,
+  "catalogSchemaVersion": 3,
+  "resourceModelVersion": "6.0.0",
+  "damageCalculatorVersion": "3.5.0",
+  "catalogCounts": {
+    "skills": 235,
+    "activeSkills": 219,
+    "spiritSkills": 16,
+    "skillsWithExactSpiritReservation": 51,
+    "supports": 451
+  },
+  "catalogSha256": "09bae23eb9a80771035d0db2cf38c101f128e9c1eaed32c648dba76e46ccbac3",
+  "localizationSha256": "3b1fe1e587ba67b48bc985f0f39044f0c2e9cc187259835c4d2ec131d06a0990",
+  "sourceChain": [
+    "skill_gems.grants_skills",
+    "skills.static.reservations.spirit"
+  ],
+  "weaponSetHandling": {
+    "set1": "set-1-plus-both-reservations",
+    "set2": "set-2-plus-both-reservations"
+  },
+  "capacityScope": "confirmed-minimum-only",
+  "statuses": [
+    "fits-confirmed-minimum",
+    "exceeds-confirmed-minimum",
+    "blocked-incomplete-reservation-chain",
+    "no-reservations"
+  ],
+  "blockedMethods": [
+    "invented-quest-spirit",
+    "fuzzy-reservation-matching",
+    "negative-usability-claim-from-confirmed-minimum-only",
+    "unknown-reservation-default",
+    "runtime-network"
+  ],
+  "decision": "productive-for-exact-reservations-and-positive-minimum-capacity-proof",
+  "nextTask": "step-28-complete-spirit-capacity-and-reservation-efficiency"
+}

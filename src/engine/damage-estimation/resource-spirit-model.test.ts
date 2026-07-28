@@ -22,6 +22,69 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })
     expect(model.sources[0]).toMatchObject({ kind: 'multiple-spirit-reservations', reservationCount: 2 })
   })
+  it('verbindet den exakten Geistbetrag und prüft beide Waffensets getrennt', () => {
+    const archmage = { ...skill('archmage', 'Archmage'), spiritReservation: 100 }
+    const barkskin = { ...skill('barkskin', 'Barkskin'), spiritReservation: 30 }
+    const model = resolveResourceSpiritModel({
+      equipment: [{
+        id: 'amulet',
+        slotId: 'slot-amulet',
+        modifierValues: [{ id: 'spirit', modifierId: 'spirit', value: 120, statValues: [{ statId: 'base_maximum_spirit', value: 120 }] }],
+      }],
+      setups: [setup(archmage.id, [], 'set-1'), setup(barkskin.id, [], 'set-2')],
+      skills: [archmage, barkskin],
+      supports: [],
+    })
+    expect(model.sources.find(source => source.sourceSkillId === archmage.id)).toMatchObject({
+      reservationAmount: 100,
+      status: 'structured-exact-reservation',
+    })
+    expect(model.spiritReservations).toEqual([
+      expect.objectContaining({ setupId: 'archmage', reservationAmount: 100, weaponSet: 'set-1' }),
+      expect.objectContaining({ setupId: 'barkskin', reservationAmount: 30, weaponSet: 'set-2' }),
+    ])
+    expect(model.spiritCapacityByWeaponSet).toEqual([
+      expect.objectContaining({ weaponSet: 'set-1', confirmedMinimumCapacity: 120, reservedSpirit: 100, remainingSpirit: 20, status: 'fits-confirmed-minimum' }),
+      expect.objectContaining({ weaponSet: 'set-2', confirmedMinimumCapacity: 120, reservedSpirit: 30, remainingSpirit: 90, status: 'fits-confirmed-minimum' }),
+    ])
+    expect(model.productive).toBe(true)
+  })
+  it('zählt beidseitig aktive Reservierungen in beiden Waffensets', () => {
+    const definition = { ...skill('barkskin', 'Barkskin'), spiritReservation: 30 }
+    const model = resolveResourceSpiritModel({
+      setups: [setup(definition.id, [], 'both')],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.spiritCapacityByWeaponSet.map(value => value.reservedSpirit)).toEqual([30, 30])
+    expect(model.spiritCapacityByWeaponSet.every(value => value.status === 'exceeds-confirmed-minimum')).toBe(true)
+  })
+  it('wendet bestätigte Geistwirkungen aus Baum und Aszendenz auf die Mindestkapazität an', () => {
+    const definition = { ...skill('barkskin', 'Barkskin'), spiritReservation: 30 }
+    const model = resolveResourceSpiritModel({
+      setups: [setup(definition.id, [], 'set-1')],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [
+          { id: 'flat-spirit', stats: [{ sourceText: '+40 to Spirit' }], ascendancyId: null },
+          { id: 'more-spirit', stats: [{ sourceText: '25% increased Spirit' }], ascendancyId: 'test-ascendancy' },
+        ],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['flat-spirit'] },
+        ascendancyPlanning: { allocatedNodeIds: ['more-spirit'] },
+      } as never,
+    })
+    expect(model.spiritCapacityByWeaponSet[0]).toMatchObject({
+      confirmedMinimumCapacity: 50,
+      reservedSpirit: 30,
+      remainingSpirit: 20,
+      status: 'fits-confirmed-minimum',
+    })
+  })
   it('erfasst eine Manawechselwirkung, aber keine erfundene Aufrechterhaltbarkeit', () => {
     const definition = skill('archmage', 'Archmage')
     const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })

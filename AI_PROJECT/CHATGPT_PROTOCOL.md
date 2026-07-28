@@ -2136,3 +2136,44 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Produktions-Build, Pages-Build und JSON-Validierung erfolgreich.
 - Nächster Schritt: technisch bestätigte Passive- und Aszendenzwirkungen auf
   Ressourcen in denselben Pooltransport integrieren.
+
+## Schritt 26 – Passive-, Aszendenz- und Waffenset-Ressourcen
+
+- Ausgangscommit: `ec7deea266313571815ab92364c4f16c1df9bd6a`.
+- Das Ressourcenmodell wurde auf Version `5.0.0` erweitert.
+- Tatsächlich vergebene, unbedingte und exakt lesbare Ressourcenwirkungen
+  aus gemeinsamem Pfad, aktivem Waffensetpfad und Aszendenz werden
+  automatisch in Pool und Kostenkette einbezogen.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_PASSIVE_RESOURCE_EFFECTS_STEP_26.md`.
+- Audit:
+  `docs/audits/build-assistant-passive-resource-effects-step-26.json`.
+
+## Schritt 27 – Geistreservierungen und bestätigte Mindestkapazität
+
+- Ausgangscommit: `6a6668f8cab22370696ea67d1ecbb5dbb9188015`.
+- Der produktive RePoE-Gemkatalog verwendet Schema 3 und verbindet
+  `skill_gems.grants_skills` deterministisch mit
+  `skills.static.reservations.spirit`.
+- Von 235 produktiven Fertigkeiten besitzen 51 einen eindeutigen exakten
+  Geistreservierungsbetrag.
+- Das Ressourcenmodell wurde auf Version `6.0.0` erweitert.
+- Reservierungen und bestätigte Mindestkapazität werden getrennt für
+  Waffenset 1 und Waffenset 2 berechnet; Fertigkeiten mit `Beide` belasten
+  beide Sets.
+- Quest-Geist wird nicht erfunden. Ein Überschreiten der bestätigten
+  Mindestkapazität erzeugt eine sichtbare Warnung, aber keine automatische
+  Ablehnung der Kombination.
+- Keine neue Benutzereinstellung, keine neue Quelle, kein Runtime-Netzwerk
+  und keine Änderung der Produktpins.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_SPIRIT_RESERVATION_STEP_27.md`.
+- Audit:
+  `docs/audits/build-assistant-spirit-reservation-step-27.json`.
+- Prüfstatus vor Commit: 1.249 Tests in 97 Testdateien fachlich erfolgreich;
+  vier im parallelen Gesamtlauf zeitbedingt abgebrochene Tests wurden
+  anschließend seriell erfolgreich bestätigt. Lint, Typecheck,
+  Produktions-Build, Pages-Build, JSON-Validierung, `git diff --check` und
+  Git-Sicherheitsprüfung sind erfolgreich.
+- Nächster Schritt: lokal belegbare Quest-Geistkapazität und bestätigte
+  Reservierungseffizienz erschließen.

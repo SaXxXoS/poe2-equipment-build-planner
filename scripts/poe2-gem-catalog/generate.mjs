@@ -53,9 +53,34 @@ const normalize = entry => ({
   },
 })
 
+const spiritReservation = entry => {
+  const values = [...new Set(
+    entry.grantedSkillIds
+      .map(id => skillRecords[id]?.static?.reservations?.spirit)
+      .filter(Number.isFinite),
+  )]
+  return {
+    amount: values.length === 1 ? values[0] : null,
+    status: values.length === 1
+      ? 'structured-exact'
+      : values.length > 1
+        ? 'blocked-conflicting-granted-skill-values'
+        : 'not-present',
+  }
+}
+
 const skills = entries
   .filter(entry => ['active', 'spirit'].includes(entry.gemType) && isCraftableGem(entry))
-  .map(normalize)
+  .map(entry => {
+    const normalized = normalize(entry)
+    const reservation = spiritReservation(entry)
+    return {
+      ...normalized,
+      grantedSkillIds: [...entry.grantedSkillIds].sort(),
+      spiritReservation: reservation.amount,
+      spiritReservationStatus: reservation.status,
+    }
+  })
   .sort((a, b) => a.id.localeCompare(b.id))
 
 const supports = entries
@@ -81,7 +106,7 @@ const supports = entries
   .sort((a, b) => a.id.localeCompare(b.id))
 
 const content = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   sourceScope: 'poe2-repoe-skill-support-catalog',
   sourceRepository: 'repoe-fork/repod-data',
   sourceCommit,
@@ -101,6 +126,7 @@ const content = {
     skills: skills.length,
     activeSkills: skills.filter(item => item.gemType === 'active').length,
     spiritSkills: skills.filter(item => item.gemType === 'spirit').length,
+    skillsWithExactSpiritReservation: skills.filter(item => item.spiritReservationStatus === 'structured-exact').length,
     supports: supports.length,
   },
   limitations: [
@@ -108,7 +134,7 @@ const content = {
     'Tags are mapped only through a closed exact allowlist; unknown tags remain unresolved.',
     'Support tiers remain separate source records.',
     'No icons, media, descriptions, stat IDs or runtime source access are included.',
-    'The only numerical support field is the exact cost multiplier reached through the pinned gem-to-granted-skill chain.',
+    'Numerical support cost multipliers and skill Spirit reservations are included only through exact pinned gem-to-granted-skill chains.',
   ],
   skills,
   supports,

@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '5.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '6.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -23,8 +23,9 @@ export interface ResolvedResourceSpiritSource {
   weaponSet: SkillSetup['weaponSet']
   kind: 'spirit-reservation' | 'multiple-spirit-reservations' | 'mana-interaction'
   reservationCount?: number
+  reservationAmount?: number
   numericEffects: Array<{ statId: string; value: number }>
-  status: 'blocked-missing-reservation-amount-and-capacity' | 'blocked-missing-cost-and-pool'
+  status: 'structured-exact-reservation' | 'blocked-missing-reservation-amount-and-capacity' | 'blocked-missing-cost-and-pool'
   evidence: 'structured-exact'
   sourceReferences: string[]
   detail: string
@@ -81,6 +82,8 @@ export interface ResourceSpiritModel {
   sources: ResolvedResourceSpiritSource[]
   equipmentContributions: EquipmentResourceContribution[]
   skillCostChains: SkillResourceCostChain[]
+  spiritReservations: NonNullable<DamageEstimate['resourceSpiritModel']>['spiritReservations']
+  spiritCapacityByWeaponSet: NonNullable<DamageEstimate['resourceSpiritModel']>['spiritCapacityByWeaponSet']
   semanticSupportCostHints: Array<{ supportId: string; value: number }>
   limitations: string[]
 }
@@ -158,6 +161,7 @@ function passiveResourceEffects(
       }
       if (/^No inherent Mana Regeneration$/i.test(text)) { add(nodeId, text, 'no-inherent-mana-regeneration', 1); continue }
       if (/^You have no Mana$/i.test(text)) add(nodeId, text, 'no-mana', 1)
+      if (/^You have no Spirit$/i.test(text)) add(nodeId, text, 'no-spirit', 1)
     }
   }
   return effects.sort((a, b) => a.sourceNodeId.localeCompare(b.sourceNodeId) || a.sourceText.localeCompare(b.sourceText))
@@ -186,15 +190,17 @@ export function resolveResourceSpiritModel(input: {
       .sort((a, b) => a.statId.localeCompare(b.statId))
     if (!hasReservation && !hasMultipleReservation && !numericEffects.length) continue
     const reservationCount = hasMultipleReservation ? 2 : hasReservation ? 1 : undefined
+    const reservationAmount = Number.isFinite(definition.spiritReservation) ? Number(definition.spiritReservation) : undefined
     sources.push({
       sourceSkillId: definition.id,
       sourceSkillName: definition.displayNameDe,
       weaponSet: setup.weaponSet,
       kind: hasMultipleReservation ? 'multiple-spirit-reservations' : hasReservation ? 'spirit-reservation' : 'mana-interaction',
       ...(reservationCount == null ? {} : { reservationCount }),
+      ...(reservationAmount == null ? {} : { reservationAmount }),
       numericEffects,
       status: hasReservation || hasMultipleReservation
-        ? 'blocked-missing-reservation-amount-and-capacity'
+        ? reservationAmount == null ? 'blocked-missing-reservation-amount-and-capacity' : 'structured-exact-reservation'
         : 'blocked-missing-cost-and-pool',
       evidence: 'structured-exact',
       sourceReferences: [
@@ -202,7 +208,9 @@ export function resolveResourceSpiritModel(input: {
         ...numericEffects.map(effect => `damage-reference:${record.name}:numericStats.${effect.statId}`),
       ],
       detail: hasReservation || hasMultipleReservation
-        ? `${reservationCount === 2 ? 'Mehrere Reservierungen sind' : 'Eine Reservierung ist'} strukturell belegt. Reservierungsbetrag und verfügbare Geistkapazität fehlen; Aktivität und Aufrechterhaltbarkeit werden nicht behauptet.`
+        ? reservationAmount == null
+          ? `${reservationCount === 2 ? 'Mehrere Reservierungen sind' : 'Eine Reservierung ist'} strukturell belegt. Der genaue Betrag fehlt; Aktivität und Aufrechterhaltbarkeit werden nicht behauptet.`
+          : `${reservationAmount} Geist Reservierung sind über die gepinnte Gem-zu-Fertigkeit-Kette exakt belegt.`
         : 'Eine Manawechselwirkung ist strukturell belegt. Grundkosten, aktueller Ressourcenpool und Regeneration fehlen; die Aufrechterhaltbarkeit wird nicht berechnet.',
     })
   }
@@ -231,6 +239,25 @@ export function resolveResourceSpiritModel(input: {
     || a.sourceStatId.localeCompare(b.sourceStatId),
   )
   const supportHintById = new Map(semanticSupportCostHints.map(value => [value.supportId, value.value]))
+  const spiritReservations = input.setups
+    .filter(setup => Boolean(setup.skillId))
+    .map(setup => {
+      const definition = input.skills.find(value => value.id === setup.skillId)
+      const reservationAmount = definition && Number.isFinite(definition.spiritReservation)
+        ? Number(definition.spiritReservation)
+        : null
+      return {
+        setupId: setup.id,
+        skillId: setup.skillId,
+        skillName: definition?.displayNameDe ?? definition?.nameEn ?? setup.skillId,
+        weaponSet: setup.weaponSet,
+        reservationAmount,
+        status: reservationAmount == null ? 'blocked-missing-exact-reservation' as const : 'structured-exact' as const,
+        ...(definition?.sourceReference ? { sourceReference: definition.sourceReference } : {}),
+      }
+    })
+    .filter(value => value.reservationAmount != null || sources.some(source => source.sourceSkillId === value.skillId && source.kind !== 'mana-interaction'))
+    .sort((a, b) => a.setupId.localeCompare(b.setupId))
   const level = Number.isInteger(input.characterLevel) && Number(input.characterLevel) >= 1
     ? Math.min(100, Number(input.characterLevel))
     : undefined
@@ -248,6 +275,41 @@ export function resolveResourceSpiritModel(input: {
     const manaRegenerationPerSecond = Number((mana * inherentPercentPerSecond * (1 + manaRegenIncrease / 100)).toFixed(2))
     return { characterLevel: level, baseLife, baseMana, life, mana, manaRegenerationPerSecond, status: 'confirmed-minimum-only' as const }
   })()
+  const flatEquipmentSpirit = equipmentContributions
+    .filter(value => value.resource === 'spirit')
+    .reduce((sum, value) => sum + value.value, 0)
+  const spiritCapacityByWeaponSet = (['set-1', 'set-2'] as const).map(weaponSet => {
+    const effects = passiveResourceEffects(input.passiveTree, input.realPassivePlanning, weaponSet)
+    const noSpirit = effects.some(effect => effect.kind === 'no-spirit')
+    const flatSpirit = effects.filter(effect => effect.kind === 'flat-spirit').reduce((sum, effect) => sum + effect.value, 0)
+    const increasedSpirit = effects.filter(effect => effect.kind === 'spirit-increased').reduce((sum, effect) => sum + effect.value, 0)
+      - effects.filter(effect => effect.kind === 'spirit-reduced').reduce((sum, effect) => sum + effect.value, 0)
+    const lessSpirit = effects.filter(effect => effect.kind === 'spirit-less').reduce((value, effect) => value * (1 - effect.value / 100), 1)
+    const confirmedMinimumCapacity = noSpirit
+      ? 0
+      : Math.max(0, Math.floor((flatEquipmentSpirit + flatSpirit) * (1 + increasedSpirit / 100) * lessSpirit))
+    const activeReservations = spiritReservations.filter(value => value.weaponSet === 'both' || value.weaponSet === weaponSet)
+    const complete = activeReservations.every(value => value.reservationAmount != null)
+    const reservedSpirit = complete
+      ? activeReservations.reduce((sum, value) => sum + (value.reservationAmount ?? 0), 0)
+      : null
+    return {
+      weaponSet,
+      confirmedMinimumCapacity,
+      reservedSpirit,
+      remainingSpirit: reservedSpirit == null ? null : confirmedMinimumCapacity - reservedSpirit,
+      status: activeReservations.length === 0
+        ? 'no-reservations' as const
+        : !complete
+          ? 'blocked-incomplete-reservation-chain' as const
+          : (reservedSpirit ?? Number.POSITIVE_INFINITY) <= confirmedMinimumCapacity
+            ? 'fits-confirmed-minimum' as const
+            : 'exceeds-confirmed-minimum' as const,
+      passiveResourceEffects: effects.filter(effect => [
+        'flat-spirit', 'spirit-increased', 'spirit-reduced', 'spirit-less', 'no-spirit',
+      ].includes(effect.kind)),
+    }
+  })
   const skillCostChains = input.setups
     .filter(setup => Boolean(setup.skillId))
     .map(setup => {
@@ -375,7 +437,10 @@ export function resolveResourceSpiritModel(input: {
     .sort((a, b) => a.setupId.localeCompare(b.setupId))
   return {
     modelVersion: RESOURCE_SPIRIT_MODEL_VERSION,
-    productive: Boolean(confirmedMinimumPools && skillCostChains.some(chain => chain.sustainStatus === 'sustainable-on-confirmed-minimum')),
+    productive: Boolean(
+      (confirmedMinimumPools && skillCostChains.some(chain => chain.sustainStatus === 'sustainable-on-confirmed-minimum'))
+      || spiritCapacityByWeaponSet.some(value => value.status === 'fits-confirmed-minimum'),
+    ),
     manaPoolKnown: false,
     lifePoolKnown: false,
     spiritCapacityKnown: false,
@@ -386,10 +451,12 @@ export function resolveResourceSpiritModel(input: {
     sources,
     equipmentContributions,
     skillCostChains,
+    spiritReservations,
+    spiritCapacityByWeaponSet,
     semanticSupportCostHints,
     limitations: [
       'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
-      'Der gepinnte Fertigkeitsbestand enthält Reservierungsmarker, aber keine allgemeine geschlossene Kette aus Reservierungsbetrag und verfügbarer Geistkapazität.',
+      'Exakte Geistreservierungen werden über die gepinnte Gem-zu-Fertigkeit-Kette verbunden. Die bestätigte Mindestkapazität enthält nur eindeutig erfasste Ausrüstungs-, Passive- und Aszendenzbeiträge; nicht transportierter Quest-Geist wird nicht erfunden.',
       'Fertigkeits-Grundkosten auf Stufe 20 und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Kostenketten bleiben blockiert.',
       'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten- und Geistwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte Texte und Kosten-Effizienz bleiben fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
@@ -413,6 +480,11 @@ export const resourceSpiritOutput = (
     semanticSupportCostHints: [...value.semanticSupportCostHints],
     baseCosts: value.baseCosts.map(cost => ({ ...cost })),
     supportCostMultipliers: value.supportCostMultipliers.map(multiplier => ({ ...multiplier })),
+    passiveResourceEffects: value.passiveResourceEffects.map(effect => ({ ...effect })),
+  })),
+  spiritReservations: model.spiritReservations.map(value => ({ ...value })),
+  spiritCapacityByWeaponSet: model.spiritCapacityByWeaponSet.map(value => ({
+    ...value,
     passiveResourceEffects: value.passiveResourceEffects.map(effect => ({ ...effect })),
   })),
   semanticSupportCostHints: model.semanticSupportCostHints.map(value => ({ ...value })),
