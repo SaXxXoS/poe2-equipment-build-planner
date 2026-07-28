@@ -2352,6 +2352,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   bei der automatischen Build- oder Supportaktion eingesetzt. Eingebettete
   Fertigkeiten und Supports teilen sich fünf Plätze und die eingebetteten
   Fertigkeiten gelangen als eigene Eingaben in die Analyzer.
+- Nach sichtbarer Auftraggeberprüfung wurde die Grenze präzisiert:
+  Ausschließlich gepinnte Gemmen mit gleichzeitigem `meta`- und `trigger`-
+  Tag erhalten eingebettete Fertigkeitsslots. Der UI-Pfad besitzt zusätzlich
+  eine exakte Triggernamen-Auflösung, damit gespeicherte oder zusammengeführte
+  Definitionen den Triggerbereich nicht verlieren. Vorhandene fünf Supports
+  werden beim automatischen Einsetzen eines Skills auf vier Restplätze
+  gekürzt.
 - Unique-Details ohne getrennte PoB2-Varianten zeigen ihre itemweiten
   Eigenschaften direkt. Rohe interne `engine.unique.reason.*`-Schlüssel
   wurden durch verständliche deutsche Begründungen ersetzt.

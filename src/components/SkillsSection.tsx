@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { supportExclusiveKeys, type SkillOrigin, type SkillRole, type SkillSetup, type SkillWeaponSet } from '../domain'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import { DEFAULT_SKILL_SLOT_COUNT, emptySkillSetup } from '../features/skills/initial-state'
-import { compatibleEmbeddedSkills, supportCapacityFor } from '../features/skills/meta-skills'
+import { compatibleEmbeddedSkills, resolvedMetaSocketRule, supportCapacityFor } from '../features/skills/meta-skills'
 
 const roleLabels: Record<SkillRole, string> = { main: 'Hauptschaden', secondary: 'Zusatzschaden', utility: 'Utility', movement: 'Bewegung', defensive: 'Defensive' }
 const originLabels: Record<SkillOrigin, string> = { manual: 'Manuell gewählt', recommended: 'Von der App empfohlen', ascendancy: 'Durch Aszendenz', equipment: 'Durch Ausrüstung verfügbar' }
@@ -40,7 +40,8 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       </article>
 
       const supportQuery = supportSearches[setup.id] ?? ''
-      const embeddedCandidates = skill.metaSocketRule ? compatibleEmbeddedSkills(skill, buildAssistantCandidates.skills) : []
+      const metaSocketRule = resolvedMetaSocketRule(skill)
+      const embeddedCandidates = metaSocketRule ? compatibleEmbeddedSkills(skill, buildAssistantCandidates.skills) : []
       const embeddedSkillIds = setup.embeddedSkillIds ?? []
       const supportCapacity = supportCapacityFor(setup)
       const selectedSupportKeys = new Set(setup.supportGemIds.flatMap(id => {
@@ -53,7 +54,7 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
         {setup.synergyReason && <p className="skill-synergy-reason"><b>Zusammenhang:</b> {setup.synergyReason}</p>}
         <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [], embeddedSkillIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>
         <div className="form-grid compact"><label>Rolle<select value={setup.role} onChange={event => update(setup.id, { role: event.target.value as SkillRole })}>{Object.entries(roleLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label>Waffenset<select value={setup.weaponSet} onChange={event => update(setup.id, { weaponSet: event.target.value as SkillWeaponSet })}>{Object.entries(setLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label></div>
-        {skill.metaSocketRule && <div className="embedded-skill-editor">
+        {metaSocketRule && <div className="embedded-skill-editor">
           <div className="row"><b>Eingebettete Fertigkeiten</b><small>{embeddedSkillIds.length}/{skill.maxEmbeddedSkillCount ?? 2}</small></div>
           {!embeddedSkillIds.length && <p className="analysis-error">Diese Meta-Fertigkeit funktioniert erst mit mindestens einer kompatiblen eingebetteten Fertigkeit.</p>}
           {embeddedSkillIds.map((id, embeddedIndex) => {

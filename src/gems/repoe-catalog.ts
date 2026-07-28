@@ -89,7 +89,7 @@ export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item =
     attributeRequirements: item.requirements,
     recommendedSupportIds: item.recommendedSupportIds,
     metaSocketRule: metaSocketRuleFor(item.nameEn, item.tags),
-    maxEmbeddedSkillCount: item.tags.includes('meta') ? 2 : undefined,
+    maxEmbeddedSkillCount: item.tags.includes('meta') && item.tags.includes('trigger') ? 2 : undefined,
     spiritReservation: item.spiritReservationStatus === 'structured-exact' && item.spiritReservation != null
       ? item.spiritReservation
       : undefined,

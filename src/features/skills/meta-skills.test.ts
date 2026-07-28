@@ -21,11 +21,16 @@ describe('Meta-Fertigkeiten', () => {
       skillId: byName('Cast on Elemental Ailment').id,
       role: 'utility',
       weaponSet: 'both',
-      supportGemIds: [],
+      supportGemIds: ['a', 'b', 'c', 'd', 'e'],
     }
     const filled = ensureRequiredEmbeddedSkill(setup, buildAssistantCandidates.skills)
     expect(filled.embeddedSkillIds).toHaveLength(1)
+    expect(filled.supportGemIds).toEqual(['a', 'b', 'c', 'd'])
     expect(supportCapacityFor(filled)).toBe(4)
+  })
+
+  it('behandelt Meta-Fertigkeiten ohne Trigger-Tag nicht als auslösenden Skillcontainer', () => {
+    expect(byName('Hand of Chayula').metaSocketRule).toBeUndefined()
   })
 
   it('transportiert eingebettete Fertigkeiten als eigene Analyzer-Eingaben', () => {
