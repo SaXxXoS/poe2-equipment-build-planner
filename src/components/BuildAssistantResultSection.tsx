@@ -138,6 +138,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   return <section id="result" className="result build-assistant-result">
     <div className="placeholder">BUILD-ASSISTENT V1 · ECHTE ANALYZER-AUSWERTUNG</div>
     <h2>Build-Vorschlag</h2>
+    {resourceRebalance?.passivePlanAdjusted ? <p className="analysis-note"><b>Ressourcen-Passivziele:</b> Die zunächst erkannte Unterdeckung wurde durch einen belegbar tragfähigeren alternativen Passivplan reduziert. Die Supportauswahl wurde erst danach geprüft.</p> : null}
     {resourceRebalance?.adjustedSetupIds.length ? <p className="analysis-note"><b>Ressourcenprüfung:</b> {resourceRebalance.adjustedSetupIds.length} automatisch erzeugte Supportkombination(en) wurden nach der realen Passiv- und Aszendenzplanung auf eine tragfähigere Kombination umgestellt.</p> : null}
     {resourceRebalance?.manualConflictSetupIds.length ? <p className="analysis-warning"><b>Manuelle Auswahl beibehalten:</b> Bei {resourceRebalance.manualConflictSetupIds.length} Fertigkeitssetup(s) ist eine bestätigte Ressourcenunterdeckung vorhanden. Die Nutzerwahl wurde nicht automatisch verändert.</p> : null}
     <article className="build-summary"><h3>Zusammenfassung · Build-Eignung: {fitCategory}</h3><p className="muted">Die Eignung bewertet die fachliche Passung. Der getrennte Schadenswert darunter zeigt nur den aktuell sicher berechenbaren Trefferschaden.</p><dl className="summary-grid">

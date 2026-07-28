@@ -25,6 +25,7 @@ export interface RealPassivePlanningConfiguration {
   preparedTargetingContext?:PreparedPassiveTargetingContext
   resultDetailMode?:RealPassiveResultDetailMode
   planningMode?:PassivePlanningMode
+  resourcePriority?:'normal'|'undercoverage'
   targetProfile?:'mapping'|'boss'|'balanced'
   alreadyAllocatedNodeIds?:string[]
   blockedNodeIds?:string[]
@@ -77,7 +78,11 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
   if(!['compact','full'].includes(detailMode))errors.push('invalid-result-detail-mode')
   if(errors.length)return invalid(errors,detailMode)
   const started=performance.now()
-  const baseInput:RealPassivePipelineInput={requestId:configuration.requestId!,sourceVersion:configuration.sourceVersion!,buildProfile,characterClassId:configuration.characterContext!.classId,ascendancyId:configuration.characterContext!.ascendancyId,characterLevel:configuration.characterContext!.characterLevel,startNodeId:configuration.startNodeId,pointBudget:configuration.pointBudget!,targetProfile:configuration.targetProfile!,planningMode:configuration.planningMode!,passiveTree:configuration.passiveTree!,passiveGraph:configuration.passiveGraph,preparedTargetingContext:configuration.preparedTargetingContext,alreadyAllocatedNodeIds:configuration.alreadyAllocatedNodeIds,blockedNodeIds:configuration.blockedNodeIds,requiredTargetNodeIds:configuration.requiredTargetNodeIds,excludedTargetNodeIds:configuration.excludedTargetNodeIds,requiredNodeTypes:configuration.requiredNodeTypes,maximumTargetingResults:configuration.maximumTargetingResults,candidatePoolLimit:configuration.candidatePoolLimit??50,maximumSelectedTargets:configuration.maximumSelectedTargets??20,minimumTargetScore:configuration.minimumTargetScore??0,minimumConfidence:configuration.minimumConfidence??'low',allowKeystoneReoptimization:configuration.allowKeystoneReoptimization??false,analyzerContext:context}
+  const prioritizeResources=(profile:BuildProfile):BuildProfile=>configuration.resourcePriority==='undercoverage'
+    ? {...profile,requirements:{...profile.requirements,resourceNeed:100}}
+    : profile
+  const planningProfile=prioritizeResources(buildProfile)
+  const baseInput:RealPassivePipelineInput={requestId:configuration.requestId!,sourceVersion:configuration.sourceVersion!,buildProfile:planningProfile,characterClassId:configuration.characterContext!.classId,ascendancyId:configuration.characterContext!.ascendancyId,characterLevel:configuration.characterContext!.characterLevel,startNodeId:configuration.startNodeId,pointBudget:configuration.pointBudget!,targetProfile:configuration.targetProfile!,planningMode:configuration.planningMode!,passiveTree:configuration.passiveTree!,passiveGraph:configuration.passiveGraph,preparedTargetingContext:configuration.preparedTargetingContext,alreadyAllocatedNodeIds:configuration.alreadyAllocatedNodeIds,blockedNodeIds:configuration.blockedNodeIds,requiredTargetNodeIds:configuration.requiredTargetNodeIds,excludedTargetNodeIds:configuration.excludedTargetNodeIds,requiredNodeTypes:configuration.requiredNodeTypes,maximumTargetingResults:configuration.maximumTargetingResults,candidatePoolLimit:configuration.candidatePoolLimit??50,maximumSelectedTargets:configuration.maximumSelectedTargets??20,minimumTargetScore:configuration.minimumTargetScore??0,minimumConfidence:configuration.minimumConfidence??'low',allowKeystoneReoptimization:configuration.allowKeystoneReoptimization??false,analyzerContext:context}
   let ascendancyFull:RealPassivePipelineResult|undefined,ascendancyPlanning:ProjectedRealPassivePipelineResult|undefined,ascendancyFeedback:PassiveProfileFeedback|undefined,effectiveBuildProfile=buildProfile
   if((configuration.ascendancyPointBudget??0)>0){
     ascendancyFull=runner({...baseInput,requestId:`${baseInput.requestId}-ascendancy`,planningScope:'ascendancy',pointBudget:configuration.ascendancyPointBudget!,startNodeId:undefined,alreadyAllocatedNodeIds:[],requiredNodeTypes:['ascendancy'],candidatePoolLimit:24,maximumSelectedTargets:8})
@@ -86,7 +91,7 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
     effectiveBuildProfile=feedback.profile;ascendancyFeedback=feedback.feedback
   }
   const specializationPointLimit=Math.max(0,Math.min(configuration.pointBudget!,Math.trunc(configuration.weaponSetPointBudget??0)))
-  const input={...baseInput,buildProfile:effectiveBuildProfile,pointBudget:specializationPointLimit?configuration.pointBudget!-specializationPointLimit:configuration.pointBudget!}
+  const input={...baseInput,buildProfile:prioritizeResources(effectiveBuildProfile),pointBudget:specializationPointLimit?configuration.pointBudget!-specializationPointLimit:configuration.pointBudget!}
   const pipelineStarted=performance.now(),fullResult=runner(input),pipelineDurationMs=performance.now()-pipelineStarted,projection=projectRealPassivePipelineResult(fullResult,detailMode),pipelineResult=projection.result,integrationDurationMs=performance.now()-started
   const stage=(id:string)=>fullResult.pipelineStages.find(value=>value.stageId===id)?.durationMs??0
   let weaponSetPlanning:WeaponSetPassivePlanningResult|undefined
@@ -109,9 +114,9 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
       usedPointBudget:fullResult.usedPointBudget+setResult.usedPointBudget,
       remainingPointBudget:Math.max(0,configuration.pointBudget!-fullResult.usedPointBudget-setResult.usedPointBudget)
     })
-    const set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,pointBudget:specializationPointLimit,buildProfile:effectiveWeaponSetProfiles['set-1'],alreadyAllocatedNodeIds:sharedNodeIds})
+    const set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-1']),alreadyAllocatedNodeIds:sharedNodeIds})
     const set2ExcludedTargets=[...new Set([...(configuration.excludedTargetNodeIds??[]),...set1Specific.selectedTargetIds])]
-    const set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,pointBudget:specializationPointLimit,buildProfile:effectiveWeaponSetProfiles['set-2'],alreadyAllocatedNodeIds:sharedNodeIds,excludedTargetNodeIds:set2ExcludedTargets})
+    const set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-2']),alreadyAllocatedNodeIds:sharedNodeIds,excludedTargetNodeIds:set2ExcludedTargets})
     const set1Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-1'],configuration.passiveTree!,set1Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     const set2Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-2'],configuration.passiveTree!,set2Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     effectiveWeaponSetProfiles={'set-1':set1Applied.profile,'set-2':set2Applied.profile};set1Feedback=set1Applied.feedback;set2Feedback=set2Applied.feedback

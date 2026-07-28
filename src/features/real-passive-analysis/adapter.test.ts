@@ -1,15 +1,112 @@
-import { describe,expect,it } from 'vitest'
-import { ascendancyDefinitions,initialEquipment,skillSetups } from '../../data'
-import { buildRealPassiveWorkerRequest,createPassiveAnalysisInputSignature,REAL_PASSIVE_UI_SOURCE_VERSION,type PassiveAnalysisUiInput } from './adapter'
-const input=():PassiveAnalysisUiInput=>({character:{classId:'class-official-6',ascendancyId:ascendancyDefinitions.find(value=>value.classId==='class-official-6')?.id??'',level:70,goalProfile:'balanced'},equipment:structuredClone(initialEquipment),setups:structuredClone(skillSetups),pointBudget:20,planningMode:'balanced'})
-describe('UI-zu-Passive-Worker-Adapter',()=>{
- it('erzeugt eine Compact-Anfrage mit explizitem Budget und offizieller Startzuordnung',()=>{const source=input(),copy=structuredClone(source),result=buildRealPassiveWorkerRequest(source,'request');expect(result.errors).toEqual([]);expect(result.classStartNodeId).toBe('marauder594');expect(result.payload?.planning).toMatchObject({requestId:'request',sourceVersion:REAL_PASSIVE_UI_SOURCE_VERSION,pointBudget:20,characterContext:{classId:'6'},requiredTargetNodeIds:[]});expect(result.payload?.planning.startNodeId).toBeUndefined();expect(result.payload?.request.realPassivePlanning).toBeUndefined();expect(source).toEqual(copy)})
- it('rät keinen Klassenstart',()=>{const source=input();source.character.classId='class-official-0';expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('class-start-unavailable')})
- it('erzwingt ganzzahliges technisches Budget',()=>{const source=input();source.pointBudget=1.5;expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('invalid-point-budget')})
- it('überträgt die Aufteilung normaler Punkte auf Waffen-Set-Pläne',()=>{const source=input();source.weaponSetPointBudget=12;expect(buildRealPassiveWorkerRequest(source,'request').payload?.planning).toMatchObject({pointBudget:20,weaponSetPointBudget:12})})
- it('blockiert mehr Waffen-Set-Punkte als normale Punkte',()=>{const source=input();source.weaponSetPointBudget=21;expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('invalid-weapon-set-point-budget')})
- it('überträgt höchstens acht getrennte Aszendenzpunkte',()=>{const source=input();source.ascendancyPointBudget=8;expect(buildRealPassiveWorkerRequest(source,'request').payload?.planning).toMatchObject({ascendancyPointBudget:8});source.ascendancyPointBudget=9;expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('invalid-ascendancy-point-budget')})
- it('verlangt für positive Aszendenzpunkte eine gewählte Aszendenz',()=>{const source=input();source.character.ascendancyId='';source.ascendancyPointBudget=4;expect(buildRealPassiveWorkerRequest(source,'request').errors).toContain('missing-ascendancy-for-points')})
- it('erzeugt deterministische fachliche Signaturen',()=>{const first=input(),second=input();expect(createPassiveAnalysisInputSignature(first)).toBe(createPassiveAnalysisInputSignature(second));second.pointBudget++;expect(createPassiveAnalysisInputSignature(first)).not.toBe(createPassiveAnalysisInputSignature(second))})
- it('überträgt weder Baum, Graph noch Prepared Context',()=>{const payload=buildRealPassiveWorkerRequest(input(),'request').payload!,serialized=JSON.stringify(payload);expect(serialized).not.toContain('passiveTree');expect(serialized).not.toContain('passiveGraph');expect(serialized).not.toContain('preparedTargetingContext');expect(new TextEncoder().encode(serialized).length).toBeLessThan(25000)})
+import { describe, expect, it } from 'vitest'
+import { ascendancyDefinitions, initialEquipment, skillSetups } from '../../data'
+import {
+  buildRealPassiveWorkerRequest,
+  createPassiveAnalysisInputSignature,
+  REAL_PASSIVE_UI_SOURCE_VERSION,
+  type PassiveAnalysisUiInput,
+} from './adapter'
+
+const input = (): PassiveAnalysisUiInput => ({
+  character: {
+    classId: 'class-official-6',
+    ascendancyId: ascendancyDefinitions.find(value => value.classId === 'class-official-6')?.id ?? '',
+    level: 70,
+    goalProfile: 'balanced',
+  },
+  equipment: structuredClone(initialEquipment),
+  setups: structuredClone(skillSetups),
+  pointBudget: 20,
+  planningMode: 'balanced',
+})
+
+describe('UI-zu-Passive-Worker-Adapter', () => {
+  it('erzeugt eine Compact-Anfrage mit explizitem Budget und offizieller Startzuordnung', () => {
+    const source = input()
+    const copy = structuredClone(source)
+    const result = buildRealPassiveWorkerRequest(source, 'request')
+    expect(result.errors).toEqual([])
+    expect(result.classStartNodeId).toBe('marauder594')
+    expect(result.payload?.planning).toMatchObject({
+      requestId: 'request',
+      sourceVersion: REAL_PASSIVE_UI_SOURCE_VERSION,
+      pointBudget: 20,
+      characterContext: { classId: '6' },
+      requiredTargetNodeIds: [],
+      resourcePriority: 'normal',
+    })
+    expect(result.payload?.planning.startNodeId).toBeUndefined()
+    expect(result.payload?.request.realPassivePlanning).toBeUndefined()
+    expect(source).toEqual(copy)
+  })
+
+  it('überträgt eine erkannte Ressourcenunterdeckung explizit in den Planungslauf', () => {
+    const result = buildRealPassiveWorkerRequest(
+      { ...input(), resourcePriority: 'undercoverage' },
+      'resource-request',
+    )
+    expect(result.errors).toEqual([])
+    expect(result.payload?.planning.resourcePriority).toBe('undercoverage')
+  })
+
+  it('rät keinen Klassenstart', () => {
+    const source = input()
+    source.character.classId = 'class-official-0'
+    expect(buildRealPassiveWorkerRequest(source, 'request').errors).toContain('class-start-unavailable')
+  })
+
+  it('erzwingt ganzzahliges technisches Budget', () => {
+    const source = input()
+    source.pointBudget = 1.5
+    expect(buildRealPassiveWorkerRequest(source, 'request').errors).toContain('invalid-point-budget')
+  })
+
+  it('überträgt die Aufteilung normaler Punkte auf Waffen-Set-Pläne', () => {
+    const source = input()
+    source.weaponSetPointBudget = 12
+    expect(buildRealPassiveWorkerRequest(source, 'request').payload?.planning)
+      .toMatchObject({ pointBudget: 20, weaponSetPointBudget: 12 })
+  })
+
+  it('blockiert mehr Waffen-Set-Punkte als normale Punkte', () => {
+    const source = input()
+    source.weaponSetPointBudget = 21
+    expect(buildRealPassiveWorkerRequest(source, 'request').errors)
+      .toContain('invalid-weapon-set-point-budget')
+  })
+
+  it('überträgt höchstens acht getrennte Aszendenzpunkte', () => {
+    const source = input()
+    source.ascendancyPointBudget = 8
+    expect(buildRealPassiveWorkerRequest(source, 'request').payload?.planning)
+      .toMatchObject({ ascendancyPointBudget: 8 })
+    source.ascendancyPointBudget = 9
+    expect(buildRealPassiveWorkerRequest(source, 'request').errors)
+      .toContain('invalid-ascendancy-point-budget')
+  })
+
+  it('verlangt für positive Aszendenzpunkte eine gewählte Aszendenz', () => {
+    const source = input()
+    source.character.ascendancyId = ''
+    source.ascendancyPointBudget = 4
+    expect(buildRealPassiveWorkerRequest(source, 'request').errors)
+      .toContain('missing-ascendancy-for-points')
+  })
+
+  it('erzeugt deterministische fachliche Signaturen', () => {
+    const first = input()
+    const second = input()
+    expect(createPassiveAnalysisInputSignature(first)).toBe(createPassiveAnalysisInputSignature(second))
+    second.pointBudget++
+    expect(createPassiveAnalysisInputSignature(first)).not.toBe(createPassiveAnalysisInputSignature(second))
+  })
+
+  it('überträgt weder Baum, Graph noch Prepared Context', () => {
+    const payload = buildRealPassiveWorkerRequest(input(), 'request').payload!
+    const serialized = JSON.stringify(payload)
+    expect(serialized).not.toContain('passiveTree')
+    expect(serialized).not.toContain('passiveGraph')
+    expect(serialized).not.toContain('preparedTargetingContext')
+    expect(new TextEncoder().encode(serialized).length).toBeLessThan(25_000)
+  })
 })

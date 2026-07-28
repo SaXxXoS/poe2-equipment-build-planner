@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "step": 31,
+  "normalPlanRunsFirst": true,
+  "alternativePlanTrigger": [
+    "confirmed-hard-resource-conflict",
+    "measured-resource-risk"
+  ],
+  "alternativePlanningProfile": {
+    "resourcePriority": "undercoverage",
+    "temporaryResourceNeed": 100,
+    "leaksIntoFinalBuildProfile": false
+  },
+  "acceptancePolicy": [
+    "fewer-hard-resource-conflicts",
+    "same-hard-conflict-count-and-lower-measured-penalty"
+  ],
+  "fallback": "restore-original-passive-plan",
+  "supportAdjustmentOrder": "after-passive-replanning",
+  "manualSupportsAutomaticallyChanged": false,
+  "runtimeNetwork": false,
+  "dataPinsChanged": false
+}

@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
-import { rebalanceSupportsAfterPassivePlanning } from './post-passive-resource-rebalance'
+import {
+  rebalanceSupportsAfterPassivePlanning,
+  summarizePostPassiveResourceRisk,
+} from './post-passive-resource-rebalance'
 
 const skill: SkillGemDefinition = {
   id: 'skill-main',
@@ -64,10 +67,7 @@ describe('Ressourcen-Nachprüfung nach dem realen Passivplan', () => {
   it('verändert eine manuelle Auswahl auch bei bestätigtem Null-Mana-Konflikt nicht', () => {
     const noManaTree = {
       metadata: { releaseTag: 'test' },
-      nodes: [{
-        id: 'no-mana',
-        stats: [{ sourceText: 'You have no Mana' }],
-      }],
+      nodes: [{ id: 'no-mana', stats: [{ sourceText: 'You have no Mana' }] }],
       connections: [],
     } as never
     const noManaPlanning = {
@@ -89,5 +89,28 @@ describe('Ressourcen-Nachprüfung nach dem realen Passivplan', () => {
     expect(result.setups).toEqual([manual])
     expect(result.adjustedSetupIds).toEqual([])
     expect(result.manualConflictSetupIds).toEqual(['setup-main'])
+  })
+
+  it('fasst belegte Ressourcenrisiken deterministisch zusammen', () => {
+    const noManaTree = {
+      metadata: { releaseTag: 'test' },
+      nodes: [{ id: 'no-mana', stats: [{ sourceText: 'You have no Mana' }] }],
+      connections: [],
+    } as never
+    const noManaPlanning = {
+      pipelineResult: { allocatedNodeIds: ['no-mana'] },
+      ascendancyPlanning: { allocatedNodeIds: [] },
+    } as never
+    const result = summarizePostPassiveResourceRisk({
+      equipment: [],
+      setups: [setup('manual')],
+      skills: [skill],
+      supports: [costly],
+      characterLevel: 20,
+      passiveTree: noManaTree,
+      realPassivePlanning: noManaPlanning,
+    })
+    expect(result.hardConflictSetupIds).toEqual(['setup-main'])
+    expect(result.totalPenalty).toBeGreaterThanOrEqual(0)
   })
 })

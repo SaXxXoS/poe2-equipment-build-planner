@@ -21,7 +21,7 @@ import { RealPassiveAnalysis, createPassiveAnalysisController, REAL_PASSIVE_UI_M
 import { buildAssistantCandidates, runBuildAssistantV1, validateBuildAssistantInput } from './features/build-assistant-v1'
 import { clearStoredBuild, loadStoredBuild, saveStoredBuild } from './features/build-storage'
 import { createEquipmentSlotSuggestions } from './features/equipment-editor/recommendations'
-import { rebalanceSupportsAfterPassivePlanning, type PostPassiveResourceRebalanceResult } from './features/skills/post-passive-resource-rebalance'
+import { rebalanceSupportsAfterPassivePlanning, summarizePostPassiveResourceRisk, type PostPassiveResourceRebalanceResult } from './features/skills/post-passive-resource-rebalance'
 import officialPassiveTree from '../generated/poe2-tree/tree.json'
 
 export default function App() {
@@ -238,8 +238,45 @@ export default function App() {
         }
         if (passiveController.getState().status === 'uninitialized') await passiveController.initialize()
         await passiveController.analyze(passiveInput)
-        const passiveAwareResult = passiveController.getState().result
+        let passiveAwareResult = passiveController.getState().result
         if (passiveAwareResult?.realPassivePlanning) {
+          let passivePlanAdjustedForResources = false
+          const initialResourceRisk = summarizePostPassiveResourceRisk({
+            equipment,
+            setups: effectiveSetups,
+            skills: buildAssistantCandidates.skills,
+            supports: buildAssistantCandidates.supports,
+            characterLevel: effectiveCharacter.level || undefined,
+            passiveTree: officialPassiveTree,
+            realPassivePlanning: passiveAwareResult.realPassivePlanning!,
+          })
+          if (initialResourceRisk.hardConflictSetupIds.length || initialResourceRisk.totalPenalty > 0) {
+            await passiveController.analyze({ ...passiveInput, resourcePriority: 'undercoverage' })
+            const resourceAwareCandidate = passiveController.getState().result
+            if (resourceAwareCandidate?.realPassivePlanning) {
+              const candidateRisk = summarizePostPassiveResourceRisk({
+                equipment,
+                setups: effectiveSetups,
+                skills: buildAssistantCandidates.skills,
+                supports: buildAssistantCandidates.supports,
+                characterLevel: effectiveCharacter.level || undefined,
+                passiveTree: officialPassiveTree,
+                realPassivePlanning: resourceAwareCandidate.realPassivePlanning,
+              })
+              const candidateImproves = candidateRisk.hardConflictSetupIds.length < initialResourceRisk.hardConflictSetupIds.length
+                || (
+                  candidateRisk.hardConflictSetupIds.length === initialResourceRisk.hardConflictSetupIds.length
+                  && candidateRisk.totalPenalty < initialResourceRisk.totalPenalty
+                )
+              if (candidateImproves) {
+                passiveAwareResult = resourceAwareCandidate
+                passivePlanAdjustedForResources = true
+              } else {
+                await passiveController.analyze(passiveInput)
+                passiveAwareResult = passiveController.getState().result ?? passiveAwareResult
+              }
+            }
+          }
           const rankedSupports = effectiveSetups.flatMap(value => {
             if (!value.skillId) return []
             return runBuildAssistantV1({
@@ -256,16 +293,19 @@ export default function App() {
             rankedSupports,
             characterLevel: effectiveCharacter.level || undefined,
             passiveTree: officialPassiveTree,
-            realPassivePlanning: passiveAwareResult.realPassivePlanning,
+            realPassivePlanning: passiveAwareResult.realPassivePlanning!,
           })
-          setResourceRebalance(postPassiveRebalance)
+          setResourceRebalance({
+            ...postPassiveRebalance,
+            passivePlanAdjusted: passivePlanAdjustedForResources,
+          })
           if (postPassiveRebalance.adjustedSetupIds.length) {
             effectiveSetups = postPassiveRebalance.setups
             setSetups(effectiveSetups)
           }
           result = runBuildAssistantV1(
             { character: effectiveCharacter, equipment, setups: effectiveSetups },
-            passiveAwareResult.realPassivePlanning,
+            passiveAwareResult.realPassivePlanning!,
           )
         }
         setAnalysis(result)

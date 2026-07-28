@@ -2269,3 +2269,22 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Git-Sicherheitsprüfung sind erfolgreich.
 - Nächster Schritt: bei bestätigter Unterdeckung kontrolliert prüfen, ob ein
   belegter Ressourcenknoten als alternatives Passivziel besser ist.
+# Schritt 31 – Ressourcenorientierte alternative Passivplanung
+
+- Ausgangscommit: `64ba2a345c086969a9328fe572f2c383cf036412`.
+- Bei einer nach dem normalen realen Passivlauf belegten
+  Ressourcenunterdeckung wird jetzt zuerst ein zweiter, explizit
+  ressourcenorientierter Planungslauf geprüft.
+- Der alternative Plan wird ausschließlich bei weniger harten Konflikten
+  oder bei gleicher Konfliktzahl und geringerem belegtem Risiko übernommen.
+- Ein nicht besserer Plan wird verworfen; der ursprüngliche Plan wird
+  deterministisch wiederhergestellt.
+- Die temporäre Ressourcenpriorität beeinflusst nur die Zielauswahl und wird
+  nicht als künstlicher Wert in das abschließende BuildProfile übernommen.
+- Automatische Supportanpassungen aus Schritt 30 erfolgen erst nach dieser
+  Planprüfung. Manuelle Supports bleiben unverändert.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_RESOURCE_PASSIVE_REPLANNING_STEP_31.md`.
+- Audit:
+  `docs/audits/build-assistant-resource-passive-replanning-step-31.json`.
+- Datenpins, Produktdaten und Runtime-Netzwerk bleiben unverändert.

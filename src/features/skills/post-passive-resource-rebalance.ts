@@ -16,6 +16,38 @@ export interface PostPassiveResourceRebalanceResult {
   setups: SkillSetup[]
   adjustedSetupIds: string[]
   manualConflictSetupIds: string[]
+  passivePlanAdjusted?: boolean
+}
+
+export interface PostPassiveResourceRiskSummary {
+  hardConflictSetupIds: string[]
+  totalPenalty: number
+}
+
+export function summarizePostPassiveResourceRisk(input: {
+  equipment: EquipmentEntry[]
+  setups: SkillSetup[]
+  skills: SkillGemDefinition[]
+  supports: SupportGemDefinition[]
+  characterLevel?: number
+  passiveTree: RealPassiveTree
+  realPassivePlanning: RealPassivePlanningIntegrationResult
+}): PostPassiveResourceRiskSummary {
+  const context: ResourceAwareSupportContext = {
+    equipment: input.equipment,
+    setups: input.setups,
+    skills: input.skills,
+    characterLevel: input.characterLevel,
+    passiveTree: input.passiveTree,
+    realPassivePlanning: input.realPassivePlanning,
+  }
+  const risks = input.setups
+    .filter(setup => Boolean(setup.skillId))
+    .map(setup => ({ setup, risk: supportResourceRisk(setup, setup.supportGemIds, input.supports, context) }))
+  return {
+    hardConflictSetupIds: risks.filter(value => value.risk.hardBlocked).map(value => value.setup.id),
+    totalPenalty: risks.reduce((sum, value) => sum + value.risk.penalty, 0),
+  }
 }
 
 export function rebalanceSupportsAfterPassivePlanning(input: {
