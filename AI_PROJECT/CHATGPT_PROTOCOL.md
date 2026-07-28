@@ -2047,3 +2047,40 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Nächster Schritt: gepinnte lokale Quellen auf eine vollständige,
   stufengenaue Kette für Fertigkeitsgrundkosten und
   Support-Kostenmultiplikatoren prüfen.
+
+## Schritt 24 – Fertigkeitsgrundkosten und Supportmultiplikatoren
+
+- Ausgangscommit: `bc1842b2134eff599491c66d8a5fa5ea61ea83a2`.
+- Das `resource-spirit-model` wurde auf Version `3.0.0`, der
+  Schadensrechner auf Version `3.3.0` erweitert.
+- Die unverändert gepinnte PoB2-Schadensreferenz enthält nun strukturierte
+  Stufe-20-Kosten aus `act_str.lua`, `act_dex.lua` und `act_int.lua`.
+- Die Divisoren stammen aus `src/Data/Costs.lua` am selben PoB2-Pin,
+  SHA-256
+  `4d59ec2732a0dc2bdcd524b5fbd831f70a74e7f3a528d1c7539ee849d6d5d16a`.
+- Coverage: 337 Fertigkeitsrecords, 235 mit Kostentabelle, 178 mit
+  Nichtnullkosten und 57 mit strukturierten Nullkosten.
+- Der bestehende RePoE-Gemkatalog verbindet Support-Gem-ID,
+  `grants_skills` und technische Support-Skill-ID mit genau dem Feld
+  `static.cost_multiplier` aus `data/skills.json`.
+- 450 von 451 Supportrecords besitzen einen eindeutigen Multiplikator. Der
+  einzelne fehlende Wert bleibt fail-closed.
+- Pro belegter Fertigkeitskarte werden Grundbetrag,
+  Supportmultiplikatoren, kombinierter Multiplikator sowie
+  supportangepasste Kosten pro Einsatz beziehungsweise Sekunde ausgegeben.
+- Vollständiger Ressourcenpool, Wiederherstellung, Reservierungsbetrag und
+  weitere Kostenänderungen durch Passive, Aszendenz, Ausrüstung oder
+  Zustände bleiben unbekannt. Dauerhafte Nutzbarkeit und eine
+  DPS-Begrenzung werden deshalb noch nicht behauptet.
+- Keine neue Nutzereinstellung, keine neue externe Quelle, kein
+  Runtime-Netzwerk und keine Änderung der Produktpins.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_SKILL_SUPPORT_COSTS_STEP_24.md`.
+- Audit:
+  `docs/audits/build-assistant-skill-support-costs-step-24.json`.
+- Prüfstatus vor Commit: 1.242 Tests in 97 Testdateien, Lint, Typecheck,
+  Produktions-Build, Pages-Build und JSON-Validierung erfolgreich.
+- Desktop und Mobilansicht 390 × 844 technisch geprüft; kein horizontaler
+  Überlauf und keine neuen Browserfehler oder -warnungen.
+- Nächster Schritt: vollständigen Charakter-Ressourcenpool und belegte
+  Wiederherstellung anbinden, um Kosten gegen reale Verfügbarkeit zu prüfen.

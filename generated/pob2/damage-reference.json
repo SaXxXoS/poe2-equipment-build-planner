@@ -1,12 +1,21 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "costsSourceFile": "src/Data/Costs.lua",
+  "costsSourceSha256": "4d59ec2732a0dc2bdcd524b5fbd831f70a74e7f3a528d1c7539ee849d6d5d16a",
+  "costDivisors": {
+    "Mana": 1,
+    "ManaPerMinute": 60,
+    "ManaPercentPerMinute": 60,
+    "RagePerMinute": 60
+  },
   "limitations": [
     "Bounded hit estimate; not Path of Building parity.",
     "Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.",
-    "PoB2 calculation reference is not represented as a technical GGG identity chain."
+    "PoB2 calculation reference is not represented as a technical GGG identity chain.",
+    "Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved."
   ],
   "skills": [
     {
@@ -24,6 +33,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Alchemist's Boon",
       "numericStats": {
         "skill_alchemists_boon_generate_x_charges_for_any_flask_per_minute": 14,
@@ -52,6 +62,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 44
+      },
       "statSetLabel": "Warcry",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -79,6 +92,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.11,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Volcanic Eruption",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -103,6 +119,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.45,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Volcanic Steps",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -128,6 +147,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 91
+      },
       "statSetLabel": "Ancestral Warrior Totem",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -150,6 +172,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Archmage",
       "numericStats": {
         "archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost": 610
@@ -179,6 +202,9 @@
       "castTime": 1.1,
       "attackSpeedMultiplier": 0,
       "critChance": 9,
+      "costs": {
+        "Mana": 81
+      },
       "statSetLabel": "Arc",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 20,
@@ -208,6 +234,7 @@
       "castTime": 0,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {},
       "statSetLabel": "Arctic Armour",
       "numericStats": {
         "arctic_armour_minimum_added_cold_damage_per_stack": 101,
@@ -234,6 +261,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 1.81,
+      "costs": {
+        "Mana": 38
+      },
       "statSetLabel": "Armour Breaker",
       "numericStats": {
         "apply_X_armour_break_on_hit": 4918
@@ -253,6 +283,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 55
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {
         "base_number_of_crossbow_bolts": 21
@@ -280,6 +313,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 325,
       "baseMultiplier": 0.91,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "apply_X_armour_break_on_hit": 845
@@ -304,6 +340,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 95
+      },
       "statSetLabel": "Ballista",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -335,6 +374,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": -75,
       "baseMultiplier": 0.4,
+      "costs": {},
       "statSetLabel": "Bolts",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -353,6 +393,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Attrition",
       "numericStats": {
         "skill_attrition_presence_max_seconds": 59,
@@ -387,6 +428,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 9,
+      "costs": {
+        "Mana": 96
+      },
       "statSetLabel": "Ball Lightning",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 6,
@@ -409,6 +453,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Barkskin",
       "numericStats": {
         "barkskin_armour_to_gain_as_%_of_energy_shield_lost_to_enemy_hits": 62
@@ -434,6 +479,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 51
+      },
       "statSetLabel": "Barrage",
       "numericStats": {
         "empower_barrage_cooldown_%_of_attack_time": 410
@@ -461,6 +509,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 1.45,
+      "costs": {
+        "ManaPerMinute": 4051
+      },
       "statSetLabel": "Fury of the Mountain",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -486,6 +537,10 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 3.06,
+      "costs": {
+        "Mana": 97,
+        "RagePerMinute": 300
+      },
       "statSetLabel": "Rampage",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -504,6 +559,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Berserk",
       "numericStats": {
         "skill_base_rage_effect_+%_to_apply": 59
@@ -530,6 +586,9 @@
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Explosion",
       "numericStats": {
         "secondary_minimum_base_physical_damage": 521,
@@ -553,6 +612,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -577,6 +637,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -596,6 +657,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Blink",
       "numericStats": {
         "blink_travel_distance": 49
@@ -618,6 +682,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Blink",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -643,6 +708,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.08,
       "critChance": 5,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Blood Explosion",
       "numericStats": {
         "main_hand_weapon_minimum_physical_damage": 196,
@@ -671,6 +739,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Mark",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -695,6 +766,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.43,
+      "costs": {
+        "Mana": 36
+      },
       "statSetLabel": "Dash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -719,6 +793,9 @@
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
       "critChance": 14,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Bone Blast",
       "numericStats": {
         "spell_minimum_base_physical_damage": 226,
@@ -748,6 +825,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 80
+      },
       "statSetLabel": "Bone Cage",
       "numericStats": {
         "spell_minimum_base_physical_damage": 347,
@@ -781,6 +861,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 110
+      },
       "statSetLabel": "Buff",
       "numericStats": {
         "bone_offering_damage_taken_+%_final": -25
@@ -802,6 +885,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 3.12,
+      "costs": {
+        "Mana": 60
+      },
       "statSetLabel": "Initial Strike",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -827,6 +913,9 @@
       "castTime": 0.125,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "ManaPerMinute": 3634
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_physical_damage": 116,
@@ -859,6 +948,7 @@
       "castTime": 0,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {},
       "statSetLabel": "Briarpatch",
       "numericStats": {
         "briarpatch_maximum_stored_physical_damage": 256
@@ -882,6 +972,9 @@
       ],
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 65
+      },
       "statSetLabel": "Buff",
       "numericStats": {
         "charged_staff_attack_minimum_added_lightning_damage_per_stack": 1,
@@ -903,6 +996,7 @@
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.66,
+      "costs": {},
       "statSetLabel": "Shockwave",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -921,6 +1015,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Charge Regulation",
       "numericStats": {
         "charge_mastery_skill_speed_+%_with_frenzy_charges": 25,
@@ -953,6 +1048,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 4.9,
+      "costs": {
+        "Mana": 99
+      },
       "statSetLabel": "Primary Grenade",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -980,6 +1078,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Physical",
       "numericStats": {
         "spell_minimum_base_physical_damage": 279,
@@ -1002,6 +1103,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Combat Frenzy",
       "numericStats": {
         "skill_combat_frenzy_x_ms_cooldown": 6100
@@ -1031,6 +1133,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 13,
+      "costs": {
+        "Mana": 173
+      },
       "statSetLabel": "Comet",
       "numericStats": {
         "spell_minimum_base_cold_damage": 787,
@@ -1050,6 +1155,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Command",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -1077,6 +1185,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 83
+      },
       "statSetLabel": "Contagion",
       "numericStats": {
         "base_chaos_damage_to_deal_per_minute": 5635
@@ -1098,6 +1209,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 20
+      },
       "statSetLabel": "Convalescence",
       "numericStats": {
         "base_skill_effect_duration": 3950
@@ -1119,6 +1233,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Convalescence",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -1147,6 +1262,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Poison Cloud",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -1169,6 +1287,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Crackling Palm",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -1186,6 +1305,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 150
+      },
       "statSetLabel": "Compose Requiem",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1212,6 +1334,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 300,
       "baseMultiplier": 9.36,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Requiem",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1231,6 +1356,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 2.81,
+      "costs": {
+        "Mana": 42
+      },
       "statSetLabel": "Cull the Weak",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -1252,6 +1380,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 133
+      },
       "statSetLabel": "Dark Effigy",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -1280,6 +1411,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {},
       "statSetLabel": "Vile Effusion",
       "numericStats": {
         "spell_minimum_base_chaos_damage": 69,
@@ -1304,6 +1436,7 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Defiance Banner",
       "numericStats": {
         "base_skill_effect_duration": 9800,
@@ -1329,6 +1462,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Defiance Banner",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1356,6 +1490,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 178
+      },
       "statSetLabel": "Despair",
       "numericStats": {
         "base_skill_effect_duration": 7400,
@@ -1391,6 +1528,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 8,
+      "costs": {
+        "Mana": 99
+      },
       "statSetLabel": "Detonate Dead",
       "numericStats": {
         "spell_minimum_base_fire_damage": 145,
@@ -1421,6 +1561,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -55,
       "baseMultiplier": 1.92,
+      "costs": {
+        "ManaPerMinute": 2764
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -1441,6 +1584,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Discipline",
       "numericStats": {
         "base_skill_buff_total_maximum_energy_shield_+_to_apply": 328
@@ -1470,6 +1614,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 3.08,
+      "costs": {
+        "Mana": 36
+      },
       "statSetLabel": "Initial Strike",
       "numericStats": {
         "consume_parry_debuff_on_hit_to_gain_X_frenzy_charges": 3
@@ -1493,6 +1640,7 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Dread Banner",
       "numericStats": {
         "base_skill_effect_duration": 9800,
@@ -1519,6 +1667,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Dread Banner",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1543,6 +1692,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 1.25,
+      "costs": {
+        "Mana": 56
+      },
       "statSetLabel": "Impact",
       "numericStats": {
         "base_number_of_earthquakes_allowed": 4
@@ -1568,6 +1720,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 1.4,
+      "costs": {
+        "Mana": 51
+      },
       "statSetLabel": "Slam",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1596,6 +1751,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 10,
       "baseMultiplier": 2.5,
+      "costs": {
+        "Mana": 46
+      },
       "statSetLabel": "Electrocuting Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -1618,6 +1776,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Elemental Conflux",
       "numericStats": {
         "skill_elemental_conflux_active_element_damage_+%_final": 59
@@ -1644,6 +1803,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": -45,
+      "costs": {
+        "Mana": 50
+      },
       "statSetLabel": "Pulse",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -1673,6 +1835,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 178
+      },
       "statSetLabel": "Elemental Weakness",
       "numericStats": {
         "base_skill_effect_duration": 7400,
@@ -1703,6 +1868,9 @@
       "castTime": 0.4,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 37
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_fire_damage": 195,
@@ -1728,6 +1896,9 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 82
+      },
       "statSetLabel": "Emergency Reload",
       "numericStats": {
         "emergency_reload_damage_+%_final": 31
@@ -1757,6 +1928,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 178
+      },
       "statSetLabel": "Enfeeble",
       "numericStats": {
         "base_skill_effect_duration": 7400,
@@ -1791,6 +1965,9 @@
       "castTime": 0.9,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 95
+      },
       "statSetLabel": "Fissures",
       "numericStats": {
         "spell_minimum_base_physical_damage": 111,
@@ -1819,6 +1996,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.87,
+      "costs": {},
       "statSetLabel": "Ice Fragments",
       "numericStats": {
         "base_number_of_projectiles": 4
@@ -1848,6 +2026,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.65,
+      "costs": {
+        "Mana": 74
+      },
       "statSetLabel": "Escape Shot",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 585,
@@ -1879,6 +2060,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 57
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_chaos_damage": 138,
@@ -1900,6 +2084,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Eternal Rage",
       "numericStats": {
         "ceaseless_rage_base_rage_regeneration_per_minute": 300
@@ -1929,6 +2114,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 8.78,
+      "costs": {
+        "Mana": 68
+      },
       "statSetLabel": "Explosive Grenade",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 24
@@ -1949,6 +2137,9 @@
       ],
       "castTime": 1.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 64
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -1976,6 +2167,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 4.05,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2010,6 +2204,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 1.56,
+      "costs": {
+        "Mana": 34
+      },
       "statSetLabel": "Spear",
       "numericStats": {
         "base_number_of_remote_spear_mines_allowed": 3
@@ -2039,6 +2236,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 8,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Tendrils",
       "numericStats": {
         "spell_minimum_base_physical_damage": 84,
@@ -2070,6 +2270,9 @@
       "castTime": 1.4,
       "attackSpeedMultiplier": 0,
       "critChance": 12,
+      "costs": {
+        "Mana": 195
+      },
       "statSetLabel": "Eye of Winter",
       "numericStats": {
         "spell_minimum_base_cold_damage": 40,
@@ -2098,6 +2301,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 4.37,
+      "costs": {
+        "Mana": 76
+      },
       "statSetLabel": "Melee",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -2121,6 +2327,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -15,
       "baseMultiplier": 2.96,
+      "costs": {
+        "Mana": 32
+      },
       "statSetLabel": "Stab",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 157,
@@ -2145,6 +2354,9 @@
       ],
       "castTime": 1.3,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Feast of Flesh",
       "numericStats": {
         "feast_of_flesh_recover_X_life_per_corpse_consumed": 211,
@@ -2168,6 +2380,9 @@
       ],
       "castTime": 1.1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Ferocious Roar",
       "numericStats": {
         "warcry_grant_break_X_armour_on_hit": 6147
@@ -2199,6 +2414,9 @@
       "castTime": 1.2,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 104
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_fire_damage": 224,
@@ -2231,6 +2449,9 @@
       "castTime": 0.9,
       "attackSpeedMultiplier": 0,
       "critChance": 8,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_fire_damage": 290,
@@ -2265,6 +2486,9 @@
       "castTime": 1.4,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 147
+      },
       "statSetLabel": "Firestorm",
       "numericStats": {
         "spell_minimum_base_fire_damage": 111,
@@ -2293,6 +2517,9 @@
       "castTime": 0.25,
       "attackSpeedMultiplier": 0,
       "critChance": 8,
+      "costs": {
+        "ManaPerMinute": 3450
+      },
       "statSetLabel": "Flameblast",
       "numericStats": {
         "spell_minimum_base_fire_damage": 244,
@@ -2327,6 +2554,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 5,
+      "costs": {
+        "Mana": 111
+      },
       "statSetLabel": "Wall",
       "numericStats": {
         "spell_minimum_base_fire_damage": 181,
@@ -2358,6 +2588,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 4.08,
+      "costs": {
+        "Mana": 53
+      },
       "statSetLabel": "Flash Grenade",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 33
@@ -2380,6 +2613,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -50,
       "baseMultiplier": 3.27,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Flicker Strike",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -2406,6 +2642,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 5.77,
+      "costs": {
+        "Mana": 60
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2430,6 +2669,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Fortifying Cry",
       "numericStats": {
         "shielding_cry_grant_X_guard_per_5_mp": 92
@@ -2457,6 +2699,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.04,
       "critChance": 5,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Shield Wave",
       "numericStats": {
         "off_hand_weapon_minimum_physical_damage": 85,
@@ -2479,6 +2724,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 53
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2505,6 +2753,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.72,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "projectile_base_number_of_targets_to_pierce": 4
@@ -2533,6 +2784,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Mark",
       "numericStats": {
         "freezing_mark_hit_damage_freeze_multiplier_+%_final": 35
@@ -2565,6 +2819,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.5,
+      "costs": {
+        "Mana": 105
+      },
       "statSetLabel": "Freezing Salvo",
       "numericStats": {
         "base_skill_seal_gain_interval_ms": 750,
@@ -2597,6 +2854,9 @@
       "castTime": 1.2,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Freezing Shards",
       "numericStats": {
         "spell_minimum_base_cold_damage": 64,
@@ -2627,6 +2887,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 12,
+      "costs": {
+        "Mana": 59
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_cold_damage": 144,
@@ -2665,6 +2928,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 13,
+      "costs": {
+        "Mana": 99
+      },
       "statSetLabel": "Frost Bomb",
       "numericStats": {
         "spell_minimum_base_cold_damage": 238,
@@ -2693,6 +2959,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 13,
+      "costs": {
+        "Mana": 59
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_cold_damage": 45,
@@ -2727,6 +2996,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Frost Wall",
       "numericStats": {
         "spell_minimum_base_cold_damage": 187,
@@ -2756,6 +3028,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": -30,
+      "costs": {
+        "Mana": 81
+      },
       "statSetLabel": "Crystal",
       "numericStats": {
         "frost_wall_maximum_life": 9536,
@@ -2781,6 +3056,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Fulmination",
       "numericStats": {
         "skill_wrath_aura_shared_damage_+%_to_other_shocked_enemies_in_presence": -71
@@ -2805,6 +3081,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 2.54,
+      "costs": {
+        "Mana": 69
+      },
       "statSetLabel": "Base",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2823,6 +3102,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 2.65,
+      "costs": {
+        "Mana": 63
+      },
       "statSetLabel": "Wind Blast",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -2848,6 +3130,9 @@
       ],
       "castTime": 0.65,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -2865,6 +3150,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 44
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2891,6 +3179,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.54,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2921,6 +3212,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.94,
+      "costs": {
+        "Mana": 62
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -2945,6 +3239,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.35,
+      "costs": {
+        "ManaPerMinute": 3203
+      },
       "statSetLabel": "Normal Dash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -2968,6 +3265,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.81,
+      "costs": {},
       "statSetLabel": "Cold Surge",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -2986,6 +3284,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Ghost Dance",
       "numericStats": {
         "base_cooldown_modifiable_repeat_interval_ms": 10100
@@ -3007,6 +3306,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 49
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3036,6 +3338,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.45,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3058,6 +3363,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 1.25,
+      "costs": {
+        "Mana": 63
+      },
       "statSetLabel": "Wave",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3088,6 +3396,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 4.05,
+      "costs": {
+        "Mana": 55
+      },
       "statSetLabel": "Spear",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 157,
@@ -3113,6 +3424,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Grim Feast",
       "numericStats": {
         "grim_remnant_max_health_stored": 66124
@@ -3134,6 +3446,9 @@
       ],
       "castTime": 0.4,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Grim Resurrection",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3152,6 +3467,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 193
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {
         "base_number_of_crossbow_bolts": 50
@@ -3183,6 +3501,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -45,
       "baseMultiplier": 2.28,
+      "costs": {
+        "Mana": 163
+      },
       "statSetLabel": "Impact",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 157,
@@ -3208,6 +3529,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -50,
       "baseMultiplier": 15.29,
+      "costs": {
+        "Mana": 73
+      },
       "statSetLabel": "Hammer of the Gods",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3229,6 +3553,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -11,
       "baseMultiplier": 2.09,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Strike",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3252,6 +3579,7 @@
       "castTime": 0,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {},
       "statSetLabel": "Heart of Ice",
       "numericStats": {
         "spell_minimum_base_cold_damage": 888,
@@ -3279,6 +3607,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3305,6 +3634,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3328,6 +3658,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3348,6 +3679,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Herald of Plague",
       "numericStats": {
         "herald_of_agony_poison_spread_on_kill_radius_base_magnitude_to_grant": 18,
@@ -3374,6 +3706,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {
         "herald_of_thunder_storm_max_hits": 3
@@ -3403,6 +3736,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 127
+      },
       "statSetLabel": "Hexblast",
       "numericStats": {
         "spell_minimum_base_chaos_damage": 725,
@@ -3425,6 +3761,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 47
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3452,6 +3791,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.64,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3483,6 +3825,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "His Foul Emergence",
       "numericStats": {
         "spell_minimum_base_physical_damage": 425,
@@ -3513,6 +3858,9 @@
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "His Winnowing Flame",
       "numericStats": {
         "spell_minimum_base_fire_damage": 418,
@@ -3541,6 +3889,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {
         "skill_hyena_cackle_size": 9
@@ -3574,6 +3923,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 12,
+      "costs": {
+        "Mana": 74
+      },
       "statSetLabel": "Ice Nova",
       "numericStats": {
         "spell_minimum_base_cold_damage": 131,
@@ -3596,6 +3948,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3625,6 +3980,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 450,
       "baseMultiplier": 0.29,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3652,6 +4010,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -10,
       "baseMultiplier": 3.44,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -3684,6 +4045,9 @@
       "castTime": 1.2,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {
+        "Mana": 126
+      },
       "statSetLabel": "Storm",
       "numericStats": {
         "spell_minimum_base_cold_damage": 93,
@@ -3708,6 +4072,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 40,
       "baseMultiplier": 1.87,
+      "costs": {
+        "Mana": 36
+      },
       "statSetLabel": "Normal Strikes",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3733,6 +4100,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.87,
+      "costs": {},
       "statSetLabel": "Ice Fragments",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -3761,6 +4129,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 63
+      },
       "statSetLabel": "Ice-Tipped Arrows",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -3782,6 +4153,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Impurity",
       "numericStats": {
         "base_skill_buff_chaos_damage_resistance_%_to_apply": 29
@@ -3801,6 +4173,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 44
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3827,6 +4202,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.36,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3853,6 +4231,7 @@
       "castTime": 0.25,
       "attackSpeedMultiplier": 0,
       "critChance": 6,
+      "costs": {},
       "statSetLabel": "Incinerate",
       "numericStats": {
         "spell_minimum_base_fire_damage": 83,
@@ -3880,6 +4259,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {},
       "statSetLabel": "Combust",
       "numericStats": {
         "secondary_minimum_base_fire_damage": 112,
@@ -3906,6 +4286,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Infernal Cry",
       "numericStats": {
         "infernal_cry_exerted_attack_all_damage_%_to_gain_as_fire_%": 49
@@ -3927,6 +4310,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Iron Ward",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -3945,6 +4331,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Iron Ward",
       "numericStats": {
         "warding_steel_maximum_stored_mitigated_physical_damage": 22886,
@@ -3969,6 +4356,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 2.81,
+      "costs": {
+        "Mana": 42
+      },
       "statSetLabel": "Killing Palm",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -3991,6 +4381,9 @@
       "castTime": 1.4,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.49,
+      "costs": {
+        "Mana": 97
+      },
       "statSetLabel": "Leap Slam",
       "numericStats": {
         "active_skill_hit_damage_stun_multiplier_+%_final": 88
@@ -4023,6 +4416,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -10,
       "baseMultiplier": 2.5,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "lightning_arrow_maximum_number_of_extra_targets": 4
@@ -4052,6 +4448,9 @@
       "castTime": 0.85,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Lightning Bolt",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 30,
@@ -4080,6 +4479,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 195
+      },
       "statSetLabel": "Lightning Conduit",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 189,
@@ -4114,6 +4516,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 20,
       "baseMultiplier": 0.94,
+      "costs": {
+        "Mana": 30
+      },
       "statSetLabel": "Lightning Rod",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -4142,6 +4547,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 3.43,
+      "costs": {
+        "Mana": 46
+      },
       "statSetLabel": "Spear",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -4174,6 +4582,9 @@
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {
+        "Mana": 83
+      },
       "statSetLabel": "Lightning Warp",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 54,
@@ -4197,6 +4608,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -4225,6 +4637,9 @@
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Living Bomb",
       "numericStats": {
         "spell_minimum_base_fire_damage": 481,
@@ -4251,6 +4666,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 10,
       "baseMultiplier": 1.25,
+      "costs": {
+        "Mana": 46
+      },
       "statSetLabel": "Base",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 506,
@@ -4273,6 +4691,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4297,6 +4716,7 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 6.94,
       "critChance": 5,
+      "costs": {},
       "statSetLabel": "Magma Spray",
       "numericStats": {
         "off_hand_weapon_minimum_fire_damage": 103,
@@ -4329,6 +4749,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -50,
       "baseMultiplier": 1.56,
+      "costs": {
+        "Mana": 162
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -4350,6 +4773,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Malice",
       "numericStats": {
         "critical_chance_against_aura_apply_brittle_every_x_ms": 510
@@ -4370,6 +4794,9 @@
       ],
       "castTime": 0.85,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Mana Drain",
       "numericStats": {
         "mana_drain_base_mana_leech_amount": 408
@@ -4392,6 +4819,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Mana Remnants",
       "numericStats": {
         "mana_remnants_mana_gain_per_globe": 281
@@ -4417,6 +4845,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "ManaPercentPerMinute": 60
+      },
       "statSetLabel": "Mana Tempest",
       "numericStats": {
         "non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff": 78,
@@ -4440,6 +4871,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Mantra of Destruction",
       "numericStats": {
         "mantra_of_destruction_grant_all_damage_%_to_gain_as_chaos_with_attacks": 69
@@ -4465,6 +4899,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Barrier Invocation",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4489,6 +4924,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Curse on Block",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4514,6 +4950,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Thundergod's Wrath",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4538,6 +4975,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Block",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4561,6 +4999,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Critical",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4584,6 +5023,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Dodge",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4610,6 +5050,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Elemental Ailment",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4633,6 +5074,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Melee Kill",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4654,6 +5096,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Melee Stun",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4678,6 +5121,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Cast on Minion Death",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4707,6 +5151,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Elemental Invocation",
       "numericStats": {
         "energy_generated_+%": 68
@@ -4733,6 +5178,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Feral Invocation",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4754,6 +5200,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Mirage Archer",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -4778,6 +5225,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 121
+      },
       "statSetLabel": "Mortar Cannon",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -4805,6 +5255,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Reaper's Invocation",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4831,6 +5282,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Spellslinger",
       "numericStats": {
         "energy_generated_+%": 57
@@ -4853,6 +5305,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Mirror of Refraction",
       "numericStats": {
         "base_cooldown_modifiable_repeat_interval_ms": 2000
@@ -4880,6 +5333,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 2.65,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4906,6 +5362,9 @@
       "castTime": 1.4,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.9,
+      "costs": {
+        "Mana": 97
+      },
       "statSetLabel": "Molten Crash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4933,6 +5392,10 @@
       "castTime": 1,
       "attackSpeedMultiplier": 200,
       "baseMultiplier": 2.81,
+      "costs": {
+        "Mana": 41,
+        "ManaPerMinute": 2430
+      },
       "statSetLabel": "Base",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -4961,6 +5424,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 4.08,
+      "costs": {
+        "Mana": 60
+      },
       "statSetLabel": "Primary Grenade",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 26
@@ -4995,6 +5461,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 129
+      },
       "statSetLabel": "Orb of Storms",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 14,
@@ -5019,6 +5488,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Overwhelming Presence",
       "numericStats": {
         "skill_overwhelming_pressure_aura_enemy_stun_threshold_+%": -25,
@@ -5045,6 +5515,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 110
+      },
       "statSetLabel": "Pain Offering",
       "numericStats": {
         "pain_offering_attack_and_cast_speed_+%": 29,
@@ -5069,6 +5542,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -70,
       "baseMultiplier": 3.43,
+      "costs": {
+        "ManaPerMinute": 2515
+      },
       "statSetLabel": "Normal Strikes",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5087,6 +5563,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 44
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5113,6 +5592,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.49,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 504,
@@ -5141,6 +5623,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 0.62,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5161,6 +5646,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Plague Bearer",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5179,6 +5667,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Plague Bearer",
       "numericStats": {
         "plague_bearer_maximum_stored_poison_damage": 15257
@@ -5199,6 +5688,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 122
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5224,6 +5716,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 33.89,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5249,6 +5744,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.74,
+      "costs": {
+        "Mana": 38
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5271,6 +5769,9 @@
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Power Siphon",
       "numericStats": {
         "spell_minimum_base_physical_damage": 109,
@@ -5297,6 +5798,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 2.5,
+      "costs": {
+        "Mana": 38
+      },
       "statSetLabel": "Normal Strikes",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5326,6 +5830,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 65
+      },
       "statSetLabel": "Profane Ritual",
       "numericStats": {
         "base_chaos_damage_to_deal_per_minute": 39130
@@ -5349,6 +5856,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Purity of Fire",
       "numericStats": {
         "base_skill_buff_fire_damage_resistance_%_to_apply": 41
@@ -5372,6 +5880,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Purity of Ice",
       "numericStats": {
         "base_skill_buff_cold_damage_resistance_%_to_apply": 41
@@ -5395,6 +5904,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Purity of Lightning",
       "numericStats": {
         "base_skill_buff_lightning_damage_resistance_%_to_apply": 41
@@ -5425,6 +5935,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Raging Spirits",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -5453,6 +5964,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 1.81,
+      "costs": {
+        "Mana": 103
+      },
       "statSetLabel": "Rain of Arrows",
       "numericStats": {
         "base_number_of_projectiles": 39
@@ -5483,6 +5997,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 102
+      },
       "statSetLabel": "Minion Info",
       "numericStats": {
         "power_charged_zombie_hit_damage_+%_final": 253
@@ -5506,6 +6023,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.81,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Dash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5528,6 +6048,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -60,
       "baseMultiplier": 0.78,
+      "costs": {
+        "Mana": 69
+      },
       "statSetLabel": "Normal Strikes",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5546,6 +6069,9 @@
       ],
       "castTime": 1.2,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 186
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5571,6 +6097,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 450,
       "baseMultiplier": 0.94,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "maximum_number_of_crossbow_heat_stacks": 45
@@ -5602,6 +6131,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Ravenous Swarm",
       "numericStats": {
         "base_skill_effect_duration": 9800
@@ -5629,6 +6159,9 @@
       "castTime": 1.2,
       "attackSpeedMultiplier": 0,
       "critChance": 14,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Reap",
       "numericStats": {
         "spell_minimum_base_physical_damage": 400,
@@ -5658,6 +6191,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.94,
       "critChance": 5,
+      "costs": {
+        "ManaPerMinute": 2816
+      },
       "statSetLabel": "Resonating Shield",
       "numericStats": {
         "off_hand_weapon_minimum_physical_damage": 103,
@@ -5689,6 +6225,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Rhoa Mount",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5715,6 +6252,9 @@
       "castTime": 0.7,
       "attackSpeedMultiplier": -15,
       "baseMultiplier": 2.18,
+      "costs": {
+        "Mana": 83
+      },
       "statSetLabel": "Rolling Magma",
       "numericStats": {
         "number_of_chains": 5,
@@ -5736,6 +6276,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 96
+      },
       "statSetLabel": "Rolling Slam",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5756,6 +6299,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Sacrifice",
       "numericStats": {
         "harvester_minion_resummon_speed_+%_final": -40
@@ -5775,6 +6319,7 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Savage Fury",
       "numericStats": {
         "wild_beast_damage_+%_final": 29
@@ -5795,6 +6340,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Savage Fury",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -5819,6 +6365,9 @@
       "castTime": 0.4,
       "attackSpeedMultiplier": 0,
       "critChance": 11,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 325,
@@ -5844,6 +6393,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Scavenged Plating",
       "numericStats": {
         "scavenged_plating_thorns_minimum_physical_damage": 43,
@@ -5870,6 +6420,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Seismic Cry",
       "numericStats": {
         "secondary_minimum_base_physical_damage": 223,
@@ -5896,6 +6449,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Shard Scavenger",
       "numericStats": {
         "base_secondary_skill_effect_duration": 6050,
@@ -5920,6 +6474,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 3.74,
+      "costs": {},
       "statSetLabel": "Explosion",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -5939,6 +6494,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 1.09,
+      "costs": {
+        "Mana": 40
+      },
       "statSetLabel": "Melee",
       "numericStats": {
         "shattering_palm_debuff_damage_threshold": 12788
@@ -5962,6 +6520,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.53,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Shattering Spite",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -5986,6 +6547,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.94,
       "critChance": 5,
+      "costs": {
+        "ManaPerMinute": 2921
+      },
       "statSetLabel": "Area of Effect",
       "numericStats": {
         "off_hand_weapon_minimum_physical_damage": 85,
@@ -6017,6 +6581,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.35,
       "critChance": 5,
+      "costs": {
+        "Mana": 92
+      },
       "statSetLabel": "Shield Wall",
       "numericStats": {
         "off_hand_weapon_minimum_physical_damage": 103,
@@ -6041,6 +6608,9 @@
       ],
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 100
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {
         "base_number_of_crossbow_bolts": 19
@@ -6069,6 +6639,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 300,
       "baseMultiplier": 0.36,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6101,6 +6674,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 2.18,
+      "costs": {
+        "Mana": 68
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6129,6 +6705,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 3.27,
+      "costs": {
+        "Mana": 73
+      },
       "statSetLabel": "Voltaic Grenade",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 24,
@@ -6153,6 +6732,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 103
+      },
       "statSetLabel": "Totem",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -6180,6 +6762,7 @@
       "castTime": 0.6,
       "attackSpeedMultiplier": -50,
       "baseMultiplier": 0.66,
+      "costs": {},
       "statSetLabel": "Slam",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6202,6 +6785,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 121
+      },
       "statSetLabel": "Ballista",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -6231,6 +6817,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": -75,
       "baseMultiplier": 0.66,
+      "costs": {},
       "statSetLabel": "Artillery",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6249,6 +6836,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 81
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6277,6 +6867,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 1.45,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6302,6 +6895,9 @@
       ],
       "castTime": 0.6,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Sigil of Power",
       "numericStats": {
         "circle_of_power_spell_damage_+%_final_per_stage": 14,
@@ -6329,6 +6925,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Siphon Elements",
       "numericStats": {
         "remnant_pickup_range_+%": 38
@@ -6353,6 +6950,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.34,
+      "costs": {
+        "Mana": 47
+      },
       "statSetLabel": "Dash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -6389,6 +6989,9 @@
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
       "critChance": 13,
+      "costs": {
+        "Mana": 89
+      },
       "statSetLabel": "Cold",
       "numericStats": {
         "spell_minimum_base_cold_damage": 473,
@@ -6418,6 +7021,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -55,
       "baseMultiplier": 3.12,
+      "costs": {
+        "ManaPerMinute": 7114
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6443,6 +7049,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Sniper's Mark",
       "numericStats": {
         "enemy_additional_critical_strike_multiplier_against_self": 77
@@ -6474,6 +7083,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Pulse",
       "numericStats": {
         "spell_minimum_base_fire_damage": 181,
@@ -6498,6 +7110,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 141
+      },
       "statSetLabel": "Soul Offering",
       "numericStats": {
         "power_offering_buff_spell_damage_+%": 77
@@ -6528,6 +7143,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 13,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Projectile",
       "numericStats": {
         "spell_minimum_base_chaos_damage": 130,
@@ -6559,6 +7177,9 @@
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
       "critChance": 9,
+      "costs": {
+        "Mana": 56
+      },
       "statSetLabel": "Base",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 11,
@@ -6584,6 +7205,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": -30,
+      "costs": {
+        "Mana": 39
+      },
       "statSetLabel": "Spearfield",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 69
@@ -6613,6 +7237,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 6.12,
+      "costs": {
+        "Mana": 91
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6640,6 +7267,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.06,
+      "costs": {
+        "Mana": 64
+      },
       "statSetLabel": "Spiral Volley",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6662,6 +7292,9 @@
       ],
       "castTime": 1.25,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Consecrate",
       "numericStats": {
         "consecrated_ground_effect_+%": 38
@@ -6686,6 +7319,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 2.5,
+      "costs": {
+        "Mana": 47
+      },
       "statSetLabel": "Staggering Palm",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -6707,6 +7343,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.04,
+      "costs": {},
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -6730,6 +7367,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.25,
+      "costs": {
+        "Mana": 65
+      },
       "statSetLabel": "Footsteps",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6748,6 +7388,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 63
+      },
       "statSetLabel": "Ammunition",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6776,6 +7419,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.72,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -6801,6 +7447,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 0.62,
+      "costs": {
+        "Mana": 50
+      },
       "statSetLabel": "Arrow",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6833,6 +7482,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 1.87,
+      "costs": {
+        "Mana": 46
+      },
       "statSetLabel": "Projectile",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -6853,6 +7505,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 3.43,
+      "costs": {
+        "Mana": 54
+      },
       "statSetLabel": "Storm Wave",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -6898,6 +7553,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {
         "active_skill_minion_damage_+%_final": 84
@@ -6925,6 +7581,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 121
+      },
       "statSetLabel": "Spell Totem",
       "numericStats": {
         "totem_elemental_resistance_%": 75,
@@ -6956,6 +7615,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -6986,6 +7646,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7009,6 +7670,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7040,6 +7702,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7067,6 +7730,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7097,6 +7761,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7127,6 +7792,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7153,6 +7819,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7198,6 +7865,7 @@
       ],
       "castTime": 0.85,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7233,6 +7901,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {
         "tangmazu_raven_added_to_your_flock_every_x_msec_a_rare_or_unique_enemy_is_in_your_presence": 1050
@@ -7257,6 +7926,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -60,
       "baseMultiplier": 6.53,
+      "costs": {
+        "Mana": 106
+      },
       "statSetLabel": "Wave",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -7278,6 +7950,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.54,
+      "costs": {
+        "ManaPerMinute": 3203
+      },
       "statSetLabel": "Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -7294,6 +7969,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 99
+      },
       "statSetLabel": "Tame Beast",
       "numericStats": {
         "base_skill_effect_duration": 11800
@@ -7324,6 +8002,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 20,
+      "costs": {
+        "Mana": 98
+      },
       "statSetLabel": "Tempest Bell",
       "numericStats": {
         "base_number_of_tempest_bells_allowed": 3
@@ -7346,6 +8027,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 40,
       "baseMultiplier": 1.4,
+      "costs": {
+        "Mana": 37
+      },
       "statSetLabel": "Normal Strikes",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7372,6 +8056,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 178
+      },
       "statSetLabel": "Temporal Chains",
       "numericStats": {
         "base_skill_effect_duration": 7400,
@@ -7407,6 +8094,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 152
+      },
       "statSetLabel": "Thrashing Vines",
       "numericStats": {
         "spell_minimum_base_physical_damage": 151,
@@ -7433,6 +8123,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.49,
+      "costs": {
+        "Mana": 76
+      },
       "statSetLabel": "Thunderous Leap",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -7461,6 +8154,9 @@
       "castTime": 0.9,
       "attackSpeedMultiplier": 0,
       "critChance": 9,
+      "costs": {
+        "Mana": 129
+      },
       "statSetLabel": "Thunderstorm",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 5,
@@ -7484,6 +8180,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Time of Need",
       "numericStats": {
         "base_cooldown_modifiable_repeat_interval_ms": 8100,
@@ -7515,6 +8212,9 @@
       ],
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 110
+      },
       "statSetLabel": "Tornado",
       "numericStats": {
         "base_physical_damage_to_deal_per_minute": 8765,
@@ -7554,6 +8254,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 20,
       "baseMultiplier": 1.56,
+      "costs": {
+        "Mana": 88
+      },
       "statSetLabel": "Impact",
       "numericStats": {
         "tornado_shot_number_of_hits_allowed": 8
@@ -7580,6 +8283,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 3.12,
+      "costs": {
+        "Mana": 106
+      },
       "statSetLabel": "Toxic Bloom",
       "numericStats": {
         "toxic_domain_healing_per_minute_+": 2400
@@ -7612,6 +8318,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -25,
       "baseMultiplier": 1.63,
+      "costs": {
+        "Mana": 86
+      },
       "statSetLabel": "Impact",
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 20
@@ -7642,6 +8351,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.62,
+      "costs": {
+        "Mana": 98
+      },
       "statSetLabel": "Pustules",
       "numericStats": {
         "toxic_pustule_burst_1%_more_damage_per_x_stored_poison": 969,
@@ -7668,6 +8380,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Trail of Caltrops",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -7687,6 +8400,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Grisly Pyre",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7717,6 +8433,9 @@
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 1.43,
       "critChance": 5,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Caltrops",
       "numericStats": {
         "main_hand_weapon_minimum_physical_damage": 159,
@@ -7743,6 +8462,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 0.82,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Gale Force",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -7764,6 +8486,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Trinity",
       "numericStats": {
         "trinity_damage_+%_final_to_grant_per_50_resonance": 6,
@@ -7793,6 +8516,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 2.32,
+      "costs": {
+        "Mana": 32
+      },
       "statSetLabel": "Twister",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -7825,6 +8551,9 @@
       "castTime": 0.95,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 76
+      },
       "statSetLabel": "Unearth",
       "numericStats": {
         "spell_minimum_base_physical_damage": 117,
@@ -7861,6 +8590,9 @@
       "castTime": 0.85,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Lightning Bolt",
       "numericStats": {
         "spell_minimum_base_lightning_damage": 30,
@@ -7884,6 +8616,9 @@
       ],
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Unleash",
       "numericStats": {
         "staff_unleash_cooldown_%_of_cast_time": 1010
@@ -7912,6 +8647,9 @@
       "castTime": 0,
       "attackSpeedMultiplier": 0,
       "critChance": 9,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Buff",
       "numericStats": {
         "cast_on_damage_taken_threshold": 628
@@ -7936,6 +8674,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 4.22,
+      "costs": {
+        "Mana": 83
+      },
       "statSetLabel": "Vaulting Impact",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -7965,6 +8706,9 @@
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
       "critChance": 15,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "His Vile Intrusion",
       "numericStats": {
         "spell_minimum_base_physical_damage": 435,
@@ -8000,6 +8744,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.18,
+      "costs": {
+        "Mana": 47
+      },
       "statSetLabel": "Impact",
       "numericStats": {
         "number_of_vine_arrow_pod_allowed": 3
@@ -8030,6 +8777,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Volatile Dead",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_int.lua"
@@ -8055,6 +8805,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -20,
       "baseMultiplier": 1.66,
+      "costs": {
+        "Mana": 41
+      },
       "statSetLabel": "Volcanic Fissure",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8085,6 +8838,10 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 8,
+      "costs": {
+        "Mana": 73,
+        "ManaPerMinute": 3680
+      },
       "statSetLabel": "Eruption",
       "numericStats": {
         "spell_minimum_base_fire_damage": 121,
@@ -8114,6 +8871,9 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 79
+      },
       "statSetLabel": "Mark",
       "numericStats": {
         "thaumaturgist_mark_hit_damage_electrocute_multiplier_+%": 35
@@ -8143,6 +8903,9 @@
       ],
       "castTime": 0.7,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 178
+      },
       "statSetLabel": "Vulnerability",
       "numericStats": {
         "base_skill_effect_duration": 7400,
@@ -8168,6 +8931,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.45,
+      "costs": {},
       "statSetLabel": "Small Meteor",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8191,6 +8955,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 0,
+      "costs": {
+        "Mana": 166
+      },
       "statSetLabel": "Walking Calamity",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8212,6 +8979,7 @@
       ],
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "War Banner",
       "numericStats": {
         "base_skill_effect_duration": 9800,
@@ -8238,6 +9006,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "War Banner",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8260,6 +9029,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -45,
       "baseMultiplier": 2.35,
+      "costs": {
+        "Mana": 100
+      },
       "statSetLabel": "Wave of Frost",
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 585,
@@ -8290,6 +9062,9 @@
       "castTime": 0.75,
       "attackSpeedMultiplier": 0,
       "critChance": 7,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Chaos Bolt",
       "numericStats": {
         "spell_minimum_base_chaos_damage": 200,
@@ -8312,6 +9087,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -15,
       "baseMultiplier": 1.63,
+      "costs": {
+        "Mana": 126
+      },
       "statSetLabel": "Whirling Assault",
       "numericStats": {
         "area_of_effect_+%_final_from_whirling_assault_level": 20
@@ -8337,6 +9115,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -30,
       "baseMultiplier": 2.18,
+      "costs": {
+        "Mana": 39
+      },
       "statSetLabel": "Melee",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -8368,6 +9149,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -40,
       "baseMultiplier": 3.43,
+      "costs": {
+        "Mana": 46
+      },
       "statSetLabel": "Spear",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -8387,6 +9171,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Buff",
       "numericStats": {
         "wind_dancer_stages_gained_every_x_ms": 1120
@@ -8413,6 +9198,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": -60,
       "baseMultiplier": 5.98,
+      "costs": {
+        "Mana": 69
+      },
       "statSetLabel": "Thrust",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_dex.lua"
@@ -8436,6 +9224,9 @@
       "castTime": 0.5,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.65,
+      "costs": {
+        "Mana": 55
+      },
       "statSetLabel": "Wing Blast",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8458,6 +9249,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Withering Presence",
       "numericStats": {
         "skill_withering_presence_frequency_ms": 1420
@@ -8480,6 +9272,9 @@
       ],
       "castTime": 0.25,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Wither",
       "numericStats": {
         "active_skill_withered_base_duration_ms": 2950
@@ -8510,6 +9305,9 @@
       "castTime": 0.8,
       "attackSpeedMultiplier": 0,
       "critChance": 10,
+      "costs": {
+        "Mana": 85
+      },
       "statSetLabel": "Arctic Howl",
       "numericStats": {
         "secondary_minimum_base_cold_damage": 186,
@@ -8539,6 +9337,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 10,
       "baseMultiplier": 2.35,
+      "costs": {
+        "Mana": 67
+      },
       "statSetLabel": "Cross Slash",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8560,6 +9361,7 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 2.35,
+      "costs": {},
       "statSetLabel": "Moonbeam",
       "numericStats": {
         "wolf_lunar_blessing_beam_attack_extra_beams_to_trigger": 5
@@ -8583,6 +9385,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 166
+      },
       "statSetLabel": "Lunar Blessing",
       "numericStats": {
         "wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage": 59
@@ -8610,6 +9415,7 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Minion Info",
       "numericStats": {
         "skill_wolf_pack_size": 6
@@ -8633,6 +9439,7 @@
       ],
       "castTime": 0,
       "attackSpeedMultiplier": 0,
+      "costs": {},
       "statSetLabel": "Predator's Mark",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8657,6 +9464,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 0,
       "baseMultiplier": 3.12,
+      "costs": {
+        "Mana": 102
+      },
       "statSetLabel": "Pounce",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -8682,6 +9492,9 @@
       ],
       "castTime": 1,
       "attackSpeedMultiplier": 0,
+      "costs": {
+        "Mana": 0
+      },
       "statSetLabel": "Summon Wolf",
       "numericStats": {
         "number_of_wolves_allowed": 6
@@ -8710,6 +9523,9 @@
       "castTime": 1,
       "attackSpeedMultiplier": 70,
       "baseMultiplier": 2.35,
+      "costs": {
+        "Mana": 55
+      },
       "statSetLabel": "Devour",
       "numericStats": {
         "wyvern_devour_life_restoration": 337
@@ -8744,6 +9560,10 @@
       "castTime": 1,
       "attackSpeedMultiplier": 700,
       "baseMultiplier": 1.09,
+      "costs": {
+        "Mana": 157,
+        "RagePerMinute": 360
+      },
       "statSetLabel": "Flame Breath",
       "numericStats": {},
       "sourceFile": "src/Data/Skills/act_str.lua"
@@ -14769,5 +15589,5 @@
       "sourceFile": "src/Data/Bases/mace.lua"
     }
   ],
-  "contentHash": "193e1be36e90f6a130fa14e6c737302a41a63aabdcdae5e32e6fb4f3adfc3e22"
+  "contentHash": "9d6e5d0a183a688d41c288b44ac99fc0d111dd289ea134868d92347d08d21b5b"
 }

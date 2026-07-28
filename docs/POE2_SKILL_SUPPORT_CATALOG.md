@@ -14,6 +14,8 @@ erhalten.
 - Exportcommit: `b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c`
 - Quelldatei: `data/skill_gems.json`
 - SHA-256: `2c5a481f1147a87c844b1734a8fd2c660e4e13922145470ac72bca75095a69e3`
+- Unterstützende Kostendatei: `data/skills.json`
+- SHA-256: `1a83f007c1015c1d2fc0e3e22503dc8deb2debed0e3ea450cf64bc3714f378c7`
 - Produktdatei: `generated/poe2-gems/catalog.json`
 
 Die vollständige Rohdatei bleibt im gitignorierten Auditbereich. Es gibt
@@ -48,6 +50,13 @@ Ranking benötigt eine ausdrückliche `recommended_supports`-Referenz des
 gewählten gepinnten Skillrecords. Ohne diese Evidenz bleibt der Support
 auswählbar, wird aber durch `insufficient-semantic-evidence` blockiert.
 
+Seit Schritt 24 wird zusätzlich genau ein numerisches Feld übernommen:
+`cost_multiplier`. Die Identität muss vollständig über
+`Gem-ID → grants_skills → Support-Skill-ID` belegt sein. 450 von 451 Supports
+besitzen eine eindeutige Kette; der fehlende Wert wird nicht geschätzt. Der
+Kostenmultiplikator ist keine Schadenswirkung und ersetzt keine
+Kompatibilitätsprüfung.
+
 ## Deutsche Anzeigenamen
 
 Der vollständige Katalog verwendet jetzt die echten deutschen
@@ -73,7 +82,7 @@ SHA-256 der deutschen Anzeigedatei:
 `4eba093cadd22cc1de5ad11aafdbacd37d1e660ec28ec320e6ec532fa2c112a1`.
 
 Nicht importiert werden Icons, Medien, Tutorialvideos, Beschreibungen,
-numerische Effekttabellen, technische Stat-IDs oder Rohdaten.
+sonstige numerische Effekttabellen, technische Stat-IDs oder Rohdaten.
 
 Die Projektentscheidung ist keine externe Lizenzfreigabe und keine
 Rechtsberatung. Die bekannte Rechteunsicherheit bleibt dokumentiert.

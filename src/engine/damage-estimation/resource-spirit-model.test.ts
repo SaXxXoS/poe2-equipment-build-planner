@@ -59,15 +59,51 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     expect(model.manaPoolKnown).toBe(false)
     expect(model.productive).toBe(false)
   })
-  it('klassifiziert jede belegte Fertigkeit als unvollständige Kostenkette', () => {
+  it('übernimmt die exakten Stufe-20-Grundkosten ohne Supports', () => {
     const definition = skill('arc', 'Arc')
     const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })
     expect(model.skillCostChains).toEqual([expect.objectContaining({
       skillId: definition.id,
-      baseCostStatus: 'blocked-missing-exact-base-cost',
+      baseCostStatus: 'structured-exact-level-20',
+      supportMultiplierStatus: 'structured-exact-no-supports',
+      combinedSupportMultiplier: 1,
+      baseCosts: [{ resource: 'mana', cadence: 'per-use', baseAmount: 81, supportAdjustedAmount: 81, sourceResource: 'Mana' }],
       poolStatus: 'blocked-missing-complete-character-pool',
-      sustainStatus: 'blocked-incomplete-cost-pool-and-recovery-chain',
+      sustainStatus: 'blocked-missing-pool-and-recovery',
     })])
+  })
+  it('verknüpft alle belegten Supportmultiplikatoren deterministisch', () => {
+    const definition = skill('arc', 'Arc')
+    const supports = [
+      { id: 'support-a', displayNameDe: 'Support A', costMultiplierPercent: 120, sourceReference: 'skills.json#a' },
+      { id: 'support-b', displayNameDe: 'Support B', costMultiplierPercent: 130, sourceReference: 'skills.json#b' },
+    ] as SupportGemDefinition[]
+    const model = resolveResourceSpiritModel({
+      setups: [setup(definition.id, supports.map(value => value.id))],
+      skills: [definition],
+      supports,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      combinedSupportMultiplier: 1.56,
+      supportMultiplierStatus: 'structured-exact-all-selected-supports',
+      baseCosts: [{ baseAmount: 81, supportAdjustedAmount: 126 }],
+    })
+    expect(model.exactSkillCostsKnown).toBe(true)
+  })
+  it('blockiert die Kostenkette bei einem fehlenden Supportmultiplikator', () => {
+    const definition = skill('arc', 'Arc')
+    const support = { id: 'unknown-support', displayNameDe: 'Unbekannt' } as SupportGemDefinition
+    const model = resolveResourceSpiritModel({
+      setups: [setup(definition.id, [support.id])],
+      skills: [definition],
+      supports: [support],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      combinedSupportMultiplier: null,
+      supportMultiplierStatus: 'blocked-missing-exact-support-cost-multipliers',
+      sustainStatus: 'blocked-missing-exact-cost-chain',
+    })
+    expect(model.exactSkillCostsKnown).toBe(false)
   })
   it('ignoriert ähnlich benannte, aber nicht freigegebene Ressourcen-Stat-IDs', () => {
     const definition = skill('arc', 'Arc')

@@ -109,6 +109,9 @@ export const repoeSupportCatalog: SupportGemDefinition[] = catalog.supports.map(
     excludedTags: [],
     ownTags: tags,
     supportedDamageTypes: tags.filter(tag => ['physical', 'fire', 'cold', 'lightning', 'chaos'].includes(tag)) as SupportGemDefinition['supportedDamageTypes'],
+    costMultiplierPercent: item.costMultiplierStatus === 'structured-exact' && item.costMultiplierPercent != null
+      ? item.costMultiplierPercent
+      : undefined,
     enabled: true,
     experimental: true,
     selectionOnly: true,

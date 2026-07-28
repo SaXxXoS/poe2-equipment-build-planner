@@ -60,6 +60,8 @@ export interface SupportGemDefinition extends GameDataMetadata {
   bossBase?: number
   utilityBase?: number
   resourceCost?: number
+  /** Exakter Kostenmultiplikator der gepinnten technischen Support-Fertigkeit; 100 bedeutet unverändert. */
+  costMultiplierPercent?: number
   reducedSpeed?: number
   reducedDefence?: number
   mappingPenalty?: number

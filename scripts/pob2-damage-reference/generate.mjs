@@ -7,6 +7,16 @@ const root = process.cwd()
 const repo = path.join(root, '.local-audits', 'poe2-german-parser-candidates', 'candidate-02-pob', 'repo')
 const sourceCommit = 'c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0'
 const skillFiles = ['act_str.lua', 'act_dex.lua', 'act_int.lua']
+const costsRelative = 'src/Data/Costs.lua'
+const costsBytes = fs.readFileSync(path.join(repo, costsRelative))
+const costsText = costsBytes.toString('utf8')
+const expectedCostDivisors = { Mana: 1, ManaPerMinute: 60, ManaPercentPerMinute: 60, RagePerMinute: 60 }
+const costDivisors = Object.fromEntries(Object.entries(expectedCostDivisors).map(([resource, expected]) => {
+  const blockMatch = new RegExp(`Resource\\s*=\\s*"${resource}"[\\s\\S]*?Divisor\\s*=\\s*(\\d+)`).exec(costsText)
+  const actual = blockMatch ? Number(blockMatch[1]) : undefined
+  if (actual !== expected) throw new Error(`PoB2 cost divisor mismatch for ${resource}: expected ${expected}, received ${actual}`)
+  return [resource, actual]
+}))
 const baseDir = path.join(repo, 'src', 'Data', 'Bases')
 const gitDir = path.join(repo, '.git')
 const head = fs.readFileSync(path.join(gitDir, 'HEAD'), 'utf8').trim()
@@ -68,6 +78,15 @@ const positional = row => {
   const head = row.slice(1, row.indexOf('statInterpolation') >= 0 ? row.indexOf('statInterpolation') : -1)
   return head.split(',').map(value => value.trim()).filter(value => /^-?\d+(?:\.\d+)?$/.test(value)).map(Number)
 }
+const namedNumericTable = (body, key) => {
+  const table = tableFor(body, key)
+  if (!table) return {}
+  return Object.fromEntries(
+    [...table.matchAll(/\b([A-Za-z][A-Za-z0-9_]*)\s*=\s*(-?[\d.]+)/g)]
+      .map(([, name, value]) => [name, Number(value)])
+      .filter(([, value]) => Number.isFinite(value)),
+  )
+}
 
 const skills = []
 for (const file of skillFiles) {
@@ -94,6 +113,7 @@ for (const file of skillFiles) {
       attackSpeedMultiplier: number(mainLevel ?? '', 'attackSpeedMultiplier') ?? 0,
       baseMultiplier: number(mainLevel ?? '', 'baseMultiplier'),
       critChance: number(mainLevel ?? '', 'critChance'),
+      costs: namedNumericTable(mainLevel ?? '', 'cost'),
       statSetLabel: firstSet ? string(firstSet, 'label') : undefined,
       numericStats,
       sourceFile: relative,
@@ -129,14 +149,18 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
+  costsSourceFile: costsRelative,
+  costsSourceSha256: crypto.createHash('sha256').update(costsBytes).digest('hex'),
+  costDivisors,
   limitations: [
     'Bounded hit estimate; not Path of Building parity.',
     'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',
     'PoB2 calculation reference is not represented as a technical GGG identity chain.',
+    'Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved.',
   ],
   skills: skills.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
   weaponBases: bases.sort((a, b) => a.name.localeCompare(b.name)),

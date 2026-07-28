@@ -46,6 +46,16 @@ describe('vollständiger lokaler RePoE Skill-/Supportkatalog', () => {
     expect(new Set(bleed.map(item => item.supportFamilyId)).size).toBe(1)
   })
 
+  it('übernimmt Kostenmultiplikatoren nur über die gepinnte Gem-zu-Skill-Kette', () => {
+    expect(catalog.schemaVersion).toBe(2)
+    expect(catalog.supportingSourceFile).toBe('data/skills.json')
+    expect(catalog.supportingSourceSha256).toBe('1a83f007c1015c1d2fc0e3e22503dc8deb2debed0e3ea450cf64bc3714f378c7')
+    expect(catalog.supports.filter(item => item.costMultiplierStatus === 'structured-exact')).toHaveLength(450)
+    expect(repoeSupportCatalog.filter(item => item.costMultiplierPercent != null)).toHaveLength(450)
+    expect(repoeSupportCatalog.find(item => item.nameEn === 'Abiding Hex')?.costMultiplierPercent).toBe(100)
+    expect(repoeSupportCatalog.find(item => item.nameEn === 'Perpetual Charge')?.costMultiplierPercent).toBeUndefined()
+  })
+
   it('ordnet Beherrschungen derselben spielseitigen Ausschlusskategorie zu', () => {
     const masteries = repoeSupportCatalog.filter(item => item.nameEn?.endsWith('Mastery'))
     expect(masteries.map(item => item.nameEn)).toEqual(expect.arrayContaining([

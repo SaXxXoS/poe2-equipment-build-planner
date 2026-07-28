@@ -6,10 +6,14 @@ import { fileURLToPath } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const sourcePath = resolve(root, '.local-audits/poe2-unique-source-candidates/candidate-01-repoe/data/skill_gems.json')
+const skillsSourcePath = resolve(root, '.local-audits/poe2-unique-source-candidates/candidate-01-repoe/data/skills.json')
 const outputPath = resolve(root, 'generated/poe2-gems/catalog.json')
 const sourceBytes = await readFile(sourcePath)
+const skillsSourceBytes = await readFile(skillsSourcePath)
 const source = JSON.parse(sourceBytes)
+const skillRecords = JSON.parse(skillsSourceBytes)
 const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex')
+const skillsSourceSha256 = createHash('sha256').update(skillsSourceBytes).digest('hex')
 const sourceCommit = 'b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c'
 const sourceVersion = '4.5.4.4.4'
 
@@ -22,6 +26,7 @@ const entries = Object.entries(source).map(([sourceRecordId, value]) => ({
   craftingTypes: value.crafting_types ?? [],
   tags: value.tags ?? [],
   recommendedSupports: value.recommended_supports ?? [],
+  grantedSkillIds: value.grants_skills ?? [],
   requirements: value.requirement_weights ?? {},
 }))
 
@@ -55,17 +60,36 @@ const skills = entries
 
 const supports = entries
   .filter(entry => entry.gemType === 'support' && isCraftableGem(entry))
-  .map(normalize)
+  .map(entry => {
+    const normalized = normalize(entry)
+    const grantedSkillIds = [...entry.grantedSkillIds].sort()
+    const multipliers = grantedSkillIds
+      .map(id => skillRecords[id]?.static?.cost_multiplier)
+      .filter(Number.isFinite)
+    const distinct = [...new Set(multipliers)]
+    return {
+      ...normalized,
+      grantedSkillIds,
+      costMultiplierPercent: distinct.length === 1 ? distinct[0] : null,
+      costMultiplierStatus: distinct.length === 1
+        ? 'structured-exact'
+        : distinct.length > 1
+          ? 'blocked-conflicting-granted-skill-values'
+          : 'blocked-missing-granted-skill-value',
+    }
+  })
   .sort((a, b) => a.id.localeCompare(b.id))
 
 const content = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   sourceScope: 'poe2-repoe-skill-support-catalog',
   sourceRepository: 'repoe-fork/repod-data',
   sourceCommit,
   sourceVersion,
   sourceFile: 'data/skill_gems.json',
   sourceSha256,
+  supportingSourceFile: 'data/skills.json',
+  supportingSourceSha256: skillsSourceSha256,
   filters: {
     releaseState: 'released',
     minimumCraftingLevelExclusive: 0,
@@ -83,7 +107,8 @@ const content = {
     'English source names are used when no separately approved German display name exists.',
     'Tags are mapped only through a closed exact allowlist; unknown tags remain unresolved.',
     'Support tiers remain separate source records.',
-    'No icons, media, numerical skill effects, descriptions, stat IDs or runtime source access are included.',
+    'No icons, media, descriptions, stat IDs or runtime source access are included.',
+    'The only numerical support field is the exact cost multiplier reached through the pinned gem-to-granted-skill chain.',
   ],
   skills,
   supports,

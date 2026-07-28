@@ -10,10 +10,11 @@
     "src/Data/Skills/act_str.lua",
     "src/Data/Skills/act_dex.lua",
     "src/Data/Skills/act_int.lua",
+    "src/Data/Costs.lua",
     "src/Data/Bases/*.lua"
   ],
   "allowedOutput": "generated/pob2/damage-reference.json",
-  "allowedPurpose": "bounded-offline-hit-damage-estimate",
+  "allowedPurpose": "bounded-offline-hit-damage-and-level-20-skill-cost-reference",
   "forbiddenPurposes": [
     "full-pob-parity-claim",
     "technical-ggg-identity-claim",

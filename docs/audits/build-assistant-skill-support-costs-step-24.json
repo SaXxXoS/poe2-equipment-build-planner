@@ -1,0 +1,48 @@
+{
+  "step": 24,
+  "status": "partial-exact-cost-chain-pool-and-sustain-blocked",
+  "pob2Commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "repoeCommit": "b3f38149a9e5ffbba1eae3a9f2ddcdd66481884c",
+  "skillReferenceSchemaVersion": 2,
+  "gemCatalogSchemaVersion": 2,
+  "skillRecords": 337,
+  "skillsWithStructuredCosts": 235,
+  "skillsWithNonZeroCosts": 178,
+  "skillsWithStructuredZeroCosts": 57,
+  "costResourceCoverage": {
+    "Mana": 224,
+    "ManaPerMinute": 12,
+    "ManaPercentPerMinute": 1,
+    "RagePerMinute": 2
+  },
+  "supportRecords": 451,
+  "supportsWithExactCostMultiplier": 450,
+  "supportsBlockedMissingCostMultiplier": 1,
+  "costDivisorsSource": {
+    "file": "src/Data/Costs.lua",
+    "sha256": "4d59ec2732a0dc2bdcd524b5fbd831f70a74e7f3a528d1c7539ee849d6d5d16a"
+  },
+  "supportMultiplierSource": {
+    "gemFile": "data/skill_gems.json",
+    "skillsFile": "data/skills.json",
+    "skillsSha256": "1a83f007c1015c1d2fc0e3e22503dc8deb2debed0e3ea450cf64bc3714f378c7"
+  },
+  "damageReferenceContentHash": "9d6e5d0a183a688d41c288b44ac99fc0d111dd289ea134868d92347d08d21b5b",
+  "modelVersion": "3.0.0",
+  "calculatorVersion": "3.3.0",
+  "productiveEffects": [
+    "exact-level-20-base-cost",
+    "exact-selected-support-cost-multipliers",
+    "support-adjusted-cost-per-use-or-second"
+  ],
+  "blockedEffects": [
+    "complete-character-resource-pool",
+    "recovery-and-regeneration",
+    "reservation-capacity-chain",
+    "passive-ascendancy-equipment-cost-modifiers",
+    "sustainable-action-frequency",
+    "dps-adjustment-from-resource-sustain"
+  ],
+  "runtimeNetwork": false,
+  "externalApprovalClaimed": false
+}

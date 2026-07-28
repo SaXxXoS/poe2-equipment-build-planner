@@ -4,7 +4,14 @@ Die App besitzt einen ersten deterministischen numerischen Rechenkern. Für unte
 
 ## Quelle und Pin
 
-Die Buildzeit-Referenz stammt aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am unveränderten Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Verwendet werden nur `src/Data/Skills/act_str.lua`, `act_dex.lua`, `act_int.lua` und numerische Waffenbasen aus `src/Data/Bases/*.lua`. Der Offline-Generator erzeugt `generated/pob2/damage-reference.json`; zur Laufzeit werden weder Lua noch Netzwerkquellen geladen.
+Die Buildzeit-Referenz stammt aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am unveränderten Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Verwendet werden nur `src/Data/Skills/act_str.lua`, `act_dex.lua`, `act_int.lua`, `src/Data/Costs.lua` und numerische Waffenbasen aus `src/Data/Bases/*.lua`. Der Offline-Generator erzeugt `generated/pob2/damage-reference.json`; zur Laufzeit werden weder Lua noch Netzwerkquellen geladen.
+
+Seit Schritt 24 enthält die Referenz außerdem die strukturierten
+Stufe-20-Grundkosten und die gepinnten Kostendivisoren. Aus dem bestehenden
+RePoE-Gemkatalog werden ausschließlich technisch ID-verknüpfte
+Support-Kostenmultiplikatoren ergänzt. Kosten pro Einsatz sind dadurch
+belegbar; dauerhafte Nutzbarkeit bleibt ohne vollständigen Pool und
+Wiederherstellung blockiert.
 
 Der Scope `poe2-pob2-damage-calculation-reference` ist eine ausdrückliche Projektentscheidung mit offengelegter Rechteunsicherheit. Keine PoB2- oder GGG-Genehmigung und keine technische GGG-ID-Kette werden behauptet.
 
