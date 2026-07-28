@@ -1993,3 +1993,29 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Audit: `docs/audits/build-assistant-gem-level-quality-step-21.json`.
 - Nächster Schritt: Gegenstandsqualität und lokale/globale Werte strikt
   trennen.
+
+## Gegenstandsqualität und lokale/globale Werte – Schritt 22 (2026-07-28)
+
+- Ausgangscommit: `de33237bdf87bb9ea9e37f2d77f702d38f470142`.
+- Neues fail-closed Modell `item-value-scope-model`, Version `1.0.0`;
+  Schadensrechner `3.1.0`.
+- Der technische Affixbestand `4.5.4.4.4` enthält 1.828 Datensätze:
+  448 lokal und 1.380 nicht lokal; kein Scope bleibt unklassifiziert.
+- Eingegebene oder per Bilderkennung bestätigte Tooltip-Waffen- und
+  Verteidigungswerte gelten als Endwerte. Qualität und lokale Affixe werden
+  darauf nicht erneut gerechnet.
+- Bei einer gepinnten Waffenbasis dürfen lokale Affixe genau einmal wirken.
+  Globale Build-Skalierungen schließen `isLocal = true` weiterhin aus.
+- Eine Qualitätsangabe auf einer reinen Basis blockiert den numerischen
+  Waffenschaden, solange keine exakte gepinnte Qualitätsformel vorhanden ist.
+  Qualität wird weder ignoriert noch frei interpoliert.
+- Rüstung, Ausweichwert und Energieschild bleiben defensive Endwerte und
+  erzeugen keinen Waffenschaden. Waffen bleiben von Rüstungswerten getrennt.
+- Keine neue Datenquelle, keine neue Nutzereinstellung und keine Änderung der
+  Produktpins.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_ITEM_VALUE_SCOPE_STEP_22.md`.
+- Audit:
+  `docs/audits/build-assistant-item-value-scope-step-22.json`.
+- Nächster Schritt: geschlossener Charakterwerttransport für Ressourcenpools
+  und Fertigkeitskosten, sobald exakte gepinnte Quellen vorliegen.

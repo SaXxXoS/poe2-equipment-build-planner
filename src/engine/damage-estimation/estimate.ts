@@ -14,6 +14,7 @@ import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
 import { resourceSpiritOutput, resolveResourceSpiritModel } from './resource-spirit-model'
 import { gemLevelQualityOutput, resolveGemLevelQualityModel } from './gem-level-quality-model'
+import { itemValueScopeOutput, resolveItemValueScopeModel } from './item-value-scope-model'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -83,7 +84,8 @@ export function estimateHitDamage(input:{
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
   const resourceSpiritModel=resolveResourceSpiritModel({setups:input.setups,skills:input.skills,supports:input.supports??[]})
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.0.0'}
+  const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.1.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Verfügbar ist ausschließlich Stufe ${skill.gemLevel}; eine Skalierung wird nicht erfunden.`]}
   const damageOverTime=collectDamageOverTime(skill)
@@ -102,6 +104,7 @@ export function estimateHitDamage(input:{
     const weaponEntry=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`)&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
     const weaponName=weaponEntry?.baseDisplayName??weaponEntry?.itemDefinitionId
     const weapon=weaponName?weaponsByName.get(weaponName.toLocaleLowerCase('en')):undefined
+    const weaponValueScope=weaponEntry?itemValueScopeModel.entries.find(entry=>entry.itemId===weaponEntry.id):undefined
     const hasObservedWeaponBasis=Boolean(weaponEntry?.weaponStats?.attacksPerSecond&&[
       weaponEntry.weaponStats.physicalDamage,
       weaponEntry.weaponStats.fireDamage,
@@ -110,10 +113,11 @@ export function estimateHitDamage(input:{
       weaponEntry.weaponStats.chaosDamage,
     ].some(Boolean))
     if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
+    if(weaponValueScope&&!weaponValueScope.productive)return{...base,status:'unavailable',warnings:[`${weaponValueScope.detail} Der Waffenschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
     const localAttackSpeed=weaponEntry.weaponStats?0:valueFor(weaponEntry,/local_attack_speed_\+%|attack_speed_\+%_local/)
     actionsPerSecond=(weaponEntry.weaponStats?.attacksPerSecond??weapon!.attacksPerSecond)*(1+localAttackSpeed/100)*(1+skill.attackSpeedMultiplier/100)
-    included.push(weaponEntry.weaponStats?'eingegebene endgültige Waffenschadenswerte':'Waffenbasis','Angriffsmultiplikator',weaponEntry.weaponStats?.attacksPerSecond?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
+    included.push(weaponEntry.weaponStats?'eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität':'Waffenbasis mit einmalig angewandten lokalen Affixen','Angriffsmultiplikator',weaponEntry.weaponStats?.attacksPerSecond?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
     if(weaponEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Waffenbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
   }else{
     components=spellComponents(skill)

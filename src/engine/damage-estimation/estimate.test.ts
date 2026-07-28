@@ -45,7 +45,33 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       {type:'cold',minimum:72.5,maximum:87.5},
     ])
     expect(result.actionsPerSecond).toBe(1.35)
-    expect(result.included).toContain('eingegebene endgültige Waffenschadenswerte')
+    expect(result.included).toContain('eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität')
+  })
+  it('wendet Qualität und lokale Affixe nicht erneut auf eingegebene Endwerte an',()=>{
+    const observed={...weapon('Gezackter Speer'),quality:20,weaponStats:{
+      physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,
+    },modifierValues:[{
+      id:'local-physical',modifierId:'local-physical',value:100,isLocal:true,
+      statValues:[{statId:'local_physical_damage_+%',value:100}],
+    }]}
+    const result=estimateHitDamage({equipment:[observed],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
+    expect(result.hitDamage).toMatchObject({minimum:250,maximum:250})
+    expect(result.itemValueScopeModel).toMatchObject({
+      observedFinalValueItemIds:['weapon'],
+      localModifiersExcludedFromGlobalScaling:1,
+      blockedItemIds:[],
+    })
+  })
+  it('blockiert unbelegte Qualitätsberechnung auf einer reinen Waffenbasis',()=>{
+    const result=estimateHitDamage({
+      equipment:[{...weapon('Crude Bow'),quality:20}],
+      setups:[setup('arrow')],
+      skills:[skill('arrow','Lightning Arrow')],
+    })
+    expect(result.status).toBe('unavailable')
+    expect(result.hitDamage).toBeUndefined()
+    expect(result.itemValueScopeModel?.blockedItemIds).toEqual(['weapon'])
+    expect(result.warnings.join(' ')).toContain('fehlt eine exakte')
   })
   it('weist nicht enthaltene komplexe Mechaniken aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})

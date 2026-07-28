@@ -1,0 +1,37 @@
+{
+  "task": "build-assistant-item-value-scope-step-22",
+  "startingCommit": "de33237bdf87bb9ea9e37f2d77f702d38f470142",
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "3.1.0",
+  "technicalAffixSourceVersion": "4.5.4.4.4",
+  "technicalAffixes": {
+    "total": 1828,
+    "local": 448,
+    "nonLocal": 1380,
+    "unclassifiedScope": 0
+  },
+  "valueBases": [
+    "observed-final-values",
+    "pinned-base-values",
+    "no-numeric-item-values"
+  ],
+  "qualityPolicy": {
+    "observedFinalValues": "included-in-observed-final-values",
+    "pinnedBaseWithoutExactFormula": "blocked-missing-exact-quality-formula",
+    "freeInterpolation": false,
+    "doubleApplication": false
+  },
+  "localModifierPolicy": {
+    "observedFinalValues": "excluded-already-in-observed-final-values",
+    "pinnedBaseValues": "applied-to-pinned-base-values",
+    "globalScaling": false
+  },
+  "globalModifierPolicy": {
+    "appliedByQuantitativeBuildScaling": true,
+    "localModifiersExcluded": true
+  },
+  "productPinsChanged": false,
+  "newExternalSource": false,
+  "decisionStatus": "implemented-fail-closed",
+  "nextTask": "closed-character-resource-pool-and-skill-cost-transport"
+}
