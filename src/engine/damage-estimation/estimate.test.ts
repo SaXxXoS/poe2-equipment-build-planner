@@ -49,8 +49,27 @@ describe('begrenzte Trefferschadenberechnung',()=>{
   })
   it('weist nicht enthaltene komplexe Mechaniken aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
-    expect(result.excluded).toContain('Mehrfachtreffer, Projektile und situationsabhängige Effekte')
+    expect(result.excluded).toContain('nicht belegte Projektilüberlappung, Fork-, Rückkehr- und Wiederholungstreffer')
     expect(result.excluded).toContain('bedingte Passive- und Aszendenzeffekte')
+  })
+  it('weist Spark-Projektile als Mapping-Abdeckung aus, ohne den Boss-DPS zu vervielfachen',()=>{
+    const spark=estimateHitDamage({equipment:[],setups:[setup('spark')],skills:[skill('spark','Spark')]})
+    expect(spark.projectileHitModel).toMatchObject({
+      isProjectileSkill:true,
+      projectilesPerAction:9,
+      singleTargetHitMultiplier:1,
+      mappingPotentialTargetContacts:9,
+      bossScenario:{hitMultiplier:1,status:'single-hit-only'},
+    })
+    expect(spark.hitDamagePerSecond).toBeCloseTo(spark.expectedCriticalHitDamagePerSecond!/(spark.criticalExpectationMultiplier??1),1)
+  })
+  it('behandelt Arc-Verkettungen nur als mögliche zusätzliche Zielkontakte',()=>{
+    const arc=estimateHitDamage({equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')]})
+    expect(arc.projectileHitModel?.mappingPotentialTargetContacts).toBe(10)
+    expect(arc.projectileHitModel?.mechanics).toContainEqual(expect.objectContaining({
+      kind:'chain-count',value:9,damageUse:'coverage-only',
+    }))
+    expect(arc.projectileHitModel?.singleTargetHitMultiplier).toBe(1)
   })
   it('weist Flammenwand-DoT getrennt vom Trefferschaden als Einzelanwendung aus',()=>{
     const result=estimateHitDamage({equipment:[],setups:[setup('wall')],skills:[skill('wall','Flame Wall')]})

@@ -9,6 +9,7 @@ import { applyBuildEnemyEffects } from './build-enemy-effects'
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
+import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -76,9 +77,10 @@ export function estimateHitDamage(input:{
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.5.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.6.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   const damageOverTime=collectDamageOverTime(skill)
+  const projectileHitModel=resolveProjectileHitModel(skill)
   const damageOverTimeOutput=()=>({modelVersion:damageOverTime.modelVersion,effects:damageOverTime.effects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,damageType:value.damageType,kind:value.kind,status:value.status,damagePerSecond:value.damagePerSecond,durationMs:value.durationMs,totalDamagePerApplication:value.totalDamagePerApplication,stackCount:value.stackCount,detail:value.detail})),blockedEffects:damageOverTime.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),totalSingleApplicationDamagePerSecond:damageOverTime.totalSingleApplicationDamagePerSecond,limitations:damageOverTime.limitations})
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -166,7 +168,7 @@ export function estimateHitDamage(input:{
     ? nextSkillEnemyMitigation.average*(criticalExpectationMultiplier??1)
     : undefined
   return{
-    ...base,status:'partial',components,baseComponents,
+    ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
@@ -197,7 +199,7 @@ export function estimateHitDamage(input:{
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Buff- und Triggerwirkungen ohne vollständige Aktivierungs- und Zahlenkette','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damageOverTime.effects.length?['nicht belegte Entzünden-, Gift- und Blutungs-DPS sowie DoT-Stapelung']:['Ailments und Schaden über Zeit ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'Mehrfachtreffer, Projektile und situationsabhängige Effekte'],
+    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Buff- und Triggerwirkungen ohne vollständige Aktivierungs- und Zahlenkette','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damageOverTime.effects.length?['nicht belegte Entzünden-, Gift- und Blutungs-DPS sowie DoT-Stapelung']:['Ailments und Schaden über Zeit ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork-, Rückkehr- und Wiederholungstreffer'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

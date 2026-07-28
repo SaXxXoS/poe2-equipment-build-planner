@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 17,
+  "sourceCommit": "bd3e2abe539985b6f79210c2c5a10bb1c8f84300",
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "2.6.0",
+  "sourceArtifact": "generated/pob2/damage-reference.json",
+  "totalReferencedSkills": 337,
+  "projectileTaggedSkills": 85,
+  "structuredFields": {
+    "base_number_of_projectiles": {
+      "skillCount": 3,
+      "skills": ["Ice Fragments", "Rain of Arrows", "Spark"]
+    },
+    "number_of_chains": {
+      "skillCount": 4,
+      "skills": ["Arc", "His Scattering Calamity", "Orb of Storms", "Rolling Magma"]
+    },
+    "projectile_base_number_of_targets_to_pierce": {
+      "skillCount": 2,
+      "skills": ["Fragmentation Rounds", "Permafrost Bolts"]
+    },
+    "tornado_shot_number_of_hits_allowed": {
+      "skillCount": 1,
+      "skills": ["Tornado Shot"],
+      "productUse": "blocked-as-damage-multiplier"
+    }
+  },
+  "bossScenario": {
+    "singleTargetHitMultiplier": 1,
+    "reason": "No generic same-target overlap, return or repeat chain is proven."
+  },
+  "mappingScenario": {
+    "formula": "projectilesPerAction * (1 + chainCount + pierceCount)",
+    "productUse": "coverage-only-not-dps"
+  },
+  "blockedMechanics": [
+    "unproven same-target projectile overlap",
+    "fork without structured count and target rule",
+    "return without proven re-contact rule",
+    "maximum hit cap used as guaranteed hit count",
+    "free-text inferred repeat hits"
+  ],
+  "sourcePinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "deterministic": true,
+  "nextStep": "evidence-based trigger and repeat model"
+}

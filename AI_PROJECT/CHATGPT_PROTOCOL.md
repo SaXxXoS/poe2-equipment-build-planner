@@ -1874,3 +1874,29 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/audits/build-assistant-damage-over-time-step-16.json`.
 - Nächster Schritt: Mehrfachtreffer und Projektile nur mit belegter
   Trefferzahl, Überlappungsbedingung und Zielannahme modellieren.
+
+## Projektile und Mehrfachtreffer – Schritt 17 (2026-07-28)
+
+- Ausgangscommit: `bd3e2abe539985b6f79210c2c5a10bb1c8f84300`.
+- Neues fail-closed Projektilmodell:
+  `src/engine/damage-estimation/projectile-hit-model.ts`.
+- Modellversion `1.0.0`, Schadensrechner `2.6.0`.
+- Der gepinnte numerische Bestand umfasst 337 Fertigkeiten, davon 85 mit
+  strukturierten Projektilmerkmalen.
+- Strukturiert erfasst: drei Fertigkeiten mit Projektilanzahl, vier mit
+  Chain-Anzahl, zwei mit Pierce-Anzahl und eine maximale Trefferobergrenze.
+- Projektile, Chain und Pierce erhöhen ausschließlich die ausgewiesene
+  Mapping-Abdeckung. Der Boss-Einzelzielmultiplikator bleibt ohne belegte
+  Überlappungsregel bei `1`.
+- Tornado Shots Trefferobergrenze wird nicht als garantierte Trefferzahl
+  verwendet.
+- Fork, Rückkehr und Wiederholung bleiben ohne vollständige technische
+  Ziel-/Wiederkontaktkette ausgeschlossen.
+- Keine neue Quelle, kein Runtime-Netzwerk und keine Änderung bestehender
+  Datenpins oder Produktdaten.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_PROJECTILE_HITS_STEP_17.md`.
+- Audit:
+  `docs/audits/build-assistant-projectile-hits-step-17.json`.
+- Nächster Schritt: Trigger und Wiederholungen nur mit belegtem Auslöser,
+  Intervall und Zielbezug modellieren.
