@@ -46,6 +46,12 @@ const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
     rotationRoles: ['main-damage'] as SkillGemDefinition['rotationRoles'],
     preferredWeaponSet: 'set-1' as const,
   }
+  if (['Emergency Reload', 'Infernal Cry', 'Mantra of Destruction'].includes(skill.nameEn ?? '')) return {
+    ...skill,
+    possibleRoles: ['utility'] as SkillGemDefinition['possibleRoles'],
+    rotationRoles: ['setup'] as SkillGemDefinition['rotationRoles'],
+    affectsNextSkill: true,
+  }
   return skill
 })
 

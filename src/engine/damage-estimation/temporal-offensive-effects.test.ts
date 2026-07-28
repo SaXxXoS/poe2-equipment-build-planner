@@ -130,10 +130,7 @@ describe('zeitabhängige offensive Wirkungen', () => {
     ['Charge Regulation', 'Ladungsarten'],
     ['Charged Staff', 'Ladungszahl'],
     ['Elemental Conflux', 'aktives Element'],
-    ['Emergency Reload', 'Zielmunition'],
-    ['Infernal Cry', 'Folgeangriff'],
     ['Mana Tempest', 'Manadauer'],
-    ['Mantra of Destruction', 'Combozustand'],
     ['Trinity', 'Resonanz'],
     ['Lunar Blessing', 'Buffdauer'],
   ])('erklärt die unvollständige Wirkungskette von %s', (nameEn, expectedReason) => {

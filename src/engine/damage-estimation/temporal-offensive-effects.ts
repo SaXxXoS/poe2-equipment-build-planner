@@ -57,14 +57,6 @@ const blockedCandidates: Record<string, { sourceReferences: string[]; detail: st
     sourceReferences: ['skill_elemental_conflux_active_element_damage_+%_final'],
     detail: 'Der Bonus des aktiven Elements ist belegt; aktives Element, Wechselzeitpunkt und Übereinstimmung mit der Hauptschadensart sind nicht aufgelöst.',
   },
-  'Emergency Reload': {
-    sourceReferences: ['emergency_reload_damage_+%_final'],
-    detail: 'Der Schadensbonus ist belegt, gilt aber für die nächste nachgeladene Armbrustmunition. Zielmunition, Einmalverbrauch und Wiederholungsfrequenz sind nicht vollständig belegt.',
-  },
-  'Infernal Cry': {
-    sourceReferences: ['infernal_cry_exerted_attack_all_damage_%_to_gain_as_fire_%'],
-    detail: 'Der Feuergewinn des exerted Angriffs ist belegt; Warcry-Power, Ladungsverbrauch und der konkret betroffene Folgeangriff sind nicht vollständig belegt.',
-  },
   'Lunar Blessing': {
     sourceReferences: ['wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage'],
     detail: 'Der Kältegewinn ist belegt; Buffdauer, Formbedingung und aufrechterhaltbares Aktivierungsfenster sind unbekannt.',
@@ -72,10 +64,6 @@ const blockedCandidates: Record<string, { sourceReferences: string[]; detail: st
   'Mana Tempest': {
     sourceReferences: ['non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff'],
     detail: 'Der Blitzgewinn für Zauber ist belegt; tatsächliche Manadauer, Abbruchbedingung und verlässliche Wirkzeit sind nicht vollständig belegt.',
-  },
-  'Mantra of Destruction': {
-    sourceReferences: ['mantra_of_destruction_grant_all_damage_%_to_gain_as_chaos_with_attacks'],
-    detail: 'Der Chaosgewinn für Angriffe ist belegt; erforderlicher Combozustand, Verbrauch und Wirkzeit sind nicht vollständig belegt.',
   },
   'Sigil of Power': {
     sourceReferences: ['circle_of_power_spell_damage_+%_final_per_stage'],

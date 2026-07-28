@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 15,
+  "modelVersion": "1.0.0",
+  "scope": "build-assistant-prepared-next-skill-effects",
+  "automatic": true,
+  "userConfigurationRequired": false,
+  "candidates": 3,
+  "productivelyModelledCandidates": 1,
+  "blockedCandidates": 2,
+  "productiveEffects": [
+    {
+      "skill": "Emergency Reload",
+      "effect": "31 % more damage",
+      "target": "directly-following-crossbow-attack",
+      "output": "prepared-next-hit",
+      "affectsSustainedDps": false,
+      "sourceReferences": [
+        "emergency_reload_damage_+%_final",
+        "rotation:direct-next-skill",
+        "skill:requiredWeaponTypes=crossbow"
+      ]
+    }
+  ],
+  "blockedEffects": [
+    {
+      "skill": "Infernal Cry",
+      "knownValue": "49 % gain as fire",
+      "missingEvidence": [
+        "warcry-power",
+        "available-exertion-count",
+        "exertion-consumption"
+      ]
+    },
+    {
+      "skill": "Mantra of Destruction",
+      "knownValue": "69 % gain as chaos",
+      "missingEvidence": [
+        "combo-build-up",
+        "activation-state",
+        "one-time-consumption"
+      ]
+    }
+  ],
+  "guards": [
+    "selected-source-skill-required",
+    "direct-rotation-adjacency-required",
+    "structured-target-weapon-required",
+    "structured-numeric-value-required",
+    "one-time-effect-excluded-from-sustained-dps",
+    "unresolved-state-produces-no-bonus"
+  ],
+  "nextStep": "damage-over-time-and-ailment-state-step-16"
+}

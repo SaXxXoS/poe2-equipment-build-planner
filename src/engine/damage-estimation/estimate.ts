@@ -7,6 +7,7 @@ import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
+import { resolveNextSkillEffects } from './next-skill-effects'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -74,7 +75,7 @@ export function estimateHitDamage(input:{
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.3.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.4.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(skill.kind==='other')return{...base,status:'unavailable',warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
@@ -114,6 +115,7 @@ export function estimateHitDamage(input:{
   actionsPerSecond*=1+speedIncrease/100
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
+  const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
   const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
@@ -121,6 +123,7 @@ export function estimateHitDamage(input:{
   if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
+  if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)
   const average=(minimum+maximum)/2
@@ -139,6 +142,9 @@ export function estimateHitDamage(input:{
   const activeWindowDamagePerSecond=temporal.appliedEffects.length
     ? temporalAverage*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
     : undefined
+  const preparedNextHitAverage=nextSkill.appliedEffects.length
+    ? nextSkill.components.reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)*(criticalExpectationMultiplier??1)
+    : undefined
   const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
     profile:input.enemyProfile,setups:input.setups,skills:input.skills,
     activeDamageTypes:components.map(value=>value.type),weaponSet:activeSet,
@@ -152,6 +158,10 @@ export function estimateHitDamage(input:{
   const activeWindowDamagePerSecondAfterMitigation=temporalEnemyMitigation
     ? temporalEnemyMitigation.average*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
     : undefined
+  const nextSkillEnemyMitigation=resolvedEnemyProfile&&nextSkill.appliedEffects.length?applyEnemyMitigation(nextSkill.components,resolvedEnemyProfile):undefined
+  const preparedNextHitDamageAfterMitigation=nextSkillEnemyMitigation
+    ? nextSkillEnemyMitigation.average*(criticalExpectationMultiplier??1)
+    : undefined
   return{
     ...base,status:'partial',components,baseComponents,
     stages:[
@@ -159,6 +169,7 @@ export function estimateHitDamage(input:{
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
       {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components:increasedComponents},
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
+      ...(preparedNextHitAverage==null?[]:[{id:'prepared-next-hit' as const,label:'Einmalig vorbereiteter nächster Treffer',components:nextSkill.components,value:round(preparedNextHitAverage)}]),
       ...(activeWindowDamagePerSecond==null?[]:[{id:'temporal-active-window' as const,label:'Im belegten aktiven Bufffenster',components:temporalComponents,value:round(activeWindowDamagePerSecond)}]),
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
       ...(expectedCriticalHitDamagePerSecond==null?[]:[{id:'critical-expectation' as const,label:'Erwartungswert einschließlich kritischer Treffer',components:[],value:round(expectedCriticalHitDamagePerSecond)}]),
@@ -168,6 +179,7 @@ export function estimateHitDamage(input:{
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSupportEffects:supportEffects.appliedEffects,
     temporalOffensiveEffects:temporal.effects.map(value=>({sourceId:value.sourceId,label:value.label,kind:value.kind,percent:value.percent,activationTimeMs:value.activationTimeMs,durationMs:value.durationMs,status:value.status,detail:value.detail})),
+    ...(nextSkill.effects.length?{nextSkillEffects:{modelVersion:nextSkill.modelVersion,effects:nextSkill.effects.map(value=>({sourceId:value.sourceId,sourceLabel:value.sourceLabel,targetSkillId:value.targetSkillId,targetSkillLabel:value.targetSkillLabel,kind:value.kind,percent:value.percent,status:value.status,detail:value.detail}))}}:{}),
     ...(temporal.chargeState.relevant?{chargeState:{modelVersion:temporal.chargeState.modelVersion,productive:temporal.chargeState.productive,states:temporal.chargeState.states.map(value=>({type:value.type,label:value.label,availability:value.availability,count:value.count,detail:value.detail})),consumptions:temporal.chargeState.consumptions.map(value=>({sourceId:value.sourceId,label:value.label,chargeTypes:value.chargeTypes,intervalMs:value.intervalMs,detail:value.detail}))}}:{}),
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
@@ -175,6 +187,8 @@ export function estimateHitDamage(input:{
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
     ...(activeWindowDamagePerSecond==null?{}:{activeWindowDamagePerSecond:round(activeWindowDamagePerSecond)}),
     ...(activeWindowDamagePerSecondAfterMitigation==null?{}:{activeWindowDamagePerSecondAfterMitigation:round(activeWindowDamagePerSecondAfterMitigation)}),
+    ...(preparedNextHitAverage==null?{}:{preparedNextHitDamage:round(preparedNextHitAverage)}),
+    ...(preparedNextHitDamageAfterMitigation==null?{}:{preparedNextHitDamageAfterMitigation:round(preparedNextHitDamageAfterMitigation)}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),

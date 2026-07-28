@@ -1825,3 +1825,27 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/BUILD_ASSISTANT_ROTATION_TIMING_STEP_11.md`.
 - Nächster Schritt: nur vollständig belegte numerische Buff-, Debuff- und
   Triggerwirkungen in die zeitabhängige Schadensrechnung aufnehmen.
+
+## Vorbereitete Folgeangriffe – Schritt 15 (2026-07-28)
+
+- Ausgangscommit: `ed715c3a13acafb175ad61ce2e1f99e4c8a97602`.
+- Das neue Modell `next-skill-effects` verbindet einen vorbereitenden Skill
+  nur mit der unmittelbar folgenden tatsächlich verwendeten Fertigkeit.
+- Emergency Reload wirkt mit dem strukturierten Wert von `31 % mehr Schaden`
+  ausschließlich auf einen direkt folgenden Armbrustangriff.
+- Der vorbereitete Treffer wird separat vom dauerhaften Trefferschaden pro
+  Sekunde angezeigt. Es wird keine Uptime oder Wiederholungsfrequenz erfunden.
+- Bei Infernal Cry ist der Folgeangriff identifizierbar; Warcry-Power,
+  verfügbare Exertions und Verbrauch sind jedoch nicht vollständig belegt.
+  Der bekannte Wert von `49 % als Feuer` bleibt deshalb fail-closed.
+- Mantra of Destruction bleibt trotz bekanntem `69 % als Chaos` blockiert,
+  weil Comboaufbau, Aktivierung und Einmalverbrauch nicht geschlossen sind.
+- Die bestehenden Rotationen kennzeichnen diese drei Fertigkeiten als
+  vorbereitende Schritte. Es wurde keine zweite Rotationsengine eingeführt.
+- Keine neue Nutzereinstellung und keine Änderung der Datenpins.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_NEXT_SKILL_EFFECTS_STEP_15.md`.
+- Audit:
+  `docs/audits/build-assistant-next-skill-effects-step-15.json`.
+- Nächster Schritt: getrenntes Schaden-über-Zeit- und Ailmentmodell mit
+  belegter Basis, Dauer, Auslösebedingung und Stapelregel.

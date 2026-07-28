@@ -168,4 +168,20 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.temporalOffensiveEffects?.filter(effect=>effect.status==='active-window')).toHaveLength(2)
     expect(result.stages?.map(stage=>stage.id)).toContain('temporal-active-window')
   })
+  it('weist einen vorbereiteten Armbrusttreffer aus, ohne den Dauer-DPS zu erhöhen',()=>{
+    const main={...skill('main','Explosive Shot'),tags:['attack'] as SkillGemDefinition['tags'],requiredWeaponTypes:['crossbow'] as SkillGemDefinition['requiredWeaponTypes']}
+    const reload=skill('reload','Emergency Reload')
+    const observed={...weapon('Unbekannte Armbrust'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}
+    const reloadSetup:SkillSetup={id:'reload-setup',skillId:'reload',role:'utility',weaponSet:'set-1',supportGemIds:[]}
+    const rotationAnalysis={bossRotation:{steps:[
+      {stepId:'reload',order:1,actionType:'use-skill',skillId:'reload'},
+      {stepId:'main',order:2,actionType:'use-skill',skillId:'main'},
+    ]}} as unknown as RotationAnalysis
+    const result=estimateHitDamage({equipment:[observed],setups:[setup('main'),reloadSetup],skills:[main,reload],rotationAnalysis})
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup('main')],skills:[main]})
+    expect(result.hitDamagePerSecond).toBe(baseline.hitDamagePerSecond)
+    expect(result.preparedNextHitDamage).toBeCloseTo(result.hitDamage!.average*1.31,1)
+    expect(result.nextSkillEffects?.effects[0]).toMatchObject({sourceId:'reload',targetSkillId:'main',status:'prepared-next-hit'})
+    expect(result.stages?.map(stage=>stage.id)).toContain('prepared-next-hit')
+  })
 })

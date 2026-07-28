@@ -87,7 +87,8 @@ korrekt fail-closed.
 
 ## Als Nächstes
 
-Schritt 15 modelliert die Beziehung zwischen vorbereitender Fertigkeit und
-dem konkret folgenden Angriff. Priorität haben Exerted Attacks, einmalige
-Folgeangriffe und verbrauchbare Trigger. Erst eine geschlossene Ziel- und
-Verbrauchskette darf Schaden verändern.
+Schritt 15 ist abgeschlossen. Die App trennt den einmalig vorbereiteten
+Folgeangriff nun vom dauerhaften Schaden pro Sekunde. Emergency Reload kann
+bei einer geschlossenen Armbrustkette produktiv wirken; Infernal Cry und
+Mantra of Destruction bleiben ohne vollständige Zustands- und Verbrauchskette
+fail-closed.
