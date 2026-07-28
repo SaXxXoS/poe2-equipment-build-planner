@@ -4,6 +4,7 @@ export type SkillRole = 'main' | 'secondary' | 'utility' | 'movement' | 'defensi
 export type SkillWeaponSet = 'set-1' | 'set-2' | 'both'
 export type SkillOrigin = 'manual' | 'recommended' | 'ascendancy' | 'equipment'
 export type RotationDurationCategory = 'short' | 'medium' | 'long' | 'persistent'
+export type MetaSocketRule = 'spell' | 'attack' | 'projectile-attack' | 'debuff' | 'warcry' | 'any-skill'
 
 export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'bow' | 'crossbow' | 'wand' | 'claw' | 'dagger' | 'flail' | 'mace' | 'quarterstaff' | 'spear' | 'sword' | 'axe' | 'any'
 export interface SkillAttributeRequirements { strength?: number; dexterity?: number; intelligence?: number }
@@ -37,6 +38,9 @@ export interface SkillGemDefinition extends GameDataMetadata {
   affectsPlayer?: boolean
   blockedForRotation?: boolean
   recommendedSupportIds?: EntityId[]
+  /** Meta-Gemmen nehmen aktive Fertigkeiten in denselben Sockelbereich wie Supports auf. */
+  metaSocketRule?: MetaSocketRule
+  maxEmbeddedSkillCount?: number
   /** Exakte Geistreservierung aus der gepinnten Gem-zu-Fertigkeit-Kette. */
   spiritReservation?: number
 }
@@ -103,6 +107,8 @@ export interface SkillSetup {
   role: SkillRole
   weaponSet: SkillWeaponSet
   supportGemIds: EntityId[]
+  /** In einer Meta-Gemme eingebettete aktive Fertigkeiten; keine Supports. */
+  embeddedSkillIds?: EntityId[]
   origin?: SkillOrigin
   level?: number
   locked?: boolean

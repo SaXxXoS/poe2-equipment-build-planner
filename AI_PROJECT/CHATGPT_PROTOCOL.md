@@ -2344,6 +2344,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   pauschalen Vergleich mit der bevorzugten Optimierer-Waffenart verworfen.
   Maßgeblich bleiben belegte Fertigkeitsanforderungen und das
   `valid`-Ergebnis des Unique Analyzers.
+- Meta-Fertigkeiten werden nicht mehr wie normale Fertigkeiten mit fünf
+  reinen Supportplätzen modelliert. Die gepinnten `meta`-Tags aktivieren
+  getrennte eingebettete Fertigkeitsslots. `Elemental Invocation` und
+  `Cast on ...` akzeptieren belegbar Zauber; für elementare Auslöser werden
+  nur elementare Zauber angeboten. Mindestens eine passende Fertigkeit wird
+  bei der automatischen Build- oder Supportaktion eingesetzt. Eingebettete
+  Fertigkeiten und Supports teilen sich fünf Plätze und die eingebetteten
+  Fertigkeiten gelangen als eigene Eingaben in die Analyzer.
 - Unique-Details ohne getrennte PoB2-Varianten zeigen ihre itemweiten
   Eigenschaften direkt. Rohe interne `engine.unique.reason.*`-Schlüssel
   wurden durch verständliche deutsche Begründungen ersetzt.

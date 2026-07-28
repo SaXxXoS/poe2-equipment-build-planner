@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { supportExclusiveKeys, type SkillOrigin, type SkillRole, type SkillSetup, type SkillWeaponSet } from '../domain'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import { DEFAULT_SKILL_SLOT_COUNT, emptySkillSetup } from '../features/skills/initial-state'
+import { compatibleEmbeddedSkills, supportCapacityFor } from '../features/skills/meta-skills'
 
 const roleLabels: Record<SkillRole, string> = { main: 'Hauptschaden', secondary: 'Zusatzschaden', utility: 'Utility', movement: 'Bewegung', defensive: 'Defensive' }
 const originLabels: Record<SkillOrigin, string> = { manual: 'Manuell gewählt', recommended: 'Von der App empfohlen', ascendancy: 'Durch Aszendenz', equipment: 'Durch Ausrüstung verfügbar' }
@@ -16,7 +17,7 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
   const visible = setups.length >= DEFAULT_SKILL_SLOT_COUNT ? setups : [...setups, ...Array.from({ length: DEFAULT_SKILL_SLOT_COUNT - setups.length }, (_, i) => emptySkillSetup(setups.length + i))]
   const update = (id: string, patch: Partial<SkillSetup>) => onChange(visible.map(value => value.id === id ? { ...value, ...patch } : value))
   const chooseSkill = (setupId: string, skillId: string) => {
-    update(setupId, { skillId, origin: 'manual', supportGemIds: [] })
+    update(setupId, { skillId, origin: 'manual', supportGemIds: [], embeddedSkillIds: [] })
     setOpenSkillPicker(null)
     setSearches(current => ({ ...current, [setupId]: '' }))
   }
@@ -39,6 +40,9 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       </article>
 
       const supportQuery = supportSearches[setup.id] ?? ''
+      const embeddedCandidates = skill.metaSocketRule ? compatibleEmbeddedSkills(skill, buildAssistantCandidates.skills) : []
+      const embeddedSkillIds = setup.embeddedSkillIds ?? []
+      const supportCapacity = supportCapacityFor(setup)
       const selectedSupportKeys = new Set(setup.supportGemIds.flatMap(id => {
         const definition = buildAssistantCandidates.supports.find(item => item.id === id)
         return definition ? supportExclusiveKeys(definition) : []
@@ -47,11 +51,23 @@ export function SkillsSection({ setups, onChange, onRecommendSupports }: { setup
       return <article className="skill-card populated-skill-card" key={setup.id}>
         <div className="skill-card-head"><span className="skill-art" aria-hidden="true">{skill.displayNameDe.slice(0, 2)}</span><div><h3>{skill.displayNameDe}</h3><small>{originLabels[setup.origin ?? 'manual']}</small></div>{index >= DEFAULT_SKILL_SLOT_COUNT && !setup.locked && <button aria-label="Fertigkeitsslot entfernen" onClick={() => onChange(visible.filter(value => value.id !== setup.id))}>−</button>}</div>
         {setup.synergyReason && <p className="skill-synergy-reason"><b>Zusammenhang:</b> {setup.synergyReason}</p>}
-        <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>
+        <label>Fertigkeit<select value={setup.skillId} onChange={event => update(setup.id, { skillId: event.target.value, origin: 'manual', supportGemIds: [], embeddedSkillIds: [] })}><option value="">Fertigkeit entfernen</option>{buildAssistantCandidates.skills.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select></label>
         <div className="form-grid compact"><label>Rolle<select value={setup.role} onChange={event => update(setup.id, { role: event.target.value as SkillRole })}>{Object.entries(roleLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label>Waffenset<select value={setup.weaponSet} onChange={event => update(setup.id, { weaponSet: event.target.value as SkillWeaponSet })}>{Object.entries(setLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label></div>
+        {skill.metaSocketRule && <div className="embedded-skill-editor">
+          <div className="row"><b>Eingebettete Fertigkeiten</b><small>{embeddedSkillIds.length}/{skill.maxEmbeddedSkillCount ?? 2}</small></div>
+          {!embeddedSkillIds.length && <p className="analysis-error">Diese Meta-Fertigkeit funktioniert erst mit mindestens einer kompatiblen eingebetteten Fertigkeit.</p>}
+          {embeddedSkillIds.map((id, embeddedIndex) => {
+            return <label key={`${id}-${embeddedIndex}`}>Eingebettete Fertigkeit {embeddedIndex + 1}<span className="row"><select value={id} onChange={event => update(setup.id, { embeddedSkillIds: embeddedSkillIds.map((value, index) => index === embeddedIndex ? event.target.value : value) })}>{embeddedCandidates.map(item => <option value={item.id} key={item.id}>{item.displayNameDe}{item.nameEn && item.nameEn !== item.displayNameDe ? ` (${item.nameEn})` : ''}</option>)}</select><button type="button" className="danger" onClick={() => update(setup.id, { embeddedSkillIds: embeddedSkillIds.filter((_, index) => index !== embeddedIndex) })}>−</button></span></label>
+          })}
+          {embeddedSkillIds.length < (skill.maxEmbeddedSkillCount ?? 2) && <button type="button" onClick={() => {
+            const next = embeddedCandidates.find(item => !embeddedSkillIds.includes(item.id))
+            if (next) update(setup.id, { embeddedSkillIds: [...embeddedSkillIds, next.id], supportGemIds: setup.supportGemIds.slice(0, Math.max(0, 4 - embeddedSkillIds.length)) })
+          }}>＋ Fertigkeit einbetten</button>}
+          <small>Fertigkeiten und Supports teilen sich insgesamt fünf Sockelplätze.</small>
+        </div>}
         <div className="support-editor">
           <div className="row"><b>Unterstützungsplätze</b><button onClick={() => onRecommendSupports?.(setup.id)}>Beste vorschlagen</button></div>
-          <div className="support-slot-list">{Array.from({ length: Math.max(visibleSupportSlots, setup.supportGemIds.length) }, (_, supportIndex) => {
+          <div className="support-slot-list">{Array.from({ length: Math.max(supportCapacity, setup.supportGemIds.length) }, (_, supportIndex) => {
             const id = setup.supportGemIds[supportIndex]
             const support = id ? buildAssistantCandidates.supports.find(item => item.id === id) : undefined
             return support

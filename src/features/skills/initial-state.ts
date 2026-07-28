@@ -6,6 +6,7 @@ export const emptySkillSetup = (index: number): SkillSetup => ({
   role: index === 0 ? 'main' : 'utility',
   weaponSet: 'both',
   supportGemIds: [],
+  embeddedSkillIds: [],
   origin: 'manual',
 })
 export const DEFAULT_SKILL_SLOT_COUNT = 9

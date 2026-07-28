@@ -12,6 +12,7 @@ import { removeDuplicateSupportFamilies } from './features/skills/support-select
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
 import { fillRecommendedSupportSlots } from './features/skills/automatic-supports'
+import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
 import { optimizeBuildVariants, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
@@ -85,19 +86,21 @@ export default function App() {
           setupsToFill.reduce<typeof setups>((filled, value) => {
             const currentSetups = [...filled, ...setupsToFill.slice(filled.length)]
             if (!value.skillId) return [...filled, value]
+            const preparedValue = ensureRequiredEmbeddedSkill(value, buildAssistantCandidates.skills)
+            const preparedCurrentSetups = currentSetups.map(item => item.id === value.id ? preparedValue : item)
             const skillResult = runBuildAssistantV1({
               character: { ...characterForAnalysis, desiredMainSkillId: value.skillId },
               equipment,
-              setups: currentSetups,
+              setups: preparedCurrentSetups,
             })
             return [...filled, fillRecommendedSupportSlots(
-              value,
+              preparedValue,
               skillResult.supportAnalysis.topCandidates,
               buildAssistantCandidates.supports,
-              5,
+              supportCapacityFor(preparedValue),
               {
                 equipment,
-                setups: currentSetups,
+                setups: preparedCurrentSetups,
                 skills: buildAssistantCandidates.skills,
                 characterLevel: characterForAnalysis.level || undefined,
               },
@@ -344,18 +347,20 @@ export default function App() {
   function recommendSupports(setupId: string) {
     const setup = setups.find(value => value.id === setupId)
     if (!setup?.skillId || !character.classId) return
-    const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups })
+    const preparedSetup = ensureRequiredEmbeddedSkill(setup, buildAssistantCandidates.skills)
+    const preparedSetups = setups.map(value => value.id === setupId ? preparedSetup : value)
+    const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups: preparedSetups })
     const rankedSupports = result.supportAnalysis.topCandidates.length
       ? result.supportAnalysis.topCandidates
       : result.supportAnalysis.eligibleCandidates
     const filled = fillRecommendedSupportSlots(
-      setup,
+      preparedSetup,
       rankedSupports,
       buildAssistantCandidates.supports,
-      5,
+      supportCapacityFor(preparedSetup),
       {
         equipment,
-        setups,
+        setups: preparedSetups,
         skills: buildAssistantCandidates.skills,
         characterLevel: character.level || undefined,
       },

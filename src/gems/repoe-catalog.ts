@@ -1,6 +1,7 @@
 import catalog from '../../generated/poe2-gems/catalog.json'
 import germanDisplay from '../../generated/localization/de/poe2-gems.json'
 import type { MechanicTag, SkillGemDefinition, SupportGemDefinition, SyntheticWeaponType } from '../domain'
+import { metaSocketRuleFor } from '../features/skills/meta-skills'
 
 const supportedTags = new Set<MechanicTag>([
   'attack', 'spell', 'projectile', 'melee', 'area', 'physical', 'fire', 'cold',
@@ -87,6 +88,8 @@ export const repoeSkillCatalog: SkillGemDefinition[] = catalog.skills.map(item =
     requiredWeaponTypes: mapWeaponTypes(item.craftingTypes),
     attributeRequirements: item.requirements,
     recommendedSupportIds: item.recommendedSupportIds,
+    metaSocketRule: metaSocketRuleFor(item.nameEn, item.tags),
+    maxEmbeddedSkillCount: item.tags.includes('meta') ? 2 : undefined,
     spiritReservation: item.spiritReservationStatus === 'structured-exact' && item.spiritReservation != null
       ? item.spiritReservation
       : undefined,

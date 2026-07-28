@@ -38,6 +38,7 @@ export function validateSkillReferences(skills: SkillGemDefinition[], supports: 
   const skillIds = new Set(skills.map(value => value.id)); const supportIds = new Set(supports.map(value => value.id))
   return setups.flatMap(setup => [
     ...(!skillIds.has(setup.skillId) ? [`SkillSetup ${setup.id}: unbekannter Skill ${setup.skillId}`] : []),
+    ...(setup.embeddedSkillIds ?? []).filter(id => !skillIds.has(id)).map(id => `SkillSetup ${setup.id}: unbekannter eingebetteter Skill ${id}`),
     ...setup.supportGemIds.filter(id => !supportIds.has(id)).map(id => `SkillSetup ${setup.id}: unbekannter Support ${id}`),
   ])
 }
