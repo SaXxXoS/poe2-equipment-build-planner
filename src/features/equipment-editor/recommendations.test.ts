@@ -52,13 +52,13 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     }])
   })
 
-  it('schlägt kein Waffen-Unique einer anderen als der optimierten Waffenart vor',()=>{
+  it('behält ein vom Unique Analyzer als gültig bewertetes Waffen-Unique bei',()=>{
     const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false} as UniqueRecommendation
     const suggestions=createEquipmentSlotSuggestions({
       equipment,
       optimization:{
         evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
-        equipmentFirst:false,status:'selected',alternatives:[],
+        equipmentFirst:true,status:'selected',alternatives:[],
         selected:{
           skillId:'snap',weaponType:'wand',weaponLabel:'Zauberstab',
           mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,
@@ -67,8 +67,7 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       },
       uniqueRecommendations:[bow],
       uniqueNames:new Map([['unique-bow','Peripherie']]),
-      uniqueItemCategories:new Map([['unique-bow','bow']]),
     })
-    expect(suggestions.some(value=>value.uniqueItemId==='unique-bow')).toBe(false)
+    expect(suggestions.some(value=>value.uniqueItemId==='unique-bow')).toBe(true)
   })
 })

@@ -48,7 +48,6 @@ export default function App() {
       ...analysis.uniqueAnalysis.topDefensiveUniques,
     ],
     uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
-    uniqueItemCategories:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.itemType])),
   }):[]
   useEffect(() => {
     const timer = window.setTimeout(() => {

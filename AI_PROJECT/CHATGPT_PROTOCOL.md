@@ -2339,9 +2339,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Automatisch befüllte Fertigkeitskarten verwenden nun ebenfalls den
   kontrollierten Support-Fallback der ausdrücklichen Aktion
   `Beste vorschlagen`; harte fachliche Inkompatibilitäten bleiben gesperrt.
-- Waffen-Uniques werden vor der sichtbaren Empfehlung zusätzlich gegen die
-  konkret optimierte Waffenart geprüft. Ein Bogen wird deshalb nicht mehr
-  für einen auf Zauberstab optimierten Zerschlagen-Build vorgeschlagen.
+- Korrektur nach Spielprüfung des Auftraggebers: `Zerschlagen` kann mit
+  Bögen verwendet werden. Waffen-Uniques werden deshalb nicht durch einen
+  pauschalen Vergleich mit der bevorzugten Optimierer-Waffenart verworfen.
+  Maßgeblich bleiben belegte Fertigkeitsanforderungen und das
+  `valid`-Ergebnis des Unique Analyzers.
 - Unique-Details ohne getrennte PoB2-Varianten zeigen ihre itemweiten
   Eigenschaften direkt. Rohe interne `engine.unique.reason.*`-Schlüssel
   wurden durch verständliche deutsche Begründungen ersetzt.

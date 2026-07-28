@@ -61,7 +61,6 @@ export function createEquipmentSlotSuggestions(input:{
   optimization?:BuildVariantOptimization|null
   uniqueRecommendations:UniqueRecommendation[]
   uniqueNames:Map<string,string>
-  uniqueItemCategories?:Map<string,string>
 }):EquipmentSlotSuggestion[]{
   const suggestions:EquipmentSlotSuggestion[]=[]
   const selected=input.optimization?.selected
@@ -91,11 +90,6 @@ export function createEquipmentSlotSuggestions(input:{
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
     if(!recommendation.valid||recommendation.totalScore<=0||seenUniqueIds.has(recommendation.uniqueId))continue
-    const itemCategory=input.uniqueItemCategories?.get(recommendation.uniqueId)
-    if(recommendation.itemSlot==='weapon'&&selected&&(
-      selected.weaponType==='any'
-      || itemCategory!==selected.weaponType
-    ))continue
     seenUniqueIds.add(recommendation.uniqueId)
     const slotId=firstEmptySlot(
       uniqueTargetSlots(recommendation.itemSlot,mainSet).filter(value=>!occupied.has(value)),
