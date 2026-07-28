@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "step": 21,
+  "scope": "build-assistant-gem-level-quality-model",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "totalSkillRecords": 337,
+  "skillRecordsAtLevel20": 337,
+  "skillRecordsAtOtherLevels": 0,
+  "numericSkillQualityFields": 0,
+  "skillLevelTransported": true,
+  "skillQualityTransported": false,
+  "supportLevelTransported": false,
+  "supportQualityTransported": false,
+  "levelInterpolationAllowed": false,
+  "qualityEstimationAllowed": false,
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "3.0.0",
+  "status": "level-20-exact-other-levels-fail-closed",
+  "nextStep": "item-quality-and-local-global-value-separation"
+}

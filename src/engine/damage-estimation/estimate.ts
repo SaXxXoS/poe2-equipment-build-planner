@@ -13,6 +13,7 @@ import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit
 import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
 import { resourceSpiritOutput, resolveResourceSpiritModel } from './resource-spirit-model'
+import { gemLevelQualityOutput, resolveGemLevelQualityModel } from './gem-level-quality-model'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -81,8 +82,10 @@ export function estimateHitDamage(input:{
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
   const resourceSpiritModel=resolveResourceSpiritModel({setups:input.setups,skills:input.skills,supports:input.supports??[]})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:skill?.gemLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'2.9.0'}
+  const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.0.0'}
   if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
+  if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Verfügbar ist ausschließlich Stufe ${skill.gemLevel}; eine Skalierung wird nicht erfunden.`]}
   const damageOverTime=collectDamageOverTime(skill)
   const projectileHitModel=resolveProjectileHitModel(skill)
   const triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills})
@@ -93,7 +96,7 @@ export function estimateHitDamage(input:{
   if(skill.kind==='other')return{...base,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
   let actionsPerSecond=skill.castTime>0?1/skill.castTime:1
-  const included=['Fertigkeitsstufe 20','strukturierte Basiswerte der Fertigkeit']
+  const included=[`Fertigkeitsstufe ${gemLevelQualityModel.appliedSkillLevel}`,'strukturierte Basiswerte der Fertigkeit']
   const activeSet=setup?.weaponSet==='set-2'?'set-2':'set-1'
   if(skill.kind==='attack'){
     const weaponEntry=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`)&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))

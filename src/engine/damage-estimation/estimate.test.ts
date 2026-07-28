@@ -272,4 +272,12 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.nextSkillEffects?.effects[0]).toMatchObject({sourceId:'reload',targetSkillId:'main',status:'prepared-next-hit'})
     expect(result.stages?.map(stage=>stage.id)).toContain('prepared-next-hit')
   })
+  it('blockiert eine nicht referenzierte Gemmenstufe statt Stufe 20 zu verwenden',()=>{
+    const mismatched={...setup('arc'),level:19}
+    const result=estimateHitDamage({equipment:[],setups:[mismatched],skills:[skill('arc','Arc')]})
+    expect(result.status).toBe('unavailable')
+    expect(result.gemLevel).toBeUndefined()
+    expect(result.gemLevelQualityModel).toMatchObject({requestedSkillLevel:19,availableSkillLevel:20,productive:false})
+    expect(result.warnings.join(' ')).toContain('keine exakte numerische Referenz')
+  })
 })

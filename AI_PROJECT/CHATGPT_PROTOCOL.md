@@ -1972,3 +1972,24 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Hauptdokument: `docs/BUILD_ASSISTANT_RESOURCES_SPIRIT_STEP_20.md`.
 - Audit: `docs/audits/build-assistant-resources-spirit-step-20.json`.
 - Nächster Schritt: Gemmenstufen und Qualität mit belegten Wirkungen.
+
+## Gemmenstufen und Qualität – Schritt 21 (2026-07-28)
+
+- Ausgangscommit: `4bbea26cd9e44ae4461606aedd1bbb226c0c8dbe`.
+- Neues fail-closed Modell `gem-level-quality-model`, Version `1.0.0`;
+  Schadensrechner `3.0.0`.
+- Alle 337 numerischen Fertigkeitsreferenzen liegen ausschließlich auf
+  Gemmenstufe 20 vor; numerische Qualitätsfelder fehlen.
+- `SkillSetup.level` wird jetzt tatsächlich geprüft. Exakt angeforderte
+  Stufe 20 ist produktiv; ohne Eingabestufe wird die einzige Referenzstufe 20
+  transparent verwendet.
+- Jede andere angeforderte Stufe blockiert den numerischen Schadenswert.
+  Stufe 20 wird nicht länger stillschweigend für eine andere Stufe verwendet.
+- Fertigkeitsqualität, Supportstufen und Supportqualität bleiben ohne
+  geschlossene technische Referenz ohne Zahlenwirkung.
+- Keine Interpolation, keine Schätzung aus Gemmennamen und keine zusätzliche
+  Nutzereinstellung.
+- Hauptdokument: `docs/BUILD_ASSISTANT_GEM_LEVEL_QUALITY_STEP_21.md`.
+- Audit: `docs/audits/build-assistant-gem-level-quality-step-21.json`.
+- Nächster Schritt: Gegenstandsqualität und lokale/globale Werte strikt
+  trennen.

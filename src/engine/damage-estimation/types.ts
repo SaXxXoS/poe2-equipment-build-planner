@@ -86,6 +86,7 @@ export interface DamageEstimate {
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:false;sources:TriggerRepeatSource[];limitations:string[]}
   minionCompanionModel?:{modelVersion:string;primarySkillMinion:boolean;productive:false;sources:MinionCompanionSource[];limitations:string[]}
   resourceSpiritModel?:{modelVersion:string;productive:false;manaPoolKnown:false;lifePoolKnown:false;spiritCapacityKnown:false;exactSkillCostsKnown:false;sources:ResourceSpiritSource[];semanticSupportCostHints:Array<{supportId:string;value:number}>;limitations:string[]}
+  gemLevelQualityModel?:{modelVersion:string;requestedSkillLevel?:number;availableSkillLevel?:number;appliedSkillLevel?:number;skillLevelStatus:'exact'|'default-reference-level'|'blocked-level-mismatch'|'blocked-missing-reference';skillQualityStatus:'blocked-not-transported-and-no-reference';supportLevelStatus:'blocked-not-transported';supportQualityStatus:'blocked-not-transported-and-no-reference';productive:boolean;sourceReferences:string[];limitations:string[]}
   chargeState?:{modelVersion:string;productive:boolean;states:AppliedChargeState[];consumptions:AppliedChargeConsumption[]}
   confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}
