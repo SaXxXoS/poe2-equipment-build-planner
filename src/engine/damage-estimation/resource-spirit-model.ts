@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '6.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '7.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -70,6 +70,7 @@ export interface ResourceSpiritModel {
   lifePoolKnown: false
   spiritCapacityKnown: false
   exactSkillCostsKnown: boolean
+  questSpiritEstimate?: NonNullable<DamageEstimate['resourceSpiritModel']>['questSpiritEstimate']
   confirmedMinimumPools?: {
     characterLevel: number
     baseLife: number
@@ -157,6 +158,12 @@ function passiveResourceEffects(
       match = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|less) Spirit$/i)
       if (match) {
         add(nodeId, text, match[2].toLowerCase() === 'increased' ? 'spirit-increased' : match[2].toLowerCase() === 'reduced' ? 'spirit-reduced' : 'spirit-less', Number(match[1]))
+        continue
+      }
+      match = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|less) (?:Spirit )?Reservation Efficiency(?: of Skills)?$/i)
+      if (match) {
+        const modifier = match[2].toLowerCase()
+        add(nodeId, text, modifier === 'increased' ? 'reservation-efficiency-increased' : modifier === 'reduced' ? 'reservation-efficiency-reduced' : 'reservation-efficiency-less', Number(match[1]))
         continue
       }
       if (/^No inherent Mana Regeneration$/i.test(text)) { add(nodeId, text, 'no-inherent-mana-regeneration', 1); continue }
@@ -278,6 +285,15 @@ export function resolveResourceSpiritModel(input: {
   const flatEquipmentSpirit = equipmentContributions
     .filter(value => value.resource === 'spirit')
     .reduce((sum, value) => sum + value.value, 0)
+  const eligibleQuestSpiritRewards = level == null
+    ? []
+    : reference.questSpiritRewards.filter(reward => reward.areaLevel <= level)
+  const questSpiritEstimate = level == null ? undefined : {
+    characterLevel: level,
+    amount: eligibleQuestSpiritRewards.reduce((sum, reward) => sum + reward.amount, 0),
+    eligibleRewards: eligibleQuestSpiritRewards,
+    status: 'level-derived-upper-bound-not-completion-proof' as const,
+  }
   const spiritCapacityByWeaponSet = (['set-1', 'set-2'] as const).map(weaponSet => {
     const effects = passiveResourceEffects(input.passiveTree, input.realPassivePlanning, weaponSet)
     const noSpirit = effects.some(effect => effect.kind === 'no-spirit')
@@ -288,25 +304,51 @@ export function resolveResourceSpiritModel(input: {
     const confirmedMinimumCapacity = noSpirit
       ? 0
       : Math.max(0, Math.floor((flatEquipmentSpirit + flatSpirit) * (1 + increasedSpirit / 100) * lessSpirit))
+    const levelDerivedQuestSpirit = noSpirit ? 0 : questSpiritEstimate?.amount ?? 0
+    const planningCapacity = noSpirit
+      ? 0
+      : Math.max(0, Math.floor((flatEquipmentSpirit + flatSpirit + levelDerivedQuestSpirit) * (1 + increasedSpirit / 100) * lessSpirit))
+    const reservationEfficiencyPercent = effects
+      .filter(effect => effect.kind === 'reservation-efficiency-increased')
+      .reduce((sum, effect) => sum + effect.value, 0)
+      - effects.filter(effect => effect.kind === 'reservation-efficiency-reduced').reduce((sum, effect) => sum + effect.value, 0)
+    const reservationEfficiencyMore = effects
+      .filter(effect => effect.kind === 'reservation-efficiency-less')
+      .reduce((value, effect) => value * (1 - effect.value / 100), 1)
     const activeReservations = spiritReservations.filter(value => value.weaponSet === 'both' || value.weaponSet === weaponSet)
     const complete = activeReservations.every(value => value.reservationAmount != null)
     const reservedSpirit = complete
       ? activeReservations.reduce((sum, value) => sum + (value.reservationAmount ?? 0), 0)
       : null
+    const effectiveReservedSpirit = reservedSpirit == null
+      ? null
+      : Math.max(0, Math.round(reservedSpirit / Math.max(0.01, 1 + reservationEfficiencyPercent / 100) / Math.max(0.01, reservationEfficiencyMore)))
     return {
       weaponSet,
       confirmedMinimumCapacity,
+      levelDerivedQuestSpirit,
+      planningCapacity,
+      reservationEfficiencyPercent,
       reservedSpirit,
-      remainingSpirit: reservedSpirit == null ? null : confirmedMinimumCapacity - reservedSpirit,
+      effectiveReservedSpirit,
+      remainingSpirit: effectiveReservedSpirit == null ? null : planningCapacity - effectiveReservedSpirit,
       status: activeReservations.length === 0
         ? 'no-reservations' as const
         : !complete
           ? 'blocked-incomplete-reservation-chain' as const
-          : (reservedSpirit ?? Number.POSITIVE_INFINITY) <= confirmedMinimumCapacity
+          : (effectiveReservedSpirit ?? Number.POSITIVE_INFINITY) <= confirmedMinimumCapacity
             ? 'fits-confirmed-minimum' as const
-            : 'exceeds-confirmed-minimum' as const,
+            : levelDerivedQuestSpirit === 0
+              ? 'exceeds-confirmed-minimum' as const
+              : (effectiveReservedSpirit ?? Number.POSITIVE_INFINITY) <= planningCapacity
+                ? 'fits-level-derived-quest-estimate' as const
+                : 'exceeds-level-derived-quest-estimate' as const,
+      capacityEvidence: levelDerivedQuestSpirit > 0
+        ? 'level-derived-quest-upper-bound' as const
+        : 'confirmed-minimum' as const,
       passiveResourceEffects: effects.filter(effect => [
         'flat-spirit', 'spirit-increased', 'spirit-reduced', 'spirit-less', 'no-spirit',
+        'reservation-efficiency-increased', 'reservation-efficiency-reduced', 'reservation-efficiency-less',
       ].includes(effect.kind)),
     }
   })
@@ -439,7 +481,7 @@ export function resolveResourceSpiritModel(input: {
     modelVersion: RESOURCE_SPIRIT_MODEL_VERSION,
     productive: Boolean(
       (confirmedMinimumPools && skillCostChains.some(chain => chain.sustainStatus === 'sustainable-on-confirmed-minimum'))
-      || spiritCapacityByWeaponSet.some(value => value.status === 'fits-confirmed-minimum'),
+      || spiritCapacityByWeaponSet.some(value => value.status === 'fits-confirmed-minimum' || value.status === 'fits-level-derived-quest-estimate'),
     ),
     manaPoolKnown: false,
     lifePoolKnown: false,
@@ -447,6 +489,7 @@ export function resolveResourceSpiritModel(input: {
     exactSkillCostsKnown: skillCostChains.length > 0 && skillCostChains.every(chain =>
       chain.baseCostStatus !== 'blocked-missing-exact-base-cost'
       && chain.supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'),
+    ...(questSpiritEstimate ? { questSpiritEstimate } : {}),
     ...(confirmedMinimumPools ? { confirmedMinimumPools } : {}),
     sources,
     equipmentContributions,
@@ -456,9 +499,9 @@ export function resolveResourceSpiritModel(input: {
     semanticSupportCostHints,
     limitations: [
       'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
-      'Exakte Geistreservierungen werden über die gepinnte Gem-zu-Fertigkeit-Kette verbunden. Die bestätigte Mindestkapazität enthält nur eindeutig erfasste Ausrüstungs-, Passive- und Aszendenzbeiträge; nicht transportierter Quest-Geist wird nicht erfunden.',
+      'Exakte Geistreservierungen werden über die gepinnte Gem-zu-Fertigkeit-Kette verbunden. Quest-Geist wird aus Charakterlevel und gepinnten Belohnungsstufen nur als obere Planungsschätzung abgeleitet; das Level beweist keinen Questabschluss.',
       'Fertigkeits-Grundkosten auf Stufe 20 und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Kostenketten bleiben blockiert.',
-      'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten- und Geistwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte Texte und Kosten-Effizienz bleiben fail-closed.',
+      'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten-, Geist- und allgemeine Reservierungseffizienzwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte und fertigkeitsspezifische Effizienz bleibt fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
     ],
   }

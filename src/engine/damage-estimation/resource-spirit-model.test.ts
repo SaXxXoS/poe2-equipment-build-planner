@@ -85,6 +85,41 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       status: 'fits-confirmed-minimum',
     })
   })
+  it('nutzt Quest-Geist nur als levelbasierte Planungsschätzung und wendet allgemeine Reservierungseffizienz an', () => {
+    const definition = { ...skill('barkskin', 'Barkskin'), spiritReservation: 100 }
+    const model = resolveResourceSpiritModel({
+      characterLevel: 61,
+      setups: [setup(definition.id, [], 'set-1')],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [{ id: 'efficiency', stats: [{ sourceText: '25% increased Reservation Efficiency of Skills' }], ascendancyId: null }],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['efficiency'] },
+        ascendancyPlanning: { allocatedNodeIds: [] },
+      } as never,
+    })
+    expect(model.questSpiritEstimate).toMatchObject({
+      characterLevel: 61,
+      amount: 100,
+      status: 'level-derived-upper-bound-not-completion-proof',
+    })
+    expect(model.questSpiritEstimate?.eligibleRewards).toHaveLength(3)
+    expect(model.spiritCapacityByWeaponSet[0]).toMatchObject({
+      confirmedMinimumCapacity: 0,
+      levelDerivedQuestSpirit: 100,
+      planningCapacity: 100,
+      reservationEfficiencyPercent: 25,
+      reservedSpirit: 100,
+      effectiveReservedSpirit: 80,
+      remainingSpirit: 20,
+      status: 'fits-level-derived-quest-estimate',
+      capacityEvidence: 'level-derived-quest-upper-bound',
+    })
+  })
   it('erfasst eine Manawechselwirkung, aber keine erfundene Aufrechterhaltbarkeit', () => {
     const definition = skill('archmage', 'Archmage')
     const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })

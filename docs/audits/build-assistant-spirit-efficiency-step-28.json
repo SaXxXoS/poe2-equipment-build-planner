@@ -1,0 +1,22 @@
+{
+  "step": 28,
+  "status": "implemented-with-disclosed-quest-completion-uncertainty",
+  "resourceSpiritModelVersion": "7.0.0",
+  "sourceScope": "poe2-pob2-damage-calculation-reference",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "questSpiritRewards": [
+    { "act": 1, "area": "Freythorn", "info": "King In The Mists", "amount": 30, "areaLevel": 11 },
+    { "act": 3, "area": "Azak Bog", "info": "Ignagduk", "amount": 30, "areaLevel": 36 },
+    { "act": 5, "area": "Kriar Village", "info": "Lythara", "amount": 40, "areaLevel": 61 }
+  ],
+  "questSpiritTotalUpperBound": 100,
+  "questCompletionProofAvailable": false,
+  "questCapacityStatus": "level-derived-upper-bound-not-completion-proof",
+  "reservationFormula": "round(base / (1 + increasedEfficiency / 100) / moreEfficiency)",
+  "generalReservationEfficiency": "productive-when-unconditional-and-exact",
+  "conditionalOrSkillSpecificEfficiency": "fail-closed",
+  "weaponSetAccounting": "separate",
+  "runtimeNetwork": false,
+  "newUserSetting": false,
+  "nextStep": "resource-aware-automatic-skill-and-support-optimization"
+}

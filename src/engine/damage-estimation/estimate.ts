@@ -86,7 +86,9 @@ export function estimateHitDamage(input:{
   const resourceSpiritModel=resolveResourceSpiritModel({equipment:input.equipment,setups:input.setups,skills:input.skills,supports:input.supports??[],characterLevel:input.characterLevel,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning})
   const spiritWarnings=resourceSpiritModel.spiritCapacityByWeaponSet.flatMap(state=>{
     if(state.status==='blocked-incomplete-reservation-chain')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Mindestens eine Geistreservierung besitzt keine exakte, lokal belegte Höhe.`]
-    if(state.status==='exceeds-confirmed-minimum')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: ${state.reservedSpirit} Geist sind reserviert, aber nur ${state.confirmedMinimumCapacity} Geist sind als Mindestkapazität bestätigt. Nicht transportierter Quest-Geist kann die Differenz decken; die Kombination wird deshalb nicht automatisch verworfen.`]
+    if(state.status==='fits-level-derived-quest-estimate')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Die Reservierung passt nur unter der automatischen Quest-Geist-Schätzung. Das Charakterlevel beweist den Abschluss der zugehörigen Quests nicht.`]
+    if(state.status==='exceeds-confirmed-minimum')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: ${state.effectiveReservedSpirit} Geist überschreiten die sicher belegte Mindestkapazität; ohne Level- oder Questangabe ist die dauerhafte Nutzbarkeit unbekannt.`]
+    if(state.status==='exceeds-level-derived-quest-estimate')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: ${state.effectiveReservedSpirit} Geist werden nach belegter Effizienz reserviert; selbst die levelbasierte Planungskapazität von ${state.planningCapacity} Geist reicht nicht.`]
     return[]
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})

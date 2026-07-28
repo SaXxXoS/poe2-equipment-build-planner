@@ -11,10 +11,13 @@
     "src/Data/Skills/act_dex.lua",
     "src/Data/Skills/act_int.lua",
     "src/Data/Costs.lua",
+    "src/Data/Misc.lua",
+    "src/Data/QuestRewards.lua",
+    "src/Modules/CalcDefence.lua",
     "src/Data/Bases/*.lua"
   ],
   "allowedOutput": "generated/pob2/damage-reference.json",
-  "allowedPurpose": "bounded-offline-hit-damage-and-level-20-skill-cost-reference",
+  "allowedPurpose": "bounded-offline-hit-damage-level-20-skill-cost-character-resource-quest-spirit-and-reservation-formula-reference",
   "forbiddenPurposes": [
     "full-pob-parity-claim",
     "technical-ggg-identity-claim",

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -20,11 +20,43 @@
     "manaLevelOffset": 30,
     "inherentManaRegenerationPercentPerMinute": 240
   },
+  "questSpiritRewardsSourceFile": "src/Data/QuestRewards.lua",
+  "questSpiritRewardsSourceSha256": "f8e718c8a1a02e86af0297b9139eb41b017b2d02ca85b3f9c80ba53461cc63d6",
+  "questSpiritRewards": [
+    {
+      "act": 1,
+      "area": "Freythorn",
+      "info": "King In The Mists",
+      "amount": 30,
+      "areaLevel": 11
+    },
+    {
+      "act": 3,
+      "area": "Azak Bog",
+      "info": "Ignagduk",
+      "amount": 30,
+      "areaLevel": 36
+    },
+    {
+      "act": 5,
+      "area": "Kriar Village",
+      "info": "Lythara",
+      "amount": 40,
+      "areaLevel": 61
+    }
+  ],
+  "reservationFormulaSourceFile": "src/Modules/CalcDefence.lua",
+  "reservationFormulaSourceSha256": "cc731e063badcb2417891cd9c79069f7b2bf3b57c9c5ff248f7ea3f93080f051",
+  "reservationFormula": {
+    "description": "rounded(base reservation / (1 + increased reservation efficiency / 100) / more reservation efficiency)",
+    "rounding": "nearest-integer"
+  },
   "limitations": [
     "Bounded hit estimate; not Path of Building parity.",
     "Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.",
     "PoB2 calculation reference is not represented as a technical GGG identity chain.",
-    "Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved."
+    "Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved.",
+    "Quest Spirit rewards are exact, but character level only provides a planning upper bound and does not prove quest completion."
   ],
   "skills": [
     {
@@ -15598,5 +15630,5 @@
       "sourceFile": "src/Data/Bases/mace.lua"
     }
   ],
-  "contentHash": "be839fd2192566bc7977ac3d4d98da7c32b98244675f5cab9b1a6f9986b8be88"
+  "contentHash": "24bc800525b2dc14d4e3f1fdc90b8667fb8e0af763567b35200c72488ac20f39"
 }

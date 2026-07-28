@@ -2177,3 +2177,39 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Git-Sicherheitsprüfung sind erfolgreich.
 - Nächster Schritt: lokal belegbare Quest-Geistkapazität und bestätigte
   Reservierungseffizienz erschließen.
+
+## Schritt 28 – Quest-Geist und Reservierungseffizienz
+
+- Ausgangscommit: `01c5c3683204cb57ddec73d79389a7bc3ee10969`.
+- Das Ressourcenmodell wurde auf Version `7.0.0`, die gepinnte
+  Schadensreferenz auf Schema 4 erweitert.
+- `src/Data/QuestRewards.lua` belegt am unveränderten PoB2-Pin die
+  Geistbelohnungen `+30` auf Gebietsstufe 11, `+30` auf Gebietsstufe 36
+  und `+40` auf Gebietsstufe 61.
+- Das Charakterlevel wird automatisch als Erreichbarkeitsgrenze verwendet.
+  Die daraus gebildete Summe ist ausdrücklich nur eine obere
+  Planungsschätzung und kein Beweis abgeschlossener Quests.
+- `src/Modules/CalcDefence.lua` belegt die verwendete
+  Reservierungseffizienzformel einschließlich Rundung.
+- Allgemeine, unbedingte Reservierungseffizienz aus tatsächlich vergebenen
+  Passiv- und Aszendenzknoten wird waffensetspezifisch angewandt.
+- Sichere Mindestkapazität, Quest-Schätzung, Planungskapazität,
+  Grundreservierung, effektive Reservierung und Restgeist werden getrennt
+  ausgegeben.
+- Bedingte und fertigkeitsspezifische Effizienz bleibt fail-closed.
+- Keine neue Nutzereinstellung, kein Runtime-Netzwerk und keine Änderung
+  der Produktpins.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_SPIRIT_EFFICIENCY_STEP_28.md`.
+- Audit:
+  `docs/audits/build-assistant-spirit-efficiency-step-28.json`.
+- Generierte Referenzdatei SHA-256:
+  `a05dd0b71c4d50fd41b9df9c4b732aa2cc4e6938fe82536432ab3fe130034ebe`.
+- Prüfstatus vor Commit: 1.250 Tests in 97 Testdateien fachlich erfolgreich;
+  zwei im parallelen Gesamtlauf zeitbedingt abgebrochene Tests wurden
+  anschließend seriell erfolgreich bestätigt. Lint, Typecheck,
+  Produktions-Build, Pages-Build, JSON-Validierung, `git diff --check` und
+  Git-Sicherheitsprüfung sind erfolgreich.
+- Nächster Schritt: automatische Skill- und Supportauswahl anhand der
+  belegten Kosten-, Nachhaltigkeits- und Geistbilanz ressourcenbewusst
+  optimieren.

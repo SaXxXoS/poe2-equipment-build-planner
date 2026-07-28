@@ -13,6 +13,12 @@ const costsText = costsBytes.toString('utf8')
 const miscRelative = 'src/Data/Misc.lua'
 const miscBytes = fs.readFileSync(path.join(repo, miscRelative))
 const miscText = miscBytes.toString('utf8')
+const questRewardsRelative = 'src/Data/QuestRewards.lua'
+const questRewardsBytes = fs.readFileSync(path.join(repo, questRewardsRelative))
+const questRewardsText = questRewardsBytes.toString('utf8')
+const reservationFormulaRelative = 'src/Modules/CalcDefence.lua'
+const reservationFormulaBytes = fs.readFileSync(path.join(repo, reservationFormulaRelative))
+const reservationFormulaText = reservationFormulaBytes.toString('utf8')
 const expectedCostDivisors = { Mana: 1, ManaPerMinute: 60, ManaPercentPerMinute: 60, RagePerMinute: 60 }
 const costDivisors = Object.fromEntries(Object.entries(expectedCostDivisors).map(([resource, expected]) => {
   const blockMatch = new RegExp(`Resource\\s*=\\s*"${resource}"[\\s\\S]*?Divisor\\s*=\\s*(\\d+)`).exec(costsText)
@@ -32,6 +38,32 @@ const resourceConstants = {
   manaPerLevel: characterConstant('mana_per_level', 4),
   manaLevelOffset: 30,
   inherentManaRegenerationPercentPerMinute: characterConstant('character_inherent_mana_regeneration_rate_per_minute_%', 240),
+}
+const questSpiritRewards = [...questRewardsText.matchAll(/\{\r?\n([\s\S]*?)\r?\n\t\},?/g)]
+  .flatMap(([, body]) => {
+    const spirit = /\["Stat"\]\s*=\s*"\+(\d+) to Spirit"/.exec(body)
+    if (!spirit) return []
+    const field = key => new RegExp(`\\["${key}"\\]\\s*=\\s*"([^"]+)"`).exec(body)?.[1]
+    const numeric = key => Number(new RegExp(`\\["${key}"\\]\\s*=\\s*(\\d+)`).exec(body)?.[1])
+    return [{
+      act: numeric('Act'),
+      area: field('Area'),
+      info: field('Info'),
+      amount: Number(spirit[1]),
+      areaLevel: numeric('AreaLevel'),
+    }]
+  })
+const expectedQuestSpiritRewards = [
+  { act: 1, area: 'Freythorn', info: 'King In The Mists', amount: 30, areaLevel: 11 },
+  { act: 3, area: 'Azak Bog', info: 'Ignagduk', amount: 30, areaLevel: 36 },
+  { act: 5, area: 'Kriar Village', info: 'Lythara', amount: 40, areaLevel: 61 },
+]
+if (JSON.stringify(questSpiritRewards) !== JSON.stringify(expectedQuestSpiritRewards)) {
+  throw new Error(`PoB2 quest Spirit rewards mismatch: ${JSON.stringify(questSpiritRewards)}`)
+}
+const reservationFormulaNeedle = 'values.reservedFlat = m_max(round(baseFlatVal * (100 + values.inc) / 100 * values.more / (1 + values.efficiency / 100) / values.efficiencyMore, 0), 0)'
+if (!reservationFormulaText.includes(reservationFormulaNeedle)) {
+  throw new Error('PoB2 Spirit reservation formula mismatch')
 }
 const baseDir = path.join(repo, 'src', 'Data', 'Bases')
 const gitDir = path.join(repo, '.git')
@@ -165,7 +197,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -175,11 +207,21 @@ const payload = {
   resourceConstantsSourceFile: miscRelative,
   resourceConstantsSourceSha256: crypto.createHash('sha256').update(miscBytes).digest('hex'),
   resourceConstants,
+  questSpiritRewardsSourceFile: questRewardsRelative,
+  questSpiritRewardsSourceSha256: crypto.createHash('sha256').update(questRewardsBytes).digest('hex'),
+  questSpiritRewards,
+  reservationFormulaSourceFile: reservationFormulaRelative,
+  reservationFormulaSourceSha256: crypto.createHash('sha256').update(reservationFormulaBytes).digest('hex'),
+  reservationFormula: {
+    description: 'rounded(base reservation / (1 + increased reservation efficiency / 100) / more reservation efficiency)',
+    rounding: 'nearest-integer',
+  },
   limitations: [
     'Bounded hit estimate; not Path of Building parity.',
     'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',
     'PoB2 calculation reference is not represented as a technical GGG identity chain.',
     'Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved.',
+    'Quest Spirit rewards are exact, but character level only provides a planning upper bound and does not prove quest completion.',
   ],
   skills: skills.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
   weaponBases: bases.sort((a, b) => a.name.localeCompare(b.name)),

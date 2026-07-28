@@ -1,5 +1,16 @@
 # Schadensberechnung V1
 
+## Schritt 28: Quest-Geist und Reservierungseffizienz
+
+Der gepinnte Referenzstand liefert jetzt die drei Geistbelohnungen
+`30 + 30 + 40` sowie die Reservierungsformel. Ohne zusätzliche
+Nutzereinstellung bildet die App aus dem Charakterlevel eine klar als
+unsicher markierte obere Quest-Geist-Planungsschätzung. Sie behauptet damit
+keinen Questabschluss. Allgemeine, unbedingte Reservierungseffizienz
+tatsächlich vergebener Passive und Aszendenzen wird getrennt je Waffenset
+angewandt. Details:
+`BUILD_ASSISTANT_SPIRIT_EFFICIENCY_STEP_28.md`.
+
 ## Schritt 26: Ressourcen aus Baum und Aszendenz
 
 Die Ressourcenbilanz verwendet jetzt die tatsächlich vergebenen gemeinsamen,
@@ -28,7 +39,7 @@ Die App besitzt einen ersten deterministischen numerischen Rechenkern. Für unte
 
 ## Quelle und Pin
 
-Die Buildzeit-Referenz stammt aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am unveränderten Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Verwendet werden nur `src/Data/Skills/act_str.lua`, `act_dex.lua`, `act_int.lua`, `src/Data/Costs.lua` und numerische Waffenbasen aus `src/Data/Bases/*.lua`. Der Offline-Generator erzeugt `generated/pob2/damage-reference.json`; zur Laufzeit werden weder Lua noch Netzwerkquellen geladen.
+Die Buildzeit-Referenz stammt aus `PathOfBuildingCommunity/PathOfBuilding-PoE2` am unveränderten Commit `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`. Verwendet werden nur `src/Data/Skills/act_str.lua`, `act_dex.lua`, `act_int.lua`, `src/Data/Costs.lua`, `src/Data/Misc.lua`, `src/Data/QuestRewards.lua`, `src/Modules/CalcDefence.lua` und numerische Waffenbasen aus `src/Data/Bases/*.lua`. Der Offline-Generator erzeugt `generated/pob2/damage-reference.json`; zur Laufzeit werden weder Lua noch Netzwerkquellen geladen.
 
 Seit Schritt 24 enthält die Referenz außerdem die strukturierten
 Stufe-20-Grundkosten und die gepinnten Kostendivisoren. Aus dem bestehenden
