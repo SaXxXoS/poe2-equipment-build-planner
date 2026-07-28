@@ -10,6 +10,9 @@ export interface EquipmentSlotSuggestion {
   title: string
   detail: string
   source: 'weapon-optimizer' | 'unique-analyzer'
+  uniqueItemId?: string
+  reasons?: string[]
+  tradeOffs?: string[]
 }
 
 const weaponSlot = (set:'set-1'|'set-2') => `slot-weapon-${set}-left`
@@ -80,6 +83,9 @@ export function createEquipmentSlotSuggestions(input:{
       title:input.uniqueNames.get(recommendation.uniqueId)??recommendation.uniqueId,
       detail:recommendation.buildEnabler?'Build-Enabler':'Passender Unique-Kandidat',
       source:'unique-analyzer',
+      uniqueItemId:recommendation.uniqueId,
+      reasons:(recommendation.reasons??[]).slice(0,4).map(reason=>reason.messageKey),
+      tradeOffs:(recommendation.tradeOffs??[]).slice(0,4),
     })
     occupied.add(slotId)
   }

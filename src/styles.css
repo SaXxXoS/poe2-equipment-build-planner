@@ -83,6 +83,8 @@ body:has(.modal-backdrop){overflow:hidden}
 .weapon-item-editor .form-grid.compact label:nth-child(n+2){display:none}
 .weapon-item-editor .form-grid.compact + .muted{display:none}
 .weapon-item-editor details>label:has(input[min="1"]){display:none}
+.weapon-base-value-grid{display:grid;gap:.8rem;margin-top:.75rem}.weapon-damage-range{display:grid;gap:.45rem;padding:.7rem;border:1px solid #3b4655;border-radius:10px;background:#101720}.weapon-damage-range>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.weapon-damage-range input,.weapon-single-values input{width:100%;min-width:0}.weapon-single-values{display:grid;gap:.65rem}.suggestion-details .dialog-scroll{display:grid;gap:.6rem}.suggestion-details h3{margin-top:.8rem}.suggestion-details ul{margin:.2rem 0;padding-left:1.25rem}.suggestion-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.suggestion-facts>div{padding:.65rem;border:1px solid #303c4c;border-radius:8px;background:#101720}.suggestion-facts dt{color:#95a1b0;font-size:.78rem}.suggestion-facts dd{margin:.2rem 0 0;font-weight:800}.recommendation-type{color:#e8b86d;font-weight:900}
+@media(max-width:420px){.weapon-damage-range>div,.suggestion-facts{grid-template-columns:1fr}}
 .property-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem;align-items:end}
 .property-values>span{grid-column:1/-1;font-weight:700;color:#f1cf94}
 @media(max-width:520px){.dynamic-property-actions{grid-template-columns:1fr}.property-values{grid-template-columns:1fr}}

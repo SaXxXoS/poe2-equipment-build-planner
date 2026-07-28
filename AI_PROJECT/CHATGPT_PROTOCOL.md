@@ -2309,3 +2309,28 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Audit:
   `docs/audits/build-assistant-resource-passive-replanning-step-31.json`.
 - Datenpins, Produktdaten und Runtime-Netzwerk bleiben unverändert.
+
+# Korrektur der Eingabe- und Ergebnisfehler vom 28.07.2026
+
+- Waffen-Grundwerte sind im mobilen Item-Editor als echte, direkt
+  editierbare Felder angeordnet: physischer, Feuer-, Kälte-, Blitz- und
+  Chaosschaden jeweils mit Minimum und Maximum sowie kritische
+  Trefferchance, Angriffe pro Sekunde und Reichweite.
+- Ein Ausrüstungsvorschlag öffnet nun zuerst eine Detailansicht. Bei
+  produktiven PoB2-Uniques zeigt sie Basistyp, benötigtes Level, Varianten
+  und die lokalisierten Eigenschaften; eine reine Waffenart-Empfehlung wird
+  ausdrücklich als solche gekennzeichnet.
+- `Beste vorschlagen` bleibt bei fehlender vollständiger
+  Ressourcenabsicherung nicht mehr lautlos leer. Die ausdrückliche
+  Nutzeraktion darf die kompatibelsten belegten Supports mit sichtbarer
+  Risikobewertung einsetzen; der automatische Buildlauf bleibt weiterhin
+  fail-closed.
+- Ein Timeout der rechenintensiven Passive-Planung verwirft nicht mehr die
+  bereits fertiggestellte Skill-, Support-, Ausrüstungs- und
+  Build-Auswertung. Die Passive-Warnung bleibt sichtbar und der Worker
+  erhält für den Vollauf eine längere, begrenzte Laufzeit.
+- Allgemeine Warnungen aus der Abdeckung des gesamten Passivbaum-
+  Quelldatensatzes werden nicht mehr als tausende konkrete Buildfehler
+  gezählt; die sichtbare Problemliste enthält nur blockierende Violations.
+- Datenpins, Produktdaten, Analyzerregeln und Runtime-Netzwerk bleiben
+  unverändert.

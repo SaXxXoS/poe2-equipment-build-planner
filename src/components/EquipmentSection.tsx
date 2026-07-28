@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { technicalAffixById } from '../affixes/registry'
 import { equipmentSlotDefinitions } from '../data'
 import type { EquipmentEntry } from '../domain'
-import { localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
+import { localizedPob2LinesForVariant, localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
 import { affixDisplayName } from '../features/equipment-editor/affix-display'
 import { inferItemRarity } from '../features/equipment-editor/model'
 import { activeWeaponSlotIds, canRemoveJewelEntry, createNextJewelEntry, jewelEntries } from '../features/equipment-editor/layout'
@@ -29,6 +29,7 @@ const armorSlots = ['slot-helmet','slot-amulet','slot-body-armour','slot-gloves'
 const quickSlots = ['slot-life-flask','slot-charm-1','slot-charm-2','slot-charm-3','slot-mana-flask']
 export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entries: EquipmentEntry[]; setEntries: (values: EquipmentEntry[]) => void; suggestions?:EquipmentSlotSuggestion[] }) {
   const [active, setActive] = useState<EquipmentEntry | null>(null)
+  const [activeSuggestion, setActiveSuggestion] = useState<EquipmentSlotSuggestion | null>(null)
   const [weaponSet, setWeaponSet] = useState<'set-1'|'set-2'>('set-1')
   const save = (updated: EquipmentEntry) => setEntries(entries.map(entry => entry.id === updated.id ? updated : entry))
   const jewels = jewelEntries(entries)
@@ -37,8 +38,11 @@ export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entr
   const removeJewel = () => canRemoveJewelEntry(lastJewel) && setEntries(entries.filter(entry => entry.id !== lastJewel?.id))
   const renderSlot = (id: string, compact = false) => {
     const entry = entries.find(value => value.slotId === id)
-    return entry && <EquipmentSlot key={id} entry={entry} compact={compact} suggestion={suggestions.find(value=>value.slotId===id)} onClick={() => setActive(entry)}/>
+    const suggestion=suggestions.find(value=>value.slotId===id)
+    return entry && <EquipmentSlot key={id} entry={entry} compact={compact} suggestion={suggestion} onClick={() => suggestion&&!inferItemRarity(entry)?setActiveSuggestion(suggestion):setActive(entry)}/>
   }
+  const suggestedEntry=activeSuggestion&&entries.find(value=>value.slotId===activeSuggestion.slotId)
+  const suggestedUnique=activeSuggestion?.uniqueItemId?localizedPob2UniquesDe.find(value=>value.id===activeSuggestion.uniqueItemId):undefined
   return <section id="equipment"><h2>2. Ausrüstung</h2><p className="muted">Tippe einen Platz an, um deinen Gegenstand einzutragen.</p>
     <div className="equipment-paperdoll-stage">
     <div className="weapon-set-toggle" role="group" aria-label="Waffenset auswählen">
@@ -56,6 +60,7 @@ export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entr
       <div>{jewels.map(entry => <EquipmentSlot key={entry.id} entry={entry} compact onClick={() => setActive(entry)}/>)}</div>
     </div>
     </div>
+    {activeSuggestion&&suggestedEntry&&<div className="modal-backdrop" onMouseDown={event=>event.target===event.currentTarget&&setActiveSuggestion(null)}><div className="modal suggestion-details" role="dialog" aria-modal="true" aria-label="Details zum Ausrüstungsvorschlag"><header className="dialog-header"><button className="text-button" onClick={()=>setActiveSuggestion(null)}>← Zurück</button><h2>{activeSuggestion.title}</h2><button className="icon" aria-label="Dialog schließen" onClick={()=>setActiveSuggestion(null)}>×</button></header><div className="dialog-scroll"><p className="recommendation-type">{activeSuggestion.source==='unique-analyzer'?'Einzigartiger Gegenstand':'Empfohlene Waffenart'}</p><p>{activeSuggestion.detail}</p>{suggestedUnique&&<><dl className="suggestion-facts"><div><dt>Basistyp</dt><dd>{suggestedUnique.baseDisplayName}</dd></div><div><dt>Benötigtes Level</dt><dd>{suggestedUnique.requiredLevel??'Unbekannt'}</dd></div><div><dt>Varianten</dt><dd>{suggestedUnique.variants.length}</dd></div></dl><h3>Eigenschaften</h3>{suggestedUnique.variants.map(variant=>{const lines=localizedPob2LinesForVariant(suggestedUnique,variant.id);return <details key={variant.id} open={suggestedUnique.variants.length===1}><summary>{variant.text}{variant.currentOrLegacy==='legacy'?' · Legacy':''}</summary><ul>{[...lines.implicits,...lines.modifiers].map(line=><li key={line.id}>{line.text}</li>)}</ul></details>})}</>}{activeSuggestion.reasons?.length?<><h3>Warum vorgeschlagen</h3><ul>{activeSuggestion.reasons.map(value=><li key={value}>{value}</li>)}</ul></>:null}{activeSuggestion.tradeOffs?.length?<><h3>Nachteile und Abwägungen</h3><ul>{activeSuggestion.tradeOffs.map(value=><li key={value}>{value}</li>)}</ul></>:null}{activeSuggestion.source==='weapon-optimizer'&&<p className="muted">Dies ist eine Waffenart-Empfehlung, kein erfundener fertiger Gegenstand. Konkrete Affixe und Werte werden erst aus deiner Eingabe oder aus belegten Gegenstandsdaten übernommen.</p>}</div><div className="dialog-actions"><button className="secondary" onClick={()=>setActiveSuggestion(null)}>Schließen</button><button onClick={()=>{setActiveSuggestion(null);setActive(suggestedEntry)}}>Gegenstand eintragen</button></div></div></div>}
     {active && <AffixDialog entry={active} slotName={slotName(active.slotId)} onSave={save} onClose={() => setActive(null)}/>}
   </section>
 }

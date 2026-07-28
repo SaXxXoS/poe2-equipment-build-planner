@@ -78,6 +78,7 @@ export function fillRecommendedSupportSlots(
   definitions: SupportGemDefinition[],
   limit = 5,
   resourceContext?: ResourceAwareSupportContext,
+  allowHardBlockedFallback = false,
 ): SkillSetup {
   if (!setup.skillId || setup.supportGemIds.length >= limit) return setup
 
@@ -106,6 +107,7 @@ export function fillRecommendedSupportSlots(
       || left.candidate.supportId.localeCompare(right.candidate.supportId),
     )
     const choice = available.find(value => !value.hardBlocked)
+      ?? (allowHardBlockedFallback ? available[0] : undefined)
     if (!choice) break
     selected.push(choice.candidate.supportId)
     choice.keys.forEach(key => usedKeys.add(key))

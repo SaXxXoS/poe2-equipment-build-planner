@@ -13,13 +13,23 @@ export const affixConflictGroupsBlockObservedEquipment = false
 const propertyKindText:Record<ItemPropertyKind,string>={prefix:'Prefix',suffix:'Suffix',implicit:'Implicit','socket-effect':'Sockeleffekt','unique-property':'Unique-Eigenschaft',enchantment:'Verzauberung','granted-skill':'Gewährte Fertigkeit',unknown:'Unbekannt'}
 const uniqueSlots = (slotId: string) => slotId.includes('helmet') ? ['helmet'] : slotId.includes('body-armour') ? ['body-armour'] : slotId.includes('gloves') ? ['gloves'] : slotId.includes('boots') ? ['boots'] : slotId.includes('amulet') ? ['amulet'] : slotId.includes('ring') ? ['ring'] : slotId.includes('belt') ? ['belt'] : slotId.includes('weapon') ? (slotId.endsWith('right') ? ['weapon', 'offhand'] : ['weapon']) : slotId.includes('jewel') ? ['jewel'] : ['special']
 
-function WeaponStatsFields({value,onChange}:{value:EquipmentWeaponStats;onChange:(value:EquipmentWeaponStats)=>void}) {
+export function WeaponStatsFields({value,onChange}:{value:EquipmentWeaponStats;onChange:(value:EquipmentWeaponStats)=>void}) {
   const number=(key:keyof EquipmentWeaponStats,label:string,step='any')=><label>{label}<input type="number" min="0" step={step} value={typeof value[key]==='number'?value[key]:''} onChange={event=>onChange({...value,[key]:event.target.value===''?undefined:Number(event.target.value)})}/></label>
   const range=(key:'physicalDamage'|'fireDamage'|'coldDamage'|'lightningDamage'|'chaosDamage',label:string)=>{
     const current=value[key]
-    return <fieldset className="weapon-damage-range"><legend>{label}</legend><label>Minimum<input type="number" min="0" value={current?.minimum??''} onChange={event=>onChange({...value,[key]:event.target.value===''&&current?.maximum===undefined?undefined:{minimum:event.target.value===''?0:Number(event.target.value),maximum:current?.maximum??0}})}/></label><label>Maximum<input type="number" min="0" value={current?.maximum??''} onChange={event=>onChange({...value,[key]:event.target.value===''&&current?.minimum===undefined?undefined:{minimum:current?.minimum??0,maximum:event.target.value===''?0:Number(event.target.value)}})}/></label></fieldset>
+    const update=(part:'minimum'|'maximum',draft:string)=>{
+      if(draft===''&&current?.[part==='minimum'?'maximum':'minimum']===undefined){
+        onChange({...value,[key]:undefined})
+        return
+      }
+      onChange({...value,[key]:{
+        minimum:part==='minimum'?(draft===''?0:Number(draft)):(current?.minimum??0),
+        maximum:part==='maximum'?(draft===''?0:Number(draft)):(current?.maximum??0),
+      }})
+    }
+    return <div className="weapon-damage-range"><b>{label}</b><div><label>Minimum<input inputMode="decimal" type="number" min="0" step="any" value={current?.minimum??''} placeholder="Min." onChange={event=>update('minimum',event.target.value)}/></label><label>Maximum<input inputMode="decimal" type="number" min="0" step="any" value={current?.maximum??''} placeholder="Max." onChange={event=>update('maximum',event.target.value)}/></label></div></div>
   }
-  return <details open className="weapon-base-values"><summary>Waffen-Grundwerte</summary><p className="muted">Endgültige Werte aus der Gegenstandsanzeige. Sie werden getrennt von Affixen gespeichert.</p><div className="form-grid compact">{range('physicalDamage','Physischer Schaden')}{range('fireDamage','Feuerschaden')}{range('coldDamage','Kälteschaden')}{range('lightningDamage','Blitzschaden')}{range('chaosDamage','Chaosschaden')}{number('criticalHitChance','Kritische Trefferchance (%)','0.01')}{number('attacksPerSecond','Angriffe pro Sekunde','0.01')}{number('range','Reichweite','0.1')}</div>{value.unresolvedElementalDamage?.length?<p className="warning">Im Bild wurden {value.unresolvedElementalDamage.length} elementare Schadensbereiche erkannt, deren Schadensart anhand des OCR-Texts nicht sicher bestimmt werden konnte. Bitte trage sie oben bei Feuer, Kälte oder Blitz ein.</p>:null}</details>
+  return <details open className="weapon-base-values"><summary>Waffen-Grundwerte</summary><p className="muted">Trage die endgültigen Werte aus der Gegenstandsanzeige ein. Minimum und Maximum sind getrennt editierbar.</p><div className="weapon-base-value-grid">{range('physicalDamage','Physischer Schaden')}{range('fireDamage','Feuerschaden')}{range('coldDamage','Kälteschaden')}{range('lightningDamage','Blitzschaden')}{range('chaosDamage','Chaosschaden')}<div className="weapon-single-values">{number('criticalHitChance','Kritische Trefferchance (%)','0.01')}{number('attacksPerSecond','Angriffe pro Sekunde','0.01')}{number('range','Reichweite','0.1')}</div></div>{value.unresolvedElementalDamage?.length?<p className="warning">Im Bild wurden {value.unresolvedElementalDamage.length} elementare Schadensbereiche erkannt, deren Schadensart anhand des OCR-Texts nicht sicher bestimmt werden konnte. Bitte trage sie oben bei Feuer, Kälte oder Blitz ein.</p>:null}</details>
 }
 
 function AppliedSlot({ side, index, value, onChoose, onRemove }: { side: 'prefix'|'suffix'|'implicit'; index: number; value?: AppliedModifier; onChoose: () => void; onRemove: () => void }) {

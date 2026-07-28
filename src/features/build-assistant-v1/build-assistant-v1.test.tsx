@@ -4,6 +4,7 @@ import { initialEquipment, skillSetups } from '../../data'
 import type { CharacterConfiguration, EquipmentEntry } from '../../domain'
 import { BuildAssistantResultSection } from '../../components/BuildAssistantResultSection'
 import { buildAssistantCandidates, createBuildAssistantRequest, deriveWeaponContext, runBuildAssistantV1, validateBuildAssistantInput } from '.'
+import { fillRecommendedSupportSlots } from '../skills/automatic-supports'
 
 const character = (goalProfile: CharacterConfiguration['goalProfile'] = 'balanced', desiredMainSkillId = 'skill-lightning-arrow'): CharacterConfiguration => ({
   classId: 'class-official-6',
@@ -78,6 +79,25 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(result.equipmentAnalysis.profileSet1.damageTypes.lightning).toBe(0)
     expect(result.equipmentAnalysis.profileSet2.damageTypes.lightning).toBeGreaterThan(0)
     expect(result.equipmentAnalysis.profileSet2.damageTypes.fire).toBe(0)
+  })
+
+  it('liefert für Zerschlagen belegte kompatible Supportvorschläge', () => {
+    const skillId = realSkillId('Snap')
+    const result = runBuildAssistantV1({
+      character: character('balanced', skillId),
+      equipment: structuredClone(initialEquipment),
+      setups: [{ id: 'snap-main', skillId, role: 'main', weaponSet: 'set-1', supportGemIds: [] }],
+    })
+    expect(result.supportAnalysis.topCandidates.length).toBeGreaterThan(0)
+    expect(result.supportAnalysis.topCandidates.every(value => value.skillId === skillId && value.valid)).toBe(true)
+    const setup={ id: 'snap-main', skillId, role: 'main' as const, weaponSet: 'set-1' as const, origin:'recommended' as const, supportGemIds: [] }
+    expect(fillRecommendedSupportSlots(
+      setup,
+      result.supportAnalysis.topCandidates,
+      buildAssistantCandidates.supports,
+      5,
+      {equipment:structuredClone(initialEquipment),setups:[setup],skills:buildAssistantCandidates.skills,characterLevel:80},
+    ).supportGemIds.length).toBeGreaterThan(0)
   })
 
   it('Ã¼bertrÃ¤gt Klasse, Aszendenz, AusrÃ¼stung, Unique und Variante verlustfrei', () => {

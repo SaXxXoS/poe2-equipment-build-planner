@@ -46,6 +46,9 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       title:'Deutscher Unique-Name',
       detail:'Passender Unique-Kandidat',
       source:'unique-analyzer',
+      uniqueItemId:'unique-helmet',
+      reasons:[],
+      tradeOffs:[],
     }])
   })
 })

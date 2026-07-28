@@ -72,4 +72,5 @@ describe('automatische Supportbefüllung',()=>{
     )
     expect(result.supportGemIds).toEqual(['efficient'])
   })
+
 })

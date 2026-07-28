@@ -103,8 +103,10 @@ const immutableFiles = {
   '../../scripts/poe2-affix-import.mjs': '2014d442bce3f54c6f25d1b208ee19cc5d036a79f8059f1bb69ac801c144dd68',
   '../../src/affixes/registry.ts': '8fb686c14f5e69bb69067d143d030059ee079863bb54b2c59fbbd2ade0aa6ef0',
   // V1.3 authorizes the editor expansion; the later item-type correction keeps
-  // defensive totals out of weapon and jewellery editors.
-  '../../src/components/AffixDialog.tsx': 'd81e43c05f0b9bb0b768ac672738ef9cd202264ad6016391bab0618cbe6e0171',
+  // defensive totals out of weapon and jewellery editors. The 2026-07-28
+  // mobile correction only replaces the weapon-value controls; source scopes
+  // and socketable product boundaries remain unchanged.
+  '../../src/components/AffixDialog.tsx': 'ba31a2a55e3746a86b8d23c3d1e0ebd84199493b1fc7df64206812059a8c9a85',
   '../../src/engine/common/types.ts': 'ae1657637df03da215ae79eacf81e11e977c2e2cf9e2121138bd210043dcf2d2',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',

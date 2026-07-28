@@ -20,7 +20,7 @@ export function RealPassiveAnalysis({character,equipment,setups,controller:provi
  const input=useMemo<PassiveAnalysisUiInput>(()=>({character,equipment,setups,pointBudget,weaponSetPointBudget,ascendancyPointBudget,planningMode}),[ascendancyPointBudget,character,equipment,setups,pointBudget,weaponSetPointBudget,planningMode]),signature=createPassiveAnalysisInputSignature(input)
  useEffect(()=>controller.inputsChanged(signature),[controller,signature]);useEffect(()=>()=>{if(!provided)void controller.dispose()},[controller,provided])
  const integration=state.result?.realPassivePlanning,weaponPlans=integration?.weaponSetPlanning,ascendancyPlan=integration?.ascendancyPlanning,profileFeedback=integration?.profileFeedback
- const pipeline=weaponPlans?.shared??integration?.pipelineResult,plan=pipeline&&'plan'in pipeline?pipeline.plan:undefined,targets=plan?.selectedTargets.slice(0,8)??[],issues=[...(pipeline?.violations??[]),...(pipeline?.warnings??[])]
+ const pipeline=weaponPlans?.shared??integration?.pipelineResult,plan=pipeline&&'plan'in pipeline?pipeline.plan:undefined,targets=plan?.selectedTargets.slice(0,8)??[],issues=[...(pipeline?.violations??[])]
  const compact=pipeline&&'plan'in pipeline?pipeline as CompactRealPassivePipelineResult:null
  const compactSet1=weaponPlans?.set1&&'plan'in weaponPlans.set1?weaponPlans.set1 as CompactRealPassivePipelineResult:null
  const compactSet2=weaponPlans?.set2&&'plan'in weaponPlans.set2?weaponPlans.set2 as CompactRealPassivePipelineResult:null

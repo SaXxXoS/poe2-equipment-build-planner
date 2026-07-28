@@ -9,7 +9,7 @@ import { createEmptySkillSetups } from '../features/skills/initial-state'
 import { createInitialCharacterConfiguration } from '../features/character/initial-state'
 import { availablePassivePoints } from '../features/character/passive-points'
 import { initialEquipment } from '../data'
-import { AffixDialog, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
+import { AffixDialog, WeaponStatsFields, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
 import { itemSupportsDefenceValues, weaponStatsAreValid } from '../features/equipment-editor/item-stat-fields'
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
 
@@ -82,6 +82,14 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(html).not.toContain('Waffenset 2 links')
     expect(activeWeaponSlotIds('set-1')).toEqual(['slot-weapon-set-1-left','slot-weapon-set-1-right'])
     expect(activeWeaponSlotIds('set-2')).toEqual(['slot-weapon-set-2-left','slot-weapon-set-2-right'])
+  })
+  it('zeigt alle editierbaren Waffen-Grundwerte mit eindeutigen Min-/Max-Feldern',()=>{
+    const html=renderToStaticMarkup(<WeaponStatsFields value={{}} onChange={()=>undefined}/>)
+    expect(html).toContain('Physischer Schaden')
+    expect(html).toContain('Kritische Trefferchance (%)')
+    expect(html).toContain('Angriffe pro Sekunde')
+    expect((html.match(/placeholder="Min\."/g)??[]).length).toBe(5)
+    expect((html.match(/placeholder="Max\."/g)??[]).length).toBe(5)
   })
   it('startet mit neun kompakten leeren Fertigkeitskarten ohne Supports', () => {
     expect(createInitialCharacterConfiguration()).toEqual({ classId:'', ascendancyId:'', level:0, additionalPassivePoints:undefined, ascendancyPassivePoints:undefined, goalProfile:'balanced' })

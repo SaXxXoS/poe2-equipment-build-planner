@@ -79,6 +79,7 @@ export default function App() {
     setCalculationErrors(errors)
     if (errors.length) return
     setCalculationState('running')
+    let completedAnalyzerResult:BuildAnalysis|null=null
     try {
         const addRecommendedSupports = (setupsToFill:typeof setups, characterForAnalysis:CharacterConfiguration) =>
           setupsToFill.reduce<typeof setups>((filled, value) => {
@@ -103,6 +104,7 @@ export default function App() {
             )]
           }, [])
         let result = runBuildAssistantV1(input)
+        completedAnalyzerResult=result
         let effectiveSetups = preparedSetups
         let effectiveCharacter = character
         const hasSelectedSkill = preparedSetups.some(value => value.skillId)
@@ -178,6 +180,7 @@ export default function App() {
             setSetups(nextSetups)
             setCharacter(effectiveCharacter)
             result = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: nextSetups })
+            completedAnalyzerResult=result
           }
         }
         if (hasSelectedSkill) {
@@ -219,6 +222,7 @@ export default function App() {
               effectiveSetups = populatedWithSupports
               setSetups(effectiveSetups)
               result = runBuildAssistantV1({ character: effectiveCharacter, equipment, setups: effectiveSetups })
+              completedAnalyzerResult=result
             }
           }
         }
@@ -307,13 +311,24 @@ export default function App() {
             { character: effectiveCharacter, equipment, setups: effectiveSetups },
             passiveAwareResult.realPassivePlanning!,
           )
+          completedAnalyzerResult=result
         }
         setAnalysis(result)
         setCalculationState('completed')
         setTimeout(() => document.querySelector('#result')?.scrollIntoView({ behavior: 'smooth' }), 0)
-      } catch {
-        setCalculationState('error')
-        setCalculationErrors(['Die Build-Auswertung konnte nicht abgeschlossen werden. Bitte prüfe die Eingaben.'])
+      } catch(error) {
+        const code=error instanceof Error?error.message:'unknown-analysis-error'
+        if(completedAnalyzerResult){
+          setAnalysis(completedAnalyzerResult)
+          setCalculationState('completed')
+          setCalculationErrors([code.includes('timeout')
+            ? 'Die Passivplanung hat das Zeitlimit erreicht. Die übrige Build-Auswertung wird trotzdem angezeigt; der Baumplan kann separat erneut berechnet werden.'
+            : 'Die Passivplanung konnte nicht abgeschlossen werden. Die bereits berechnete Build-Auswertung wird trotzdem angezeigt.'])
+          setTimeout(() => document.querySelector('#result')?.scrollIntoView({ behavior: 'smooth' }), 0)
+        }else{
+          setCalculationState('error')
+          setCalculationErrors(['Die Build-Auswertung konnte nicht abgeschlossen werden. Bitte prüfe die Eingaben.'])
+        }
       }
   }
   function resetBuild() {
@@ -329,9 +344,12 @@ export default function App() {
     const setup = setups.find(value => value.id === setupId)
     if (!setup?.skillId || !character.classId) return
     const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups })
+    const rankedSupports = result.supportAnalysis.topCandidates.length
+      ? result.supportAnalysis.topCandidates
+      : result.supportAnalysis.eligibleCandidates
     const filled = fillRecommendedSupportSlots(
       setup,
-      result.supportAnalysis.topCandidates,
+      rankedSupports,
       buildAssistantCandidates.supports,
       5,
       {
@@ -340,9 +358,15 @@ export default function App() {
         skills: buildAssistantCandidates.skills,
         characterLevel: character.level || undefined,
       },
+      true,
     )
     setSetups(setups.map(value => value.id === setupId ? filled : value))
     invalidateResult()
+    if(filled.supportGemIds.length===setup.supportGemIds.length){
+      setCalculationErrors([`Für ${buildAssistantCandidates.skills.find(value=>value.id===setup.skillId)?.displayNameDe??'diese Fertigkeit'} wurde kein belegter kompatibler Support gefunden.`])
+    }else{
+      setCalculationErrors([])
+    }
   }
   return <>
     <header>
