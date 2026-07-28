@@ -145,15 +145,18 @@ export function deriveWeaponContext(equipment: EquipmentEntry[]) {
 export function createBuildAssistantRequest(input: BuildAssistantInput): EngineRequest & { weaponContext: NonNullable<EngineRequest['weaponContext']> } {
   const analyzerSetups = input.setups.flatMap(setup => [
     setup,
-    ...(setup.embeddedSkillIds ?? []).map((skillId, index): SkillSetup => ({
-      id: `${setup.id}:embedded:${index + 1}`,
-      skillId,
-      role: 'secondary',
-      weaponSet: setup.weaponSet,
-      supportGemIds: setup.supportGemIds,
-      origin: setup.origin,
-      synergyReason: `In ${buildAssistantCandidates.skills.find(value => value.id === setup.skillId)?.displayNameDe ?? 'Meta-Fertigkeit'} eingebettet`,
-    })),
+    ...(setup.embeddedSkillIds ?? []).map((skillId, index): SkillSetup => {
+      const embedded = buildAssistantCandidates.skills.find(value => value.id === skillId)
+      return {
+        id: `${setup.id}:embedded:${index + 1}`,
+        skillId,
+        role: 'secondary',
+        weaponSet: setup.weaponSet,
+        supportGemIds: setup.supportGemIds.filter(id => embedded?.recommendedSupportIds?.includes(id)),
+        origin: setup.origin,
+        synergyReason: `In ${buildAssistantCandidates.skills.find(value => value.id === setup.skillId)?.displayNameDe ?? 'Meta-Fertigkeit'} eingebettet`,
+      }
+    }),
   ])
   const buildInput: BuildInput = {
     character: input.character,

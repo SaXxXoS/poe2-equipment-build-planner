@@ -64,6 +64,15 @@ export default function App() {
     setCalculationState('idle')
     setCalculationErrors([])
   }
+  function prepareMetaSetup(value: typeof setups[number], allSetups: typeof setups) {
+    const main = allSetups.find(item => item.role === 'main' && item.skillId)
+    const mainTags = buildAssistantCandidates.skills.find(item => item.id === main?.skillId)?.tags ?? []
+    const occupiedSkillIds = allSetups.flatMap(item => [
+      ...(item.id === value.id ? [] : item.skillId ? [item.skillId] : []),
+      ...(item.id === value.id ? [] : item.embeddedSkillIds ?? []),
+    ])
+    return ensureRequiredEmbeddedSkill(value, buildAssistantCandidates.skills, mainTags, occupiedSkillIds)
+  }
   const receivePassivePlan = useCallback((value: PassivePlanPresentation) => {
     setPassivePlan(value)
     if (value.status === 'completed' && Object.values(value.results).some(Boolean)) setPlanVisible(true)
@@ -86,7 +95,7 @@ export default function App() {
           setupsToFill.reduce<typeof setups>((filled, value) => {
             const currentSetups = [...filled, ...setupsToFill.slice(filled.length)]
             if (!value.skillId) return [...filled, value]
-            const preparedValue = ensureRequiredEmbeddedSkill(value, buildAssistantCandidates.skills)
+            const preparedValue = prepareMetaSetup(value, currentSetups)
             const preparedCurrentSetups = currentSetups.map(item => item.id === value.id ? preparedValue : item)
             const skillResult = runBuildAssistantV1({
               character: { ...characterForAnalysis, desiredMainSkillId: value.skillId },
@@ -347,7 +356,7 @@ export default function App() {
   function recommendSupports(setupId: string) {
     const setup = setups.find(value => value.id === setupId)
     if (!setup?.skillId || !character.classId) return
-    const preparedSetup = ensureRequiredEmbeddedSkill(setup, buildAssistantCandidates.skills)
+    const preparedSetup = prepareMetaSetup(setup, setups)
     const preparedSetups = setups.map(value => value.id === setupId ? preparedSetup : value)
     const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups: preparedSetups })
     const rankedSupports = result.supportAnalysis.topCandidates.length

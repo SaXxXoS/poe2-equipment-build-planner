@@ -13,6 +13,17 @@ describe('Meta-Fertigkeiten', () => {
     expect(candidates.length).toBeGreaterThan(0)
     expect(candidates.every(value => value.tags.includes('spell'))).toBe(true)
     expect(candidates.every(value => value.tags.some(tag => ['fire', 'cold', 'lightning'].includes(tag)))).toBe(true)
+    expect(candidates.every(value => value.nameEn !== 'Elemental Weakness' && !value.tags.includes('debuff'))).toBe(true)
+    expect(candidates.map(value => value.nameEn)).not.toContain('Elemental Weakness')
+  })
+
+  it('bevorzugt eine belegte Schadensart und dupliziert keinen bereits eigenständig belegten Skill', () => {
+    const meta = byName('Cast on Elemental Ailment')
+    const lightning = compatibleEmbeddedSkills(meta, buildAssistantCandidates.skills, ['lightning'])[0]
+    expect(lightning.tags).toContain('lightning')
+    const setup: SkillSetup = { id: 'meta', skillId: meta.id, role: 'utility', weaponSet: 'set-2', supportGemIds: [] }
+    const filled = ensureRequiredEmbeddedSkill(setup, buildAssistantCandidates.skills, ['lightning'], [lightning.id])
+    expect(filled.embeddedSkillIds).not.toContain(lightning.id)
   })
 
   it('setzt automatisch eine eingebettete Fertigkeit ein und reduziert die Supportplätze', () => {

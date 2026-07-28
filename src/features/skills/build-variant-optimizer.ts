@@ -119,6 +119,7 @@ function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof
 
 function supportCompatible(skill: SkillGemDefinition, support: SupportGemDefinition, weapon: SyntheticWeaponType) {
   if (support.enabled === false) return false
+  if (skill.recommendedSupportIds?.length && !skill.recommendedSupportIds.includes(support.id)) return false
   if (support.selectionOnly && !skill.recommendedSupportIds?.includes(support.id)) return false
   if (support.requiredTags.some(tag => !skill.tags.includes(tag))) return false
   if (support.excludedTags.some(tag => skill.tags.includes(tag))) return false

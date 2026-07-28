@@ -114,9 +114,8 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
       usedPointBudget:fullResult.usedPointBudget+setResult.usedPointBudget,
       remainingPointBudget:Math.max(0,configuration.pointBudget!-fullResult.usedPointBudget-setResult.usedPointBudget)
     })
-    const set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-1']),alreadyAllocatedNodeIds:sharedNodeIds})
-    const set2ExcludedTargets=[...new Set([...(configuration.excludedTargetNodeIds??[]),...set1Specific.selectedTargetIds])]
-    const set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-2']),alreadyAllocatedNodeIds:sharedNodeIds,excludedTargetNodeIds:set2ExcludedTargets})
+    const set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-1']),alreadyAllocatedNodeIds:sharedNodeIds})
+    const set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-2']),alreadyAllocatedNodeIds:sharedNodeIds})
     const set1Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-1'],configuration.passiveTree!,set1Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     const set2Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-2'],configuration.passiveTree!,set2Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     effectiveWeaponSetProfiles={'set-1':set1Applied.profile,'set-2':set2Applied.profile};set1Feedback=set1Applied.feedback;set2Feedback=set2Applied.feedback

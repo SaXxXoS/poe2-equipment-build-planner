@@ -28,7 +28,12 @@ function incrementalPath(input:PassivePlanningInput,target:string,state:State,ca
  const anchor=input.startNodeId,key=cacheKey(input,anchor,target,state);let path=cache.entries.get(key)
  if(path){state.cacheHits++;return path.reachable?path:undefined}
  if(state.pathSearches>=PASSIVE_PLANNING_CONFIG.limits.maximumPathSearches){state.safety=true;return undefined}
- const result=findPassivePath(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:${target}`,startNodeId:anchor,targetNodeIds:[target],allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:input.planningScope==='ascendancy'?['ascendancy-start','ascendancy']:['normal','notable','keystone','class-start','jewel-socket'],ascendancyId:input.planningScope==='ascendancy'?input.ascendancyId:undefined,searchMode:'lowest-cost-path'})
+ const allowedNodeTypes=input.planningScope==='ascendancy'
+  ? ['ascendancy-start','ascendancy'] as const
+  : input.planningScope==='weapon-set'
+    ? ['normal','notable','class-start'] as const
+    : ['normal','notable','keystone','class-start','jewel-socket'] as const
+ const result=findPassivePath(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:${target}`,startNodeId:anchor,targetNodeIds:[target],allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:[...allowedNodeTypes],ascendancyId:input.planningScope==='ascendancy'?input.ascendancyId:undefined,searchMode:'lowest-cost-path'})
  state.pathSearches++;path=fromPath(result);cache.entries.set(key,path)
  return path.reachable?path:undefined
 }

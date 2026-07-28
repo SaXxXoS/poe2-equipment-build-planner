@@ -2362,3 +2362,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Unique-Details ohne getrennte PoB2-Varianten zeigen ihre itemweiten
   Eigenschaften direkt. Rohe interne `engine.unique.reason.*`-Schlüssel
   wurden durch verständliche deutsche Begründungen ersetzt.
+## Zentrale Build-Korrektheitsprüfung (2026-07-28)
+
+- Anlass: Nutzerprüfung zeigte fachlich unzusammenhängende Trigger-, Support-
+  und Waffensetempfehlungen.
+- Automatische Trigger-Nutzlasten sind nun auf belegte Schadensskills
+  beschränkt. Flüche, Debuffs, Buffs, Marks, persistente Hilfsskills und weitere
+  Meta-Skills werden nicht als automatische Schadensnutzlast eingesetzt.
+- Die Hauptschadensart priorisiert die Nutzlast; bereits eigenständig belegte
+  Skills werden nicht zusätzlich automatisch eingebettet.
+- Vorhandene skillbezogene Support-Positivlisten sind jetzt eine harte Grenze
+  für automatische Empfehlungen.
+- Meta-Container-Supports werden nicht ungeprüft auf den eingebetteten Skill
+  übertragen.
+- Waffenset-Pfade besitzen einen eigenen Planungsbereich. Neue
+  Juwelenfassungen und Keystones sind dort ausgeschlossen.
+- Unterschiedliche Setpfade werden nicht länger künstlich erzwungen. Ohne
+  belegte abweichende Wirkung darf das Ergebnis identisch oder teilweise
+  unbelegt bleiben.
+- Fachliche Dokumentation:
+  `docs/BUILD_ASSISTANT_CORRECTNESS_GATE.md`.

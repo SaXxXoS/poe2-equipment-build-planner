@@ -1,6 +1,7 @@
 import type { MetaSocketRule, SkillGemDefinition, SkillSetup } from '../../domain'
 
 const elementalDamage = new Set(['fire', 'cold', 'lightning'])
+const nonPayloadTags = new Set(['buff', 'curse', 'debuff', 'mark', 'meta', 'persistent', 'trigger'])
 const knownTriggerRules: Record<string, MetaSocketRule> = {
   'Elemental Invocation': 'spell',
   "Reaper's Invocation": 'spell',
@@ -36,22 +37,31 @@ export function isCompatibleEmbeddedSkill(meta: SkillGemDefinition, candidate: S
   return true
 }
 
-export function compatibleEmbeddedSkills(meta: SkillGemDefinition, skills: SkillGemDefinition[]): SkillGemDefinition[] {
-  const damageTags = new Set(meta.tags.filter(tag => elementalDamage.has(tag)))
-  return skills.filter(candidate => isCompatibleEmbeddedSkill(meta, candidate)).sort((left, right) => {
+export function isAutomaticEmbeddedPayload(meta: SkillGemDefinition, candidate: SkillGemDefinition): boolean {
+  if (!isCompatibleEmbeddedSkill(meta, candidate)) return false
+  if (candidate.tags.some(tag => nonPayloadTags.has(tag))) return false
+  return candidate.possibleRoles?.includes('main') === true || candidate.possibleRoles?.includes('secondary') === true
+}
+
+export function compatibleEmbeddedSkills(meta: SkillGemDefinition, skills: SkillGemDefinition[], preferredTags: string[] = []): SkillGemDefinition[] {
+  const damageTags = new Set(preferredTags.filter(tag => elementalDamage.has(tag)))
+  return skills.filter(candidate => isAutomaticEmbeddedPayload(meta, candidate)).sort((left, right) => {
     const leftOverlap = left.tags.filter(tag => damageTags.has(tag)).length
     const rightOverlap = right.tags.filter(tag => damageTags.has(tag)).length
-    return rightOverlap - leftOverlap || left.displayNameDe.localeCompare(right.displayNameDe, 'de')
+    const leftRecommended = meta.recommendedSupportIds?.filter(id => left.recommendedSupportIds?.includes(id)).length ?? 0
+    const rightRecommended = meta.recommendedSupportIds?.filter(id => right.recommendedSupportIds?.includes(id)).length ?? 0
+    return rightOverlap - leftOverlap || rightRecommended - leftRecommended || left.displayNameDe.localeCompare(right.displayNameDe, 'de')
   })
 }
 
-export function ensureRequiredEmbeddedSkill(setup: SkillSetup, skills: SkillGemDefinition[]): SkillSetup {
+export function ensureRequiredEmbeddedSkill(setup: SkillSetup, skills: SkillGemDefinition[], preferredTags: string[] = [], excludedSkillIds: string[] = []): SkillSetup {
   const meta = skills.find(value => value.id === setup.skillId)
   if (!meta || !resolvedMetaSocketRule(meta)) return setup
   if (setup.embeddedSkillIds?.length) {
     return { ...setup, supportGemIds: setup.supportGemIds.slice(0, supportCapacityFor(setup)) }
   }
-  const first = compatibleEmbeddedSkills(meta, skills)[0]
+  const excluded = new Set(excludedSkillIds)
+  const first = compatibleEmbeddedSkills(meta, skills, preferredTags).find(candidate => !excluded.has(candidate.id))
   return first ? { ...setup, embeddedSkillIds: [first.id], supportGemIds: setup.supportGemIds.slice(0, 4) } : setup
 }
 

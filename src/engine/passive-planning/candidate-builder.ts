@@ -28,6 +28,7 @@ function isCandidate(input:PassivePlanningInput,value:PassiveTargetRecommendatio
   if(!graphNode||!graphNode.enabled||value.eligibility==='blocked'||value.nodeId===input.startNodeId) return false
   if(input.planningScope==='ascendancy') return graphNode.nodeType==='ascendancy'&&Boolean(input.ascendancyId)&&graphNode.ascendancyId===input.ascendancyId&&!(input.excludedTargetNodeIds??[]).includes(value.nodeId)&&value.totalScore>=input.minimumTargetScore&&confidence(value.confidence)>=confidence(input.minimumConfidence)
   if(['class-start','ascendancy-start','ascendancy','unknown'].includes(graphNode.nodeType)) return false
+  if(input.planningScope==='weapon-set'&&(graphNode.nodeType==='jewel-socket'||graphNode.nodeType==='keystone')) return false
   if(graphNode.nodeType==='jewel-socket'&&!required.has(value.nodeId)) return false
   if(!allowed.has(graphNode.nodeType)&&!(required.has(value.nodeId)&&graphNode.nodeType==='jewel-socket')) return false
   if((input.excludedTargetNodeIds??[]).includes(value.nodeId)||value.totalScore<input.minimumTargetScore||confidence(value.confidence)<confidence(input.minimumConfidence)) return false
