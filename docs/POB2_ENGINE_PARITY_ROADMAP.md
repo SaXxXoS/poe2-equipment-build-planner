@@ -178,3 +178,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Das deterministische Schadensreferenzschema ist Version 10.
 - Offen bleiben insbesondere kritische Ailment-Sonderfälle, bedingte
   Aggravation und Bewegungserkennung.
+
+# Schritt 39 – Kritische Entzünden-Gewichtung
+
+- Normale und kritische Treffer erhalten getrennte Entzündenchancen.
+- Der Entzündenschaden verwendet die nach beiden Auslösepfaden gewichtete
+  Feuerschadensbasis aus `CalcOffence.calcAilmentDamage`.
+- Die Wahrscheinlichkeit mindestens eines kritisch ausgelösten aktiven
+  Entzündens wird nach der gepinnten PoB2-Formel ausgewiesen.
+- Kritische Gift-/Blutungs-Sonderregeln bleiben bis zur vollständigen
+  Stat- und Bedingungskette fail-closed.

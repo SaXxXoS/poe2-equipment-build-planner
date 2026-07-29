@@ -2723,3 +2723,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   wenn er im aktiven Passive-/Waffensetplan tatsächlich belegt ist.
 - Dauer, Magnitude und Aggravationsmultiplikator werden gemeinsam angewendet.
 - Bedingte Aggravation und kritische Ailment-Sonderfälle bleiben fail-closed.
+
+# Fortsetzung: Schritt 39 – kritische Entzünden-Gewichtung
+
+- Die gepinnte PoB2-Funktion `CalcOffence.calcAilmentDamage` ist für
+  Entzünden produktiv nachgebildet.
+- Normale und kritische Treffer werden mit ihren getrennten
+  Entzündenchancen und Schadensbasen gewichtet.
+- `ailmentCritChance` wird als Wahrscheinlichkeit mindestens eines kritisch
+  ausgelösten aktiven Entzündens ausgewiesen, nicht als erfundener
+  Schadensmultiplikator.
+- Kritische Gift-/Blutungs-Sonderfälle bleiben bis zu einer vollständigen
+  belegten Bedingungskette ausgeschlossen.

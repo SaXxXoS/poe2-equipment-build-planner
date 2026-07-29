@@ -3,7 +3,7 @@ import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.1.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.2.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -29,6 +29,10 @@ export interface ResolvedDamagingAilment {
   totalDamagePerApplication: number
   effectMultiplier: number
   aggravated?: boolean
+  chanceOnHitPercent?: number
+  chanceOnCriticalHitPercent?: number
+  ailmentCriticalChancePercent?: number
+  weightedSourceDamage?: number
   sourceReferences: string[]
   evidence: 'structured-exact'
   detail: string
@@ -106,6 +110,8 @@ export function collectDamagingAilments(input: {
   enemyLevel?: number
   enemyProfile?: EnemyMitigationProfile
   bleedingPassiveEffect?: BleedingPassiveEffect
+  criticalChancePercent?: number
+  criticalHitDamageMultiplier?: number
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -230,19 +236,32 @@ export function collectDamagingAilments(input: {
     const chanceIncrease = sum(allStats, 'active_skill_ignite_chance_+%_final')
       + sum(allStats, 'support_ignition_chance_to_ignite_+%_final')
     const averageFireHit = (fireRange.minimum + fireRange.maximum) / 2
-    const chancePercent = Math.min(
+    const criticalChance = Math.max(0, Math.min(100, input.criticalChancePercent ?? 0)) / 100
+    const criticalHitDamageMultiplier = Math.max(1, input.criticalHitDamageMultiplier ?? 1)
+    const averageCriticalFireHit = averageFireHit * criticalHitDamageMultiplier
+    const chanceOnHitPercent = Math.min(
       100,
       Math.max(0, (averageFireHit / threshold * reference.ailmentConstants.igniteChanceMultiplier + flatChance) * (1 + chanceIncrease / 100)),
     )
+    const chanceOnCriticalHitPercent = Math.min(
+      100,
+      Math.max(0, (averageCriticalFireHit / threshold * reference.ailmentConstants.igniteChanceMultiplier + flatChance) * (1 + chanceIncrease / 100)),
+    )
+    const chancePercent = chanceOnHitPercent * (1 - criticalChance) + chanceOnCriticalHitPercent * criticalChance
     if (chancePercent > 0) {
       const durationMs = reference.ailmentConstants.baseIgniteDurationSeconds * 1000
       const basePercentPerSecond = reference.ailmentConstants.igniteHitDamagePercentPerMinute / 60 / 100
-      const expectedActiveStacks = Math.min(
-        input.actionsPerSecond * durationMs / 1000 * chancePercent / 100 * input.hitChancePercent / 100,
-        1,
-      )
+      const stackPotential = input.actionsPerSecond * durationMs / 1000 * chancePercent / 100 * input.hitChancePercent / 100
+      const expectedActiveStacks = Math.min(stackPotential, 1)
+      const ailmentCriticalChance = 1 - Math.pow(1 - criticalChance, Math.max(stackPotential, 1))
+      const chanceFromHit = chanceOnHitPercent * (1 - criticalChance)
+      const chanceFromCriticalHit = chanceOnCriticalHitPercent * criticalChance
+      const weightedFireHit = chanceFromHit + chanceFromCriticalHit > 0
+        ? (averageFireHit * chanceFromHit + averageCriticalFireHit * chanceFromCriticalHit)
+          / (chanceFromHit + chanceFromCriticalHit)
+        : averageFireHit
       const effectMultiplier = productMore(valuesFor(allStats, 'active_skill_damaging_ailment_effect_+%_final'))
-      const singleStackDps = averageFireHit * basePercentPerSecond * effectMultiplier
+      const singleStackDps = weightedFireHit * basePercentPerSecond * effectMultiplier
       const resistance = Math.max(-100, Math.min(90,
         (input.enemyProfile?.resistances?.fire ?? 0)
         - Math.max(0, input.enemyProfile?.resistanceReduction?.fire ?? 0),
@@ -263,11 +282,16 @@ export function collectDamagingAilments(input: {
           : {}),
         totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
         effectMultiplier: round(effectMultiplier),
+        chanceOnHitPercent: round(chanceOnHitPercent),
+        chanceOnCriticalHitPercent: round(chanceOnCriticalHitPercent),
+        ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),
+        weightedSourceDamage: round(weightedFireHit),
         sourceReferences: [
           `monsterAilmentThresholdTable[${enemyLevel}]`,
           'IgniteChanceMultiplier',
           'IgniteHitDamagePercentPerMinute',
           'BaseIgniteDuration',
+          ...(criticalChance > 0 ? ['CalcOffence.calcAilmentDamage', 'CalcOffence.ailmentCritChance'] : []),
         ],
         evidence: 'structured-exact',
         detail: 'Feuerschaden, gepinnte PoB2-Gegnerschwelle, Chance, Dauer, Wirkfrequenz und Grundschaden sind strukturiert verbunden.',

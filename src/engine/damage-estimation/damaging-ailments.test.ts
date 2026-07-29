@@ -144,6 +144,33 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
+  it('gewichtet Entzünden aus normalen und kritischen Treffern nach der gepinnten PoB2-Formel', () => {
+    const result = collectDamagingAilments({
+      skill: record('Molten Blast'),
+      components: [{ type: 'fire', minimum: 1000, maximum: 1000 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      criticalChancePercent: 50,
+      criticalHitDamageMultiplier: 2,
+      enemyLevel: 50,
+      setup: setup(),
+      supports: [],
+    })
+    const ignite = result.effects[0]
+    expect(ignite).toMatchObject({
+      kind: 'ignite',
+      chanceOnHitPercent: 17.51,
+      chanceOnCriticalHitPercent: 35.03,
+      chancePercent: 26.27,
+      ailmentCriticalChancePercent: 51.73,
+      weightedSourceDamage: 1666.67,
+      damagePerSecond: 333.33,
+      totalDamagePerApplication: 1333.33,
+    })
+    expect(ignite.sourceReferences).toContain('CalcOffence.calcAilmentDamage')
+    expect(ignite.sourceReferences).toContain('CalcOffence.ailmentCritChance')
+  })
+
   it('wendet gegnerischen Feuerwiderstand auf Entzünden an, aber keine Trefferpenetration', () => {
     const result = collectDamagingAilments({
       skill: record('Molten Blast'),

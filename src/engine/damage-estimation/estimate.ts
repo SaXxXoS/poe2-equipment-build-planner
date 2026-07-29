@@ -223,6 +223,8 @@ export function estimateHitDamage(input:{
       planning: input.realPassivePlanning,
       weaponSet: activeSet,
     }),
+    criticalChancePercent: effectiveCriticalChance,
+    criticalHitDamageMultiplier: 1 + totalCriticalDamageBonus / 100,
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)
@@ -264,7 +266,9 @@ export function estimateHitDamage(input:{
       effects:damagingAilments.effects.map(value=>({
         sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,damageType:value.damageType,status:value.status,
         chancePercent:value.chancePercent,durationMs:value.durationMs,maximumStacks:value.maximumStacks,expectedActiveStacks:value.expectedActiveStacks,
-        damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,detail:value.detail,
+        damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,
+        chanceOnHitPercent:value.chanceOnHitPercent,chanceOnCriticalHitPercent:value.chanceOnCriticalHitPercent,
+        ailmentCriticalChancePercent:value.ailmentCriticalChancePercent,weightedSourceDamage:value.weightedSourceDamage,detail:value.detail,
       })),
       blockedEffects:damagingAilments.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),
       totalSustainedDamagePerSecond:damagingAilments.totalSustainedDamagePerSecond,
