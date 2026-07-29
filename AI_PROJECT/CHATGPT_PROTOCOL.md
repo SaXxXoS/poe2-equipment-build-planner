@@ -2911,3 +2911,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   verändert.
 - Technische Details:
   `docs/BUILD_ASSISTANT_INTRINSIC_SKILL_COSTS_STEP_59.md`.
+
+# Fortsetzung: Schritt 60 – Archmage-Kosten und Mana-Skalierung
+
+- Die bislang blockierte Archmage-Wechselwirkung wird jetzt aus den
+  strukturierten Daten der exakt gewählten Gemmenstufe berechnet.
+- Auf Stufe 20 werden `6,10 %` des bestätigten maximalen Manas als zusätzliche
+  Grundkosten und `4 %` Schaden je 100 maximales Mana als zusätzlicher
+  Blitzschaden angewandt.
+- Bei 520 bestätigtem Mana entstehen damit 31 zusätzliche Mana-Grundkosten
+  und 20,8 % des Schadens als zusätzlicher Blitzschaden.
+- Archmage gilt nur für nicht-kanalisierte Zauber im selben aktiven
+  Waffenset; eine getrennte Set-2-Quelle verändert keinen Set-1-Zauber.
+- Fehlende Mana-, Stufen- oder Zielbelege bleiben fail-closed.
+- Ressourcenmodell `10.0.0`, Schadensrechner `3.8.0`.
+- Fokussierte Referenztests: 63 erfolgreich; Typecheck und Lint erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_ARCHMAGE_STEP_60.md`.

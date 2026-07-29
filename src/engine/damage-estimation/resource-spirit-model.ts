@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '9.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '10.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -152,6 +152,48 @@ const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, leve
       sourceReference: intrinsicCostReference(record, level, statId),
     }] : []
   })
+}
+
+const setupAppliesTo = (source: SkillSetup['weaponSet'], target: SkillSetup['weaponSet']) =>
+  source === 'both' || source === target
+
+const archmageForTarget = (
+  input: { setups: SkillSetup[]; skills: SkillGemDefinition[] },
+  targetSetup: SkillSetup,
+  targetRecord: NumericSkill | undefined,
+  effectiveManaPool: number | null,
+): { effect?: IntrinsicSkillCostEffect; blocked?: BlockedIntrinsicSkillCostEffect } => {
+  if (!targetRecord || targetRecord.kind !== 'spell' || targetRecord.skillTypes.includes('Channel')) return {}
+  const candidates = input.setups.flatMap(sourceSetup => {
+    if (sourceSetup.id === targetSetup.id || !setupAppliesTo(sourceSetup.weaponSet, targetSetup.weaponSet)) return []
+    const sourceDefinition = input.skills.find(value => value.id === sourceSetup.skillId)
+    if (sourceDefinition?.nameEn !== 'Archmage') return []
+    const sourceRecord = recordFor(sourceDefinition)
+    const sourceLevel = levelFor(sourceRecord, sourceSetup)
+    const permyriad = Number((sourceLevel?.numericStats as Record<string, number | undefined> | undefined)?.archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost)
+    const gainPerHundred = Number((sourceLevel?.numericStats as Record<string, number | undefined> | undefined)?.['archmage_all_damage_%_to_gain_as_lightning_to_grant_to_non_channelling_spells_per_100_max_mana'])
+    if (!sourceRecord || !sourceLevel || !Number.isFinite(permyriad) || !Number.isFinite(gainPerHundred)) return []
+    return [{ sourceSetup, sourceRecord, sourceLevel, permyriad, gainPerHundred }]
+  }).sort((a, b) => a.sourceSetup.id.localeCompare(b.sourceSetup.id))
+  const source = candidates[0]
+  if (!source) return {}
+  const sourceReference = intrinsicCostReference(source.sourceRecord, source.sourceLevel, 'archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost')
+  if (effectiveManaPool == null) return { blocked: {
+    statId: 'archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost',
+    value: source.permyriad,
+    reason: 'requires-confirmed-maximum-mana',
+    sourceReference,
+  } }
+  return { effect: {
+    statId: 'archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost',
+    kind: 'archmage-max-mana-cost',
+    value: source.permyriad / 100,
+    additionalBaseManaCost: Math.floor(effectiveManaPool * source.permyriad / 10_000),
+    gainAsLightningPercent: floorFour(effectiveManaPool / 100 * source.gainPerHundred),
+    sourceSkillId: source.sourceSetup.skillId,
+    evidence: 'structured-exact',
+    sourceReference,
+  } }
 }
 
 const allocatedNodeIds = (planning: RealPassivePlanningIntegrationResult | undefined, weaponSet: SkillSetup['weaponSet']) => {
@@ -453,7 +495,7 @@ export function resolveResourceSpiritModel(input: {
           }]
         }).sort((a, b) => a.sourceResource.localeCompare(b.sourceResource))
         : []
-      const exactCostChain = baseCostStatus !== 'blocked-missing-exact-base-cost'
+      let exactCostChain = baseCostStatus !== 'blocked-missing-exact-base-cost'
         && supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'
         && blockedSkillCostEffects.length === 0
       const appliedPassiveEffects = passiveResourceEffects(input.passiveTree, input.realPassivePlanning, setup.weaponSet)
@@ -486,6 +528,17 @@ export function resolveResourceSpiritModel(input: {
         : noInherentManaRegeneration || noMana
           ? 0
           : Number((effectiveManaPool * (reference.resourceConstants.inherentManaRegenerationPercentPerMinute / 60 / 100) * (1 + (manaRegenIncrease + passiveManaRegenIncrease) / 100)).toFixed(2))
+      const archmage = archmageForTarget(input, setup, record, effectiveManaPool)
+      if (archmage.effect) {
+        appliedIntrinsicSkillCostEffects.push(archmage.effect)
+        for (const cost of baseCosts) {
+          if (cost.resource !== 'mana' || cost.cadence !== 'per-use') continue
+          cost.baseAmount += archmage.effect.additionalBaseManaCost ?? 0
+          cost.supportAdjustedAmount = Math.floor(cost.baseAmount * (combinedSupportMultiplier ?? 1))
+        }
+      }
+      if (archmage.blocked) blockedSkillCostEffects.push(archmage.blocked)
+      exactCostChain = exactCostChain && blockedSkillCostEffects.length === 0
       for (const cost of baseCosts) cost.resourceAdjustedAmount = cost.resource === 'mana' || cost.resource === 'mana-percent'
         ? Math.max(0, Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier / combinedResourceCostEfficiency))
         : cost.supportAdjustedAmount

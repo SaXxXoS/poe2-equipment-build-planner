@@ -19,6 +19,32 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
   })
+  it('wendet Archmage-Kosten und zusätzlichen Blitzschaden nur im aktiven Waffenset an',()=>{
+    const arc=skill('arc','Arc')
+    const archmage=skill('archmage','Archmage')
+    const arcSetup={...setup(arc.id,'set-1'),id:'arc-setup'}
+    const activeArchmage={...setup(archmage.id,'set-1'),id:'archmage-setup',role:'utility' as const}
+    const inactiveArchmage={...activeArchmage,weaponSet:'set-2' as const}
+    const baseline=estimateHitDamage({equipment:[],setups:[arcSetup,inactiveArchmage],skills:[arc,archmage],characterLevel:100})
+    const result=estimateHitDamage({equipment:[],setups:[arcSetup,activeArchmage],skills:[arc,archmage],characterLevel:100})
+    expect(result.resourceSpiritModel?.skillCostChains.find(value=>value.skillId===arc.id)).toMatchObject({
+      baseCosts:[{baseAmount:112,supportAdjustedAmount:112,resourceAdjustedAmount:112}],
+      intrinsicSkillCostEffects:[{
+        kind:'archmage-max-mana-cost',
+        additionalBaseManaCost:31,
+        gainAsLightningPercent:20.8,
+      }],
+    })
+    expect(result.hitDamage!.average).toBeCloseTo(baseline.hitDamage!.average*1.208,1)
+    expect(result.confirmedGainAsExtra).toContainEqual(expect.objectContaining({
+      from:'all',
+      to:'lightning',
+      percent:20.8,
+      source:'skill',
+      sourceId:archmage.id,
+    }))
+    expect(result.included).toContain('Archmage: 20.8% des Schadens als zusätzlicher Blitzschaden bei 31 zusätzlichen Mana-Grundkosten')
+  })
   it('wendet Hourglass-Schaden und den belegten Cooldown-Override gemeinsam an',()=>{
     const hourglass:SupportGemDefinition={
       id:'hourglass',displayNameDe:'Sanduhr',nameEn:'Hourglass',tags:[],dataVersion:'test',

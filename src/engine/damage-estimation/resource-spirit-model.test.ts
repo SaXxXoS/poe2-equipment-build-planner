@@ -349,6 +349,51 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     })
     expect(model.exactSkillCostsKnown).toBe(false)
   })
+  it('wendet Archmage auf einen nicht-kanalisierten Zauber im selben Waffenset an', () => {
+    const arc = skill('arc', 'Arc')
+    const archmage = skill('archmage', 'Archmage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [
+        setup(arc.id, [], 'set-1'),
+        { ...setup(archmage.id, [], 'set-1'), id: 'archmage-setup', role: 'utility' },
+      ],
+      skills: [arc, archmage],
+      supports: [],
+    })
+    expect(model.skillCostChains.find(value => value.skillId === arc.id)).toMatchObject({
+      intrinsicSkillCostEffects: [{
+        statId: 'archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost',
+        kind: 'archmage-max-mana-cost',
+        value: 6.1,
+        additionalBaseManaCost: 31,
+        gainAsLightningPercent: 20.8,
+        sourceSkillId: archmage.id,
+        evidence: 'structured-exact',
+      }],
+      blockedIntrinsicSkillCostEffects: [],
+      effectiveManaPool: 520,
+      baseCosts: [{ baseAmount: 112, supportAdjustedAmount: 112, resourceAdjustedAmount: 112 }],
+    })
+  })
+  it('überträgt Archmage nicht zwischen getrennten Waffensets', () => {
+    const arc = skill('arc', 'Arc')
+    const archmage = skill('archmage', 'Archmage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [
+        setup(arc.id, [], 'set-1'),
+        { ...setup(archmage.id, [], 'set-2'), id: 'archmage-setup', role: 'utility' },
+      ],
+      skills: [arc, archmage],
+      supports: [],
+    })
+    expect(model.skillCostChains.find(value => value.skillId === arc.id)).toMatchObject({
+      intrinsicSkillCostEffects: [],
+      blockedIntrinsicSkillCostEffects: [],
+      baseCosts: [{ baseAmount: 81, supportAdjustedAmount: 81, resourceAdjustedAmount: 81 }],
+    })
+  })
   it('trennt Waffenset-Passive und verbindet Aszendenzwirkungen mit beiden Sets', () => {
     const definition = skill('arc', 'Arc')
     const passiveTree = {

@@ -53,7 +53,9 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>
               <div><dt>Fertigkeitseigene Kostenwirkung</dt><dd>{chain.intrinsicSkillCostEffects.length
-                ? chain.intrinsicSkillCostEffects.map(effect => `+${formatNumber(effect.value)} %`).join(', ')
+                ? chain.intrinsicSkillCostEffects.map(effect => effect.kind === 'archmage-max-mana-cost'
+                  ? `Archmage: +${formatNumber(effect.additionalBaseManaCost ?? 0)} Mana (${formatNumber(effect.value)} % des maximalen Manas), ${formatNumber(effect.gainAsLightningPercent ?? 0)} % als zusätzlicher Blitzschaden`
+                  : `+${formatNumber(effect.value)} %`).join(', ')
                 : 'Keine exakt anwendbare'}</dd></div>
               <div><dt>Baum-/Aszendenz-Kostenfaktor</dt><dd>{formatNumber(chain.combinedResourceCostMultiplier * 100)} %</dd></div>
               <div><dt>Baum-/Aszendenz-Kosteneffizienz</dt><dd>{formatNumber(chain.combinedResourceCostEfficiency * 100)} %</dd></div>
