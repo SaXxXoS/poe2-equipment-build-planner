@@ -12,6 +12,25 @@ const average = (values: number[]) =>
 const scoreValue = (score: Pick<Score, 'totalScore'> | undefined) =>
   clamp(score?.totalScore ?? 0)
 
+const candidateTags = (
+  candidate: BuildVariantCandidate,
+  selectedSkill: BuildAnalysis['skillAnalysis']['allCandidates'][number] | undefined,
+) => new Set([
+  ...(candidate.skillTags ?? []),
+  ...(selectedSkill?.matchedProfileFields ?? [])
+    .flatMap(field => field.split('.'))
+    .filter(Boolean),
+])
+
+const hasCandidateEvidence = (
+  tags: Set<string>,
+  matchedSkillTags: readonly string[] = [],
+  matchedProfileFields: readonly string[] = [],
+) => matchedSkillTags.some(tag => tags.has(tag))
+  || matchedProfileFields.some(field =>
+    [...tags].some(tag => field === tag || field.endsWith(`.${tag}`)),
+  )
+
 export function evaluateAnalyzedBuildPackage(
   candidate: BuildVariantCandidate,
   analysis: BuildAnalysis,
@@ -24,8 +43,13 @@ export function evaluateAnalyzedBuildPackage(
     .map(id => analysis.supportAnalysis.allCandidates.find(item => item.supportId === id))
     .filter(item => item !== undefined)
   const validSupports = selectedSupports.filter(item => item.valid)
+  const evidenceTags = candidateTags(candidate, selectedSkill)
   const passiveCandidates = analysis.passiveAnalysis.topDamageCandidates
-    .filter(item => item.valid)
+    .filter(item => item.valid && hasCandidateEvidence(
+      evidenceTags,
+      [],
+      item.matchedProfileFields,
+    ))
     .slice(0, 5)
   const jewelCandidates = analysis.jewelAnalysis.topDamageJewels
     .filter(item => item.valid && item.matchedSkillTags.some(tag =>
@@ -34,7 +58,13 @@ export function evaluateAnalyzedBuildPackage(
     ))
     .slice(0, 3)
   const uniqueCandidates = analysis.uniqueAnalysis.topDamageUniques
-    .filter(item => item.valid && item.supportsCurrentBuild)
+    .filter(item => item.valid
+      && item.supportsCurrentBuild
+      && hasCandidateEvidence(
+        evidenceTags,
+        item.matchedSkillTags,
+        item.matchedProfileFields,
+      ))
     .slice(0, 3)
   const relatedBlockingWarnings = analysis.warnings.filter(item => item.blocking && (
     item.sourceId === candidate.skillId

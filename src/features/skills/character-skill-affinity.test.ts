@@ -25,4 +25,10 @@ describe('Charakterabhängige Skillpräferenz', () => {
     const spell = scoreCharacterSkillAffinity(skill('spell', ['spell', 'fire']), 'class-official-6', 'ascendancy-official-Warrior1')
     expect(melee.score).toBeGreaterThan(spell.score)
   })
+
+  it('does not count several elemental tags as several class-affinity bonuses', () => {
+    const lightning = scoreCharacterSkillAffinity(skill('lightning', ['spell', 'intelligence', 'lightning']), 'class-official-7', 'ascendancy-official-Sorceress1')
+    const multiElement = scoreCharacterSkillAffinity(skill('multi', ['spell', 'intelligence', 'fire', 'cold', 'lightning']), 'class-official-7', 'ascendancy-official-Sorceress1')
+    expect(multiElement.score).toBe(lightning.score)
+  })
 })

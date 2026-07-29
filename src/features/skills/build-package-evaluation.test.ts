@@ -36,13 +36,23 @@ const analysis = (skillValid = true): BuildAnalysis => ({
     allCandidates: [{ supportId: 'support-a', valid: true, totalScore: 75 }],
   },
   passiveAnalysis: {
-    topDamageCandidates: [{ valid: true, damageScore: 85 }],
+    topDamageCandidates: [{
+      valid: true,
+      damageScore: 85,
+      matchedProfileFields: ['mechanics.spell'],
+    }],
   },
   jewelAnalysis: {
     topDamageJewels: [{ valid: true, damageScore: 60, matchedSkillTags: ['spell'] }],
   },
   uniqueAnalysis: {
-    topDamageUniques: [{ valid: true, damageScore: 55, supportsCurrentBuild: true }],
+    topDamageUniques: [{
+      valid: true,
+      damageScore: 55,
+      supportsCurrentBuild: true,
+      matchedSkillTags: ['spell'],
+      matchedProfileFields: ['mechanics.spell'],
+    }],
   },
   rotationAnalysis: {
     validPlans: [{ missingRoles: [] }],
@@ -71,6 +81,17 @@ describe('gemeinsame Build-Paketbewertung', () => {
     const result = evaluateAnalyzedBuildPackage(candidate, analysis(false))
     expect(result.status).toBe('blocked')
     expect(result.blockers).toContain('Die Hauptfertigkeit wurde vom Skill Analyzer blockiert.')
+  })
+  it('rechnet fachfremde Passive- und Unique-Wirkungen nicht dem Paket zu', () => {
+    const value = analysis()
+    value.passiveAnalysis.topDamageCandidates[0].matchedProfileFields = ['damage.fire']
+    value.uniqueAnalysis.topDamageUniques[0].matchedSkillTags = ['attack']
+    value.uniqueAnalysis.topDamageUniques[0].matchedProfileFields = ['damage.fire']
+    const result = evaluateAnalyzedBuildPackage(candidate, value)
+    expect(result.components.passives).toBe(0)
+    expect(result.components.uniques).toBe(0)
+    expect(result.evidence.join(' ')).toContain('Passive')
+    expect(result.evidence.join(' ')).toContain('Uniques')
   })
   it('führt einen reinen Attributmangel ohne vorhandene Ausrüstung als planbare Anforderung', () => {
     const value = analysis(false)

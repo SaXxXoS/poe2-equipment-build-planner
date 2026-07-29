@@ -2562,3 +2562,27 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   UI-/Itembasis-/Optimierungslauf `31/31`, Lint und Typecheck erfolgreich,
   Produktions- und Pages-Build erfolgreich, `166` JSON-Dateien validiert,
   `git diff --check` erfolgreich und keine lokalen Audit-Rohdaten versioniert.
+
+## Vollständiger Regel- und Funktionsaudit (2026-07-29)
+
+- Die Behauptung eines vollständigen PoE2-Verständnisses bleibt
+  ausdrücklich **nicht belegt**.
+- Meta-Häufigkeit ist jetzt nur noch ein begrenzter Sekundärbeleg und kann
+  harte Skill-, Waffen-, Ressourcen- oder Interaktionsregeln nicht
+  überstimmen.
+- Mehrere Elementvarianten erzeugen nicht länger mehrere gleichartige
+  Klassenboni.
+- Passive und Uniques tragen nur noch zu einem geprüften Build-Paket bei,
+  wenn ihr Fachbezug zur Hauptfertigkeit belegt ist.
+- Allgemeine Tags wie `attack` oder `spell` reichen nicht länger als
+  positiver Unique-Beleg.
+- Lokaler Bestand: `235` aktive Skills, `451` Supports, `36`
+  Aszendenzen; `22` Aszendenzen besitzen produktiv abgeleitete Semantik.
+- Der Passive-Tree-Pin bleibt bei `0.5.2`; ein Saisonupdate erfordert den
+  bestehenden versionierten Quellen- und Approval-Prozess.
+- Gesamtstatus:
+  `critical-core-corrected-app-not-game-complete`.
+- Dokumentation:
+  `docs/POE2_COMPLETE_APP_RULE_AND_FUNCTION_AUDIT_2026_07_29.md`.
+- Audit:
+  `docs/audits/poe2-complete-app-rule-gap-matrix.json`.

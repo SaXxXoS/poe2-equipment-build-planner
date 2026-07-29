@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-07-29",
+  "decisionStatus": "critical-core-corrected-app-not-game-complete",
+  "currentSeasonStatus": {
+    "observedPatchFamily": "0.5.x",
+    "localPassiveTreePin": "0.5.2",
+    "pinUpdateStatus": "blocked-pending-existing-source-approval-process"
+  },
+  "verifiedLocalInventory": {
+    "activeSkills": 235,
+    "supports": 451,
+    "ascendancies": 36,
+    "ascendanciesWithProductiveDerivedTags": 22,
+    "metaReferenceProfiles": 53,
+    "reproducibleMetaBuildPackages": 0
+  },
+  "correctedInThisChange": [
+    {
+      "id": "meta-reference-dominates-optimizer",
+      "before": "A popularity reference could add up to 2800 score points without equipment.",
+      "after": "Meta evidence is bounded and secondary to hard skill, weapon, resource and interaction rules."
+    },
+    {
+      "id": "multi-element-affinity-stacking",
+      "before": "Fire, cold and lightning variants could yield three simultaneous class/fallback affinity bonuses.",
+      "after": "Elemental affinity contributes at most one class/fallback match; structured ascendancy evidence remains separate."
+    },
+    {
+      "id": "global-passive-package-credit",
+      "before": "Top passive damage candidates contributed to every evaluated main skill.",
+      "after": "Only passive candidates with matching profile evidence contribute."
+    },
+    {
+      "id": "global-unique-package-credit",
+      "before": "Top damage uniques could contribute to unrelated evaluated main skills.",
+      "after": "Only current-build uniques with matching skill or profile evidence contribute."
+    },
+    {
+      "id": "generic-unique-skill-overlap",
+      "before": "Generic tags such as attack or spell could be sufficient for a positive current-build unique classification.",
+      "after": "Only meaningful mechanic/damage overlap produces skill synergy; unrelated passive paths no longer inflate the unique."
+    }
+  ],
+  "confirmedRules": {
+    "weaponSetPassives": {
+      "maximumSpecialisationPairs": 24,
+      "accounting": "one normal passive point can back one set-1 and one set-2 alternative allocation",
+      "notAdditionalSimultaneousPoints": true,
+      "jewelSocketsSetSpecific": false,
+      "commonPathMustRemainValid": true
+    },
+    "recommendationPolicy": {
+      "hardCompatibilityOverridesScore": true,
+      "unknownMechanicsCreatePositiveScore": false,
+      "equipmentFirstWhenEquipmentExists": true,
+      "metaObservationIsProofOfOptimality": false
+    }
+  },
+  "criticalRemainingGaps": [
+    {
+      "id": "current-patch-pin",
+      "severity": "critical",
+      "status": "blocked-by-versioned-source-approval",
+      "detail": "The passive tree pin is older than the observed live patch family."
+    },
+    {
+      "id": "complete-formula-engine",
+      "severity": "critical",
+      "status": "not-complete",
+      "detail": "Conversions, ailments and damage over time, triggers, minions, projectile overlap, enemy mitigation, uptime and every skill-specific formula are not comprehensively modeled."
+    },
+    {
+      "id": "reproducible-meta-packages",
+      "severity": "critical",
+      "status": "not-complete",
+      "detail": "The local meta snapshot is observational and does not contain fully reproducible equipment, gems, passive node ids and rotation state."
+    },
+    {
+      "id": "weapon-base-and-offhand-coverage",
+      "severity": "high",
+      "status": "partial",
+      "detail": "The optimizer has concrete base selection for common attack weapons and selected wands, but not every current equipment family and offhand interaction."
+    },
+    {
+      "id": "ascendancy-semantic-coverage",
+      "severity": "high",
+      "status": "partial",
+      "detail": "Only 22 of 36 ascendancies currently expose productive derived tags."
+    },
+    {
+      "id": "variant-specific-skill-model",
+      "severity": "high",
+      "status": "partial",
+      "detail": "Skills with several elemental or behavioral variants need variant-bound scoring instead of one broad item-level tag union."
+    },
+    {
+      "id": "unique-technical-identity",
+      "severity": "high",
+      "status": "partial",
+      "detail": "PoB2 visible planner lines remain separated from unconfirmed GGG mod/stat identity; many uniques cannot be safely ranked beyond narrow derived semantics."
+    },
+    {
+      "id": "ocr",
+      "severity": "high",
+      "status": "partial",
+      "detail": "Photographs with perspective, background UI and low contrast are not reliably recognized; manual verification remains required."
+    }
+  ],
+  "completionClaim": {
+    "appFullyUnderstandsPoe2": false,
+    "metaBuildEquivalentOrBetterProven": false,
+    "safeToUseAsDeterministicEvidenceBoundPlanner": true,
+    "safeToUseAsCompletePobReplacement": false
+  }
+}

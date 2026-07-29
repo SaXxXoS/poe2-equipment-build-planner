@@ -55,6 +55,14 @@ export function characterSkillAffinity(classId: string, ascendancyId: string): C
   }
 }
 
+const elementalDamageTags = new Set<MechanicTag>(['fire', 'cold', 'lightning'])
+
+const boundedAffinityMatchCount = (matches: MechanicTag[]) => {
+  const elementalMatches = matches.filter(tag => elementalDamageTags.has(tag))
+  return matches.filter(tag => !elementalDamageTags.has(tag)).length
+    + (elementalMatches.length ? 1 : 0)
+}
+
 export function scoreCharacterSkillAffinity(skill: SkillGemDefinition, classId: string, ascendancyId: string) {
   const affinity = characterSkillAffinity(classId, ascendancyId)
   const classMatches = affinity.classTags.filter(tag => skill.tags.includes(tag))
@@ -65,7 +73,15 @@ export function scoreCharacterSkillAffinity(skill: SkillGemDefinition, classId: 
   return {
     classMatches,
     ascendancyMatches,
-    score: classMatches.length * 20 + derived.score + fallbackOnlyMatches.length * 45,
+    /*
+     * Eine Fertigkeit mit mehreren möglichen Elementvarianten erhält nicht
+     * drei Klassen- oder Fallbackboni gleichzeitig. Das verhindert, dass
+     * Mehrvarianten-Skills allein durch breite Quelltags alle
+     * Einzelschadens-Skills überholen.
+     */
+    score: boundedAffinityMatchCount(classMatches) * 20
+      + derived.score
+      + boundedAffinityMatchCount(fallbackOnlyMatches) * 45,
     evidence: derived.evidence === 'structured-derived'
       ? fallbackOnlyMatches.length ? 'structured-derived-with-curated-fallback' : derived.evidence
       : 'fallback-curated',

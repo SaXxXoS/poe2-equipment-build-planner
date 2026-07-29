@@ -434,6 +434,15 @@ export function optimizeBuildVariants(input: {
         blockedCombinationCount += 1
         return []
       }
+      /*
+       * Meta-Beobachtungen sind ein nachrangiger, gepinnter
+       * Plausibilitätsbeleg. Sie dürfen technische Skill-, Waffen-,
+       * Ressourcen- und Aszendenzregeln nicht überstimmen.
+       */
+      const metaReferenceContribution = Math.min(
+        equipmentFirst ? 35 : 400,
+        Math.round(metaReference.score * (equipmentFirst ? 0.5 : 6)),
+      )
       const totalScore = Math.round(
         score.totalScore * 2
         + affinity.score * 3
@@ -445,7 +454,7 @@ export function optimizeBuildVariants(input: {
         // Dann darf der gepinnte, ascendancy-spezifische Snapshot stärker
         // zwischen bereits hart kompatiblen Kandidaten unterscheiden. Er
         // überstimmt weiterhin keine Waffen-, Skill- oder Supportregel.
-        + metaReference.score * (equipmentFirst ? 1 : 40)
+        + metaReferenceContribution
         + Math.min(60, ruleGraph.productiveEdgeCount * 6)
         - resourcePenalty,
       )
