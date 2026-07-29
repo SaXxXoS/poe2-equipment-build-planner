@@ -2882,3 +2882,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Trigger-Teilmodell `1.7.0`.
 - Technische Details:
   `docs/BUILD_ASSISTANT_TRIGGER_STORED_USES_STEP_51.md`.
+
+# Fortsetzung: Schritt 58 – Ressourcenkosten und Kosteneffizienz
+
+- Die gepinnte PoB2-Reihenfolge für Kosten wurde um verringerte und weniger
+  Manakosten sowie allgemeine und Mana-Kosteneffizienz erweitert.
+- Kosteneffizienz wird als Divisor nach den additiven und multiplikativen
+  Kostenmodifikatoren angewandt.
+- Gemeinsame, waffensetspezifische und Aszendenzknoten bleiben getrennt.
+- Nur unbedingte, exakt lesbare Knotenwirkungen werden produktiv verwendet;
+  bedingte Wirkungen bleiben fail-closed.
+- Das Ressourcenmodell trägt Schema `8.0.0`.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RESOURCE_COST_EFFICIENCY_STEP_58.md`.

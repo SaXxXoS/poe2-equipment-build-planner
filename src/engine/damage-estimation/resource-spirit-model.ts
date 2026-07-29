@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '7.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '8.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -58,6 +58,7 @@ interface SkillResourceCostChain {
   passiveResourceEffects: PassiveResourceEffect[]
   combinedSupportMultiplier: number | null
   combinedResourceCostMultiplier: number
+  combinedResourceCostEfficiency: number
   effectiveManaPool: number | null
   effectiveManaRegenerationPerSecond: number | null
   confirmedFlatSpiritContribution: number
@@ -156,8 +157,16 @@ function passiveResourceEffects(
       if (match) { add(nodeId, text, 'mana-regeneration-increased', Number(match[1])); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% increased Mana Cost of Skills$/i)
       if (match) { add(nodeId, text, 'mana-cost-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% reduced Mana Cost of Skills$/i)
+      if (match) { add(nodeId, text, 'mana-cost-reduced', Number(match[1])); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% more Mana Cost of Skills$/i)
       if (match) { add(nodeId, text, 'mana-cost-more', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% less Mana Cost of Skills$/i)
+      if (match) { add(nodeId, text, 'mana-cost-less', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased Mana Cost Efficiency$/i)
+      if (match) { add(nodeId, text, 'mana-cost-efficiency-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased Cost Efficiency$/i)
+      if (match) { add(nodeId, text, 'cost-efficiency-increased', Number(match[1])); continue }
       if (/^Mana Costs are Doubled$/i.test(text)) { add(nodeId, text, 'mana-cost-doubled', 100); continue }
       match = text.match(/^\+(\d+(?:\.\d+)?) to (?:maximum )?Spirit$/i)
       if (match) { add(nodeId, text, 'flat-spirit', Number(match[1])); continue }
@@ -416,9 +425,16 @@ export function resolveResourceSpiritModel(input: {
       const noMana = appliedPassiveEffects.some(effect => effect.kind === 'no-mana')
       const noInherentManaRegeneration = appliedPassiveEffects.some(effect => effect.kind === 'no-inherent-mana-regeneration')
       const confirmedFlatSpiritContribution = appliedPassiveEffects.filter(effect => effect.kind === 'flat-spirit').reduce((sum, effect) => sum + effect.value, 0)
+      const combinedResourceCostEfficiency = 1 + appliedPassiveEffects
+        .filter(effect => effect.kind === 'mana-cost-efficiency-increased' || effect.kind === 'cost-efficiency-increased')
+        .reduce((sum, effect) => sum + effect.value, 0) / 100
       const combinedResourceCostMultiplier = floorFour(
-        (1 + appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-increased').reduce((sum, effect) => sum + effect.value, 0) / 100)
+        Math.max(0, 1 + (
+          appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-increased').reduce((sum, effect) => sum + effect.value, 0)
+          - appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-reduced').reduce((sum, effect) => sum + effect.value, 0)
+        ) / 100)
         * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-more').reduce((value, effect) => value * (1 + effect.value / 100), 1)
+        * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-less').reduce((value, effect) => value * (1 - effect.value / 100), 1)
         * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-doubled').reduce(value => value * 2, 1),
       )
       const effectiveManaPool = confirmedMinimumPools
@@ -430,7 +446,7 @@ export function resolveResourceSpiritModel(input: {
           ? 0
           : Number((effectiveManaPool * (reference.resourceConstants.inherentManaRegenerationPercentPerMinute / 60 / 100) * (1 + (manaRegenIncrease + passiveManaRegenIncrease) / 100)).toFixed(2))
       for (const cost of baseCosts) cost.resourceAdjustedAmount = cost.resource === 'mana' || cost.resource === 'mana-percent'
-        ? Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier)
+        ? Math.max(0, Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier / combinedResourceCostEfficiency))
         : cost.supportAdjustedAmount
       const actionFrequencyPerSecond = record?.kind === 'spell' && record.castTime > 0
         ? Number((1 / record.castTime).toFixed(4))
@@ -471,6 +487,7 @@ export function resolveResourceSpiritModel(input: {
         passiveResourceEffects: appliedPassiveEffects,
         combinedSupportMultiplier,
         combinedResourceCostMultiplier,
+        combinedResourceCostEfficiency,
         effectiveManaPool,
         effectiveManaRegenerationPerSecond,
         confirmedFlatSpiritContribution,

@@ -273,6 +273,42 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     })
     expect(model.skillCostChains[0].passiveResourceEffects).toHaveLength(4)
   })
+  it('wendet verringerte, weniger und effiziente Manakosten in der gepinnten PoB2-Reihenfolge an', () => {
+    const definition = skill('arc', 'Arc')
+    const passiveTree = {
+      metadata: { releaseTag: 'test' },
+      connections: [],
+      nodes: [
+        { id: 'reduced', stats: [{ sourceText: '20% reduced Mana Cost of Skills' }], ascendancyId: null },
+        { id: 'less', stats: [{ sourceText: '25% less Mana Cost of Skills' }], ascendancyId: null },
+        { id: 'mana-efficiency', stats: [{ sourceText: '20% increased Mana Cost [Efficiency]' }], ascendancyId: null },
+        { id: 'general-efficiency', stats: [{ sourceText: '10% increased Cost Efficiency' }], ascendancyId: 'TestAscendancy' },
+      ],
+    } as never
+    const realPassivePlanning = {
+      pipelineResult: { allocatedNodeIds: ['reduced', 'less', 'mana-efficiency'] },
+      ascendancyPlanning: { allocatedNodeIds: ['general-efficiency'] },
+    } as never
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+      passiveTree,
+      realPassivePlanning,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      combinedResourceCostMultiplier: 0.6,
+      combinedResourceCostEfficiency: 1.3,
+      baseCosts: [{ supportAdjustedAmount: 81, resourceAdjustedAmount: 37 }],
+    })
+    expect(model.skillCostChains[0].passiveResourceEffects.map(effect => effect.kind)).toEqual([
+      'cost-efficiency-increased',
+      'mana-cost-less',
+      'mana-cost-efficiency-increased',
+      'mana-cost-reduced',
+    ])
+  })
   it('trennt Waffenset-Passive und verbindet Aszendenzwirkungen mit beiden Sets', () => {
     const definition = skill('arc', 'Arc')
     const passiveTree = {

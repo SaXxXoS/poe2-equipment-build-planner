@@ -53,6 +53,7 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>
               <div><dt>Baum-/Aszendenz-Kostenfaktor</dt><dd>{formatNumber(chain.combinedResourceCostMultiplier * 100)} %</dd></div>
+              <div><dt>Baum-/Aszendenz-Kosteneffizienz</dt><dd>{formatNumber(chain.combinedResourceCostEfficiency * 100)} %</dd></div>
               <div><dt>Bestätigter Geistbeitrag</dt><dd>{formatNumber(chain.confirmedFlatSpiritContribution)}</dd></div>
             </dl>
             <p className={`resource-status ${chain.sustainStatus.startsWith('blocked') || chain.sustainStatus.startsWith('unusable') ? 'warning' : ''}`}>
