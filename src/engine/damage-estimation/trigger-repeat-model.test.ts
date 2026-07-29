@@ -88,6 +88,34 @@ describe('Trigger- und Wiederholungsmodell', () => {
     expect(result.productive).toBe(false)
   })
 
+  it('berechnet für Cast on Critical die kritische Ereignisrate und den normierten Energieaufbau', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('comet', 'Comet')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+      primaryActionContext: {
+        actionsPerSecond: 2,
+        hitChancePercent: 80,
+        criticalHitChancePercent: 25,
+      },
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      status: 'normalized-event-rate-only',
+      eventRatePerSecond: 0.4,
+      energyPerSecondAtMonsterPowerOne: 0.628,
+      triggerRatePerSecondAtMonsterPowerOne: 0.00628,
+      secondsPerTriggerAtMonsterPowerOne: 159.235669,
+    })
+    expect(result.productive).toBe(false)
+  })
+
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('coc', 'Cast on Critical')

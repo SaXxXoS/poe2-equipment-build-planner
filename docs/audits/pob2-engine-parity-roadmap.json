@@ -62,9 +62,11 @@
         "unknown embedded IDs do not create a target relationship",
         "source, condition and target are exposed with evidence while DPS remains blocked without a complete event, energy and frequency chain",
         "internal pinned trigger supports expose exact target compatibility and energy-per-cast-time rules",
-        "energy requirement, per-event generation and required events at monster power one are calculated without inventing an event rate"
+        "energy requirement, per-event generation and required events at monster power one are calculated without inventing an event rate",
+        "Cast on Critical derives its critical-event rate from action rate, hit chance and effective critical chance",
+        "normalized energy buildup and trigger rate at monster power one are exposed without adding uncalculated target damage"
       ],
-      "nextGap": "connect skill-specific event rates and monster power to the validated energy chain; then add overlaps and return/fork chains"
+      "nextGap": "resolve target damage with a recursion-safe secondary-skill calculation and connect actual monster power or explicit event profiles; then add overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

@@ -2797,3 +2797,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   erforderliche Ereignisse bei Monsterstärke eins werden ausgewiesen.
 - Ohne belegte Ereignisrate bleibt zusätzlicher Trigger-DPS fail-closed.
 - Trigger-Teilmodell `1.2.0`.
+
+# Fortsetzung: Schritt 46 – Meta-Trigger-Ereignisrate
+
+- `Cast on Critical` verwendet Aktionsrate, Trefferchance und effektive
+  Kritchance für die belegte kritische Ereignisrate.
+- Energieaufbau, Auslösungen pro Sekunde und Sekunden pro Auslösung werden
+  bei normierter Monsterstärke eins ausgewiesen.
+- Andere Ereignisarten bleiben ohne belegte Rate blockiert.
+- Eingebetteter Zielschaden wird noch nicht zum Gesamt-DPS addiert; dafür
+  fehlt die rekursionssichere Sekundärskill-Berechnung.
+- Trigger-Teilmodell `1.3.0`.

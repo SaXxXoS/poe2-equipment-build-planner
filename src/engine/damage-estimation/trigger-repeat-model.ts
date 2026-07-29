@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.2.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.3.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type InternalTriggerSupport = (typeof reference.internalTriggerSupports)[number]
@@ -39,11 +39,16 @@ export interface ResolvedTriggerRepeatSource {
   energyGenerationModifierPercent?: number
   effectiveEnergyPerEventAtMonsterPowerOne?: number
   eventsRequiredAtMonsterPowerOne?: number
+  eventRatePerSecond?: number
+  energyPerSecondAtMonsterPowerOne?: number
+  triggerRatePerSecondAtMonsterPowerOne?: number
+  secondsPerTriggerAtMonsterPowerOne?: number
   status:
     | 'blocked-missing-target'
     | 'blocked-incompatible-target'
     | 'blocked-missing-trigger-source'
     | 'blocked-missing-interval'
+    | 'normalized-event-rate-only'
     | 'interval-only'
   evidence: 'structured-exact'
   sourceReferences: string[]
@@ -85,6 +90,11 @@ export function resolveTriggerRepeatModel(input: {
   primarySkill?: SkillGemDefinition
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
+  primaryActionContext?: {
+    actionsPerSecond: number
+    hitChancePercent: number
+    criticalHitChancePercent: number
+  }
 }): TriggerRepeatModel {
   const primaryRecord = recordFor(input.primarySkill)
   const primaryTypes = new Set(primaryRecord?.skillTypes ?? [])
@@ -141,6 +151,26 @@ export function resolveTriggerRepeatModel(input: {
       && effectiveEnergyPerEventAtMonsterPowerOne > 0
       ? Math.ceil(energyRequirement / effectiveEnergyPerEventAtMonsterPowerOne)
       : undefined
+    const eventRatePerSecond = record.name.toLocaleLowerCase('en') === 'cast on critical'
+      && input.primaryActionContext
+      ? input.primaryActionContext.actionsPerSecond
+        * input.primaryActionContext.hitChancePercent / 100
+        * input.primaryActionContext.criticalHitChancePercent / 100
+      : undefined
+    const energyPerSecondAtMonsterPowerOne = eventRatePerSecond != null
+      && effectiveEnergyPerEventAtMonsterPowerOne != null
+      ? eventRatePerSecond * effectiveEnergyPerEventAtMonsterPowerOne
+      : undefined
+    const triggerRatePerSecondAtMonsterPowerOne = energyRequirement != null
+      && energyRequirement > 0
+      && energyPerSecondAtMonsterPowerOne != null
+      ? energyPerSecondAtMonsterPowerOne / energyRequirement
+      : undefined
+    const secondsPerTriggerAtMonsterPowerOne = triggerRatePerSecondAtMonsterPowerOne != null
+      && triggerRatePerSecondAtMonsterPowerOne > 0
+      ? 1 / triggerRatePerSecondAtMonsterPowerOne
+      : undefined
+    const stable = (value: number): number => Math.round(value * 1_000_000) / 1_000_000
 
     for (const target of targets.length ? targets : [undefined]) {
       const targetRecord = recordFor(target)
@@ -156,10 +186,16 @@ export function resolveTriggerRepeatModel(input: {
         ...(Number.isFinite(energyGenerationModifierPercent) ? { energyGenerationModifierPercent } : {}),
         ...(effectiveEnergyPerEventAtMonsterPowerOne == null ? {} : { effectiveEnergyPerEventAtMonsterPowerOne }),
         ...(eventsRequiredAtMonsterPowerOne == null ? {} : { eventsRequiredAtMonsterPowerOne }),
+        ...(eventRatePerSecond == null ? {} : { eventRatePerSecond: stable(eventRatePerSecond) }),
+        ...(energyPerSecondAtMonsterPowerOne == null ? {} : { energyPerSecondAtMonsterPowerOne: stable(energyPerSecondAtMonsterPowerOne) }),
+        ...(triggerRatePerSecondAtMonsterPowerOne == null ? {} : { triggerRatePerSecondAtMonsterPowerOne: stable(triggerRatePerSecondAtMonsterPowerOne) }),
+        ...(secondsPerTriggerAtMonsterPowerOne == null ? {} : { secondsPerTriggerAtMonsterPowerOne: stable(secondsPerTriggerAtMonsterPowerOne) }),
         status: !target
           ? 'blocked-missing-target'
           : compatible
-            ? 'blocked-missing-interval'
+            ? eventRatePerSecond == null
+              ? 'blocked-missing-interval'
+              : 'normalized-event-rate-only'
             : 'blocked-incompatible-target',
         evidence: 'structured-exact',
         sourceReferences: [
@@ -169,7 +205,9 @@ export function resolveTriggerRepeatModel(input: {
           ...(internalSupport ? [`damage-reference:${internalSupport.sourceRecordId}`] : []),
         ],
         detail: target && compatible
-          ? `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
+          ? eventRatePerSecond != null
+            ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate und Energieaufbau sind bei normierter Monsterstärke 1 berechnet; Zielschaden, tatsächliche Monsterstärke und Trigger-Obergrenzen fehlen noch, daher entsteht noch kein zusätzlicher DPS-Wert.`
+            : `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
           : target
             ? `Das eingebettete Ziel „${target.displayNameDe}“ erfüllt die strukturierten Fertigkeitsanforderungen der Triggerquelle nicht und wird nicht produktiv berechnet.`
             : condition
