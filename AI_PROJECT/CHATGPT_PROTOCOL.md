@@ -2762,3 +2762,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Nur der kritische Angriffsanteil der Blutungsanwendungen wird verschärft.
 - Zaubertreffer und normale Treffer bleiben ausgeschlossen; globale
   Aggravation wird nicht doppelt multipliziert.
+
+# Fortsetzung: Schritt 43 – Lucky-Trefferschadenswürfe
+
+- Unbedingte allgemeine und schadensartspezifische Lucky-Chancen aus exakt
+  belegten Passivknoten fließen in den Treffer-Erwartungswert ein.
+- Die Berechnung verwendet den Erwartungswert des besseren von zwei
+  gleichverteilten Schadenswürfen und mischt ihn mit der belegten Chance.
+- Die Zuordnung bleibt waffensetgetrennt; bedingte Gegnerzustände sowie
+  defensive Unlucky-Texte bleiben fail-closed.
+- Rechenmodell `3.7.0`, Lucky-Teilmodell `1.0.0`.
+- Weiter offen: Doppel-/Dreifachschaden, bedingte Lucky-Zustände und
+  fertigkeitsspezifische Wiederholungsformeln.

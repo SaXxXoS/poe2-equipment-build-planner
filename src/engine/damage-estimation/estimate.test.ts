@@ -1,6 +1,8 @@
 import { describe,expect,it } from 'vitest'
 import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
 import type { RotationAnalysis } from '../common/types'
+import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
+import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { estimateHitDamage } from './estimate'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,displayNameDe:nameEn,nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
@@ -15,6 +17,30 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.status).toBe('partial')
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
+  })
+  it('wendet einen exakt belegten Lucky-Trefferschadensknoten im Erwartungswert an',()=>{
+    const passiveTree={nodes:[{
+      id:'lucky',
+      stats:[{sourceText:'20% chance for Damage with [HitDamage|Hits] to be [Lucky]'}],
+    }]} as unknown as RealPassiveTree
+    const realPassivePlanning={
+      pipelineResult:{allocatedNodeIds:['lucky']},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup('ball')],
+      skills:[skill('ball','Ball Lightning')],
+      passiveTree,
+      realPassivePlanning,
+    })
+    expect(result.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
+    expect(result.luckyHitEffects).toMatchObject({
+      modelVersion:'1.0.0',
+      expectedHitDamage:58.8,
+      effects:[{sourceNodeId:'lucky',damageType:'all',chancePercent:20}],
+    })
+    expect(result.hitDamagePerSecond).toBe(58.8)
+    expect(result.stages?.map(stage=>stage.id)).toContain('lucky-hit-expectation')
   })
   it('verwendet die exakt gewählte Skill-Levelzeile für Schaden und Kosten',()=>{
     const selected={...setup('ball'),level:19}

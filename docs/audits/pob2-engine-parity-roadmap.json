@@ -32,9 +32,11 @@
         "conversion remains separate from gain-as-extra",
         "gain-as-extra retains source damage",
         "extra component receives source and destination scaling",
-        "stage and provenance are exposed in DamageEstimate"
+        "stage and provenance are exposed in DamageEstimate",
+        "unconditional allocated hit-damage lucky chance uses the exact uniform-roll expectation",
+        "damage-type-specific lucky chance remains separated by active weapon-set allocation"
       ],
-      "nextGap": "multi-step conversion precedence, double/triple damage, lucky damage and skill-specific repeat formulas"
+      "nextGap": "double/triple damage, conditional lucky states and skill-specific repeat formulas"
     },
     {
       "referenceArea": "damage over time and ailments",

@@ -44,7 +44,8 @@ export interface EnemyMitigationProfile {
   temporalModelVersion?:string
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
-export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'prepared-next-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
+export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'prepared-next-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
+export interface AppliedLuckyHitEffect { damageType:DamageComponent['type']|'all';chancePercent:number;sourceNodeId:string;sourceText:string;evidence:'text-pattern-exact' }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
 export interface AppliedNextSkillEffect { sourceId:string;sourceLabel:string;targetSkillId?:string;targetSkillLabel?:string;kind:'more-damage'|'gain-as-fire'|'gain-as-chaos'|'blocked';percent?:number;status:'prepared-next-hit'|'blocked';detail:string }
@@ -127,6 +128,7 @@ export interface DamageEstimate {
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number
   criticalExpectationMultiplier?:number
+  luckyHitEffects?:{modelVersion:'1.0.0';expectedHitDamage:number;effects:AppliedLuckyHitEffect[]}
   included:string[]
   excluded:string[]
   warnings:string[]
