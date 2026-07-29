@@ -2,14 +2,18 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.1.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.2.0'
 
 type NumericSkill = (typeof reference.skills)[number]
+type InternalTriggerSupport = (typeof reference.internalTriggerSupports)[number]
+
 const byName = new Map<string, NumericSkill>()
 for (const skill of reference.skills) {
   const key = skill.name.toLocaleLowerCase('en')
   const current = byName.get(key)
-  if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) byName.set(key, skill)
+  if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) {
+    byName.set(key, skill)
+  }
 }
 
 const triggerConditionByName: Readonly<Record<string, string>> = {
@@ -30,7 +34,17 @@ export interface ResolvedTriggerRepeatSource {
   condition?: string
   intervalMs?: number
   targetSkillId?: string
-  status: 'blocked-missing-target' | 'blocked-missing-trigger-source' | 'blocked-missing-interval' | 'interval-only'
+  energyRequirement?: number
+  baseEnergyPerEvent?: number
+  energyGenerationModifierPercent?: number
+  effectiveEnergyPerEventAtMonsterPowerOne?: number
+  eventsRequiredAtMonsterPowerOne?: number
+  status:
+    | 'blocked-missing-target'
+    | 'blocked-incompatible-target'
+    | 'blocked-missing-trigger-source'
+    | 'blocked-missing-interval'
+    | 'interval-only'
   evidence: 'structured-exact'
   sourceReferences: string[]
   detail: string
@@ -46,6 +60,26 @@ export interface TriggerRepeatModel {
 
 const recordFor = (definition: SkillGemDefinition | undefined): NumericSkill | undefined =>
   definition?.nameEn ? byName.get(definition.nameEn.toLocaleLowerCase('en')) : undefined
+
+const internalSupportFor = (record: NumericSkill): InternalTriggerSupport | undefined =>
+  reference.internalTriggerSupports.find(value => value.sourceRecordId === `Support${record.sourceRecordId}`)
+
+const targetCompatible = (target: NumericSkill, support: InternalTriggerSupport | undefined): boolean => {
+  if (!support) return false
+  const targetTypes = new Set(target.skillTypes)
+  const required = support.requireSkillTypes.filter(value => value !== 'AND')
+  return required.every(value => targetTypes.has(value))
+    && support.excludeSkillTypes.every(value => !targetTypes.has(value))
+}
+
+const energyPerEvent = (record: NumericSkill): number | undefined => {
+  const entry = Object.entries(record.numericStats).find(([stat]) =>
+    (/gain_(?:1|X)_energy/.test(stat) || stat.includes('gain_X_centienergy'))
+    && !stat.includes('maximum_energy'))
+  if (!entry) return undefined
+  const [stat, value] = entry
+  return value / (stat.includes('centienergy') ? 100 : 1)
+}
 
 export function resolveTriggerRepeatModel(input: {
   primarySkill?: SkillGemDefinition
@@ -77,29 +111,70 @@ export function resolveTriggerRepeatModel(input: {
     const definition = input.skills.find(value => value.id === setup.skillId)
     const record = recordFor(definition)
     if (!definition || !record || !record.skillTypes.includes('Triggers')) continue
+
     const condition = triggerConditionByName[record.name.toLocaleLowerCase('en')]
+    const internalSupport = internalSupportFor(record)
     const targets = (setup.embeddedSkillIds ?? [])
       .map(targetSkillId => input.skills.find(value => value.id === targetSkillId))
       .filter((value): value is SkillGemDefinition => Boolean(value))
+    const targetRecords = targets.map(target => recordFor(target))
+    const millisecondsPerEnergy = Number(
+      internalSupport?.numericStats.generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time,
+    )
+    const energyRequirement = Number.isFinite(millisecondsPerEnergy) && millisecondsPerEnergy > 0
+      ? targetRecords.reduce(
+        (sum, targetRecord) => sum + (targetRecord ? targetRecord.castTime * 1000 / millisecondsPerEnergy : 0),
+        0,
+      )
+      : undefined
+    const baseEnergyPerEvent = energyPerEvent(record)
+    const energyGenerationModifierPercent = Number(record.numericStats['energy_generated_+%'])
+    const effectiveEnergyPerEventAtMonsterPowerOne = baseEnergyPerEvent == null
+      ? undefined
+      : Math.round(baseEnergyPerEvent * (
+        Number.isFinite(energyGenerationModifierPercent)
+          ? 1 + energyGenerationModifierPercent / 100
+          : 1
+      ) * 1_000_000) / 1_000_000
+    const eventsRequiredAtMonsterPowerOne = energyRequirement != null
+      && effectiveEnergyPerEventAtMonsterPowerOne != null
+      && effectiveEnergyPerEventAtMonsterPowerOne > 0
+      ? Math.ceil(energyRequirement / effectiveEnergyPerEventAtMonsterPowerOne)
+      : undefined
+
     for (const target of targets.length ? targets : [undefined]) {
+      const targetRecord = recordFor(target)
+      const compatible = targetRecord ? targetCompatible(targetRecord, internalSupport) : false
       sources.push({
         sourceSkillId: definition.id,
         sourceSkillName: definition.displayNameDe,
         kind: 'meta-trigger',
         ...(condition ? { condition } : {}),
         ...(target ? { targetSkillId: target.id } : {}),
-        status: target ? 'blocked-missing-interval' : 'blocked-missing-target',
+        ...(energyRequirement == null ? {} : { energyRequirement }),
+        ...(baseEnergyPerEvent == null ? {} : { baseEnergyPerEvent }),
+        ...(Number.isFinite(energyGenerationModifierPercent) ? { energyGenerationModifierPercent } : {}),
+        ...(effectiveEnergyPerEventAtMonsterPowerOne == null ? {} : { effectiveEnergyPerEventAtMonsterPowerOne }),
+        ...(eventsRequiredAtMonsterPowerOne == null ? {} : { eventsRequiredAtMonsterPowerOne }),
+        status: !target
+          ? 'blocked-missing-target'
+          : compatible
+            ? 'blocked-missing-interval'
+            : 'blocked-incompatible-target',
         evidence: 'structured-exact',
         sourceReferences: [
           `damage-reference:${record.name}:skillTypes.Triggers`,
           ...(condition ? [`damage-reference:${record.name}:name`] : []),
           ...(target ? [`build-profile:${setup.id}:embeddedSkillIds:${target.id}`] : []),
+          ...(internalSupport ? [`damage-reference:${internalSupport.sourceRecordId}`] : []),
         ],
-        detail: target
-          ? `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Die vollständige Energie-, Ereignis- und Auslösefrequenzkette fehlt jedoch; daher entsteht noch kein zusätzlicher DPS-Wert.`
-          : condition
-            ? `Die Auslösebedingung „${condition}“ ist über die eindeutige Trigger-Fertigkeitsidentität belegt. Ein verknüpftes Ziel und ein vollständiges Auslöseintervall fehlen im BuildProfile; daher entsteht kein zusätzlicher DPS-Wert.`
-            : 'Die Fertigkeit ist als Triggerquelle belegt. Bedingung, Ziel und Intervall sind nicht vollständig strukturiert verknüpft; daher entsteht kein zusätzlicher DPS-Wert.',
+        detail: target && compatible
+          ? `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
+          : target
+            ? `Das eingebettete Ziel „${target.displayNameDe}“ erfüllt die strukturierten Fertigkeitsanforderungen der Triggerquelle nicht und wird nicht produktiv berechnet.`
+            : condition
+              ? `Die Auslösebedingung „${condition}“ ist über die eindeutige Trigger-Fertigkeitsidentität belegt. Ein verknüpftes Ziel und ein vollständiges Auslöseintervall fehlen im BuildProfile; daher entsteht kein zusätzlicher DPS-Wert.`
+              : 'Die Fertigkeit ist als Triggerquelle belegt. Bedingung, Ziel und Intervall sind nicht vollständig strukturiert verknüpft; daher entsteht kein zusätzlicher DPS-Wert.',
       })
     }
   }
@@ -124,9 +199,9 @@ export function resolveTriggerRepeatModel(input: {
     productive: false,
     sources,
     limitations: [
-      'Ein Trigger erhöht den Schadenswert erst, wenn Quelle, Bedingung, Ziel und Intervall gemeinsam belegt sind.',
+      'Ein Trigger erhöht den Schadenswert erst, wenn Quelle, Bedingung, Ziel und Ereignisfrequenz gemeinsam belegt sind.',
       'Triggerable bedeutet nur auslösbar und wird nicht als tatsächlich ausgelöst behandelt.',
-      'Energieerzeugungsboni der Meta-Gemmen sind keine Auslösefrequenz.',
+      'Energiebedarf und Energie pro Ereignis sind ohne Ereignisrate noch keine Auslösefrequenz.',
       'Wiederholungen, Triggerketten und ausgelöste Sekundärfertigkeiten erzeugen ohne vollständige Verknüpfung keinen positiven DPS-Wert.',
     ],
   }

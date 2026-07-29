@@ -200,11 +200,37 @@ const qualityStats = body => {
 }
 
 const skills = []
+const internalTriggerSupports = []
 for (const file of skillFiles) {
   const relative = `src/Data/Skills/${file}`
   const text = fs.readFileSync(path.join(repo, relative), 'utf8')
   for (const { key, body } of blocks(text, 'skills')) {
     const name = string(body, 'name')
+    if (
+      name
+      && /\bsupport\s*=\s*true\b/.test(body)
+      && /\bhidden\s*=\s*true\b/.test(body)
+      && /\bisTrigger\s*=\s*true\b/.test(body)
+    ) {
+      const statSets = tableFor(body, 'statSets')
+      const firstSetMatch = statSets && /\[1\]\s*=\s*\{/.exec(statSets)
+      const firstSet = firstSetMatch ? balanced(statSets, statSets.indexOf('{', firstSetMatch.index)) : undefined
+      const statsTable = firstSet && tableFor(firstSet, 'stats')
+      const statNames = statsTable ? [...statsTable.matchAll(/"([^"]+)"/g)].map(value => value[1]) : []
+      const statValues = positional(firstSet && levelRow(firstSet, 1))
+      internalTriggerSupports.push({
+        sourceRecordId: key,
+        name,
+        requireSkillTypes: skillTypesFor(body, 'requireSkillTypes'),
+        excludeSkillTypes: skillTypesFor(body, 'excludeSkillTypes'),
+        addSkillTypes: skillTypesFor(body, 'addSkillTypes'),
+        numericStats: {
+          ...constantNumericStats(firstSet ?? ''),
+          ...Object.fromEntries(statNames.map((stat, index) => [stat, statValues[index]]).filter(([, value]) => Number.isFinite(value))),
+        },
+        sourceFile: relative,
+      })
+    }
     if (!name || key.includes('Support')) continue
     const skillTypes = [...body.matchAll(/SkillType\.([A-Za-z0-9_]+)\]\s*=\s*true/g)].map(value => value[1])
     const gemLevel = 20
@@ -365,7 +391,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 10,
+  schemaVersion: 11,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -395,6 +421,7 @@ const payload = {
     'Quest Spirit rewards are exact, but character level only provides a planning upper bound and does not prove quest completion.',
   ],
   skills: skills.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
+  internalTriggerSupports: internalTriggerSupports.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
   supports: supports.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
   weaponBases: bases.sort((a, b) => a.name.localeCompare(b.name)),
   equipmentBases: equipmentBases.sort((a, b) => a.name.localeCompare(b.name)),

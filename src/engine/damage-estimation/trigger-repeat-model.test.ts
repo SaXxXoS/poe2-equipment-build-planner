@@ -56,10 +56,35 @@ describe('Trigger- und Wiederholungsmodell', () => {
       kind: 'meta-trigger',
       condition: 'bei einem kritischen Treffer',
       status: 'blocked-missing-interval',
+      energyRequirement: 100,
+      baseEnergyPerEvent: 1,
+      energyGenerationModifierPercent: 57,
+      effectiveEnergyPerEventAtMonsterPowerOne: 1.57,
+      eventsRequiredAtMonsterPowerOne: 64,
     })
     expect(result.sources[0]?.sourceReferences).toContain(
       'build-profile:setup:coc:embeddedSkillIds:comet',
     )
+    expect(result.productive).toBe(false)
+  })
+
+  it('blockiert ein eingebettetes Angriffsziel, das die Triggeranforderung Spell und Triggerable nicht erfüllt', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('boneshatter', 'Boneshatter')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      targetSkillId: 'boneshatter',
+      status: 'blocked-incompatible-target',
+    })
     expect(result.productive).toBe(false)
   })
 

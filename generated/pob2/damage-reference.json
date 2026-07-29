@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 10,
+  "schemaVersion": 11,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -222911,6 +222911,319 @@
       "sourceFile": "src/Data/Skills/act_str.lua"
     }
   ],
+  "internalTriggerSupports": [
+    {
+      "sourceRecordId": "SupportBarrierInvocationPlayer",
+      "name": "SupportBarrierInvocationPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportBlasphemyPlayer",
+      "name": "SupportBlasphemyPlayer",
+      "requireSkillTypes": [
+        "AppliesCurse"
+      ],
+      "excludeSkillTypes": [
+        "Trapped",
+        "RemoteMined",
+        "OR",
+        "SummonsTotem",
+        "UsedByTotem",
+        "NOT",
+        "AND",
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "HasReservation",
+        "TotemCastsWhenNotDetached",
+        "TotemCastsAlone",
+        "Aura",
+        "AuraAffectsEnemies",
+        "CanHaveBlessing",
+        "Triggered"
+      ],
+      "numericStats": {
+        "support_blasphemy_curse_effect_+%_final": -50,
+        "active_skill_base_area_of_effect_radius": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportElementalInvocationPlayer",
+      "name": "SupportElementalInvocationPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportFerociousRoarPlayer",
+      "name": "SupportFerociousRoarPlayer",
+      "requireSkillTypes": [
+        "Warcry"
+      ],
+      "excludeSkillTypes": [
+        "Meta",
+        "InbuiltTrigger",
+        "Shapeshift"
+      ],
+      "addSkillTypes": [
+        "Triggered",
+        "UsableWhileShapeshifted"
+      ],
+      "numericStats": {
+        "chance_to_cast_on_bear_warcry_%": 100,
+        "base_skill_area_of_effect_+%": 50,
+        "warcry_grant_damage_+%_to_exerted_attacks": 30,
+        "damage_+%": 30
+      },
+      "sourceFile": "src/Data/Skills/act_str.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastCurseOnBlockPlayer",
+      "name": "SupportMetaCastCurseOnBlockPlayer",
+      "requireSkillTypes": [
+        "AppliesCurse",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastLightningSpellOnHitPlayer",
+      "name": "SupportMetaCastLightningSpellOnHitPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "Lightning",
+        "AND",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10,
+        "damage_+%": 10
+      },
+      "sourceFile": "src/Data/Skills/act_str.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnBlockPlayer",
+      "name": "SupportMetaCastOnBlockPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_str.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnCritPlayer",
+      "name": "SupportMetaCastOnCritPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "trigger_meta_gem_damage_+%_final": -20,
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnDodgePlayer",
+      "name": "SupportMetaCastOnDodgePlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnElementalAilmentPlayer",
+      "name": "SupportMetaCastOnElementalAilmentPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnMeleeKillPlayer",
+      "name": "SupportMetaCastOnMeleeKillPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered",
+        "Cooldown"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10,
+        "trigger_meta_gem_damage_+%_final": 50
+      },
+      "sourceFile": "src/Data/Skills/act_str.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnMeleeStunPlayer",
+      "name": "SupportMetaCastOnMeleeStunPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered",
+        "Cooldown"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_str.lua"
+    },
+    {
+      "sourceRecordId": "SupportMetaCastOnMinionDeathPlayer",
+      "name": "SupportMetaCastOnMinionDeathPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "CreatesMinion",
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportReapersInvocationPlayer",
+      "name": "SupportReapersInvocationPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    },
+    {
+      "sourceRecordId": "SupportSpellslingerPlayer",
+      "name": "SupportSpellslingerPlayer",
+      "requireSkillTypes": [
+        "Spell",
+        "Triggerable",
+        "AND"
+      ],
+      "excludeSkillTypes": [
+        "InbuiltTrigger",
+        "Persistent",
+        "UsedByProxy"
+      ],
+      "addSkillTypes": [
+        "Triggered"
+      ],
+      "numericStats": {
+        "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
+      },
+      "sourceFile": "src/Data/Skills/act_int.lua"
+    }
+  ],
   "supports": [
     {
       "sourceRecordId": "CompressedDurationSupportPlayer",
@@ -303680,5 +303993,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "8a088c95a42cd21b771fcb48877ff06cd6a237b4f49bd9e5b0f4fb2b5f18e702"
+  "contentHash": "6c7769edfeaaff36374a6473ddb22c03be6066c50cf5221a9eb8a862afc5844c"
 }
