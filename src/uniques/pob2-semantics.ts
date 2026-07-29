@@ -14,13 +14,13 @@ export interface Pob2UniqueSemantics {
   resolutionStatus: 'productive' | 'unresolved'
 }
 
-const exactPatterns: Array<{ pattern: RegExp; tags: MechanicTag[] }> = [
+const exactPatterns: Array<{ pattern: RegExp; tags: MechanicTag[]; offensiveDamage?: boolean }> = [
   // Widerstände sind defensive Werte und kein offensiver Elementbezug.
-  { pattern: /\b(?:Fire Damage|Ignite)\b/i, tags: ['fire'] },
-  { pattern: /\b(?:Cold Damage|Chill|Freeze)\b/i, tags: ['cold'] },
-  { pattern: /\b(?:Lightning Damage|Shock)\b/i, tags: ['lightning'] },
-  { pattern: /\b(?:Chaos Damage|Poison)\b/i, tags: ['chaos'] },
-  { pattern: /\bPhysical Damage\b/i, tags: ['physical'] },
+  { pattern: /\b(?:Fire Damage|Ignite)\b/i, tags: ['fire'], offensiveDamage: true },
+  { pattern: /\b(?:Cold Damage|Chill|Freeze)\b/i, tags: ['cold'], offensiveDamage: true },
+  { pattern: /\b(?:Lightning Damage|Shock)\b/i, tags: ['lightning'], offensiveDamage: true },
+  { pattern: /\b(?:Chaos Damage|Poison)\b/i, tags: ['chaos'], offensiveDamage: true },
+  { pattern: /\bPhysical Damage\b/i, tags: ['physical'], offensiveDamage: true },
   { pattern: /\bAttack(?:s| Damage| Speed| Hits?)\b/i, tags: ['attack'] },
   { pattern: /\bSpell(?:s| Damage| Critical| Skill)\b/i, tags: ['spell'] },
   { pattern: /\bProjectile(?:s| Damage| Speed)?\b/i, tags: ['projectile'] },
@@ -35,8 +35,10 @@ const exactPatterns: Array<{ pattern: RegExp; tags: MechanicTag[] }> = [
   { pattern: /\bMovement Speed\b|\bSkill Speed\b/i, tags: ['movement'] },
 ]
 const negativePattern = /\b(?:reduced|less|Cannot|Lose|You have no|is not applied|instead of Mana or Life)\b/i
+const increasedAttributeRequirementPattern = /\b(?:Strength|Dexterity|Intelligence) Requirement\b/i
 const enablerPattern = /\b(?:Skills Cost \w+ instead of Mana or Life|Can have \d+ additional|Trigger \w+ Skill)\b/i
 const ambiguousPattern = /\b(?:increased Damage|more Damage|Gain \w+ Damage)\b/i
+const damageTakenContext = /\bDamage (?:from Hits )?(?:is )?taken\b|\bDamage taken as\b/i
 
 function linesSharedByEveryVariant(record: Pob2SemanticRecord): Pob2SemanticLine[] {
   if (!record.variants.length) return record.visibleModifiers
@@ -52,14 +54,19 @@ export function classifyPob2Unique(record: Pob2SemanticRecord): Pob2UniqueSemant
   let ambiguous = false
   for (const line of linesSharedByEveryVariant(record)) {
     let matched = false
-    for (const rule of exactPatterns) if (rule.pattern.test(line.normalizedPlannerLine)) {
+    const defensiveDamageConversion = damageTakenContext.test(line.normalizedPlannerLine)
+    for (const rule of exactPatterns) if ((!rule.offensiveDamage || !defensiveDamageConversion) && rule.pattern.test(line.normalizedPlannerLine)) {
       rule.tags.forEach(tag => tags.add(tag))
       matched = true
     }
-    if (negativePattern.test(line.normalizedPlannerLine)) tradeOffs.add(`source-line:${line.sourceLineId}`)
+    if (defensiveDamageConversion) {
+      tags.add('defensive')
+      matched = true
+    }
+    if (negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine)) tradeOffs.add(`source-line:${line.sourceLineId}`)
     if (enablerPattern.test(line.normalizedPlannerLine)) buildEnabler = true
     if (!matched && ambiguousPattern.test(line.normalizedPlannerLine)) ambiguous = true
-    if (matched || negativePattern.test(line.normalizedPlannerLine) || enablerPattern.test(line.normalizedPlannerLine)) evidenceLineIds.add(line.sourceLineId)
+    if (matched || negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine) || enablerPattern.test(line.normalizedPlannerLine)) evidenceLineIds.add(line.sourceLineId)
   }
   const productive = tags.size > 0 || tradeOffs.size > 0 || buildEnabler
   const requiredWeaponTypes: SyntheticWeaponType[] = ['bow', 'crossbow'].includes(record.itemCategory) ? ['ranged-weapon'] : ['mace', 'spear'].includes(record.itemCategory) ? ['melee-weapon'] : []

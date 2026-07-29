@@ -22,6 +22,13 @@ export interface EquipmentSlotSuggestion {
   itemDefinitionId?: string
   baseDisplayName?: string
   weaponStats?: EquipmentWeaponStats
+  requirements?: {
+    requiredLevel: number | null
+    strength: number | null
+    dexterity: number | null
+    intelligence: number | null
+  }
+  properties?: string[]
   reasons?: string[]
   tradeOffs?: string[]
 }
@@ -45,6 +52,17 @@ function rawWeaponOutput(stats: EquipmentWeaponStats): number {
     stats.lightningDamage, stats.chaosDamage,
   ].reduce((sum, range) => sum + (range ? (range.minimum + range.maximum) / 2 : 0), 0)
     * (stats.attacksPerSecond ?? 0)
+}
+
+function baseRequirements(base:{
+  requiredLevel:number|null
+  requirements:{strength:number|null;dexterity:number|null;intelligence:number|null}
+}):EquipmentSlotSuggestion['requirements']{
+  return {requiredLevel:base.requiredLevel,...base.requirements}
+}
+
+function rangeText(label:string,range:{minimum:number;maximum:number}|undefined){
+  return range?`${label}: ${range.minimum}–${range.maximum}`:undefined
 }
 
 function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel?:number, skillTags:string[]=[]){
@@ -71,6 +89,16 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
       itemDefinitionId:selected.id,
       baseDisplayName:selected.nameEn,
       weaponStats:undefined,
+      requirements:baseRequirements(selected),
+      properties:[
+        selected.implicit?`Implizit: ${selected.implicit}`:undefined,
+        selected.spirit!==null?`Geist: ${selected.spirit}`:undefined,
+        selected.socketLimit!==null?`Maximale Sockel: ${selected.socketLimit}`:undefined,
+      ].filter((value):value is string=>Boolean(value)),
+      reasons:[
+        `Anforderungen: Level ${selected.requiredLevel??'—'}, Stärke ${selected.requirements.strength??'—'}, Geschick ${selected.requirements.dexterity??'—'}, Intelligenz ${selected.requirements.intelligence??'—'}`,
+        selected.implicit?`Belegte Eigenschaft: ${selected.implicit}`:'Keine zusätzliche Basis-Eigenschaft belegt.',
+      ],
     }
   }
   const selected=(weaponItemClasses[weaponType]??[])
@@ -85,6 +113,23 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
     itemDefinitionId:selected.base.id,
     baseDisplayName:selected.base.nameEn,
     weaponStats:selected.stats,
+    requirements:baseRequirements(selected.base),
+    properties:[
+      rangeText('Physischer Schaden',selected.stats.physicalDamage),
+      rangeText('Feuerschaden',selected.stats.fireDamage),
+      rangeText('Kälteschaden',selected.stats.coldDamage),
+      rangeText('Blitzschaden',selected.stats.lightningDamage),
+      rangeText('Chaosschaden',selected.stats.chaosDamage),
+      `Kritische Trefferchance: ${selected.stats.criticalHitChance}%`,
+      `Angriffe pro Sekunde: ${selected.stats.attacksPerSecond}`,
+      selected.base.implicit?`Implizit: ${selected.base.implicit}`:undefined,
+      selected.base.socketLimit!==null?`Maximale Sockel: ${selected.base.socketLimit}`:undefined,
+    ].filter((value):value is string=>Boolean(value)),
+    reasons:[
+      `Anforderungen: Level ${selected.base.requiredLevel??'—'}, Stärke ${selected.base.requirements.strength??'—'}, Geschick ${selected.base.requirements.dexterity??'—'}, Intelligenz ${selected.base.requirements.intelligence??'—'}`,
+      `Grundwerte: ${selected.stats.physicalDamage?.minimum??0}–${selected.stats.physicalDamage?.maximum??0} physisch, ${selected.stats.criticalHitChance}% Krit, ${selected.stats.attacksPerSecond} Angriffe/s`,
+      ...(selected.base.implicit?[`Belegte Eigenschaft: ${selected.base.implicit}`]:[]),
+    ],
   }
 }
 
@@ -167,12 +212,14 @@ export function createEquipmentSlotSuggestions(input:{
   const occupied=new Set(suggestions.map(item=>item.slotId))
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
+    const hasMatchedBuildTags=(recommendation.matchedSkillTags?.length??0)>0
     const hasProductiveEvidence=recommendation.buildEnabler
-      || recommendation.supportsCurrentBuild
-      || recommendation.damageScore>0
+      || (recommendation.supportsCurrentBuild&&hasMatchedBuildTags)
+      || (recommendation.damageScore>0&&hasMatchedBuildTags)
       || recommendation.ascendancySynergyScore>0
-      || (recommendation.defenceScore>0&&recommendation.tradeOffs.length===0)
-      || (recommendation.resourceScore>0&&recommendation.tradeOffs.length===0)
+      || (recommendation.replacementVerdict==='clear-upgrade'
+        && (recommendation.tradeOffs?.length??0)===0
+        && (recommendation.defenceScore>0||recommendation.resourceScore>0))
     if(!recommendation.valid||recommendation.totalScore<=0||!hasProductiveEvidence
       || recommendation.replacementVerdict==='downgrade'
       || seenUniqueIds.has(recommendation.uniqueId))continue

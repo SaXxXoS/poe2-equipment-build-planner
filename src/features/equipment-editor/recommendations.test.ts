@@ -37,7 +37,7 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
 
   it('überschreibt keine vorhandene Waffe und zeigt nur positive gültige Uniques',()=>{
     const equipped=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'?{...item,itemClassId:'Wands'}:item)
-    const unique={valid:true,totalScore:10,itemSlot:'helmet',uniqueId:'unique-helmet',buildEnabler:false,damageScore:10,replacementVerdict:'clear-upgrade'} as UniqueRecommendation
+    const unique={valid:true,totalScore:10,itemSlot:'helmet',uniqueId:'unique-helmet',buildEnabler:false,damageScore:10,matchedSkillTags:['lightning'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation
     const suggestions=createEquipmentSlotSuggestions({
       equipment:[...equipped,{id:'helmet',slotId:'slot-helmet',modifierValues:[]}],
       optimization:null,
@@ -50,13 +50,13 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       detail:'Passender Unique-Kandidat',
       source:'unique-analyzer',
       uniqueItemId:'unique-helmet',
-      reasons:[],
+      reasons:['Passt zu: Blitzschaden'],
       tradeOffs:[],
     }])
   })
 
   it('behält ein vom Unique Analyzer als gültig bewertetes Waffen-Unique bei',()=>{
-    const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false,damageScore:10,replacementVerdict:'clear-upgrade'} as UniqueRecommendation
+    const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false,damageScore:10,matchedSkillTags:['attack'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation
     const suggestions=createEquipmentSlotSuggestions({
       equipment,
       optimization:{
@@ -102,6 +102,8 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     expect(suggestions[0].baseDisplayName).toBeTruthy()
     expect(suggestions[0].weaponStats?.attacksPerSecond).toBeGreaterThan(0)
     expect(suggestions[0].weaponStats?.physicalDamage?.maximum).toBeGreaterThan(0)
+    expect(suggestions[0].requirements?.requiredLevel).not.toBeUndefined()
+    expect(suggestions[0].reasons).toContainEqual(expect.stringContaining('Anforderungen:'))
   })
 
   it('unterdrückt ein Unique ohne positive, widerspruchsfreie Build-Wirkung',()=>{
@@ -110,12 +112,27 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       damageScore:0,defenceScore:10,resourceScore:0,ascendancySynergyScore:0,
       supportsCurrentBuild:false,tradeOffs:['negative-roll-range'],
       replacementVerdict:'situational-upgrade',
-    } as UniqueRecommendation
+    } as unknown as UniqueRecommendation
     expect(createEquipmentSlotSuggestions({
       equipment:[...equipment,{id:'ring',slotId:'slot-ring-1',modifierValues:[]}],
       optimization:null,
       uniqueRecommendations:[misleading],
       uniqueNames:new Map([['ventor','Ventors Glücksspiel']]),
+    })).toEqual([])
+  })
+
+  it('unterdrückt defensive Elementumleitung ohne belegte offensive Build-Wirkung',()=>{
+    const defensiveConversion={
+      valid:true,totalScore:10,itemSlot:'offhand',uniqueId:'nightfall',
+      buildEnabler:false,damageScore:0,defenceScore:10,resourceScore:0,
+      ascendancySynergyScore:0,supportsCurrentBuild:false,matchedSkillTags:[],
+      tradeOffs:['source-line:requirement'],replacementVerdict:'situational-upgrade',
+    } as unknown as UniqueRecommendation
+    expect(createEquipmentSlotSuggestions({
+      equipment,
+      optimization:null,
+      uniqueRecommendations:[defensiveConversion],
+      uniqueNames:new Map([['nightfall','Einbruch der Nacht']]),
     })).toEqual([])
   })
 })
