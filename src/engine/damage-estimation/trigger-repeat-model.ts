@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.0.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.1.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 const byName = new Map<string, NumericSkill>()
@@ -30,7 +30,7 @@ export interface ResolvedTriggerRepeatSource {
   condition?: string
   intervalMs?: number
   targetSkillId?: string
-  status: 'blocked-missing-target' | 'blocked-missing-trigger-source' | 'interval-only'
+  status: 'blocked-missing-target' | 'blocked-missing-trigger-source' | 'blocked-missing-interval' | 'interval-only'
   evidence: 'structured-exact'
   sourceReferences: string[]
   detail: string
@@ -78,21 +78,30 @@ export function resolveTriggerRepeatModel(input: {
     const record = recordFor(definition)
     if (!definition || !record || !record.skillTypes.includes('Triggers')) continue
     const condition = triggerConditionByName[record.name.toLocaleLowerCase('en')]
-    sources.push({
-      sourceSkillId: definition.id,
-      sourceSkillName: definition.displayNameDe,
-      kind: 'meta-trigger',
-      ...(condition ? { condition } : {}),
-      status: 'blocked-missing-target',
-      evidence: 'structured-exact',
-      sourceReferences: [
-        `damage-reference:${record.name}:skillTypes.Triggers`,
-        ...(condition ? [`damage-reference:${record.name}:name`] : []),
-      ],
-      detail: condition
-        ? `Die Auslösebedingung „${condition}“ ist über die eindeutige Trigger-Fertigkeitsidentität belegt. Ein verknüpftes Ziel und ein vollständiges Auslöseintervall fehlen im BuildProfile; daher entsteht kein zusätzlicher DPS-Wert.`
-        : 'Die Fertigkeit ist als Triggerquelle belegt. Bedingung, Ziel und Intervall sind nicht vollständig strukturiert verknüpft; daher entsteht kein zusätzlicher DPS-Wert.',
-    })
+    const targets = (setup.embeddedSkillIds ?? [])
+      .map(targetSkillId => input.skills.find(value => value.id === targetSkillId))
+      .filter((value): value is SkillGemDefinition => Boolean(value))
+    for (const target of targets.length ? targets : [undefined]) {
+      sources.push({
+        sourceSkillId: definition.id,
+        sourceSkillName: definition.displayNameDe,
+        kind: 'meta-trigger',
+        ...(condition ? { condition } : {}),
+        ...(target ? { targetSkillId: target.id } : {}),
+        status: target ? 'blocked-missing-interval' : 'blocked-missing-target',
+        evidence: 'structured-exact',
+        sourceReferences: [
+          `damage-reference:${record.name}:skillTypes.Triggers`,
+          ...(condition ? [`damage-reference:${record.name}:name`] : []),
+          ...(target ? [`build-profile:${setup.id}:embeddedSkillIds:${target.id}`] : []),
+        ],
+        detail: target
+          ? `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Die vollständige Energie-, Ereignis- und Auslösefrequenzkette fehlt jedoch; daher entsteht noch kein zusätzlicher DPS-Wert.`
+          : condition
+            ? `Die Auslösebedingung „${condition}“ ist über die eindeutige Trigger-Fertigkeitsidentität belegt. Ein verknüpftes Ziel und ein vollständiges Auslöseintervall fehlen im BuildProfile; daher entsteht kein zusätzlicher DPS-Wert.`
+            : 'Die Fertigkeit ist als Triggerquelle belegt. Bedingung, Ziel und Intervall sind nicht vollständig strukturiert verknüpft; daher entsteht kein zusätzlicher DPS-Wert.',
+      })
+    }
   }
 
   const interval = Number(primaryRecord?.numericStats.base_cooldown_modifiable_repeat_interval_ms)

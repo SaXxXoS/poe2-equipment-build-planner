@@ -57,7 +57,12 @@
       "pob2Modules": ["CalcOffence.lua", "CalcTriggers.lua"],
       "appModules": ["projectile-hit-model.ts", "trigger-repeat-model.ts"],
       "status": "guarded-partial",
-      "nextGap": "skill-specific overlaps, return/fork chains and closed trigger-source-target-frequency chains"
+      "completedInThisStep": [
+        "embedded meta-skill targets are read from stable BuildProfile skill IDs",
+        "unknown embedded IDs do not create a target relationship",
+        "source, condition and target are exposed with evidence while DPS remains blocked without a complete event, energy and frequency chain"
+      ],
+      "nextGap": "close event, energy and frequency chains; then add skill-specific overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

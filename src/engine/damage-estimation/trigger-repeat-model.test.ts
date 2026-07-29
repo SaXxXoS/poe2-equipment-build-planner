@@ -36,6 +36,53 @@ describe('Trigger- und Wiederholungsmodell', () => {
     })
   })
 
+  it('verknüpft eine eingebettete Fertigkeit als Triggerziel, ohne eine unbelegte Frequenz zu erfinden', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('comet', 'Comet')
+    const triggerSetup = {
+      ...setup(trigger.id),
+      embeddedSkillIds: [target.id],
+    }
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [setup(primary.id, 'main'), triggerSetup],
+      skills: [primary, trigger, target],
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      sourceSkillId: 'coc',
+      targetSkillId: 'comet',
+      kind: 'meta-trigger',
+      condition: 'bei einem kritischen Treffer',
+      status: 'blocked-missing-interval',
+    })
+    expect(result.sources[0]?.sourceReferences).toContain(
+      'build-profile:setup:coc:embeddedSkillIds:comet',
+    )
+    expect(result.productive).toBe(false)
+  })
+
+  it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const triggerSetup = {
+      ...setup(trigger.id),
+      embeddedSkillIds: ['unknown-target'],
+    }
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [setup(primary.id, 'main'), triggerSetup],
+      skills: [primary, trigger],
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      sourceSkillId: 'coc',
+      status: 'blocked-missing-target',
+    })
+    expect(result.sources[0]?.targetSkillId).toBeUndefined()
+  })
+
   it('verwendet einen Energiebonus nicht als Triggerfrequenz', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('invocation', 'Elemental Invocation')

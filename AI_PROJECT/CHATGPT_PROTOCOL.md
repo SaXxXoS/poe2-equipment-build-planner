@@ -2774,3 +2774,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Rechenmodell `3.7.0`, Lucky-Teilmodell `1.0.0`.
 - Weiter offen: Doppel-/Dreifachschaden, bedingte Lucky-Zustände und
   fertigkeitsspezifische Wiederholungsformeln.
+
+# Fortsetzung: Schritt 44 – Meta-Trigger-Zielkette
+
+- Eingebettete aktive Fertigkeiten werden über stabile
+  `SkillSetup.embeddedSkillIds` mit ihrer Meta-Triggerquelle verbunden.
+- Unbekannte eingebettete IDs erzeugen keine behauptete Zielidentität.
+- Quelle, belegte Bedingung und Ziel werden mit Quellenreferenzen
+  ausgewiesen.
+- Ohne vollständige Ereignis-, Energie- und Frequenzkette bleibt zusätzlicher
+  Trigger-DPS fail-closed.
+- Trigger-Teilmodell `1.1.0`.
