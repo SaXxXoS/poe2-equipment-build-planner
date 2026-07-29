@@ -101,7 +101,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.9.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.10.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -380,6 +380,43 @@ export function estimateHitDamage(input:{
   const combinedDamagePerSecondAfterMitigation=primaryComparableDamagePerSecondAfterMitigation==null
     ? undefined
     : primaryComparableDamagePerSecondAfterMitigation+triggeredDamagePerSecondAfterMitigation
+  const rageChain=resourceSpiritModel.skillCostChains.find(value=>value.setupId===setup?.id)
+  const hasConfirmedRageGain=Boolean(rageChain&&(
+    rageChain.rageGenerationPerHit>0
+    || (rageChain.rageGenerationPerSecond??0)>0
+  ))
+  const comparedRage=skill.kind==='attack'&&hasConfirmedRageGain
+    ? rageChain!.confirmedMaximumRage
+    : 0
+  const inherentMoreAttackDamagePerRagePercent=reference.rageDamageConstants.inherentMoreAttackDamagePerRagePercent
+  const rageDamageMultiplier=1+comparedRage*inherentMoreAttackDamagePerRagePercent/100
+  const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=skill.kind==='attack'&&hasConfirmedRageGain
+    ? {
+        modelVersion:'1.0.0',
+        status:'full-confirmed-pool-comparison',
+        inherentMoreAttackDamagePerRagePercent,
+        comparedRage,
+        damageMultiplier:round(rageDamageMultiplier,4),
+        expectedHitDamageAtComparedRage:round((expectedCriticalHitDamage??rollExpectedAverage)*rageDamageMultiplier),
+        expectedDamagePerSecondAtComparedRage:round((primaryComparableDamagePerSecond??rollExpectedAverage*actionsPerSecond)*rageDamageMultiplier),
+        ...(primaryComparableDamagePerSecondAfterMitigation==null?{}:{
+          expectedDamagePerSecondAfterMitigationAtComparedRage:round(primaryComparableDamagePerSecondAfterMitigation*rageDamageMultiplier),
+        }),
+        ...(rageChain?.noGainNoHitRageDurationSeconds==null?{}:{
+          durationWithoutFurtherHitOrGainSeconds:rageChain.noGainNoHitRageDurationSeconds,
+        }),
+        detail:'Explizites Vergleichsfenster bei vollem bestätigtem Wutvorrat. Der normale Dauerschadenswert setzt diesen Zustand nicht voraus.',
+      }
+    : {
+        modelVersion:'1.0.0',
+        status:'blocked-no-confirmed-rage-gain',
+        inherentMoreAttackDamagePerRagePercent,
+        comparedRage:0,
+        damageMultiplier:1,
+        detail:skill.kind==='attack'
+          ? 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.'
+          : 'Der inhärente Wutbonus gilt für Angriffsschaden; für diesen Zauber wird er nicht angewandt.',
+      }
   return{
     ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),
@@ -428,6 +465,7 @@ export function estimateHitDamage(input:{
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
     ...(combinedDamagePerSecond==null?{}:{combinedDamagePerSecond:round(combinedDamagePerSecond)}),
     ...(combinedDamagePerSecondAfterMitigation==null?{}:{combinedDamagePerSecondAfterMitigation:round(combinedDamagePerSecondAfterMitigation)}),
+    rageDamageComparison,
     ...(activeWindowDamagePerSecond==null?{}:{activeWindowDamagePerSecond:round(activeWindowDamagePerSecond)}),
     ...(activeWindowDamagePerSecondAfterMitigation==null?{}:{activeWindowDamagePerSecondAfterMitigation:round(activeWindowDamagePerSecondAfterMitigation)}),
     ...(preparedNextHitAverage==null?{}:{preparedNextHitDamage:round(preparedNextHitAverage)}),

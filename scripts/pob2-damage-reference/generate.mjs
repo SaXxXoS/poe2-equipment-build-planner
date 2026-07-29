@@ -20,6 +20,9 @@ const questRewardsText = questRewardsBytes.toString('utf8')
 const reservationFormulaRelative = 'src/Modules/CalcDefence.lua'
 const reservationFormulaBytes = fs.readFileSync(path.join(repo, reservationFormulaRelative))
 const reservationFormulaText = reservationFormulaBytes.toString('utf8')
+const rageFormulaRelative = 'src/Modules/ConfigOptions.lua'
+const rageFormulaBytes = fs.readFileSync(path.join(repo, rageFormulaRelative))
+const rageFormulaText = rageFormulaBytes.toString('utf8')
 const expectedCostDivisors = { Mana: 1, ManaPerMinute: 60, ManaPercentPerMinute: 60, RagePerMinute: 60 }
 const costDivisors = Object.fromEntries(Object.entries(expectedCostDivisors).map(([resource, expected]) => {
   const blockMatch = new RegExp(`Resource\\s*=\\s*"${resource}"[\\s\\S]*?Divisor\\s*=\\s*(\\d+)`).exec(costsText)
@@ -42,6 +45,13 @@ const resourceConstants = {
   baseMaximumRage: characterConstant('BaseMaximumRage', 30),
   baseRageLossPerSecond: characterConstant('BaseRageLossPerMinute', 300) / 60,
   baseRageLossDelaySeconds: characterConstant('BaseRageLossDelayMs', 4000) / 1000,
+}
+const inherentRageDamageNeedle = 'inherently grants 1% More Attack Damage per 1 ^xFF9922Rage'
+if (!rageFormulaText.includes(inherentRageDamageNeedle)) {
+  throw new Error('PoB2 inherent Rage damage formula mismatch')
+}
+const rageDamageConstants = {
+  inherentMoreAttackDamagePerRagePercent: 1,
 }
 const gameConstant = (name, expected) => {
   const match = new RegExp(`\\["${name}"\\]\\s*=\\s*(-?[\\d.]+)`).exec(miscText)
@@ -400,7 +410,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 11,
+  schemaVersion: 12,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -410,6 +420,9 @@ const payload = {
   resourceConstantsSourceFile: miscRelative,
   resourceConstantsSourceSha256: crypto.createHash('sha256').update(miscBytes).digest('hex'),
   resourceConstants,
+  rageFormulaSourceFile: rageFormulaRelative,
+  rageFormulaSourceSha256: crypto.createHash('sha256').update(rageFormulaBytes).digest('hex'),
+  rageDamageConstants,
   ailmentConstants,
   monsterAilmentThresholdTable,
   questSpiritRewardsSourceFile: questRewardsRelative,

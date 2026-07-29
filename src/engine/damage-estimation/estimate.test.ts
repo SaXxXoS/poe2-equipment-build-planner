@@ -174,6 +174,17 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       result.actionsPerSecond!*result.attackHitChance!.hitChancePercent!/100*5,
       2,
     )
+    expect(result.rageDamageComparison).toMatchObject({
+      modelVersion:'1.0.0',
+      status:'full-confirmed-pool-comparison',
+      inherentMoreAttackDamagePerRagePercent:1,
+      comparedRage:30,
+      damageMultiplier:1.3,
+    })
+    expect(result.rageDamageComparison?.expectedDamagePerSecondAtComparedRage).toBeCloseTo(
+      result.accuracyAdjustedExpectedCriticalDamagePerSecond!*1.3,
+      2,
+    )
   })
   it('erfindet ohne zuordenbare Waffenbasis keinen Angriffsschaden',()=>{
     const result=estimateHitDamage({equipment:[weapon('Unbekannter Bogen')],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})

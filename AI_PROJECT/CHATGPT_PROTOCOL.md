@@ -3032,3 +3032,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ressourcenmodell `16.0.0`; 75 fokussierte Tests und Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RAGE_DECAY_STEP_67.md`.
+
+# Schritt 68 – belegtes Wut-Schadensfenster
+
+- Der gepinnte inhärente Bonus von `1 % mehr Angriffsschaden je Wut` ist in
+  der reduzierten Schadensreferenz fail-closed verankert.
+- Ein Voll-Wut-Vergleich wird nur bei belegter Wutgewinnkette erzeugt.
+- Der normale Dauerschadenswert setzt keinen erfundenen Wutstand voraus; das
+  klar bezeichnete Vergleichsfenster bleibt davon getrennt.
+- Zauber sowie Angriffe ohne bestätigten Wutgewinn erhalten keinen positiven
+  Wutbonus.
+- Schadensrechner `3.10.0`, Vergleichsmodell `1.0.0`,
+  Referenzschema `12`; 73 fokussierte Tests und Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RAGE_DAMAGE_STEP_68.md`.

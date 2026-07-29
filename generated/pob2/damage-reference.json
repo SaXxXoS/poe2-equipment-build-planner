@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 11,
+  "schemaVersion": 12,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -22,6 +22,11 @@
     "baseMaximumRage": 30,
     "baseRageLossPerSecond": 5,
     "baseRageLossDelaySeconds": 4
+  },
+  "rageFormulaSourceFile": "src/Modules/ConfigOptions.lua",
+  "rageFormulaSourceSha256": "137949c3ff29c9edb97233130dcc1e02e43ef2145651db29e925f4b30cb98a7f",
+  "rageDamageConstants": {
+    "inherentMoreAttackDamagePerRagePercent": 1
   },
   "ailmentConstants": {
     "bleedingHitDamagePercentPerMinute": 900,
@@ -310891,5 +310896,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "429654e44b80325212f475a219f3125de35554fe9897c00897d630dad97da7f8"
+  "contentHash": "990d334f4072e1ad05b13789ea250ad41d9c790dc8fd9d6777f2b735b2d788ca"
 }

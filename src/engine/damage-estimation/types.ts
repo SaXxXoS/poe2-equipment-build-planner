@@ -108,6 +108,18 @@ export interface DamageEstimate {
   expectedDamagePerSecondAfterMitigation?:number
   combinedDamagePerSecond?:number
   combinedDamagePerSecondAfterMitigation?:number
+  rageDamageComparison?:{
+    modelVersion:string
+    status:'full-confirmed-pool-comparison'|'blocked-no-confirmed-rage-gain'
+    inherentMoreAttackDamagePerRagePercent:number
+    comparedRage:number
+    damageMultiplier:number
+    expectedHitDamageAtComparedRage?:number
+    expectedDamagePerSecondAtComparedRage?:number
+    expectedDamagePerSecondAfterMitigationAtComparedRage?:number
+    durationWithoutFurtherHitOrGainSeconds?:number
+    detail:string
+  }
   activeWindowDamagePerSecond?:number
   activeWindowDamagePerSecondAfterMitigation?:number
   preparedNextHitDamage?:number
