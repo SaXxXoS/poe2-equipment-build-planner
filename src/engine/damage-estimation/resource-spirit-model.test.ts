@@ -309,6 +309,46 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       'mana-cost-reduced',
     ])
   })
+  it('wendet den strukturierten fertigkeitseigenen Kostenaufschlag von Toxic Domain an', () => {
+    const definition = skill('toxic-domain', 'Toxic Domain')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      intrinsicSkillCostEffects: [{
+        statId: 'toxic_domain_mana_cost_+%',
+        kind: 'cost-increased',
+        value: 25,
+        evidence: 'structured-exact',
+      }],
+      blockedIntrinsicSkillCostEffects: [],
+      combinedResourceCostMultiplier: 1.25,
+      baseCosts: [{ baseAmount: 106, supportAdjustedAmount: 106, resourceAdjustedAmount: 132 }],
+    })
+  })
+  it('weist dynamische Mana-Tempest-Kosten fail-closed aus', () => {
+    const definition = skill('mana-tempest', 'Mana Tempest')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [setup(definition.id)],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      intrinsicSkillCostEffects: [],
+      blockedIntrinsicSkillCostEffects: [{
+        statId: 'mana_tempest_mana_cost_%_to_add_to_cost_per_second',
+        value: 30,
+        reason: 'requires-runtime-spend-rate',
+      }],
+      combinedResourceCostMultiplier: 1,
+      sustainStatus: 'blocked-missing-exact-cost-chain',
+    })
+    expect(model.exactSkillCostsKnown).toBe(false)
+  })
   it('trennt Waffenset-Passive und verbindet Aszendenzwirkungen mit beiden Sets', () => {
     const definition = skill('arc', 'Arc')
     const passiveTree = {

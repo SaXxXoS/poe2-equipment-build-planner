@@ -2895,3 +2895,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Das Ressourcenmodell trägt Schema `8.0.0`.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RESOURCE_COST_EFFICIENCY_STEP_58.md`.
+
+# Fortsetzung: Schritt 59 – fertigkeitseigene Kostenwirkungen
+
+- Das Ressourcenmodell wurde auf Version `9.0.0` angehoben.
+- Der strukturierte Kostenaufschlag von `Toxic Domain` wird von der exakt
+  gewählten Fertigkeitsstufe übernommen und additiv mit erhöhten und
+  verringerten Manakosten verrechnet.
+- `Mana Tempest`, `Archmage` und die anfängliche Rage-Kostenunterdrückung
+  kanalisierter Fertigkeiten werden als strukturierte, aber noch
+  laufzeitabhängige Kostenwirkungen erkannt.
+- Diese dynamischen Fälle bleiben fail-closed und werden in der sichtbaren
+  Ressourcenbilanz ausdrücklich als nicht angewandt ausgewiesen.
+- Es wurden keine Datenpins, Produktdaten oder Runtime-Netzwerkgrenzen
+  verändert.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_INTRINSIC_SKILL_COSTS_STEP_59.md`.

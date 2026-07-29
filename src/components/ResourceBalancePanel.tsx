@@ -52,10 +52,16 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
               <div><dt>Wirksamer Mana-Mindestbestand</dt><dd>{chain.effectiveManaPool == null ? 'Unbekannt' : formatNumber(chain.effectiveManaPool)}</dd></div>
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>
+              <div><dt>Fertigkeitseigene Kostenwirkung</dt><dd>{chain.intrinsicSkillCostEffects.length
+                ? chain.intrinsicSkillCostEffects.map(effect => `+${formatNumber(effect.value)} %`).join(', ')
+                : 'Keine exakt anwendbare'}</dd></div>
               <div><dt>Baum-/Aszendenz-Kostenfaktor</dt><dd>{formatNumber(chain.combinedResourceCostMultiplier * 100)} %</dd></div>
               <div><dt>Baum-/Aszendenz-Kosteneffizienz</dt><dd>{formatNumber(chain.combinedResourceCostEfficiency * 100)} %</dd></div>
               <div><dt>Bestätigter Geistbeitrag</dt><dd>{formatNumber(chain.confirmedFlatSpiritContribution)}</dd></div>
             </dl>
+            {chain.blockedIntrinsicSkillCostEffects.length > 0 && <p className="resource-unknown">
+              Dynamische fertigkeitseigene Kostenwirkung nicht angewandt: {chain.blockedIntrinsicSkillCostEffects.map(effect => effect.statId).join(', ')}
+            </p>}
             <p className={`resource-status ${chain.sustainStatus.startsWith('blocked') || chain.sustainStatus.startsWith('unusable') ? 'warning' : ''}`}>
               <b>Status:</b> {sustainLabel(chain.sustainStatus)}
             </p>

@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '8.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '9.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -55,6 +55,8 @@ interface SkillResourceCostChain {
   semanticSupportCostHints: number[]
   baseCosts: Array<{ resource:'mana'|'mana-percent'|'rage';cadence:'per-use'|'per-second';baseAmount:number;supportAdjustedAmount:number;resourceAdjustedAmount:number;sourceResource:string }>
   supportCostMultipliers: Array<{ supportId:string;supportName:string;multiplierPercent:number;sourceReference:string }>
+  intrinsicSkillCostEffects: NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['intrinsicSkillCostEffects']
+  blockedIntrinsicSkillCostEffects: NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['blockedIntrinsicSkillCostEffects']
   passiveResourceEffects: PassiveResourceEffect[]
   combinedSupportMultiplier: number | null
   combinedResourceCostMultiplier: number
@@ -114,8 +116,43 @@ const costDescriptor = (sourceResource: string) => {
 
 const floorFour = (value: number) => Math.floor(value * 10_000) / 10_000
 type PassiveResourceEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['passiveResourceEffects'][number]
+type IntrinsicSkillCostEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['intrinsicSkillCostEffects'][number]
+type BlockedIntrinsicSkillCostEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['blockedIntrinsicSkillCostEffects'][number]
 const stripMarkup = (value: string) => value.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').replace(/\[([^\]]+)\]/g, '$1').replace(/\s+/g, ' ').trim()
 const unique = <T>(values: T[]) => [...new Set(values)]
+
+const intrinsicCostReference = (record: NumericSkill, level: NumericSkillLevel, statId: string) =>
+  `damage-reference:${record.sourceRecordId}:levels.${level.level}.numericStats.${statId}`
+
+const intrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined): IntrinsicSkillCostEffect[] => {
+  if (!record || !level) return []
+  const value = Number((level.numericStats as Record<string, number | undefined>)['toxic_domain_mana_cost_+%'])
+  return Number.isFinite(value) ? [{
+    statId: 'toxic_domain_mana_cost_+%',
+    kind: 'cost-increased',
+    value,
+    evidence: 'structured-exact',
+    sourceReference: intrinsicCostReference(record, level, 'toxic_domain_mana_cost_+%'),
+  }] : []
+}
+
+const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined): BlockedIntrinsicSkillCostEffect[] => {
+  if (!record || !level) return []
+  const rules: Array<[string, BlockedIntrinsicSkillCostEffect['reason']]> = [
+    ['mana_tempest_mana_cost_%_to_add_to_cost_per_second', 'requires-runtime-spend-rate'],
+    ['archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost', 'requires-max-mana-and-target-skill-chain'],
+    ['channelled_skill_suppress_ongoing_rage_cost_for_first_X_ms', 'requires-channel-duration-state'],
+  ]
+  return rules.flatMap(([statId, reason]) => {
+    const value = Number((level.numericStats as Record<string, number | undefined>)[statId])
+    return Number.isFinite(value) ? [{
+      statId,
+      value,
+      reason,
+      sourceReference: intrinsicCostReference(record, level, statId),
+    }] : []
+  })
+}
 
 const allocatedNodeIds = (planning: RealPassivePlanningIntegrationResult | undefined, weaponSet: SkillSetup['weaponSet']) => {
   const normal = weaponSet === 'set-1'
@@ -374,6 +411,8 @@ export function resolveResourceSpiritModel(input: {
       const definition = input.skills.find(value => value.id === setup.skillId)
       const record = recordFor(definition)
       const skillLevel = levelFor(record, setup)
+      const appliedIntrinsicSkillCostEffects = intrinsicSkillCostEffects(record, skillLevel)
+      const blockedSkillCostEffects = blockedIntrinsicSkillCostEffects(record, skillLevel)
       const supportCostMultipliers = setup.supportGemIds
         .map(id => input.supports.find(value => value.id === id))
         .flatMap(support => support && Number.isFinite(support.costMultiplierPercent) ? [{
@@ -416,6 +455,7 @@ export function resolveResourceSpiritModel(input: {
         : []
       const exactCostChain = baseCostStatus !== 'blocked-missing-exact-base-cost'
         && supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'
+        && blockedSkillCostEffects.length === 0
       const appliedPassiveEffects = passiveResourceEffects(input.passiveTree, input.realPassivePlanning, setup.weaponSet)
       const flatPassiveMana = appliedPassiveEffects.filter(effect => effect.kind === 'flat-mana').reduce((sum, effect) => sum + effect.value, 0)
       const maximumManaIncrease = appliedPassiveEffects.filter(effect => effect.kind === 'maximum-mana-increased').reduce((sum, effect) => sum + effect.value, 0)
@@ -431,6 +471,7 @@ export function resolveResourceSpiritModel(input: {
       const combinedResourceCostMultiplier = floorFour(
         Math.max(0, 1 + (
           appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-increased').reduce((sum, effect) => sum + effect.value, 0)
+          + appliedIntrinsicSkillCostEffects.filter(effect => effect.kind === 'cost-increased').reduce((sum, effect) => sum + effect.value, 0)
           - appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-reduced').reduce((sum, effect) => sum + effect.value, 0)
         ) / 100)
         * appliedPassiveEffects.filter(effect => effect.kind === 'mana-cost-more').reduce((value, effect) => value * (1 + effect.value / 100), 1)
@@ -484,6 +525,8 @@ export function resolveResourceSpiritModel(input: {
           .sort((a, b) => a - b),
         baseCosts,
         supportCostMultipliers,
+        intrinsicSkillCostEffects: appliedIntrinsicSkillCostEffects,
+        blockedIntrinsicSkillCostEffects: blockedSkillCostEffects,
         passiveResourceEffects: appliedPassiveEffects,
         combinedSupportMultiplier,
         combinedResourceCostMultiplier,
@@ -513,7 +556,8 @@ export function resolveResourceSpiritModel(input: {
     spiritCapacityKnown: false,
     exactSkillCostsKnown: skillCostChains.length > 0 && skillCostChains.every(chain =>
       chain.baseCostStatus !== 'blocked-missing-exact-base-cost'
-      && chain.supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'),
+      && chain.supportMultiplierStatus !== 'blocked-missing-exact-support-cost-multipliers'
+      && chain.blockedIntrinsicSkillCostEffects.length === 0),
     ...(questSpiritEstimate ? { questSpiritEstimate } : {}),
     ...(confirmedMinimumPools ? { confirmedMinimumPools } : {}),
     sources,
@@ -526,6 +570,7 @@ export function resolveResourceSpiritModel(input: {
       'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
       'Exakte Geistreservierungen werden über die gepinnte Gem-zu-Fertigkeit-Kette verbunden. Quest-Geist wird aus Charakterlevel und gepinnten Belohnungsstufen nur als obere Planungsschätzung abgeleitet; das Level beweist keinen Questabschluss.',
       'Fertigkeits-Grundkosten der exakt gewählten, vorhandenen Stufe und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Stufen oder Kostenketten bleiben blockiert.',
+      'Strukturiert belegte fertigkeitseigene Kostenaufschläge werden additiv mit erhöhten und verringerten Kosten verrechnet. Laufzeitabhängige Sonderkosten durch Ressourcenverbrauch, Ziel-Fertigkeiten oder Kanalisierungsdauer bleiben pro Fertigkeit sichtbar blockiert.',
       'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten-, Geist- und allgemeine Reservierungseffizienzwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte und fertigkeitsspezifische Effizienz bleibt fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
     ],
@@ -548,6 +593,8 @@ export const resourceSpiritOutput = (
     semanticSupportCostHints: [...value.semanticSupportCostHints],
     baseCosts: value.baseCosts.map(cost => ({ ...cost })),
     supportCostMultipliers: value.supportCostMultipliers.map(multiplier => ({ ...multiplier })),
+    intrinsicSkillCostEffects: value.intrinsicSkillCostEffects.map(effect => ({ ...effect })),
+    blockedIntrinsicSkillCostEffects: value.blockedIntrinsicSkillCostEffects.map(effect => ({ ...effect })),
     passiveResourceEffects: value.passiveResourceEffects.map(effect => ({ ...effect })),
   })),
   spiritReservations: model.spiritReservations.map(value => ({ ...value })),
