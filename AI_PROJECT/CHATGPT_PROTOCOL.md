@@ -3017,3 +3017,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ressourcenmodell `15.0.0`; 74 fokussierte Tests und Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RAGE_POOL_STEP_66.md`.
+
+# Schritt 67 – natürlicher Wutverlust
+
+- Der gepinnte Grundwert von `5` Wutverlust pro Sekunde nach einer
+  Verzögerung von `4` Sekunden wird fail-closed aus PoB2 übernommen.
+- Laufender Fertigkeitsverbrauch und verzögert beginnender natürlicher
+  Wutverlust werden stückweise zu einer konservativen Dauer ohne weitere
+  Treffer oder Wutgewinne verbunden.
+- Exakte passive und Aszendenzwirkungen für späteren, langsameren oder
+  vollständig aufgehobenen natürlichen Wutverlust werden berücksichtigt.
+- Aktueller Wutstand, Mehrfachtreffer und mehrere Ziele werden weiterhin
+  nicht erfunden.
+- Ressourcenmodell `16.0.0`; 75 fokussierte Tests und Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RAGE_DECAY_STEP_67.md`.

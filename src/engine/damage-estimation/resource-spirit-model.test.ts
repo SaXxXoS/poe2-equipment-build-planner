@@ -494,6 +494,9 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     expect(model.skillCostChains[0]).toMatchObject({
       rageDemandPerSecond: 6,
       rageSuppressionDurationMs: 5000,
+      inherentRageLossPerSecond: 5,
+      inherentRageLossDelaySeconds: 4,
+      noGainNoHitRageDurationSeconds: 7.27,
       rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
       blockedIntrinsicSkillCostEffects: [],
     })
@@ -516,6 +519,9 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       rageSuppressionDurationMs: 2500,
       confirmedMaximumRage: 30,
       maximumStartRageDurationSeconds: 8.5,
+      inherentRageLossPerSecond: 5,
+      inherentRageLossDelaySeconds: 4,
+      noGainNoHitRageDurationSeconds: 6.25,
       rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
     })
   })
@@ -552,6 +558,33 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     expect(model.skillCostChains[0]).toMatchObject({
       confirmedMaximumRage: 76,
       maximumStartRageDurationSeconds: 17.7,
+      noGainNoHitRageDurationSeconds: 10.85,
+    })
+  })
+  it('wendet belegte Verzoegerung und langsameren natuerlichen Rasereiverlust an', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20 }],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [
+          { id: 'rage-delay', stats: [{ sourceText: 'Inherent Rage loss starts 1 second later' }], ascendancyId: null },
+          { id: 'rage-slower', stats: [{ sourceText: 'Inherent loss of Rage is 20% slower' }], ascendancyId: null },
+        ],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['rage-delay', 'rage-slower'] },
+        ascendancyPlanning: { allocatedNodeIds: [] },
+      } as never,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      inherentRageLossPerSecond: 4,
+      inherentRageLossDelaySeconds: 5,
+      noGainNoHitRageDurationSeconds: 6.94,
     })
   })
   it('blockiert ein ungueltiges Qualitaetslevel statt das Raserei-Fenster zu schaetzen', () => {

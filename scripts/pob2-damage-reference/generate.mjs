@@ -40,6 +40,8 @@ const resourceConstants = {
   manaLevelOffset: 30,
   inherentManaRegenerationPercentPerMinute: characterConstant('character_inherent_mana_regeneration_rate_per_minute_%', 240),
   baseMaximumRage: characterConstant('BaseMaximumRage', 30),
+  baseRageLossPerSecond: characterConstant('BaseRageLossPerMinute', 300) / 60,
+  baseRageLossDelaySeconds: characterConstant('BaseRageLossDelayMs', 4000) / 1000,
 }
 const gameConstant = (name, expected) => {
   const match = new RegExp(`\\["${name}"\\]\\s*=\\s*(-?[\\d.]+)`).exec(miscText)

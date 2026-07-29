@@ -19,7 +19,9 @@
     "manaPerLevel": 4,
     "manaLevelOffset": 30,
     "inherentManaRegenerationPercentPerMinute": 240,
-    "baseMaximumRage": 30
+    "baseMaximumRage": 30,
+    "baseRageLossPerSecond": 5,
+    "baseRageLossDelaySeconds": 4
   },
   "ailmentConstants": {
     "bleedingHitDamagePercentPerMinute": 900,
@@ -310889,5 +310891,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "0c1dc4408c3090fec737bc2beb12be4c9bc2d00b99d7bff33e2936f475236ae2"
+  "contentHash": "429654e44b80325212f475a219f3125de35554fe9897c00897d630dad97da7f8"
 }

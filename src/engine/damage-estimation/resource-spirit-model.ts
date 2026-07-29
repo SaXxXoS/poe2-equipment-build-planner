@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '15.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '16.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -79,6 +79,9 @@ interface SkillResourceCostChain {
   rageSuppressionDurationMs: number | null
   confirmedMaximumRage: number
   maximumStartRageDurationSeconds: number | null
+  inherentRageLossPerSecond: number
+  inherentRageLossDelaySeconds: number
+  noGainNoHitRageDurationSeconds: number | null
   rageSustainStatus: 'no-rage-cost' | 'sustainable-with-confirmed-generation' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'requires-hit-frequency-and-rage-pool' | 'blocked-missing-exact-cost-chain'
 }
 
@@ -126,6 +129,31 @@ const costDescriptor = (sourceResource: string) => {
 }
 
 const floorFour = (value: number) => Math.floor(value * 10_000) / 10_000
+const depletionDuration = (
+  pool: number,
+  demandPerSecond: number,
+  demandStartsAtSeconds: number,
+  inherentLossPerSecond: number,
+  inherentLossStartsAtSeconds: number,
+): number | null => {
+  let remaining = pool
+  let current = 0
+  const boundaries = unique([0, demandStartsAtSeconds, inherentLossStartsAtSeconds])
+    .filter(value => value >= 0)
+    .sort((a, b) => a - b)
+  for (const next of [...boundaries.slice(1), Number.POSITIVE_INFINITY]) {
+    const rate = (current >= demandStartsAtSeconds ? demandPerSecond : 0)
+      + (current >= inherentLossStartsAtSeconds ? inherentLossPerSecond : 0)
+    if (rate > 0) {
+      const availableDuration = next - current
+      const requiredDuration = remaining / rate
+      if (requiredDuration <= availableDuration) return Number((current + requiredDuration).toFixed(2))
+      remaining -= availableDuration * rate
+    }
+    current = next
+  }
+  return null
+}
 const localAttackSpeedFor = (entry: EquipmentEntry) => entry.modifierValues
   .flatMap(modifier => modifier.statValues ?? [])
   .filter(stat => /local_attack_speed_\+%|attack_speed_\+%_local/.test(stat.statId))
@@ -326,6 +354,11 @@ function passiveResourceEffects(
       if (match) { add(nodeId, text, 'flat-maximum-rage', Number(match[1])); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% more Maximum Rage$/i)
       if (match) { add(nodeId, text, 'maximum-rage-more', Number(match[1])); continue }
+      match = text.match(/^Inherent Rage loss starts (\d+(?:\.\d+)?) seconds? later$/i)
+      if (match) { add(nodeId, text, 'rage-loss-delay', Number(match[1])); continue }
+      match = text.match(/^Inherent loss of Rage is (\d+(?:\.\d+)?)% slower$/i)
+      if (match) { add(nodeId, text, 'rage-loss-slower', Number(match[1])); continue }
+      if (/^No Inherent loss of Rage$/i.test(text)) { add(nodeId, text, 'no-inherent-rage-loss', 1); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|less) Spirit$/i)
       if (match) {
         add(nodeId, text, match[2].toLowerCase() === 'increased' ? 'spirit-increased' : match[2].toLowerCase() === 'reduced' ? 'spirit-reduced' : 'spirit-less', Number(match[1]))
@@ -679,6 +712,23 @@ export function resolveResourceSpiritModel(input: {
       const maximumStartRageDurationSeconds = rageNetDemandPerSecond == null || !rageCost || rageNetDemandPerSecond === 0
         ? null
         : Number(((rageSuppressionDurationMs ?? 0) / 1000 + confirmedMaximumRage / rageNetDemandPerSecond).toFixed(2))
+      const preventsInherentRageLoss = appliedPassiveEffects.some(effect => effect.kind === 'no-inherent-rage-loss')
+      const inherentRageLossPerSecond = preventsInherentRageLoss
+        ? 0
+        : Number((reference.resourceConstants.baseRageLossPerSecond * Math.max(0, 1 - appliedPassiveEffects
+          .filter(effect => effect.kind === 'rage-loss-slower')
+          .reduce((sum, effect) => sum + effect.value, 0) / 100)).toFixed(2))
+      const inherentRageLossDelaySeconds = reference.resourceConstants.baseRageLossDelaySeconds
+        + appliedPassiveEffects.filter(effect => effect.kind === 'rage-loss-delay').reduce((sum, effect) => sum + effect.value, 0)
+      const noGainNoHitRageDurationSeconds = !rageCost || rageDemandPerSecond == null || rageGenerationPerSecond !== 0
+        ? null
+        : depletionDuration(
+          confirmedMaximumRage,
+          rageDemandPerSecond,
+          (rageSuppressionDurationMs ?? 0) / 1000,
+          inherentRageLossPerSecond,
+          inherentRageLossDelaySeconds,
+        )
       const rageSustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
         : !rageCost
@@ -739,6 +789,9 @@ export function resolveResourceSpiritModel(input: {
         rageSuppressionDurationMs,
         confirmedMaximumRage,
         maximumStartRageDurationSeconds,
+        inherentRageLossPerSecond,
+        inherentRageLossDelaySeconds,
+        noGainNoHitRageDurationSeconds,
         rageSustainStatus,
       }
     })

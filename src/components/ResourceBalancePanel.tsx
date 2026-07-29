@@ -58,6 +58,12 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
               <div><dt>Dauer ab vollem Rasereivorrat</dt><dd>{chain.rageSustainStatus === 'sustainable-with-confirmed-generation'
                 ? 'Dauerhaft'
                 : chain.maximumStartRageDurationSeconds == null ? 'Nicht berechenbar' : `${formatNumber(chain.maximumStartRageDurationSeconds)} s`}</dd></div>
+              <div><dt>Natürlicher Rasereiverlust</dt><dd>{chain.inherentRageLossPerSecond === 0
+                ? 'Verhindert'
+                : `${formatNumber(chain.inherentRageLossPerSecond)}/s nach ${formatNumber(chain.inherentRageLossDelaySeconds)} s`}</dd></div>
+              <div><dt>Dauer ohne Treffer oder Rasereigewinn</dt><dd>{chain.noGainNoHitRageDurationSeconds == null
+                ? 'Nicht anwendbar'
+                : `${formatNumber(chain.noGainNoHitRageDurationSeconds)} s`}</dd></div>
               <div><dt>Wirksamer Mana-Mindestbestand</dt><dd>{chain.effectiveManaPool == null ? 'Unbekannt' : formatNumber(chain.effectiveManaPool)}</dd></div>
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>
