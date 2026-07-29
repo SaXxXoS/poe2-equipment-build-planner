@@ -2735,3 +2735,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Schadensmultiplikator.
 - Kritische Gift-/Blutungs-Sonderfälle bleiben bis zu einer vollständigen
   belegten Bedingungskette ausgeschlossen.
+
+# Fortsetzung: Schritt 40 – kritische Blutungs- und Giftgewichtung
+
+- Blutung und Gift erhalten die gleiche gepinnte normale/kritische
+  Quellschadensgewichtung wie PoB2.
+- Die Zustands-Kritwahrscheinlichkeit bleibt eine getrennte Kennzahl und wird
+  nicht als zusätzlicher Schadensmultiplikator missbraucht.
+- Bedingte Krit-Zustandsstats bleiben weiter fail-closed.

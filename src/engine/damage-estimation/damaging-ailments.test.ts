@@ -77,6 +77,28 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
+  it('gewichtet auch Blutung aus normalen und kritischen Treffern nach der PoB2-Quellschadensformel', () => {
+    const result = collectDamagingAilments({
+      skill: record('Rake'),
+      components: [{ type: 'physical', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      criticalChancePercent: 50,
+      criticalHitDamageMultiplier: 2,
+      setup: setup(),
+      supports: [],
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'bleeding',
+      chanceOnHitPercent: 100,
+      chanceOnCriticalHitPercent: 100,
+      ailmentCriticalChancePercent: 96.88,
+      weightedSourceDamage: 275,
+      damagePerSecond: 82.5,
+      totalDamagePerApplication: 412.5,
+    })
+  })
+
   it('übernimmt belegte Giftchance, Effekt, Dauer und Zusatzstapel aus ausgewählten Supports', () => {
     const supports = [
       support('poison', 'Poison I'),

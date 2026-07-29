@@ -3,7 +3,7 @@ import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.2.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.3.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -117,6 +117,8 @@ export function collectDamagingAilments(input: {
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
   const effects: ResolvedDamagingAilment[] = []
   const blockedEffects: BlockedDamagingAilment[] = []
+  const criticalChance = Math.max(0, Math.min(100, input.criticalChancePercent ?? 0)) / 100
+  const criticalHitDamageMultiplier = Math.max(1, input.criticalHitDamageMultiplier ?? 1)
 
   const definitions = [
     {
@@ -178,7 +180,15 @@ export function collectDamagingAilments(input: {
       * input.hitChancePercent / 100
     const expectedActiveStacks = Math.min(applicationStacks, maximumStacks)
     const roll = weightedRoll(applicationStacks, maximumStacks)
-    const sourceDamage = range.minimum + (range.maximum - range.minimum) * roll
+    const nonCriticalSourceDamage = range.minimum + (range.maximum - range.minimum) * roll
+    const criticalSourceDamage = nonCriticalSourceDamage * criticalHitDamageMultiplier
+    const chanceFromHit = chancePercent * (1 - criticalChance)
+    const chanceFromCriticalHit = chancePercent * criticalChance
+    const sourceDamage = chanceFromHit + chanceFromCriticalHit > 0
+      ? (nonCriticalSourceDamage * chanceFromHit + criticalSourceDamage * chanceFromCriticalHit)
+        / (chanceFromHit + chanceFromCriticalHit)
+      : nonCriticalSourceDamage
+    const ailmentCriticalChance = 1 - Math.pow(1 - criticalChance, Math.max(applicationStacks, 1))
     const genericEffect = valuesFor(allStats, 'active_skill_damaging_ailment_effect_+%_final')
     const specificEffect = definition.effectStats.flatMap(stat =>
       valuesFor(allStats, stat),
@@ -196,6 +206,7 @@ export function collectDamagingAilments(input: {
       ...definition.durationStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
       ...(definition.kind === 'poison' && maximumStacks > 1 ? ['number_of_additional_poison_stacks'] : []),
       ...(bleedingPassiveEffect?.sourceReferences ?? []),
+      ...(criticalChance > 0 ? ['CalcOffence.calcAilmentDamage', 'CalcOffence.ailmentCritChance'] : []),
     ]
     const resistance = definition.damageType === 'physical'
       ? 0
@@ -220,6 +231,10 @@ export function collectDamagingAilments(input: {
       totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
       ...(bleedingPassiveEffect ? { aggravated: true } : {}),
+      chanceOnHitPercent: round(chancePercent),
+      chanceOnCriticalHitPercent: round(chancePercent),
+      ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),
+      weightedSourceDamage: round(sourceDamage),
       sourceReferences,
       evidence: 'structured-exact',
       detail: 'PoB2-Grundwert, Auslösechance, relevante ungeminderte Schadensarten, Wirkfrequenz, Dauer, Effekt und Stapelgrenze sind strukturiert verbunden.',
@@ -236,8 +251,6 @@ export function collectDamagingAilments(input: {
     const chanceIncrease = sum(allStats, 'active_skill_ignite_chance_+%_final')
       + sum(allStats, 'support_ignition_chance_to_ignite_+%_final')
     const averageFireHit = (fireRange.minimum + fireRange.maximum) / 2
-    const criticalChance = Math.max(0, Math.min(100, input.criticalChancePercent ?? 0)) / 100
-    const criticalHitDamageMultiplier = Math.max(1, input.criticalHitDamageMultiplier ?? 1)
     const averageCriticalFireHit = averageFireHit * criticalHitDamageMultiplier
     const chanceOnHitPercent = Math.min(
       100,

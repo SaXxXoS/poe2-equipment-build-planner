@@ -188,3 +188,12 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   Entzündens wird nach der gepinnten PoB2-Formel ausgewiesen.
 - Kritische Gift-/Blutungs-Sonderregeln bleiben bis zur vollständigen
   Stat- und Bedingungskette fail-closed.
+
+# Schritt 40 – Kritische Blutungs- und Giftgewichtung
+
+- Blutung und Gift verwenden ebenfalls die gewichtete normale/kritische
+  Quellschadensbasis aus `CalcOffence.calcAilmentDamage`.
+- Die Wahrscheinlichkeit mindestens eines kritisch ausgelösten aktiven
+  Zustands wird separat ausgewiesen.
+- Bedingte Krit-Zustandsstats bleiben ohne vollständige Quelle-, Waffen- und
+  Bedingungskette fail-closed.
