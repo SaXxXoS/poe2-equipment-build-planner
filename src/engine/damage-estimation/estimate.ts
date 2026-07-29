@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, collectQuantitativeEffects } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
@@ -136,7 +136,8 @@ export function estimateHitDamage(input:{
   const baseComponents=components.map(value=>({...value}))
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet})
   const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
-  components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers).map(value=>component(value.type,value.minimum,value.maximum))
+  const gainedComponents=applyGainAsExtra(convertedComponents,quantitative.gainAsExtra,baseComponents)
+  components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers,quantitative.gainAsExtra).map(value=>component(value.type,value.minimum,value.maximum))
   const increasedComponents=components.map(value=>({...value}))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
@@ -150,6 +151,7 @@ export function estimateHitDamage(input:{
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
   if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
   if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
+  if(quantitative.gainAsExtra.length)included.push('bestätigter zusätzlicher Schaden nach PoB-Modifikatorreihenfolge')
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
@@ -196,6 +198,7 @@ export function estimateHitDamage(input:{
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
+      ...(quantitative.gainAsExtra.length?[{id:'gain-as-extra' as const,label:'Nach bestätigtem zusätzlichem Schaden',components:gainedComponents}]:[]),
       {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components:increasedComponents},
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
       ...(preparedNextHitAverage==null?[]:[{id:'prepared-next-hit' as const,label:'Einmalig vorbereiteter nächster Treffer',components:nextSkill.components,value:round(preparedNextHitAverage)}]),
@@ -212,6 +215,7 @@ export function estimateHitDamage(input:{
     ...((damageOverTime.effects.length||damageOverTime.blockedEffects.length)?{damageOverTime:damageOverTimeOutput()}:{}),
     ...(temporal.chargeState.relevant?{chargeState:{modelVersion:temporal.chargeState.modelVersion,productive:temporal.chargeState.productive,states:temporal.chargeState.states.map(value=>({type:value.type,label:value.label,availability:value.availability,count:value.count,detail:value.detail})),consumptions:temporal.chargeState.consumptions.map(value=>({sourceId:value.sourceId,label:value.label,chargeTypes:value.chargeTypes,intervalMs:value.intervalMs,detail:value.detail}))}}:{}),
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
+    confirmedGainAsExtra:quantitative.gainAsExtra.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
     ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),

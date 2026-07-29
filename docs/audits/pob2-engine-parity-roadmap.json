@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-29",
+  "reference": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "localPinVerified": true,
+    "usage": "technical-reference-only",
+    "fullParityClaimAllowed": false
+  },
+  "architectureDecision": {
+    "reuseExistingEngine": true,
+    "embedLuaRuntime": false,
+    "runtimeNetwork": false,
+    "copyRawPobDatabase": false,
+    "secondBuildEngine": false
+  },
+  "moduleComparison": [
+    {
+      "referenceArea": "active-skill setup and modifier applicability",
+      "pob2Modules": ["CalcSetup.lua", "CalcActiveSkill.lua", "ModParser.lua"],
+      "appModules": ["build-effect-graph.ts", "poe2-interaction-rules.ts", "quantitative-effects.ts"],
+      "status": "partial",
+      "nextGap": "complete conditional modifier applicability and mutually exclusive states"
+    },
+    {
+      "referenceArea": "hit offence pipeline",
+      "pob2Modules": ["CalcOffence.lua", "CalcPerform.lua"],
+      "appModules": ["estimate.ts", "quantitative-effects.ts", "quantitative-supports.ts"],
+      "status": "partial",
+      "completedInThisStep": [
+        "conversion remains separate from gain-as-extra",
+        "gain-as-extra retains source damage",
+        "extra component receives source and destination scaling",
+        "stage and provenance are exposed in DamageEstimate"
+      ],
+      "nextGap": "multi-step conversion precedence, double/triple damage, lucky damage and skill-specific repeat formulas"
+    },
+    {
+      "referenceArea": "damage over time and ailments",
+      "pob2Modules": ["CalcOffence.lua", "CalcSections.lua"],
+      "appModules": ["damage-over-time.ts"],
+      "status": "partial",
+      "nextGap": "ignite, poison, bleeding, stack limits, application rate and ailment magnitude"
+    },
+    {
+      "referenceArea": "projectiles, repeats and triggers",
+      "pob2Modules": ["CalcOffence.lua", "CalcTriggers.lua"],
+      "appModules": ["projectile-hit-model.ts", "trigger-repeat-model.ts"],
+      "status": "guarded-partial",
+      "nextGap": "skill-specific overlaps, return/fork chains and closed trigger-source-target-frequency chains"
+    },
+    {
+      "referenceArea": "minions and companions",
+      "pob2Modules": ["CalcOffence.lua", "CalcPerform.lua"],
+      "appModules": ["minion-companion-model.ts"],
+      "status": "blocked-incomplete-bases",
+      "nextGap": "minion base stats, active count, own action frequency, duration and uptime"
+    },
+    {
+      "referenceArea": "defence, recovery and resources",
+      "pob2Modules": ["CalcDefence.lua", "CalcSections.lua"],
+      "appModules": ["resource-spirit-model.ts", "enemy-mitigation.ts"],
+      "status": "partial",
+      "nextGap": "complete armour/evasion/block/recovery pools and reservation/cost formulas"
+    },
+    {
+      "referenceArea": "calculation breakdown",
+      "pob2Modules": ["CalcBreakdown.lua", "CalcFormat.lua"],
+      "appModules": ["DamageEstimate.stages", "BuildResultSection.tsx"],
+      "status": "partial",
+      "nextGap": "uniform contribution trace for every recommendation and every numeric output"
+    }
+  ],
+  "priorityOrder": [
+    "central modifier ordering and applicability",
+    "skill and support level/quality formulas",
+    "ailment and damage-over-time application model",
+    "trigger/repeat/projectile skill-specific models",
+    "minion and companion bases",
+    "defence/recovery/resource completeness",
+    "reproducible reference-build comparison",
+    "optimizer objective validation against the completed calculation graph"
+  ],
+  "completionDefinition": {
+    "required": [
+      "same input produces the same result",
+      "every positive recommendation has a traversable evidence path",
+      "unsupported mechanics produce no positive score",
+      "reference builds reproduce their declared configuration",
+      "calculation breakdown explains every included and excluded effect"
+    ],
+    "notSatisfiedYet": [
+      "full Path of Building calculation parity",
+      "global optimality against current meta builds",
+      "complete current-season data coverage"
+    ]
+  }
+}

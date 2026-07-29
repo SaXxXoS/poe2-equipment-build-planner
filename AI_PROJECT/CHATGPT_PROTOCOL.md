@@ -2586,3 +2586,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/POE2_COMPLETE_APP_RULE_AND_FUNCTION_AUDIT_2026_07_29.md`.
 - Audit:
   `docs/audits/poe2-complete-app-rule-gap-matrix.json`.
+# PoB2-Rechenparität und zentrale Modifier-Reihenfolge (2026-07-29)
+
+- Der lokal vorhandene PoB2-Referenzstand wurde gegen die produktive
+  TypeScript-Engine inventarisiert.
+- Referenzpin:
+  `PathOfBuildingCommunity/PathOfBuilding-PoE2` bei
+  `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`.
+- PoB2 bleibt technische Offline-Referenz. Keine Lua-Laufzeit, kein
+  Runtime-Netzwerk, kein Rohdatenmirror und keine Vollparitätsbehauptung.
+- Die erste zentrale Paritätslücke ist geschlossen: `Gain as Extra Damage`
+  bleibt von Umwandlung getrennt, erhält die richtige Ausgangsbasis und wird
+  nach Ursprungs- und Zielschadensart skaliert.
+- Bedingte oder nicht exakt lesbare Effekte bleiben fail-closed.
+- Maschinenlesbarer Fahrplan:
+  `docs/audits/pob2-engine-parity-roadmap.json`.
+- Hauptdokument: `docs/POB2_ENGINE_PARITY_ROADMAP.md`.
+- Nächster Rechenblock: mehrstufige Umwandlungspriorität und vollständige
+  Modifier-Anwendbarkeit; danach Gemmenlevel/Qualität und Ailments/DoT.
