@@ -82,7 +82,8 @@ Zusätzlich verarbeitet die Engine jetzt:
 
 1. Qualität und fertigkeitsspezifische Variantenformeln
 2. exakte Trennung von Skill- und globaler Umwandlungspriorität
-3. Entzünden, Gift, Blutung, Stapelung und Ailment-Magnitude
+3. Entzünden mit gegnerabhängigem Schwellenwert/Aufbau sowie Sonderfälle
+   für Blutung und Gift
 4. fertigkeitsspezifische Projektile, Mehrfachtreffer, Fork und Return
 5. geschlossene Trigger- und Wiederholungsketten
 6. Minion- und Begleitergrundwerte
@@ -101,3 +102,22 @@ Gleichwertigkeit mit den besten Meta-Builds ist erst belegbar, wenn
 repräsentative Builds mit identischen Eingaben und Rechenbedingungen
 reproduziert werden. Bis dahin bleiben fehlende Mechaniken sichtbar
 `Unbekannt` und erzeugen keinen positiven Bonus.
+
+## Schädigende Zustände: belegter Teilstand
+
+Blutung und Gift besitzen nun eine eigene, von Trefferschaden und
+eigenständigem DoT getrennte Rechenkette. Verwendet werden ausschließlich
+strukturierte Werte aus dem gepinnten PoB2-Stand:
+
+- Grundschaden pro Sekunde und Grunddauer
+- Auslösechance
+- relevante ungeminderte Ausgangsschadensarten
+- Wirkfrequenz und Trefferchance
+- Zustandswirkung, Dauer und maximale Stapelzahl
+- die von PoB2 verwendete gewichtete Schadensroll-Behandlung
+
+Angriffs-Zustände bleiben gesperrt, solange die Accuracy-Gegnerkette nicht
+vollständig vorliegt. Entzünden bleibt ebenfalls gesperrt, bis
+Gegner-Ailment-Schwelle und Aufbau reproduzierbar modelliert sind. Damit
+erzeugt eine bloß plausible, aber unvollständige Zustandskette keinen
+positiven Schaden.

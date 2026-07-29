@@ -2626,3 +2626,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Weiter offen: Qualität, Skill-vor-globaler Umwandlungspräzedenz,
   Ailments/DoT, projektil- und triggerspezifische Trefferketten, Minions sowie
   reproduzierbare Referenzbuild-Parität.
+
+## PoB2-Rechenparität: Blutung und Gift (2026-07-29)
+
+- Blutung und Gift sind als getrennte schädigende Zustände in die
+  Schadensschätzung und die sichtbare Ergebnisansicht integriert.
+- Grundlage sind ausschließlich die gepinnten PoB2-Werte für Grundschaden,
+  Dauer, Chance, Effekt, Stapelgrenze und Anwendungshäufigkeit.
+- Die gewichtete Schadensroll-Behandlung folgt dem inspizierten
+  `CalcOffence.lua`-Referenzpfad.
+- Zaubertreffer verwenden in diesem Teilmodell 100 % Trefferchance.
+  Angriffs-Zustände bleiben bis zur vollständigen Accuracy-Gegnerkette
+  fail-closed.
+- Entzünden bleibt bis zur belegten Gegner-Ailment-Schwellen- und
+  Aufbaulogik gesperrt.
+- Eine vollständige PoB2-Parität oder Meta-Überlegenheit wird weiterhin
+  nicht behauptet.

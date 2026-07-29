@@ -9,6 +9,7 @@ import { applyBuildEnemyEffects } from './build-enemy-effects'
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
+import { collectDamagingAilments } from './damaging-ailments'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
@@ -148,12 +149,20 @@ export function estimateHitDamage(input:{
   actionsPerSecond*=1+speedIncrease/100
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
+  const damagingAilments=collectDamagingAilments({
+    skill,
+    components,
+    actionsPerSecond,
+    hitChancePercent: skill.kind === 'spell' ? 100 : undefined,
+    setup,
+    supports: input.supports??[],
+  })
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
   const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
   if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
-  if(quantitative.conversions.length)included.push('bestätigte einstufige Schadensumwandlungen')
+  if(quantitative.conversions.length)included.push('bestätigte mehrstufig geordnete Schadensumwandlungen')
   if(quantitative.gainAsExtra.length)included.push('bestätigter zusätzlicher Schaden nach PoB-Modifikatorreihenfolge')
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
@@ -216,6 +225,17 @@ export function estimateHitDamage(input:{
     temporalOffensiveEffects:temporal.effects.map(value=>({sourceId:value.sourceId,label:value.label,kind:value.kind,percent:value.percent,activationTimeMs:value.activationTimeMs,durationMs:value.durationMs,status:value.status,detail:value.detail})),
     ...(nextSkill.effects.length?{nextSkillEffects:{modelVersion:nextSkill.modelVersion,effects:nextSkill.effects.map(value=>({sourceId:value.sourceId,sourceLabel:value.sourceLabel,targetSkillId:value.targetSkillId,targetSkillLabel:value.targetSkillLabel,kind:value.kind,percent:value.percent,status:value.status,detail:value.detail}))}}:{}),
     ...((damageOverTime.effects.length||damageOverTime.blockedEffects.length)?{damageOverTime:damageOverTimeOutput()}:{}),
+    ...((damagingAilments.effects.length||damagingAilments.blockedEffects.length)?{damagingAilments:{
+      modelVersion:damagingAilments.modelVersion,
+      effects:damagingAilments.effects.map(value=>({
+        sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,damageType:value.damageType,status:value.status,
+        chancePercent:value.chancePercent,durationMs:value.durationMs,maximumStacks:value.maximumStacks,expectedActiveStacks:value.expectedActiveStacks,
+        damagePerSecond:value.damagePerSecond,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,detail:value.detail,
+      })),
+      blockedEffects:damagingAilments.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),
+      totalSustainedDamagePerSecond:damagingAilments.totalSustainedDamagePerSecond,
+      limitations:damagingAilments.limitations,
+    }}:{}),
     ...(temporal.chargeState.relevant?{chargeState:{modelVersion:temporal.chargeState.modelVersion,productive:temporal.chargeState.productive,states:temporal.chargeState.states.map(value=>({type:value.type,label:value.label,availability:value.availability,count:value.count,detail:value.detail})),consumptions:temporal.chargeState.consumptions.map(value=>({sourceId:value.sourceId,label:value.label,chargeTypes:value.chargeTypes,intervalMs:value.intervalMs,detail:value.detail}))}}:{}),
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     confirmedGainAsExtra:quantitative.gainAsExtra.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
@@ -230,7 +250,7 @@ export function estimateHitDamage(input:{
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
-    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damageOverTime.effects.length?['nicht belegte Entzünden-, Gift- und Blutungs-DPS sowie DoT-Stapelung']:['Ailments und Schaden über Zeit ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
+    excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damagingAilments.effects.length?['nicht vollständig belegte Entzünden-, Gift- und Blutungs-Sonderfälle sowie gegnerische DoT-Abwehr']:['Entzünden, Gift und Blutung ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

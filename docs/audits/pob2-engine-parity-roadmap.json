@@ -39,9 +39,16 @@
     {
       "referenceArea": "damage over time and ailments",
       "pob2Modules": ["CalcOffence.lua", "CalcSections.lua"],
-      "appModules": ["damage-over-time.ts"],
+      "appModules": ["damage-over-time.ts", "damaging-ailments.ts"],
       "status": "partial",
-      "nextGap": "ignite, poison, bleeding, stack limits, application rate and ailment magnitude"
+      "completedInThisStep": [
+        "bleeding and poison use pinned PoB2 base damage percentages and durations",
+        "structured chance, effect, duration, stack limits and application frequency are connected",
+        "PoB2 weighted damage-roll handling is reproduced for the supported chain",
+        "attack ailments fail closed until the accuracy versus enemy chain is available",
+        "ignite fails closed until ailment threshold and buildup are modeled"
+      ],
+      "nextGap": "enemy ailment threshold and buildup, attack accuracy, aggravation, critical ailment special cases and enemy damage-over-time mitigation"
     },
     {
       "referenceArea": "projectiles, repeats and triggers",
