@@ -12,6 +12,12 @@ import { planSynergisticSkills, type SkillSynergyScore } from './synergy-planner
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
 import { fillRecommendedSupportSlots } from './automatic-supports'
 import { scoreMetaReference } from './meta-reference'
+import {
+  evaluateSkillWeaponCompatibility,
+  evaluateSupportInteraction,
+  weaponTypeMatches,
+} from './poe2-interaction-rules'
+import { buildEffectGraph } from './build-effect-graph'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
@@ -75,6 +81,8 @@ export interface BuildVariantCandidate {
   }
   packageEvidence?: string[]
   packageBlockers?: string[]
+  ruleGraphStatus?: 'coherent' | 'limited' | 'blocked'
+  ruleGraphEvidence?: string[]
   reasons: string[]
 }
 
@@ -119,18 +127,9 @@ function equipmentWeaponSets(equipment: EquipmentEntry[]) {
   return result
 }
 
-function weaponMatches(required: SyntheticWeaponType[] | undefined, weapon: SyntheticWeaponType) {
-  if (!required?.length || required.includes('any')) return true
-  return required.some(value =>
-    value === weapon
-    || value === 'melee-weapon' && meleeWeapons.has(weapon)
-    || value === 'ranged-weapon' && rangedWeapons.has(weapon),
-  )
-}
-
 function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof equipmentWeaponSets>) {
   const equippedTypes = [...new Set([...equipped['set-1'], ...equipped['set-2']])]
-  if (equippedTypes.length) return equippedTypes.filter(type => weaponMatches(skill.requiredWeaponTypes, type))
+  if (equippedTypes.length) return equippedTypes.filter(type => evaluateSkillWeaponCompatibility(skill, type).status === 'productive')
   if (skill.requiredWeaponTypes?.length) {
     return skill.requiredWeaponTypes.flatMap(type =>
       type === 'melee-weapon' ? [...meleeWeapons]
@@ -144,18 +143,7 @@ function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof
 }
 
 function supportCompatible(skill: SkillGemDefinition, support: SupportGemDefinition, weapon: SyntheticWeaponType) {
-  if (support.enabled === false) return false
-  if (skill.recommendedSupportIds?.length && !skill.recommendedSupportIds.includes(support.id)) return false
-  if (support.selectionOnly && !skill.recommendedSupportIds?.includes(support.id)) return false
-  if (support.requiredTags.some(tag => !skill.tags.includes(tag))) return false
-  if (support.excludedTags.some(tag => skill.tags.includes(tag))) return false
-  if (support.supportedDamageTypes?.some(tag => !skill.tags.includes(tag))) return false
-  if (support.supportedMechanics?.some(tag => !skill.tags.includes(tag))) return false
-  if (support.excludedDamageTypes?.some(tag => skill.tags.includes(tag))) return false
-  if (support.requiredWeaponTypes?.length && !weaponMatches(support.requiredWeaponTypes, weapon)) return false
-  if (support.excludedWeaponTypes?.some(type => weaponMatches([type], weapon))) return false
-  if (support.allowedSkillRoles?.length && !support.allowedSkillRoles.includes('main')) return false
-  return true
+  return evaluateSupportInteraction(skill, support, weapon, 'main').status === 'productive'
 }
 
 function preferredSet(weapon: SyntheticWeaponType, equipped: ReturnType<typeof equipmentWeaponSets>) {
@@ -177,9 +165,9 @@ function setupWeapon(
   equipped: ReturnType<typeof equipmentWeaponSets>,
 ) {
   if (!skill) return undefined
-  const equippedSetTwo = [...equipped['set-2']].find(type => weaponMatches(skill.requiredWeaponTypes, type))
+  const equippedSetTwo = [...equipped['set-2']].find(type => weaponTypeMatches(skill.requiredWeaponTypes, type))
   if (equippedSetTwo) return equippedSetTwo
-  if (weaponMatches(skill.requiredWeaponTypes, mainWeapon)) return mainWeapon
+  if (weaponTypeMatches(skill.requiredWeaponTypes, mainWeapon)) return mainWeapon
   return candidateWeapons(skill, { 'set-1': new Set(), 'set-2': new Set() })[0]
 }
 
@@ -215,7 +203,7 @@ export function optimizeBuildVariants(input: {
       return []
     }
     return weapons.flatMap(weapon => {
-      if (!weaponMatches(skill.requiredWeaponTypes, weapon)) {
+      if (evaluateSkillWeaponCompatibility(skill, weapon).status !== 'productive') {
         blockedCombinationCount += 1
         return []
       }
@@ -247,11 +235,13 @@ export function optimizeBuildVariants(input: {
           characterLevel: input.characterLevel,
         },
       ).supportGemIds
-      const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1)[0]
+      const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1, {
+        ascendancyId: input.ascendancyId,
+      })[0]
       const setupDefinition = characterSkills.find(value => value.id === setup?.skillId)
       const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped)
       const usableSetup = setup && setupDefinition && setupWeaponType
-        && weaponMatches(setupDefinition.requiredWeaponTypes, setupWeaponType)
+        && evaluateSkillWeaponCompatibility(setupDefinition, setupWeaponType).status === 'productive'
         ? setup
         : undefined
       const mainWeaponSet = preferredSet(weapon, equipped)
@@ -286,6 +276,20 @@ export function optimizeBuildVariants(input: {
       const metaReference = scoreMetaReference(skill, weapon, input.ascendancyId)
       const weaponEvidenceScore = skill.requiredWeaponTypes?.length ? 80 : skill.tags.includes('spell') && weapon === 'wand' ? 25 : 0
       const setupScore = usableSetup ? 35 : 0
+      const ruleGraph = buildEffectGraph({
+        mainSkill: skill,
+        mainWeapon: weapon,
+        supports: supportIds
+          .map(id => input.supports.find(value => value.id === id))
+          .filter((value): value is SupportGemDefinition => Boolean(value)),
+        setupSkill: usableSetup ? setupDefinition : undefined,
+        ascendancyId: input.ascendancyId,
+        role: 'main',
+      })
+      if (ruleGraph.status === 'blocked') {
+        blockedCombinationCount += 1
+        return []
+      }
       const totalScore = Math.round(
         score.totalScore * 2
         + affinity.score * 3
@@ -295,6 +299,7 @@ export function optimizeBuildVariants(input: {
         + setupScore
         + Math.min(250, modeledDps ?? 0)
         + metaReference.score
+        + Math.min(60, ruleGraph.productiveEdgeCount * 6)
         - resourcePenalty,
       )
       const reasons = [
@@ -332,6 +337,11 @@ export function optimizeBuildVariants(input: {
         resourcePenalty,
         totalScore,
         metaReferenceScore: metaReference.score,
+        ruleGraphStatus: ruleGraph.status,
+        ruleGraphEvidence: [
+          ...ruleGraph.edges.filter(edge => edge.productive).map(edge => edge.reason),
+          ...ruleGraph.unresolved,
+        ],
         reasons,
       }]
     })

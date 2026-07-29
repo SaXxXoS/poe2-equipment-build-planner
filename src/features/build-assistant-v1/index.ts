@@ -28,7 +28,12 @@ const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
 }).map((skill): SkillGemDefinition => ({
   ...skill,
   damageTypes: skill.tags.filter(tag => damageTags.has(tag)) as SkillGemDefinition['damageTypes'],
-  possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility'] : skill.tags.some(tag => ['buff', 'debuff', 'defensive'].includes(tag)) ? ['utility'] : ['main', 'secondary'],
+  possibleRoles: skill.tags.includes('movement') ? ['movement', 'utility']
+    : skill.gemType === 'spirit'
+      || skill.sourceTags?.some(tag => ['aura', 'buff', 'curse', 'debuff', 'mark', 'meta', 'persistent', 'trigger'].includes(tag))
+      || skill.tags.some(tag => ['buff', 'debuff', 'defensive'].includes(tag))
+      ? ['utility']
+      : ['main', 'secondary'],
   mappingBase: skill.tags.some(tag => ['projectile', 'area', 'movement'].includes(tag)) ? 65 : 50,
   bossBase: skill.tags.includes('debuff') ? 70 : 55,
   enabled: true,

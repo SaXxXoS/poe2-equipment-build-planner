@@ -207,6 +207,7 @@ export default function App() {
               }),
               rankedSkills,
               provisionalSetups.length - 1,
+              { ascendancyId: character.ascendancyId },
             ) : []
             if (optimization.selected?.setupSkillId) {
               const selectedSetupIndex = skillQueue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
@@ -254,7 +255,9 @@ export default function App() {
               evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
             }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
-            const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length)
+            const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {
+              ascendancyId: character.ascendancyId,
+            })
               .filter(value => !existingIds.has(value.skillId))
             const populated = preparedSetups.map(value => {
               if (value.skillId) return value

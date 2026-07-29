@@ -1,4 +1,5 @@
 import type { MechanicTag, SkillGemDefinition } from '../../domain'
+import { derivedAscendancyAffinity } from './ascendancy-tree-affinity'
 
 type CharacterAffinity = {
   classTags: MechanicTag[]
@@ -57,10 +58,17 @@ export function characterSkillAffinity(classId: string, ascendancyId: string): C
 export function scoreCharacterSkillAffinity(skill: SkillGemDefinition, classId: string, ascendancyId: string) {
   const affinity = characterSkillAffinity(classId, ascendancyId)
   const classMatches = affinity.classTags.filter(tag => skill.tags.includes(tag))
-  const ascendancyMatches = affinity.ascendancyTags.filter(tag => skill.tags.includes(tag))
+  const derived = derivedAscendancyAffinity(skill, ascendancyId)
+  const fallbackMatches = affinity.ascendancyTags.filter(tag => skill.tags.includes(tag))
+  const ascendancyMatches = [...new Set([...derived.matches, ...fallbackMatches])].sort()
+  const fallbackOnlyMatches = fallbackMatches.filter(tag => !derived.matches.includes(tag))
   return {
     classMatches,
     ascendancyMatches,
-    score: classMatches.length * 20 + ascendancyMatches.length * 45,
+    score: classMatches.length * 20 + derived.score + fallbackOnlyMatches.length * 45,
+    evidence: derived.evidence === 'structured-derived'
+      ? fallbackOnlyMatches.length ? 'structured-derived-with-curated-fallback' : derived.evidence
+      : 'fallback-curated',
+    sourceNodeCount: derived.sourceNodeCount,
   }
 }

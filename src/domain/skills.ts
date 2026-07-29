@@ -9,6 +9,9 @@ export type MetaSocketRule = 'spell' | 'attack' | 'projectile-attack' | 'debuff'
 export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'bow' | 'crossbow' | 'wand' | 'claw' | 'dagger' | 'flail' | 'mace' | 'quarterstaff' | 'spear' | 'sword' | 'axe' | 'any'
 export interface SkillAttributeRequirements { strength?: number; dexterity?: number; intelligence?: number }
 export interface SkillGemDefinition extends GameDataMetadata {
+  /** Vollständige normalisierte Quell-Tags; nur für fail-closed Regelprüfung. */
+  sourceTags?: string[]
+  gemType?: 'active' | 'spirit'
   damageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]
   possibleRoles?: SkillRole[]
   requiredWeaponTypes?: SyntheticWeaponType[]
@@ -46,6 +49,8 @@ export interface SkillGemDefinition extends GameDataMetadata {
 }
 
 export interface SupportGemDefinition extends GameDataMetadata {
+  /** Vollständige normalisierte Quell-Tags; nur für fail-closed Regelprüfung. */
+  sourceTags?: string[]
   /** Gemeinsame Support-Kategorie über alle Stufen hinweg (z. B. Mystizismus I/II). */
   supportFamilyId?: EntityId
   supportCategoryIds?: EntityId[]

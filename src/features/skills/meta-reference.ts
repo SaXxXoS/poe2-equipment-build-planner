@@ -197,3 +197,48 @@ export function scoreMetaReference(
     snapshot: metaReferenceSnapshot,
   }
 }
+
+export function correlatedMetaSkillRelations(
+  mainSkill: SkillGemDefinition,
+  ascendancyId: string,
+) {
+  const packages = correlatedPackages.packages.filter(item =>
+    item.productive
+    && item.ascendancyId === ascendancyId
+    && item.mainSkill === mainSkill.nameEn
+    && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
+  )
+  const relations = new Map<string, { profileCount: number; share: number; packageIds: string[] }>()
+  packages.forEach(item => item.linkedActiveSkills.forEach(linked => {
+    const current = relations.get(linked.name)
+    relations.set(linked.name, {
+      profileCount: (current?.profileCount ?? 0) + linked.count,
+      share: Math.max(current?.share ?? 0, linked.share),
+      packageIds: [...(current?.packageIds ?? []), item.packageId].sort(),
+    })
+  }))
+  return relations
+}
+
+export function correlatedMetaSupportNames(
+  mainSkill: SkillGemDefinition,
+  ascendancyId: string,
+) {
+  return correlatedPackages.packages
+    .filter(item =>
+      item.productive
+      && item.ascendancyId === ascendancyId
+      && item.mainSkill === mainSkill.nameEn
+      && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
+    )
+    .flatMap(item => item.supports.map(support => ({
+      ...support,
+      packageId: item.packageId,
+      profileCount: item.profileCount,
+    })))
+    .sort((left, right) =>
+      right.share - left.share
+      || right.count - left.count
+      || left.name.localeCompare(right.name),
+    )
+}

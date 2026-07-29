@@ -1,5 +1,6 @@
 import type { SkillGemDefinition, SkillRole, SkillWeaponSet } from '../../domain'
 import { evaluateSkillInteraction, type SkillInteractionEvidence } from './poe2-interaction-rules'
+import { correlatedMetaSkillRelations } from './meta-reference'
 
 export interface SkillSynergyScore {
   skillId: string
@@ -23,9 +24,10 @@ export function planSynergisticSkills(
   definitions: SkillGemDefinition[],
   recommendationScores: SkillSynergyScore[],
   limit: number,
+  context?: { ascendancyId?: string },
 ): PlannedSynergySkill[] {
   const scores = new Map(recommendationScores.map(value => [value.skillId, value]))
-  const candidates = definitions.flatMap((candidate): PlannedSynergySkill[] => {
+  const explicitCandidates = definitions.flatMap((candidate): PlannedSynergySkill[] => {
     const interaction = evaluateSkillInteraction(main, candidate)
     if (interaction.status !== 'productive' || !interaction.role || !interaction.weaponSet) return []
     const recommendation = scores.get(candidate.id)
@@ -39,8 +41,27 @@ export function planSynergisticSkills(
       ruleId: interaction.ruleId,
     }]
   })
+  const correlated = context?.ascendancyId
+    ? correlatedMetaSkillRelations(main, context.ascendancyId)
+    : new Map()
+  const metaCandidates = definitions.flatMap((candidate): PlannedSynergySkill[] => {
+    const evidence = correlated.get(candidate.nameEn)
+    if (!evidence || candidate.id === main.id) return []
+    const recommendation = scores.get(candidate.id)
+    return [{
+      skillId: candidate.id,
+      role: candidate.gemType === 'spirit' || candidate.sourceTags?.some(tag =>
+        ['aura', 'buff', 'curse', 'debuff', 'mark', 'meta', 'persistent', 'trigger'].includes(tag),
+      ) ? 'utility' : 'secondary',
+      weaponSet: 'both',
+      reason: `${evidence.profileCount} lokal gepinnte Profile derselben Aszendenz belegen diese Fertigkeit gemeinsam mit dem Hauptskill.`,
+      score: 35 + Math.min(25, evidence.profileCount * 2) + Math.max(0, recommendation?.totalScore ?? 0) * 0.02,
+      evidence: 'multi-profile-correlated-exact',
+      ruleId: `meta-package:${evidence.packageIds.join('+')}`,
+    }]
+  })
 
-  return candidates
+  return [...explicitCandidates, ...metaCandidates]
     .sort((a, b) => b.score - a.score || a.skillId.localeCompare(b.skillId))
     .filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
     .slice(0, Math.max(0, limit))

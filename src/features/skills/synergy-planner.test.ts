@@ -65,6 +65,22 @@ describe('zusammenhängende Skillplanung', () => {
     expect(planSynergisticSkills(main, [main, ...candidates], [], 8)).toEqual(planSynergisticSkills(main, [main, ...candidates], [], 8))
   })
 
+  it('nutzt ein mehrfach beobachtetes lokales Meta-Paket nur für dieselbe Aszendenz', () => {
+    const main = skill('skyfall', 'Skyfall', ['spell', 'cold'])
+    const trigger = skill('cast-on-critical', 'Cast on Critical', ['spell'], {
+      sourceTags: ['meta', 'trigger'],
+    })
+    expect(planSynergisticSkills(main, [main, trigger], [], 8, {
+      ascendancyId: 'ascendancy-official-Witch1',
+    })[0]).toMatchObject({
+      skillId: 'cast-on-critical',
+      evidence: 'multi-profile-correlated-exact',
+    })
+    expect(planSynergisticSkills(main, [main, trigger], [], 8, {
+      ascendancyId: 'ascendancy-official-Ranger1',
+    })).toEqual([])
+  })
+
   it('findet im produktiven Katalog für Blitz und Feuer jeweils eine verbundene Set-2-Vorbereitung', () => {
     const spark = buildAssistantCandidates.skills.find(value => value.nameEn === 'Spark')!
     const flameblast = buildAssistantCandidates.skills.find(value => value.nameEn === 'Flameblast')!

@@ -63,4 +63,32 @@ belegten Interaktionen erweitert.
 4. Aszendenz- und Passivwirkungen als explizite Wirkungsgraphen anbinden.
 5. Erst danach DPS-orientierte Paketoptimierung über ausschließlich gültige
    Kombinationen durchführen.
+## Ausbau 2: zentraler Wirkungsgraph
+
+Der Wirkungsgraph verbindet Hauptfertigkeit, Waffe, Supports, vorbereitende
+Fertigkeit, Meta-Payload und Aszendenz. Eine harte Waffen- oder
+Support-Inkompatibilität blockiert das gesamte Kandidatenpaket.
+
+`multi-profile-correlated-exact` ist nur als begrenzte Sekundärevidenz
+zulässig: Eine Kombination muss in mindestens zwei Profilen desselben
+gepinnten Meta-Pakets gemeinsam beobachtet worden sein. Dieser Hinweis darf
+harte Regeln niemals überstimmen.
+
+Strukturierte lokale Breite:
+
+- 235 Fertigkeitsdefinitionen: 219 aktiv, 16 Geist;
+- 451 Supportdefinitionen;
+- 233 Fertigkeiten mit strukturierter Liste kompatibler Supports;
+- 450 Supports mit strukturiertem Kostenmultiplikator;
+- 36 Aszendenzen im lokalen Baum, davon derzeit 22 mit produktiv
+  klassifizierbaren Tags.
+
+Rohe Quelltags wie Aura, Buff, Fluch, Markierung, Meta, Trigger, anhaltend
+und Minion bleiben für die zentrale Regelprüfung erhalten. Nicht
+klassifizierbare Aszendenzstats und komplexe Sondermechaniken bleiben
+`Unbekannt` und erzeugen keinen positiven Bonus.
+
+Der lokale Meta-Snapshot umfasst 10 produktive Pakete aus 53 validierten
+Profilen. Er ist keine vollständige Saisonabbildung und keine
+Optimalitätsgarantie.
 

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition } from '../../domain'
-import { evaluateSkillInteraction } from './poe2-interaction-rules'
+import type { SupportGemDefinition } from '../../domain'
+import {
+  evaluateSkillInteraction,
+  evaluateSkillWeaponCompatibility,
+  evaluateSupportInteraction,
+} from './poe2-interaction-rules'
 
 const skill = (
   id: string,
@@ -20,6 +25,48 @@ const skill = (
 })
 
 describe('zentrale PoE2-Interaktionsregeln', () => {
+  it('blockiert eine Waffe, die die strukturierte Skillanforderung nicht erfüllt', () => {
+    const bowSkill = skill('bow-skill', 'Bow Skill', ['attack', 'projectile'], {
+      requiredWeaponTypes: ['bow'],
+    })
+    expect(evaluateSkillWeaponCompatibility(bowSkill, 'bow')).toMatchObject({
+      status: 'productive',
+      evidence: 'structured-exact',
+    })
+    expect(evaluateSkillWeaponCompatibility(bowSkill, 'mace')).toMatchObject({
+      status: 'blocked',
+      ruleId: 'skill-weapon.required-missing',
+    })
+  })
+
+  it('lässt nur der Fertigkeit strukturiert zugeordnete importierte Supports zu', () => {
+    const support = {
+      id: 'support',
+      displayNameDe: 'Support',
+      dataVersion: 'test',
+      source: 'local-placeholder',
+      status: 'placeholder',
+      tags: [],
+      requiredTags: [],
+      excludedTags: [],
+      ownTags: [],
+      selectionOnly: true,
+      enabled: true,
+    } satisfies SupportGemDefinition
+    const main = skill('main', 'Main', ['spell'], {
+      recommendedSupportIds: ['support'],
+    })
+    expect(evaluateSupportInteraction(main, support, 'wand')).toMatchObject({
+      status: 'productive',
+      evidence: 'structured-exact',
+    })
+    expect(evaluateSupportInteraction(
+      { ...main, recommendedSupportIds: ['different-support'] },
+      support,
+      'wand',
+    )).toMatchObject({ status: 'blocked' })
+  })
+
   it('wertet gleiche Schadens-Tags nicht als produktive Beziehung', () => {
     const main = skill('spark', 'Spark', ['spell', 'projectile', 'lightning'])
     const candidate = skill('other', 'Other Lightning Spell', ['spell', 'area', 'lightning'], {

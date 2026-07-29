@@ -2479,3 +2479,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständiges Verständnis aller Mechaniken der aktuellen Saison:
   **Unbekannt**. Die Regelschicht wird mechanikweise erweitert; fehlende
   Evidenz bleibt ohne Empfehlung.
+## PoE2-Regelverständnisschicht – zentraler Wirkungsgraph
+
+- Der Fertigkeitskatalog bewahrt die vollständigen lokalen Quelltags und den
+  Gemmentyp; Runtime-Netzwerk ist nicht erforderlich.
+- Waffe, Fertigkeit, Support, Set-2-Vorbereitung, Meta-Payload und Aszendenz
+  werden in einem gemeinsamen fail-closed Wirkungsgraph geprüft.
+- Die 36 lokalen Aszendenzen werden direkt aus ihren Passivbaumknoten
+  ausgewertet. 22 besitzen produktiv klassifizierbare Tags; 14 bleiben
+  `Unbekannt`.
+- Importierte Supports sind nur produktiv zulässig, wenn die strukturierte
+  Fertigkeit-Support-Kette und alle harten Tag-, Schadens-, Rollen- und
+  Waffenregeln passen.
+- Der gepinnte Meta-Snapshot darf gemeinsam beobachtete Skills nur nach den
+  harten Regeln und nur mit mindestens zwei Profilen stützen.
+- Gleiche Tags, Namen oder Textähnlichkeit reichen weiterhin nicht.
+- Coverage:
+  `docs/audits/poe2-rule-understanding-coverage-v2.json`.
+- Vollständiges PoE2-Verständnis und globale Meta-Optimalität: **Unbekannt**.

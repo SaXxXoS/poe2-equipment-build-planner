@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "2.0.0",
+  "status": "partially-understood-fail-closed",
+  "skillCatalog": {
+    "total": 235,
+    "active": 219,
+    "spirit": 16,
+    "withStructuredRecommendedSupports": 233
+  },
+  "supportCatalog": {
+    "total": 451,
+    "withStructuredCostMultiplier": 450
+  },
+  "rawSkillTagCoverage": {
+    "attack": 122,
+    "spell": 50,
+    "aura": 7,
+    "buff": 69,
+    "curse": 5,
+    "mark": 5,
+    "meta": 16,
+    "persistent": 62,
+    "trigger": 21,
+    "minion": 22
+  },
+  "ascendancyTree": {
+    "totalAscendancies": 36,
+    "withProductiveDerivedTags": 22,
+    "unresolved": 14
+  },
+  "correlatedMetaReference": {
+    "validatedProfiles": 53,
+    "productivePackages": 10,
+    "minimumProfilesPerProductivePackage": 2,
+    "use": "bounded-secondary-evidence-after-hard-rules"
+  },
+  "centralChecks": [
+    "skill-weapon",
+    "skill-support",
+    "main-setup",
+    "meta-payload",
+    "ascendancy-skill"
+  ],
+  "blockedEvidenceClasses": [
+    "heuristic-only",
+    "blocked",
+    "text-similarity",
+    "name-only"
+  ],
+  "limitations": [
+    "Vollständige Mechanikabdeckung der aktuellen Saison ist Unbekannt.",
+    "Nicht klassifizierte Aszendenzstats erzeugen keinen Bonus.",
+    "Der Meta-Snapshot ist partiell und keine Optimalitätsgarantie.",
+    "Keine vollständige Path-of-Building-DPS-Simulation."
+  ]
+}
