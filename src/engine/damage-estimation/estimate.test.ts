@@ -160,6 +160,29 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     }))
     expect(result.triggerRepeatModel?.productive).toBe(false)
   })
+  it('berechnet ein kompatibles Cast-on-Critical-Ziel rekursionssicher als normierten Teilwert',()=>{
+    const main=skill('arc','Arc')
+    const trigger=skill('coc','Cast on Critical')
+    const target=skill('comet','Comet')
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[
+        setup(main.id),
+        {...setup(trigger.id),id:'trigger',role:'utility',embeddedSkillIds:[target.id]},
+      ],
+      skills:[main,trigger,target],
+    })
+    expect(result.status).toBe('partial')
+    expect(result.triggerRepeatModel?.sources).toContainEqual(expect.objectContaining({
+      sourceSkillId:'coc',
+      targetSkillId:'comet',
+      status:'normalized-target-damage-only',
+      targetDamageMultiplier:0.8,
+      targetExpectedHitDamage:expect.any(Number),
+      normalizedTriggeredDamagePerSecondAtMonsterPowerOne:expect.any(Number),
+    }))
+    expect(result.triggerRepeatModel?.productive).toBe(false)
+  })
   it('berechnet eine Minion-Hauptfertigkeit nicht fälschlich mit Spielerwaffe und Spielertempo',()=>{
     const result=estimateHitDamage({
       equipment:[weapon('Crude Bow')],

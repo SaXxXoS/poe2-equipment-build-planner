@@ -64,9 +64,11 @@
         "internal pinned trigger supports expose exact target compatibility and energy-per-cast-time rules",
         "energy requirement, per-event generation and required events at monster power one are calculated without inventing an event rate",
         "Cast on Critical derives its critical-event rate from action rate, hit chance and effective critical chance",
-        "normalized energy buildup and trigger rate at monster power one are exposed without adding uncalculated target damage"
+        "normalized energy buildup and trigger rate at monster power one are exposed without adding uncalculated target damage",
+        "compatible embedded target skills are calculated through a recursion-safe isolated hit calculation",
+        "the internal trigger damage multiplier and optional enemy mitigation are applied to the normalized target result"
       ],
-      "nextGap": "resolve target damage with a recursion-safe secondary-skill calculation and connect actual monster power or explicit event profiles; then add overlaps and return/fork chains"
+      "nextGap": "connect actual monster power or explicit event profiles and exact trigger caps before adding trigger damage to total DPS; then add overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

@@ -2808,3 +2808,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Eingebetteter Zielschaden wird noch nicht zum Gesamt-DPS addiert; dafür
   fehlt die rekursionssichere Sekundärskill-Berechnung.
 - Trigger-Teilmodell `1.3.0`.
+
+# Fortsetzung: Schritt 47 – Meta-Trigger-Zielschaden
+
+- Kompatible eingebettete Zielskills werden rekursionssicher in einem
+  isolierten Schadenslauf berechnet.
+- Ausrüstung, Waffenset, Passive, Aszendenz, Meta-Supports, Krit und das
+  optionale Gegnerprofil bleiben in derselben Wirkungskette.
+- Der interne Trigger-Schadensfaktor wird genau einmal angewendet.
+- Erwarteter Zieltreffer und normierter Trigger-DPS bei Monsterstärke eins
+  werden ausgewiesen, aber ohne reale Monsterstärke noch nicht zum
+  Gesamt-DPS addiert.

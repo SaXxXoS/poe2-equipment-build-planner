@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
-import { resolveTriggerRepeatModel } from './trigger-repeat-model'
+import { attachNormalizedTriggeredTargetDamage, resolveTriggerRepeatModel } from './trigger-repeat-model'
 
 const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   id, displayNameDe: nameEn, nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
@@ -112,6 +112,39 @@ describe('Trigger- und Wiederholungsmodell', () => {
       energyPerSecondAtMonsterPowerOne: 0.628,
       triggerRatePerSecondAtMonsterPowerOne: 0.00628,
       secondsPerTriggerAtMonsterPowerOne: 159.235669,
+    })
+    expect(result.productive).toBe(false)
+  })
+
+  it('verbindet normierten Triggeraufbau mit Zielschaden und internem Schadensfaktor', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('comet', 'Comet')
+    const energyModel = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+      primaryActionContext: {
+        actionsPerSecond: 2,
+        hitChancePercent: 80,
+        criticalHitChancePercent: 25,
+      },
+    })
+    const result = attachNormalizedTriggeredTargetDamage(
+      energyModel,
+      new Map([['comet', { expectedHitDamage: 1000, expectedHitDamageAfterMitigation: 750 }]]),
+    )
+
+    expect(result.sources[0]).toMatchObject({
+      status: 'normalized-target-damage-only',
+      targetDamageMultiplier: 0.8,
+      targetExpectedHitDamage: 800,
+      targetExpectedHitDamageAfterMitigation: 600,
+      normalizedTriggeredDamagePerSecondAtMonsterPowerOne: 5.024,
+      normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne: 3.768,
     })
     expect(result.productive).toBe(false)
   })

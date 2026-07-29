@@ -15,7 +15,7 @@ import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
 import { resolveAttackHitChance } from './attack-hit-chance'
 import { expectedLuckyHitDamage, resolveLuckyHitEffects } from './lucky-hit-effects'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
-import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
+import { attachNormalizedTriggeredTargetDamage, resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
 import { resourceSpiritOutput, resolveResourceSpiritModel } from './resource-spirit-model'
 import { applySkillQualityStats, gemLevelQualityOutput, resolveGemLevelQualityModel } from './gem-level-quality-model'
@@ -83,6 +83,7 @@ export function estimateHitDamage(input:{
   rotationAnalysis?:RotationAnalysis
   characterLevel?:number
   characterClassId?:string
+  triggerDepth?:number
 }):DamageEstimate {
   const setup=input.setups.find(value=>value.role==='main'&&value.skillId)||input.setups.find(value=>value.skillId)
   const skillId=setup?.skillId||input.fallbackSkillId
@@ -261,6 +262,37 @@ export function estimateHitDamage(input:{
   const preparedNextHitDamageAfterMitigation=nextSkillEnemyMitigation
     ? expectedLuckyHitDamage(nextSkillEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)
     : undefined
+  if((input.triggerDepth??0)===0){
+    const targetDamage=new Map<string,{expectedHitDamage:number;expectedHitDamageAfterMitigation?:number}>()
+    for(const source of triggerRepeatModel.sources){
+      if(source.status!=='normalized-event-rate-only'||!source.targetSkillId||targetDamage.has(source.targetSkillId))continue
+      const metaSetup=input.setups.find(value=>value.skillId===source.sourceSkillId)
+      const targetDefinition=input.skills.find(value=>value.id===source.targetSkillId)
+      if(!metaSetup||!targetDefinition)continue
+      const targetEstimate=estimateHitDamage({
+        ...input,
+        setups:[{
+          id:`${metaSetup.id}:trigger-target:${source.targetSkillId}`,
+          skillId:source.targetSkillId,
+          role:'main',
+          weaponSet:metaSetup.weaponSet,
+          supportGemIds:metaSetup.supportGemIds,
+          origin:metaSetup.origin,
+        }],
+        fallbackSkillId:source.targetSkillId,
+        triggerDepth:1,
+      })
+      const expectedHitDamage=targetEstimate.expectedCriticalHitDamage??targetEstimate.hitDamage?.average
+      if(expectedHitDamage==null)continue
+      targetDamage.set(source.targetSkillId,{
+        expectedHitDamage,
+        ...(targetEstimate.expectedDamageAfterMitigation==null?{}:{
+          expectedHitDamageAfterMitigation:targetEstimate.expectedDamageAfterMitigation,
+        }),
+      })
+    }
+    triggerRepeatModel=attachNormalizedTriggeredTargetDamage(triggerRepeatModel,targetDamage)
+  }
   return{
     ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),

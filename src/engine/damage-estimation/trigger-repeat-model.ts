@@ -43,12 +43,18 @@ export interface ResolvedTriggerRepeatSource {
   energyPerSecondAtMonsterPowerOne?: number
   triggerRatePerSecondAtMonsterPowerOne?: number
   secondsPerTriggerAtMonsterPowerOne?: number
+  targetDamageMultiplier?: number
+  targetExpectedHitDamage?: number
+  targetExpectedHitDamageAfterMitigation?: number
+  normalizedTriggeredDamagePerSecondAtMonsterPowerOne?: number
+  normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne?: number
   status:
     | 'blocked-missing-target'
     | 'blocked-incompatible-target'
     | 'blocked-missing-trigger-source'
     | 'blocked-missing-interval'
     | 'normalized-event-rate-only'
+    | 'normalized-target-damage-only'
     | 'interval-only'
   evidence: 'structured-exact'
   sourceReferences: string[]
@@ -139,6 +145,10 @@ export function resolveTriggerRepeatModel(input: {
       : undefined
     const baseEnergyPerEvent = energyPerEvent(record)
     const energyGenerationModifierPercent = Number(record.numericStats['energy_generated_+%'])
+    const triggerDamageFinalPercent = Number(internalSupport?.numericStats['trigger_meta_gem_damage_+%_final'])
+    const targetDamageMultiplier = Number.isFinite(triggerDamageFinalPercent)
+      ? 1 + triggerDamageFinalPercent / 100
+      : 1
     const effectiveEnergyPerEventAtMonsterPowerOne = baseEnergyPerEvent == null
       ? undefined
       : Math.round(baseEnergyPerEvent * (
@@ -190,6 +200,7 @@ export function resolveTriggerRepeatModel(input: {
         ...(energyPerSecondAtMonsterPowerOne == null ? {} : { energyPerSecondAtMonsterPowerOne: stable(energyPerSecondAtMonsterPowerOne) }),
         ...(triggerRatePerSecondAtMonsterPowerOne == null ? {} : { triggerRatePerSecondAtMonsterPowerOne: stable(triggerRatePerSecondAtMonsterPowerOne) }),
         ...(secondsPerTriggerAtMonsterPowerOne == null ? {} : { secondsPerTriggerAtMonsterPowerOne: stable(secondsPerTriggerAtMonsterPowerOne) }),
+        targetDamageMultiplier: stable(targetDamageMultiplier),
         status: !target
           ? 'blocked-missing-target'
           : compatible
@@ -243,6 +254,44 @@ export function resolveTriggerRepeatModel(input: {
       'Wiederholungen, Triggerketten und ausgelöste Sekundärfertigkeiten erzeugen ohne vollständige Verknüpfung keinen positiven DPS-Wert.',
     ],
   }
+}
+
+export function attachNormalizedTriggeredTargetDamage(
+  model: TriggerRepeatModel,
+  targetDamage: ReadonlyMap<string, { expectedHitDamage: number; expectedHitDamageAfterMitigation?: number }>,
+): TriggerRepeatModel {
+  const sources = model.sources.map(source => {
+    if (
+      source.status !== 'normalized-event-rate-only'
+      || !source.targetSkillId
+      || source.triggerRatePerSecondAtMonsterPowerOne == null
+    ) return source
+    const target = targetDamage.get(source.targetSkillId)
+    if (!target) return source
+    const multiplier = source.targetDamageMultiplier ?? 1
+    const targetExpectedHitDamage = target.expectedHitDamage * multiplier
+    const targetExpectedHitDamageAfterMitigation = target.expectedHitDamageAfterMitigation == null
+      ? undefined
+      : target.expectedHitDamageAfterMitigation * multiplier
+    return {
+      ...source,
+      status: 'normalized-target-damage-only' as const,
+      targetExpectedHitDamage: Math.round(targetExpectedHitDamage * 1_000_000) / 1_000_000,
+      ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
+        targetExpectedHitDamageAfterMitigation: Math.round(targetExpectedHitDamageAfterMitigation * 1_000_000) / 1_000_000,
+      }),
+      normalizedTriggeredDamagePerSecondAtMonsterPowerOne: Math.round(
+        targetExpectedHitDamage * source.triggerRatePerSecondAtMonsterPowerOne * 1_000_000,
+      ) / 1_000_000,
+      ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
+        normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne: Math.round(
+          targetExpectedHitDamageAfterMitigation * source.triggerRatePerSecondAtMonsterPowerOne * 1_000_000,
+        ) / 1_000_000,
+      }),
+      detail: `${source.detail} Der Erwartungsschaden des eingebetteten Ziels ist mit dem internen Trigger-Schadensfaktor verbunden; das Ergebnis bleibt auf Monsterstärke 1 normiert und wird nicht als tatsächlicher Gesamt-DPS ausgegeben.`,
+    }
+  })
+  return { ...model, sources }
 }
 
 export const triggerRepeatOutput = (
