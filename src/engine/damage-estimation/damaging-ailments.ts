@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent } from './types'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '1.0.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.0.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -16,8 +16,8 @@ interface NumericRecord {
 export interface ResolvedDamagingAilment {
   sourceRecordId: string
   sourceLabel: string
-  kind: Exclude<AilmentKind, 'ignite'>
-  damageType: 'physical' | 'chaos'
+  kind: AilmentKind
+  damageType: 'physical' | 'chaos' | 'fire'
   status: 'sustained-exact-input-chain'
   chancePercent: number
   durationMs: number
@@ -99,6 +99,7 @@ export function collectDamagingAilments(input: {
   hitChancePercent?: number
   setup?: SkillSetup
   supports: SupportGemDefinition[]
+  enemyLevel?: number
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -197,19 +198,64 @@ export function collectDamagingAilments(input: {
     })
   }
 
-  const igniteReferences = [
-    'active_skill_ignite_chance_+%_final',
-    'support_ignition_chance_to_ignite_+%_final',
-  ].filter(stat => allStats.some(stats => Number.isFinite(stats[stat])))
-  if (igniteReferences.length) {
+  const fireRange = componentRange(input.components, ['fire'])
+  const enemyLevel = isFiniteNumber(input.enemyLevel)
+    ? Math.max(1, Math.min(reference.monsterAilmentThresholdTable.length, Math.trunc(input.enemyLevel)))
+    : undefined
+  if (fireRange.maximum > 0 && enemyLevel != null && input.actionsPerSecond > 0 && isFiniteNumber(input.hitChancePercent)) {
+    const threshold = reference.monsterAilmentThresholdTable[enemyLevel - 1]
+    const flatChance = sum(allStats, 'base_chance_to_ignite_%')
+    const chanceIncrease = sum(allStats, 'active_skill_ignite_chance_+%_final')
+      + sum(allStats, 'support_ignition_chance_to_ignite_+%_final')
+    const averageFireHit = (fireRange.minimum + fireRange.maximum) / 2
+    const chancePercent = Math.min(
+      100,
+      Math.max(0, (averageFireHit / threshold * reference.ailmentConstants.igniteChanceMultiplier + flatChance) * (1 + chanceIncrease / 100)),
+    )
+    if (chancePercent > 0) {
+      const durationMs = reference.ailmentConstants.baseIgniteDurationSeconds * 1000
+      const basePercentPerSecond = reference.ailmentConstants.igniteHitDamagePercentPerMinute / 60 / 100
+      const expectedActiveStacks = Math.min(
+        input.actionsPerSecond * durationMs / 1000 * chancePercent / 100 * input.hitChancePercent / 100,
+        1,
+      )
+      const effectMultiplier = productMore(valuesFor(allStats, 'active_skill_damaging_ailment_effect_+%_final'))
+      const singleStackDps = averageFireHit * basePercentPerSecond * effectMultiplier
+      effects.push({
+        sourceRecordId: input.skill.sourceRecordId,
+        sourceLabel: input.skill.name,
+        kind: 'ignite',
+        damageType: 'fire',
+        status: 'sustained-exact-input-chain',
+        chancePercent: round(chancePercent),
+        durationMs,
+        maximumStacks: 1,
+        expectedActiveStacks: round(expectedActiveStacks),
+        damagePerSecond: round(Math.min(singleStackDps * expectedActiveStacks, 35_791_394)),
+        totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
+        effectMultiplier: round(effectMultiplier),
+        sourceReferences: [
+          `monsterAilmentThresholdTable[${enemyLevel}]`,
+          'IgniteChanceMultiplier',
+          'IgniteHitDamagePercentPerMinute',
+          'BaseIgniteDuration',
+        ],
+        evidence: 'structured-exact',
+        detail: 'Feuerschaden, gepinnte PoB2-Gegnerschwelle, Chance, Dauer, Wirkfrequenz und Grundschaden sind strukturiert verbunden.',
+      })
+    }
+  } else if (fireRange.maximum > 0 || allStats.some(stats =>
+    Number.isFinite(stats['active_skill_ignite_chance_+%_final'])
+    || Number.isFinite(stats['support_ignition_chance_to_ignite_+%_final']),
+  )) {
     blockedEffects.push({
       sourceRecordId: input.skill.sourceRecordId,
       sourceLabel: input.skill.name,
       kind: 'ignite',
       status: 'blocked',
-      sourceReferences: igniteReferences,
+      sourceReferences: ['IgniteChanceMultiplier', 'monsterAilmentThresholdTable'],
       evidence: 'incomplete-identity-chain',
-      detail: 'Der Modifikator der Entzündungswahrscheinlichkeit ist vorhanden; die gegnerabhängige Ailment-Schwelle und vollständige Buildup-Kette fehlen jedoch. Es wird kein Entzündungs-DPS erfunden.',
+      detail: 'Feuerschaden oder Entzündungsmodifikatoren sind vorhanden; Gegnerlevel, Trefferchance oder Wirkfrequenz fehlen jedoch. Es wird kein Entzündungs-DPS erfunden.',
     })
   }
 
@@ -223,7 +269,7 @@ export function collectDamagingAilments(input: {
     limitations: [
       'Zaubertreffer werden derzeit mit 100 % Trefferchance modelliert; Angriffe bleiben bis zur vollständigen Accuracy-Gegnerkette gesperrt.',
       'Kritische Ailment-Sonderfälle, Aggravation, gegnerische DoT-Widerstände und bedingte Effekte bleiben ausgeschlossen.',
-      'Entzünden bleibt ohne gegnerabhängige Ailment-Schwelle und vollständige Buildup-Kette fail-closed.',
+      'Entzünden wird nur mit gepinnter gegnerabhängiger Ailment-Schwelle, Feuerschaden, Wirkfrequenz und Trefferchance berechnet.',
     ],
   }
 }

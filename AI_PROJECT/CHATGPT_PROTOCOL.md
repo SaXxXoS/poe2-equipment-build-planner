@@ -2685,3 +2685,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Umwandlungs- und Schadensmodelltests sowie Typecheck sind grün.
 - Nächster Rechenblock: vollständige Modifier-Anwendbarkeit und danach
   schädigende Zustände mit ihren gegnerabhängigen Sonderregeln.
+# Fortsetzung: Schritt 35 – Entzünden mit PoB2-Gegnerschwelle
+
+- Der PoB2-Pin bleibt
+  `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`.
+- `generated/pob2/damage-reference.json` enthält nun die 100
+  levelabhängigen `monsterAilmentThresholdTable`-Werte sowie die gepinnten
+  Entzünden-Konstanten.
+- Entzünden wird nur bei vollständiger Kette aus Feuerschaden, Gegnerlevel,
+  Trefferchance und Wirkfrequenz produktiv berechnet.
+- Nicht modellierte Ailment-Sonderfälle bleiben fail-closed.
+- Die PoB2-Runtime wird weiterhin nicht eingebettet.

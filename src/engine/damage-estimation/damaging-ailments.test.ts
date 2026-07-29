@@ -79,11 +79,34 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
-  it('blockiert Entzünden ohne vollständige gegnerabhängige Schwellenkette', () => {
+  it('berechnet Entzünden mit der gepinnten levelabhängigen PoB2-Gegnerschwelle', () => {
     const result = collectDamagingAilments({
       skill: record('Molten Blast'),
       components: [{ type: 'fire', minimum: 100, maximum: 200 }],
       actionsPerSecond: 1,
+      hitChancePercent: 100,
+      enemyLevel: 1,
+      setup: setup(),
+      supports: [],
+    })
+    expect(result.effects).toEqual([expect.objectContaining({
+      kind: 'ignite',
+      chancePercent: 100,
+      durationMs: 4000,
+      maximumStacks: 1,
+      expectedActiveStacks: 1,
+      damagePerSecond: 30,
+      totalDamagePerApplication: 120,
+    })])
+    expect(result.blockedEffects).toEqual([])
+  })
+
+  it('blockiert Entzünden weiterhin ohne Gegnerlevel', () => {
+    const result = collectDamagingAilments({
+      skill: record('Molten Blast'),
+      components: [{ type: 'fire', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
       setup: setup(),
       supports: [],
     })

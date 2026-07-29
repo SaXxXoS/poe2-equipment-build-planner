@@ -144,3 +144,11 @@ nicht geschätzt.
 Intrinsische Skillumwandlung wird jetzt aus dem gepinnten Skilldatensatz
 erfasst und vor globaler Umwandlung angewendet. Globale Umwandlung skaliert
 nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
+# Fortschritt Schritt 35
+
+- Die gepinnte levelabhängige Gegner-Ailmentschwelle ist Bestandteil der
+  reduzierten Buildzeitreferenz.
+- Entzünden nutzt Feuerschaden, Schwelle, PoB2-Chancemultiplikator, Dauer,
+  Wirkfrequenz und Trefferchance.
+- Fehlendes Gegnerlevel oder fehlende Wirkparameter blockieren die
+  Berechnung weiterhin.

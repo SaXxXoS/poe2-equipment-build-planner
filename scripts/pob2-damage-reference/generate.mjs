@@ -40,6 +40,26 @@ const resourceConstants = {
   manaLevelOffset: 30,
   inherentManaRegenerationPercentPerMinute: characterConstant('character_inherent_mana_regeneration_rate_per_minute_%', 240),
 }
+const gameConstant = (name, expected) => {
+  const match = new RegExp(`\\["${name}"\\]\\s*=\\s*(-?[\\d.]+)`).exec(miscText)
+  const actual = match ? Number(match[1]) : undefined
+  if (actual !== expected) throw new Error(`PoB2 game constant mismatch for ${name}: expected ${expected}, received ${actual}`)
+  return actual
+}
+const numericTable = name => {
+  const match = new RegExp(`data\\.${name}\\s*=\\s*\\{([^}]+)\\}`).exec(miscText)
+  if (!match) throw new Error(`PoB2 numeric table missing: ${name}`)
+  return [...match[1].matchAll(/-?[\d.]+/g)].map(value => Number(value[0]))
+}
+const ailmentConstants = {
+  igniteChanceMultiplier: gameConstant('IgniteChanceMultiplier', 20),
+  igniteHitDamagePercentPerMinute: gameConstant('IgniteHitDamagePercentPerMinute', 1200),
+  baseIgniteDurationSeconds: gameConstant('BaseIgniteDuration', 4),
+}
+const monsterAilmentThresholdTable = numericTable('monsterAilmentThresholdTable')
+if (monsterAilmentThresholdTable.length !== 100) {
+  throw new Error(`PoB2 ailment threshold table length mismatch: expected 100, received ${monsterAilmentThresholdTable.length}`)
+}
 const questSpiritRewards = [...questRewardsText.matchAll(/\{\r?\n([\s\S]*?)\r?\n\t\},?/g)]
   .flatMap(([, body]) => {
     const spirit = /\["Stat"\]\s*=\s*"\+(\d+) to Spirit"/.exec(body)
@@ -340,7 +360,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 8,
+  schemaVersion: 9,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -350,6 +370,8 @@ const payload = {
   resourceConstantsSourceFile: miscRelative,
   resourceConstantsSourceSha256: crypto.createHash('sha256').update(miscBytes).digest('hex'),
   resourceConstants,
+  ailmentConstants,
+  monsterAilmentThresholdTable,
   questSpiritRewardsSourceFile: questRewardsRelative,
   questSpiritRewardsSourceSha256: crypto.createHash('sha256').update(questRewardsBytes).digest('hex'),
   questSpiritRewards,
@@ -361,7 +383,7 @@ const payload = {
   },
   limitations: [
     'Bounded hit estimate; not Path of Building parity.',
-    'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',
+    'Multi-hit frequency, ailment Sonderfälle, minion damage and conditional mechanics are not completely included.',
     'PoB2 calculation reference is not represented as a technical GGG identity chain.',
     'Skill and support level rows are retained exactly where the pinned PoB2 source provides them; missing levels and resources remain unresolved.',
     'Support records retain exact structured compatibility types and numeric stats; conditional stats are not automatically treated as unconditional effects.',

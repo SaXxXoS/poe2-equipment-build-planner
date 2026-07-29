@@ -170,6 +170,7 @@ export function estimateHitDamage(input:{
     hitChancePercent,
     setup,
     supports: input.supports??[],
+    enemyLevel: input.enemyProfile?.level,
   })
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
