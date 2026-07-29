@@ -18,7 +18,8 @@
     "lifeLevelOffset": 16,
     "manaPerLevel": 4,
     "manaLevelOffset": 30,
-    "inherentManaRegenerationPercentPerMinute": 240
+    "inherentManaRegenerationPercentPerMinute": 240,
+    "baseMaximumRage": 30
   },
   "ailmentConstants": {
     "bleedingHitDamagePercentPerMinute": 900,
@@ -310888,5 +310889,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "6580ecd3b7fa2eeaab57d7ebe80fa7082767c91a49087f7eb1ba56966d19f629"
+  "contentHash": "0c1dc4408c3090fec737bc2beb12be4c9bc2d00b99d7bff33e2936f475236ae2"
 }

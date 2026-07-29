@@ -3000,3 +3000,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Tests: 75 erfolgreich; Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_SUCCESSFUL_HIT_RESOURCE_STEP_65.md`.
+
+# Schritt 66 – bestätigter Rasereivorrat und Nutzungsdauer
+
+- Der gepinnte PoB2-Grundwert `BaseMaximumRage = 30` wird vom
+  Referenzgenerator fail-closed geprüft und in die reduzierte
+  Schadensreferenz übernommen.
+- Exakt erkannte Ausrüstungswerte mit `maximum_rage` sowie unbedingt wirksame
+  Passive- und Aszendenzknoten erhöhen den bestätigten Vorrat.
+- Nettoverbrauch, kostenfreies Anfangsfenster und der Start mit vollem Vorrat
+  ergeben eine sichtbare maximale Nutzungsdauer.
+- Deckt die belegte Treffererzeugung den Verbrauch vollständig, wird die
+  Fertigkeit als dauerhaft tragfähig ausgewiesen.
+- Bedingte Vorratswirkungen, unbekannter aktueller Rasereistand,
+  Mehrfachtreffer und mehrere Ziele bleiben fail-closed.
+- Ressourcenmodell `15.0.0`; 74 fokussierte Tests und Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RAGE_POOL_STEP_66.md`.

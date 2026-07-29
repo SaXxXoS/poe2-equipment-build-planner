@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '14.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '15.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -40,7 +40,7 @@ export interface ResolvedResourceSpiritSource {
 }
 
 interface EquipmentResourceContribution {
-  resource: 'life' | 'mana' | 'spirit' | 'mana-regeneration'
+  resource: 'life' | 'mana' | 'spirit' | 'mana-regeneration' | 'maximum-rage'
   value: number
   sourceItemId: string
   sourceModifierId: string
@@ -77,7 +77,9 @@ interface SkillResourceCostChain {
   rageGenerationPerSecond: number | null
   rageNetDemandPerSecond: number | null
   rageSuppressionDurationMs: number | null
-  rageSustainStatus: 'no-rage-cost' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'requires-hit-frequency-and-rage-pool' | 'blocked-missing-exact-cost-chain'
+  confirmedMaximumRage: number
+  maximumStartRageDurationSeconds: number | null
+  rageSustainStatus: 'no-rage-cost' | 'sustainable-with-confirmed-generation' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'requires-hit-frequency-and-rage-pool' | 'blocked-missing-exact-cost-chain'
 }
 
 export interface ResourceSpiritModel {
@@ -111,6 +113,7 @@ const resourceForStat = (statId: string): EquipmentResourceContribution['resourc
   if (/^(?:base_)?maximum_mana$/.test(statId)) return 'mana'
   if (/^(?:base_)?maximum_spirit$|^spirit_?\+?$/.test(statId)) return 'spirit'
   if (/^mana_regeneration_rate_\+%$/.test(statId)) return 'mana-regeneration'
+  if (/^(?:base_)?maximum_rage$/.test(statId)) return 'maximum-rage'
   return undefined
 }
 
@@ -319,6 +322,10 @@ function passiveResourceEffects(
       if (/^Mana Costs are Doubled$/i.test(text)) { add(nodeId, text, 'mana-cost-doubled', 100); continue }
       match = text.match(/^\+(\d+(?:\.\d+)?) to (?:maximum )?Spirit$/i)
       if (match) { add(nodeId, text, 'flat-spirit', Number(match[1])); continue }
+      match = text.match(/^\+(\d+(?:\.\d+)?) to Maximum Rage$/i)
+      if (match) { add(nodeId, text, 'flat-maximum-rage', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% more Maximum Rage$/i)
+      if (match) { add(nodeId, text, 'maximum-rage-more', Number(match[1])); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|less) Spirit$/i)
       if (match) {
         add(nodeId, text, match[2].toLowerCase() === 'increased' ? 'spirit-increased' : match[2].toLowerCase() === 'reduced' ? 'spirit-reduced' : 'spirit-less', Number(match[1]))
@@ -656,10 +663,28 @@ export function resolveResourceSpiritModel(input: {
         ? null
         : Number(Math.max(0, rageDemandPerSecond - rageGenerationPerSecond).toFixed(2))
       const rageSuppressionDurationMs = rageEffect?.suppressionDurationMs ?? null
+      const equipmentMaximumRage = equipmentContributions
+        .filter(value => value.resource === 'maximum-rage')
+        .reduce((sum, value) => sum + value.value, 0)
+      const passiveMaximumRage = appliedPassiveEffects
+        .filter(effect => effect.kind === 'flat-maximum-rage')
+        .reduce((sum, effect) => sum + effect.value, 0)
+      const maximumRageMoreMultiplier = appliedPassiveEffects
+        .filter(effect => effect.kind === 'maximum-rage-more')
+        .reduce((value, effect) => value * (1 + effect.value / 100), 1)
+      const confirmedMaximumRage = Math.max(0, Math.floor(
+        (reference.resourceConstants.baseMaximumRage + equipmentMaximumRage + passiveMaximumRage)
+        * maximumRageMoreMultiplier,
+      ))
+      const maximumStartRageDurationSeconds = rageNetDemandPerSecond == null || !rageCost || rageNetDemandPerSecond === 0
+        ? null
+        : Number(((rageSuppressionDurationMs ?? 0) / 1000 + confirmedMaximumRage / rageNetDemandPerSecond).toFixed(2))
       const rageSustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
         : !rageCost
           ? 'no-rage-cost' as const
+          : rageNetDemandPerSecond === 0
+            ? 'sustainable-with-confirmed-generation' as const
           : rageGenerationPerHit > 0 && rageGenerationPerSecond == null
             ? 'requires-hit-frequency-and-rage-pool' as const
           : rageSuppressionDurationMs != null
@@ -712,6 +737,8 @@ export function resolveResourceSpiritModel(input: {
         rageGenerationPerSecond,
         rageNetDemandPerSecond,
         rageSuppressionDurationMs,
+        confirmedMaximumRage,
+        maximumStartRageDurationSeconds,
         rageSustainStatus,
       }
     })
@@ -744,6 +771,7 @@ export function resolveResourceSpiritModel(input: {
       'Strukturiert belegte fertigkeitseigene Kostenaufschläge werden additiv mit erhöhten und verringerten Kosten verrechnet. Laufzeitabhängige Sonderkosten durch Ressourcenverbrauch, Ziel-Fertigkeiten oder Kanalisierungsdauer bleiben pro Fertigkeit sichtbar blockiert.',
       'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten-, Geist- und allgemeine Reservierungseffizienzwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte und fertigkeitsspezifische Effizienz bleibt fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
+      'Der Rasereivorrat beginnt bei den gepinnten 30 Basis-Raserei und addiert nur exakt belegte unbedingte Ausrüstungs-, Passive- und Aszendenzbeiträge. Die Dauer ab vollem Vorrat ist eine Obergrenze; aktueller Rasereistand und bedingte Effekte werden nicht erfunden.',
     ],
   }
 }

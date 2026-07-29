@@ -514,7 +514,44 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     expect(model.skillCostChains[0]).toMatchObject({
       rageDemandPerSecond: 5,
       rageSuppressionDurationMs: 2500,
+      confirmedMaximumRage: 30,
+      maximumStartRageDurationSeconds: 8.5,
       rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
+    })
+  })
+  it('verbindet belegte Ausruestungs-, Passive- und Aszendenzbeitraege mit dem gepinnten Raserei-Grundvorrat', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      equipment: [{
+        id: 'rage-item',
+        slotId: 'slot-gloves',
+        modifierValues: [{
+          id: 'rage-mod',
+          modifierId: 'rage-mod',
+          value: 4,
+          statValues: [{ statId: 'maximum_rage', value: 4 }],
+        }],
+      }],
+      setups: [{ ...setup(definition.id), level: 20 }],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [
+          { id: 'rage-flat', stats: [{ sourceText: '+4 to Maximum Rage' }], ascendancyId: null },
+          { id: 'rage-more', stats: [{ sourceText: '100% more Maximum Rage' }], ascendancyId: 'test-ascendancy' },
+        ],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['rage-flat'] },
+        ascendancyPlanning: { allocatedNodeIds: ['rage-more'] },
+      } as never,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      confirmedMaximumRage: 76,
+      maximumStartRageDurationSeconds: 17.7,
     })
   })
   it('blockiert ein ungueltiges Qualitaetslevel statt das Raserei-Fenster zu schaetzen', () => {
@@ -606,7 +643,35 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       rageGenerationPerHit: 5,
       rageGenerationPerSecond: 4.2,
       rageNetDemandPerSecond: 0.8,
+      confirmedMaximumRage: 30,
+      maximumStartRageDurationSeconds: 40,
       rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
+    })
+  })
+  it('markiert eine vollstaendig belegte ausgeglichene Rasereikette als dauerhaft', () => {
+    const definition = skill('rampage', 'Rampage')
+    const rageSupport = {
+      id: 'rage-three',
+      nameEn: 'Rage III',
+      displayNameDe: 'Raserei III',
+      costMultiplierPercent: 100,
+    } as SupportGemDefinition
+    const selectedSetup = { ...setup(definition.id, [rageSupport.id], 'set-1'), level: 20 }
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [selectedSetup],
+      skills: [definition],
+      supports: [rageSupport],
+      resolvedActionFrequencyPerSecondBySetup: { [selectedSetup.id]: 1 },
+      resolvedSuccessfulHitFrequencyPerSecondBySetup: { [selectedSetup.id]: 1 },
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      rageDemandPerSecond: 5,
+      rageGenerationPerSecond: 5,
+      rageNetDemandPerSecond: 0,
+      confirmedMaximumRage: 30,
+      maximumStartRageDurationSeconds: null,
+      rageSustainStatus: 'sustainable-with-confirmed-generation',
     })
   })
   it('vermischt unterschiedliche Waffenset-Geschwindigkeiten bei beidseitigen Skills nicht', () => {

@@ -54,6 +54,10 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
               <div><dt>Raserei-Erzeugung pro Sekunde</dt><dd>{chain.rageGenerationPerSecond == null ? 'Unbekannt – Trefferfrequenz fehlt' : formatNumber(chain.rageGenerationPerSecond)}</dd></div>
               <div><dt>Netto-Raserei-Bedarf pro Sekunde</dt><dd>{chain.rageNetDemandPerSecond == null ? 'Unbekannt' : formatNumber(chain.rageNetDemandPerSecond)}</dd></div>
               <div><dt>Kostenfreies Raserei-Fenster</dt><dd>{chain.rageSuppressionDurationMs == null ? 'Keines' : `${formatNumber(chain.rageSuppressionDurationMs / 1000)} s`}</dd></div>
+              <div><dt>Bestätigte maximale Raserei</dt><dd>{formatNumber(chain.confirmedMaximumRage)}</dd></div>
+              <div><dt>Dauer ab vollem Rasereivorrat</dt><dd>{chain.rageSustainStatus === 'sustainable-with-confirmed-generation'
+                ? 'Dauerhaft'
+                : chain.maximumStartRageDurationSeconds == null ? 'Nicht berechenbar' : `${formatNumber(chain.maximumStartRageDurationSeconds)} s`}</dd></div>
               <div><dt>Wirksamer Mana-Mindestbestand</dt><dd>{chain.effectiveManaPool == null ? 'Unbekannt' : formatNumber(chain.effectiveManaPool)}</dd></div>
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>

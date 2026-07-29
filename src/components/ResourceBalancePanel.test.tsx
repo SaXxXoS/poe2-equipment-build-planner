@@ -59,6 +59,8 @@ const model = (): ResourceModel => ({
     rageGenerationPerSecond: 0,
     rageNetDemandPerSecond: 0,
     rageSuppressionDurationMs: null,
+    confirmedMaximumRage: 30,
+    maximumStartRageDurationSeconds: null,
     rageSustainStatus: 'no-rage-cost',
   }, {
     setupId: 'unknown',
@@ -89,6 +91,8 @@ const model = (): ResourceModel => ({
     rageGenerationPerSecond: 0,
     rageNetDemandPerSecond: null,
     rageSuppressionDurationMs: null,
+    confirmedMaximumRage: 30,
+    maximumStartRageDurationSeconds: null,
     rageSustainStatus: 'blocked-missing-exact-cost-chain',
   }],
   spiritReservations: [],
