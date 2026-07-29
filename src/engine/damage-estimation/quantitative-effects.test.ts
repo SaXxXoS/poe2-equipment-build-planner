@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { EquipmentEntry, SkillGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects, collectSkillConversions } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions } from './quantitative-effects'
 
 const skill: SkillGemDefinition = {
   id: 'spark',
@@ -21,6 +21,9 @@ const tree = {
     { id: 'shared', name: { sourceText: 'Lightning Damage' }, stats: [{ sourceText: '20% increased [Lightning|Lightning] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'asc', name: { sourceText: 'Cast Speed' }, stats: [{ sourceText: '10% increased Cast Speed' }], nodeType: 'ascendancy', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: 'Stormweaver', isJewelSocket: false },
     { id: 'extra', name: { sourceText: 'Extra Lightning' }, stats: [{ sourceText: '[Gain] 12% of [Physical] Damage as Extra [Lightning] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'rage-physical', name: { sourceText: 'Bestial Rage' }, stats: [{ sourceText: 'Every 10 [Rage|Rage] also grants 12% increased [Physical|Physical] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'rage-spell-more', name: { sourceText: 'Druidic Champion' }, stats: [{ sourceText: 'Every 2 [Rage|Rage] also grants 1% more Spell damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'rage-ambiguous', name: { sourceText: 'Unknown Rage' }, stats: [{ sourceText: 'Gain lots of Damage for every Rage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
   ],
 } as RealPassiveTree
 const planning = {
@@ -152,5 +155,39 @@ describe('quantitative Wirkungskette', () => {
     }]
     const attack = { ...skill, tags: ['attack', 'physical'] as SkillGemDefinition['tags'], damageTypes: ['physical'] as SkillGemDefinition['damageTypes'] }
     expect(collectQuantitativeEffects({ equipment, skill: attack, weaponSet: 'set-1' }).speedModifiers).toEqual([])
+  })
+
+  it('wertet exakt belegte zusätzliche Wutskalierungen mit dem wirksamen Wutstand aus', () => {
+    const spell = { ...skill, tags: ['spell', 'physical'] as SkillGemDefinition['tags'], damageTypes: ['physical'] as SkillGemDefinition['damageTypes'] }
+    const effects = collectRageScaledDamageModifiers({
+      passiveTree: tree,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['rage-physical', 'rage-spell-more', 'rage-ambiguous'] },
+      } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1',
+      skill: spell,
+      effectiveRageEffect: 30,
+    })
+    expect(effects).toEqual([
+      expect.objectContaining({ sourceId: 'rage-physical', kind: 'increased', percent: 36, rageDivisor: 10 }),
+      expect.objectContaining({ sourceId: 'rage-spell-more', kind: 'more', percent: 15, rageDivisor: 2 }),
+    ])
+    expect(applyRageMoreDamageModifiers(
+      [{ type: 'physical', minimum: 136, maximum: 136 }],
+      effects,
+    )).toEqual([{ type: 'physical', minimum: 156.4, maximum: 156.4 }])
+  })
+
+  it('blockiert unpassende oder nicht exakt strukturierte Wuttexte fail-closed', () => {
+    const attack = { ...skill, tags: ['attack', 'physical'] as SkillGemDefinition['tags'], damageTypes: ['physical'] as SkillGemDefinition['damageTypes'] }
+    expect(collectRageScaledDamageModifiers({
+      passiveTree: tree,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['rage-spell-more', 'rage-ambiguous'] },
+      } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1',
+      skill: attack,
+      effectiveRageEffect: 30,
+    })).toEqual([])
   })
 })

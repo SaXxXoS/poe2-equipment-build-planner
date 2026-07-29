@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects, collectSkillConversions } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
@@ -101,7 +101,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.11.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.12.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -392,9 +392,45 @@ export function estimateHitDamage(input:{
   const effectiveRageEffect=comparedRage>0 ? rageChain!.confirmedRageEffectAtMaximum : 0
   const inherentMoreAttackDamagePerRagePercent=reference.rageDamageConstants.inherentMoreAttackDamagePerRagePercent
   const rageDamageMultiplier=1+effectiveRageEffect*inherentMoreAttackDamagePerRagePercent/100
+  const rageScaledModifiers=collectRageScaledDamageModifiers({
+    passiveTree:input.passiveTree,
+    realPassivePlanning:input.realPassivePlanning,
+    weaponSet:activeSet,
+    skill:definition,
+    effectiveRageEffect,
+  })
+  const rageIncreasedModifiers=rageScaledModifiers
+    .filter(value=>value.kind==='increased')
+    .map(value=>({
+      id:value.id,
+      source:value.source,
+      sourceId:value.sourceId,
+      label:value.label,
+      percent:value.percent,
+      appliesTo:value.appliesTo,
+    }))
+  const rageStateBeforeSupports=applyDamageModifiers(
+    baseComponents,
+    quantitative.conversions,
+    [...quantitative.damageModifiers,...rageIncreasedModifiers],
+    quantitative.gainAsExtra,
+  )
+  const rageStateAfterSupports=applyQuantitativeSupports({
+    components:rageStateBeforeSupports,
+    setup,
+    supports:input.supports??[],
+  }).components
+  const rageStateComponents=applyRageMoreDamageModifiers(rageStateAfterSupports,rageScaledModifiers)
+  const rageStateRollAverage=expectedLuckyHitDamage(rageStateComponents,luckyHitEffects)
+  const rageStateExpectedHitDamage=rageStateRollAverage*(criticalExpectationMultiplier??1)*rageDamageMultiplier
+  const rageStateExpectedDamagePerSecond=rageStateRollAverage*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier
+  const rageStateMitigation=resolvedEnemyProfile?applyEnemyMitigation(rageStateComponents,resolvedEnemyProfile):undefined
+  const rageStateExpectedDamagePerSecondAfterMitigation=rageStateMitigation
+    ? expectedLuckyHitDamage(rageStateMitigation.components,luckyHitEffects)*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier
+    : undefined
   const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=rageAppliesToSkill&&hasConfirmedRageGain
     ? {
-        modelVersion:'2.0.0',
+        modelVersion:'2.1.0',
         status:rageChain?.fullRageCombatStatus==='maintainable-after-ramp'
           ? 'ramped-sustained-combat-comparison'
           : 'full-confirmed-pool-window',
@@ -403,20 +439,29 @@ export function estimateHitDamage(input:{
         effectiveRageEffect,
         appliesTo:rageChain!.rageDamageAppliesTo,
         damageMultiplier:round(rageDamageMultiplier,4),
-        expectedHitDamageAtComparedRage:round((expectedCriticalHitDamage??rollExpectedAverage)*rageDamageMultiplier),
-        expectedDamagePerSecondAtComparedRage:round((primaryComparableDamagePerSecond??rollExpectedAverage*actionsPerSecond)*rageDamageMultiplier),
-        ...(primaryComparableDamagePerSecondAfterMitigation==null?{}:{
-          expectedDamagePerSecondAfterMitigationAtComparedRage:round(primaryComparableDamagePerSecondAfterMitigation*rageDamageMultiplier),
+        expectedHitDamageAtComparedRage:round(rageStateExpectedHitDamage),
+        expectedDamagePerSecondAtComparedRage:round(rageStateExpectedDamagePerSecond),
+        ...(rageStateExpectedDamagePerSecondAfterMitigation==null?{}:{
+          expectedDamagePerSecondAfterMitigationAtComparedRage:round(rageStateExpectedDamagePerSecondAfterMitigation),
         }),
         ...(rageChain?.noGainNoHitRageDurationSeconds==null?{}:{
           durationWithoutFurtherHitOrGainSeconds:rageChain.noGainNoHitRageDurationSeconds,
         }),
+        ...(rageScaledModifiers.length===0?{}:{
+          appliedRageScaledEffects:rageScaledModifiers.map(value=>({
+            sourceId:value.sourceId,
+            label:value.label,
+            kind:value.kind,
+            percent:value.percent,
+            rageDivisor:value.rageDivisor,
+          })),
+        }),
         detail:rageChain?.fullRageCombatStatus==='maintainable-after-ramp'
-          ? `Belegter Kampfreferenzwert nach ${rageChain.secondsToFullRage?.toLocaleString('de-DE')} s Anlaufzeit bei fortgesetzter gleicher Treffer- und Wutgewinnrate.`
+          ? `Belegter Kampfreferenzwert nach ${rageChain.secondsToFullRage?.toLocaleString('de-DE')} s Anlaufzeit bei fortgesetzter gleicher Treffer- und Wutgewinnrate.${rageScaledModifiers.length?` ${rageScaledModifiers.length} zusätzliche belegte Wutskalierung${rageScaledModifiers.length===1?'':'en'} ist/sind eingerechnet.`:''}`
           : 'Explizites Vergleichsfenster bei vollem bestätigtem Wutvorrat. Der normale Dauerschadenswert setzt diesen Zustand nicht voraus.',
       }
     : {
-        modelVersion:'2.0.0',
+        modelVersion:'2.1.0',
         status:'blocked-no-confirmed-rage-gain',
         inherentMoreAttackDamagePerRagePercent,
         comparedRage:0,

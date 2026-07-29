@@ -28,6 +28,17 @@ export interface QuantitativeGainAsExtra {
   to: DamageComponent['type']
   percent: number
 }
+export interface RageScaledDamageModifier {
+  id: string
+  source: 'passive' | 'ascendancy'
+  sourceId: string
+  label: string
+  kind: 'increased' | 'more'
+  percent: number
+  appliesTo: string[]
+  rageDivisor: number
+  effectiveRageEffect: number
+}
 export interface QuantitativeEffectSummary {
   damageModifiers: QuantitativeDamageModifier[]
   speedModifiers: QuantitativeDamageModifier[]
@@ -162,6 +173,69 @@ function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassive
     }
   }
   return result
+}
+
+export function collectRageScaledDamageModifiers(input: {
+  passiveTree?: RealPassiveTree
+  realPassivePlanning?: RealPassivePlanningIntegrationResult
+  weaponSet: 'set-1' | 'set-2'
+  skill?: SkillGemDefinition
+  effectiveRageEffect: number
+}): RageScaledDamageModifier[] {
+  if (!input.passiveTree || !input.realPassivePlanning || input.effectiveRageEffect <= 0) return []
+  const nodes = new Map(input.passiveTree.nodes.map(node => [node.id, node]))
+  const skillTags = new Set<string>([...(input.skill?.tags ?? []), ...(input.skill?.damageTypes ?? [])])
+  const result: RageScaledDamageModifier[] = []
+  for (const nodeId of allocatedNodeIds(input.realPassivePlanning, input.weaponSet)) {
+    const node = nodes.get(nodeId)
+    if (!node) continue
+    const source = node.ascendancyId ? 'ascendancy' as const : 'passive' as const
+    for (const sourceText of node.stats.map(value => value.sourceText).filter((value): value is string => Boolean(value))) {
+      const text = stripMarkup(sourceText)
+      const match = text.match(/^Every(?: (\d+))? Rage also grants (\d+(?:\.\d+)?)% (increased|more) (?:(Physical|Fire|Cold|Lightning|Chaos|Elemental|Attack|Spell|Projectile|Melee|Area) )?Damage$/i)
+      if (!match) continue
+      const divisor = Number(match[1] ?? 1)
+      if (!Number.isFinite(divisor) || divisor <= 0) continue
+      const stacks = Math.floor(input.effectiveRageEffect / divisor)
+      if (stacks <= 0) continue
+      const qualifier = match[4]?.toLocaleLowerCase('en')
+      const appliesTo =
+        !qualifier ? [...damageTypes]
+        : qualifier === 'elemental' ? ['fire', 'cold', 'lightning']
+        : (damageTypes as readonly string[]).includes(qualifier) ? [qualifier]
+        : skillTags.has(qualifier) ? [...damageTypes]
+        : []
+      if (!appliesTo.length) continue
+      result.push({
+        id: `${source}:${nodeId}:rage:${text}`,
+        source,
+        sourceId: nodeId,
+        label: text,
+        kind: match[3].toLocaleLowerCase('en') as 'increased' | 'more',
+        percent: Number(match[2]) * stacks,
+        appliesTo,
+        rageDivisor: divisor,
+        effectiveRageEffect: input.effectiveRageEffect,
+      })
+    }
+  }
+  return result.sort((a, b) => a.id.localeCompare(b.id, 'en'))
+}
+
+export function applyRageMoreDamageModifiers(
+  components: DamageComponent[],
+  effects: RageScaledDamageModifier[],
+): DamageComponent[] {
+  return components.map(value => {
+    const multiplier = effects
+      .filter(effect => effect.kind === 'more' && effect.appliesTo.includes(value.type))
+      .reduce((product, effect) => product * (1 + effect.percent / 100), 1)
+    return {
+      ...value,
+      minimum: stableNumber(value.minimum * multiplier),
+      maximum: stableNumber(value.maximum * multiplier),
+    }
+  })
 }
 
 export function collectQuantitativeEffects(input: { equipment: EquipmentEntry[]; skill?: SkillGemDefinition; passiveTree?: RealPassiveTree; realPassivePlanning?: RealPassivePlanningIntegrationResult; weaponSet: 'set-1' | 'set-2' }): QuantitativeEffectSummary {

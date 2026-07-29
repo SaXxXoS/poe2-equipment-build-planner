@@ -3074,3 +3074,25 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Wutvergleich `2.0.0`; 77 fokussierte Tests und Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RAGE_EFFECT_STEP_70.md`.
+
+# Schritt 71 – zusätzliche Schadensskalierung pro Wut
+
+- Exakte gepinnte PoB2-Zeilen `Every Rage also grants …` und
+  `Every N Rage also grants …` werden fail-closed aus tatsächlich vergebenen
+  normalen und Aszendenzknoten gelesen.
+- Die produktive Auswertung unterstützt begrenzte `increased`- und
+  `more`-Schadenswirkungen mit eindeutigem Schadens- oder Skillbezug.
+  Unklare Texte, freie Ähnlichkeit und unpassende Skillarten bleiben ohne
+  Bonus.
+- Der bestätigte Wutzustand wird vollständig neu durch Umwandlungen,
+  Gain-as-extra, Supports, Lucky, Trefferchance, kritische Treffer,
+  intrinsische Wutwirkung und gegnerische Minderung gerechnet.
+- Der normale Dauerschadenswert wird durch einen nur zeitweise erreichbaren
+  Wutzustand nicht stillschweigend erhöht.
+- Schadensrechner `3.12.0`, Wutvergleich `2.1.0`; 88 fokussierte Tests
+  erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_RAGE_SCALING_STEP_71.md`.
+- Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
+  Arbeit wird mit der nächsten größten reproduzierbaren Rechenlücke
+  fortgesetzt.

@@ -120,6 +120,13 @@ export interface DamageEstimate {
     expectedDamagePerSecondAtComparedRage?:number
     expectedDamagePerSecondAfterMitigationAtComparedRage?:number
     durationWithoutFurtherHitOrGainSeconds?:number
+    appliedRageScaledEffects?:Array<{
+      sourceId:string
+      label:string
+      kind:'increased'|'more'
+      percent:number
+      rageDivisor:number
+    }>
     detail:string
   }
   activeWindowDamagePerSecond?:number

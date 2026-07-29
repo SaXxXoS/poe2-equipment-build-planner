@@ -104,7 +104,7 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(result.luckyHitEffects).toMatchObject({
-      modelVersion:'2.0.0',
+      modelVersion:'1.0.0',
       expectedHitDamage:58.8,
       effects:[{sourceNodeId:'lucky',damageType:'all',chancePercent:20}],
     })
@@ -175,7 +175,7 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       2,
     )
     expect(result.rageDamageComparison).toMatchObject({
-      modelVersion:'1.0.0',
+      modelVersion:'2.1.0',
       status:'ramped-sustained-combat-comparison',
       inherentMoreAttackDamagePerRagePercent:1,
       comparedRage:30,
@@ -186,6 +186,57 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.rageDamageComparison?.expectedDamagePerSecondAtComparedRage).toBeCloseTo(
       result.accuracyAdjustedExpectedCriticalDamagePerSecond!*1.3,
       2,
+    )
+  })
+  it('rechnet belegte passive Wutskalierung nur in den bestätigten Wutzustand ein',()=>{
+    const rage:SupportGemDefinition={
+      id:'rage-three',displayNameDe:'Raserei III',nameEn:'Rage III',tags:[],dataVersion:'test',
+      source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[],
+      costMultiplierPercent:100,
+    }
+    const selected={...setup('leap'),supportGemIds:[rage.id]}
+    const passiveTree={
+      metadata:{releaseTag:'test'},
+      connections:[],
+      nodes:[{
+        id:'bestial-rage',
+        name:{sourceText:'Bestial Rage'},
+        stats:[{sourceText:'Every 10 [Rage|Rage] also grants 12% increased [Physical|Physical] Damage'}],
+        nodeType:'normal',
+        isClassStart:false,
+        classStartIndex:null,
+        isAscendancyStart:false,
+        ascendancyId:null,
+        isJewelSocket:false,
+      }],
+    } as RealPassiveTree
+    const realPassivePlanning={
+      pipelineResult:{allocatedNodeIds:['bestial-rage']},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const common={
+      equipment:[weapon('Akoyan Club')],
+      setups:[selected],
+      skills:[skill('leap','Leap Slam')],
+      supports:[rage],
+      characterLevel:80,
+      characterClassId:'class-official-8',
+      enemyProfile:{id:'target',label:'Stufe 80',source:'manual-comparison-profile' as const,level:80,evasion:853},
+    }
+    const baseline=estimateHitDamage(common)
+    const result=estimateHitDamage({...common,passiveTree,realPassivePlanning})
+    expect(result.accuracyAdjustedExpectedCriticalDamagePerSecond).toBe(
+      baseline.accuracyAdjustedExpectedCriticalDamagePerSecond,
+    )
+    expect(result.rageDamageComparison?.appliedRageScaledEffects).toEqual([
+      expect.objectContaining({
+        sourceId:'bestial-rage',
+        kind:'increased',
+        percent:36,
+        rageDivisor:10,
+      }),
+    ])
+    expect(result.rageDamageComparison!.expectedDamagePerSecondAtComparedRage!).toBeGreaterThan(
+      baseline.rageDamageComparison!.expectedDamagePerSecondAtComparedRage!,
     )
   })
   it('erfindet ohne zuordenbare Waffenbasis keinen Angriffsschaden',()=>{
