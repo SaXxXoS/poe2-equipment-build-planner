@@ -2659,3 +2659,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Gegnerblocken und bedingte Genauigkeits-Sonderfälle bleiben offen.
 - Dokumentation:
   `docs/BUILD_ASSISTANT_ATTACK_ACCURACY_STEP_32.md`.
+## PoB2-Gemmenstufe und normale Qualität – Schritt 33 (2026-07-29)
+
+- Der produktive Skill-Editor transportiert Gemmenstufe und normale Qualität.
+- Stufen werden ausschließlich aus exakt vorhandenen Zeilen des gepinnten
+  PoB2-Bestands angewendet; es gibt keine Interpolation.
+- Normale Qualität von 0 bis 23 wird aus `qualityStats` berechnet. Die
+  Multiplikation und Abrundung gegen null entspricht dem gepinnten
+  `CalcTools.lua`.
+- Die resultierenden Stats fließen vor den nachgelagerten Schadensmodellen in
+  die Skillstats ein.
+- Alternative Qualität und Supportqualität bleiben blockiert und sichtbar als
+  Lücke dokumentiert. Supportvarianten besitzen am Pin eine Stufenzeile.
+- Referenzschema: 8.
+- Nächster Rechenblock: mehrstufige Umwandlungspriorität und vollständige
+  Modifier-Anwendbarkeit.

@@ -133,3 +133,9 @@ Lokale Genauigkeit stammt ausschließlich aus der aktiven Waffe. Die
 Ergebnisansicht trennt theoretischen Aktionswert, trefferbereinigten Wert und
 den Wert nach Gegnerabwehr. Gegnerblocken und bedingte Genauigkeit bleiben
 bis zu einer vollständigen technischen Kette ausgeschlossen.
+# Fortschreibung 2026-07-29: Gemmenqualität
+
+Normale aktive Gemmenqualität ist jetzt aus den gepinnten PoB2-`qualityStats`
+produktiver Bestandteil der Schadenskette. Exakte Gemmenstufen werden bereits
+verwendet. Alternative Qualität und Supportqualität bleiben offen; sie werden
+nicht geschätzt.

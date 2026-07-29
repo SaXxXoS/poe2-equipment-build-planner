@@ -236,8 +236,8 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
         {analysis.damageEstimate?.resourceSpiritModel ? <ResourceBalancePanel model={analysis.damageEstimate.resourceSpiritModel}/> : null}
         {analysis.damageEstimate?.gemLevelQualityModel?<div><b>Gemmenstufe und Qualität:</b><ul>
           <li>Fertigkeitsstufe: {analysis.damageEstimate.gemLevelQualityModel.skillLevelStatus==='exact'?`Stufe ${analysis.damageEstimate.gemLevelQualityModel.appliedSkillLevel} exakt angewandt`:analysis.damageEstimate.gemLevelQualityModel.skillLevelStatus==='default-reference-level'?`Stufe ${analysis.damageEstimate.gemLevelQualityModel.appliedSkillLevel} aus dem gepinnten Referenzstand angewandt`:'nicht berechenbar – angeforderte und verfügbare Stufe stimmen nicht überein'}</li>
-          <li>Fertigkeitsqualität: nicht numerisch belegt</li>
-          <li>Supportstufen und -qualität: nicht als numerische Wirkung transportiert</li>
+          <li>Fertigkeitsqualität: {analysis.damageEstimate.gemLevelQualityModel.skillQualityStatus==='exact'?`${analysis.damageEstimate.gemLevelQualityModel.appliedSkillQuality}% exakt angewandt (${analysis.damageEstimate.gemLevelQualityModel.appliedQualityStats.length} wirksame Qualitätswerte)`:analysis.damageEstimate.gemLevelQualityModel.skillQualityStatus==='default-zero'?'0% als unveränderte Standardqualität angewandt':'nicht berechenbar – Qualität muss ganzzahlig zwischen 0 und 23 liegen'}</li>
+          <li>Supportstufen: die am Quellenpin vorhandene Stufe jeder Supportvariante wird exakt verwendet; Supportqualität bleibt unbelegt.</li>
         </ul><p className="muted">{analysis.damageEstimate.gemLevelQualityModel.limitations.join(' ')}</p></div>:null}
         {analysis.damageEstimate?.itemValueScopeModel?<div><b>Gegenstandswerte und Qualität:</b><ul>
           <li>{analysis.damageEstimate.itemValueScopeModel.observedFinalValueItemIds.length} Gegenstände verwenden eingegebene Tooltip-Endwerte.</li>

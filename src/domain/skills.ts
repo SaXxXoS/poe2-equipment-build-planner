@@ -116,6 +116,8 @@ export interface SkillSetup {
   embeddedSkillIds?: EntityId[]
   origin?: SkillOrigin
   level?: number
+  /** Gemmenqualität in Prozent; numerisch wirksam nur mit exakter gepinnter Qualitätszeile. */
+  quality?: number
   locked?: boolean
   /** Sichtbare, regelbasierte Begründung einer automatischen Synergiezuordnung. */
   synergyReason?: string

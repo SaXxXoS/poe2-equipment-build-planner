@@ -5,8 +5,8 @@ import { resolveGemLevelQualityModel } from './gem-level-quality-model'
 const skill = (nameEn = 'Arc'): SkillGemDefinition => ({
   id: 'skill', nameEn, displayNameDe: nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
 })
-const setup = (level?: number): SkillSetup => ({
-  id: 'setup', skillId: 'skill', role: 'main', weaponSet: 'both', supportGemIds: [], ...(level == null ? {} : { level }),
+const setup = (level?: number, quality?: number): SkillSetup => ({
+  id: 'setup', skillId: 'skill', role: 'main', weaponSet: 'both', supportGemIds: [], ...(level == null ? {} : { level }), ...(quality == null ? {} : { quality }),
 })
 
 describe('fail-closed Gemmenstufen- und Qualitätsmodell', () => {
@@ -30,11 +30,18 @@ describe('fail-closed Gemmenstufen- und Qualitätsmodell', () => {
       requestedSkillLevel: 99, skillLevelStatus: 'blocked-level-mismatch', productive: false,
     })
   })
-  it('weist Qualität und Supportstufen ausdrücklich als nicht belegt aus', () => {
-    expect(resolveGemLevelQualityModel({ setup: setup(20), skill: skill(), supports: [] })).toMatchObject({
-      skillQualityStatus: 'blocked-not-transported-and-no-reference',
-      supportLevelStatus: 'blocked-not-transported',
+  it('wendet normale Qualität aus der gepinnten Referenz exakt an', () => {
+    expect(resolveGemLevelQualityModel({ setup: setup(20, 20), skill: skill(), supports: [] })).toMatchObject({
+      requestedSkillQuality: 20,
+      appliedSkillQuality: 20,
+      skillQualityStatus: 'exact',
+      supportLevelStatus: 'exact-level-one-reference',
       supportQualityStatus: 'blocked-not-transported-and-no-reference',
+    })
+  })
+  it('blockiert Qualität außerhalb des belegten Bereichs', () => {
+    expect(resolveGemLevelQualityModel({ setup: setup(20, 24), skill: skill(), supports: [] })).toMatchObject({
+      skillQualityStatus: 'blocked-invalid-range', productive: false,
     })
   })
   it('bleibt deterministisch', () => {

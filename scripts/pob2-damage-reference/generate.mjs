@@ -162,6 +162,17 @@ const constantNumericStats = body => {
       .filter(([, value]) => Number.isFinite(value)),
   )
 }
+const qualityStats = body => {
+  const table = tableFor(body, 'qualityStats')
+  if (!table) return []
+  return [...table.matchAll(/\{\s*"([^"]+)"\s*,\s*(-?[\d.]+)\s*,\s*\{([^}]*)\}\s*\}/g)]
+    .map(([, statId, perQuality, scope]) => ({
+      statId,
+      perQuality: Number(perQuality),
+      statSetIndexes: [...scope.matchAll(/\[(\d+)\]\s*=\s*true/g)].map(([, value]) => Number(value)),
+    }))
+    .filter(entry => Number.isFinite(entry.perQuality))
+}
 
 const skills = []
 for (const file of skillFiles) {
@@ -214,6 +225,7 @@ for (const file of skillFiles) {
       costs: namedNumericTable(mainLevel ?? '', 'cost'),
       statSetLabel: firstSet ? string(firstSet, 'label') : undefined,
       numericStats,
+      qualityStats: qualityStats(body),
       levels,
       sourceFile: relative,
     })
@@ -261,6 +273,7 @@ for (const file of supportFiles) {
       addSkillTypes: skillTypesFor(body, 'addSkillTypes'),
       manaMultiplierPercent: number(mainLevel ?? '', 'manaMultiplier') ?? 0,
       numericStats: { ...constantNumericStats(firstSet ?? ''), ...levelStats },
+      qualityStats: qualityStats(body),
       levels,
       sourceFile: relative,
     })
@@ -327,7 +340,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 7,
+  schemaVersion: 8,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
