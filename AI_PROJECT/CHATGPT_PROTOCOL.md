@@ -3096,3 +3096,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   Arbeit wird mit der nächsten größten reproduzierbaren Rechenlücke
   fortgesetzt.
+
+# Schritt 72 – Doppel- und Dreifachschaden
+
+- Ein eigenes Mehrfachschadensmodell liest nur exakt belegte aktive Passive-
+  und Aszendenzwirkungen.
+- Doppel- und Dreifachschaden folgen der gepinnten PoB2-Reihenfolge aus
+  `CalcOffence.lua`: Dreifachschaden verdrängt den überlappenden Doppelanteil.
+- Exakte unbedingte, Zauber-, Elementar- und kritisch gewichtete Formen sind
+  produktiv. Unbelegte Waffen-, Gegner-, Zeit- und Schwellenbedingungen
+  bleiben fail-closed.
+- Der Erwartungsfaktor wirkt in der vollständigen Trefferschadenskette,
+  einschließlich Gegnerabwehr, zeitlichen Trefferfenstern und bestätigtem
+  Wutzustand. Schaden über Zeit und Zustände werden nicht fälschlich
+  vervielfacht.
+- Schadensrechner `3.13.0`, Mehrfachschadensmodell `1.0.0`; 56 fokussierte
+  Tests und Typecheck erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_MULTIPLE_DAMAGE_STEP_72.md`.

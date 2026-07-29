@@ -14,6 +14,7 @@ import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
 import { resolveAttackHitChance } from './attack-hit-chance'
 import { expectedLuckyHitDamage, resolveLuckyHitEffects } from './lucky-hit-effects'
+import { resolveMultipleDamageEffect } from './multiple-damage-effects'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import { attachNormalizedTriggeredTargetDamage, resolveTriggerRepeatModel, supportedSkillCooldownFor, triggerRepeatOutput } from './trigger-repeat-model'
 import { additionalCooldownUsesFor } from './additional-cooldown-uses'
@@ -101,7 +102,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.12.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.13.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -259,7 +260,16 @@ export function estimateHitDamage(input:{
   const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus
   const totalCriticalDamageBonus=100+additionalCriticalDamageBonus
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
-  const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:rollExpectedAverage*criticalExpectationMultiplier
+  const multipleDamageEffect=resolveMultipleDamageEffect({
+    passiveTree:input.passiveTree,
+    planning:input.realPassivePlanning,
+    weaponSet:activeSet,
+    skill:definition,
+    criticalChancePercent:effectiveCriticalChance,
+  })
+  const multipleDamageMultiplier=multipleDamageEffect.expectedDamageMultiplier
+  if(multipleDamageEffect.sources.length)included.push('exakt belegter Doppel- und Dreifachschaden mit PoB2-Überlappungsreihenfolge')
+  const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:rollExpectedAverage*criticalExpectationMultiplier*multipleDamageMultiplier
   const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
   const accuracyMultiplier=hitChancePercent==null?undefined:hitChancePercent/100
   const accuracyAdjustedCriticalChance=effectiveCriticalChance==null||accuracyMultiplier==null?undefined:effectiveCriticalChance*accuracyMultiplier
@@ -284,16 +294,16 @@ export function estimateHitDamage(input:{
     })
   }
   const accuracyAdjustedCriticalMultiplier=accuracyAdjustedCriticalChance==null?undefined:1+accuracyAdjustedCriticalChance/100*totalCriticalDamageBonus/100
-  const accuracyAdjustedDamagePerSecond=accuracyMultiplier==null?undefined:rollExpectedAverage*actionsPerSecond*accuracyMultiplier
+  const accuracyAdjustedDamagePerSecond=accuracyMultiplier==null?undefined:rollExpectedAverage*actionsPerSecond*accuracyMultiplier*multipleDamageMultiplier
   const accuracyAdjustedExpectedCriticalDamagePerSecond=accuracyMultiplier==null
     ? undefined
-    : rollExpectedAverage*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)
+    : rollExpectedAverage*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)*multipleDamageMultiplier
   const temporalAverage=expectedLuckyHitDamage(temporalComponents,luckyHitEffects)
   const activeWindowDamagePerSecond=temporal.appliedEffects.length
-    ? temporalAverage*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
+    ? temporalAverage*(criticalExpectationMultiplier??1)*temporalActionsPerSecond*multipleDamageMultiplier
     : undefined
   const preparedNextHitAverage=nextSkill.appliedEffects.length
-    ? expectedLuckyHitDamage(nextSkill.components,luckyHitEffects)*(criticalExpectationMultiplier??1)
+    ? expectedLuckyHitDamage(nextSkill.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier
     : undefined
   const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
     profile:input.enemyProfile,setups:input.setups,skills:input.skills,
@@ -326,18 +336,18 @@ export function estimateHitDamage(input:{
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const mitigatedRollAverage=enemyMitigation?expectedLuckyHitDamage(enemyMitigation.components,luckyHitEffects):undefined
-  const expectedDamageAfterMitigation=mitigatedRollAverage==null?undefined:mitigatedRollAverage*(criticalExpectationMultiplier??1)
+  const expectedDamageAfterMitigation=mitigatedRollAverage==null?undefined:mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
   const accuracyAdjustedDamagePerSecondAfterMitigation=enemyMitigation?.average==null||accuracyMultiplier==null
     ? undefined
-    : mitigatedRollAverage!*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)
+    : mitigatedRollAverage!*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)*multipleDamageMultiplier
   const temporalEnemyMitigation=resolvedEnemyProfile&&temporal.appliedEffects.length?applyEnemyMitigation(temporalComponents,resolvedEnemyProfile):undefined
   const activeWindowDamagePerSecondAfterMitigation=temporalEnemyMitigation
-    ? expectedLuckyHitDamage(temporalEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
+    ? expectedLuckyHitDamage(temporalEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*temporalActionsPerSecond*multipleDamageMultiplier
     : undefined
   const nextSkillEnemyMitigation=resolvedEnemyProfile&&nextSkill.appliedEffects.length?applyEnemyMitigation(nextSkill.components,resolvedEnemyProfile):undefined
   const preparedNextHitDamageAfterMitigation=nextSkillEnemyMitigation
-    ? expectedLuckyHitDamage(nextSkillEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)
+    ? expectedLuckyHitDamage(nextSkillEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier
     : undefined
   if((input.triggerDepth??0)===0){
     const targetDamage=new Map<string,{expectedHitDamage:number;expectedHitDamageAfterMitigation?:number}>()
@@ -422,11 +432,11 @@ export function estimateHitDamage(input:{
   }).components
   const rageStateComponents=applyRageMoreDamageModifiers(rageStateAfterSupports,rageScaledModifiers)
   const rageStateRollAverage=expectedLuckyHitDamage(rageStateComponents,luckyHitEffects)
-  const rageStateExpectedHitDamage=rageStateRollAverage*(criticalExpectationMultiplier??1)*rageDamageMultiplier
-  const rageStateExpectedDamagePerSecond=rageStateRollAverage*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier
+  const rageStateExpectedHitDamage=rageStateRollAverage*(criticalExpectationMultiplier??1)*rageDamageMultiplier*multipleDamageMultiplier
+  const rageStateExpectedDamagePerSecond=rageStateRollAverage*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier*multipleDamageMultiplier
   const rageStateMitigation=resolvedEnemyProfile?applyEnemyMitigation(rageStateComponents,resolvedEnemyProfile):undefined
   const rageStateExpectedDamagePerSecondAfterMitigation=rageStateMitigation
-    ? expectedLuckyHitDamage(rageStateMitigation.components,luckyHitEffects)*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier
+    ? expectedLuckyHitDamage(rageStateMitigation.components,luckyHitEffects)*actionsPerSecond*(accuracyMultiplier??1)*(accuracyAdjustedCriticalMultiplier??criticalExpectationMultiplier??1)*rageDamageMultiplier*multipleDamageMultiplier
     : undefined
   const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=rageAppliesToSkill&&hasConfirmedRageGain
     ? {
@@ -482,6 +492,7 @@ export function estimateHitDamage(input:{
       {id:'increased-damage',label:'Nach passenden Schadenserhöhungen',components:increasedComponents},
       {id:'support-more-damage',label:'Nach strukturierten Support-Multiplikatoren',components},
       ...(luckyHitEffects.length?[{id:'lucky-hit-expectation' as const,label:'Erwartungswert mit belegten Lucky-Schadenswürfen',components,value:round(rollExpectedAverage)}]:[]),
+      ...(multipleDamageEffect.sources.length?[{id:'multiple-damage-expectation' as const,label:'Erwartungswert mit belegtem Doppel-/Dreifachschaden',components,value:round(rollExpectedAverage*multipleDamageMultiplier)}]:[]),
       ...(preparedNextHitAverage==null?[]:[{id:'prepared-next-hit' as const,label:'Einmalig vorbereiteter nächster Treffer',components:nextSkill.components,value:round(preparedNextHitAverage)}]),
       ...(activeWindowDamagePerSecond==null?[]:[{id:'temporal-active-window' as const,label:'Im belegten aktiven Bufffenster',components:temporalComponents,value:round(activeWindowDamagePerSecond)}]),
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
@@ -512,6 +523,7 @@ export function estimateHitDamage(input:{
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     confirmedGainAsExtra:quantitative.gainAsExtra.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(luckyHitEffects.length?{luckyHitEffects:{modelVersion:'1.0.0' as const,expectedHitDamage:round(rollExpectedAverage),effects:luckyHitEffects}}:{}),
+    ...(multipleDamageEffect.sources.length?{multipleDamageEffect}:{}),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
     ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
     ...(accuracyAdjustedDamagePerSecond==null?{}:{accuracyAdjustedDamagePerSecond:round(accuracyAdjustedDamagePerSecond)}),
@@ -527,7 +539,7 @@ export function estimateHitDamage(input:{
     ...(preparedNextHitDamageAfterMitigation==null?{}:{preparedNextHitDamageAfterMitigation:round(preparedNextHitDamageAfterMitigation)}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
-    hitDamagePerSecond:round(rollExpectedAverage*actionsPerSecond),
+    hitDamagePerSecond:round(rollExpectedAverage*actionsPerSecond*multipleDamageMultiplier),
     included,
     excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damagingAilments.effects.length?['nicht vollständig belegte Entzünden-, Gift- und Blutungs-Sonderfälle sowie gegnerische DoT-Abwehr']:['Entzünden, Gift und Blutung ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
     warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],

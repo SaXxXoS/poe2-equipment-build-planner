@@ -111,6 +111,45 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.hitDamagePerSecond).toBe(58.8)
     expect(result.stages?.map(stage=>stage.id)).toContain('lucky-hit-expectation')
   })
+  it('wendet Doppel- und Dreifachschaden in der belegten PoB2-Erwartungsreihenfolge an',()=>{
+    const passiveTree={nodes:[
+      {
+        id:'double',
+        stats:[{sourceText:'20% chance to deal Double Damage'}],
+      },
+      {
+        id:'triple',
+        stats:[{sourceText:'10% chance to deal Triple Damage'}],
+      },
+    ]} as unknown as RealPassiveTree
+    const realPassivePlanning={
+      pipelineResult:{allocatedNodeIds:['double','triple']},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const baseline=estimateHitDamage({
+      equipment:[],
+      setups:[setup('ball')],
+      skills:[skill('ball','Ball Lightning')],
+    })
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup('ball')],
+      skills:[skill('ball','Ball Lightning')],
+      passiveTree,
+      realPassivePlanning,
+    })
+    expect(result.multipleDamageEffect).toMatchObject({
+      doubleDamageChancePercent:20,
+      tripleDamageChancePercent:10,
+      effectiveDoubleDamageChancePercent:18,
+      expectedDamageMultiplier:1.38,
+    })
+    expect(result.hitDamagePerSecond).toBeCloseTo(baseline.hitDamagePerSecond!*1.38,2)
+    expect(result.expectedCriticalHitDamagePerSecond).toBeCloseTo(
+      baseline.expectedCriticalHitDamagePerSecond!*1.38,
+      1,
+    )
+    expect(result.stages?.map(stage=>stage.id)).toContain('multiple-damage-expectation')
+  })
   it('verwendet die exakt gewählte Skill-Levelzeile für Schaden und Kosten',()=>{
     const selected={...setup('ball'),level:19}
     const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('ball','Ball Lightning')]})

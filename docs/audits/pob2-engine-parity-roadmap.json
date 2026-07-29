@@ -36,7 +36,12 @@
         "unconditional allocated hit-damage lucky chance uses the exact uniform-roll expectation",
         "damage-type-specific lucky chance remains separated by active weapon-set allocation"
       ],
-      "nextGap": "double/triple damage, conditional lucky states and skill-specific repeat formulas"
+      "completedAfterAudit": [
+        "unconditional and tightly qualified double/triple damage expectation",
+        "PoB2 triple-over-double overlap ordering",
+        "critical-hit double-damage chance weighted by effective critical chance"
+      ],
+      "nextGap": "conditional lucky states and skill-specific repeat formulas"
     },
     {
       "referenceArea": "damage over time and ailments",

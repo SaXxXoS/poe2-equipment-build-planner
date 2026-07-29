@@ -46,7 +46,7 @@ export interface EnemyMitigationProfile {
   temporalModelVersion?:string
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
-export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'prepared-next-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
+export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'multiple-damage-expectation'|'prepared-next-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
 export interface AppliedLuckyHitEffect { damageType:DamageComponent['type']|'all';chancePercent:number;sourceNodeId:string;sourceText:string;evidence:'text-pattern-exact' }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'gain-as-lightning'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
@@ -155,6 +155,23 @@ export interface DamageEstimate {
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number
   criticalExpectationMultiplier?:number
+  multipleDamageEffect?:{
+    modelVersion:'1.0.0'
+    doubleDamageChancePercent:number
+    tripleDamageChancePercent:number
+    effectiveDoubleDamageChancePercent:number
+    expectedDamageMultiplier:number
+    sources:Array<{
+      sourceNodeId:string
+      sourceText:string
+      kind:'double'|'triple'
+      rawChancePercent:number
+      effectiveChanceContributionPercent:number
+      condition:'unconditional'|'critical-hit'
+      evidence:'text-pattern-exact'
+    }>
+    limitations:string[]
+  }
   luckyHitEffects?:{modelVersion:'1.0.0';expectedHitDamage:number;effects:AppliedLuckyHitEffect[]}
   included:string[]
   excluded:string[]
