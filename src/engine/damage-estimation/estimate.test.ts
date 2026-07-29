@@ -45,6 +45,34 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     }))
     expect(result.included).toContain('Archmage: 20.8% des Schadens als zusätzlicher Blitzschaden bei 31 zusätzlichen Mana-Grundkosten')
   })
+  it('weist Mana Tempest als begrenztes aktives Schadensfenster statt Dauer-DPS aus',()=>{
+    const arc=skill('arc','Arc')
+    const tempest=skill('tempest','Mana Tempest')
+    const baseline=estimateHitDamage({
+      equipment:[],
+      setups:[{...setup(arc.id,'set-1'),id:'arc-setup',level:20}],
+      skills:[arc],
+      characterLevel:100,
+    })
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[
+        {...setup(arc.id,'set-1'),id:'arc-setup',level:20},
+        {...setup(tempest.id,'set-1'),id:'tempest-setup',role:'utility',level:20},
+      ],
+      skills:[arc,tempest],
+      characterLevel:100,
+    })
+    expect(result.temporalOffensiveEffects).toMatchObject([{
+      sourceId:tempest.id,
+      kind:'gain-as-lightning',
+      percent:78,
+      durationMs:6489,
+      status:'active-window',
+    }])
+    expect(result.activeWindowDamagePerSecond).toBeGreaterThan(result.expectedCriticalHitDamagePerSecond!)
+    expect(result.hitDamagePerSecond).toBe(baseline.hitDamagePerSecond)
+  })
   it('wendet Hourglass-Schaden und den belegten Cooldown-Override gemeinsam an',()=>{
     const hourglass:SupportGemDefinition={
       id:'hourglass',displayNameDe:'Sanduhr',nameEn:'Hourglass',tags:[],dataVersion:'test',

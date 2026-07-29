@@ -2928,3 +2928,25 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Referenztests: 63 erfolgreich; Typecheck und Lint erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_ARCHMAGE_STEP_60.md`.
+
+# Fortsetzung: Schritt 61 – Mana-Tempest-Fenster
+
+- `Mana Tempest` wird für einen mana-verbrauchenden Zauber im kompatiblen
+  Waffenset als begrenztes aktives Schadensfenster berechnet.
+- Grundverbrauch des Sturms, kontinuierlicher Manaaufwand der
+  Hauptfertigkeit, der belegte zusätzliche Verbrauch von `30 %`,
+  Manaregeneration und verfügbarer Manapool bestimmen die Fensterdauer.
+- Auf Gemmenstufe 20 werden im aktiven Fenster `78 %` des Schadens als
+  zusätzlicher Blitzschaden gewonnen.
+- Dieser Gewinn läuft vor schadensartspezifischen Steigerungen und Supports
+  durch die bestehende PoB-Modifikatorreihenfolge; der normale Dauerschaden
+  bleibt unverändert.
+- Getrennte Waffensets, Angriffe, Zauber ohne Manakosten, unbekannte
+  Ressourcengrößen und nicht vollständig modellierte Kostenarten bleiben
+  fail-closed.
+- Temporalmodell `1.2.0`, Ressourcenmodell `10.0.0`,
+  Schadensrechner `3.9.0`.
+- Fokussierte Tests `54/54`, Typecheck, Lint und Produktions-Build
+  erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_MANA_TEMPEST_STEP_61.md`.

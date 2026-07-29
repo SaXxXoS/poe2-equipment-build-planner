@@ -3,14 +3,15 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis } from '../common/types'
 import type { RotationStepTiming } from '../rotations/timing'
 import type { DamageComponent } from './types'
+import type { ResourceSpiritModel } from './resource-spirit-model'
 import { resolveChargeState, type ChargeStateResult } from './charge-state'
 
-export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.1.0'
+export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.2.0'
 export interface TemporalOffensiveEffect {
   sourceId: string
   label: string
   target: 'player'
-  kind: 'more-damage' | 'increased-action-speed' | 'blocked'
+  kind: 'more-damage' | 'increased-action-speed' | 'gain-as-lightning' | 'blocked'
   percent?: number
   appliesTo: Array<'attack' | 'spell'>
   activationTimeMs?: number
@@ -26,6 +27,7 @@ export interface TemporalOffensiveEffectResult {
   blockedEffects: TemporalOffensiveEffect[]
   damageMultiplier: number
   actionSpeedMultiplier: number
+  gainAsLightningPercent: number
   chargeState: ChargeStateResult
 }
 
@@ -80,6 +82,7 @@ export function collectTemporalOffensiveEffects(input: {
   skills: SkillGemDefinition[]
   mainSkill?: SkillGemDefinition
   rotationAnalysis?: RotationAnalysis
+  resourceSpiritModel?: ResourceSpiritModel
 }): TemporalOffensiveEffectResult {
   const effects: TemporalOffensiveEffect[] = []
   const chargeState = resolveChargeState({ setups: input.setups, skills: input.skills })
@@ -128,8 +131,68 @@ export function collectTemporalOffensiveEffects(input: {
           : 'Aktivierungsregel und Wirkzeit sind nicht gemeinsam in der gewählten Bossrotation belegt.',
       })
     }
+    if (definition.nameEn === 'Mana Tempest') {
+      const sourceSetup = input.setups.find(value => value.skillId === definition.id)
+      const targetSetup = input.setups.find(value => value.skillId === input.mainSkill?.id)
+      const sourceLevel = record.levels.find(value => value.level === (sourceSetup?.level ?? record.gemLevel))
+      const targetChain = input.resourceSpiritModel?.skillCostChains.find(value => value.setupId === targetSetup?.id)
+      const sourceChain = input.resourceSpiritModel?.skillCostChains.find(value => value.setupId === sourceSetup?.id)
+      const compatibleSet = Boolean(
+        sourceSetup && targetSetup
+        && (sourceSetup.weaponSet === 'both' || sourceSetup.weaponSet === targetSetup.weaponSet),
+      )
+      const mainCostsMana = Boolean(targetChain?.baseCosts.some(value => value.resource === 'mana' && value.cadence === 'per-use' && value.resourceAdjustedAmount > 0))
+      const gain = Number((sourceLevel?.numericStats as Record<string, number | undefined> | undefined)?.['non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff'])
+      const addedDrainPercent = Number((sourceLevel?.numericStats as Record<string, number | undefined> | undefined)?.['mana_tempest_mana_cost_%_to_add_to_cost_per_second'])
+      const baseDrain = sourceChain?.baseCosts
+        .filter(value => value.resource === 'mana-percent' && value.cadence === 'per-second')
+        .reduce((sum, value) => sum + (sourceChain.effectiveManaPool ?? 0) * value.resourceAdjustedAmount / 100, 0)
+      const targetSpend = targetChain?.manaDemandPerSecond
+      const manaPool = targetChain?.effectiveManaPool
+      const manaRegeneration = targetChain?.effectiveManaRegenerationPerSecond
+      const mainRecord = input.mainSkill?.nameEn ? byName.get(input.mainSkill.nameEn.toLocaleLowerCase('en')) : undefined
+      const mainLevel = mainRecord?.levels.find(value => value.level === (targetSetup?.level ?? mainRecord.gemLevel))
+      const supportedSpendKeys = new Set(['Mana', 'ManaPerMinute', 'ManaPercentPerMinute'])
+      const hasUnsupportedSpend = Object.entries(mainLevel?.costs ?? {})
+        .some(([key, value]) => !supportedSpendKeys.has(key) && Number(value) !== 0)
+      const exact = mainRecord?.kind === 'spell'
+        && compatibleSet
+        && mainCostsMana
+        && !hasUnsupportedSpend
+        && Number.isFinite(gain)
+        && Number.isFinite(addedDrainPercent)
+        && Number.isFinite(baseDrain)
+        && baseDrain! > 0
+        && targetSpend != null
+        && manaPool != null
+        && manaRegeneration != null
+      if (exact) {
+        const totalDrainPerSecond = baseDrain! + targetSpend! * (1 + addedDrainPercent / 100)
+        const netDrainPerSecond = Math.max(0, totalDrainPerSecond - manaRegeneration!)
+        const durationMs = netDrainPerSecond > 0 ? Math.floor(manaPool! / netDrainPerSecond * 1000) : undefined
+        effects.push({
+          sourceId: definition.id,
+          label: definition.displayNameDe,
+          target: 'player',
+          kind: 'gain-as-lightning',
+          percent: gain,
+          appliesTo: ['spell'],
+          ...(durationMs == null ? {} : { durationMs }),
+          status: 'active-window',
+          evidence: 'structured-exact',
+          sourceReferences: [
+            `damage-reference:${record.sourceRecordId}:levels.${sourceLevel!.level}.numericStats.non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff`,
+            `damage-reference:${record.sourceRecordId}:levels.${sourceLevel!.level}.numericStats.mana_tempest_mana_cost_%_to_add_to_cost_per_second`,
+            `damage-reference:${record.sourceRecordId}:levels.${sourceLevel!.level}.costs.ManaPercentPerMinute`,
+          ],
+          detail: `${gain} % des Zauberschadens werden im Sturm als zusätzlicher Blitzschaden gewonnen. Bei kontinuierlicher Nutzung der Hauptfertigkeit werden ${totalDrainPerSecond.toFixed(2)} Mana/s vor Regeneration verbraucht; ${durationMs == null ? 'der bestätigte Mindestzustand ist aufrechterhaltbar' : `das bestätigte Mindestfenster beträgt ${Math.floor(durationMs / 10) / 100} s`}.`,
+        })
+      }
+    }
     const blocked = definition.nameEn ? blockedCandidates[definition.nameEn] : undefined
-    if (blocked && blocked.sourceReferences.some(key => Number.isFinite(stats[key]))) effects.push({
+    const alreadyResolved = definition.nameEn === 'Mana Tempest'
+      && effects.some(value => value.sourceId === definition.id && value.status === 'active-window')
+    if (!alreadyResolved && blocked && blocked.sourceReferences.some(key => Number.isFinite(stats[key]))) effects.push({
       sourceId: definition.id, label: definition.displayNameDe, target: 'player', kind: 'blocked',
       appliesTo: ['attack', 'spell'], activationTimeMs: timing?.activationTimeMs, durationMs: timing?.effectDurationMs,
       status: 'blocked', evidence: 'unresolved',
@@ -148,6 +211,7 @@ export function collectTemporalOffensiveEffects(input: {
     blockedEffects: effects.filter(effect => effect.status === 'blocked'),
     damageMultiplier: appliedEffects.filter(effect => effect.kind === 'more-damage').reduce((value, effect) => value * (1 + effect.percent! / 100), 1),
     actionSpeedMultiplier: 1 + appliedEffects.filter(effect => effect.kind === 'increased-action-speed').reduce((sum, effect) => sum + effect.percent!, 0) / 100,
+    gainAsLightningPercent: appliedEffects.filter(effect => effect.kind === 'gain-as-lightning').reduce((sum, effect) => sum + effect.percent!, 0),
     chargeState,
   }
 }

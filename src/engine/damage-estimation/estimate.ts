@@ -101,7 +101,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.8.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.9.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -146,6 +146,7 @@ export function estimateHitDamage(input:{
   if(!components.length)return{...base,status:'unavailable',...(damageOverTime.effects.length||damageOverTime.blockedEffects.length?{damageOverTime:damageOverTimeOutput()}:{}),warnings:['Die primäre Schadenskomponente ist nicht eindeutig strukturiert verfügbar.']}
   const baseComponents=components.map(value=>({...value}))
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet})
+  const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis,resourceSpiritModel})
   const archmageEffect=resourceSpiritModel.skillCostChains
     .find(value=>value.setupId===setup?.id)
     ?.intrinsicSkillCostEffects.find(value=>value.kind==='archmage-max-mana-cost'&&value.gainAsLightningPercent!=null)
@@ -159,6 +160,7 @@ export function estimateHitDamage(input:{
       percent:archmageEffect.gainAsLightningPercent,
     })
   }
+  const manaTempestEffect=temporal.appliedEffects.find(value=>value.kind==='gain-as-lightning'&&value.percent!=null)
   quantitative.conversions.unshift(...collectSkillConversions(skill.sourceRecordId,skill.numericStats as Record<string, number>))
   const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
   const gainedComponents=applyGainAsExtra(convertedComponents,quantitative.gainAsExtra,baseComponents)
@@ -185,7 +187,6 @@ export function estimateHitDamage(input:{
     if(supportedCooldown.additionalStoredUses>0)included.push(`${supportedCooldown.additionalStoredUses} belegte zusätzliche Cooldown-Nutzung${supportedCooldown.additionalStoredUses===1?'':'en'} aus aktivem Waffenset und Passivplan`)
     if(additionalCooldownUses.recoveryPercent>0)included.push(`${additionalCooldownUses.recoveryPercent}% belegte Abklingzeiterholung aus aktivem Waffenset und Passivplan`)
   }
-  const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const attackHitChance=skill.kind==='attack'?resolveAttackHitChance({
     characterLevel:input.characterLevel,
     characterClassId:input.characterClassId,
@@ -198,7 +199,26 @@ export function estimateHitDamage(input:{
   }):undefined
   const hitChancePercent=skill.kind==='spell'?100:attackHitChance?.hitChancePercent
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
-  const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
+  const temporalGainComponents=manaTempestEffect?.percent
+    ? applyQuantitativeSupports({
+        components:applyDamageModifiers(
+          baseComponents,
+          quantitative.conversions,
+          quantitative.damageModifiers,
+          [...quantitative.gainAsExtra, {
+            id:`skill:${manaTempestEffect.sourceId}:active-window-gain-as-lightning`,
+            source:'skill',
+            sourceId:manaTempestEffect.sourceId,
+            from:'all',
+            to:'lightning',
+            percent:manaTempestEffect.percent,
+          }],
+        ),
+        setup,
+        supports:input.supports??[],
+      }).components
+    : components
+  const temporalComponents=applyTemporalDamageWindow(temporalGainComponents,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
   const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
   if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')

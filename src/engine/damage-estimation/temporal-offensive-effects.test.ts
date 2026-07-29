@@ -3,6 +3,7 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis } from '../common/types'
 import type { RotationStepTiming } from '../rotations/timing'
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
+import { resolveResourceSpiritModel } from './resource-spirit-model'
 
 const skill = (id: string, nameEn: string, tags: SkillGemDefinition['tags'] = []): SkillGemDefinition => ({
   id,
@@ -94,6 +95,65 @@ describe('zeitabhängige offensive Wirkungen', () => {
     })
     expect(result.appliedEffects).toEqual([])
     expect(result.blockedEffects[0]?.detail).toContain('Stufenzahl')
+  })
+
+  it('berechnet Mana Tempest als begrenztes Mana- und Blitzschadensfenster', () => {
+    const main = skill('main', 'Arc', ['spell'])
+    const tempest = skill('tempest', 'Mana Tempest')
+    const setups = [
+      { ...setup('main-setup', main.id, 'main'), level: 20 },
+      { ...setup('tempest-setup', tempest.id, 'utility'), level: 20 },
+    ]
+    const resourceSpiritModel = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups,
+      skills: [main, tempest],
+      supports: [],
+    })
+    const result = collectTemporalOffensiveEffects({
+      setups,
+      skills: [main, tempest],
+      mainSkill: main,
+      resourceSpiritModel,
+    })
+    expect(result.appliedEffects).toMatchObject([{
+      sourceId: tempest.id,
+      kind: 'gain-as-lightning',
+      percent: 78,
+      durationMs: 6489,
+      status: 'active-window',
+      evidence: 'structured-exact',
+    }])
+    expect(result.gainAsLightningPercent).toBe(78)
+    expect(result.blockedEffects).toEqual([])
+    expect(applyTemporalDamageWindow(
+      [{ type: 'lightning', minimum: 10, maximum: 20 }],
+      result.damageMultiplier,
+    )).toEqual([{ type: 'lightning', minimum: 10, maximum: 20 }])
+  })
+
+  it('überträgt Mana Tempest nicht aus einem getrennten Waffenset', () => {
+    const main = skill('main', 'Arc', ['spell'])
+    const tempest = skill('tempest', 'Mana Tempest')
+    const setups = [
+      { ...setup('main-setup', main.id, 'main'), level: 20 },
+      { ...setup('tempest-setup', tempest.id, 'utility'), level: 20, weaponSet: 'set-2' as const },
+    ]
+    const resourceSpiritModel = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups,
+      skills: [main, tempest],
+      supports: [],
+    })
+    const result = collectTemporalOffensiveEffects({
+      setups,
+      skills: [main, tempest],
+      mainSkill: main,
+      resourceSpiritModel,
+    })
+    expect(result.appliedEffects).toEqual([])
+    expect(result.gainAsLightningPercent).toBe(0)
+    expect(result.blockedEffects[0]?.detail).toContain('Manadauer')
   })
 
   it('verknüpft Charge Regulation mit dem automatisch ermittelten Verbrauchszustand', () => {
