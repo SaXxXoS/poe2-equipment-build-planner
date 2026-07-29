@@ -230,6 +230,7 @@ export function estimateHitDamage(input:{
     bleedingChanceOnCriticalHitPercent: conditionalAilmentEffects.bleedingChanceOnCriticalHitPercent,
     poisonChanceOnCriticalHitPercent: conditionalAilmentEffects.poisonChanceOnCriticalHitPercent,
     conditionalAilmentSourceReferences: conditionalAilmentEffects.sourceReferences,
+    aggravateBleedingOnCriticalAttack: conditionalAilmentEffects.aggravateBleedingOnCriticalAttack,
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)

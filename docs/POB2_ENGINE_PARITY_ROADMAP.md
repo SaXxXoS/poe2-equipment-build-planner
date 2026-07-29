@@ -207,3 +207,10 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - OCR, Freitext, deutsche Anzeige und Ähnlichkeitssuche erzeugen keine
   technische Zustandswirkung.
 - Weitere bedingte Zustandsstats bleiben offen.
+# Schritt 42 – kritische Angriffs-Aggravation
+
+- Eine exakte Unique-Bedingung verschärft nur Blutung aus kritischen
+  Angriffstreffern.
+- Normale Treffer, Zaubertreffer und bereits global verschärfte Blutungen
+  erhalten keinen unzulässigen zusätzlichen Multiplikator.
+- Varianten- und Quellenauflösung bleiben fail-closed.

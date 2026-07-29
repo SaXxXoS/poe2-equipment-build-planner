@@ -242,6 +242,49 @@ describe('belegte schädigende Zustände', () => {
     expect(result.effects[0].sourceReferences).toContain('pob2:test:critical-poison')
   })
 
+  it('verschärft bei exakter Unique-Bedingung nur Blutung aus kritischen Angriffstreffern', () => {
+    const result = collectDamagingAilments({
+      skill: record('Rake'),
+      components: [{ type: 'physical', minimum: 100, maximum: 100 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      criticalChancePercent: 50,
+      criticalHitDamageMultiplier: 2,
+      aggravateBleedingOnCriticalAttack: true,
+      conditionalAilmentSourceReferences: ['pob2:test:critical-aggravation'],
+      setup: setup(),
+      supports: [],
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'bleeding',
+      aggravated: true,
+      weightedSourceDamage: 250,
+      damagePerSecond: 75,
+      totalDamagePerApplication: 375,
+    })
+    expect(result.effects[0].sourceReferences).toContain('pob2:test:critical-aggravation')
+  })
+
+  it('wendet die kritische Angriffs-Aggravation nicht auf Zaubertreffer an', () => {
+    const result = collectDamagingAilments({
+      skill: { ...record('Rake'), kind: 'spell' },
+      components: [{ type: 'physical', minimum: 100, maximum: 100 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      criticalChancePercent: 50,
+      criticalHitDamageMultiplier: 2,
+      aggravateBleedingOnCriticalAttack: true,
+      setup: setup(),
+      supports: [],
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'bleeding',
+      weightedSourceDamage: 150,
+      damagePerSecond: 45,
+    })
+    expect(result.effects[0].aggravated).toBeUndefined()
+  })
+
   it('blockiert Angriffs-Zustände ohne belegte Trefferchance', () => {
     const result = collectDamagingAilments({
       skill: record('Rake'),

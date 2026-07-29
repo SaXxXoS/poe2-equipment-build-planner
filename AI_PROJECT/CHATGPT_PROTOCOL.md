@@ -2754,3 +2754,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   ausgeschlossen.
 - Weitere bedingte Zustandsstats bleiben bis zu einer vollständigen
   gepinnten Stat- und Bedingungskette fail-closed.
+
+# Fortsetzung: Schritt 42 – kritische Angriffs-Aggravation
+
+- Die exakte PoB2-Unique-Zeile zur Aggravation bei kritischen
+  Angriffstreffern ist produktiv integriert.
+- Nur der kritische Angriffsanteil der Blutungsanwendungen wird verschärft.
+- Zaubertreffer und normale Treffer bleiben ausgeschlossen; globale
+  Aggravation wird nicht doppelt multipliziert.

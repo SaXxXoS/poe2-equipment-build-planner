@@ -4,6 +4,7 @@ import { pob2UniquePlannerRegistry } from '../../uniques'
 export interface ConditionalAilmentEffects {
   bleedingChanceOnCriticalHitPercent?: number
   poisonChanceOnCriticalHitPercent?: number
+  aggravateBleedingOnCriticalAttack?: boolean
   sourceReferences: string[]
 }
 
@@ -29,12 +30,20 @@ export function resolveConditionalAilmentEffects(equipment: EquipmentEntry[]): C
   const result: ConditionalAilmentEffects = { sourceReferences: [] }
   for (const entry of equipment) {
     for (const line of selectedLines(entry)) {
-      if (line.normalizedPlannerLine !== 'Critical Hits Poison the enemy') continue
-      result.poisonChanceOnCriticalHitPercent = 100
-      result.sourceReferences.push(
-        `${entry.uniqueItemId}:${line.sourceLineId}`,
-        'PoB2:ModCache:Critical Hits Poison the enemy',
-      )
+      if (line.normalizedPlannerLine === 'Critical Hits Poison the enemy') {
+        result.poisonChanceOnCriticalHitPercent = 100
+        result.sourceReferences.push(
+          `${entry.uniqueItemId}:${line.sourceLineId}`,
+          'PoB2:ModCache:Critical Hits Poison the enemy',
+        )
+      }
+      if (line.normalizedPlannerLine === 'Aggravate Bleeding on targets you Critically Hit with Attacks') {
+        result.aggravateBleedingOnCriticalAttack = true
+        result.sourceReferences.push(
+          `${entry.uniqueItemId}:${line.sourceLineId}`,
+          'PoB2:ModCache:Aggravate Bleeding on targets you Critically Hit with Attacks',
+        )
+      }
     }
   }
   result.sourceReferences = [...new Set(result.sourceReferences)].sort((left, right) => left.localeCompare(right, 'en'))

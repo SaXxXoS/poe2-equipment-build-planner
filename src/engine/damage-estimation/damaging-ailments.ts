@@ -3,7 +3,7 @@ import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.4.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.5.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -11,6 +11,7 @@ type NumericStats = Partial<Record<string, number>>
 interface NumericRecord {
   sourceRecordId: string
   name: string
+  kind?: string
   numericStats: NumericStats
 }
 
@@ -115,6 +116,7 @@ export function collectDamagingAilments(input: {
   bleedingChanceOnCriticalHitPercent?: number
   poisonChanceOnCriticalHitPercent?: number
   conditionalAilmentSourceReferences?: string[]
+  aggravateBleedingOnCriticalAttack?: boolean
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -195,8 +197,15 @@ export function collectDamagingAilments(input: {
     const criticalSourceDamage = nonCriticalSourceDamage * criticalHitDamageMultiplier
     const chanceFromHit = chanceOnHitPercent * (1 - criticalChance)
     const chanceFromCriticalHit = chanceOnCriticalHitPercent * criticalChance
+    const conditionalCriticalAggravation = definition.kind === 'bleeding'
+      && input.skill.kind === 'attack'
+      && input.aggravateBleedingOnCriticalAttack === true
+      && !bleedingPassiveEffect
+    const criticalAilmentDamageMultiplier = conditionalCriticalAggravation
+      ? reference.ailmentConstants.bloodstainedMultiplierWhenMovingOrBleedingAggravated
+      : 1
     const sourceDamage = chanceFromHit + chanceFromCriticalHit > 0
-      ? (nonCriticalSourceDamage * chanceFromHit + criticalSourceDamage * chanceFromCriticalHit)
+      ? (nonCriticalSourceDamage * chanceFromHit + criticalSourceDamage * criticalAilmentDamageMultiplier * chanceFromCriticalHit)
         / (chanceFromHit + chanceFromCriticalHit)
       : nonCriticalSourceDamage
     const ailmentCriticalChance = 1 - Math.pow(1 - criticalChance, Math.max(applicationStacks, 1))
@@ -219,6 +228,7 @@ export function collectDamagingAilments(input: {
       ...(bleedingPassiveEffect?.sourceReferences ?? []),
       ...(criticalChance > 0 ? ['CalcOffence.calcAilmentDamage', 'CalcOffence.ailmentCritChance'] : []),
       ...(definition.chanceOnCriticalHitPercent != null ? input.conditionalAilmentSourceReferences ?? [] : []),
+      ...(conditionalCriticalAggravation ? input.conditionalAilmentSourceReferences ?? [] : []),
     ]
     const resistance = definition.damageType === 'physical'
       ? 0
@@ -242,7 +252,7 @@ export function collectDamagingAilments(input: {
         : {}),
       totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
-      ...(bleedingPassiveEffect ? { aggravated: true } : {}),
+      ...(bleedingPassiveEffect || conditionalCriticalAggravation ? { aggravated: true } : {}),
       chanceOnHitPercent: round(chanceOnHitPercent),
       chanceOnCriticalHitPercent: round(chanceOnCriticalHitPercent),
       ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),

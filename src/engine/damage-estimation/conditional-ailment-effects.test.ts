@@ -36,4 +36,14 @@ describe('bedingte Zustandschancen aus gepinnten Unique-Zeilen', () => {
     ])
     expect(result).toEqual({ sourceReferences: [] })
   })
+
+  it('löst kritische Angriffs-Aggravation nur aus der exakten Unique-Zeile auf', () => {
+    const result = resolveConditionalAilmentEffects([
+      entry({ uniqueItemId: 'pob2:src/Data/Uniques/helmet.lua#35' }),
+    ])
+    expect(result.aggravateBleedingOnCriticalAttack).toBe(true)
+    expect(result.sourceReferences).toContain(
+      'pob2:src/Data/Uniques/helmet.lua#35:src/Data/Uniques/helmet.lua#35:line:5',
+    )
+  })
 })
