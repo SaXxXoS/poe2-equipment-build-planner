@@ -2969,3 +2969,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ohne tatsächliche Trefferfrequenz wird kein Sekundenwert erfunden.
 - Der nächste Ressourcenbaustein ist die belegte Verbindung von Waffen-
   Angriffsgeschwindigkeit, Trefferzahl und Rasereivorrat.
+
+# Schritt 64 – waffenbasierte Aktionsfrequenz
+
+- Das Ressourcenmodell 13.0.0 verbindet Angriffe mit der beobachteten
+  endgültigen Angriffsgeschwindigkeit oder einer eindeutig gepinnten
+  Waffenbasis.
+- Lokale Angriffsgeschwindigkeit und der strukturierte
+  Fertigkeitsmultiplikator werden in der belegten Reihenfolge angewandt.
+- Set 1 und Set 2 werden getrennt ausgewertet; widersprüchliche Werte für
+  `beide` bleiben ungelöst.
+- Die Aktionsfrequenz steuert Kosten pro Verwendung. Sie wird nicht als
+  garantierte Trefferfrequenz ausgegeben; Raserei pro Treffer bleibt bis zur
+  vollständigen Trefferkette fail-closed.
+- Fokussierte Tests: 33 erfolgreich; Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_ATTACK_ACTION_FREQUENCY_STEP_64.md`.

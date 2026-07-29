@@ -555,6 +555,49 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       rageSustainStatus: 'requires-hit-frequency-and-rage-pool',
     })
   })
+  it('leitet die Aktionsfrequenz aus beobachteter Waffengeschwindigkeit und Skillmultiplikator ab, aber erfindet keine Trefferfrequenz', () => {
+    const definition = skill('rampage', 'Rampage')
+    const rageSupport = {
+      id: 'rage-three',
+      nameEn: 'Rage III',
+      displayNameDe: 'Raserei III',
+      costMultiplierPercent: 100,
+    } as SupportGemDefinition
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      equipment: [{
+        id: 'observed-weapon',
+        slotId: 'slot-weapon-set-1-left',
+        modifierValues: [],
+        weaponStatsSource: 'observed-final',
+        weaponStats: { attacksPerSecond: 1.5 },
+      }],
+      setups: [{ ...setup(definition.id, [rageSupport.id], 'set-1'), level: 20 }],
+      skills: [definition],
+      supports: [rageSupport],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      actionFrequencyPerSecond: 1.05,
+      rageGenerationPerHit: 5,
+      rageGenerationPerSecond: null,
+      rageNetDemandPerSecond: null,
+      rageSustainStatus: 'requires-hit-frequency-and-rage-pool',
+    })
+  })
+  it('vermischt unterschiedliche Waffenset-Geschwindigkeiten bei beidseitigen Skills nicht', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      equipment: [
+        { id: 'set-1', slotId: 'slot-weapon-set-1-left', modifierValues: [], weaponStatsSource: 'observed-final', weaponStats: { attacksPerSecond: 1.5 } },
+        { id: 'set-2', slotId: 'slot-weapon-set-2-left', modifierValues: [], weaponStatsSource: 'observed-final', weaponStats: { attacksPerSecond: 1.2 } },
+      ],
+      setups: [{ ...setup(definition.id, [], 'both'), level: 20 }],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0].actionFrequencyPerSecond).toBeNull()
+  })
   it('bleibt deterministisch', () => {
     const definition = skill('barkskin', 'Barkskin')
     const input = { setups: [setup(definition.id)], skills: [definition], supports: [] }

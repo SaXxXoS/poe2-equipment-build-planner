@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '12.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '13.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -15,6 +15,7 @@ for (const skill of reference.skills) {
   if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) byName.set(key, skill)
 }
 const supportByName = new Map(reference.supports.map(support => [support.name.toLocaleLowerCase('en'), support]))
+const weaponByName = new Map(reference.weaponBases.map(weapon => [weapon.name.toLocaleLowerCase('en'), weapon]))
 
 const recordFor = (definition: SkillGemDefinition | undefined): NumericSkill | undefined =>
   definition?.nameEn ? byName.get(definition.nameEn.toLocaleLowerCase('en')) : undefined
@@ -122,6 +123,10 @@ const costDescriptor = (sourceResource: string) => {
 }
 
 const floorFour = (value: number) => Math.floor(value * 10_000) / 10_000
+const localAttackSpeedFor = (entry: EquipmentEntry) => entry.modifierValues
+  .flatMap(modifier => modifier.statValues ?? [])
+  .filter(stat => /local_attack_speed_\+%|attack_speed_\+%_local/.test(stat.statId))
+  .reduce((sum, stat) => sum + stat.value, 0)
 type PassiveResourceEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['passiveResourceEffects'][number]
 type IntrinsicSkillCostEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['intrinsicSkillCostEffects'][number]
 type BlockedIntrinsicSkillCostEffect = NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['blockedIntrinsicSkillCostEffects'][number]
@@ -196,6 +201,31 @@ const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, leve
 
 const setupAppliesTo = (source: SkillSetup['weaponSet'], target: SkillSetup['weaponSet']) =>
   source === 'both' || source === target
+
+const attackFrequencyFor = (
+  equipment: EquipmentEntry[] | undefined,
+  setup: SkillSetup,
+  record: NumericSkill | undefined,
+): number | null => {
+  if (!record || record.kind !== 'attack') return null
+  const sets = setup.weaponSet === 'both' ? ['set-1', 'set-2'] as const : [setup.weaponSet]
+  const frequencies = sets.flatMap(set => {
+    const candidates = (equipment ?? []).filter(entry =>
+      entry.slotId.includes(`weapon-${set}`)
+      && (entry.weaponStats?.attacksPerSecond != null || entry.baseDisplayName || entry.itemDefinitionId))
+    const values = candidates.flatMap(entry => {
+      const observed = entry.weaponStatsSource !== 'pinned-base' ? entry.weaponStats?.attacksPerSecond : undefined
+      const baseName = entry.baseDisplayName ?? entry.itemDefinitionId
+      const pinned = baseName ? weaponByName.get(baseName.toLocaleLowerCase('en'))?.attacksPerSecond : undefined
+      const base = observed ?? pinned
+      if (!Number.isFinite(base) || Number(base) <= 0) return []
+      const local = observed != null ? 0 : localAttackSpeedFor(entry)
+      return [Number((Number(base) * (1 + local / 100) * (1 + record.attackSpeedMultiplier / 100)).toFixed(4))]
+    })
+    return values.length === 1 || values.length > 1 && values.every(value => value === values[0]) ? [values[0]] : []
+  })
+  return frequencies.length === sets.length && frequencies.every(value => value === frequencies[0]) ? frequencies[0] : null
+}
 
 const archmageForTarget = (
   input: { setups: SkillSetup[]; skills: SkillGemDefinition[] },
@@ -582,9 +612,10 @@ export function resolveResourceSpiritModel(input: {
       for (const cost of baseCosts) cost.resourceAdjustedAmount = cost.resource === 'mana' || cost.resource === 'mana-percent'
         ? Math.max(0, Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier / combinedResourceCostEfficiency))
         : cost.supportAdjustedAmount
-      const actionFrequencyPerSecond = record?.kind === 'spell' && record.castTime > 0
+      const attackFrequency = attackFrequencyFor(input.equipment, setup, record)
+      const actionFrequencyPerSecond = attackFrequency ?? (record?.kind === 'spell' && record.castTime > 0
         ? Number((1 / record.castTime).toFixed(4))
-        : record?.kind === 'other' ? 1 : null
+        : record?.kind === 'other' ? 1 : null)
       const manaDemandPerSecond = exactCostChain && effectiveManaPool != null
         ? baseCosts.reduce<number | null>((sum, cost) => {
           if (sum == null || cost.resource === 'rage') return sum
@@ -609,9 +640,10 @@ export function resolveResourceSpiritModel(input: {
           ? rageCost.resourceAdjustedAmount
           : actionFrequencyPerSecond == null ? null : rageCost.resourceAdjustedAmount * actionFrequencyPerSecond
         : exactCostChain ? 0 : null
-      const rageGenerationPerSecond = rageGenerationPerHit > 0 && actionFrequencyPerSecond != null
-        ? Number((rageGenerationPerHit * actionFrequencyPerSecond).toFixed(2))
-        : rageGenerationPerHit === 0 ? 0 : null
+      // Attack actions are not guaranteed successful hits. Accuracy, target
+      // contact and multi-hit behaviour must be connected before an on-hit
+      // Rage gain can safely be expressed as a per-second value.
+      const rageGenerationPerSecond = rageGenerationPerHit === 0 ? 0 : null
       const rageNetDemandPerSecond = rageDemandPerSecond == null || rageGenerationPerSecond == null
         ? null
         : Number(Math.max(0, rageDemandPerSecond - rageGenerationPerSecond).toFixed(2))
