@@ -70,9 +70,11 @@
         "pinned rarity defaults supply monster power 10 for rare comparison targets and 20 for unique boss targets",
         "Cast on Critical energy uses critical raw hit damage divided by the pinned level-specific ailment threshold",
         "energy overflow is capped so one critical hit cannot create more than one trigger",
-        "a fully closed Cast on Critical chain contributes its embedded target to a separately exposed combined comparison DPS"
+        "a fully closed Cast on Critical chain contributes its embedded target to a separately exposed combined comparison DPS",
+        "pinned per-level skill cooldowns and stored uses are exported from the PoB2 skill tables",
+        "triggered target cooldowns are rounded up to the pinned 33 ms server tick before capping the productive trigger rate"
       ],
-      "nextGap": "add exact cooldown and server-tick caps, multi-target trigger rotation, other trigger event profiles, overlaps and return/fork chains"
+      "nextGap": "add cooldown recovery and override modifiers, multi-target trigger rotation, other trigger event profiles, overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

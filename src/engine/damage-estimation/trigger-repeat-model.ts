@@ -2,7 +2,8 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.4.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.5.0'
+export const POB2_SERVER_TICK_SECONDS = 0.033
 
 type NumericSkill = (typeof reference.skills)[number]
 type InternalTriggerSupport = (typeof reference.internalTriggerSupports)[number]
@@ -49,6 +50,10 @@ export interface ResolvedTriggerRepeatSource {
   ailmentThresholdRatio?: number
   effectiveEnergyPerEvent?: number
   energyPerSecond?: number
+  uncappedTriggerRatePerSecond?: number
+  targetBaseCooldownSeconds?: number
+  serverTickRoundedCooldownSeconds?: number
+  cooldownRateCapPerSecond?: number
   triggerRatePerSecond?: number
   secondsPerTrigger?: number
   targetDamageMultiplier?: number
@@ -206,11 +211,28 @@ export function resolveTriggerRepeatModel(input: {
     const energyPerSecond = eventRatePerSecond != null && cappedEnergyPerEvent != null
       ? eventRatePerSecond * cappedEnergyPerEvent
       : undefined
-    const triggerRatePerSecond = energyRequirement != null
+    const uncappedTriggerRatePerSecond = energyRequirement != null
       && energyRequirement > 0
       && energyPerSecond != null
       ? Math.min(eventRatePerSecond!, energyPerSecond / energyRequirement)
       : undefined
+    const targetBaseCooldownSeconds = targetRecords.length === 1
+      && Number.isFinite(targetRecords[0]?.cooldown)
+      && Number(targetRecords[0]?.cooldown) > 0
+      ? Number(targetRecords[0]?.cooldown)
+      : undefined
+    const serverTickRoundedCooldownSeconds = targetBaseCooldownSeconds == null
+      ? undefined
+      : Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
+        * POB2_SERVER_TICK_SECONDS
+    const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
+      ? undefined
+      : 1 / serverTickRoundedCooldownSeconds
+    const triggerRatePerSecond = uncappedTriggerRatePerSecond == null
+      ? undefined
+      : cooldownRateCapPerSecond == null
+        ? uncappedTriggerRatePerSecond
+        : Math.min(uncappedTriggerRatePerSecond, cooldownRateCapPerSecond)
     const secondsPerTrigger = triggerRatePerSecond != null && triggerRatePerSecond > 0
       ? 1 / triggerRatePerSecond
       : undefined
@@ -253,6 +275,10 @@ export function resolveTriggerRepeatModel(input: {
         ...(ailmentThresholdRatio == null ? {} : { ailmentThresholdRatio: stable(ailmentThresholdRatio) }),
         ...(effectiveEnergyPerEvent == null ? {} : { effectiveEnergyPerEvent: stable(effectiveEnergyPerEvent) }),
         ...(energyPerSecond == null ? {} : { energyPerSecond: stable(energyPerSecond) }),
+        ...(uncappedTriggerRatePerSecond == null ? {} : { uncappedTriggerRatePerSecond: stable(uncappedTriggerRatePerSecond) }),
+        ...(targetBaseCooldownSeconds == null ? {} : { targetBaseCooldownSeconds: stable(targetBaseCooldownSeconds) }),
+        ...(serverTickRoundedCooldownSeconds == null ? {} : { serverTickRoundedCooldownSeconds: stable(serverTickRoundedCooldownSeconds) }),
+        ...(cooldownRateCapPerSecond == null ? {} : { cooldownRateCapPerSecond: stable(cooldownRateCapPerSecond) }),
         ...(triggerRatePerSecond == null ? {} : { triggerRatePerSecond: stable(triggerRatePerSecond) }),
         ...(secondsPerTrigger == null ? {} : { secondsPerTrigger: stable(secondsPerTrigger) }),
         targetDamageMultiplier: stable(targetDamageMultiplier),

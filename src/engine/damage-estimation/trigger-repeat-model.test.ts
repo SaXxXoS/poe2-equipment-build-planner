@@ -189,6 +189,36 @@ describe('Trigger- und Wiederholungsmodell', () => {
     expect(result.productive).toBe(true)
   })
 
+  it('begrenzt ausgelöste Fertigkeiten am gepinnten 33-ms-Server-Tick', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('snap', 'Snap')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+      primaryActionContext: {
+        actionsPerSecond: 10,
+        hitChancePercent: 100,
+        criticalHitChancePercent: 100,
+        criticalHitDamageBeforeMitigation: 10_000,
+        monsterPower: 20,
+        enemyAilmentThreshold: 100,
+      },
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      uncappedTriggerRatePerSecond: 10,
+      targetBaseCooldownSeconds: 4,
+      serverTickRoundedCooldownSeconds: 4.026,
+      cooldownRateCapPerSecond: 0.248385,
+      triggerRatePerSecond: 0.248385,
+    })
+  })
+
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('coc', 'Cast on Critical')

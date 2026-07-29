@@ -2839,3 +2839,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Triggerziele, weitere Triggerbedingungen sowie Projektilüberlappung,
   Rückkehr- und Fork-Ketten.
 - Trigger-Teilmodell `1.4.0`.
+
+# Fortsetzung: Schritt 49 – Trigger-Cooldown und Server-Takt
+
+- Der gepinnte Schadensreferenzgenerator übernimmt jetzt Basis-Cooldown und
+  gespeicherte Nutzungen je Skill und Gemmenstufe.
+- Produktive Triggerziele werden an ihrer belegten Basis-Abklingzeit
+  begrenzt.
+- Die Abklingzeit wird entsprechend dem gepinnten PoB2-Modul auf den nächsten
+  Server-Tick von `0,033` Sekunden aufgerundet.
+- Die Oberfläche weist Cooldown-Grenze, tickgerundete Dauer und tatsächliche
+  Auslöserate getrennt aus.
+- Weiter offen sind Cooldown-Recovery/Overrides, Sonderfälle gespeicherter
+  Nutzungen und die Rotation mehrerer Triggerziele.
+- Trigger-Teilmodell `1.5.0`.

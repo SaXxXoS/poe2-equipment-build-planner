@@ -255,6 +255,8 @@ for (const file of skillFiles) {
       const statValues = positional(firstSet && levelRow(firstSet, level))
       return {
         level,
+        cooldown: number(mainRow ?? '', 'cooldown'),
+        storedUses: number(mainRow ?? '', 'storedUses'),
         attackSpeedMultiplier: number(mainRow ?? '', 'attackSpeedMultiplier') ?? 0,
         baseMultiplier: number(mainRow ?? '', 'baseMultiplier'),
         critChance: number(mainRow ?? '', 'critChance'),
@@ -270,6 +272,8 @@ for (const file of skillFiles) {
       kind: skillTypes.includes('Attack') ? 'attack' : skillTypes.includes('Spell') ? 'spell' : 'other',
       skillTypes,
       castTime: number(body, 'castTime') ?? 1,
+      cooldown: number(mainLevel ?? '', 'cooldown'),
+      storedUses: number(mainLevel ?? '', 'storedUses'),
       attackSpeedMultiplier: number(mainLevel ?? '', 'attackSpeedMultiplier') ?? 0,
       baseMultiplier: number(mainLevel ?? '', 'baseMultiplier'),
       critChance: number(mainLevel ?? '', 'critChance'),
