@@ -3,7 +3,7 @@ import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../..
 import { pob2SupportReferenceFor } from '../../gems/pob2-support-reference'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.9.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.10.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 const stableNumber = (value: number): number => Math.round(value * 1_000_000) / 1_000_000
 
@@ -139,6 +139,8 @@ export interface SupportedSkillCooldown {
   overrideCooldownSeconds?: number
   cooldownRecoveryPercent: number
   effectiveCooldownSeconds: number
+  baseStoredUses: number
+  additionalStoredUses: number
   storedUses: number
   sustainedUseRatePerSecond: number
   sourceReferences: string[]
@@ -148,6 +150,7 @@ export function supportedSkillCooldownFor(
   target: NumericSkill,
   setup: SkillSetup | undefined,
   supports: SupportGemDefinition[],
+  additionalUses: { count: number; sourceReferences: string[] } = { count: 0, sourceReferences: [] },
 ): SupportedSkillCooldown | undefined {
   if (!setup) return undefined
   const baseCooldownSeconds = Number(target.cooldown)
@@ -172,8 +175,10 @@ export function supportedSkillCooldownFor(
   const selectedBase = overrideCooldownSeconds ?? baseCooldownSeconds
   if (!Number.isFinite(selectedBase) || selectedBase <= 0) return undefined
   const rawEffective = effectiveCooldownSeconds(selectedBase, cooldownRecoveryPercent)
-  const storedUses = Number.isFinite(Number(target.storedUses)) ? Math.max(1, Number(target.storedUses)) : 1
-  const effective = storedUses > 1
+  const baseStoredUses = Number.isFinite(Number(target.storedUses)) ? Math.max(1, Number(target.storedUses)) : 1
+  const additionalStoredUses = Math.max(0, Math.trunc(additionalUses.count))
+  const storedUses = baseStoredUses + additionalStoredUses
+  const effective = storedUses > 1 || additionalStoredUses > 0
     ? rawEffective
     : Math.ceil(rawEffective / POB2_SERVER_TICK_SECONDS) * POB2_SERVER_TICK_SECONDS
   return {
@@ -181,9 +186,11 @@ export function supportedSkillCooldownFor(
     ...(overrideCooldownSeconds == null ? {} : { overrideCooldownSeconds }),
     cooldownRecoveryPercent,
     effectiveCooldownSeconds: stableNumber(effective),
+    baseStoredUses,
+    additionalStoredUses,
     storedUses,
     sustainedUseRatePerSecond: stableNumber(1 / effective),
-    sourceReferences,
+    sourceReferences: [...new Set([...sourceReferences, ...additionalUses.sourceReferences])].sort((a, b) => a.localeCompare(b, 'en')),
   }
 }
 

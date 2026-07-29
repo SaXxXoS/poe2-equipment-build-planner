@@ -16,6 +16,7 @@ import { resolveAttackHitChance } from './attack-hit-chance'
 import { expectedLuckyHitDamage, resolveLuckyHitEffects } from './lucky-hit-effects'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import { attachNormalizedTriggeredTargetDamage, resolveTriggerRepeatModel, supportedSkillCooldownFor, triggerRepeatOutput } from './trigger-repeat-model'
+import { additionalCooldownUsesFor } from './additional-cooldown-uses'
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
 import { resourceSpiritOutput, resolveResourceSpiritModel } from './resource-spirit-model'
 import { applySkillQualityStats, gemLevelQualityOutput, resolveGemLevelQualityModel } from './gem-level-quality-model'
@@ -155,12 +156,20 @@ export function estimateHitDamage(input:{
   const speedIncrease=quantitative.speedModifiers.reduce((sum,effect)=>sum+effect.percent,0)
   actionsPerSecond*=1+speedIncrease/100
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
-  const supportedCooldown=supportedSkillCooldownFor(skill,setup,input.supports??[])
+  const additionalCooldownUses=additionalCooldownUsesFor({
+    skillTypes:skill.skillTypes,
+    equipment:input.equipment,
+    weaponSet:activeSet,
+    passiveTree:input.passiveTree,
+    planning:input.realPassivePlanning,
+  })
+  const supportedCooldown=supportedSkillCooldownFor(skill,setup,input.supports??[],additionalCooldownUses)
   if(supportedCooldown){
     actionsPerSecond=Math.min(actionsPerSecond,supportedCooldown.sustainedUseRatePerSecond)
     included.push(supportedCooldown.overrideCooldownSeconds==null
       ? 'nach Server-Takt begrenzte nachhaltige Cooldown-Nutzungsrate'
       : 'supportbedingter Cooldown-Override mit nachhaltiger Nutzungsrate')
+    if(supportedCooldown.additionalStoredUses>0)included.push(`${supportedCooldown.additionalStoredUses} belegte zusätzliche Cooldown-Nutzung${supportedCooldown.additionalStoredUses===1?'':'en'} aus aktivem Waffenset und Passivplan`)
   }
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const attackHitChance=skill.kind==='attack'?resolveAttackHitChance({

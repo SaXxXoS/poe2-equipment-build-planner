@@ -38,6 +38,26 @@ describe('Trigger- und Wiederholungsmodell', () => {
     })
   })
 
+  it('erhöht den kurzfristigen Vorrat, aber nicht die nachhaltige Cooldown-Rate', () => {
+    const grenade = damageReference.skills.find(value => value.name === 'Cluster Grenade')
+    expect(grenade).toBeDefined()
+    const result = supportedSkillCooldownFor(
+      grenade!,
+      setup('cluster-grenade', 'main'),
+      [],
+      { count: 2, sourceReferences: ['equipment:crossbow:grenade_skill_cooldown_count_+'] },
+    )
+    expect(result).toMatchObject({
+      baseCooldownSeconds: 10,
+      baseStoredUses: 1,
+      additionalStoredUses: 2,
+      storedUses: 3,
+      effectiveCooldownSeconds: 10,
+      sustainedUseRatePerSecond: 0.1,
+    })
+    expect(result?.sourceReferences).toContain('equipment:crossbow:grenade_skill_cooldown_count_+')
+  })
+
   it('blockiert eine eingebaute Triggerfertigkeit ohne belegte Auslöserkette', () => {
     const primary = skill('blood-explosion', 'Blood Explosion')
     const result = resolveTriggerRepeatModel({ primarySkill: primary, setups: [setup(primary.id, 'main')], skills: [primary] })
