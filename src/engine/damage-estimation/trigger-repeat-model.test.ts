@@ -294,10 +294,21 @@ describe('Trigger- und Wiederholungsmodell', () => {
       targetSkillId: 'frost-wall',
       targetBaseCooldownSeconds: 5,
       targetStoredUses: 3,
+      emptyToFullRechargeSeconds: 15,
       cooldownRoundedToServerTick: false,
       serverTickRoundedCooldownSeconds: 5,
       cooldownRateCapPerSecond: 0.2,
       triggerRatePerSecond: 0.2,
+    })
+
+    const withDamage = attachNormalizedTriggeredTargetDamage(result, new Map([
+      ['frost-wall', { expectedHitDamage: 1000, expectedHitDamageAfterMitigation: 750 }],
+    ]))
+    expect(withDamage.sources[0]).toMatchObject({
+      targetExpectedHitDamage: 800,
+      targetExpectedHitDamageAfterMitigation: 600,
+      fullyStoredUseDamage: 2400,
+      fullyStoredUseDamageAfterMitigation: 1800,
     })
   })
 

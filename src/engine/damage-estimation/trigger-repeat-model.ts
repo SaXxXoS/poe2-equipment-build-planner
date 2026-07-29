@@ -3,7 +3,7 @@ import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../..
 import { pob2SupportReferenceFor } from '../../gems/pob2-support-reference'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.8.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.9.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 
 type NumericSkill = (typeof reference.skills)[number]
@@ -60,6 +60,7 @@ export interface ResolvedTriggerRepeatSource {
   cooldownRecoverySourceReferences?: string[]
   effectiveTargetCooldownSeconds?: number
   targetStoredUses?: number
+  emptyToFullRechargeSeconds?: number
   cooldownRoundedToServerTick?: boolean
   serverTickRoundedCooldownSeconds?: number
   cooldownRateCapPerSecond?: number
@@ -68,6 +69,8 @@ export interface ResolvedTriggerRepeatSource {
   targetDamageMultiplier?: number
   targetExpectedHitDamage?: number
   targetExpectedHitDamageAfterMitigation?: number
+  fullyStoredUseDamage?: number
+  fullyStoredUseDamageAfterMitigation?: number
   normalizedTriggeredDamagePerSecondAtMonsterPowerOne?: number
   normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne?: number
   triggeredDamagePerSecond?: number
@@ -310,6 +313,11 @@ export function resolveTriggerRepeatModel(input: {
       const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
         ? undefined
         : 1 / serverTickRoundedCooldownSeconds
+      const emptyToFullRechargeSeconds = serverTickRoundedCooldownSeconds != null
+        && targetStoredUses != null
+        && targetStoredUses > 1
+        ? serverTickRoundedCooldownSeconds * targetStoredUses
+        : undefined
       const triggerRatePerSecond = uncappedTriggerRatePerSecond == null
         ? undefined
         : cooldownRateCapPerSecond == null
@@ -360,6 +368,9 @@ export function resolveTriggerRepeatModel(input: {
           effectiveTargetCooldownSeconds: stable(effectiveTargetCooldownSeconds),
         }),
         ...(targetStoredUses == null ? {} : { targetStoredUses }),
+        ...(emptyToFullRechargeSeconds == null ? {} : {
+          emptyToFullRechargeSeconds: stable(emptyToFullRechargeSeconds),
+        }),
         ...(targetBaseCooldownSeconds == null ? {} : { cooldownRoundedToServerTick }),
         ...(serverTickRoundedCooldownSeconds == null ? {} : { serverTickRoundedCooldownSeconds: stable(serverTickRoundedCooldownSeconds) }),
         ...(cooldownRateCapPerSecond == null ? {} : { cooldownRateCapPerSecond: stable(cooldownRateCapPerSecond) }),
@@ -378,6 +389,12 @@ export function resolveTriggerRepeatModel(input: {
           `damage-reference:${record.name}:skillTypes.Triggers`,
           ...(condition ? [`damage-reference:${record.name}:name`] : []),
           ...(target ? [`build-profile:${setup.id}:embeddedSkillIds:${target.id}`] : []),
+          ...(targetRecord && targetBaseCooldownSeconds != null
+            ? [`damage-reference:${targetRecord.sourceRecordId}:numericStats.cooldown`]
+            : []),
+          ...(targetRecord && targetStoredUses != null
+            ? [`damage-reference:${targetRecord.sourceRecordId}:numericStats.storedUses`]
+            : []),
           ...(internalSupport ? [`damage-reference:${internalSupport.sourceRecordId}`] : []),
           ...cooldownRecovery.sourceReferences,
           ...(hasStatId(record, 'generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills')
@@ -428,6 +445,7 @@ export function resolveTriggerRepeatModel(input: {
       'Ein Trigger erhöht den Schadenswert erst, wenn Quelle, Bedingung, Ziel und Ereignisfrequenz gemeinsam belegt sind.',
       'Triggerable bedeutet nur auslösbar und wird nicht als tatsächlich ausgelöst behandelt.',
       'Energiebedarf und Energie pro Ereignis sind ohne Ereignisrate noch keine Auslösefrequenz.',
+      'Gespeicherte Nutzungen bilden eine begrenzte Reserve und keinen dauerhaften Schadensmultiplikator.',
       'Wiederholungen, Triggerketten und ausgelöste Sekundärfertigkeiten erzeugen ohne vollständige Verknüpfung keinen positiven DPS-Wert.',
     ],
   }
@@ -450,6 +468,14 @@ export function attachNormalizedTriggeredTargetDamage(
     const targetExpectedHitDamageAfterMitigation = target.expectedHitDamageAfterMitigation == null
       ? undefined
       : target.expectedHitDamageAfterMitigation * multiplier
+    const fullyStoredUseDamage = source.targetStoredUses != null && source.targetStoredUses > 1
+      ? targetExpectedHitDamage * source.targetStoredUses
+      : undefined
+    const fullyStoredUseDamageAfterMitigation = source.targetStoredUses != null
+      && source.targetStoredUses > 1
+      && targetExpectedHitDamageAfterMitigation != null
+      ? targetExpectedHitDamageAfterMitigation * source.targetStoredUses
+      : undefined
     const productive = source.triggerRatePerSecond != null
     const appliedRate = source.triggerRatePerSecond ?? source.triggerRatePerSecondAtMonsterPowerOne!
     return {
@@ -458,6 +484,12 @@ export function attachNormalizedTriggeredTargetDamage(
       targetExpectedHitDamage: Math.round(targetExpectedHitDamage * 1_000_000) / 1_000_000,
       ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
         targetExpectedHitDamageAfterMitigation: Math.round(targetExpectedHitDamageAfterMitigation * 1_000_000) / 1_000_000,
+      }),
+      ...(fullyStoredUseDamage == null ? {} : {
+        fullyStoredUseDamage: Math.round(fullyStoredUseDamage * 1_000_000) / 1_000_000,
+      }),
+      ...(fullyStoredUseDamageAfterMitigation == null ? {} : {
+        fullyStoredUseDamageAfterMitigation: Math.round(fullyStoredUseDamageAfterMitigation * 1_000_000) / 1_000_000,
       }),
       normalizedTriggeredDamagePerSecondAtMonsterPowerOne: Math.round(
         targetExpectedHitDamage * (source.triggerRatePerSecondAtMonsterPowerOne ?? appliedRate) * 1_000_000,
