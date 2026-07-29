@@ -2714,3 +2714,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Einzelanwendungswert.
 - Überlappung, Refresh, vollständige Uptime und fertigkeitsspezifische
   Stapelregeln bleiben fail-closed.
+# Fortsetzung: Schritt 38 – PoB2-Zustandskonstanten und Aggravation
+
+- Blutung und Gift verwenden die exakt geprüften Konstanten des gepinnten
+  PoB2-`Misc.lua` statt lokaler Zahlenliterale.
+- Das Referenzschema ist Version 10.
+- Der vollständig belegte unbedingte passive Aggravationsknoten wirkt nur,
+  wenn er im aktiven Passive-/Waffensetplan tatsächlich belegt ist.
+- Dauer, Magnitude und Aggravationsmultiplikator werden gemeinsam angewendet.
+- Bedingte Aggravation und kritische Ailment-Sonderfälle bleiben fail-closed.

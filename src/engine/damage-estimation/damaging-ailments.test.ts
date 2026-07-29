@@ -50,6 +50,33 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
+  it('wendet die vollständig belegte passive Aggravation mit Dauer und Magnitude gemeinsam an', () => {
+    const result = collectDamagingAilments({
+      skill: record('Rake'),
+      components: [{ type: 'physical', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      setup: setup(),
+      supports: [],
+      bleedingPassiveEffect: {
+        aggravated: true,
+        durationMs: 1000,
+        magnitudeMultiplier: 1.5,
+        aggravatedMultiplier: reference.ailmentConstants.bloodstainedMultiplierWhenMovingOrBleedingAggravated,
+        sourceReferences: ['passive-node:test'],
+      },
+    })
+    expect(result.effects).toEqual([expect.objectContaining({
+      kind: 'bleeding',
+      aggravated: true,
+      durationMs: 1000,
+      expectedActiveStacks: 1,
+      effectMultiplier: 6,
+      damagePerSecond: 135,
+      totalDamagePerApplication: 135,
+    })])
+  })
+
   it('übernimmt belegte Giftchance, Effekt, Dauer und Zusatzstapel aus ausgewählten Supports', () => {
     const supports = [
       support('poison', 'Poison I'),

@@ -1,8 +1,9 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
+import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.0.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.1.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -27,6 +28,7 @@ export interface ResolvedDamagingAilment {
   damagePerSecondAfterMitigation?: number
   totalDamagePerApplication: number
   effectMultiplier: number
+  aggravated?: boolean
   sourceReferences: string[]
   evidence: 'structured-exact'
   detail: string
@@ -103,6 +105,7 @@ export function collectDamagingAilments(input: {
   supports: SupportGemDefinition[]
   enemyLevel?: number
   enemyProfile?: EnemyMitigationProfile
+  bleedingPassiveEffect?: BleedingPassiveEffect
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -115,8 +118,8 @@ export function collectDamagingAilments(input: {
       damageType: 'physical' as const,
       sourceTypes: ['physical'] as DamageComponent['type'][],
       chanceStat: 'base_chance_to_inflict_bleeding_%',
-      basePercentPerSecond: 0.15,
-      durationMs: 5000,
+      basePercentPerSecond: reference.ailmentConstants.bleedingHitDamagePercentPerMinute / 60 / 100,
+      durationMs: reference.ailmentConstants.baseBleedingDurationSeconds * 1000,
       effectStats: ['active_skill_bleeding_effect_+%_final', 'support_deep_cuts_bleeding_effect_+%_final'],
       durationStats: [] as string[],
     },
@@ -125,8 +128,8 @@ export function collectDamagingAilments(input: {
       damageType: 'chaos' as const,
       sourceTypes: ['physical', 'chaos'] as DamageComponent['type'][],
       chanceStat: 'base_chance_to_poison_on_hit_%',
-      basePercentPerSecond: 0.2,
-      durationMs: 2000,
+      basePercentPerSecond: reference.ailmentConstants.poisonHitDamagePercentPerMinute / 60 / 100,
+      durationMs: reference.ailmentConstants.basePoisonDurationSeconds * 1000,
       effectStats: ['support_deadly_poison_poison_effect_+%_final'],
       durationStats: ['support_multi_poison_poison_duration_+%_final'],
     },
@@ -158,7 +161,8 @@ export function collectDamagingAilments(input: {
         valuesFor(allStats, stat),
       ),
     )
-    const durationMs = definition.durationMs * durationMultiplier
+    const bleedingPassiveEffect = definition.kind === 'bleeding' ? input.bleedingPassiveEffect : undefined
+    const durationMs = (bleedingPassiveEffect?.durationMs ?? definition.durationMs) * durationMultiplier
     const maximumStacks = definition.kind === 'poison'
       ? 1 + Math.max(0, sum(allStats, 'number_of_additional_poison_stacks'))
       : 1
@@ -174,13 +178,18 @@ export function collectDamagingAilments(input: {
       valuesFor(allStats, stat),
     )
     const effectMultiplier = productMore([...genericEffect, ...specificEffect])
+      * (bleedingPassiveEffect?.magnitudeMultiplier ?? 1)
+      * (bleedingPassiveEffect?.aggravatedMultiplier ?? 1)
     const singleStackDps = sourceDamage * definition.basePercentPerSecond * effectMultiplier
     const damagePerSecond = singleStackDps * expectedActiveStacks
     const sourceReferences = [
       definition.chanceStat,
+      definition.kind === 'bleeding' ? 'BleedingHitDamagePercentPerMinute' : 'PoisonHitDamagePercentPerMinute',
+      definition.kind === 'bleeding' ? 'BaseBleedingDuration' : 'BasePoisonDuration',
       ...definition.effectStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
       ...definition.durationStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
       ...(definition.kind === 'poison' && maximumStacks > 1 ? ['number_of_additional_poison_stacks'] : []),
+      ...(bleedingPassiveEffect?.sourceReferences ?? []),
     ]
     const resistance = definition.damageType === 'physical'
       ? 0
@@ -204,6 +213,7 @@ export function collectDamagingAilments(input: {
         : {}),
       totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
+      ...(bleedingPassiveEffect ? { aggravated: true } : {}),
       sourceReferences,
       evidence: 'structured-exact',
       detail: 'PoB2-Grundwert, Auslösechance, relevante ungeminderte Schadensarten, Wirkfrequenz, Dauer, Effekt und Stapelgrenze sind strukturiert verbunden.',

@@ -168,3 +168,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Penetration und die Treffer-Rüstungsformel werden nicht fälschlich auf DoT
   angewandt.
 - Rohwert und gegnerbereinigter Einzelanwendungswert bleiben getrennt.
+# Schritt 38 – PoB2-Zustandskonstanten und passive Aggravation
+
+- Blutungs- und Giftgrundschaden sowie ihre Basisdauer stammen jetzt aus dem
+  exakt gepinnten `Misc.lua`.
+- Der vollständige unbedingte passive Aggravationsknoten wird mit Dauer,
+  Magnitude und Aggravationsmultiplikator gemeinsam angewendet.
+- Bedingte oder nur ähnliche Aggravationstexte bleiben fail-closed.
+- Das deterministische Schadensreferenzschema ist Version 10.
+- Offen bleiben insbesondere kritische Ailment-Sonderfälle, bedingte
+  Aggravation und Bewegungserkennung.

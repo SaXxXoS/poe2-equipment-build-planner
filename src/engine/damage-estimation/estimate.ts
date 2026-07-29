@@ -10,6 +10,7 @@ import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './te
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
 import { collectDamagingAilments } from './damaging-ailments'
+import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
 import { resolveAttackHitChance } from './attack-hit-chance'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
@@ -217,6 +218,11 @@ export function estimateHitDamage(input:{
     supports: input.supports??[],
     enemyLevel: resolvedEnemyProfile?.level,
     enemyProfile: resolvedEnemyProfile,
+    bleedingPassiveEffect: resolveBleedingPassiveEffect({
+      passiveTree: input.passiveTree,
+      planning: input.realPassivePlanning,
+      weaponSet: activeSet,
+    }),
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 9,
+  "schemaVersion": 10,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -21,9 +21,14 @@
     "inherentManaRegenerationPercentPerMinute": 240
   },
   "ailmentConstants": {
+    "bleedingHitDamagePercentPerMinute": 900,
     "igniteChanceMultiplier": 20,
     "igniteHitDamagePercentPerMinute": 1200,
-    "baseIgniteDurationSeconds": 4
+    "poisonHitDamagePercentPerMinute": 1200,
+    "baseBleedingDurationSeconds": 5,
+    "basePoisonDurationSeconds": 2,
+    "baseIgniteDurationSeconds": 4,
+    "bloodstainedMultiplierWhenMovingOrBleedingAggravated": 2
   },
   "monsterAilmentThresholdTable": [
     15,
@@ -303675,5 +303680,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "5badfe939ec763a8f120d92ebce9d4a29b382e0408756ee9214fd963bd949007"
+  "contentHash": "8a088c95a42cd21b771fcb48877ff06cd6a237b4f49bd9e5b0f4fb2b5f18e702"
 }

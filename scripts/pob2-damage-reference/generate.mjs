@@ -52,9 +52,14 @@ const numericTable = name => {
   return [...match[1].matchAll(/-?[\d.]+/g)].map(value => Number(value[0]))
 }
 const ailmentConstants = {
+  bleedingHitDamagePercentPerMinute: gameConstant('BleedingHitDamagePercentPerMinute', 900),
   igniteChanceMultiplier: gameConstant('IgniteChanceMultiplier', 20),
   igniteHitDamagePercentPerMinute: gameConstant('IgniteHitDamagePercentPerMinute', 1200),
+  poisonHitDamagePercentPerMinute: gameConstant('PoisonHitDamagePercentPerMinute', 1200),
+  baseBleedingDurationSeconds: gameConstant('BaseBleedingDuration', 5),
+  basePoisonDurationSeconds: gameConstant('BasePoisonDuration', 2),
   baseIgniteDurationSeconds: gameConstant('BaseIgniteDuration', 4),
+  bloodstainedMultiplierWhenMovingOrBleedingAggravated: gameConstant('BloodstainedMultiplierWhenMovingOrBleedingAggravated', 2),
 }
 const monsterAilmentThresholdTable = numericTable('monsterAilmentThresholdTable')
 if (monsterAilmentThresholdTable.length !== 100) {
@@ -360,7 +365,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 9,
+  schemaVersion: 10,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
