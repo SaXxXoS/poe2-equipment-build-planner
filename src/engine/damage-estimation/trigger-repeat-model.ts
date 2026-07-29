@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.6.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.7.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 
 type NumericSkill = (typeof reference.skills)[number]
@@ -55,6 +55,8 @@ export interface ResolvedTriggerRepeatSource {
   energyPerSecond?: number
   uncappedTriggerRatePerSecond?: number
   targetBaseCooldownSeconds?: number
+  targetStoredUses?: number
+  cooldownRoundedToServerTick?: boolean
   serverTickRoundedCooldownSeconds?: number
   cooldownRateCapPerSecond?: number
   triggerRatePerSecond?: number
@@ -246,10 +248,18 @@ export function resolveTriggerRepeatModel(input: {
         && Number(targetRecord?.cooldown) > 0
         ? Number(targetRecord?.cooldown)
         : undefined
+      const targetStoredUses = Number.isFinite(targetRecord?.storedUses)
+        && Number(targetRecord?.storedUses) > 0
+        ? Number(targetRecord?.storedUses)
+        : undefined
+      const cooldownRoundedToServerTick = targetBaseCooldownSeconds != null
+        && !(targetStoredUses != null && targetStoredUses > 1)
       const serverTickRoundedCooldownSeconds = targetBaseCooldownSeconds == null
         ? undefined
-        : Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
-          * POB2_SERVER_TICK_SECONDS
+        : cooldownRoundedToServerTick
+          ? Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
+            * POB2_SERVER_TICK_SECONDS
+          : targetBaseCooldownSeconds
       const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
         ? undefined
         : 1 / serverTickRoundedCooldownSeconds
@@ -295,6 +305,8 @@ export function resolveTriggerRepeatModel(input: {
         ...(energyPerSecond == null ? {} : { energyPerSecond: stable(energyPerSecond) }),
         ...(uncappedTriggerRatePerSecond == null ? {} : { uncappedTriggerRatePerSecond: stable(uncappedTriggerRatePerSecond) }),
         ...(targetBaseCooldownSeconds == null ? {} : { targetBaseCooldownSeconds: stable(targetBaseCooldownSeconds) }),
+        ...(targetStoredUses == null ? {} : { targetStoredUses }),
+        ...(targetBaseCooldownSeconds == null ? {} : { cooldownRoundedToServerTick }),
         ...(serverTickRoundedCooldownSeconds == null ? {} : { serverTickRoundedCooldownSeconds: stable(serverTickRoundedCooldownSeconds) }),
         ...(cooldownRateCapPerSecond == null ? {} : { cooldownRateCapPerSecond: stable(cooldownRateCapPerSecond) }),
         ...(triggerRatePerSecond == null ? {} : { triggerRatePerSecond: stable(triggerRatePerSecond) }),
@@ -325,8 +337,8 @@ export function resolveTriggerRepeatModel(input: {
           ? eventRatePerSecond != null
             ? triggerRatePerSecond != null
               ? triggersAllSocketedSkills
-                ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Der gemeinsame Energiebedarf umfasst alle ${targets.length} eingebetteten Fertigkeiten; bei voller Energie werden alle eingebetteten Fertigkeiten ausgelöst. Die eigene Cooldown-Grenze dieses Ziels wird separat im gepinnten Server-Takt angewendet.`
-                : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Ereignisrate und Energieaufbau sind geschlossen berechnet; die eigene Cooldown-Grenze dieses Ziels wird separat im gepinnten Server-Takt angewendet.`
+                ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Der gemeinsame Energiebedarf umfasst alle ${targets.length} eingebetteten Fertigkeiten; bei voller Energie werden alle eingebetteten Fertigkeiten ausgelöst. Die eigene Cooldown-Grenze dieses Ziels wird separat ${cooldownRoundedToServerTick ? 'im gepinnten Server-Takt' : 'ohne Tick-Rundung wegen mehrerer gespeicherter Nutzungen'} angewendet.`
+                : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Ereignisrate und Energieaufbau sind geschlossen berechnet; die eigene Cooldown-Grenze dieses Ziels wird separat ${cooldownRoundedToServerTick ? 'im gepinnten Server-Takt' : 'ohne Tick-Rundung wegen mehrerer gespeicherter Nutzungen'} angewendet.`
               : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate und Energieaufbau sind bei normierter Monsterstärke 1 berechnet; tatsächliche Monsterstärke oder Zustands-Schwelle fehlen noch, daher entsteht noch kein zusätzlicher DPS-Wert.`
             : `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
           : target

@@ -261,6 +261,38 @@ describe('Trigger- und Wiederholungsmodell', () => {
     })
   })
 
+  it('rundet den Cooldown eines Ziels mit mehreren gespeicherten Nutzungen nicht auf Server-Ticks', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const frostWall = skill('frost-wall', 'Frost Wall')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [frostWall.id] },
+      ],
+      skills: [primary, trigger, frostWall],
+      primaryActionContext: {
+        actionsPerSecond: 10,
+        hitChancePercent: 100,
+        criticalHitChancePercent: 100,
+        criticalHitDamageBeforeMitigation: 10_000,
+        monsterPower: 20,
+        enemyAilmentThreshold: 100,
+      },
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      targetSkillId: 'frost-wall',
+      targetBaseCooldownSeconds: 5,
+      targetStoredUses: 3,
+      cooldownRoundedToServerTick: false,
+      serverTickRoundedCooldownSeconds: 5,
+      cooldownRateCapPerSecond: 0.2,
+      triggerRatePerSecond: 0.2,
+    })
+  })
+
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('coc', 'Cast on Critical')

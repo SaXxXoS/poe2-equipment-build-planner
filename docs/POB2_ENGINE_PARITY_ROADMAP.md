@@ -224,3 +224,12 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Eine rotierende Zielauswahl wird für diese Meta-Fertigkeiten nicht
   erfunden.
 - Trigger-Teilmodell `1.6.0`.
+
+# Fortschritt Schritt 51 – gespeicherte Nutzungen
+
+- Ziele mit mehreren gespeicherten Nutzungen behalten ihren exakten
+  Cooldown; nur Ziele mit höchstens einer Nutzung werden auf Server-Ticks
+  aufgerundet.
+- Die Nutzungszahl wird sichtbar ausgewiesen, aber nicht fälschlich als
+  dauerhafter Schadensmultiplikator verwendet.
+- Trigger-Teilmodell `1.7.0`.

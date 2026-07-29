@@ -2869,3 +2869,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Sonderfälle gespeicherter Nutzungen.
 - Technische Details:
   `docs/BUILD_ASSISTANT_META_MULTI_TARGET_COOLDOWN_STEP_50.md`.
+
+# Fortsetzung: Schritt 51 – gespeicherte Nutzungen
+
+- Die PoB2-Sonderregel für Fertigkeiten mit mehreren gespeicherten Nutzungen
+  ist integriert: ihr Cooldown wird nicht auf den Server-Takt aufgerundet.
+- Die App zeigt Nutzungszahl und Rundungsstatus getrennt an.
+- `Frost Wall` belegt im Test den exakten Cooldown von `5,0` Sekunden statt
+  einer falschen Rundung auf `5,016` Sekunden.
+- Eine spätere Burst-Zeitachse darf gespeicherte Nutzungen berücksichtigen;
+  der Dauer-DPS wird nicht mit ihrer Anzahl multipliziert.
+- Trigger-Teilmodell `1.7.0`.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_TRIGGER_STORED_USES_STEP_51.md`.
