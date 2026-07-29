@@ -104,12 +104,66 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(result.luckyHitEffects).toMatchObject({
-      modelVersion:'1.0.0',
+      modelVersion:'2.0.0',
       expectedHitDamage:58.8,
-      effects:[{sourceNodeId:'lucky',damageType:'all',chancePercent:20}],
+      effects:[{sourceNodeId:'lucky',damageType:'all',chancePercent:20,condition:'unconditional'}],
+      blockedEffects:[],
     })
     expect(result.hitDamagePerSecond).toBe(58.8)
     expect(result.stages?.map(stage=>stage.id)).toContain('lucky-hit-expectation')
+  })
+  it('blockiert bedingtes Lucky ohne bestätigten Gegnerzustand und aktiviert es bei Low Life',()=>{
+    const passiveTree={nodes:[{
+      id:'low-life-lucky',
+      stats:[{sourceText:'Damage with [HitDamage|Hits] is [Lucky] against Enemies that are on Low Life'}],
+    }]} as unknown as RealPassiveTree
+    const realPassivePlanning={
+      pipelineResult:{allocatedNodeIds:['low-life-lucky']},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const baseInput={
+      equipment:[],
+      setups:[setup('ball')],
+      skills:[skill('ball','Ball Lightning')],
+      passiveTree,
+      realPassivePlanning,
+    }
+    const blocked=estimateHitDamage(baseInput)
+    expect(blocked.hitDamagePerSecond).toBe(55.5)
+    expect(blocked.luckyHitEffects).toMatchObject({
+      effects:[],
+      blockedEffects:[{condition:'enemy-low-life',reason:'enemy-state-not-confirmed'}],
+    })
+    const active=estimateHitDamage({
+      ...baseInput,
+      enemyProfile:{id:'low-life',label:'Low Life',source:'manual-comparison-profile',lifeState:'low-life'},
+    })
+    expect(active.hitDamagePerSecond).toBe(72)
+    expect(active.luckyHitEffects).toMatchObject({
+      effects:[{condition:'enemy-low-life',chancePercent:100}],
+      blockedEffects:[],
+    })
+  })
+  it('aktiviert Heavy-Stun-Lucky ausschließlich bei explizit schwer betäubtem Gegner',()=>{
+    const passiveTree={nodes:[{
+      id:'heavy-stun-lucky',
+      stats:[{sourceText:'Damage with [HitDamage|Hits] is [Lucky] against Heavy Stunned Enemies'}],
+    }]} as unknown as RealPassiveTree
+    const realPassivePlanning={
+      pipelineResult:{allocatedNodeIds:['heavy-stun-lucky']},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup('ball')],
+      skills:[skill('ball','Ball Lightning')],
+      passiveTree,
+      realPassivePlanning,
+      enemyProfile:{id:'heavy-stunned',label:'Heavy Stunned',source:'manual-comparison-profile',heavyStunned:true},
+    })
+    expect(result.hitDamagePerSecond).toBe(72)
+    expect(result.luckyHitEffects?.effects[0]).toMatchObject({
+      condition:'enemy-heavy-stunned',
+      chancePercent:100,
+    })
   })
   it('wendet Doppel- und Dreifachschaden in der belegten PoB2-Erwartungsreihenfolge an',()=>{
     const passiveTree={nodes:[

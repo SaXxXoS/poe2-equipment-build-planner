@@ -39,9 +39,12 @@
       "completedAfterAudit": [
         "unconditional and tightly qualified double/triple damage expectation",
         "PoB2 triple-over-double overlap ordering",
-        "critical-hit double-damage chance weighted by effective critical chance"
+        "critical-hit double-damage chance weighted by effective critical chance",
+        "conditional full Lucky against low-life enemies activates only with an explicit low-life comparison state",
+        "conditional full Lucky against heavy-stunned enemies activates only with an explicit heavy-stun comparison state",
+        "unconfirmed conditional Lucky remains visible as blocked evidence and contributes no damage"
       ],
-      "nextGap": "conditional lucky states and skill-specific repeat formulas"
+      "nextGap": "skill-specific repeat formulas and remaining conditional hit states"
     },
     {
       "referenceArea": "damage over time and ailments",

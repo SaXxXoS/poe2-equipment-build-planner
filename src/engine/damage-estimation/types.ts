@@ -44,10 +44,13 @@ export interface EnemyMitigationProfile {
   hitsToFullyBreakArmour?:number
   timeToFullyBreakArmourMs?:number
   temporalModelVersion?:string
+  lifeState?:'low-life'|'not-low-life'|'unknown'
+  heavyStunned?:boolean
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
 export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'multiple-damage-expectation'|'prepared-next-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
-export interface AppliedLuckyHitEffect { damageType:DamageComponent['type']|'all';chancePercent:number;sourceNodeId:string;sourceText:string;evidence:'text-pattern-exact' }
+export interface AppliedLuckyHitEffect { damageType:DamageComponent['type']|'all';chancePercent:number;sourceNodeId:string;sourceText:string;condition:'unconditional'|'enemy-low-life'|'enemy-heavy-stunned';evidence:'text-pattern-exact' }
+export interface BlockedLuckyHitEffect { sourceNodeId:string;sourceText:string;condition:'enemy-low-life'|'enemy-heavy-stunned';reason:'enemy-state-not-confirmed';evidence:'text-pattern-exact' }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'gain-as-lightning'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
 export interface AppliedNextSkillEffect { sourceId:string;sourceLabel:string;targetSkillId?:string;targetSkillLabel?:string;kind:'more-damage'|'gain-as-fire'|'gain-as-chaos'|'blocked';percent?:number;status:'prepared-next-hit'|'blocked';detail:string }
@@ -172,7 +175,7 @@ export interface DamageEstimate {
     }>
     limitations:string[]
   }
-  luckyHitEffects?:{modelVersion:'1.0.0';expectedHitDamage:number;effects:AppliedLuckyHitEffect[]}
+  luckyHitEffects?:{modelVersion:'2.0.0';expectedHitDamage:number;effects:AppliedLuckyHitEffect[];blockedEffects:BlockedLuckyHitEffect[]}
   included:string[]
   excluded:string[]
   warnings:string[]

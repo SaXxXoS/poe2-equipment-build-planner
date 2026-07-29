@@ -3114,3 +3114,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Tests und Typecheck erfolgreich.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_MULTIPLE_DAMAGE_STEP_72.md`.
+
+# Schritt 73 – bedingte Lucky-Trefferschadenswürfe
+
+- Die exakt gepinnten Bedingungen `Gegner auf niedrigem Leben` und
+  `schwer betäubter Gegner` sind als eigene Gegnerzustände modelliert.
+- Ein bedingter Lucky-Knoten wirkt ausschließlich bei ausdrücklich
+  bestätigtem Zustand. Ohne Zustandsnachweis erzeugt er keinen Bonus und
+  bleibt im Rechennachweis als blockiert sichtbar.
+- Defensive Unlucky-Zeilen und freie Textähnlichkeit werden nicht als
+  offensiver Lucky-Schaden verwendet.
+- Schadensrechner `3.14.0`, Lucky-Modell `2.0.0`; 45 fokussierte Tests und
+  Typecheck erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CONDITIONAL_LUCKY_STEP_73.md`.
+- Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
+  autonome Arbeit wird mit fertigkeitsspezifischen Wiederholungsformeln und
+  weiteren reproduzierbaren Rechenlücken fortgesetzt.

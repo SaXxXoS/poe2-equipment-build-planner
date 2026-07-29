@@ -1,12 +1,22 @@
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageComponent } from './types'
+import type { EnemyMitigationProfile } from './types'
 
 export interface LuckyHitEffect {
   damageType: DamageComponent['type'] | 'all'
   chancePercent: number
   sourceNodeId: string
   sourceText: string
+  condition: 'unconditional' | 'enemy-low-life' | 'enemy-heavy-stunned'
+  evidence: 'text-pattern-exact'
+}
+
+export interface BlockedLuckyHitEffect {
+  sourceNodeId: string
+  sourceText: string
+  condition: 'enemy-low-life' | 'enemy-heavy-stunned'
+  reason: 'enemy-state-not-confirmed'
   evidence: 'text-pattern-exact'
 }
 
@@ -15,6 +25,8 @@ const stripMarkup = (value: string) =>
 
 const exactGeneral = /^(\d+(?:\.\d+)?)% chance for Damage with Hits to be Lucky$/
 const exactTyped = /^(\d+(?:\.\d+)?)% chance for (Physical|Fire|Cold|Lightning|Chaos) Damage with Hits to be Lucky$/
+const exactLowLife = /^Damage with Hits is Lucky against Enemies that are on Low Life$/
+const exactHeavyStunned = /^Damage with Hits is Lucky against Heavy Stunned Enemies$/
 
 function allocatedNodeIds(
   planning: RealPassivePlanningIntegrationResult | undefined,
@@ -27,14 +39,16 @@ function allocatedNodeIds(
   ])]
 }
 
-export function resolveLuckyHitEffects(input: {
+export function resolveLuckyHitEffectModel(input: {
   passiveTree?: RealPassiveTree
   planning?: RealPassivePlanningIntegrationResult
   weaponSet: 'set-1' | 'set-2'
-}): LuckyHitEffect[] {
-  if (!input.passiveTree || !input.planning) return []
+  enemyProfile?: EnemyMitigationProfile
+}): { effects: LuckyHitEffect[]; blockedEffects: BlockedLuckyHitEffect[] } {
+  if (!input.passiveTree || !input.planning) return { effects: [], blockedEffects: [] }
   const nodes = new Map(input.passiveTree.nodes.map(node => [node.id, node]))
   const effects: LuckyHitEffect[] = []
+  const blockedEffects: BlockedLuckyHitEffect[] = []
   for (const nodeId of allocatedNodeIds(input.planning, input.weaponSet)) {
     const node = nodes.get(nodeId)
     if (!node) continue
@@ -42,17 +56,45 @@ export function resolveLuckyHitEffects(input: {
       const text = stripMarkup(stat.sourceText ?? '')
       const general = text.match(exactGeneral)
       const typed = text.match(exactTyped)
-      if (!general && !typed) continue
+      const lowLife = exactLowLife.test(text)
+      const heavyStunned = exactHeavyStunned.test(text)
+      if (!general && !typed && !lowLife && !heavyStunned) continue
+      const condition = lowLife ? 'enemy-low-life' : heavyStunned ? 'enemy-heavy-stunned' : 'unconditional'
+      const active = condition === 'unconditional'
+        || (condition === 'enemy-low-life' && input.enemyProfile?.lifeState === 'low-life')
+        || (condition === 'enemy-heavy-stunned' && input.enemyProfile?.heavyStunned === true)
+      if (!active) {
+        blockedEffects.push({
+          sourceNodeId: nodeId,
+          sourceText: stat.sourceText ?? text,
+          condition,
+          reason: 'enemy-state-not-confirmed',
+          evidence: 'text-pattern-exact',
+        })
+        continue
+      }
       effects.push({
         damageType: typed ? typed[2].toLocaleLowerCase('en') as DamageComponent['type'] : 'all',
-        chancePercent: Number((typed ?? general)![1]),
+        chancePercent: lowLife || heavyStunned ? 100 : Number((typed ?? general)![1]),
         sourceNodeId: nodeId,
         sourceText: stat.sourceText ?? text,
+        condition,
         evidence: 'text-pattern-exact',
       })
     }
   }
-  return effects.sort((a, b) => a.sourceNodeId.localeCompare(b.sourceNodeId) || a.sourceText.localeCompare(b.sourceText))
+  const sort = <T extends { sourceNodeId: string; sourceText: string }>(values: T[]) =>
+    values.sort((a, b) => a.sourceNodeId.localeCompare(b.sourceNodeId) || a.sourceText.localeCompare(b.sourceText))
+  return { effects: sort(effects), blockedEffects: sort(blockedEffects) }
+}
+
+export function resolveLuckyHitEffects(input: {
+  passiveTree?: RealPassiveTree
+  planning?: RealPassivePlanningIntegrationResult
+  weaponSet: 'set-1' | 'set-2'
+  enemyProfile?: EnemyMitigationProfile
+}): LuckyHitEffect[] {
+  return resolveLuckyHitEffectModel(input).effects
 }
 
 export function expectedLuckyHitDamage(
