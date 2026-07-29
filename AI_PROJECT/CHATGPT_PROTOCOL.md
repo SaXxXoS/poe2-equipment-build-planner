@@ -3131,3 +3131,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit wird mit fertigkeitsspezifischen Wiederholungsformeln und
   weiteren reproduzierbaren Rechenlücken fortgesetzt.
+
+# Schritt 74 – Barrage-Wiederholungssequenz
+
+- Barrage wirkt nur auf einen unmittelbar folgenden Angriff, der in den
+  gepinnten PoB2-Daten ausdrücklich als `Barrageable` markiert ist.
+- Zwei Basiswiederholungen mit jeweils 50 Prozent weniger Schaden ergeben
+  nachvollziehbar eine vorbereitete Gesamtsequenz von `2,0` Trefferschäden.
+- Zauber, nicht benachbarte Rotationsschritte und zusätzliche
+  Raserei-Wiederholungen ohne bestätigte Ladungszahl bleiben fail-closed.
+- Schadensrechner `3.15.0`, Folgefertigkeitsmodell `2.0.0`; 49 fokussierte
+  Tests und Typecheck erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_BARRAGE_SEQUENCE_STEP_74.md`.
+- Die autonome PoB2-Paritätsarbeit wird mit weiteren reproduzierbaren
+  Wiederholungs-, Trigger- und Projektilketten fortgesetzt.

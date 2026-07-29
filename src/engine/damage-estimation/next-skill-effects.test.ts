@@ -115,4 +115,38 @@ describe('vorbereitete Folgeangriffswirkungen', () => {
     expect(result.blockedEffects[0]).toMatchObject({ percent: 69, status: 'blocked' })
     expect(result.blockedEffects[0].detail).toContain('Comboaufbau')
   })
+
+  it('berechnet die belegte Barrage-Basissequenz nur für einen unmittelbar folgenden Barrageable-Angriff', () => {
+    const main = skill('main', 'Lightning Arrow', { tags: ['attack', 'projectile'] })
+    const barrage = skill('barrage', 'Barrage')
+    const result = resolveNextSkillEffects({
+      components: [{ type: 'lightning', minimum: 100, maximum: 200 }],
+      setups: [setup('barrage-setup', barrage.id, 'utility'), setup('main-setup', main.id, 'main')],
+      skills: [barrage, main],
+      mainSkill: main,
+      rotationAnalysis: rotation(barrage.id, main.id),
+    })
+    expect(result.appliedEffects[0]).toMatchObject({
+      kind: 'repeated-projectile-sequence',
+      repeatCount: 2,
+      percent: 50,
+      sequenceDamageMultiplier: 2,
+      status: 'prepared-next-sequence',
+    })
+    expect(result.components).toEqual([{ type: 'lightning', minimum: 200, maximum: 400 }])
+  })
+
+  it('blockiert Barrage bei einem nicht wiederholbaren Folgezauber', () => {
+    const main = skill('main', 'Spark', { tags: ['spell', 'projectile'] })
+    const barrage = skill('barrage', 'Barrage')
+    const result = resolveNextSkillEffects({
+      components: [{ type: 'lightning', minimum: 10, maximum: 20 }],
+      setups: [setup('barrage-setup', barrage.id, 'utility'), setup('main-setup', main.id, 'main')],
+      skills: [barrage, main],
+      mainSkill: main,
+      rotationAnalysis: rotation(barrage.id, main.id),
+    })
+    expect(result.appliedEffects).toHaveLength(0)
+    expect(result.blockedEffects[0].detail).toContain('nicht wiederholen')
+  })
 })

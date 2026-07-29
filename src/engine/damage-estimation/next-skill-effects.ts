@@ -3,16 +3,18 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis, RotationStepAnalysis } from '../common/types'
 import type { DamageComponent } from './types'
 
-export const NEXT_SKILL_EFFECT_MODEL_VERSION = '1.0.0'
+export const NEXT_SKILL_EFFECT_MODEL_VERSION = '2.0.0'
 
 export interface NextSkillEffect {
   sourceId: string
   sourceLabel: string
   targetSkillId?: string
   targetSkillLabel?: string
-  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'blocked'
+  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'repeated-projectile-sequence' | 'blocked'
   percent?: number
-  status: 'prepared-next-hit' | 'blocked'
+  repeatCount?: number
+  sequenceDamageMultiplier?: number
+  status: 'prepared-next-hit' | 'prepared-next-sequence' | 'blocked'
   evidence: 'structured-exact' | 'unresolved'
   sourceReferences: string[]
   detail: string
@@ -60,7 +62,7 @@ export function resolveNextSkillEffects(input: {
   let components = input.components.map(value => ({ ...value }))
 
   for (const source of input.skills.filter(value => selected.has(value.id))) {
-    if (!source.nameEn || !['Emergency Reload', 'Infernal Cry', 'Mantra of Destruction'].includes(source.nameEn)) continue
+    if (!source.nameEn || !['Emergency Reload', 'Infernal Cry', 'Mantra of Destruction', 'Barrage'].includes(source.nameEn)) continue
     const record = byName.get(source.nameEn.toLocaleLowerCase('en'))
     if (!record || !main) continue
     const stats = record.numericStats as Record<string, number>
@@ -114,12 +116,50 @@ export function resolveNextSkillEffects(input: {
         detail: 'Der Chaosgewinn ist strukturiert vorhanden, aber Comboaufbau, Aktivierung und Einmalverbrauch sind nicht gemeinsam belegt. Er verändert weder Folgeangriff noch Dauer-DPS.',
       })
     }
+
+    if (source.nameEn === 'Barrage') {
+      const targetRecord = main.nameEn ? byName.get(main.nameEn.toLocaleLowerCase('en')) : undefined
+      const repeats = stats['empower_barrage_base_number_of_barrage_repeats']
+      const lessDamage = stats['empower_barrage_damage_-%_final_with_repeated_projectiles']
+      const compatibleTarget = targetRecord?.skillTypes.includes('Barrageable') === true
+      if (adjacent && compatibleTarget && Number.isFinite(repeats) && repeats > 0 && Number.isFinite(lessDamage) && lessDamage >= 0 && lessDamage <= 100) {
+        const sequenceDamageMultiplier = 1 + repeats * (1 - lessDamage / 100)
+        effects.push({
+          ...common,
+          kind: 'repeated-projectile-sequence',
+          percent: lessDamage,
+          repeatCount: repeats,
+          sequenceDamageMultiplier,
+          status: 'prepared-next-sequence',
+          evidence: 'structured-exact',
+          sourceReferences: [
+            'empower_barrage_base_number_of_barrage_repeats',
+            'empower_barrage_damage_-%_final_with_repeated_projectiles',
+            'skillTypes:Barrageable',
+            'rotation:direct-next-skill',
+          ],
+          detail: `${source.displayNameDe} lässt den unmittelbar folgenden Projektilangriff ${main.displayNameDe} ${repeats}-mal wiederholen. Jede Wiederholung verursacht ${lessDamage} % weniger Schaden; die belegte Sequenz entspricht damit ${sequenceDamageMultiplier} Trefferschäden. Zusätzliche Wiederholungen pro Raserei-Ladung bleiben ohne bestätigte Ladungszahl ausgeschlossen.`,
+        })
+        components = scale(components, sequenceDamageMultiplier)
+      } else {
+        effects.push({
+          ...common,
+          kind: 'blocked',
+          status: 'blocked',
+          evidence: 'unresolved',
+          sourceReferences: ['empower_barrage_base_number_of_barrage_repeats', 'empower_barrage_damage_-%_final_with_repeated_projectiles'],
+          detail: !compatibleTarget
+            ? 'Barrage kann den gewählten Folgeangriff laut gepinntem Skilltyp nicht wiederholen.'
+            : 'Barrage und der konkrete wiederholbare Folgeangriff sind in der Bossrotation nicht unmittelbar verbunden.',
+        })
+      }
+    }
   }
 
   return {
     modelVersion: NEXT_SKILL_EFFECT_MODEL_VERSION,
     effects,
-    appliedEffects: effects.filter(value => value.status === 'prepared-next-hit'),
+    appliedEffects: effects.filter(value => value.status === 'prepared-next-hit' || value.status === 'prepared-next-sequence'),
     blockedEffects: effects.filter(value => value.status === 'blocked'),
     components,
   }

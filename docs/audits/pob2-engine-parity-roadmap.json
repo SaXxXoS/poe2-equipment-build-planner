@@ -80,9 +80,11 @@
         "energy overflow is capped so one critical hit cannot create more than one trigger",
         "a fully closed Cast on Critical chain contributes its embedded target to a separately exposed combined comparison DPS",
         "pinned per-level skill cooldowns and stored uses are exported from the PoB2 skill tables",
-        "triggered target cooldowns are rounded up to the pinned 33 ms server tick before capping the productive trigger rate"
+        "triggered target cooldowns are rounded up to the pinned 33 ms server tick before capping the productive trigger rate",
+        "Barrage applies its pinned two base repeats only to the immediately following Barrageable projectile attack",
+        "Barrage repeated-projectile damage uses the pinned 50 percent less modifier and excludes unconfirmed frenzy-charge repeats"
       ],
-      "nextGap": "add cooldown recovery and override modifiers, multi-target trigger rotation, other trigger event profiles, overlaps and return/fork chains"
+      "nextGap": "add cooldown recovery and override modifiers, frenzy-charge Barrage state, multi-target trigger rotation, other trigger event profiles, overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

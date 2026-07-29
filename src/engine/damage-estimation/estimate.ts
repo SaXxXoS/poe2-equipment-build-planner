@@ -102,7 +102,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.14.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.15.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -505,7 +505,7 @@ export function estimateHitDamage(input:{
     appliedSpeedEffects:quantitative.speedModifiers.map(value=>({source:value.source,sourceId:value.sourceId,label:value.label,value:value.percent})),
     appliedSupportEffects:supportEffects.appliedEffects,
     temporalOffensiveEffects:temporal.effects.map(value=>({sourceId:value.sourceId,label:value.label,kind:value.kind,percent:value.percent,activationTimeMs:value.activationTimeMs,durationMs:value.durationMs,status:value.status,detail:value.detail})),
-    ...(nextSkill.effects.length?{nextSkillEffects:{modelVersion:nextSkill.modelVersion,effects:nextSkill.effects.map(value=>({sourceId:value.sourceId,sourceLabel:value.sourceLabel,targetSkillId:value.targetSkillId,targetSkillLabel:value.targetSkillLabel,kind:value.kind,percent:value.percent,status:value.status,detail:value.detail}))}}:{}),
+    ...(nextSkill.effects.length?{nextSkillEffects:{modelVersion:nextSkill.modelVersion,effects:nextSkill.effects.map(value=>({sourceId:value.sourceId,sourceLabel:value.sourceLabel,targetSkillId:value.targetSkillId,targetSkillLabel:value.targetSkillLabel,kind:value.kind,percent:value.percent,repeatCount:value.repeatCount,sequenceDamageMultiplier:value.sequenceDamageMultiplier,status:value.status,detail:value.detail}))}}:{}),
     ...((damageOverTime.effects.length||damageOverTime.blockedEffects.length)?{damageOverTime:damageOverTimeOutput()}:{}),
     ...((damagingAilments.effects.length||damagingAilments.blockedEffects.length)?{damagingAilments:{
       modelVersion:damagingAilments.modelVersion,
