@@ -122,7 +122,7 @@ export interface DamageEstimate {
     gemLevelQualityModel?:{modelVersion:string;requestedSkillLevel?:number;availableSkillLevel?:number;availableSkillLevels:number[];appliedSkillLevel?:number;requestedSkillQuality?:number;appliedSkillQuality?:number;appliedQualityStats:Array<{statId:string;perQuality:number;value:number}>;skillLevelStatus:'exact'|'default-reference-level'|'blocked-level-mismatch'|'blocked-missing-reference';skillQualityStatus:'exact'|'default-zero'|'blocked-invalid-range'|'blocked-missing-reference';supportLevelStatus:'exact-level-one-reference';supportQualityStatus:'blocked-not-transported-and-no-reference';productive:boolean;sourceReferences:string[];limitations:string[]}
   itemValueScopeModel?:{modelVersion:string;entries:ItemValueScopeEntry[];blockedItemIds:string[];observedFinalValueItemIds:string[];localModifiersExcludedFromGlobalScaling:number;limitations:string[]}
   chargeState?:{modelVersion:string;productive:boolean;states:AppliedChargeState[];consumptions:AppliedChargeConsumption[]}
-  confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
+    confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'skill'|'equipment'|'passive'|'ascendancy';sourceId:string}>
   confirmedGainAsExtra?:Array<{from:DamageComponent['type']|'all'|'elemental';to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number

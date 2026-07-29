@@ -14,7 +14,7 @@ export interface QuantitativeDamageModifier {
 }
 export interface QuantitativeConversion {
   id: string
-  source: QuantitativeEffectSource
+  source: QuantitativeEffectSource | 'skill'
   sourceId: string
   from: DamageComponent['type']
   to: DamageComponent['type']
@@ -38,6 +38,26 @@ export interface QuantitativeEffectSummary {
   warnings: string[]
 }
 
+export function collectSkillConversions(
+  skillId: string,
+  numericStats: Record<string, number>,
+): QuantitativeConversion[] {
+  const result: QuantitativeConversion[] = []
+  for (const [statId, percent] of Object.entries(numericStats)) {
+    const match = statId.match(/^active_skill_base_(physical|fire|cold|lightning|chaos)_damage_%_to_convert_to_(physical|fire|cold|lightning|chaos)$/)
+    if (!match || !Number.isFinite(percent) || percent <= 0) continue
+    result.push({
+      id: `skill:${skillId}:${statId}`,
+      source: 'skill',
+      sourceId: skillId,
+      from: match[1] as DamageComponent['type'],
+      to: match[2] as DamageComponent['type'],
+      percent,
+    })
+  }
+  return result.sort((a, b) => a.id.localeCompare(b.id, 'en'))
+}
+
 const damageTypes = ['physical', 'fire', 'cold', 'lightning', 'chaos'] as const
 const conversionOrder = ['physical', 'lightning', 'cold', 'fire', 'chaos'] as const
 const stripMarkup = (value: string) => value
@@ -46,6 +66,7 @@ const stripMarkup = (value: string) => value
   .replace(/\s+/g, ' ')
   .trim()
 const unique = <T>(values: T[]) => [...new Set(values)]
+const stableNumber = (value: number) => Math.abs(value) < 1e-12 ? 0 : Number(value.toFixed(12))
 const statTotal = (entry: EquipmentEntry, statId: string) =>
   entry.modifierValues.filter(value => value.isLocal !== true).flatMap(value => value.statValues ?? []).filter(value => value.statId === statId).reduce((sum, value) => sum + value.value, 0)
 
@@ -186,7 +207,7 @@ export function applyGainAsExtra(
   }
   return damageTypes.flatMap(type => {
     const value = result.get(type)!
-    return value.minimum || value.maximum ? [{ type, minimum: value.minimum, maximum: value.maximum }] : []
+    return value.minimum || value.maximum ? [{ type, minimum: stableNumber(value.minimum), maximum: stableNumber(value.maximum) }] : []
   })
 }
 
@@ -199,7 +220,7 @@ export function applyConversions(components: DamageComponent[], conversions: Qua
   }
   return damageTypes.flatMap(type => {
     const value = result.get(type)!
-    return value.minimum || value.maximum ? [{ type, minimum: value.minimum, maximum: value.maximum }] : []
+    return value.minimum || value.maximum ? [{ type, minimum: stableNumber(value.minimum), maximum: stableNumber(value.maximum) }] : []
   })
 }
 
@@ -217,17 +238,33 @@ function conversionSlices(components: DamageComponent[], conversions: Quantitati
       && value.percent > 0,
     )
     if (!applicable.length) continue
-    const declaredTotal = applicable.reduce((sum, value) => sum + value.percent, 0)
-    const scale = declaredTotal > 100 ? 100 / declaredTotal : 1
-    const retainedFraction = Math.max(0, 1 - Math.min(100, declaredTotal) / 100)
+    const skillConversions = applicable.filter(value => value.source === 'skill')
+    const globalConversions = applicable.filter(value => value.source !== 'skill')
+    const skillTotal = skillConversions.reduce((sum, value) => sum + value.percent, 0)
+    const skillScale = skillTotal > 100 ? 100 / skillTotal : 1
+    const skillFraction = Math.min(100, skillTotal) / 100
+    const remainingAfterSkill = 1 - skillFraction
+    const globalTotal = globalConversions.reduce((sum, value) => sum + value.percent, 0)
+    const globalScale = globalTotal > 100 ? 100 / globalTotal : 1
+    const globalFraction = Math.min(100, globalTotal) / 100
+    const retainedFraction = remainingAfterSkill * (1 - globalFraction)
     const current = slices.filter(slice => slice.type === from)
     for (const slice of current) {
       const originalMinimum = slice.minimum
       const originalMaximum = slice.maximum
       slice.minimum *= retainedFraction
       slice.maximum *= retainedFraction
-      for (const conversion of applicable) {
-        const fraction = conversion.percent * scale / 100
+      for (const conversion of skillConversions) {
+        const fraction = conversion.percent * skillScale / 100
+        slices.push({
+          type: conversion.to,
+          minimum: originalMinimum * fraction,
+          maximum: originalMaximum * fraction,
+          lineage: unique([...slice.lineage, conversion.to]),
+        })
+      }
+      for (const conversion of globalConversions) {
+        const fraction = remainingAfterSkill * conversion.percent * globalScale / 100
         slices.push({
           type: conversion.to,
           minimum: originalMinimum * fraction,
@@ -269,6 +306,6 @@ export function applyDamageModifiers(
   }
   return damageTypes.flatMap(type => {
     const value = result.get(type)!
-    return value.minimum || value.maximum ? [{ type, minimum: value.minimum, maximum: value.maximum }] : []
+    return value.minimum || value.maximum ? [{ type, minimum: stableNumber(value.minimum), maximum: stableNumber(value.maximum) }] : []
   })
 }

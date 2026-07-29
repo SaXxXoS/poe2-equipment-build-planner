@@ -139,3 +139,8 @@ Normale aktive Gemmenqualität ist jetzt aus den gepinnten PoB2-`qualityStats`
 produktiver Bestandteil der Schadenskette. Exakte Gemmenstufen werden bereits
 verwendet. Alternative Qualität und Supportqualität bleiben offen; sie werden
 nicht geschätzt.
+# Fortschreibung 2026-07-29: Umwandlungspriorität
+
+Intrinsische Skillumwandlung wird jetzt aus dem gepinnten Skilldatensatz
+erfasst und vor globaler Umwandlung angewendet. Globale Umwandlung skaliert
+nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.

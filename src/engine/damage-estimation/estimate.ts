@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects, collectSkillConversions } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
@@ -141,6 +141,7 @@ export function estimateHitDamage(input:{
   if(!components.length)return{...base,status:'unavailable',...(damageOverTime.effects.length||damageOverTime.blockedEffects.length?{damageOverTime:damageOverTimeOutput()}:{}),warnings:['Die primäre Schadenskomponente ist nicht eindeutig strukturiert verfügbar.']}
   const baseComponents=components.map(value=>({...value}))
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet})
+  quantitative.conversions.unshift(...collectSkillConversions(skill.sourceRecordId,skill.numericStats as Record<string, number>))
   const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
   const gainedComponents=applyGainAsExtra(convertedComponents,quantitative.gainAsExtra,baseComponents)
   components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers,quantitative.gainAsExtra).map(value=>component(value.type,value.minimum,value.maximum))

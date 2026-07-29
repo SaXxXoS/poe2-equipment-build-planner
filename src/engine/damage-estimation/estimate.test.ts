@@ -69,9 +69,10 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     const result=estimateHitDamage({equipment:[observed],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
     expect(result.status).toBe('partial')
     expect(result.components).toEqual([
-      {type:'physical',minimum:115,maximum:227.5},
+      {type:'physical',minimum:23,maximum:45.5},
       {type:'fire',minimum:70,maximum:110},
       {type:'cold',minimum:72.5,maximum:87.5},
+      {type:'lightning',minimum:92,maximum:182},
     ])
     expect(result.actionsPerSecond).toBe(1.35)
     expect(result.included).toContain('eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität')
@@ -295,7 +296,8 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       enemyProfile:{id:'magic',label:'Magisches Ziel',source:'manual-comparison-profile',targetRarity:'magic',armour:9000},
     })
     expect(result.enemyProfile).toMatchObject({fullyBrokenArmour:true,hitsToFullyBreakArmour:1})
-    expect(result.mitigatedComponents?.find(value=>value.type==='physical')?.minimum).toBe(300)
+    expect(result.mitigatedComponents?.find(value=>value.type==='physical')?.minimum).toBe(60)
+    expect(result.mitigatedComponents?.find(value=>value.type==='lightning')?.minimum).toBe(200)
   })
   it('weist einen belegten War-Banner-Bonus getrennt als aktives Schadensfenster aus',()=>{
     const main={...skill('arrow','Lightning Arrow'),tags:['attack'] as SkillGemDefinition['tags']}

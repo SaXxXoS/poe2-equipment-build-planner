@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { EquipmentEntry, SkillGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, collectQuantitativeEffects, collectSkillConversions } from './quantitative-effects'
 
 const skill: SkillGemDefinition = {
   id: 'spark',
@@ -103,6 +103,28 @@ describe('quantitative Wirkungskette', () => {
       [{ type: 'fire', minimum: 100, maximum: 100 }],
       [{ id: 'backwards', source: 'passive', sourceId: 'p1', from: 'fire', to: 'cold', percent: 100 }],
     )).toEqual([{ type: 'fire', minimum: 100, maximum: 100 }])
+  })
+
+  it('liest intrinsische Skillumwandlung aus der strukturierten Stufenzeile', () => {
+    expect(collectSkillConversions('lightning-arrow', {
+      'active_skill_base_physical_damage_%_to_convert_to_lightning': 80,
+    })).toEqual([expect.objectContaining({
+      source: 'skill', sourceId: 'lightning-arrow', from: 'physical', to: 'lightning', percent: 80,
+    })])
+  })
+
+  it('gibt Skillumwandlung Vorrang und wendet globale Umwandlung nur auf den Rest an', () => {
+    expect(applyConversions(
+      [{ type: 'physical', minimum: 100, maximum: 100 }],
+      [
+        { id: 'skill', source: 'skill', sourceId: 'skill', from: 'physical', to: 'lightning', percent: 80 },
+        { id: 'global', source: 'passive', sourceId: 'node', from: 'physical', to: 'fire', percent: 50 },
+      ],
+    )).toEqual([
+      { type: 'physical', minimum: 10, maximum: 10 },
+      { type: 'fire', minimum: 10, maximum: 10 },
+      { type: 'lightning', minimum: 80, maximum: 80 },
+    ])
   })
 
   it('importiert ausschließlich unbedingte exakte Gain-as-extra-Zeilen aus vergebenen Knoten', () => {

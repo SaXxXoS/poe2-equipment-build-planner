@@ -2674,3 +2674,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Referenzschema: 8.
 - Nächster Rechenblock: mehrstufige Umwandlungspriorität und vollständige
   Modifier-Anwendbarkeit.
+## Skill-vor-globaler Umwandlungspriorität – Schritt 34 (2026-07-29)
+
+- Intrinsische Umwandlungen aktiver Fertigkeiten werden aus den strukturierten
+  PoB2-Levelstats gelesen.
+- Skillumwandlung wird zuerst angewendet; globale Umwandlung erhält nur den
+  verbleibenden Anteil.
+- Mehrstufige Vorwärtsketten und Ursprungsskalierung bleiben erhalten.
+- Rückwärtsketten und nicht strukturierte Umwandlungen erzeugen keinen Bonus.
+- Fokussierte Umwandlungs- und Schadensmodelltests sowie Typecheck sind grün.
+- Nächster Rechenblock: vollständige Modifier-Anwendbarkeit und danach
+  schädigende Zustände mit ihren gegnerabhängigen Sonderregeln.
