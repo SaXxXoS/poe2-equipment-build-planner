@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "status": "partial-central-rule-layer-active",
+  "productiveEvidenceClasses": [
+    "structured-exact",
+    "structured-derived",
+    "explicit-rule"
+  ],
+  "nonProductiveEvidenceClasses": [
+    "heuristic-only",
+    "blocked"
+  ],
+  "explicitInteractionRules": [
+    "interaction.orb-of-storms.lightning-spell",
+    "interaction.elemental-weakness.elemental-damage",
+    "interaction.vulnerability.physical",
+    "interaction.despair.chaos",
+    "interaction.voltaic-mark.lightning-attack"
+  ],
+  "structuredInteractionRules": [
+    "interaction.persistent-setup.structured",
+    "interaction.independent-movement.structured",
+    "interaction.independent-defensive.structured"
+  ],
+  "blockedFormerShortcut": "shared-tags-imply-synergy",
+  "currentSeasonRuleCompleteness": "unknown",
+  "limitations": [
+    "Not all active skill interactions are modeled.",
+    "Not all ascendancy and passive effects are connected to the interaction layer.",
+    "This layer validates relationships; it is not a complete Path of Building simulation."
+  ]
+}

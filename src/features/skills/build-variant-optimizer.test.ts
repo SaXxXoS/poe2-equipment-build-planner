@@ -52,9 +52,11 @@ describe('vollständige Build-Variantenoptimierung', () => {
   it('prüft Skill, Waffe, Supports, Aszendenz und Set-2-Setup als gemeinsame Variante', () => {
     const spark = skill('spark', ['spell', 'projectile', 'lightning'])
     const orb = skill('orb', ['spell', 'area', 'lightning'], {
+      nameEn: 'Orb of Storms',
       possibleRoles: ['utility'],
       rotationRoles: ['setup'],
       persistsAfterWeaponSwap: true,
+      affectsTarget: true,
       preferredWeaponSet: 'set-2',
     })
     const physical = skill('physical', ['attack', 'melee', 'physical'], {

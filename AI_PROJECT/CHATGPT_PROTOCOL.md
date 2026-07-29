@@ -2459,3 +2459,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Audit:
   `docs/audits/build-assistant-coherent-package-optimizer.json`.
 - Keine neue Datenquelle, kein Runtime-Netzwerk und keine zweite Build-Engine.
+## PoE2-Regelverständnisschicht – zentraler erster Regelschnitt
+
+- Die automatische Skillplanung verwendet jetzt
+  `src/features/skills/poe2-interaction-rules.ts` als zentrale fail-closed
+  Wirkungsprüfung.
+- Gleiche Tags oder hohe isolierte Scores gelten nicht mehr als Beleg einer
+  Synergie.
+- Produktiv zulässig sind nur `structured-exact`, `structured-derived` und
+  `explicit-rule`; `heuristic-only` und `blocked` füllen keine Slots und
+  erzeugen keinen positiven Synergiebonus.
+- Elementarschwäche berücksichtigt belegten Feuer-, Kälte- und Blitzschaden.
+- Generische Set-2-Vorbereitung benötigt eine strukturierte Wirkung, die nach
+  dem Waffenwechsel fortbesteht.
+- Dokumentation:
+  `docs/POE2_RULE_UNDERSTANDING_LAYER.md`
+- Coverage:
+  `docs/audits/poe2-rule-understanding-coverage.json`
+- Vollständiges Verständnis aller Mechaniken der aktuellen Saison:
+  **Unbekannt**. Die Regelschicht wird mechanikweise erweitert; fehlende
+  Evidenz bleibt ohne Empfehlung.
