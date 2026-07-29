@@ -36,6 +36,7 @@ describe('UI-zu-Passive-Worker-Adapter', () => {
       characterContext: { classId: '6' },
       requiredTargetNodeIds: [],
       resourcePriority: 'normal',
+      allowKeystoneReoptimization: true,
     })
     expect(result.payload?.planning.startNodeId).toBeUndefined()
     expect(result.payload?.request.realPassivePlanning).toBeUndefined()
