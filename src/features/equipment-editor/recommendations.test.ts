@@ -15,12 +15,13 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       equipment,
       optimization:{
         evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
         equipmentFirst:false,status:'selected',alternatives:[],
         selected:{
           skillId:'spark',weaponType:'wand',weaponLabel:'Zauberstab',
           mainWeaponSet:'set-1',setupSkillId:'orb',setupWeaponType:'wand',
           compatibleSupportIds:[],affinityScore:1,passiveAffinityScore:1,
-          analyzerScore:1,modeledDps:null,totalScore:1,reasons:[],
+          analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
         },
       },
       uniqueRecommendations:[],
@@ -58,11 +59,12 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       equipment,
       optimization:{
         evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
         equipmentFirst:true,status:'selected',alternatives:[],
         selected:{
           skillId:'snap',weaponType:'wand',weaponLabel:'Zauberstab',
           mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,
-          passiveAffinityScore:1,analyzerScore:1,modeledDps:null,totalScore:1,reasons:[],
+          passiveAffinityScore:1,analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
         },
       },
       uniqueRecommendations:[bow],

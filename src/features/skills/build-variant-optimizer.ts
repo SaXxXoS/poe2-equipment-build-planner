@@ -63,6 +63,8 @@ export interface BuildVariantCandidate {
   passiveAffinityScore: number
   analyzerScore: number
   modeledDps: number | null
+  damageObjectiveScore: number
+  numericCoverageStatus: 'comparable' | 'partial' | 'unavailable'
   resourceStatus?: 'confirmed-usable' | 'usable-with-limited-sustain' | 'resource-chain-unknown'
   resourcePenalty?: number
   totalScore: number
@@ -93,6 +95,8 @@ export interface BuildVariantOptimization {
   equipmentFirst: boolean
   selected: BuildVariantCandidate | null
   alternatives: BuildVariantCandidate[]
+  numericallyComparableCombinationCount: number
+  optimizationStatus: 'quantitatively-compared' | 'mixed-evidence' | 'structural-only'
   status: 'selected' | 'no-compatible-variant'
 }
 
@@ -169,6 +173,61 @@ function setupWeapon(
   if (equippedSetTwo) return equippedSetTwo
   if (weaponTypeMatches(skill.requiredWeaponTypes, mainWeapon)) return mainWeapon
   return candidateWeapons(skill, { 'set-1': new Set(), 'set-2': new Set() })[0]
+}
+
+export function normalizeDamageObjective(
+  variants: BuildVariantCandidate[],
+): BuildVariantCandidate[] {
+  const positive = variants
+    .map(candidate => candidate.modeledDps)
+    .filter((value): value is number => value !== null && Number.isFinite(value) && value > 0)
+  if (!positive.length) return variants
+  const minimum = Math.min(...positive)
+  const maximum = Math.max(...positive)
+  const denominator = Math.log1p(maximum) - Math.log1p(minimum)
+  return variants.map(candidate => {
+    if (candidate.modeledDps === null || candidate.modeledDps <= 0) return candidate
+    const damageObjectiveScore = denominator === 0
+      ? 100
+      : Math.round(30 + 70 * (
+          (Math.log1p(candidate.modeledDps) - Math.log1p(minimum)) / denominator
+        ))
+    return {
+      ...candidate,
+      damageObjectiveScore,
+      numericCoverageStatus: 'comparable',
+      totalScore: candidate.totalScore + Math.round(damageObjectiveScore * 2.5),
+      reasons: [
+        ...candidate.reasons,
+        `Relativer Schadensvergleich innerhalb derselben Modellgrenze: ${damageObjectiveScore}/100.`,
+      ],
+    }
+  })
+}
+
+function packageEvaluationShortlist(
+  variants: BuildVariantCandidate[],
+  limit: number,
+): Set<BuildVariantCandidate> {
+  const selected = new Set<BuildVariantCandidate>()
+  const take = (values: BuildVariantCandidate[], count: number) => {
+    for (const value of values.slice(0, count)) selected.add(value)
+  }
+  const groupSize = Math.max(1, Math.ceil(limit / 3))
+  take([...variants].sort((left, right) =>
+    right.totalScore - left.totalScore || left.skillId.localeCompare(right.skillId),
+  ), groupSize)
+  take([...variants].sort((left, right) =>
+    (right.modeledDps ?? -1) - (left.modeledDps ?? -1) || left.skillId.localeCompare(right.skillId),
+  ), groupSize)
+  take([...variants].sort((left, right) =>
+    (right.metaReferenceScore ?? 0) - (left.metaReferenceScore ?? 0) || left.skillId.localeCompare(right.skillId),
+  ), groupSize)
+  for (const value of variants) {
+    if (selected.size >= limit) break
+    selected.add(value)
+  }
+  return selected
 }
 
 export function optimizeBuildVariants(input: {
@@ -297,7 +356,6 @@ export function optimizeBuildVariants(input: {
         + weaponEvidenceScore
         + supportIds.length * 4
         + setupScore
-        + Math.min(250, modeledDps ?? 0)
         + metaReference.score
         + Math.min(60, ruleGraph.productiveEdgeCount * 6)
         - resourcePenalty,
@@ -333,6 +391,8 @@ export function optimizeBuildVariants(input: {
         passiveAffinityScore,
         analyzerScore: score.totalScore,
         modeledDps,
+        damageObjectiveScore: 0,
+        numericCoverageStatus: modeledDps === null ? 'unavailable' : 'partial',
         resourceStatus,
         resourcePenalty,
         totalScore,
@@ -345,7 +405,8 @@ export function optimizeBuildVariants(input: {
         reasons,
       }]
     })
-  }).sort((left, right) =>
+  })
+  variants = normalizeDamageObjective(variants).sort((left, right) =>
     right.totalScore - left.totalScore
     || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
     || left.skillId.localeCompare(right.skillId)
@@ -353,8 +414,9 @@ export function optimizeBuildVariants(input: {
   )
   if (input.evaluatePackage) {
     const limit = Math.max(1, input.maximumPackageEvaluations ?? 8)
-    variants = variants.map((candidate, index) => {
-      if (index >= limit) return candidate
+    const shortlist = packageEvaluationShortlist(variants, limit)
+    variants = variants.map(candidate => {
+      if (!shortlist.has(candidate)) return candidate
       const evaluation = input.evaluatePackage!(candidate)
       return {
         ...candidate,
@@ -370,6 +432,7 @@ export function optimizeBuildVariants(input: {
       }
     }).sort((left, right) =>
       (left.packageStatus === 'blocked' ? 1 : 0) - (right.packageStatus === 'blocked' ? 1 : 0)
+      || (left.packageStatus === 'coherent' ? 0 : 1) - (right.packageStatus === 'coherent' ? 0 : 1)
       || right.totalScore - left.totalScore
       || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
       || left.skillId.localeCompare(right.skillId)
@@ -381,6 +444,9 @@ export function optimizeBuildVariants(input: {
       ? candidate.packageStatus !== undefined && candidate.packageStatus !== 'blocked'
       : true,
   )
+  const numericallyComparableCombinationCount = variants.filter(
+    candidate => candidate.numericCoverageStatus === 'comparable',
+  ).length
   return {
     evaluatedSkillCount: eligibleSkills.length,
     evaluatedCombinationCount: variants.length,
@@ -388,6 +454,12 @@ export function optimizeBuildVariants(input: {
     equipmentFirst,
     selected: selectable[0] ?? null,
     alternatives: selectable.slice(1, 6),
+    numericallyComparableCombinationCount,
+    optimizationStatus: numericallyComparableCombinationCount === variants.length && variants.length > 0
+      ? 'quantitatively-compared'
+      : numericallyComparableCombinationCount > 0
+        ? 'mixed-evidence'
+        : 'structural-only',
     status: selectable.length ? 'selected' : 'no-compatible-variant',
   }
 }

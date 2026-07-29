@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "scope": "build-assistant-meta-parity-readiness",
+  "productCatalog": {
+    "activeSkills": 235,
+    "supports": 451,
+    "damageReferenceSkills": 337,
+    "catalogSkillsLinkedToDamageReference": 234,
+    "linkedAttackOrSpellSkills": 171,
+    "linkedSkillsWithStructuredCosts": 171,
+    "supportsWithStructuredCostMultiplier": 450,
+    "skillsWithExactSpiritReservation": 51,
+    "weaponBases": 354
+  },
+  "optimizer": {
+    "damageObjective": "relative-logarithmic-within-identical-model-boundary",
+    "rawDpsSaturationRemoved": true,
+    "unknownNumericDamageReceivesPositiveBonus": false,
+    "packageShortlistSignals": [
+      "coherent-structural-score",
+      "modeled-damage",
+      "correlated-meta-evidence"
+    ],
+    "hardCompatibilityBeforeRanking": true,
+    "equipmentFirst": true
+  },
+  "metaReference": {
+    "league": "Runes of Aldur",
+    "snapshotDate": "2026-07-28",
+    "profiles": 53,
+    "correlatedPackages": 10,
+    "packagesWithSupports": 10,
+    "packagesWithLinkedActiveSkills": 4,
+    "packagesWithExactPassiveNodeIds": 0,
+    "packagesWithReconstructableEquipment": 0,
+    "fullyReproducibleReferenceBuilds": 0
+  },
+  "exactlyModeled": [
+    "structured-hit-base-for-linked-attack-or-spell-records",
+    "structured-skill-costs",
+    "structured-support-cost-multipliers",
+    "exact-spirit-reservations-where-present",
+    "confirmed-conversions",
+    "confirmed-critical-and-speed-effects",
+    "confirmed-enemy-effects",
+    "confirmed-passive-and-ascendancy-effects",
+    "confirmed-weapon-final-values"
+  ],
+  "stillIncomplete": [
+    "all-skill-numeric-level-and-quality-curves",
+    "all-support-numeric-effects",
+    "complete-trigger-target-and-frequency-chains",
+    "complete-minion-base-stats-and-behaviour",
+    "complete-projectile-overlap-and-multi-hit-rules",
+    "complete-ailment-and-damage-over-time-stacking",
+    "complete-buff-and-debuff-uptime",
+    "authoritative-season-enemy-armour-and-resistance-profiles",
+    "fully-reconstructable-meta-reference-builds"
+  ],
+  "decision": {
+    "status": "optimizer-improved-meta-parity-not-proven",
+    "metaEquivalentOrBetterProven": false,
+    "reason": "No stored reference package contains the exact equipment, passive node identities, gem levels, qualities and full configuration required for an independent like-for-like replay."
+  }
+}

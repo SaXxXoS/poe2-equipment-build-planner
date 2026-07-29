@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SupportGemDefinition } from '../../domain'
 import { initialEquipment } from '../../data'
 import { createEmptySkillSetups } from './initial-state'
-import { optimizeBuildVariants, type VariantSkillScore } from './build-variant-optimizer'
+import {
+  normalizeDamageObjective,
+  optimizeBuildVariants,
+  type BuildVariantCandidate,
+  type VariantSkillScore,
+} from './build-variant-optimizer'
 
 const skill = (
   id: string,
@@ -46,6 +51,25 @@ const score = (skillId: string, totalScore = 10): VariantSkillScore => ({
   possibleRoles: ['main'],
   totalScore,
   damageScore: totalScore,
+})
+
+const damageCandidate = (
+  skillId: string,
+  modeledDps: number | null,
+): BuildVariantCandidate => ({
+  skillId,
+  weaponType: 'wand',
+  weaponLabel: 'Zauberstab',
+  mainWeaponSet: 'set-1',
+  compatibleSupportIds: [],
+  affinityScore: 0,
+  passiveAffinityScore: 0,
+  analyzerScore: 0,
+  modeledDps,
+  damageObjectiveScore: 0,
+  numericCoverageStatus: modeledDps === null ? 'unavailable' : 'partial',
+  totalScore: 100,
+  reasons: [],
 })
 
 describe('vollständige Build-Variantenoptimierung', () => {
@@ -200,5 +224,23 @@ describe('vollständige Build-Variantenoptimierung', () => {
 
     expect(result.status).toBe('no-compatible-variant')
     expect(result.selected).toBeNull()
+  })
+})
+
+describe('relatives Schadensziel', () => {
+  it('unterscheidet 500 und 50.000 DPS statt beide Werte bei 250 zu sättigen', () => {
+    const [low, high, unknown] = normalizeDamageObjective([
+      damageCandidate('low', 500),
+      damageCandidate('high', 50_000),
+      damageCandidate('unknown', null),
+    ])
+    expect(high.damageObjectiveScore).toBe(100)
+    expect(low.damageObjectiveScore).toBe(30)
+    expect(high.totalScore).toBeGreaterThan(low.totalScore)
+    expect(unknown).toMatchObject({
+      damageObjectiveScore: 0,
+      numericCoverageStatus: 'unavailable',
+      totalScore: 100,
+    })
   })
 })

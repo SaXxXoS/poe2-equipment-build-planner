@@ -14,6 +14,8 @@ const candidate: BuildVariantCandidate = {
   passiveAffinityScore: 70,
   analyzerScore: 70,
   modeledDps: null,
+  damageObjectiveScore: 0,
+  numericCoverageStatus: 'unavailable',
   resourceStatus: 'confirmed-usable',
   totalScore: 100,
   reasons: [],

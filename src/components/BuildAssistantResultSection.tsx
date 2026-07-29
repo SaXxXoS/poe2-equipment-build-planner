@@ -157,6 +157,8 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Hauptfertigkeit</dt><dd>{definitionName(variantOptimization.selected.skillId)}</dd></div>
           <div><dt>Waffe</dt><dd>{variantOptimization.selected.weaponLabel}</dd></div>
           <div><dt>Haupt-Waffenset</dt><dd>{variantOptimization.selected.mainWeaponSet === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dd></div>
+          <div><dt>Schadensziel</dt><dd>{variantOptimization.selected.numericCoverageStatus === 'comparable' ? `${variantOptimization.selected.damageObjectiveScore}/100 relativ vergleichbar` : 'Nur strukturell belegbar'}</dd></div>
+          <div><dt>Vergleichsabdeckung</dt><dd>{variantOptimization.numericallyComparableCombinationCount}/{variantOptimization.evaluatedCombinationCount}</dd></div>
           <div><dt>Set-2-Setup</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
         </dl>
         <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>

@@ -2496,4 +2496,28 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Gleiche Tags, Namen oder Textähnlichkeit reichen weiterhin nicht.
 - Coverage:
   `docs/audits/poe2-rule-understanding-coverage-v2.json`.
+
+## Schadensorientierte Paketoptimierung und Meta-Paritätsstatus
+
+- Die frühere DPS-Sättigung bei 250 Punkten wurde entfernt.
+- Berechenbare Varianten werden innerhalb derselben Modellgrenze
+  logarithmisch und deterministisch relativ verglichen.
+- Nicht numerisch belegbare Varianten erhalten keinen erfundenen
+  Schadensbonus.
+- Die vollständig geprüfte Kandidatenliste wird aus struktureller
+  Paketqualität, berechnetem Schaden und korrelierter Meta-Evidenz gebildet.
+- Harte Skill-, Waffen-, Support- und Ressourcenblocker gelten vor dem
+  Ranking.
+- Quantitative Basis: 235 Skills, 451 Supports, 234 mit lokaler
+  Schadensreferenz verbundene Skills, 171 Attack-/Spell-Wirkungsketten,
+  450 strukturierte Support-Kostenmultiplikatoren und 354 Waffenbasen.
+- Der Meta-Snapshot enthält 53 Profile und 10 korrelierte Pakete, aber keine
+  vollständig reproduzierbare Ausrüstung und keine exakten
+  Passive-Knotenlisten.
+- Nachgewiesene Gleichwertigkeit oder Überlegenheit gegenüber Meta-Builds:
+  **Unbekannt / nicht belegt**.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_META_PARITY_READINESS.md`.
+- Audit:
+  `docs/audits/build-assistant-meta-parity-readiness.json`.
 - Vollständiges PoE2-Verständnis und globale Meta-Optimalität: **Unbekannt**.
