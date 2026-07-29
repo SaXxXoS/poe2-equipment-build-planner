@@ -2696,3 +2696,10 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Trefferchance und Wirkfrequenz produktiv berechnet.
 - Nicht modellierte Ailment-Sonderfälle bleiben fail-closed.
 - Die PoB2-Runtime wird weiterhin nicht eingebettet.
+# Fortsetzung: Schritt 36 – Gegnerabwehr für Ailment-DPS
+
+- Schädigende Zustände übernehmen den aufgelösten Vergleichsgegner.
+- Entzünden und Gift berücksichtigen Widerstand und belegte
+  Widerstandsreduktion.
+- Trefferpenetration bleibt korrekt auf Treffer beschränkt.
+- Die UI zeigt bei vorhandener Gegnerkette den bereinigten Zustandsschaden.

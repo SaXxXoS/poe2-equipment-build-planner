@@ -117,6 +117,30 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
+  it('wendet gegnerischen Feuerwiderstand auf Entzünden an, aber keine Trefferpenetration', () => {
+    const result = collectDamagingAilments({
+      skill: record('Molten Blast'),
+      components: [{ type: 'fire', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      enemyLevel: 1,
+      enemyProfile: {
+        id: 'target',
+        label: 'Ziel',
+        source: 'manual-comparison-profile',
+        resistances: { fire: 50 },
+        penetration: { fire: 20 },
+      },
+      setup: setup(),
+      supports: [],
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'ignite',
+      damagePerSecond: 30,
+      damagePerSecondAfterMitigation: 15,
+    })
+  })
+
   it('blockiert Angriffs-Zustände ohne belegte Trefferchance', () => {
     const result = collectDamagingAilments({
       skill: record('Rake'),

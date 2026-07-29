@@ -152,3 +152,9 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   Wirkfrequenz und Trefferchance.
 - Fehlendes Gegnerlevel oder fehlende Wirkparameter blockieren die
   Berechnung weiterhin.
+# Fortschritt Schritt 36
+
+- Entzünden und Gift werden nach dem belegten Gegnerwiderstand berechnet.
+- Widerstandsreduktion wirkt; Trefferpenetration wird nicht auf den
+  Zustandsschaden übertragen.
+- Roh-DPS und widerstandsbereinigte DPS bleiben getrennt nachvollziehbar.

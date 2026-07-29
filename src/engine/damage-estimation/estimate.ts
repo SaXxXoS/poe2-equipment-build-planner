@@ -163,15 +163,6 @@ export function estimateHitDamage(input:{
     enemyEvasion:input.enemyProfile?.evasion,
   }):undefined
   const hitChancePercent=skill.kind==='spell'?100:attackHitChance?.hitChancePercent
-  const damagingAilments=collectDamagingAilments({
-    skill,
-    components,
-    actionsPerSecond,
-    hitChancePercent,
-    setup,
-    supports: input.supports??[],
-    enemyLevel: input.enemyProfile?.level,
-  })
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalComponents=applyTemporalDamageWindow(components,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
   const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
@@ -216,6 +207,16 @@ export function estimateHitDamage(input:{
     primarySkillId:skillId,primaryActionsPerSecond:actionsPerSecond,
     passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
   }):undefined
+  const damagingAilments=collectDamagingAilments({
+    skill,
+    components,
+    actionsPerSecond,
+    hitChancePercent,
+    setup,
+    supports: input.supports??[],
+    enemyLevel: resolvedEnemyProfile?.level,
+    enemyProfile: resolvedEnemyProfile,
+  })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
@@ -256,10 +257,11 @@ export function estimateHitDamage(input:{
       effects:damagingAilments.effects.map(value=>({
         sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,damageType:value.damageType,status:value.status,
         chancePercent:value.chancePercent,durationMs:value.durationMs,maximumStacks:value.maximumStacks,expectedActiveStacks:value.expectedActiveStacks,
-        damagePerSecond:value.damagePerSecond,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,detail:value.detail,
+        damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,detail:value.detail,
       })),
       blockedEffects:damagingAilments.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),
       totalSustainedDamagePerSecond:damagingAilments.totalSustainedDamagePerSecond,
+      totalSustainedDamagePerSecondAfterMitigation:damagingAilments.totalSustainedDamagePerSecondAfterMitigation,
       limitations:damagingAilments.limitations,
     }}:{}),
     ...(temporal.chargeState.relevant?{chargeState:{modelVersion:temporal.chargeState.modelVersion,productive:temporal.chargeState.productive,states:temporal.chargeState.states.map(value=>({type:value.type,label:value.label,availability:value.availability,count:value.count,detail:value.detail})),consumptions:temporal.chargeState.consumptions.map(value=>({sourceId:value.sourceId,label:value.label,chargeTypes:value.chargeTypes,intervalMs:value.intervalMs,detail:value.detail}))}}:{}),

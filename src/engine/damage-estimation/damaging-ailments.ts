@@ -1,6 +1,6 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
-import type { DamageComponent } from './types'
+import type { DamageComponent, EnemyMitigationProfile } from './types'
 
 export const DAMAGING_AILMENT_MODEL_VERSION = '2.0.0'
 
@@ -24,6 +24,7 @@ export interface ResolvedDamagingAilment {
   maximumStacks: number
   expectedActiveStacks: number
   damagePerSecond: number
+  damagePerSecondAfterMitigation?: number
   totalDamagePerApplication: number
   effectMultiplier: number
   sourceReferences: string[]
@@ -46,6 +47,7 @@ export interface DamagingAilmentResult {
   effects: ResolvedDamagingAilment[]
   blockedEffects: BlockedDamagingAilment[]
   totalSustainedDamagePerSecond?: number
+  totalSustainedDamagePerSecondAfterMitigation?: number
   limitations: string[]
 }
 
@@ -100,6 +102,7 @@ export function collectDamagingAilments(input: {
   setup?: SkillSetup
   supports: SupportGemDefinition[]
   enemyLevel?: number
+  enemyProfile?: EnemyMitigationProfile
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -179,6 +182,12 @@ export function collectDamagingAilments(input: {
       ...definition.durationStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
       ...(definition.kind === 'poison' && maximumStacks > 1 ? ['number_of_additional_poison_stacks'] : []),
     ]
+    const resistance = definition.damageType === 'physical'
+      ? 0
+      : Math.max(-100, Math.min(90,
+          (input.enemyProfile?.resistances?.[definition.damageType] ?? 0)
+          - Math.max(0, input.enemyProfile?.resistanceReduction?.[definition.damageType] ?? 0),
+        ))
     effects.push({
       sourceRecordId: input.skill.sourceRecordId,
       sourceLabel: input.skill.name,
@@ -190,6 +199,9 @@ export function collectDamagingAilments(input: {
       maximumStacks,
       expectedActiveStacks: round(expectedActiveStacks),
       damagePerSecond: round(Math.min(damagePerSecond, 35_791_394)),
+      ...(input.enemyProfile
+        ? { damagePerSecondAfterMitigation: round(Math.min(damagePerSecond * (1 - resistance / 100), 35_791_394)) }
+        : {}),
       totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
       sourceReferences,
@@ -221,6 +233,10 @@ export function collectDamagingAilments(input: {
       )
       const effectMultiplier = productMore(valuesFor(allStats, 'active_skill_damaging_ailment_effect_+%_final'))
       const singleStackDps = averageFireHit * basePercentPerSecond * effectMultiplier
+      const resistance = Math.max(-100, Math.min(90,
+        (input.enemyProfile?.resistances?.fire ?? 0)
+        - Math.max(0, input.enemyProfile?.resistanceReduction?.fire ?? 0),
+      ))
       effects.push({
         sourceRecordId: input.skill.sourceRecordId,
         sourceLabel: input.skill.name,
@@ -232,6 +248,9 @@ export function collectDamagingAilments(input: {
         maximumStacks: 1,
         expectedActiveStacks: round(expectedActiveStacks),
         damagePerSecond: round(Math.min(singleStackDps * expectedActiveStacks, 35_791_394)),
+        ...(input.enemyProfile
+          ? { damagePerSecondAfterMitigation: round(Math.min(singleStackDps * expectedActiveStacks * (1 - resistance / 100), 35_791_394)) }
+          : {}),
         totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
         effectMultiplier: round(effectMultiplier),
         sourceReferences: [
@@ -265,6 +284,9 @@ export function collectDamagingAilments(input: {
     blockedEffects,
     ...(effects.length
       ? { totalSustainedDamagePerSecond: round(effects.reduce((total, effect) => total + effect.damagePerSecond, 0)) }
+      : {}),
+    ...(effects.length && input.enemyProfile
+      ? { totalSustainedDamagePerSecondAfterMitigation: round(effects.reduce((total, effect) => total + (effect.damagePerSecondAfterMitigation ?? effect.damagePerSecond), 0)) }
       : {}),
     limitations: [
       'Zaubertreffer werden derzeit mit 100 % Trefferchance modelliert; Angriffe bleiben bis zur vollständigen Accuracy-Gegnerkette gesperrt.',
