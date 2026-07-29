@@ -42,6 +42,8 @@ export function additionalCooldownUsesFor(input: {
   let recoveryPercent = 0
   const sourceReferences: string[] = []
   const grenade = input.skillTypes?.includes('Grenade') === true
+  const warcry = input.skillTypes?.includes('Warcry') === true
+  const command = input.skillTypes?.some(value => value === 'Command' || value === 'CommandsMinions') === true
   for (const entry of activeEquipment(input.equipment, input.weaponSet)) {
     for (const modifier of entry.modifierValues) {
       for (const stat of modifier.statValues ?? []) {
@@ -72,7 +74,18 @@ export function additionalCooldownUsesFor(input: {
         const grenadeRecovery = grenade
           ? text.match(/^(\d+(?:\.\d+)?)% increased Cooldown Recovery Rate for Grenade Skills$/i)
           : null
-        const recovery = Number(genericRecovery?.[1] ?? grenadeRecovery?.[1])
+        const warcryRecovery = warcry
+          ? text.match(/^(\d+(?:\.\d+)?)% increased Warcry Cooldown Recovery Rate$/i)
+          : null
+        const commandRecovery = command
+          ? text.match(/^Minions have (\d+(?:\.\d+)?)% increased Cooldown Recovery Rate for Command Skills$/i)
+          : null
+        const recovery = Number(
+          genericRecovery?.[1]
+          ?? grenadeRecovery?.[1]
+          ?? warcryRecovery?.[1]
+          ?? commandRecovery?.[1],
+        )
         if (Number.isFinite(recovery) && recovery > 0) {
           recoveryPercent += recovery
           sourceReferences.push(`poe2-tree:${node.id}:stats:${index}`)

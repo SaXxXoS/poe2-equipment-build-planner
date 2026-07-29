@@ -113,4 +113,27 @@ describe('Zusätzliche Cooldown-Nutzungen', () => {
       weaponSet: 'set-1',
     }).recoveryPercent).toBe(30)
   })
+
+  it('bindet Warcry- und Minion-Command-Recovery an ihre strukturierten Skilltypen', () => {
+    const typedTree = {
+      ...passiveTree,
+      nodes: [
+        { id: 'warcry', stats: [{ sourceText: '18% increased [Warcry|Warcry] Cooldown Recovery Rate' }] },
+        { id: 'command', stats: [{ sourceText: '[Minion|Minions] have 25% increased [CooldownRecovery|Cooldown Recovery Rate] for [Command] Skills' }] },
+      ],
+    } as unknown as RealPassiveTree
+    const planning = {
+      pipelineResult: { allocatedNodeIds: ['warcry', 'command'] },
+    } as unknown as RealPassivePlanningIntegrationResult
+    const collect = (skillTypes: string[]) => additionalCooldownUsesFor({
+      skillTypes,
+      equipment: [],
+      weaponSet: 'set-1',
+      passiveTree: typedTree,
+      planning,
+    }).recoveryPercent
+    expect(collect(['Warcry', 'Cooldown'])).toBe(18)
+    expect(collect(['CommandsMinions'])).toBe(25)
+    expect(collect(['Spell', 'Cooldown'])).toBe(0)
+  })
 })
