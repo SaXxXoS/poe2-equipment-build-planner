@@ -393,7 +393,9 @@ export function estimateHitDamage(input:{
   const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=skill.kind==='attack'&&hasConfirmedRageGain
     ? {
         modelVersion:'1.0.0',
-        status:'full-confirmed-pool-comparison',
+        status:rageChain?.fullRageCombatStatus==='maintainable-after-ramp'
+          ? 'ramped-sustained-combat-comparison'
+          : 'full-confirmed-pool-window',
         inherentMoreAttackDamagePerRagePercent,
         comparedRage,
         damageMultiplier:round(rageDamageMultiplier,4),
@@ -405,7 +407,9 @@ export function estimateHitDamage(input:{
         ...(rageChain?.noGainNoHitRageDurationSeconds==null?{}:{
           durationWithoutFurtherHitOrGainSeconds:rageChain.noGainNoHitRageDurationSeconds,
         }),
-        detail:'Explizites Vergleichsfenster bei vollem bestätigtem Wutvorrat. Der normale Dauerschadenswert setzt diesen Zustand nicht voraus.',
+        detail:rageChain?.fullRageCombatStatus==='maintainable-after-ramp'
+          ? `Belegter Kampfreferenzwert nach ${rageChain.secondsToFullRage?.toLocaleString('de-DE')} s Anlaufzeit bei fortgesetzter gleicher Treffer- und Wutgewinnrate.`
+          : 'Explizites Vergleichsfenster bei vollem bestätigtem Wutvorrat. Der normale Dauerschadenswert setzt diesen Zustand nicht voraus.',
       }
     : {
         modelVersion:'1.0.0',

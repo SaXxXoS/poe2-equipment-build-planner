@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '16.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '17.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -82,6 +82,8 @@ interface SkillResourceCostChain {
   inherentRageLossPerSecond: number
   inherentRageLossDelaySeconds: number
   noGainNoHitRageDurationSeconds: number | null
+  secondsToFullRage: number | null
+  fullRageCombatStatus: NonNullable<DamageEstimate['resourceSpiritModel']>['skillCostChains'][number]['fullRageCombatStatus']
   rageSustainStatus: 'no-rage-cost' | 'sustainable-with-confirmed-generation' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'requires-hit-frequency-and-rage-pool' | 'blocked-missing-exact-cost-chain'
 }
 
@@ -729,6 +731,19 @@ export function resolveResourceSpiritModel(input: {
           inherentRageLossPerSecond,
           inherentRageLossDelaySeconds,
         )
+      const netRageGainPerSecond = rageGenerationPerSecond == null || rageDemandPerSecond == null
+        ? null
+        : rageGenerationPerSecond - rageDemandPerSecond
+      const secondsToFullRage = netRageGainPerSecond != null && netRageGainPerSecond > 0
+        ? Number((confirmedMaximumRage / netRageGainPerSecond).toFixed(2))
+        : null
+      const fullRageCombatStatus = secondsToFullRage != null
+        ? 'maintainable-after-ramp' as const
+        : rageGenerationPerSecond != null && rageGenerationPerSecond > 0 && netRageGainPerSecond === 0
+          ? 'generation-only-maintains-current-level' as const
+          : rageGenerationPerSecond != null && rageGenerationPerSecond > 0
+            ? 'depletes-despite-generation' as const
+            : 'blocked-no-confirmed-generation' as const
       const rageSustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
         : !rageCost
@@ -792,6 +807,8 @@ export function resolveResourceSpiritModel(input: {
         inherentRageLossPerSecond,
         inherentRageLossDelaySeconds,
         noGainNoHitRageDurationSeconds,
+        secondsToFullRage,
+        fullRageCombatStatus,
         rageSustainStatus,
       }
     })

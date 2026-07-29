@@ -64,6 +64,8 @@ const model = (): ResourceModel => ({
     inherentRageLossPerSecond: 5,
     inherentRageLossDelaySeconds: 4,
     noGainNoHitRageDurationSeconds: null,
+    secondsToFullRage: null,
+    fullRageCombatStatus: 'blocked-no-confirmed-generation',
     rageSustainStatus: 'no-rage-cost',
   }, {
     setupId: 'unknown',
@@ -99,6 +101,8 @@ const model = (): ResourceModel => ({
     inherentRageLossPerSecond: 5,
     inherentRageLossDelaySeconds: 4,
     noGainNoHitRageDurationSeconds: null,
+    secondsToFullRage: null,
+    fullRageCombatStatus: 'blocked-no-confirmed-generation',
     rageSustainStatus: 'blocked-missing-exact-cost-chain',
   }],
   spiritReservations: [],

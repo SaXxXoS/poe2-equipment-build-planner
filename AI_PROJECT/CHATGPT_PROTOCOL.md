@@ -3046,3 +3046,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Referenzschema `12`; 73 fokussierte Tests und Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RAGE_DAMAGE_STEP_68.md`.
+
+# Schritt 69 – Wut-Anlaufzeit und Kampfreferenz
+
+- Bestätigte Erzeugung und Verbrauch ergeben jetzt einen Nettogewinn und eine
+  deterministische Zeit bis zum vollen Wutvorrat.
+- Nur wenn der volle Vorrat aus null aufgebaut und bei fortgesetzter gleicher
+  Trefferfolge gehalten werden kann, heißt der Voll-Wut-Wert
+  `Kampfreferenz`.
+- Reines Decken des Verbrauchs, unbekannte Trefferfrequenz, Mehrfachziele und
+  unbelegte Mehrfachtreffer beweisen keinen vollen Wutstand.
+- Ressourcenmodell `17.0.0`; 75 fokussierte Tests und Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RAGE_RAMP_STEP_69.md`.

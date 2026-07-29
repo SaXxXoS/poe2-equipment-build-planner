@@ -176,7 +176,7 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     )
     expect(result.rageDamageComparison).toMatchObject({
       modelVersion:'1.0.0',
-      status:'full-confirmed-pool-comparison',
+      status:'ramped-sustained-combat-comparison',
       inherentMoreAttackDamagePerRagePercent:1,
       comparedRage:30,
       damageMultiplier:1.3,
