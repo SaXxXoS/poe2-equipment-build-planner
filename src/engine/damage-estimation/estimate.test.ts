@@ -104,7 +104,7 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(result.luckyHitEffects).toMatchObject({
-      modelVersion:'1.0.0',
+      modelVersion:'2.0.0',
       expectedHitDamage:58.8,
       effects:[{sourceNodeId:'lucky',damageType:'all',chancePercent:20}],
     })
@@ -179,6 +179,8 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       status:'ramped-sustained-combat-comparison',
       inherentMoreAttackDamagePerRagePercent:1,
       comparedRage:30,
+      effectiveRageEffect:30,
+      appliesTo:'attack',
       damageMultiplier:1.3,
     })
     expect(result.rageDamageComparison?.expectedDamagePerSecondAtComparedRage).toBeCloseTo(

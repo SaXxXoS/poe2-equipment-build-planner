@@ -3059,3 +3059,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ressourcenmodell `17.0.0`; 75 fokussierte Tests und Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_RAGE_RAMP_STEP_69.md`.
+
+# Schritt 70 – vollständige Wutwirkungskette
+
+- Erhöhte, verringerte, mehr und weniger Wutwirkung werden in der von PoB2
+  belegten Reihenfolge verrechnet und anschließend abgerundet.
+- Exakte Regeln für doppelte, dreifache und aufgehobene Wutwirkung sind
+  fail-closed angebunden.
+- Die Schadenswirkung gilt standardmäßig nur für Angriffe; eine Umleitung
+  auf Zauber erfolgt ausschließlich bei exakt belegter Regel.
+- Die Geschwindigkeitsumleitung wird transportiert, aber ohne vollständig
+  belegten saisonalen Grundwert noch nicht quantitativ angewandt.
+- Ressourcenmodell `18.0.0`, Schadensrechner `3.11.0`,
+  Wutvergleich `2.0.0`; 77 fokussierte Tests und Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_RAGE_EFFECT_STEP_70.md`.

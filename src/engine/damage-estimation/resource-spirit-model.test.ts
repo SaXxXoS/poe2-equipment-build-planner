@@ -587,6 +587,54 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       noGainNoHitRageDurationSeconds: 6.94,
     })
   })
+  it('wendet die gepinnte Wutwirkungs-Reihenfolge und exakte Umleitungen an', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20 }],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [
+          { id: 'rage-increased', stats: [{ sourceText: '50% increased Rage Effect' }], ascendancyId: null },
+          { id: 'rage-doubled', stats: [{ sourceText: 'Inherent effects from having Rage are doubled' }], ascendancyId: 'test-ascendancy' },
+          { id: 'rage-spell', stats: [{ sourceText: 'Rage grants Spell Damage instead of Attack Damage' }], ascendancyId: 'test-ascendancy' },
+          { id: 'rage-cast', stats: [{ sourceText: 'Rage grants Cast Speed instead of Attack Speed' }], ascendancyId: 'test-ascendancy' },
+        ],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['rage-increased'] },
+        ascendancyPlanning: { allocatedNodeIds: ['rage-doubled', 'rage-spell', 'rage-cast'] },
+      } as never,
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      confirmedMaximumRage: 30,
+      confirmedRageEffectAtMaximum: 90,
+      rageDamageAppliesTo: 'spell',
+      rageSpeedAppliesTo: 'cast',
+    })
+  })
+  it('setzt Wutwirkung bei einem exakt belegten Override auf null', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20 }],
+      skills: [definition],
+      supports: [],
+      passiveTree: {
+        metadata: { releaseTag: 'test' },
+        connections: [],
+        nodes: [{ id: 'no-rage-effect', stats: [{ sourceText: 'No Rage effect' }], ascendancyId: 'test-ascendancy' }],
+      } as never,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: [] },
+        ascendancyPlanning: { allocatedNodeIds: ['no-rage-effect'] },
+      } as never,
+    })
+    expect(model.skillCostChains[0].confirmedRageEffectAtMaximum).toBe(0)
+  })
   it('blockiert ein ungueltiges Qualitaetslevel statt das Raserei-Fenster zu schaetzen', () => {
     const definition = skill('rampage', 'Rampage')
     const model = resolveResourceSpiritModel({

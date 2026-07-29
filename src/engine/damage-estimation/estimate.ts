@@ -101,7 +101,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.10.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.11.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -385,19 +385,23 @@ export function estimateHitDamage(input:{
     rageChain.rageGenerationPerHit>0
     || (rageChain.rageGenerationPerSecond??0)>0
   ))
-  const comparedRage=skill.kind==='attack'&&hasConfirmedRageGain
+  const rageAppliesToSkill=Boolean(rageChain&&rageChain.rageDamageAppliesTo===skill.kind)
+  const comparedRage=rageAppliesToSkill&&hasConfirmedRageGain
     ? rageChain!.confirmedMaximumRage
     : 0
+  const effectiveRageEffect=comparedRage>0 ? rageChain!.confirmedRageEffectAtMaximum : 0
   const inherentMoreAttackDamagePerRagePercent=reference.rageDamageConstants.inherentMoreAttackDamagePerRagePercent
-  const rageDamageMultiplier=1+comparedRage*inherentMoreAttackDamagePerRagePercent/100
-  const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=skill.kind==='attack'&&hasConfirmedRageGain
+  const rageDamageMultiplier=1+effectiveRageEffect*inherentMoreAttackDamagePerRagePercent/100
+  const rageDamageComparison:NonNullable<DamageEstimate['rageDamageComparison']>=rageAppliesToSkill&&hasConfirmedRageGain
     ? {
-        modelVersion:'1.0.0',
+        modelVersion:'2.0.0',
         status:rageChain?.fullRageCombatStatus==='maintainable-after-ramp'
           ? 'ramped-sustained-combat-comparison'
           : 'full-confirmed-pool-window',
         inherentMoreAttackDamagePerRagePercent,
         comparedRage,
+        effectiveRageEffect,
+        appliesTo:rageChain!.rageDamageAppliesTo,
         damageMultiplier:round(rageDamageMultiplier,4),
         expectedHitDamageAtComparedRage:round((expectedCriticalHitDamage??rollExpectedAverage)*rageDamageMultiplier),
         expectedDamagePerSecondAtComparedRage:round((primaryComparableDamagePerSecond??rollExpectedAverage*actionsPerSecond)*rageDamageMultiplier),
@@ -412,14 +416,16 @@ export function estimateHitDamage(input:{
           : 'Explizites Vergleichsfenster bei vollem bestätigtem Wutvorrat. Der normale Dauerschadenswert setzt diesen Zustand nicht voraus.',
       }
     : {
-        modelVersion:'1.0.0',
+        modelVersion:'2.0.0',
         status:'blocked-no-confirmed-rage-gain',
         inherentMoreAttackDamagePerRagePercent,
         comparedRage:0,
+        effectiveRageEffect:0,
+        appliesTo:rageChain?.rageDamageAppliesTo??'attack',
         damageMultiplier:1,
-        detail:skill.kind==='attack'
-          ? 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.'
-          : 'Der inhärente Wutbonus gilt für Angriffsschaden; für diesen Zauber wird er nicht angewandt.',
+        detail:!rageAppliesToSkill
+          ? `Die belegte Wutwirkung gilt für ${rageChain?.rageDamageAppliesTo==='spell'?'Zauber':'Angriffe'} und wird nicht auf diese Fertigkeit angewandt.`
+          : 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.',
       }
   return{
     ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),

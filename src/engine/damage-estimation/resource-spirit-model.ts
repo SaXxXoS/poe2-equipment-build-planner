@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '17.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '18.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -78,6 +78,9 @@ interface SkillResourceCostChain {
   rageNetDemandPerSecond: number | null
   rageSuppressionDurationMs: number | null
   confirmedMaximumRage: number
+  confirmedRageEffectAtMaximum: number
+  rageDamageAppliesTo: 'attack' | 'spell'
+  rageSpeedAppliesTo: 'attack' | 'cast'
   maximumStartRageDurationSeconds: number | null
   inherentRageLossPerSecond: number
   inherentRageLossDelaySeconds: number
@@ -356,6 +359,19 @@ function passiveResourceEffects(
       if (match) { add(nodeId, text, 'flat-maximum-rage', Number(match[1])); continue }
       match = text.match(/^(\d+(?:\.\d+)?)% more Maximum Rage$/i)
       if (match) { add(nodeId, text, 'maximum-rage-more', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% increased Rage Effect$/i)
+      if (match) { add(nodeId, text, 'rage-effect-increased', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% reduced Rage Effect$/i)
+      if (match) { add(nodeId, text, 'rage-effect-reduced', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% more Rage Effect$/i)
+      if (match) { add(nodeId, text, 'rage-effect-more', Number(match[1])); continue }
+      match = text.match(/^(\d+(?:\.\d+)?)% less Rage Effect$/i)
+      if (match) { add(nodeId, text, 'rage-effect-less', Number(match[1])); continue }
+      if (/^Inherent effects from having Rage are doubled$/i.test(text)) { add(nodeId, text, 'rage-effect-more', 100); continue }
+      if (/^Inherent effects from having Rage are tripled$/i.test(text)) { add(nodeId, text, 'rage-effect-more', 200); continue }
+      if (/^No Rage effect$/i.test(text)) { add(nodeId, text, 'rage-effect-override', 0); continue }
+      if (/^Rage grants Spell Damage instead of Attack Damage$/i.test(text)) { add(nodeId, text, 'rage-damage-to-spells', 1); continue }
+      if (/^Rage grants Cast Speed instead of Attack Speed$/i.test(text)) { add(nodeId, text, 'rage-speed-to-cast-speed', 1); continue }
       match = text.match(/^Inherent Rage loss starts (\d+(?:\.\d+)?) seconds? later$/i)
       if (match) { add(nodeId, text, 'rage-loss-delay', Number(match[1])); continue }
       match = text.match(/^Inherent loss of Rage is (\d+(?:\.\d+)?)% slower$/i)
@@ -711,6 +727,25 @@ export function resolveResourceSpiritModel(input: {
         (reference.resourceConstants.baseMaximumRage + equipmentMaximumRage + passiveMaximumRage)
         * maximumRageMoreMultiplier,
       ))
+      const rageEffectOverride = appliedPassiveEffects.find(effect => effect.kind === 'rage-effect-override')
+      const rageEffectIncreased = appliedPassiveEffects
+        .filter(effect => effect.kind === 'rage-effect-increased')
+        .reduce((sum, effect) => sum + effect.value, 0)
+        - appliedPassiveEffects.filter(effect => effect.kind === 'rage-effect-reduced').reduce((sum, effect) => sum + effect.value, 0)
+      const rageEffectMoreMultiplier = appliedPassiveEffects
+        .filter(effect => effect.kind === 'rage-effect-more')
+        .reduce((value, effect) => value * (1 + effect.value / 100), 1)
+        * appliedPassiveEffects.filter(effect => effect.kind === 'rage-effect-less')
+          .reduce((value, effect) => value * Math.max(0, 1 - effect.value / 100), 1)
+      const confirmedRageEffectAtMaximum = rageEffectOverride
+        ? Math.max(0, Math.floor(rageEffectOverride.value))
+        : Math.max(0, Math.floor(confirmedMaximumRage * Math.max(0, 1 + rageEffectIncreased / 100) * rageEffectMoreMultiplier))
+      const rageDamageAppliesTo = appliedPassiveEffects.some(effect => effect.kind === 'rage-damage-to-spells')
+        ? 'spell' as const
+        : 'attack' as const
+      const rageSpeedAppliesTo = appliedPassiveEffects.some(effect => effect.kind === 'rage-speed-to-cast-speed')
+        ? 'cast' as const
+        : 'attack' as const
       const maximumStartRageDurationSeconds = rageNetDemandPerSecond == null || !rageCost || rageNetDemandPerSecond === 0
         ? null
         : Number(((rageSuppressionDurationMs ?? 0) / 1000 + confirmedMaximumRage / rageNetDemandPerSecond).toFixed(2))
@@ -803,6 +838,9 @@ export function resolveResourceSpiritModel(input: {
         rageNetDemandPerSecond,
         rageSuppressionDurationMs,
         confirmedMaximumRage,
+        confirmedRageEffectAtMaximum,
+        rageDamageAppliesTo,
+        rageSpeedAppliesTo,
         maximumStartRageDurationSeconds,
         inherentRageLossPerSecond,
         inherentRageLossDelaySeconds,
