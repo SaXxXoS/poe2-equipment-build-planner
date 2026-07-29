@@ -1,6 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
+import type { EnemyMitigationProfile } from './types'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '1.0.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '2.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -12,8 +13,10 @@ export interface ResolvedDamageOverTimeEffect {
   kind: 'native-damage-over-time'
   status: 'single-application-window'
   damagePerSecond: number
+  damagePerSecondAfterMitigation?: number
   durationMs: number
   totalDamagePerApplication: number
+  totalDamagePerApplicationAfterMitigation?: number
   stackCount: 1
   evidence: 'structured-exact'
   sourceReferences: string[]
@@ -35,6 +38,7 @@ export interface DamageOverTimeResult {
   effects: ResolvedDamageOverTimeEffect[]
   blockedEffects: UnresolvedDamageOverTimeEffect[]
   totalSingleApplicationDamagePerSecond?: number
+  totalSingleApplicationDamagePerSecondAfterMitigation?: number
   limitations: string[]
 }
 
@@ -47,8 +51,16 @@ const damageStats: Array<{ type: DamageType; stat: string }> = [
 ]
 
 const round = (value: number) => Number(value.toFixed(2))
+const resistanceAfterReduction = (type: DamageType, profile: EnemyMitigationProfile | undefined) => {
+  if (!profile || type === 'physical') return 0
+  return Math.max(-100, Math.min(
+    90,
+    (profile.resistances?.[type] ?? 0)
+      - Math.max(0, profile.resistanceReduction?.[type] ?? 0),
+  ))
+}
 
-export function collectDamageOverTime(skill: NumericSkill): DamageOverTimeResult {
+export function collectDamageOverTime(skill: NumericSkill, enemyProfile?: EnemyMitigationProfile): DamageOverTimeResult {
   const stats = skill.numericStats as Record<string, number>
   const durationMs = stats.base_skill_effect_duration
   const effects: ResolvedDamageOverTimeEffect[] = []
@@ -70,6 +82,8 @@ export function collectDamageOverTime(skill: NumericSkill): DamageOverTimeResult
       continue
     }
     const damagePerSecond = perMinute / 60
+    const resistance = resistanceAfterReduction(definition.type, enemyProfile)
+    const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100)
     effects.push({
       sourceRecordId: skill.sourceRecordId,
       sourceLabel: skill.name,
@@ -77,8 +91,12 @@ export function collectDamageOverTime(skill: NumericSkill): DamageOverTimeResult
       kind: 'native-damage-over-time',
       status: 'single-application-window',
       damagePerSecond: round(damagePerSecond),
+      ...(enemyProfile ? { damagePerSecondAfterMitigation: round(damagePerSecondAfterMitigation) } : {}),
       durationMs,
       totalDamagePerApplication: round(damagePerSecond * durationMs / 1000),
+      ...(enemyProfile ? {
+        totalDamagePerApplicationAfterMitigation: round(damagePerSecondAfterMitigation * durationMs / 1000),
+      } : {}),
       stackCount: 1,
       evidence: 'structured-exact',
       sourceReferences: [definition.stat, 'base_skill_effect_duration'],
@@ -92,6 +110,11 @@ export function collectDamageOverTime(skill: NumericSkill): DamageOverTimeResult
     blockedEffects,
     ...(effects.length ? {
       totalSingleApplicationDamagePerSecond: round(effects.reduce((sum, effect) => sum + effect.damagePerSecond, 0)),
+    } : {}),
+    ...(effects.length && enemyProfile ? {
+      totalSingleApplicationDamagePerSecondAfterMitigation: round(
+        effects.reduce((sum, effect) => sum + (effect.damagePerSecondAfterMitigation ?? effect.damagePerSecond), 0),
+      ),
     } : {}),
     limitations: [
       'Entzünden, Gift und Blutung werden erst angewandt, wenn Basiswert, Auslösung, Dauer und Stapelregel gemeinsam belegt sind.',

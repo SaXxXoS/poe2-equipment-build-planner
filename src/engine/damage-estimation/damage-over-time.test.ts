@@ -11,7 +11,7 @@ const byName = (name: string) => {
 describe('getrennter Schaden über Zeit', () => {
   it('berechnet Flammenwand nur als belegtes Einzelanwendungsfenster', () => {
     const result = collectDamageOverTime(byName('Flame Wall'))
-    expect(result.modelVersion).toBe('1.0.0')
+    expect(result.modelVersion).toBe('2.0.0')
     expect(result.effects).toEqual([expect.objectContaining({
       damageType: 'fire',
       damagePerSecond: 59.58,
@@ -50,5 +50,22 @@ describe('getrennter Schaden über Zeit', () => {
     expect(result.effects).toEqual([])
     expect(result.blockedEffects).toEqual([])
     expect(result.totalSingleApplicationDamagePerSecond).toBeUndefined()
+  })
+
+  it('wendet Gegnerwiderstand und Widerstandssenkung, aber keine Penetration auf nativen DoT an', () => {
+    const result = collectDamageOverTime(byName('Flame Wall'), {
+      id: 'dot-target',
+      label: 'DoT-Ziel',
+      source: 'manual-comparison-profile',
+      resistances: { fire: 60 },
+      resistanceReduction: { fire: 10 },
+      penetration: { fire: 30 },
+    })
+    expect(result.effects[0]).toMatchObject({
+      damagePerSecond: 59.58,
+      damagePerSecondAfterMitigation: 29.79,
+      totalDamagePerApplicationAfterMitigation: 190.67,
+    })
+    expect(result.totalSingleApplicationDamagePerSecondAfterMitigation).toBe(29.79)
   })
 })

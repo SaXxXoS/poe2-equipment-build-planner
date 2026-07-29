@@ -158,3 +158,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Widerstandsreduktion wirkt; Trefferpenetration wird nicht auf den
   Zustandsschaden übertragen.
 - Roh-DPS und widerstandsbereinigte DPS bleiben getrennt nachvollziehbar.
+
+# Fortschritt Schritt 37
+
+- Eigenständiger strukturierter Schaden über Zeit übernimmt das aufgelöste
+  Vergleichsgegnerprofil.
+- Elementarer und Chaosschaden über Zeit berücksichtigen Widerstand und
+  belegte Widerstandssenkung.
+- Penetration und die Treffer-Rüstungsformel werden nicht fälschlich auf DoT
+  angewandt.
+- Rohwert und gegnerbereinigter Einzelanwendungswert bleiben getrennt.

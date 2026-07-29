@@ -2703,3 +2703,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Widerstandsreduktion.
 - Trefferpenetration bleibt korrekt auf Treffer beschränkt.
 - Die UI zeigt bei vorhandener Gegnerkette den bereinigten Zustandsschaden.
+
+# Fortsetzung: Schritt 37 – Gegnerabwehr für nativen DoT
+
+- Eigenständiger strukturierter Schaden über Zeit verwendet nun das
+  aufgelöste Gegnerprofil.
+- Widerstand und Widerstandssenkung wirken auf passende DoT-Schadensarten;
+  Penetration bleibt auf Treffer beschränkt.
+- Die UI zeigt bei vorhandener Gegnerkette den bereinigten
+  Einzelanwendungswert.
+- Überlappung, Refresh, vollständige Uptime und fertigkeitsspezifische
+  Stapelregeln bleiben fail-closed.
