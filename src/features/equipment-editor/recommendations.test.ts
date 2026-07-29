@@ -19,7 +19,8 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
         equipmentFirst:false,status:'selected',alternatives:[],
         selected:{
           skillId:'spark',skillName:'Funken',weaponType:'wand',weaponLabel:'Zauberstab',
-          mainWeaponSet:'set-1',setupSkillId:'orb',setupWeaponType:'wand',
+          mainWeaponSet:'set-1',skillTags:['lightning','projectile'],
+          setupSkillId:'orb',setupSkillName:'Gewittersphäre',setupSkillTags:['lightning','area'],setupWeaponType:'wand',
           compatibleSupportIds:[],affinityScore:1,passiveAffinityScore:1,
           analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
         },
@@ -28,14 +29,15 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       uniqueNames:new Map(),
     })
     expect(suggestions).toMatchObject([
-      {slotId:'slot-weapon-set-1-left',title:'Zauberstab'},
-      {slotId:'slot-weapon-set-2-left',title:'Zauberstab'},
+      {slotId:'slot-weapon-set-1-left',itemClassId:'Wands',detail:'Waffenset 1 · Hauptwaffe für Funken'},
+      {slotId:'slot-weapon-set-2-left',itemClassId:'Wands',detail:'Waffenset 2 · Setup-Waffe für Gewittersphäre'},
     ])
+    expect(suggestions[0].title).not.toBe(suggestions[1].title)
   })
 
   it('überschreibt keine vorhandene Waffe und zeigt nur positive gültige Uniques',()=>{
     const equipped=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'?{...item,itemClassId:'Wands'}:item)
-    const unique={valid:true,totalScore:10,itemSlot:'helmet',uniqueId:'unique-helmet',buildEnabler:false} as UniqueRecommendation
+    const unique={valid:true,totalScore:10,itemSlot:'helmet',uniqueId:'unique-helmet',buildEnabler:false,damageScore:10,replacementVerdict:'clear-upgrade'} as UniqueRecommendation
     const suggestions=createEquipmentSlotSuggestions({
       equipment:[...equipped,{id:'helmet',slotId:'slot-helmet',modifierValues:[]}],
       optimization:null,
@@ -54,7 +56,7 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
   })
 
   it('behält ein vom Unique Analyzer als gültig bewertetes Waffen-Unique bei',()=>{
-    const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false} as UniqueRecommendation
+    const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false,damageScore:10,replacementVerdict:'clear-upgrade'} as UniqueRecommendation
     const suggestions=createEquipmentSlotSuggestions({
       equipment,
       optimization:{
@@ -100,5 +102,20 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     expect(suggestions[0].baseDisplayName).toBeTruthy()
     expect(suggestions[0].weaponStats?.attacksPerSecond).toBeGreaterThan(0)
     expect(suggestions[0].weaponStats?.physicalDamage?.maximum).toBeGreaterThan(0)
+  })
+
+  it('unterdrückt ein Unique ohne positive, widerspruchsfreie Build-Wirkung',()=>{
+    const misleading={
+      valid:true,totalScore:40,itemSlot:'ring',uniqueId:'ventor',buildEnabler:false,
+      damageScore:0,defenceScore:10,resourceScore:0,ascendancySynergyScore:0,
+      supportsCurrentBuild:false,tradeOffs:['negative-roll-range'],
+      replacementVerdict:'situational-upgrade',
+    } as UniqueRecommendation
+    expect(createEquipmentSlotSuggestions({
+      equipment:[...equipment,{id:'ring',slotId:'slot-ring-1',modifierValues:[]}],
+      optimization:null,
+      uniqueRecommendations:[misleading],
+      uniqueNames:new Map([['ventor','Ventors Glücksspiel']]),
+    })).toEqual([])
   })
 })

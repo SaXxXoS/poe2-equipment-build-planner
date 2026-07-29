@@ -1,6 +1,12 @@
 import type { EquipmentEntry, EquipmentWeaponStats, SyntheticWeaponType } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
-import { weaponBaseDisplayName, weaponBaseValuesFor, weaponStatsFromBase } from './weapon-base-values'
+import {
+  utilityBaseDisplayName,
+  utilityBaseValuesFor,
+  weaponBaseDisplayName,
+  weaponBaseValuesFor,
+  weaponStatsFromBase,
+} from './weapon-base-values'
 import {
   weaponLabelFor,
   type BuildVariantOptimization,
@@ -41,7 +47,32 @@ function rawWeaponOutput(stats: EquipmentWeaponStats): number {
     * (stats.attacksPerSecond ?? 0)
 }
 
-function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel?:number) {
+function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel?:number, skillTags:string[]=[]){
+  if(weaponType==='wand'){
+    const candidates=utilityBaseValuesFor('Wands')
+      .filter(base=>base.requiredLevel===null||characterLevel===undefined||base.requiredLevel<=characterLevel)
+    const score=(implicit:string|null)=>{
+      if(!implicit)return 0
+      let result=0
+      if(skillTags.includes('projectile')&&/additional Projectiles/i.test(implicit))result+=3
+      if(skillTags.includes('lightning')&&/Galvanic/i.test(implicit))result+=2
+      if(skillTags.includes('chaos')&&/(Chaos|Wither|Decompose)/i.test(implicit))result+=2
+      if(skillTags.includes('physical')&&/(Bone|Exsanguinate)/i.test(implicit))result+=2
+      return result
+    }
+    const selected=candidates
+      .map(base=>({base,score:score(base.implicit)}))
+      .filter(value=>value.score>0)
+      .sort((left,right)=>right.score-left.score||(right.base.requiredLevel??0)-(left.base.requiredLevel??0)||left.base.id.localeCompare(right.base.id))[0]?.base
+    if(!selected)return null
+    return {
+      title:utilityBaseDisplayName(selected),
+      itemClassId:selected.itemClassId,
+      itemDefinitionId:selected.id,
+      baseDisplayName:selected.nameEn,
+      weaponStats:undefined,
+    }
+  }
   const selected=(weaponItemClasses[weaponType]??[])
     .flatMap(itemClassId=>weaponBaseValuesFor(itemClassId))
     .filter(base=>base.requiredLevel===null||characterLevel===undefined||base.requiredLevel<=characterLevel)
@@ -111,22 +142,22 @@ export function createEquipmentSlotSuggestions(input:{
 
   if(selected&&!input.optimization?.equipmentFirst){
     const slotId=firstEmptySlot([weaponSlot(mainSet)],input.equipment)
-    const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel)
+    const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel,selected.skillTags)
     if(slotId)suggestions.push({
       slotId,
       title:concrete?.title??selected.weaponLabel,
-      detail:`Empfohlene Waffenart für ${selected.skillName}`,
+      detail:`Waffenset ${mainSet==='set-1'?'1':'2'} · Hauptwaffe für ${selected.skillName}`,
       source:'weapon-optimizer',
       ...concrete,
     })
     if(selected.setupSkillId&&selected.setupWeaponType){
       const setupSet=mainSet==='set-1'?'set-2':'set-1'
       const setupSlot=firstEmptySlot([weaponSlot(setupSet)],input.equipment)
-      const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel)
+      const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel,selected.setupSkillTags)
       if(setupSlot)suggestions.push({
         slotId:setupSlot,
         title:setupConcrete?.title??weaponLabelFor(selected.setupWeaponType),
-        detail:`Setup-Waffe für ${selected.setupSkillId}`,
+        detail:`Waffenset ${setupSet==='set-1'?'1':'2'} · Setup-Waffe für ${selected.setupSkillName??selected.setupSkillId}`,
         source:'weapon-optimizer',
         ...setupConcrete,
       })
@@ -136,7 +167,15 @@ export function createEquipmentSlotSuggestions(input:{
   const occupied=new Set(suggestions.map(item=>item.slotId))
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
-    if(!recommendation.valid||recommendation.totalScore<=0||seenUniqueIds.has(recommendation.uniqueId))continue
+    const hasProductiveEvidence=recommendation.buildEnabler
+      || recommendation.supportsCurrentBuild
+      || recommendation.damageScore>0
+      || recommendation.ascendancySynergyScore>0
+      || (recommendation.defenceScore>0&&recommendation.tradeOffs.length===0)
+      || (recommendation.resourceScore>0&&recommendation.tradeOffs.length===0)
+    if(!recommendation.valid||recommendation.totalScore<=0||!hasProductiveEvidence
+      || recommendation.replacementVerdict==='downgrade'
+      || seenUniqueIds.has(recommendation.uniqueId))continue
     seenUniqueIds.add(recommendation.uniqueId)
     const slotId=firstEmptySlot(
       uniqueTargetSlots(recommendation.itemSlot,mainSet).filter(value=>!occupied.has(value)),

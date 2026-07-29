@@ -62,6 +62,8 @@ export interface BuildVariantCandidate {
   weaponLabel: string
   mainWeaponSet: 'set-1' | 'set-2'
   setupSkillId?: string
+  setupSkillName?: string
+  setupSkillTags?: MechanicTag[]
   setupWeaponType?: SyntheticWeaponType
   setupReason?: string
   compatibleSupportIds: string[]
@@ -472,6 +474,10 @@ export function optimizeBuildVariants(input: {
         weaponLabel: weaponLabelFor(weapon),
         mainWeaponSet,
         setupSkillId: usableSetup?.skillId,
+        setupSkillName: usableSetup && setupDefinition
+          ? setupDefinition.displayNameDe || setupDefinition.nameEn || setupDefinition.id
+          : undefined,
+        setupSkillTags: usableSetup && setupDefinition ? [...setupDefinition.tags] : undefined,
         setupWeaponType: usableSetup ? setupWeaponType : undefined,
         setupReason: usableSetup?.reason,
         compatibleSupportIds: supportIds,

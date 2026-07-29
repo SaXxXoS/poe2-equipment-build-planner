@@ -15,10 +15,11 @@ export interface Pob2UniqueSemantics {
 }
 
 const exactPatterns: Array<{ pattern: RegExp; tags: MechanicTag[] }> = [
-  { pattern: /\b(?:Fire Damage|Fire Resistance|Ignite)\b/i, tags: ['fire'] },
-  { pattern: /\b(?:Cold Damage|Cold Resistance|Chill|Freeze)\b/i, tags: ['cold'] },
-  { pattern: /\b(?:Lightning Damage|Lightning Resistance|Shock)\b/i, tags: ['lightning'] },
-  { pattern: /\b(?:Chaos Damage|Chaos Resistance|Poison)\b/i, tags: ['chaos'] },
+  // Widerstände sind defensive Werte und kein offensiver Elementbezug.
+  { pattern: /\b(?:Fire Damage|Ignite)\b/i, tags: ['fire'] },
+  { pattern: /\b(?:Cold Damage|Chill|Freeze)\b/i, tags: ['cold'] },
+  { pattern: /\b(?:Lightning Damage|Shock)\b/i, tags: ['lightning'] },
+  { pattern: /\b(?:Chaos Damage|Poison)\b/i, tags: ['chaos'] },
   { pattern: /\bPhysical Damage\b/i, tags: ['physical'] },
   { pattern: /\bAttack(?:s| Damage| Speed| Hits?)\b/i, tags: ['attack'] },
   { pattern: /\bSpell(?:s| Damage| Critical| Skill)\b/i, tags: ['spell'] },
@@ -29,7 +30,7 @@ const exactPatterns: Array<{ pattern: RegExp; tags: MechanicTag[] }> = [
   { pattern: /\bDamage over Time\b/i, tags: ['damage-over-time'] },
   { pattern: /\bMinions?\b|\bAllies in your Presence\b/i, tags: ['minion'] },
   { pattern: /\bmaximum Life\b|\bLife Regeneration\b|\bArmour\b|\bEvasion Rating\b|\bEnergy Shield\b|\bBlock Chance\b/i, tags: ['defensive'] },
-  { pattern: /\bResistance(?:s)?\b/i, tags: ['resistance', 'defensive'] },
+  { pattern: /\b(?:Fire|Cold|Lightning|Chaos)?\s*Resistance(?:s)?\b/i, tags: ['resistance', 'defensive'] },
   { pattern: /\bmaximum Mana\b|\bMana Regeneration\b|\bSkills Cost\b|\bSpirit\b/i, tags: ['resource'] },
   { pattern: /\bMovement Speed\b|\bSkill Speed\b/i, tags: ['movement'] },
 ]
