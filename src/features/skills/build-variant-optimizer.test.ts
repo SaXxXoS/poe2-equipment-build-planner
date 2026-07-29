@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SupportGemDefinition } from '../../domain'
 import { initialEquipment } from '../../data'
 import { createEmptySkillSetups } from './initial-state'
+import { buildAssistantCandidates, runBuildAssistantV1 } from '../build-assistant-v1'
+import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
 import {
   normalizeDamageObjective,
   optimizeBuildVariants,
@@ -58,6 +60,7 @@ const damageCandidate = (
   modeledDps: number | null,
 ): BuildVariantCandidate => ({
   skillId,
+  skillName: skillId,
   weaponType: 'wand',
   weaponLabel: 'Zauberstab',
   mainWeaponSet: 'set-1',
@@ -73,6 +76,32 @@ const damageCandidate = (
 })
 
 describe('vollständige Build-Variantenoptimierung', () => {
+  it('schlägt bei inkompatibler Ausrüstung eine kompatible Ersatzwaffe vor', () => {
+    const equipped = initialEquipment.map(entry =>
+      entry.slotId === 'slot-weapon-set-1-left'
+        ? { ...entry, itemClassId: 'Bows' }
+        : entry)
+    const result = optimizeBuildVariants({
+      classId: 'class-official-6',
+      ascendancyId: 'ascendancy-official-Warrior1',
+      equipment: equipped,
+      setups: createEmptySkillSetups(),
+      skills: [skill('mace-attack', ['attack', 'melee', 'physical'], {
+        displayNameDe: 'Streitkolbenangriff',
+        requiredWeaponTypes: ['mace'],
+      })],
+      supports: [],
+      skillScores: [score('mace-attack')],
+      characterLevel: 60,
+    })
+    expect(result.equipmentFirst).toBe(true)
+    expect(result.selected).toMatchObject({
+      skillId: 'mace-attack',
+      skillName: 'Streitkolbenangriff',
+      weaponType: 'mace',
+    })
+  })
+
   it('prüft Skill, Waffe, Supports, Aszendenz und Set-2-Setup als gemeinsame Variante', () => {
     const spark = skill('spark', ['spell', 'projectile', 'lightning'])
     const orb = skill('orb', ['spell', 'area', 'lightning'], {
@@ -165,6 +194,49 @@ describe('vollständige Build-Variantenoptimierung', () => {
     }
     expect(optimizeBuildVariants(input)).toEqual(optimizeBuildVariants(input))
   })
+
+  it('bevorzugt ohne Ausrüstung die gepinnte ascendancy-spezifische Hauptskillreferenz', () => {
+    const character = {
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      level: 90,
+      goalProfile: 'balanced' as const,
+    }
+    const setups = createEmptySkillSetups()
+    const analysis = runBuildAssistantV1({ character, equipment: initialEquipment, setups })
+    const result = optimizeBuildVariants({
+      classId: character.classId,
+      ascendancyId: character.ascendancyId,
+      equipment: initialEquipment,
+      setups,
+      skills: buildAssistantCandidates.skills,
+      supports: buildAssistantCandidates.supports,
+      skillScores: [
+        ...analysis.skillAnalysis.topMainCandidates,
+        ...analysis.skillAnalysis.eligibleCandidates,
+        ...analysis.skillAnalysis.allCandidates,
+      ].filter((value, index, all) =>
+        all.findIndex(candidate => candidate.skillId === value.skillId) === index),
+      characterLevel: character.level,
+      evaluatePackage: candidate => {
+        const packageSetups = setups.map((setup, index) => index === 0
+          ? {
+              ...setup,
+              skillId: candidate.skillId,
+              role: 'main' as const,
+              weaponSet: candidate.mainWeaponSet,
+              supportGemIds: candidate.compatibleSupportIds,
+            }
+          : setup)
+        return evaluateAnalyzedBuildPackage(candidate, runBuildAssistantV1({
+          character: { ...character, desiredMainSkillId: candidate.skillId },
+          equipment: initialEquipment,
+          setups: packageSetups,
+        }), { allowPlannedEquipmentRequirements: true })
+      },
+    })
+    expect(result.selected?.skillName).toBe('Funken')
+  }, 15_000)
 
   it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {
     const isolated = skill('isolated', ['spell', 'fire'])

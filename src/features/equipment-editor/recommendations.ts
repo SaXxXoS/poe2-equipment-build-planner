@@ -1,5 +1,6 @@
-import type { EquipmentEntry } from '../../domain'
+import type { EquipmentEntry, EquipmentWeaponStats, SyntheticWeaponType } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
+import { weaponBaseDisplayName, weaponBaseValuesFor, weaponStatsFromBase } from './weapon-base-values'
 import {
   weaponLabelFor,
   type BuildVariantOptimization,
@@ -11,8 +12,49 @@ export interface EquipmentSlotSuggestion {
   detail: string
   source: 'weapon-optimizer' | 'unique-analyzer'
   uniqueItemId?: string
+  itemClassId?: string
+  itemDefinitionId?: string
+  baseDisplayName?: string
+  weaponStats?: EquipmentWeaponStats
   reasons?: string[]
   tradeOffs?: string[]
+}
+
+const weaponItemClasses: Partial<Record<SyntheticWeaponType, string[]>> = {
+  axe: ['One Hand Axes', 'Two Hand Axes'],
+  bow: ['Bows'],
+  claw: ['Claws'],
+  crossbow: ['Crossbows'],
+  dagger: ['Daggers'],
+  flail: ['Flails'],
+  mace: ['One Hand Maces', 'Two Hand Maces'],
+  quarterstaff: ['Quarterstaves'],
+  spear: ['Spears'],
+  sword: ['One Hand Swords', 'Two Hand Swords'],
+}
+
+function rawWeaponOutput(stats: EquipmentWeaponStats): number {
+  return [
+    stats.physicalDamage, stats.fireDamage, stats.coldDamage,
+    stats.lightningDamage, stats.chaosDamage,
+  ].reduce((sum, range) => sum + (range ? (range.minimum + range.maximum) / 2 : 0), 0)
+    * (stats.attacksPerSecond ?? 0)
+}
+
+function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel?:number) {
+  const selected=(weaponItemClasses[weaponType]??[])
+    .flatMap(itemClassId=>weaponBaseValuesFor(itemClassId))
+    .filter(base=>base.requiredLevel===null||characterLevel===undefined||base.requiredLevel<=characterLevel)
+    .map(base=>({base,stats:weaponStatsFromBase(base)}))
+    .sort((left,right)=>rawWeaponOutput(right.stats)-rawWeaponOutput(left.stats)||left.base.id.localeCompare(right.base.id))[0]
+  if(!selected)return null
+  return {
+    title:weaponBaseDisplayName(selected.base),
+    itemClassId:selected.base.itemClassId,
+    itemDefinitionId:selected.base.id,
+    baseDisplayName:selected.base.nameEn,
+    weaponStats:selected.stats,
+  }
 }
 
 const mechanicText:Record<string,string>={
@@ -61,6 +103,7 @@ export function createEquipmentSlotSuggestions(input:{
   optimization?:BuildVariantOptimization|null
   uniqueRecommendations:UniqueRecommendation[]
   uniqueNames:Map<string,string>
+  characterLevel?:number
 }):EquipmentSlotSuggestion[]{
   const suggestions:EquipmentSlotSuggestion[]=[]
   const selected=input.optimization?.selected
@@ -68,20 +111,24 @@ export function createEquipmentSlotSuggestions(input:{
 
   if(selected&&!input.optimization?.equipmentFirst){
     const slotId=firstEmptySlot([weaponSlot(mainSet)],input.equipment)
+    const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel)
     if(slotId)suggestions.push({
       slotId,
-      title:selected.weaponLabel,
-      detail:`Empfohlene Waffenart für ${selected.skillId}`,
+      title:concrete?.title??selected.weaponLabel,
+      detail:`Empfohlene Waffenart für ${selected.skillName}`,
       source:'weapon-optimizer',
+      ...concrete,
     })
     if(selected.setupSkillId&&selected.setupWeaponType){
       const setupSet=mainSet==='set-1'?'set-2':'set-1'
       const setupSlot=firstEmptySlot([weaponSlot(setupSet)],input.equipment)
+      const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel)
       if(setupSlot)suggestions.push({
         slotId:setupSlot,
-        title:weaponLabelFor(selected.setupWeaponType),
+        title:setupConcrete?.title??weaponLabelFor(selected.setupWeaponType),
         detail:`Setup-Waffe für ${selected.setupSkillId}`,
         source:'weapon-optimizer',
+        ...setupConcrete,
       })
     }
   }

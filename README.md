@@ -264,3 +264,15 @@ Skills und 451 Support-Tier-Einträgen mit technisch verknüpfter lokaler
 deutscher Spielanzeige. Passive Planpfade sind als gemeinsamer Plan (gelb),
 Waffenset 1 (rot) und Waffenset 2 (grün) unterscheidbar. Details:
 [`docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md`](docs/BUILD_STORAGE_GEM_AND_PASSIVE_CORRECTION.md).
+
+## Selbstständiger Abschlusslauf 2026-07-29
+
+Der Assistent verbindet nun gepinnte Waffen-, Rüstungs- und sonstige
+Itembasen mit der vorhandenen equipment-first Paketoptimierung. Auch ohne
+eingetragene Ausrüstung entsteht erst nach ausdrücklicher Analyse ein
+zusammenhängender Vorschlag aus Hauptskill, passenden Supports,
+Set-2-Vorbereitung, Passivbaum und Aszendenz. Der lokale Browserzustand bleibt
+speicherbar; unbekannte Mechaniken werden nicht geschätzt.
+
+Details und belegte Grenzen:
+[`docs/BUILD_ASSISTANT_AUTONOMOUS_COMPLETION_2026_07_29.md`](docs/BUILD_ASSISTANT_AUTONOMOUS_COMPLETION_2026_07_29.md).

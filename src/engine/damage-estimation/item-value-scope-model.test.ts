@@ -37,6 +37,8 @@ describe('Gegenstandswert-, Qualitäts- und Scope-Modell', () => {
   it('erlaubt lokale Affixe genau einmal auf einer gepinnten Waffenbasis', () => {
     const result = resolveItemValueScopeModel([item({
       baseDisplayName: 'Crude Bow',
+      weaponStatsSource: 'pinned-base',
+      weaponStats: { physicalDamage: { minimum: 6, maximum: 10 }, attacksPerSecond: 1.4 },
       modifierValues: [{ id: 'local', modifierId: 'local-physical', value: 50, isLocal: true }],
     })])
     expect(result.entries[0]).toMatchObject({
@@ -47,8 +49,42 @@ describe('Gegenstandswert-, Qualitäts- und Scope-Modell', () => {
     })
   })
 
+  it('unterscheidet eine gepinnte Rüstungsbasis von Tooltip-Endwerten', () => {
+    const result = resolveItemValueScopeModel([item({
+      slotId: 'slot-body-armour',
+      itemClassId: 'Body Armours',
+      itemDefinitionId: 'base:body',
+      defences: { armour: 100, energyShield: 50 },
+      defencesSource: 'pinned-base',
+    })])
+    expect(result.entries[0]).toMatchObject({
+      valueBasis: 'pinned-base-values',
+      qualityStatus: 'not-provided',
+      productive: true,
+    })
+  })
+
+  it('behandelt automatisch eingesetzte Basiswerte nicht als Tooltip-Endwerte', () => {
+    const result = resolveItemValueScopeModel([item({
+      baseDisplayName: 'Crude Bow',
+      weaponStatsSource: 'pinned-base',
+      weaponStats: { physicalDamage: { minimum: 6, maximum: 10 }, attacksPerSecond: 1.4 },
+      modifierValues: [{ id: 'local', modifierId: 'local-physical', value: 50, isLocal: true }],
+    })])
+    expect(result.entries[0]).toMatchObject({
+      valueBasis: 'pinned-base-values',
+      localModifierStatus: 'applied-to-pinned-base-values',
+      productive: true,
+    })
+  })
+
   it('blockiert Qualität auf einer Basis ohne exakte Qualitätsformel', () => {
-    const result = resolveItemValueScopeModel([item({ baseDisplayName: 'Crude Bow', quality: 20 })])
+    const result = resolveItemValueScopeModel([item({
+      baseDisplayName: 'Crude Bow',
+      quality: 20,
+      weaponStatsSource: 'pinned-base',
+      weaponStats: { physicalDamage: { minimum: 6, maximum: 10 }, attacksPerSecond: 1.4 },
+    })])
     expect(result.entries[0]).toMatchObject({
       qualityStatus: 'blocked-missing-exact-quality-formula',
       productive: false,

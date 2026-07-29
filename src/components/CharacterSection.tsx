@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { CharacterConfiguration, GoalProfile } from '../domain'
 import { ascendancyDefinitions, findTreeAscendancy } from '../data'
 import { availablePassivePoints } from '../features/character/passive-points'
@@ -6,9 +5,9 @@ import { applyClassSelection, ascendancyLabels, parseUnsignedIntegerDraft, suppo
 
 const goalLabels: Record<GoalProfile, string> = { balanced: 'Allround', mapping: 'Mapping', boss: 'Boss' }
 export function CharacterSection({ value, onChange }: { value: CharacterConfiguration; onChange: (value: CharacterConfiguration) => void }) {
-  const [levelInput, setLevelInput] = useState(value.level > 0 ? String(value.level) : '')
-  const [storyInput, setStoryInput] = useState(value.additionalPassivePoints == null ? '' : String(value.additionalPassivePoints))
-  const [ascendancyInput, setAscendancyInput] = useState(value.ascendancyPassivePoints == null ? '' : String(value.ascendancyPassivePoints))
+  const levelInput = value.level > 0 ? String(value.level) : ''
+  const storyInput = value.additionalPassivePoints == null ? '' : String(value.additionalPassivePoints)
+  const ascendancyInput = value.ascendancyPassivePoints == null ? '' : String(value.ascendancyPassivePoints)
   const levelValid = /^\d+$/.test(levelInput) && Number(levelInput) >= 1 && Number(levelInput) <= 100
   const storyValid = /^\d+$/.test(storyInput) && Number(storyInput) >= 0 && Number(storyInput) <= 50
   const ascendancyValid = /^\d+$/.test(ascendancyInput) && Number(ascendancyInput) >= 0 && Number(ascendancyInput) <= 8
@@ -21,13 +20,10 @@ export function CharacterSection({ value, onChange }: { value: CharacterConfigur
     const parsed = parseUnsignedIntegerDraft(input)
     if (parsed === null) return
     if (kind === 'level') {
-      setLevelInput(input)
       onChange({ ...value, level: parsed ?? 0 })
     } else if (kind === 'story') {
-      setStoryInput(input)
       onChange({ ...value, additionalPassivePoints: parsed })
     } else {
-      setAscendancyInput(input)
       onChange({ ...value, ascendancyPassivePoints: parsed })
     }
   }

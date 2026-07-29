@@ -16,6 +16,15 @@ describe('regelbasierter synthetischer Support Analyzer', () => {
   it('benötigtes Skill-Tag wird geprüft', () => expect(rec('fixture-support-cold-spell').violations.map(item => item.code)).toContain('required-skill-tag-missing'))
   it('ausgeschlossenes Skill-Tag blockiert', () => expect(rec('fixture-support-incompatible').eligibility).toBe('blocked'))
   it('passende Schadensart erhöht Score', () => expect(rec('fixture-support-lightning').damageScore).toBeGreaterThan(0))
+  it('behandelt erlaubte Schadensarten und Mechaniken als Oder-Liste', () => {
+    const elementalArea = support('elemental-area', [], {
+      supportedDamageTypes: ['fire', 'cold', 'lightning'],
+      supportedMechanics: ['area', 'projectile'],
+    })
+    const result = setup(fixtureD, skill('fire-area', ['spell', 'fire', 'area']), [elementalArea])
+    expect(result.eligibleCandidates).toHaveLength(1)
+    expect(result.blockedCandidates).toHaveLength(0)
+  })
   it('unpassende Schadensart gibt keinen Bonus', () => expect(rec('fixture-support-cold-spell').damageScore).toBe(0))
   it('Projectile-Support passt zu Projectile-Skill', () => expect(rec('fixture-support-compatible').matchedSkillTags).toEqual(expect.arrayContaining(['attack', 'projectile'])))
   it('Attack-Support passt nicht zu reinem Spell', () => expect(setup(fixtureB, syntheticSkillFixtures[1], [syntheticSupportFixtures[0]]).blockedCandidates).toHaveLength(1))

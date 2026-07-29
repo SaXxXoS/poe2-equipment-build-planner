@@ -7,6 +7,7 @@ const root = process.cwd()
 const repo = path.join(root, '.local-audits', 'poe2-german-parser-candidates', 'candidate-02-pob', 'repo')
 const sourceCommit = 'c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0'
 const skillFiles = ['act_str.lua', 'act_dex.lua', 'act_int.lua']
+const supportFiles = ['sup_str.lua', 'sup_dex.lua', 'sup_int.lua']
 const costsRelative = 'src/Data/Costs.lua'
 const costsBytes = fs.readFileSync(path.join(repo, costsRelative))
 const costsText = costsBytes.toString('utf8')
@@ -135,6 +136,25 @@ const namedNumericTable = (body, key) => {
       .filter(([, value]) => Number.isFinite(value)),
   )
 }
+const skillTypesFor = (body, key) => {
+  const table = tableFor(body, key)
+  return table
+    ? [...table.matchAll(/SkillType\.([A-Za-z0-9_]+)/g)].map(value => value[1])
+    : []
+}
+const stringTable = (body, key) => {
+  const table = tableFor(body, key)
+  return table ? [...table.matchAll(/"([^"]+)"/g)].map(value => value[1]) : []
+}
+const constantNumericStats = body => {
+  const table = tableFor(body, 'constantStats')
+  if (!table) return {}
+  return Object.fromEntries(
+    [...table.matchAll(/\{\s*"([^"]+)"\s*,\s*(-?[\d.]+)\s*\}/g)]
+      .map(([, name, value]) => [name, Number(value)])
+      .filter(([, value]) => Number.isFinite(value)),
+  )
+}
 
 const skills = []
 for (const file of skillFiles) {
@@ -169,35 +189,97 @@ for (const file of skillFiles) {
   }
 }
 
-const bases = []
-for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua')).sort()) {
-  const relative = `src/Data/Bases/${file}`
+const supports = []
+for (const file of supportFiles) {
+  const relative = `src/Data/Skills/${file}`
   const text = fs.readFileSync(path.join(repo, relative), 'utf8')
-  for (const { key, body } of blocks(text, 'itemBases')) {
-    const weapon = tableFor(body, 'weapon')
-    if (!weapon) continue
-    bases.push({
-      name: key,
-      type: string(body, 'type'),
-      physicalMin: number(weapon, 'PhysicalMin') ?? 0,
-      physicalMax: number(weapon, 'PhysicalMax') ?? 0,
-      fireMin: number(weapon, 'FireMin') ?? 0,
-      fireMax: number(weapon, 'FireMax') ?? 0,
-      coldMin: number(weapon, 'ColdMin') ?? 0,
-      coldMax: number(weapon, 'ColdMax') ?? 0,
-      lightningMin: number(weapon, 'LightningMin') ?? 0,
-      lightningMax: number(weapon, 'LightningMax') ?? 0,
-      chaosMin: number(weapon, 'ChaosMin') ?? 0,
-      chaosMax: number(weapon, 'ChaosMax') ?? 0,
-      critChance: number(weapon, 'CritChanceBase') ?? 5,
-      attacksPerSecond: number(weapon, 'AttackRateBase') ?? 1,
+  for (const { key, body } of blocks(text, 'skills')) {
+    if (!/\bsupport\s*=\s*true\b/.test(body)) continue
+    const name = string(body, 'name')
+    if (!name || /\bhidden\s*=\s*true\b/.test(body)) continue
+    const mainLevel = levelRow(body, 1)
+    const statSets = tableFor(body, 'statSets')
+    const firstSetMatch = statSets && /\[1\]\s*=\s*\{/.exec(statSets)
+    const firstSet = firstSetMatch ? balanced(statSets, statSets.indexOf('{', firstSetMatch.index)) : undefined
+    const statsTable = firstSet && tableFor(firstSet, 'stats')
+    const statNames = statsTable ? [...statsTable.matchAll(/"([^"]+)"/g)].map(value => value[1]) : []
+    const values = positional(firstSet && levelRow(firstSet, 1))
+    const levelStats = Object.fromEntries(statNames.map((stat, index) => [stat, values[index]]).filter(([, value]) => Number.isFinite(value)))
+    supports.push({
+      sourceRecordId: key,
+      name,
+      gemFamily: stringTable(body, 'gemFamily'),
+      requireSkillTypes: skillTypesFor(body, 'requireSkillTypes'),
+      excludeSkillTypes: skillTypesFor(body, 'excludeSkillTypes'),
+      addSkillTypes: skillTypesFor(body, 'addSkillTypes'),
+      manaMultiplierPercent: number(mainLevel ?? '', 'manaMultiplier') ?? 0,
+      numericStats: { ...constantNumericStats(firstSet ?? ''), ...levelStats },
       sourceFile: relative,
     })
   }
 }
 
+const bases = []
+const equipmentBases = []
+const itemBases = []
+for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua')).sort()) {
+  const relative = `src/Data/Bases/${file}`
+  const text = fs.readFileSync(path.join(repo, relative), 'utf8')
+  for (const { key, body } of blocks(text, 'itemBases')) {
+    const weapon = tableFor(body, 'weapon')
+    const armour = tableFor(body, 'armour')
+    const requirements = tableFor(body, 'req')
+    const tagsTable = tableFor(body, 'tags') ?? ''
+    const tags = [...tagsTable.matchAll(/([A-Za-z0-9_]+)\s*=\s*true/g)].map(match => match[1]).sort()
+    const sharedBaseFields = {
+      name: key,
+      type: string(body, 'type'),
+      implicit: string(body, 'implicit') || null,
+      spirit: number(body, 'spirit'),
+      socketLimit: number(body, 'socketLimit'),
+      requirements: requirements ? namedNumericTable(body, 'req') : {},
+      tags,
+      sourceFile: relative,
+    }
+    itemBases.push({
+      ...sharedBaseFields,
+    })
+    if (weapon) {
+      bases.push({
+        ...sharedBaseFields,
+        physicalMin: number(weapon, 'PhysicalMin') ?? 0,
+        physicalMax: number(weapon, 'PhysicalMax') ?? 0,
+        fireMin: number(weapon, 'FireMin') ?? 0,
+        fireMax: number(weapon, 'FireMax') ?? 0,
+        coldMin: number(weapon, 'ColdMin') ?? 0,
+        coldMax: number(weapon, 'ColdMax') ?? 0,
+        lightningMin: number(weapon, 'LightningMin') ?? 0,
+        lightningMax: number(weapon, 'LightningMax') ?? 0,
+        chaosMin: number(weapon, 'ChaosMin') ?? 0,
+        chaosMax: number(weapon, 'ChaosMax') ?? 0,
+        critChance: number(weapon, 'CritChanceBase') ?? 5,
+        attacksPerSecond: number(weapon, 'AttackRateBase') ?? 1,
+      })
+    }
+    if (armour) {
+      equipmentBases.push({
+        name: key,
+        type: string(body, 'type'),
+        armour: number(armour, 'Armour') ?? 0,
+        evasion: number(armour, 'Evasion') ?? 0,
+        energyShield: number(armour, 'EnergyShield') ?? 0,
+        ward: number(armour, 'Ward') ?? 0,
+        movementPenalty: number(armour, 'MovementPenalty') ?? 0,
+        socketLimit: number(body, 'socketLimit'),
+        requirements: requirements ? namedNumericTable(body, 'req') : {},
+        sourceFile: relative,
+      })
+    }
+  }
+}
+
 const payload = {
-  schemaVersion: 4,
+  schemaVersion: 6,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -221,14 +303,18 @@ const payload = {
     'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',
     'PoB2 calculation reference is not represented as a technical GGG identity chain.',
     'Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved.',
+    'Support records retain exact structured compatibility types and numeric stats; conditional stats are not automatically treated as unconditional effects.',
     'Quest Spirit rewards are exact, but character level only provides a planning upper bound and does not prove quest completion.',
   ],
   skills: skills.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
+  supports: supports.sort((a, b) => a.sourceRecordId.localeCompare(b.sourceRecordId)),
   weaponBases: bases.sort((a, b) => a.name.localeCompare(b.name)),
+  equipmentBases: equipmentBases.sort((a, b) => a.name.localeCompare(b.name)),
+  itemBases: itemBases.sort((a, b) => a.name.localeCompare(b.name) || a.sourceFile.localeCompare(b.sourceFile)),
 }
 const canonical = JSON.stringify(payload)
 const output = { ...payload, contentHash: crypto.createHash('sha256').update(canonical).digest('hex') }
 const target = path.join(root, 'generated', 'pob2', 'damage-reference.json')
 fs.mkdirSync(path.dirname(target), { recursive: true })
 fs.writeFileSync(target, `${JSON.stringify(output, null, 2)}\n`)
-console.log(JSON.stringify({ target, skills: skills.length, weaponBases: bases.length, contentHash: output.contentHash }))
+console.log(JSON.stringify({ target, skills: skills.length, supports: supports.length, weaponBases: bases.length, equipmentBases: equipmentBases.length, itemBases: itemBases.length, contentHash: output.contentHash }))

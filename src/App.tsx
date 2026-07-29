@@ -50,6 +50,7 @@ export default function App() {
       ...analysis.uniqueAnalysis.topDefensiveUniques,
     ],
     uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
+    characterLevel:character.level,
   }):[]
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -105,7 +106,9 @@ export default function App() {
             })
             return [...filled, fillRecommendedSupportSlots(
               preparedValue,
-              skillResult.supportAnalysis.topCandidates,
+              skillResult.supportAnalysis.topCandidates.length
+                ? skillResult.supportAnalysis.topCandidates
+                : skillResult.supportAnalysis.eligibleCandidates,
               buildAssistantCandidates.supports,
               supportCapacityFor(preparedValue),
               {
@@ -114,7 +117,7 @@ export default function App() {
                 skills: buildAssistantCandidates.skills,
                 characterLevel: characterForAnalysis.level || undefined,
               },
-              true,
+              false,
             )]
           }, [])
         const evaluatePackage = (
@@ -151,7 +154,11 @@ export default function App() {
             equipment,
             setups: packageSetups,
           })
-          return evaluateAnalyzedBuildPackage(candidate, packageAnalysis)
+          const hasEquipment = equipment.some(entry =>
+            Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId || entry.modifierValues.length))
+          return evaluateAnalyzedBuildPackage(candidate, packageAnalysis, {
+            allowPlannedEquipmentRequirements: !hasEquipment,
+          })
         }
         let result = runBuildAssistantV1(input)
         completedAnalyzerResult=result
@@ -171,7 +178,7 @@ export default function App() {
             setups: preparedSetups,
             skills: buildAssistantCandidates.skills,
             supports: buildAssistantCandidates.supports,
-            skillScores: result.skillAnalysis.allCandidates,
+            skillScores: mainCandidates,
             characterLevel: character.level || undefined,
             evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
           })
@@ -309,7 +316,11 @@ export default function App() {
             passiveTree: officialPassiveTree,
             realPassivePlanning: passiveAwareResult.realPassivePlanning!,
           })
-          if (initialResourceRisk.hardConflictSetupIds.length || initialResourceRisk.totalPenalty > 0) {
+          // Eine zweite vollständige Baumsuche ist nur für einen harten,
+          // bestätigten Ressourcenkonflikt gerechtfertigt. Weiche Risiken
+          // behandelt der nachfolgende Support-Rebalancer ohne den teuren
+          // Passivlauf zu wiederholen.
+          if (initialResourceRisk.hardConflictSetupIds.length) {
             await passiveController.analyze({ ...passiveInput, resourcePriority: 'undercoverage' })
             const resourceAwareCandidate = passiveController.getState().result
             if (resourceAwareCandidate?.realPassivePlanning) {
@@ -330,9 +341,6 @@ export default function App() {
               if (candidateImproves) {
                 passiveAwareResult = resourceAwareCandidate
                 passivePlanAdjustedForResources = true
-              } else {
-                await passiveController.analyze(passiveInput)
-                passiveAwareResult = passiveController.getState().result ?? passiveAwareResult
               }
             }
           }
@@ -415,7 +423,7 @@ export default function App() {
         skills: buildAssistantCandidates.skills,
         characterLevel: character.level || undefined,
       },
-      true,
+      false,
     )
     setSetups(setups.map(value => value.id === setupId ? filled : value))
     invalidateResult()

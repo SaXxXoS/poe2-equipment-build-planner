@@ -43,7 +43,7 @@ function spellComponents(skill:NumericSkill):DamageComponent[] {
   })
 }
 function weaponComponents(weapon:WeaponBase|undefined,entry:EquipmentEntry):DamageComponent[] {
-  if(entry.weaponStats){
+  if(entry.weaponStats&&entry.weaponStatsSource!=='pinned-base'){
     const observed=[
       ['physical',entry.weaponStats.physicalDamage],
       ['fire',entry.weaponStats.fireDamage],
@@ -113,7 +113,7 @@ export function estimateHitDamage(input:{
     const weaponName=weaponEntry?.baseDisplayName??weaponEntry?.itemDefinitionId
     const weapon=weaponName?weaponsByName.get(weaponName.toLocaleLowerCase('en')):undefined
     const weaponValueScope=weaponEntry?itemValueScopeModel.entries.find(entry=>entry.itemId===weaponEntry.id):undefined
-    const hasObservedWeaponBasis=Boolean(weaponEntry?.weaponStats?.attacksPerSecond&&[
+    const hasObservedWeaponBasis=Boolean(weaponEntry?.weaponStatsSource!=='pinned-base'&&weaponEntry?.weaponStats?.attacksPerSecond&&[
       weaponEntry.weaponStats.physicalDamage,
       weaponEntry.weaponStats.fireDamage,
       weaponEntry.weaponStats.coldDamage,
@@ -123,9 +123,10 @@ export function estimateHitDamage(input:{
     if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
     if(weaponValueScope&&!weaponValueScope.productive)return{...base,status:'unavailable',warnings:[`${weaponValueScope.detail} Der Waffenschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
-    const localAttackSpeed=weaponEntry.weaponStats?0:valueFor(weaponEntry,/local_attack_speed_\+%|attack_speed_\+%_local/)
-    actionsPerSecond=(weaponEntry.weaponStats?.attacksPerSecond??weapon!.attacksPerSecond)*(1+localAttackSpeed/100)*(1+skill.attackSpeedMultiplier/100)
-    included.push(weaponEntry.weaponStats?'eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität':'Waffenbasis mit einmalig angewandten lokalen Affixen','Angriffsmultiplikator',weaponEntry.weaponStats?.attacksPerSecond?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
+    const hasObservedFinalWeaponStats=weaponEntry.weaponStatsSource!=='pinned-base'&&Boolean(weaponEntry.weaponStats)
+    const localAttackSpeed=hasObservedFinalWeaponStats?0:valueFor(weaponEntry,/local_attack_speed_\+%|attack_speed_\+%_local/)
+    actionsPerSecond=(hasObservedFinalWeaponStats?weaponEntry.weaponStats?.attacksPerSecond:weapon?.attacksPerSecond)!*(1+localAttackSpeed/100)*(1+skill.attackSpeedMultiplier/100)
+    included.push(hasObservedFinalWeaponStats?'eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität':'Waffenbasis mit einmalig angewandten lokalen Affixen','Angriffsmultiplikator',hasObservedFinalWeaponStats?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
     if(weaponEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Waffenbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
   }else{
     components=spellComponents(skill)

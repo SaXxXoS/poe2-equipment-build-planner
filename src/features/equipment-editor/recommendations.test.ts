@@ -18,7 +18,7 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
         numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
         equipmentFirst:false,status:'selected',alternatives:[],
         selected:{
-          skillId:'spark',weaponType:'wand',weaponLabel:'Zauberstab',
+          skillId:'spark',skillName:'Funken',weaponType:'wand',weaponLabel:'Zauberstab',
           mainWeaponSet:'set-1',setupSkillId:'orb',setupWeaponType:'wand',
           compatibleSupportIds:[],affinityScore:1,passiveAffinityScore:1,
           analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
@@ -62,7 +62,7 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
         numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
         equipmentFirst:true,status:'selected',alternatives:[],
         selected:{
-          skillId:'snap',weaponType:'wand',weaponLabel:'Zauberstab',
+          skillId:'snap',skillName:'Zerschlagen',weaponType:'wand',weaponLabel:'Zauberstab',
           mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,
           passiveAffinityScore:1,analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
         },
@@ -71,5 +71,34 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       uniqueNames:new Map([['unique-bow','Peripherie']]),
     })
     expect(suggestions.some(value=>value.uniqueItemId==='unique-bow')).toBe(true)
+  })
+
+  it('liefert für belegte Waffenarten eine konkrete gepinnte Basis mit Grundwerten',()=>{
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment,
+      optimization:{
+        evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
+        equipmentFirst:false,status:'selected',alternatives:[],
+        selected:{
+          skillId:'bow-skill',skillName:'Bogenfertigkeit',weaponType:'bow',weaponLabel:'Bogen',
+          mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,
+          passiveAffinityScore:1,analyzerScore:1,modeledDps:null,
+          damageObjectiveScore:0,numericCoverageStatus:'unavailable',
+          totalScore:1,reasons:[],
+        },
+      },
+      uniqueRecommendations:[],
+      uniqueNames:new Map(),
+    })
+    expect(suggestions[0]).toMatchObject({
+      slotId:'slot-weapon-set-1-left',
+      source:'weapon-optimizer',
+      itemClassId:'Bows',
+    })
+    expect(suggestions[0].itemDefinitionId).toBeTruthy()
+    expect(suggestions[0].baseDisplayName).toBeTruthy()
+    expect(suggestions[0].weaponStats?.attacksPerSecond).toBeGreaterThan(0)
+    expect(suggestions[0].weaponStats?.physicalDamage?.maximum).toBeGreaterThan(0)
   })
 })

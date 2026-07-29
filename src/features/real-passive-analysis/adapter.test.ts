@@ -31,6 +31,8 @@ describe('UI-zu-Passive-Worker-Adapter', () => {
       requestId: 'request',
       sourceVersion: REAL_PASSIVE_UI_SOURCE_VERSION,
       pointBudget: 20,
+      candidatePoolLimit: 50,
+      maximumSelectedTargets: 50,
       characterContext: { classId: '6' },
       requiredTargetNodeIds: [],
       resourcePriority: 'normal',

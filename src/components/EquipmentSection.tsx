@@ -41,7 +41,22 @@ export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entr
     const suggestion=suggestions.find(value=>value.slotId===id)
     return entry && <EquipmentSlot key={id} entry={entry} compact={compact} suggestion={suggestion} onClick={() => suggestion&&!inferItemRarity(entry)?setActiveSuggestion(suggestion):setActive(entry)}/>
   }
-  const suggestedEntry=activeSuggestion&&entries.find(value=>value.slotId===activeSuggestion.slotId)
+  const rawSuggestedEntry=activeSuggestion&&entries.find(value=>value.slotId===activeSuggestion.slotId)
+  const suggestedEntry=rawSuggestedEntry&&activeSuggestion?.source==='weapon-optimizer'?{
+    ...rawSuggestedEntry,
+    rarity:'normal' as const,
+    itemClassId:activeSuggestion.itemClassId,
+    itemDefinitionId:activeSuggestion.itemDefinitionId,
+    baseDisplayName:activeSuggestion.baseDisplayName,
+    weaponStats:activeSuggestion.weaponStats,
+    weaponStatsSource:'pinned-base' as const,
+  }:rawSuggestedEntry&&activeSuggestion?.source==='unique-analyzer'?{
+    ...rawSuggestedEntry,
+    rarity:'unique' as const,
+    uniqueItemId:activeSuggestion.uniqueItemId,
+    uniqueVariantId:undefined,
+    modifierValues:[],
+  }:rawSuggestedEntry
   const suggestedUnique=activeSuggestion?.uniqueItemId?localizedPob2UniquesDe.find(value=>value.id===activeSuggestion.uniqueItemId):undefined
   const unversionedUniqueLines=suggestedUnique&&!suggestedUnique.variants.length?localizedPob2LinesForVariant(suggestedUnique):undefined
   return <section id="equipment"><h2>2. Ausrüstung</h2><p className="muted">Tippe einen Platz an, um deinen Gegenstand einzutragen.</p>

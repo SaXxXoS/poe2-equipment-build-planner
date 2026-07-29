@@ -2,6 +2,7 @@ import catalog from '../../generated/poe2-gems/catalog.json'
 import germanDisplay from '../../generated/localization/de/poe2-gems.json'
 import type { MechanicTag, SkillGemDefinition, SupportGemDefinition, SyntheticWeaponType } from '../domain'
 import { metaSocketRuleFor } from '../features/skills/meta-skills'
+import { pob2QuantitativeEffectsFor } from './pob2-support-reference'
 
 const supportedTags = new Set<MechanicTag>([
   'attack', 'spell', 'projectile', 'melee', 'area', 'physical', 'fire', 'cold',
@@ -121,6 +122,7 @@ export const repoeSupportCatalog: SupportGemDefinition[] = catalog.supports.map(
     costMultiplierPercent: item.costMultiplierStatus === 'structured-exact' && item.costMultiplierPercent != null
       ? item.costMultiplierPercent
       : undefined,
+    quantitativeEffects: pob2QuantitativeEffectsFor(item.nameEn),
     enabled: true,
     experimental: true,
     selectionOnly: true,

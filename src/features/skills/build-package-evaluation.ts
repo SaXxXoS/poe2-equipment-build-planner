@@ -15,6 +15,7 @@ const scoreValue = (score: Pick<Score, 'totalScore'> | undefined) =>
 export function evaluateAnalyzedBuildPackage(
   candidate: BuildVariantCandidate,
   analysis: BuildAnalysis,
+  options: { allowPlannedEquipmentRequirements?: boolean } = {},
 ): BuildPackageEvaluation {
   const selectedSkill = analysis.skillAnalysis.allCandidates.find(
     recommendation => recommendation.skillId === candidate.skillId,
@@ -35,15 +36,27 @@ export function evaluateAnalyzedBuildPackage(
   const uniqueCandidates = analysis.uniqueAnalysis.topDamageUniques
     .filter(item => item.valid && item.supportsCurrentBuild)
     .slice(0, 3)
+  const relatedBlockingWarnings = analysis.warnings.filter(item => item.blocking && (
+    item.sourceId === candidate.skillId
+    || candidate.compatibleSupportIds.includes(item.sourceId ?? '')
+  ))
+  const requirementOnlyInvalid = Boolean(
+    options.allowPlannedEquipmentRequirements
+    && relatedBlockingWarnings.length
+    && relatedBlockingWarnings.every(item =>
+      item.messageKey === 'engine.skill.constraint.skill-attribute-deficit'),
+  )
   const blockers = [
-    ...(!selectedSkill?.valid ? ['Die Hauptfertigkeit wurde vom Skill Analyzer blockiert.'] : []),
+    ...(!selectedSkill?.valid && !requirementOnlyInvalid
+      ? ['Die Hauptfertigkeit wurde vom Skill Analyzer blockiert.']
+      : []),
     ...selectedSupports
       .filter(item => !item.valid)
       .map(item => `Support ${item.supportId} ist für diese Hauptfertigkeit technisch blockiert.`),
-    ...analysis.warnings
-      .filter(item => item.blocking && (
-        item.sourceId === candidate.skillId
-        || candidate.compatibleSupportIds.includes(item.sourceId ?? '')
+    ...relatedBlockingWarnings
+      .filter(item => !(
+        options.allowPlannedEquipmentRequirements
+        && item.messageKey === 'engine.skill.constraint.skill-attribute-deficit'
       ))
       .map(item => item.messageKey),
   ]

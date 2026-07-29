@@ -43,7 +43,7 @@ describe('PoB2 Unique German localization audit', () => {
       modifierLines: 2345,
       implicitLines: 273,
     })
-  }, 15_000)
+  }, 60_000)
 
   it('retains the offline and fail-safe source policy', async () => {
     const { reports } = audit

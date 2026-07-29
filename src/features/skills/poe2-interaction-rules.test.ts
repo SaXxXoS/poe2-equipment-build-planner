@@ -80,6 +80,33 @@ describe('zentrale PoE2-Interaktionsregeln', () => {
     })
   })
 
+  it('behandelt mehrere unterstützte Schadensarten und Mechaniken als erlaubte Alternativen', () => {
+    const elementalArea = {
+      id: 'elemental-area',
+      displayNameDe: 'Elementarer Flächensupport',
+      dataVersion: 'test',
+      source: 'local-placeholder',
+      status: 'placeholder',
+      tags: [],
+      requiredTags: [],
+      excludedTags: [],
+      ownTags: [],
+      supportedDamageTypes: ['fire', 'cold', 'lightning'],
+      supportedMechanics: ['area', 'projectile'],
+      enabled: true,
+    } satisfies SupportGemDefinition
+    expect(evaluateSupportInteraction(
+      skill('fire-area', 'Fire Area', ['spell', 'area', 'fire']),
+      elementalArea,
+      'wand',
+    )).toMatchObject({ status: 'productive' })
+    expect(evaluateSupportInteraction(
+      skill('physical-melee', 'Physical Melee', ['attack', 'melee', 'physical']),
+      elementalArea,
+      'mace',
+    )).toMatchObject({ status: 'blocked' })
+  })
+
   it('belegt Kugel der Stürme nur für einen Blitzzauber', () => {
     const orb = skill('orb', 'Orb of Storms', ['spell', 'area', 'lightning'])
     expect(evaluateSkillInteraction(

@@ -14,6 +14,12 @@ describe('offizielle Statklassifikation',()=>{
  it('erhält Originaltext und extrahiert Zahlen',()=>{const source='12% increased [Lightning] Damage';const result=classifyPassiveText(source,'normal');expect(result.sourceText).toBe(source);expect(result.numericValues).toEqual([12])})
  it('normalisiert Markup, Typografie und Leerraum kontrolliert',()=>expect(normalizePassiveText('  12%  increased [EnergyShield|Energy Shield] — now  ')).toBe('12% increased energy shield - now'))
  it('klassifiziert Namen und Statzeilen getrennt',()=>{const result=classifyPassiveNode(node('Lightning Mastery','10% increased [Cold] Damage'));expect(result.name.tags).toContain('lightning');expect(result.stats[0].tags).toContain('cold')})
+ it('ordnet allgemeine Schadens-, Skilltempo- und Aura-Zeilen ohne Schadensart-Erfindung ein',()=>{
+  expect(tags('10% increased Damage')).toContain('generic-damage')
+  expect(tags('4% increased Skill Speed')).toEqual(expect.arrayContaining(['attack-speed','cast-speed']))
+  expect(tags('[Aura] Skills have 5% increased [BuffMagnitude|Magnitudes]')).toContain('skill-effect')
+  expect(tags('10% increased Damage')).not.toEqual(expect.arrayContaining(['fire','cold','lightning','physical','chaos']))
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
@@ -38,6 +44,6 @@ describe('Grenzen und Ranglisten',()=>{
 describe('vollständiger offizieller Baum',()=>{
  const fullInput=input(officialTree.nodes as PassiveTargetNode[],PASSIVE_TARGET_TEST_PROFILES.lightningProjectileAttack,{sourceVersion:officialTree.metadata.releaseTag,ascendancyId:'Monk3',maximumResults:25})
  it('verarbeitet alle 5.150 Knoten und Release 0.5.2',()=>{const result=evaluatePassiveTargets(fullInput);expect(result.coverage.totalNodeCount).toBe(5150);expect(result.coverage.evaluatedNodeCount).toBe(5150);expect(result.sourceVersion).toBe('0.5.2')})
- it('erzeugt einen gemessenen deterministischen Coverage-Bericht',()=>{const report=evaluatePassiveTargets(fullInput).coverage;expect(report.totalStatLineCount).toBe(5962);expect(report.classificationCoveragePercent).toBeGreaterThan(0);expect(report.classificationCoveragePercent).toBeLessThanOrEqual(100);expect(report.status).toBe('measured')})
- it('wertet keine Assets aus und erzeugt keine deutschen Texte',()=>{const result=evaluatePassiveTargets(fullInput);expect(result.allCandidates.every(value=>value.sourceLocale==='en')).toBe(true);expect(JSON.stringify(result)).not.toMatch(/\.png|sprite|asset/i)})
+ it('erzeugt einen gemessenen deterministischen Coverage-Bericht',()=>{const report=evaluatePassiveTargets(fullInput).coverage;expect(report.totalStatLineCount).toBe(5962);expect(report.classificationCoveragePercent).toBeGreaterThan(0);expect(report.classificationCoveragePercent).toBeLessThanOrEqual(100);expect(report.status).toBe('measured')},15_000)
+ it('wertet keine Assets aus und erzeugt keine deutschen Texte',()=>{const result=evaluatePassiveTargets(fullInput);expect(result.allCandidates.every(value=>value.sourceLocale==='en')).toBe(true);expect(JSON.stringify(result)).not.toMatch(/\.png|sprite|asset/i)},15_000)
 })

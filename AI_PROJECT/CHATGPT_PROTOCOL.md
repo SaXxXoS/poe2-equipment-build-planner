@@ -2521,3 +2521,44 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Audit:
   `docs/audits/build-assistant-meta-parity-readiness.json`.
 - Vollständiges PoE2-Verständnis und globale Meta-Optimalität: **Unbekannt**.
+
+## Selbstständiger Abschlusslauf des Build-Assistenten (2026-07-29)
+
+- Auftraggeberauftrag: Die App mit allen bisher besprochenen Bausteinen
+  selbstständig fertig verbinden.
+- Ausgangscommit:
+  `15f6fad38c3257ca71bf2c875a156539aed48214`.
+- Die bestehende Architektur bleibt unverändert:
+  Eingabe → BuildProfile → vorhandene Analyzer → gemeinsame
+  Paketoptimierung → deutsche Ergebnisdarstellung.
+- Eine neue gepinnte Buildzeitdatei trennt `322` Waffenbasen, `1.273`
+  Rüstungsbasen und `415` sonstige Itembasen. Waffen erhalten keine
+  Rüstungs-, Ausweich- oder Energieschildfelder.
+- `generated/pob2/damage-reference.json` verwendet Schema `6` mit `337`
+  Skillreferenzen, `540` Support-Quelldatensätzen und `1.833` Itembasen.
+- Supportlisten mit alternativen erlaubten Skilltypen werden korrekt als
+  ODER-Regel ausgewertet; harte Ausschlüsse bleiben verbindlich.
+- Equipment-first bleibt vorrangig. Ohne Ausrüstung darf ein geplantes
+  Waffen-/Skillpaket erzeugt werden; fehlende Attribute bleiben dabei
+  sichtbare Ausrüstungsanforderungen.
+- Browserbeleg ohne Ausrüstung:
+  Sturmweberin → Funken in Set 1, Gewittersphäre und
+  Elementarempfindlichkeit in Set 2 sowie belegte Supports.
+- `Alles zurücksetzen` synchronisiert die sichtbaren Charakterzahlen wieder
+  in einen tatsächlich leeren Zustand.
+- Die passive Stat-Coverage beträgt gemessen `85,32 %`
+  (`5.087 / 5.962` Statzeilen). Allgemeiner Schaden, Skilltempo und
+  Auraeffekt werden ohne erfundene Schadensart berücksichtigt.
+- Desktop und Mobil `390 × 844` geprüft: keine horizontale Überbreite,
+  einspaltige Skillkarten, Set-Zuordnung und Detaildialoge bedienbar, keine
+  neuen Konsolenfehler oder -warnungen.
+- Produktpins bleiben unverändert. Kein Runtime-Netzwerk, kein Scraping,
+  keine Trade-API, keine zweite Engine und keine erfundenen GGG-IDs.
+- Globale Optimalität, vollständige PoB-DPS und Meta-Überlegenheit:
+  **Unbekannt / nicht belegt**.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_AUTONOMOUS_COMPLETION_2026_07_29.md`.
+- Verifikation: serieller Gesamtlauf `1.314/1.314`, anschließender fokussierter
+  UI-/Itembasis-/Optimierungslauf `31/31`, Lint und Typecheck erfolgreich,
+  Produktions- und Pages-Build erfolgreich, `166` JSON-Dateien validiert,
+  `git diff --check` erfolgreich und keine lokalen Audit-Rohdaten versioniert.

@@ -73,7 +73,7 @@ const immutableFiles = {
   '../../src/engine/uniques/analyzer.ts': 'c89177fd560e649be82ae5a597eda775db7aead8c74a0c747318e71597c67383',
   '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
   // V1.3 explicitly authorizes rarity/socket transport; source separation remains guarded below.
-  '../../src/domain/equipment.ts': '03dc2aa677a14ad920a540a2af062a8031be9c26f7bb5a47b906ebb22f595a08',
+  '../../src/domain/equipment.ts': 'e4559afe880a20ab4bd19f859820744b98fefef65c1153ddd723a068b659ebb3',
   '../../src/engine/orchestration/analyze-build.ts': 'a4ead144b898662c9149ffec2886f2a4fd20c8bf4b4e80215d95de35d58ed956',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
   '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',

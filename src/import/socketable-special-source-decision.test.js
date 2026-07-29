@@ -107,7 +107,7 @@ const immutableFiles = {
   // mobile correction only replaces the weapon-value controls; the follow-up
   // removes the unrequested range input. Source scopes and socketable product
   // boundaries remain unchanged.
-  '../../src/components/AffixDialog.tsx': '280720b2c6754e09cdc5500674faf20e93dbdf2814c1e33643e414f26971c060',
+  '../../src/components/AffixDialog.tsx': '66b5e75eb2af317784d4ef480a89d4a09531302e7e8b930348a945e3460a85a6',
   '../../src/engine/common/types.ts': 'ae1657637df03da215ae79eacf81e11e977c2e2cf9e2121138bd210043dcf2d2',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',

@@ -5,6 +5,7 @@ import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
 
 const candidate: BuildVariantCandidate = {
   skillId: 'skill-main',
+  skillName: 'Hauptfertigkeit',
   skillTags: ['spell'],
   weaponType: 'wand',
   weaponLabel: 'Zauberstab',
@@ -70,5 +71,18 @@ describe('gemeinsame Build-Paketbewertung', () => {
     const result = evaluateAnalyzedBuildPackage(candidate, analysis(false))
     expect(result.status).toBe('blocked')
     expect(result.blockers).toContain('Die Hauptfertigkeit wurde vom Skill Analyzer blockiert.')
+  })
+  it('führt einen reinen Attributmangel ohne vorhandene Ausrüstung als planbare Anforderung', () => {
+    const value = analysis(false)
+    value.warnings = [{
+      blocking: true,
+      sourceId: 'skill-main',
+      messageKey: 'engine.skill.constraint.skill-attribute-deficit',
+    }] as BuildAnalysis['warnings']
+    const result = evaluateAnalyzedBuildPackage(candidate, value, {
+      allowPlannedEquipmentRequirements: true,
+    })
+    expect(result.status).not.toBe('blocked')
+    expect(result.blockers).not.toContain('engine.skill.constraint.skill-attribute-deficit')
   })
 })

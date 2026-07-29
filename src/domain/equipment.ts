@@ -57,7 +57,9 @@ export interface EquipmentEntry {
   itemLevel?: number
   quality?: number
   defences?: EquipmentDefences
+  defencesSource?: 'pinned-base' | 'observed-final'
   weaponStats?: EquipmentWeaponStats
+  weaponStatsSource?: 'pinned-base' | 'observed-final'
   uniqueItemId?: EntityId
   uniqueVariantId?: EntityId
   observedUniqueLines?: string[]

@@ -18,6 +18,11 @@ import {
   weaponTypeMatches,
 } from './poe2-interaction-rules'
 import { buildEffectGraph } from './build-effect-graph'
+import {
+  weaponBaseValuesFor,
+  weaponStatsFromBase,
+  type WeaponBaseValue,
+} from '../equipment-editor/weapon-base-values'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
@@ -51,6 +56,7 @@ const rangedWeapons = new Set<SyntheticWeaponType>(['bow', 'crossbow', 'wand'])
 
 export interface BuildVariantCandidate {
   skillId: string
+  skillName: string
   skillTags?: MechanicTag[]
   weaponType: SyntheticWeaponType
   weaponLabel: string
@@ -133,7 +139,9 @@ function equipmentWeaponSets(equipment: EquipmentEntry[]) {
 
 function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof equipmentWeaponSets>) {
   const equippedTypes = [...new Set([...equipped['set-1'], ...equipped['set-2']])]
-  if (equippedTypes.length) return equippedTypes.filter(type => evaluateSkillWeaponCompatibility(skill, type).status === 'productive')
+  const compatibleEquipped = equippedTypes.filter(type =>
+    evaluateSkillWeaponCompatibility(skill, type).status === 'productive')
+  if (compatibleEquipped.length) return compatibleEquipped
   if (skill.requiredWeaponTypes?.length) {
     return skill.requiredWeaponTypes.flatMap(type =>
       type === 'melee-weapon' ? [...meleeWeapons]
@@ -144,6 +152,63 @@ function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof
   }
   if (skill.tags.includes('spell')) return ['wand'] satisfies SyntheticWeaponType[]
   return []
+}
+
+const weaponBaseClasses: Partial<Record<SyntheticWeaponType, string[]>> = {
+  axe: ['One Hand Axes', 'Two Hand Axes'], bow: ['Bows'], claw: ['Claws'],
+  crossbow: ['Crossbows'], dagger: ['Daggers'], flail: ['Flails'],
+  mace: ['One Hand Maces', 'Two Hand Maces'], quarterstaff: ['Quarterstaves'],
+  spear: ['Spears'], sword: ['One Hand Swords', 'Two Hand Swords'],
+}
+
+function rawWeaponOutput(base: WeaponBaseValue): number {
+  const stats = weaponStatsFromBase(base)
+  return [
+    stats.physicalDamage, stats.fireDamage, stats.coldDamage,
+    stats.lightningDamage, stats.chaosDamage,
+  ].reduce((sum, range) => sum + (range ? (range.minimum + range.maximum) / 2 : 0), 0)
+    * (stats.attacksPerSecond ?? 0)
+}
+
+function referenceWeapon(
+  weapon: SyntheticWeaponType,
+  characterLevel: number | undefined,
+  set: 'set-1' | 'set-2',
+): EquipmentEntry | null {
+  const base = (weaponBaseClasses[weapon] ?? [])
+    .flatMap(itemClassId => weaponBaseValuesFor(itemClassId))
+    .filter(value => value.requiredLevel === null || characterLevel === undefined || value.requiredLevel <= characterLevel)
+    .sort((left, right) => rawWeaponOutput(right) - rawWeaponOutput(left) || left.id.localeCompare(right.id))[0]
+  if (!base) return null
+  return {
+    id: `optimizer-reference-${set}-${base.id}`,
+    slotId: `slot-weapon-${set}-left`,
+    itemClassId: base.itemClassId,
+    itemDefinitionId: base.id,
+    baseDisplayName: base.nameEn,
+    weaponStats: weaponStatsFromBase(base),
+    weaponStatsSource: 'pinned-base',
+    modifierValues: [],
+  }
+}
+
+function equipmentForEstimate(
+  equipment: EquipmentEntry[],
+  skill: SkillGemDefinition,
+  weapon: SyntheticWeaponType,
+  set: 'set-1' | 'set-2',
+  characterLevel: number | undefined,
+): EquipmentEntry[] {
+  if (!skill.tags.includes('attack')) return equipment
+  const hasCompatibleWeapon = equipment.some(entry => {
+    if (!entry.slotId.includes(`weapon-${set}`) || !entry.itemClassId) return false
+    const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
+    const technical = itemClass?.weaponType.toLowerCase()
+    return concreteWeapons.some(type => technical?.includes(type) && type === weapon)
+  })
+  if (hasCompatibleWeapon) return equipment
+  const reference = referenceWeapon(weapon, characterLevel, set)
+  return reference ? [...equipment, reference] : equipment
 }
 
 function supportCompatible(skill: SkillGemDefinition, support: SupportGemDefinition, weapon: SyntheticWeaponType) {
@@ -245,9 +310,17 @@ export function optimizeBuildVariants(input: {
   const equipped = equipmentWeaponSets(input.equipment)
   const equipmentFirst = equipped['set-1'].size + equipped['set-2'].size > 0
   const scores = new Map(input.skillScores.map(value => [value.skillId, value]))
+  const hasValidMainScore = input.skillScores.some(value =>
+    value.valid && value.possibleRoles.includes('main'))
   const eligibleSkills = input.skills.filter(skill => {
     const score = scores.get(skill.id)
-    if (skill.enabled === false || !score?.valid || !score.possibleRoles.includes('main')) return false
+    if (skill.enabled === false) return false
+    // Bei einem vollständig leeren Build kann der Skill-Analyzer noch keinen
+    // Kandidaten als gültig markieren, weil ihm der Build-Treiber fehlt. In
+    // genau diesem Bootstrap-Fall übernimmt der Variantenoptimierer die
+    // Vorauswahl anhand der strukturierten Skill-/Waffenregeln. Sobald ein
+    // gültiger Analyzer-Kandidat existiert, gelten dessen Ausschlüsse wieder.
+    if (hasValidMainScore && score && (!score.valid || !score.possibleRoles.includes('main'))) return false
     if (skill.possibleRoles?.length && !skill.possibleRoles.includes('main')) return false
     return characterAllowsSkill(skill, input.classId, input.ascendancyId)
   })
@@ -266,7 +339,13 @@ export function optimizeBuildVariants(input: {
         blockedCombinationCount += 1
         return []
       }
-      const score = scores.get(skill.id)!
+      const score = scores.get(skill.id) ?? {
+        skillId: skill.id,
+        valid: true,
+        possibleRoles: ['main'],
+        totalScore: 0,
+        damageScore: 0,
+      }
       const affinity = scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId)
       const mainSetup = input.setups.find(value => value.role === 'main') ?? input.setups[0]
       if (!mainSetup) return []
@@ -304,10 +383,14 @@ export function optimizeBuildVariants(input: {
         ? setup
         : undefined
       const mainWeaponSet = preferredSet(weapon, equipped)
+      const estimateEquipment = equipmentForEstimate(
+        input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
+      )
       const estimate = estimateHitDamage({
-        equipment: input.equipment,
+        equipment: estimateEquipment,
         setups: [{ ...mainSetup, skillId: skill.id, role: 'main', weaponSet: mainWeaponSet, supportGemIds: supportIds }],
         skills: input.skills,
+        supports: input.supports,
         fallbackSkillId: skill.id,
         characterLevel: input.characterLevel,
       })
@@ -356,7 +439,11 @@ export function optimizeBuildVariants(input: {
         + weaponEvidenceScore
         + supportIds.length * 4
         + setupScore
-        + metaReference.score
+        // Ohne eingegebene Ausrüstung fehlt das vorrangige Equipment-Signal.
+        // Dann darf der gepinnte, ascendancy-spezifische Snapshot stärker
+        // zwischen bereits hart kompatiblen Kandidaten unterscheiden. Er
+        // überstimmt weiterhin keine Waffen-, Skill- oder Supportregel.
+        + metaReference.score * (equipmentFirst ? 1 : 40)
         + Math.min(60, ruleGraph.productiveEdgeCount * 6)
         - resourcePenalty,
       )
@@ -379,6 +466,7 @@ export function optimizeBuildVariants(input: {
       ]
       return [{
         skillId: skill.id,
+        skillName: skill.displayNameDe || skill.nameEn || skill.id,
         skillTags: [...skill.tags],
         weaponType: weapon,
         weaponLabel: weaponLabelFor(weapon),

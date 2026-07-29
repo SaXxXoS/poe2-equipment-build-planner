@@ -56,9 +56,16 @@ export function resolveItemValueScopeModel(equipment: EquipmentEntry[]): ItemVal
         .filter(modifier => modifier.isLocal !== true)
         .map(modifier => modifier.id)
         .sort()
-      const observedFinalValues = hasValues(entry.weaponStats) || hasValues(entry.defences)
+      const observedFinalValues =
+        hasValues(entry.defences) && entry.defencesSource !== 'pinned-base' ||
+        hasValues(entry.weaponStats) && entry.weaponStatsSource !== 'pinned-base'
       const isWeapon = entry.slotId.includes('weapon-')
-      const hasPinnedBase = isWeapon && Boolean(entry.baseDisplayName || entry.itemDefinitionId)
+      const hasPinnedBase =
+        hasValues(entry.defences) && entry.defencesSource === 'pinned-base' ||
+        isWeapon && (
+          hasValues(entry.weaponStats) && entry.weaponStatsSource === 'pinned-base' ||
+          !hasValues(entry.weaponStats) && Boolean(entry.baseDisplayName || entry.itemDefinitionId)
+        )
       const valueBasis: ItemValueBasis = observedFinalValues
         ? 'observed-final-values'
         : hasPinnedBase
