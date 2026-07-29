@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '10.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '11.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -70,6 +70,9 @@ interface SkillResourceCostChain {
   sustainStatus: 'sustainable-on-confirmed-minimum' | 'burst-affordable-on-confirmed-minimum' | 'unusable-confirmed-zero-mana' | 'blocked-missing-action-frequency' | 'blocked-missing-character-level' | 'blocked-missing-exact-cost-chain'
   actionFrequencyPerSecond: number | null
   manaDemandPerSecond: number | null
+  rageDemandPerSecond: number | null
+  rageSuppressionDurationMs: number | null
+  rageSustainStatus: 'no-rage-cost' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'blocked-missing-exact-cost-chain'
 }
 
 export interface ResourceSpiritModel {
@@ -123,27 +126,47 @@ const unique = <T>(values: T[]) => [...new Set(values)]
 
 const intrinsicCostReference = (record: NumericSkill, level: NumericSkillLevel, statId: string) =>
   `damage-reference:${record.sourceRecordId}:levels.${level.level}.numericStats.${statId}`
+const intrinsicRecordReference = (record: NumericSkill, statId: string) =>
+  `damage-reference:${record.sourceRecordId}:numericStats.${statId}`
 
-const intrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined): IntrinsicSkillCostEffect[] => {
+const intrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined, setup: SkillSetup): IntrinsicSkillCostEffect[] => {
   if (!record || !level) return []
+  const effects: IntrinsicSkillCostEffect[] = []
   const value = Number((level.numericStats as Record<string, number | undefined>)['toxic_domain_mana_cost_+%'])
-  return Number.isFinite(value) ? [{
-    statId: 'toxic_domain_mana_cost_+%',
-    kind: 'cost-increased',
-    value,
-    evidence: 'structured-exact',
-    sourceReference: intrinsicCostReference(record, level, 'toxic_domain_mana_cost_+%'),
-  }] : []
+  if (Number.isFinite(value)) effects.push({
+      statId: 'toxic_domain_mana_cost_+%',
+      kind: 'cost-increased',
+      value,
+      evidence: 'structured-exact',
+      sourceReference: intrinsicCostReference(record, level, 'toxic_domain_mana_cost_+%'),
+    })
+  const suppressionStat = 'channelled_skill_suppress_ongoing_rage_cost_for_first_X_ms'
+  const baseSuppressionMs = Number((record.numericStats as Record<string, number | undefined>)[suppressionStat])
+  const ragePerMinute = Number((level.costs as Record<string, number | undefined>).RagePerMinute)
+  const quality = setup.quality ?? 0
+  if (Number.isFinite(baseSuppressionMs) && Number.isFinite(ragePerMinute) && Number.isInteger(quality) && quality >= 0 && quality <= 23) {
+    const perQuality = Number(record.qualityStats.find(entry => entry.statId === suppressionStat)?.perQuality ?? 0)
+    const suppressionDurationMs = baseSuppressionMs + Math.trunc(perQuality * quality)
+    effects.push({
+      statId: suppressionStat,
+      kind: 'rage-cost-suppressed-window',
+      value: suppressionDurationMs,
+      suppressionDurationMs,
+      ongoingRageCostPerSecond: Number((ragePerMinute / reference.costDivisors.RagePerMinute).toFixed(2)),
+      evidence: 'structured-exact',
+      sourceReference: intrinsicRecordReference(record, suppressionStat),
+    })
+  }
+  return effects
 }
 
-const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined): BlockedIntrinsicSkillCostEffect[] => {
+const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, level: NumericSkillLevel | undefined, setup: SkillSetup): BlockedIntrinsicSkillCostEffect[] => {
   if (!record || !level) return []
   const rules: Array<[string, BlockedIntrinsicSkillCostEffect['reason']]> = [
     ['mana_tempest_mana_cost_%_to_add_to_cost_per_second', 'requires-runtime-spend-rate'],
     ['archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost', 'requires-max-mana-and-target-skill-chain'],
-    ['channelled_skill_suppress_ongoing_rage_cost_for_first_X_ms', 'requires-channel-duration-state'],
   ]
-  return rules.flatMap(([statId, reason]) => {
+  const blocked = rules.flatMap(([statId, reason]) => {
     const value = Number((level.numericStats as Record<string, number | undefined>)[statId])
     return Number.isFinite(value) ? [{
       statId,
@@ -152,6 +175,19 @@ const blockedIntrinsicSkillCostEffects = (record: NumericSkill | undefined, leve
       sourceReference: intrinsicCostReference(record, level, statId),
     }] : []
   })
+  const suppressionStat = 'channelled_skill_suppress_ongoing_rage_cost_for_first_X_ms'
+  const baseSuppressionMs = Number((record.numericStats as Record<string, number | undefined>)[suppressionStat])
+  const ragePerMinute = Number((level.costs as Record<string, number | undefined>).RagePerMinute)
+  const quality = setup.quality ?? 0
+  if (Number.isFinite(baseSuppressionMs) && Number.isFinite(ragePerMinute) && (!Number.isInteger(quality) || quality < 0 || quality > 23)) {
+    blocked.push({
+      statId: suppressionStat,
+      value: baseSuppressionMs,
+      reason: 'requires-valid-normal-quality',
+      sourceReference: intrinsicRecordReference(record, suppressionStat),
+    })
+  }
+  return blocked
 }
 
 const setupAppliesTo = (source: SkillSetup['weaponSet'], target: SkillSetup['weaponSet']) =>
@@ -453,8 +489,8 @@ export function resolveResourceSpiritModel(input: {
       const definition = input.skills.find(value => value.id === setup.skillId)
       const record = recordFor(definition)
       const skillLevel = levelFor(record, setup)
-      const appliedIntrinsicSkillCostEffects = intrinsicSkillCostEffects(record, skillLevel)
-      const blockedSkillCostEffects = blockedIntrinsicSkillCostEffects(record, skillLevel)
+      const appliedIntrinsicSkillCostEffects = intrinsicSkillCostEffects(record, skillLevel, setup)
+      const blockedSkillCostEffects = blockedIntrinsicSkillCostEffects(record, skillLevel, setup)
       const supportCostMultipliers = setup.supportGemIds
         .map(id => input.supports.find(value => value.id === id))
         .flatMap(support => support && Number.isFinite(support.costMultiplierPercent) ? [{
@@ -553,6 +589,21 @@ export function resolveResourceSpiritModel(input: {
           return actionFrequencyPerSecond == null ? null : sum + cost.resourceAdjustedAmount * actionFrequencyPerSecond
         }, 0)
         : null
+      const rageCost = baseCosts.find(cost => cost.resource === 'rage')
+      const rageEffect = appliedIntrinsicSkillCostEffects.find(effect => effect.kind === 'rage-cost-suppressed-window')
+      const rageDemandPerSecond = exactCostChain && rageCost
+        ? rageCost.cadence === 'per-second'
+          ? rageCost.resourceAdjustedAmount
+          : actionFrequencyPerSecond == null ? null : rageCost.resourceAdjustedAmount * actionFrequencyPerSecond
+        : exactCostChain ? 0 : null
+      const rageSuppressionDurationMs = rageEffect?.suppressionDurationMs ?? null
+      const rageSustainStatus = !exactCostChain
+        ? 'blocked-missing-exact-cost-chain' as const
+        : !rageCost
+          ? 'no-rage-cost' as const
+          : rageSuppressionDurationMs != null
+            ? 'initially-suppressed-then-requires-rage-pool' as const
+            : 'requires-rage-pool' as const
       const largestManaCost = Math.max(0, ...baseCosts.filter(cost => cost.resource === 'mana').map(cost => cost.resourceAdjustedAmount))
       const sustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
@@ -595,6 +646,9 @@ export function resolveResourceSpiritModel(input: {
         sustainStatus,
         actionFrequencyPerSecond,
         manaDemandPerSecond: manaDemandPerSecond == null ? null : Number(manaDemandPerSecond.toFixed(2)),
+        rageDemandPerSecond: rageDemandPerSecond == null ? null : Number(rageDemandPerSecond.toFixed(2)),
+        rageSuppressionDurationMs,
+        rageSustainStatus,
       }
     })
     .sort((a, b) => a.setupId.localeCompare(b.setupId))

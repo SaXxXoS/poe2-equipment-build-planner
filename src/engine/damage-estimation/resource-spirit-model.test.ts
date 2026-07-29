@@ -483,6 +483,57 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     })
     expect(model.equipmentContributions).toEqual([])
   })
+  it('berechnet das qualitaetsabhaengige kostenfreie Raserei-Fenster von Flame Breath', () => {
+    const definition = skill('flame-breath', 'Flame Breath')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20, quality: 20 }],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      rageDemandPerSecond: 6,
+      rageSuppressionDurationMs: 5000,
+      rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
+      blockedIntrinsicSkillCostEffects: [],
+    })
+    expect(model.skillCostChains[0].intrinsicSkillCostEffects).toContainEqual(expect.objectContaining({
+      kind: 'rage-cost-suppressed-window',
+      suppressionDurationMs: 5000,
+      ongoingRageCostPerSecond: 6,
+    }))
+  })
+  it('berechnet Rampage nach dem anfaenglichen Fenster mit 5 Raserei pro Sekunde', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20 }],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      rageDemandPerSecond: 5,
+      rageSuppressionDurationMs: 2500,
+      rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
+    })
+  })
+  it('blockiert ein ungueltiges Qualitaetslevel statt das Raserei-Fenster zu schaetzen', () => {
+    const definition = skill('rampage', 'Rampage')
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id), level: 20, quality: 24 }],
+      skills: [definition],
+      supports: [],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      rageDemandPerSecond: null,
+      rageSuppressionDurationMs: null,
+      rageSustainStatus: 'blocked-missing-exact-cost-chain',
+    })
+    expect(model.skillCostChains[0].blockedIntrinsicSkillCostEffects).toContainEqual(expect.objectContaining({
+      reason: 'requires-valid-normal-quality',
+    }))
+  })
   it('bleibt deterministisch', () => {
     const definition = skill('barkskin', 'Barkskin')
     const input = { setups: [setup(definition.id)], skills: [definition], supports: [] }

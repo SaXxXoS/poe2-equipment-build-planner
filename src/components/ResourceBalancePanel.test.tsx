@@ -54,6 +54,9 @@ const model = (): ResourceModel => ({
     sustainStatus: 'burst-affordable-on-confirmed-minimum',
     actionFrequencyPerSecond: 2,
     manaDemandPerSecond: 44,
+    rageDemandPerSecond: 0,
+    rageSuppressionDurationMs: null,
+    rageSustainStatus: 'no-rage-cost',
   }, {
     setupId: 'unknown',
     skillId: 'unknown',
@@ -78,6 +81,9 @@ const model = (): ResourceModel => ({
     sustainStatus: 'blocked-missing-exact-cost-chain',
     actionFrequencyPerSecond: null,
     manaDemandPerSecond: null,
+    rageDemandPerSecond: null,
+    rageSuppressionDurationMs: null,
+    rageSustainStatus: 'blocked-missing-exact-cost-chain',
   }],
   spiritReservations: [],
   spiritCapacityByWeaponSet: [{

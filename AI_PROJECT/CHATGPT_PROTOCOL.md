@@ -2950,3 +2950,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_MANA_TEMPEST_STEP_61.md`.
+# Schritt 62 – kanalisierte Raserei-Kosten
+
+- Das Ressourcenmodell 11.0.0 bildet das gepinnte anfängliche Aussetzen
+  laufender Raserei-Kosten strukturiert ab.
+- Flame Breath und Rampage besitzen geprüfte Kostenphasen einschließlich
+  normaler Qualität.
+- Der anschließende Raserei-Verbrauch pro Sekunde ist sichtbar; eine maximale
+  Kanalisierungsdauer bleibt bis zur vollständigen Rasereivorrats- und
+  Erzeugungskette unbekannt.
+- Ungültige Qualität wird fail-closed blockiert.
+- Datenpins, Produktdaten und Runtime-Offlineregeln bleiben unverändert.

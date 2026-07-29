@@ -49,6 +49,8 @@ export function ResourceBalancePanel({ model }: { model: ResourceModel }) {
             <dl>
               <div><dt>Nutzungen pro Sekunde</dt><dd>{chain.actionFrequencyPerSecond == null ? 'Unbekannt' : formatNumber(chain.actionFrequencyPerSecond)}</dd></div>
               <div><dt>Mana-Bedarf pro Sekunde</dt><dd>{chain.manaDemandPerSecond == null ? 'Unbekannt' : formatNumber(chain.manaDemandPerSecond)}</dd></div>
+              <div><dt>Raserei-Bedarf pro Sekunde</dt><dd>{chain.rageDemandPerSecond == null ? 'Unbekannt' : formatNumber(chain.rageDemandPerSecond)}</dd></div>
+              <div><dt>Kostenfreies Raserei-Fenster</dt><dd>{chain.rageSuppressionDurationMs == null ? 'Keines' : `${formatNumber(chain.rageSuppressionDurationMs / 1000)} s`}</dd></div>
               <div><dt>Wirksamer Mana-Mindestbestand</dt><dd>{chain.effectiveManaPool == null ? 'Unbekannt' : formatNumber(chain.effectiveManaPool)}</dd></div>
               <div><dt>Wirksame Mana-Regeneration</dt><dd>{chain.effectiveManaRegenerationPerSecond == null ? 'Unbekannt' : `${formatNumber(chain.effectiveManaRegenerationPerSecond)}/s`}</dd></div>
               <div><dt>Support-Kostenfaktor</dt><dd>{chain.combinedSupportMultiplier == null ? 'Unbekannt' : `${formatNumber(chain.combinedSupportMultiplier * 100)} %`}</dd></div>
