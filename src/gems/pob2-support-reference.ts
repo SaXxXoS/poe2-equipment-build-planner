@@ -1,9 +1,11 @@
 import damageReference from '../../generated/pob2/damage-reference.json'
 import type { SupportQuantitativeEffect } from '../domain'
 
-interface Pob2SupportReference {
+export interface Pob2SupportReference {
   sourceRecordId: string
   name: string
+  requireSkillTypes: string[]
+  excludeSkillTypes: string[]
   numericStats: Record<string, number>
   sourceFile: string
 }

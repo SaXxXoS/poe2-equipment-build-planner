@@ -108,7 +108,7 @@ export function estimateHitDamage(input:{
   const skill={...skillReference,...selectedLevel,numericStats:applySkillQualityStats(selectedLevel.numericStats,gemLevelQualityModel),gemLevel:selectedLevel.level} as unknown as NumericSkill
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile)
   const projectileHitModel=resolveProjectileHitModel(skill)
-  let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills})
+  let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills,supports:input.supports})
   const minionCompanionModel=resolveMinionCompanionModel({primarySkill:definition,setups:input.setups,skills:input.skills})
   const damageOverTimeOutput=()=>({modelVersion:damageOverTime.modelVersion,effects:damageOverTime.effects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,damageType:value.damageType,kind:value.kind,status:value.status,damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,durationMs:value.durationMs,totalDamagePerApplication:value.totalDamagePerApplication,totalDamagePerApplicationAfterMitigation:value.totalDamagePerApplicationAfterMitigation,stackCount:value.stackCount,detail:value.detail})),blockedEffects:damageOverTime.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),totalSingleApplicationDamagePerSecond:damageOverTime.totalSingleApplicationDamagePerSecond,totalSingleApplicationDamagePerSecondAfterMitigation:damageOverTime.totalSingleApplicationDamagePerSecondAfterMitigation,limitations:damageOverTime.limitations})
   if(minionCompanionModel.primarySkillMinion)return{...base,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeit erzeugt oder steuert Minions beziehungsweise Begleiter. Ohne belegte Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime wird weder Spieler- noch Minion-DPS erfunden.']}
@@ -207,6 +207,7 @@ export function estimateHitDamage(input:{
       primarySkill:definition,
       setups:input.setups,
       skills:input.skills,
+      supports:input.supports,
       primaryActionContext:{
         actionsPerSecond,
         hitChancePercent,

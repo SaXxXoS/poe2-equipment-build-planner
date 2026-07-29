@@ -1,8 +1,9 @@
 import reference from '../../../generated/pob2/damage-reference.json'
-import type { SkillGemDefinition, SkillSetup } from '../../domain'
+import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
+import { pob2SupportReferenceFor } from '../../gems/pob2-support-reference'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.7.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.8.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 
 type NumericSkill = (typeof reference.skills)[number]
@@ -55,6 +56,9 @@ export interface ResolvedTriggerRepeatSource {
   energyPerSecond?: number
   uncappedTriggerRatePerSecond?: number
   targetBaseCooldownSeconds?: number
+  cooldownRecoveryPercent?: number
+  cooldownRecoverySourceReferences?: string[]
+  effectiveTargetCooldownSeconds?: number
   targetStoredUses?: number
   cooldownRoundedToServerTick?: boolean
   serverTickRoundedCooldownSeconds?: number
@@ -109,6 +113,44 @@ const targetCompatible = (target: NumericSkill, support: InternalTriggerSupport 
     && support.excludeSkillTypes.every(value => !targetTypes.has(value))
 }
 
+const supportCompatible = (
+  target: NumericSkill,
+  support: ReturnType<typeof pob2SupportReferenceFor>,
+): boolean => {
+  if (!support) return false
+  const targetTypes = new Set(target.skillTypes)
+  const required = support.requireSkillTypes.filter(value => value !== 'AND')
+  return required.every(value => targetTypes.has(value))
+    && support.excludeSkillTypes.every(value => !targetTypes.has(value))
+}
+
+const cooldownRecoveryFor = (
+  setup: SkillSetup,
+  target: NumericSkill | undefined,
+  supports: SupportGemDefinition[],
+): { percent: number; sourceReferences: string[] } => {
+  if (!target) return { percent: 0, sourceReferences: [] }
+  let percent = 0
+  const sourceReferences: string[] = []
+  for (const supportId of setup.supportGemIds) {
+    const definition = supports.find(value => value.id === supportId)
+    const record = pob2SupportReferenceFor(definition?.nameEn)
+    if (!record || !supportCompatible(target, record)) continue
+    const value = Number(record.numericStats['support_cooldown_reduction_cooldown_recovery_+%'])
+    if (!Number.isFinite(value) || value === 0) continue
+    percent += value
+    sourceReferences.push(
+      `damage-reference:${record.sourceFile}#${record.sourceRecordId}:support_cooldown_reduction_cooldown_recovery_+%`,
+    )
+  }
+  return { percent, sourceReferences }
+}
+
+export const effectiveCooldownSeconds = (
+  baseCooldownSeconds: number,
+  cooldownRecoveryPercent: number,
+): number => baseCooldownSeconds / Math.max(1, 1 + cooldownRecoveryPercent / 100)
+
 const energyPerEvent = (record: NumericSkill): number | undefined => {
   const entry = Object.entries(record.numericStats).find(([stat]) =>
     (/gain_(?:1|X)_energy/.test(stat) || stat.includes('gain_X_centienergy'))
@@ -122,6 +164,7 @@ export function resolveTriggerRepeatModel(input: {
   primarySkill?: SkillGemDefinition
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
+  supports?: SupportGemDefinition[]
   primaryActionContext?: {
     actionsPerSecond: number
     hitChancePercent: number
@@ -248,18 +291,22 @@ export function resolveTriggerRepeatModel(input: {
         && Number(targetRecord?.cooldown) > 0
         ? Number(targetRecord?.cooldown)
         : undefined
+      const cooldownRecovery = cooldownRecoveryFor(setup, targetRecord, input.supports ?? [])
+      const effectiveTargetCooldownSeconds = targetBaseCooldownSeconds == null
+        ? undefined
+        : effectiveCooldownSeconds(targetBaseCooldownSeconds, cooldownRecovery.percent)
       const targetStoredUses = Number.isFinite(targetRecord?.storedUses)
         && Number(targetRecord?.storedUses) > 0
         ? Number(targetRecord?.storedUses)
         : undefined
-      const cooldownRoundedToServerTick = targetBaseCooldownSeconds != null
+      const cooldownRoundedToServerTick = effectiveTargetCooldownSeconds != null
         && !(targetStoredUses != null && targetStoredUses > 1)
-      const serverTickRoundedCooldownSeconds = targetBaseCooldownSeconds == null
+      const serverTickRoundedCooldownSeconds = effectiveTargetCooldownSeconds == null
         ? undefined
         : cooldownRoundedToServerTick
-          ? Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
+          ? Math.ceil(effectiveTargetCooldownSeconds / POB2_SERVER_TICK_SECONDS)
             * POB2_SERVER_TICK_SECONDS
-          : targetBaseCooldownSeconds
+          : effectiveTargetCooldownSeconds
       const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
         ? undefined
         : 1 / serverTickRoundedCooldownSeconds
@@ -305,6 +352,13 @@ export function resolveTriggerRepeatModel(input: {
         ...(energyPerSecond == null ? {} : { energyPerSecond: stable(energyPerSecond) }),
         ...(uncappedTriggerRatePerSecond == null ? {} : { uncappedTriggerRatePerSecond: stable(uncappedTriggerRatePerSecond) }),
         ...(targetBaseCooldownSeconds == null ? {} : { targetBaseCooldownSeconds: stable(targetBaseCooldownSeconds) }),
+        ...(cooldownRecovery.percent === 0 ? {} : {
+          cooldownRecoveryPercent: stable(cooldownRecovery.percent),
+          cooldownRecoverySourceReferences: cooldownRecovery.sourceReferences,
+        }),
+        ...(effectiveTargetCooldownSeconds == null ? {} : {
+          effectiveTargetCooldownSeconds: stable(effectiveTargetCooldownSeconds),
+        }),
         ...(targetStoredUses == null ? {} : { targetStoredUses }),
         ...(targetBaseCooldownSeconds == null ? {} : { cooldownRoundedToServerTick }),
         ...(serverTickRoundedCooldownSeconds == null ? {} : { serverTickRoundedCooldownSeconds: stable(serverTickRoundedCooldownSeconds) }),
@@ -325,6 +379,7 @@ export function resolveTriggerRepeatModel(input: {
           ...(condition ? [`damage-reference:${record.name}:name`] : []),
           ...(target ? [`build-profile:${setup.id}:embeddedSkillIds:${target.id}`] : []),
           ...(internalSupport ? [`damage-reference:${internalSupport.sourceRecordId}`] : []),
+          ...cooldownRecovery.sourceReferences,
           ...(hasStatId(record, 'generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills')
             ? [`damage-reference:${record.sourceRecordId}:generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills`]
             : []),

@@ -1,12 +1,20 @@
 import { describe, expect, it } from 'vitest'
-import type { SkillGemDefinition, SkillSetup } from '../../domain'
-import { attachNormalizedTriggeredTargetDamage, resolveTriggerRepeatModel } from './trigger-repeat-model'
+import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
+import {
+  attachNormalizedTriggeredTargetDamage,
+  effectiveCooldownSeconds,
+  resolveTriggerRepeatModel,
+} from './trigger-repeat-model'
 
 const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   id, displayNameDe: nameEn, nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
 })
 const setup = (skillId: string, role: SkillSetup['role'] = 'secondary'): SkillSetup => ({
   id: `setup:${skillId}`, skillId, role, weaponSet: 'both', supportGemIds: [],
+})
+const support = (id: string, nameEn: string): SupportGemDefinition => ({
+  id, displayNameDe: nameEn, nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder',
+  status: 'verified', requiredTags: [], excludedTags: [], ownTags: [],
 })
 
 describe('Trigger- und Wiederholungsmodell', () => {
@@ -291,6 +299,68 @@ describe('Trigger- und Wiederholungsmodell', () => {
       cooldownRateCapPerSecond: 0.2,
       triggerRatePerSecond: 0.2,
     })
+  })
+
+  it('berechnet die belegte PoB2-Cooldown-Recovery-Reihenfolge deterministisch', () => {
+    expect(effectiveCooldownSeconds(4, 25)).toBe(3.2)
+    expect(effectiveCooldownSeconds(5, 30)).toBeCloseTo(3.846153846)
+    expect(effectiveCooldownSeconds(4, -50)).toBe(4)
+  })
+
+  it('wendet einen Support ohne belegte Zielkompatibilität nicht auf Snap an', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('snap', 'Snap')
+    const cooldownRecovery = support('cooldown-recovery-1', 'Cooldown Recovery I')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        {
+          ...setup(trigger.id),
+          embeddedSkillIds: [target.id],
+          supportGemIds: [cooldownRecovery.id],
+        },
+      ],
+      skills: [primary, trigger, target],
+      supports: [cooldownRecovery],
+      primaryActionContext: {
+        actionsPerSecond: 10,
+        hitChancePercent: 100,
+        criticalHitChancePercent: 100,
+        criticalHitDamageBeforeMitigation: 10_000,
+        monsterPower: 20,
+        enemyAilmentThreshold: 100,
+      },
+    })
+
+    expect(result.sources[0]).toMatchObject({
+      targetSkillId: 'snap',
+      targetBaseCooldownSeconds: 4,
+      effectiveTargetCooldownSeconds: 4,
+      serverTickRoundedCooldownSeconds: 4.026,
+    })
+    expect(result.sources[0].cooldownRecoveryPercent).toBeUndefined()
+    expect(result.sources[0].cooldownRecoverySourceReferences).toBeUndefined()
+  })
+
+  it('wendet Cooldown-Recovery weder aus einem anderen Setup noch auf inkompatible Ziele an', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('comet', 'Comet')
+    const cooldownRecovery = support('cooldown-recovery-1', 'Cooldown Recovery I')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        { ...setup(primary.id, 'main'), supportGemIds: [cooldownRecovery.id] },
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+      supports: [cooldownRecovery],
+    })
+
+    expect(result.sources[0].cooldownRecoveryPercent).toBeUndefined()
+    expect(result.sources[0].cooldownRecoverySourceReferences).toBeUndefined()
   })
 
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
