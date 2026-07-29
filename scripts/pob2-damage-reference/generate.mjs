@@ -224,6 +224,7 @@ for (const file of skillFiles) {
         requireSkillTypes: skillTypesFor(body, 'requireSkillTypes'),
         excludeSkillTypes: skillTypesFor(body, 'excludeSkillTypes'),
         addSkillTypes: skillTypesFor(body, 'addSkillTypes'),
+        statIds: statNames,
         numericStats: {
           ...constantNumericStats(firstSet ?? ''),
           ...Object.fromEntries(statNames.map((stat, index) => [stat, statValues[index]]).filter(([, value]) => Number.isFinite(value))),
@@ -279,6 +280,7 @@ for (const file of skillFiles) {
       critChance: number(mainLevel ?? '', 'critChance'),
       costs: namedNumericTable(mainLevel ?? '', 'cost'),
       statSetLabel: firstSet ? string(firstSet, 'label') : undefined,
+      statIds: stats,
       numericStats,
       qualityStats: qualityStats(body),
       levels,

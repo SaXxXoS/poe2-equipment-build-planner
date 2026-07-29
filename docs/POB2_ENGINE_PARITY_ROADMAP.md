@@ -214,3 +214,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Normale Treffer, Zaubertreffer und bereits global verschärfte Blutungen
   erhalten keinen unzulässigen zusätzlichen Multiplikator.
 - Varianten- und Quellenauflösung bleiben fail-closed.
+
+# Fortschritt Schritt 50 – gemeinsame Meta-Auslösung und Ziel-Cooldowns
+
+- Exakte Stat-IDs aus dem gepinnten PoB2-Stand belegen den gemeinsamen
+  Energiebedarf und die gemeinsame Auslösung aller eingebetteten Ziele.
+- Jedes Ziel erhält anschließend seine eigene server-taktgerundete
+  Cooldown-Grenze. Ein langsames Ziel begrenzt kein anderes Ziel.
+- Eine rotierende Zielauswahl wird für diese Meta-Fertigkeiten nicht
+  erfunden.
+- Trigger-Teilmodell `1.6.0`.

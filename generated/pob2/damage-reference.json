@@ -189,6 +189,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Alchemist's Boon",
+      "statIds": [
+        "skill_alchemists_boon_generate_x_charges_for_any_flask_per_minute",
+        "recovery_from_flasks_applies_to_allies_in_presence_%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_alchemists_boon_generate_x_charges_for_any_flask_per_minute": 14,
         "recovery_from_flasks_applies_to_allies_in_presence_%": 34
@@ -589,6 +594,13 @@
         "Mana": 44
       },
       "statSetLabel": "Warcry",
+      "statIds": [
+        "base_deal_no_damage",
+        "cannot_cancel_skill_before_contact_point",
+        "warcry_count_power_from_enemies",
+        "warcries_knock_back_enemies",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "ancestral_cry_empowered_attacks_strike_X_additional_enemies": 2,
         "skill_empower_limitation_specifier_for_stat_description": 1,
@@ -1524,6 +1536,12 @@
         "Mana": 0
       },
       "statSetLabel": "Volcanic Eruption",
+      "statIds": [
+        "base_is_projectile",
+        "ancestral_cry_projectile_triggered_by_empowered_skill_on_hit",
+        "triggerable_in_any_set",
+        "display_statset_hide_usage_stats"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 8,
         "skill_mortar_minimum_projectile_distance": 5,
@@ -2240,6 +2258,11 @@
         "Mana": 0
       },
       "statSetLabel": "Volcanic Steps",
+      "statIds": [
+        "is_area_damage",
+        "display_statset_hide_usage_stats",
+        "secondary_skill_triggered_by_primary_skill_of_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 12,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 100,
@@ -2795,6 +2818,16 @@
         "Mana": 91
       },
       "statSetLabel": "Ancestral Warrior Totem",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "base_skill_summons_totems",
+        "is_totem",
+        "skill_is_deploy_skill",
+        "totem_has_ancestral_warrior_spirit",
+        "display_statset_no_hit_damage",
+        "quality_display_base_totem_duration_is_gem"
+      ],
       "numericStats": {
         "base_totem_duration": 8000,
         "base_totem_range": 60,
@@ -3472,6 +3505,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Archmage",
+      "statIds": [
+        "archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "archmage_all_damage_%_to_gain_as_lightning_to_grant_to_non_channelling_spells_per_100_max_mana": 4,
         "archmage_max_mana_permyriad_to_add_to_non_channelled_spell_mana_cost": 610
@@ -3874,6 +3911,20 @@
         "Mana": 81
       },
       "statSetLabel": "Arc",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "number_of_chains",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "active_skill_consumes_a_lightning_infusion"
+      ],
       "numericStats": {
         "arc_damage_+%_final_from_infusion_consumption": 200,
         "arc_chains_gained_from_infusion_consumption": 6,
@@ -4681,6 +4732,12 @@
       "critChance": 11,
       "costs": {},
       "statSetLabel": "Arctic Armour",
+      "statIds": [
+        "arctic_armour_minimum_added_cold_damage_per_stack",
+        "arctic_armour_maximum_added_cold_damage_per_stack",
+        "maximum_number_of_arctic_armour_stationary_stacks",
+        "base_active_skill_buff_stack_gain_frequency_ms"
+      ],
       "numericStats": {
         "active_skill_hit_damage_freeze_multiplier_+%_final": 100,
         "active_skill_chill_effect_+%_final": 100,
@@ -5361,6 +5418,13 @@
         "Mana": 38
       },
       "statSetLabel": "Armour Breaker",
+      "statIds": [
+        "apply_X_armour_break_on_hit",
+        "global_knockback",
+        "is_area_damage",
+        "melee_defer_damage_prediction",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_range_+": 2,
         "melee_conditional_step_distance": 17,
@@ -5955,6 +6019,14 @@
         "Mana": 55
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "base_number_of_crossbow_bolts",
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "base_number_of_crossbow_bolts": 21
@@ -6429,6 +6501,21 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "apply_X_armour_break_on_hit",
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "disable_visual_hit_effect",
+        "action_do_not_face_target",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 60,
         "active_skill_override_turn_duration_ms": 100,
@@ -7315,6 +7402,17 @@
         "Mana": 95
       },
       "statSetLabel": "Ballista",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "skill_is_deploy_skill",
+        "is_totem",
+        "is_ranged_attack_totem",
+        "can_perform_skill_while_moving",
+        "totem_targets_ignoring_action_distance",
+        "base_deal_no_damage",
+        "quality_display_base_totem_duration_is_gem"
+      ],
       "numericStats": {
         "base_totem_range": 80,
         "base_totem_duration": 12000,
@@ -8042,6 +8140,15 @@
       "baseMultiplier": 0.4,
       "costs": {},
       "statSetLabel": "Bolts",
+      "statIds": [
+        "base_is_projectile",
+        "base_all_damage_can_pin",
+        "base_skill_is_totemified",
+        "is_area_damage",
+        "quality_display_active_skill_pins_as_though_dealt_damage_+%_final_is_gem",
+        "base_skill_is_ballistified",
+        "global_maim_on_hit"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "active_skill_base_area_of_effect_radius": 25,
@@ -8719,6 +8826,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Attrition",
+      "statIds": [
+        "skill_attrition_presence_max_seconds",
+        "skill_attrition_culling_strike_at_x_or_more_stacks",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_attrition_hit_damage_+%_final_vs_rare_or_unique_enemy_per_second_ever_in_presence_up_to_max": 1,
         "skill_attrition_presence_max_seconds": 59,
@@ -9166,6 +9278,16 @@
         "Mana": 96
       },
       "statSetLabel": "Ball Lightning",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "base_is_projectile",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "active_skill_consumes_a_fire_infusion"
+      ],
       "numericStats": {
         "active_skill_shock_chance_+%_final": 375,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -10006,6 +10128,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Barkskin",
+      "statIds": [
+        "barkskin_armour_to_gain_as_%_of_energy_shield_lost_to_enemy_hits",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "barkskin_armour_to_gain_as_%_of_energy_shield_lost_to_enemy_hits": 62
@@ -10406,6 +10532,13 @@
         "Mana": 51
       },
       "statSetLabel": "Barrage",
+      "statIds": [
+        "empower_barrage_cooldown_%_of_attack_time",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "active_skill_ignore_setting_aim_stance",
+        "quality_display_barrage_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 5000,
         "empowered_barrage_maximum_cooldown_ms": 30000,
@@ -11253,6 +11386,12 @@
         "ManaPerMinute": 4051
       },
       "statSetLabel": "Fury of the Mountain",
+      "statIds": [
+        "is_area_damage",
+        "action_do_not_face_target",
+        "disable_quadruped_head_movement_when_turning",
+        "attack_speed_modifiers_apply_to_over_time_cost"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 12000,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 80,
@@ -12102,6 +12241,13 @@
         "RagePerMinute": 300
       },
       "statSetLabel": "Rampage",
+      "statIds": [
+        "is_area_damage",
+        "skill_cannot_gain_rage_during_use",
+        "disable_quadruped_head_movement_when_turning",
+        "display_charge_speed_is_move_speed",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 22,
         "base_minimum_channel_time_ms": 3000,
@@ -12898,6 +13044,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Berserk",
+      "statIds": [
+        "skill_base_rage_effect_+%_to_apply"
+      ],
       "numericStats": {
         "skill_base_life_loss_%_per_minute_per_rage_while_not_losing_rage_to_apply": 6,
         "skill_base_rage_effect_+%_to_apply": 59
@@ -13299,6 +13448,17 @@
         "Mana": 0
       },
       "statSetLabel": "Explosion",
+      "statIds": [
+        "secondary_minimum_base_physical_damage",
+        "secondary_maximum_base_physical_damage",
+        "skill_cannot_be_knocked_back",
+        "spell_cast_time_cannot_be_modified",
+        "action_attack_or_cast_time_uses_animation_length",
+        "dynamic_target_updating_prioritises_movement_vector",
+        "base_skill_enabled_while_mounted",
+        "is_area_damage",
+        "always_ignite"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 24,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 60,
@@ -14179,6 +14339,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1
       },
@@ -14529,6 +14692,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "curse_apply_as_aura",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "blasphemy_base_spirit_reservation_per_socketed_curse": 60
       },
@@ -14884,6 +15051,12 @@
         "Mana": 0
       },
       "statSetLabel": "Blink",
+      "statIds": [
+        "blink_travel_distance",
+        "base_deal_no_damage",
+        "base_skill_enabled_while_mounted",
+        "usable_with_talisman"
+      ],
       "numericStats": {
         "blink_valid_placement_search_radius": 15,
         "active_skill_override_turn_duration_ms": 150,
@@ -15478,6 +15651,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Blink",
+      "statIds": [
+        "base_deal_no_damage",
+        "display_skill_reserves_in_all_weapon_sets"
+      ],
       "numericStats": {},
       "qualityStats": [],
       "levels": [
@@ -15749,6 +15926,16 @@
         "Mana": 0
       },
       "statSetLabel": "Blood Explosion",
+      "statIds": [
+        "main_hand_weapon_minimum_physical_damage",
+        "main_hand_weapon_maximum_physical_damage",
+        "display_statset_hide_usage_stats",
+        "replace_main_hand_unarmed_attack_stats_with_nothing_type",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_cause_bleeding",
+        "triggerable_in_any_set",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 26,
         "hunters_mark_explosion_area_of_effect_+%_final_from_buildup": 100,
@@ -16474,6 +16661,10 @@
         "Mana": 79
       },
       "statSetLabel": "Mark",
+      "statIds": [
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -17238,6 +17429,13 @@
         "Mana": 36
       },
       "statSetLabel": "Dash",
+      "statIds": [
+        "melee_defer_damage_prediction",
+        "is_area_damage",
+        "cannot_cause_bleeding",
+        "skill_track_enemy_blood_loss",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "base_melee_dash_range": 50,
         "total_attack_time_+_ms": 150,
@@ -17839,6 +18037,12 @@
         "Mana": 0
       },
       "statSetLabel": "Bone Blast",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 1000,
         "active_skill_base_area_of_effect_radius": 10,
@@ -18606,6 +18810,14 @@
         "Mana": 80
       },
       "statSetLabel": "Bone Cage",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "base_all_damage_can_pin",
+        "quality_display_active_skill_pins_as_though_dealt_damage_+%_final_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 1600,
         "active_skill_base_area_of_effect_radius": 18,
@@ -19541,6 +19753,11 @@
         "Mana": 110
       },
       "statSetLabel": "Buff",
+      "statIds": [
+        "bone_offering_damage_taken_+%_final",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "base_secondary_skill_effect_duration": 8000,
@@ -20261,6 +20478,12 @@
         "Mana": 60
       },
       "statSetLabel": "Initial Strike",
+      "statIds": [
+        "active_skill_show_crush_range",
+        "crushing_blow",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "is_area_damage"
+      ],
       "numericStats": {
         "melee_range_+": 2,
         "melee_conditional_step_distance": 17,
@@ -20862,6 +21085,17 @@
         "ManaPerMinute": 3634
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "channel_start_lock_cancelling_scales_with_cast_speed",
+        "projectiles_fire_at_ground",
+        "cast_speed_modifiers_apply_to_over_time_cost"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 1,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -21794,6 +22028,11 @@
       "critChance": 10,
       "costs": {},
       "statSetLabel": "Briarpatch",
+      "statIds": [
+        "briarpatch_maximum_stored_physical_damage",
+        "thorns_damage_modifiers_apply_to_spell_damage",
+        "is_area_damage"
+      ],
       "numericStats": {
         "briarpatch_stores_permyriad_of_physical_damage_dealt": 100,
         "briarpatch_ground_creation_delay_ms": 8000,
@@ -22435,6 +22674,10 @@
         "Mana": 65
       },
       "statSetLabel": "Buff",
+      "statIds": [
+        "charged_staff_attack_minimum_added_lightning_damage_per_stack",
+        "charged_staff_attack_maximum_added_lightning_damage_per_stack"
+      ],
       "numericStats": {
         "charged_staff_buff_duration_per_stack_ms": 6000,
         "active_skill_requires_X_power_charges": 1,
@@ -22988,6 +23231,11 @@
       "baseMultiplier": 0.66,
       "costs": {},
       "statSetLabel": "Shockwave",
+      "statIds": [
+        "triggered_by_charged_staff",
+        "is_area_damage",
+        "display_statset_hide_usage_stats"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 50,
         "charged_staff_cone_angle": 45,
@@ -23495,6 +23743,13 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Charge Regulation",
+      "statIds": [
+        "charge_mastery_skill_speed_+%_with_frenzy_charges",
+        "charge_mastery_crit_chance_+%_final_with_power_charges",
+        "charge_mastery_armour_evasion_energy_shield_+%_final_with_endurance_charges",
+        "consume_frenzy_power_and_endurance_charge_every_x_ms",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "charge_mastery_skill_speed_+%_with_frenzy_charges": 25,
         "charge_mastery_crit_chance_+%_final_with_power_charges": 26,
@@ -23981,6 +24236,18 @@
         "Mana": 99
       },
       "statSetLabel": "Primary Grenade",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "projectiles_cannot_fork"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -25034,6 +25301,19 @@
         "Mana": 0
       },
       "statSetLabel": "Physical",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "modifiers_to_number_of_projectiles_instead_apply_to_splitting",
+        "always_chain_from_cursed_enemies"
+      ],
       "numericStats": {
         "monster_projectile_variation": 1109,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -25792,6 +26072,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Combat Frenzy",
+      "statIds": [
+        "skill_combat_frenzy_x_ms_cooldown",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_combat_frenzy_x_ms_cooldown": 6100
       },
@@ -26153,6 +26437,13 @@
         "Mana": 173
       },
       "statSetLabel": "Comet",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "active_skill_consumes_a_fire_infusion"
+      ],
       "numericStats": {
         "range_backflip_conditional_distance": 30,
         "total_cast_time_+_ms": 1000,
@@ -26828,6 +27119,13 @@
         "Mana": 0
       },
       "statSetLabel": "Command",
+      "statIds": [
+        "minions_do_not_move_to_skill_target",
+        "can_perform_skill_while_moving",
+        "skill_is_command",
+        "base_deal_no_damage",
+        "command_skill_no_command_marker"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -50,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -27427,6 +27725,12 @@
         "Mana": 83
       },
       "statSetLabel": "Contagion",
+      "statIds": [
+        "base_chaos_damage_to_deal_per_minute",
+        "spell_damage_modifiers_apply_to_skill_dot",
+        "can_perform_skill_while_moving",
+        "quality_display_contagion_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 5000,
         "active_skill_base_area_of_effect_radius": 17,
@@ -28190,6 +28494,13 @@
         "Mana": 20
       },
       "statSetLabel": "Convalescence",
+      "statIds": [
+        "base_skill_effect_duration",
+        "display_this_skill_cooldown_does_not_recover_during_buff",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_base_skill_effect_duration_is_gem"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -28865,6 +29176,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Convalescence",
+      "statIds": [
+        "base_deal_no_damage",
+        "display_skill_reserves_in_all_weapon_sets"
+      ],
       "numericStats": {},
       "qualityStats": [],
       "levels": [
@@ -29139,6 +29454,11 @@
         "Mana": 0
       },
       "statSetLabel": "Poison Cloud",
+      "statIds": [
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_base_skill_effect_duration_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "base_skill_effect_duration": 4000,
@@ -29988,6 +30308,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Crackling Palm",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1
       },
@@ -30339,6 +30662,15 @@
         "Mana": 150
       },
       "statSetLabel": "Compose Requiem",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "crossbow_ammo_skill_does_not_transition",
+        "crossbow_ammo_has_no_ammo",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "rapidshot_requiem_number_of_stacks_per_minute": 200,
@@ -30896,6 +31228,18 @@
         "Mana": 0
       },
       "statSetLabel": "Requiem",
+      "statIds": [
+        "base_is_projectile",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectiles_crossbow_barrage",
+        "can_perform_skill_while_moving",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem",
+        "is_area_damage",
+        "crossbow_skill_has_no_ammo",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -31574,6 +31918,13 @@
         "Mana": 42
       },
       "statSetLabel": "Cull the Weak",
+      "statIds": [
+        "kill_enemy_on_hit_if_under_10%_life",
+        "active_skill_show_cull_range",
+        "global_always_hit",
+        "is_area_damage",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 15,
         "base_melee_dash_range": 75,
@@ -32254,6 +32605,16 @@
         "Mana": 133
       },
       "statSetLabel": "Dark Effigy",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "skill_is_deploy_skill",
+        "is_totem",
+        "can_perform_skill_while_moving",
+        "totem_targets_ignoring_action_distance",
+        "quality_display_base_totem_duration_is_gem",
+        "is_spell_totem"
+      ],
       "numericStats": {
         "base_totem_duration": 8000,
         "base_totem_range": 120,
@@ -32978,6 +33339,13 @@
       "critChance": 7,
       "costs": {},
       "statSetLabel": "Vile Effusion",
+      "statIds": [
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "base_is_projectile",
+        "base_skill_is_totemified",
+        "is_area_damage"
+      ],
       "numericStats": {
         "skill_disabled_unless_cloned": 2,
         "active_skill_base_area_of_effect_radius": 120,
@@ -33576,6 +33944,14 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Defiance Banner",
+      "statIds": [
+        "base_skill_effect_duration",
+        "base_skill_buff_armour_evasion_+%_final_to_apply",
+        "base_skill_buff_movement_speed_+%_to_apply",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "active_skill_can_generate_glory_even_if_an_instance_of_this_skill_is_active"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 60,
         "active_skill_requires_X_glory": 200,
@@ -34128,6 +34504,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Defiance Banner",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -34407,6 +34786,14 @@
         "Mana": 178
       },
       "statSetLabel": "Despair",
+      "statIds": [
+        "base_skill_effect_duration",
+        "active_skill_base_area_of_effect_radius",
+        "base_skill_buff_chaos_damage_resistance_%_to_apply",
+        "skill_curses_cannot_apply_to_targets_above_level",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "curse_delay_duration_ms": 1500,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -35138,6 +35525,14 @@
         "Mana": 99
       },
       "statSetLabel": "Detonate Dead",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "corpse_explosion_monster_life_permillage_physical",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 26,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -35946,6 +36341,16 @@
         "ManaPerMinute": 2764
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "attack_speed_modifiers_apply_to_over_time_cost",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "detonating_arrow_max_number_of_stages": 4,
         "active_skill_override_turn_duration_ms": 120,
@@ -36582,6 +36987,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Discipline",
+      "statIds": [
+        "base_skill_buff_total_maximum_energy_shield_+_to_apply",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "base_skill_buff_total_maximum_energy_shield_+_to_apply": 328
@@ -36986,6 +37395,12 @@
         "Mana": 36
       },
       "statSetLabel": "Initial Strike",
+      "statIds": [
+        "consume_parry_debuff_on_hit_to_gain_X_frenzy_charges",
+        "is_area_damage",
+        "base_skill_enabled_while_mounted",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "override_turn_duration_ms": 50,
         "attack_maximum_action_distance_+": -8,
@@ -37867,6 +38282,15 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Dread Banner",
+      "statIds": [
+        "base_skill_effect_duration",
+        "base_skill_buff_ailment_threshold_+%_final_to_apply",
+        "base_skill_buff_flask_charge_per_min_to_apply",
+        "base_skill_buff_additional_maximum_all_elemental_resistances_%_to_apply",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "active_skill_can_generate_glory_even_if_an_instance_of_this_skill_is_active"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 60,
         "active_skill_requires_X_glory": 200,
@@ -38460,6 +38884,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Dread Banner",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -38736,6 +39163,13 @@
         "Mana": 56
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "base_number_of_earthquakes_allowed",
+        "is_area_damage",
+        "is_player_earthquake",
+        "can_create_jagged_ground",
+        "quality_display_earthquake_is_gem"
+      ],
       "numericStats": {
         "skill_jagged_ground_base_duration_ms": 4000,
         "jagged_ground_effect_+%": 100,
@@ -39459,6 +39893,10 @@
         "Mana": 51
       },
       "statSetLabel": "Slam",
+      "statIds": [
+        "is_area_damage",
+        "quality_display_earthshatter_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "spike_slam_max_spikes": 6,
@@ -40063,6 +40501,20 @@
         "Mana": 46
       },
       "statSetLabel": "Electrocuting Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "cannot_pierce",
+        "base_projectiles_cannot_chain",
+        "quality_display_base_skill_effect_duration_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "should_use_additive_aiming_animation",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 25000,
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
@@ -40742,6 +41194,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Elemental Conflux",
+      "statIds": [
+        "skill_elemental_conflux_active_element_damage_+%_final",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "skill_elemental_conflux_active_element_damage_+%_final": 59
@@ -41141,6 +41597,11 @@
         "Mana": 50
       },
       "statSetLabel": "Pulse",
+      "statIds": [
+        "base_deal_no_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 50,
         "elemental_sundering_number_of_explosion_allowed": 20
@@ -41625,6 +42086,14 @@
         "Mana": 178
       },
       "statSetLabel": "Elemental Weakness",
+      "statIds": [
+        "base_skill_effect_duration",
+        "active_skill_base_area_of_effect_radius",
+        "base_skill_buff_all_elements_resistance_%_to_apply",
+        "skill_curses_cannot_apply_to_targets_above_level",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "curse_delay_duration_ms": 1500,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -42351,6 +42820,17 @@
         "Mana": 37
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "blazing_cluster_maximum_number_of_projectiles_allowed",
+        "base_is_projectile",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_position",
+        "quality_display_ember_fusilade_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "active_skill_consumes_a_lightning_infusion"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 1300,
         "blazing_cluster_delay_between_projectiles_ms": 100,
@@ -43197,6 +43677,13 @@
         "Mana": 82
       },
       "statSetLabel": "Emergency Reload",
+      "statIds": [
+        "emergency_reload_damage_+%_final",
+        "can_be_used_instantly_in_any_set",
+        "action_can_be_used_in_aiming_stance",
+        "action_can_be_used_in_upward_aiming_stance",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "skill_specific_stat_description_mode": 1,
@@ -43800,6 +44287,14 @@
         "Mana": 178
       },
       "statSetLabel": "Enfeeble",
+      "statIds": [
+        "base_skill_effect_duration",
+        "active_skill_base_area_of_effect_radius",
+        "base_skill_buff_damage_+%_final_to_apply",
+        "skill_curses_cannot_apply_to_targets_above_level",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "curse_delay_duration_ms": 1500,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -44530,6 +45025,14 @@
         "Mana": 95
       },
       "statSetLabel": "Fissures",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "base_number_of_entangle_roots_allowed",
+        "can_perform_skill_while_moving",
+        "visual_hit_effect_physical_is_plant",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 80,
         "active_skill_base_secondary_area_of_effect_radius": 15,
@@ -45416,6 +45919,14 @@
       "baseMultiplier": 1.87,
       "costs": {},
       "statSetLabel": "Ice Fragments",
+      "statIds": [
+        "base_number_of_projectiles",
+        "base_is_projectile",
+        "ballistic_projectiles_always_bounce",
+        "triggerable_in_any_set",
+        "is_area_damage",
+        "display_statset_hide_usage_stats"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 20,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 100,
@@ -46180,6 +46691,20 @@
         "Mana": 74
       },
       "statSetLabel": "Escape Shot",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "is_area_damage",
+        "skill_can_fire_arrows",
+        "number_of_projectiles_cannot_be_modified",
+        "has_modular_projectiles_enabled",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_fire_at_ground",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 24,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
@@ -46867,6 +47392,19 @@
         "Mana": 57
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "disable_visual_hit_effect",
+        "should_use_additive_aiming_animation",
+        "quality_display_base_skill_effect_duration_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -47542,6 +48080,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Eternal Rage",
+      "statIds": [
+        "ceaseless_rage_base_rage_regeneration_per_minute",
+        "base_deal_no_damage",
+        "display_skill_reserves_in_all_weapon_sets"
+      ],
       "numericStats": {
         "ceaseless_rage_base_rage_regeneration_per_minute": 300
       },
@@ -47905,6 +48448,19 @@
         "Mana": 68
       },
       "statSetLabel": "Explosive Grenade",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "projectiles_cannot_fork"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -48949,6 +49505,13 @@
         "Mana": 64
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000,
@@ -49472,6 +50035,21 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "cannot_cancel_skill_before_contact_point",
+        "disable_visual_hit_effect",
+        "projectiles_fire_at_ground",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 30,
@@ -50329,6 +50907,20 @@
         "Mana": 34
       },
       "statSetLabel": "Spear",
+      "statIds": [
+        "base_number_of_remote_spear_mines_allowed",
+        "base_is_projectile",
+        "can_perform_skill_while_moving",
+        "projectile_ballistic_angle_from_target_distance",
+        "should_use_additive_aiming_animation",
+        "has_modular_projectiles_enabled",
+        "projectile_uses_contact_direction",
+        "always_pierce",
+        "base_projectiles_cannot_chain",
+        "quality_display_base_number_of_remove_spear_mines_allowed_is_gem",
+        "projectiles_move_with_precise_movement",
+        "number_of_projectiles_cannot_be_modified"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -51056,6 +51648,14 @@
         "Mana": 0
       },
       "statSetLabel": "Tendrils",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "quality_display_exsanguinate_beam_targets_is_gem",
+        "can_perform_skill_while_moving",
+        "global_bleed_on_hit",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "number_of_chains": 2,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -51786,6 +52386,14 @@
         "Mana": 195
       },
       "statSetLabel": "Eye of Winter",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "base_is_projectile",
+        "single_primary_projectile",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "projectile_firing_forward_distance_override": 100,
         "eye_of_winter_damage_%_to_gain_as_element_per_ground_effect_type": 100,
@@ -52673,6 +53281,9 @@
         "Mana": 76
       },
       "statSetLabel": "Melee",
+      "statIds": [
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 60,
         "melee_conditional_step_distance": 21,
@@ -53314,6 +53925,15 @@
         "Mana": 32
       },
       "statSetLabel": "Stab",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "melee_defer_damage_prediction",
+        "cannot_cancel_skill_before_contact_point",
+        "is_area_damage",
+        "consume_parried_on_hit",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
         "melee_range_+": 4,
@@ -53953,6 +54573,12 @@
         "Mana": 0
       },
       "statSetLabel": "Feast of Flesh",
+      "statIds": [
+        "feast_of_flesh_recover_X_life_per_corpse_consumed",
+        "feast_of_flesh_recover_X_mana_per_corpse_consumed",
+        "base_deal_no_spell_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 40,
         "feast_of_flesh_recovery_duration": 3000,
@@ -54676,6 +55302,11 @@
         "Mana": 85
       },
       "statSetLabel": "Ferocious Roar",
+      "statIds": [
+        "warcry_grant_break_X_armour_on_hit",
+        "warcry_minimum_benefit_if_monster_power_present",
+        "disable_quadruped_head_movement_when_turning"
+      ],
       "numericStats": {
         "bear_warcry_gain_X_centirage_per_enemy_power": 200,
         "warcry_empowers_per_X_monster_power": 8,
@@ -55363,6 +55994,17 @@
         "Mana": 104
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "active_skill_consumes_a_fire_infusion",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -56051,6 +56693,17 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -56782,6 +57435,17 @@
         "Mana": 147
       },
       "statSetLabel": "Firestorm",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem",
+        "active_skill_consumes_a_cold_infusion",
+        "active_skill_consumes_a_fire_infusion",
+        "active_skill_consumes_a_lightning_infusion"
+      ],
       "numericStats": {
         "fire_storm_fireball_delay_ms": 200,
         "firestorm_max_number_of_storms": 1,
@@ -57837,6 +58501,15 @@
         "ManaPerMinute": 3450
       },
       "statSetLabel": "Flameblast",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "channel_start_lock_cancelling_scales_with_cast_speed",
+        "cast_speed_modifiers_apply_to_over_time_cost",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "charged_blast_spell_damage_+%_final_per_stack": 75,
         "vaal_flameblast_radius_+_per_stage": 6,
@@ -58730,6 +59403,17 @@
         "Mana": 111
       },
       "statSetLabel": "Wall",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_fire_damage_to_deal_per_minute",
+        "wall_maximum_length",
+        "base_skill_effect_duration",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_hide_display_character_panel",
+        "active_skill_consumes_a_lightning_infusion"
+      ],
       "numericStats": {
         "number_of_allowed_firewalls": 3,
         "firewall_attached_projectile_effect_mtx": 1,
@@ -59662,6 +60346,20 @@
         "Mana": 53
       },
       "statSetLabel": "Flash Grenade",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "disable_visual_hit_effect",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "projectiles_cannot_fork"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -60625,6 +61323,12 @@
         "Mana": 85
       },
       "statSetLabel": "Flicker Strike",
+      "statIds": [
+        "ignores_proximity_shield",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_gain_power_charges_during_skill",
+        "is_area_damage"
+      ],
       "numericStats": {
         "flicker_strike_additional_flickers_from_power_charges": 2
       },
@@ -61107,6 +61811,11 @@
         "Mana": 60
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "display_this_skill_cooldown_does_not_recover_during_buff"
+      ],
       "numericStats": {
         "attack_maximum_action_distance_+": 40,
         "base_skill_effect_duration": 12000,
@@ -62118,6 +62827,14 @@
         "Mana": 85
       },
       "statSetLabel": "Fortifying Cry",
+      "statIds": [
+        "shielding_cry_grant_X_guard_per_5_mp",
+        "display_statset_no_hit_damage",
+        "warcry_count_power_from_enemies",
+        "can_perform_skill_while_moving",
+        "warcry_minimum_benefit_if_monster_power_present",
+        "cannot_cancel_skill_before_contact_point"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "active_skill_base_area_of_effect_radius": 40,
@@ -63006,6 +63723,20 @@
         "Mana": 0
       },
       "statSetLabel": "Shield Wave",
+      "statIds": [
+        "off_hand_weapon_minimum_physical_damage",
+        "off_hand_weapon_maximum_physical_damage",
+        "off_hand_minimum_added_physical_damage_per_15_shield_armour",
+        "off_hand_maximum_added_physical_damage_per_15_shield_armour",
+        "base_skill_show_average_damage_instead_of_dps",
+        "display_statset_hide_usage_stats",
+        "modifiers_to_warcry_damage_also_apply_to_this",
+        "replace_off_hand_unarmed_attack_stats_with_shield_type",
+        "attack_is_melee_override",
+        "skill_triggered_manually_by_other_skill",
+        "triggerable_in_any_set",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 20,
         "off_hand_weapon_minimum_physical_damage": 85,
@@ -63681,6 +64412,13 @@
         "Mana": 53
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -64162,6 +64900,25 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "projectile_base_number_of_targets_to_pierce",
+        "base_is_projectile",
+        "projectiles_can_shotgun",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "cannot_cancel_skill_before_contact_point",
+        "destroy_frost_wall_segment_on_hit",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "base_consume_enemy_freeze_on_hit",
+        "never_freeze",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "projectiles_normal_distribution_height_mean": 3,
         "projectiles_normal_distribution_height_standard_deviation": 20,
@@ -65176,6 +65933,13 @@
         "Mana": 79
       },
       "statSetLabel": "Mark",
+      "statIds": [
+        "freezing_mark_hit_damage_freeze_multiplier_+%_final",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_freezing_mark_is_gem",
+        "active_skill_show_freeze_range_from_freezing_mark"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -65987,6 +66751,17 @@
         "Mana": 105
       },
       "statSetLabel": "Freezing Salvo",
+      "statIds": [
+        "base_skill_seal_gain_interval_ms",
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "projectile_uses_contact_position",
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "base_modifiers_to_number_of_projectiles_instead_apply_to_repeats"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 1,
         "active_skill_base_area_of_effect_radius": 12,
@@ -66920,6 +67695,16 @@
         "Mana": 0
       },
       "statSetLabel": "Freezing Shards",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectile_uses_contact_direction",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 5,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -67647,6 +68432,17 @@
         "Mana": 59
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "always_pierce",
+        "projectile_uses_contact_position",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 4000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -68383,6 +69179,16 @@
         "Mana": 99
       },
       "statSetLabel": "Frost Bomb",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "active_skill_base_area_of_effect_radius",
+        "frost_bomb_exposure_does_not_apply_to_enemies_of_level_higher_than_X",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_cancel_skill_before_contact_point",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 7,
         "base_skill_detonation_time": 4000,
@@ -69514,6 +70320,17 @@
         "Mana": 59
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "base_is_projectile",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_position",
+        "active_skill_consumes_a_cold_infusion",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "never_freeze_or_chill"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 3,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -70206,6 +71023,17 @@
         "Mana": 79
       },
       "statSetLabel": "Frost Wall",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "wall_maximum_length",
+        "frost_wall_maximum_life",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "is_ice_crystal_explosion",
+        "active_skill_consumes_a_lightning_infusion"
+      ],
       "numericStats": {
         "wall_expand_delay_ms": 150,
         "base_skill_effect_duration": 8000,
@@ -71379,6 +72207,18 @@
         "Mana": 81
       },
       "statSetLabel": "Crystal",
+      "statIds": [
+        "frost_wall_maximum_life",
+        "frost_wall_damage_taken_+%_final_from_enemies",
+        "frozen_locus_crystal_display_stat",
+        "active_skill_is_ignored_by_staggering_palm",
+        "active_skill_is_ignored_by_charged_staff",
+        "base_skill_show_average_damage_instead_of_dps",
+        "frozen_locus_stat_suppression",
+        "base_deal_no_damage",
+        "active_skill_is_ignored_by_mantra_of_destruction",
+        "quality_display_active_skill_ground_effect_area_of_effect_+%_final_per_second_max_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 10000,
         "attack_maximum_action_distance_+": 15,
@@ -71977,6 +72817,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Fulmination",
+      "statIds": [
+        "skill_wrath_aura_shared_damage_+%_to_other_shocked_enemies_in_presence",
+        "never_shock"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "skill_wrath_aura_shared_damage_+%_to_other_shocked_enemies_in_presence": -71,
@@ -72415,6 +73259,10 @@
         "Mana": 69
       },
       "statSetLabel": "Base",
+      "statIds": [
+        "is_area_damage",
+        "disable_quadruped_head_movement_when_turning"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 20,
         "active_skill_hit_damage_stun_multiplier_+%_final": 60,
@@ -73173,6 +74021,13 @@
         "Mana": 63
       },
       "statSetLabel": "Wind Blast",
+      "statIds": [
+        "global_knockback",
+        "visual_hit_effect_physical_is_wind",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "generic_knockback_+%_final_at_min_distance": 200,
         "generic_knockback_+%_final_at_max_distance": -90,
@@ -74021,6 +74876,10 @@
         "Mana": 0
       },
       "statSetLabel": "Buff",
+      "statIds": [
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "galvanic_field_shock_chance_+%_final": 30,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -74575,6 +75434,14 @@
         "Mana": 44
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -75056,6 +75923,22 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "projectiles_can_shotgun",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "cannot_cancel_skill_before_contact_point",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "base_projectiles_cannot_chain",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "projectiles_normal_distribution_height_mean": 3,
         "projectiles_normal_distribution_height_standard_deviation": 20,
@@ -75991,6 +76874,20 @@
         "Mana": 62
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "projectiles_fire_at_ground",
+        "disable_visual_hit_effect",
+        "should_use_additive_aiming_animation",
+        "is_area_damage",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 18,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -76551,6 +77448,12 @@
         "ManaPerMinute": 3203
       },
       "statSetLabel": "Normal Dash",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "quality_display_gathering_storm_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_override_turn_duration_ms": 360,
         "perfect_strike_timing_window_base_ms": 400,
@@ -77436,6 +78339,11 @@
       "baseMultiplier": 1.81,
       "costs": {},
       "statSetLabel": "Cold Surge",
+      "statIds": [
+        "is_area_damage",
+        "cannot_consume_power_frenzy_endurance_charges",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "chance_to_be_triggered_by_reload_infusion_%": 100,
         "active_skill_base_area_of_effect_radius": 16,
@@ -78031,6 +78939,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Ghost Dance",
+      "statIds": [
+        "base_cooldown_modifiable_repeat_interval_ms",
+        "base_deal_no_damage",
+        "quality_display_ghost_dance_is_gem",
+        "cooldown_recovery_modifiers_also_apply_to_repeat_interval"
+      ],
       "numericStats": {
         "skill_base_ghost_dance_grants_%_evasion_as_es_regeneration_per_minute_if_have_lost_ghost_dance_shroud_recently": 120,
         "ghost_dance_max_stacks": 3,
@@ -78466,6 +79380,13 @@
         "Mana": 49
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -78950,6 +79871,21 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "cannot_cancel_skill_before_contact_point",
+        "projectiles_fire_at_ground",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 60,
@@ -79794,6 +80730,11 @@
         "Mana": 63
       },
       "statSetLabel": "Wave",
+      "statIds": [
+        "never_freeze",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "upheaval_number_of_spikes": 8,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
@@ -80647,6 +81588,25 @@
         "Mana": 55
       },
       "statSetLabel": "Spear",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "use_scaled_contact_offset",
+        "always_pierce",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "quality_display_active_skill_base_secondary_area_of_effect_radius_is_gem",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem",
+        "projectiles_cannot_split",
+        "projectiles_cannot_fork",
+        "projectiles_cannot_return",
+        "number_of_projectiles_cannot_be_modified",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
         "active_skill_base_area_of_effect_radius": 12,
@@ -81531,6 +82491,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Grim Feast",
+      "statIds": [
+        "grim_remnant_max_health_stored",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "grim_remnant_chance_to_spawn_orb_on_minion_death_in_presence_%": 100,
         "grim_remnant_health_stored_in_globe_%": 35,
@@ -82009,6 +82973,10 @@
         "Mana": 0
       },
       "statSetLabel": "Grim Resurrection",
+      "statIds": [
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -82597,6 +83565,18 @@
         "Mana": 193
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "base_number_of_crossbow_bolts",
+        "active_skill_cannot_manually_reload",
+        "action_can_be_used_in_aiming_stance",
+        "action_can_be_used_in_upward_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "crossbow_ammo_skill_has_passive_reloading",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "active_skill_reload_speed_+%_final": 150,
@@ -83122,6 +84102,16 @@
         "Mana": 163
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "has_modular_projectiles_enabled",
+        "action_requires_upward_aiming_stance",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "base_number_of_projectiles": 1,
@@ -84049,6 +85039,12 @@
         "Mana": 73
       },
       "statSetLabel": "Hammer of the Gods",
+      "statIds": [
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "global_always_hit",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 2500,
         "active_skill_base_area_of_effect_radius": 24,
@@ -84811,6 +85807,12 @@
         "Mana": 79
       },
       "statSetLabel": "Strike",
+      "statIds": [
+        "global_always_hit",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "base_melee_dash_range": 65,
@@ -85403,6 +86405,12 @@
       "critChance": 11,
       "costs": {},
       "statSetLabel": "Heart of Ice",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "skill_chill_magnitude_is_aura_magnitude"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "spell_minimum_base_cold_damage": 888,
@@ -85881,6 +86889,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "base_deal_no_damage",
+        "quality_display_herald_of_ash_burning_%_overkill_damage_per_minute_is_gem"
+      ],
       "numericStats": {
         "herald_of_ash_overkill_threshold_%": 20
       },
@@ -86239,6 +87251,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "base_deal_no_damage",
+        "display_herald_of_blood_behaviour",
+        "quality_display_herald_of_blood_is_gem"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -86512,6 +87529,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "base_deal_no_damage",
+        "display_statset_no_hit_damage",
+        "display_herald_of_ice_behaviour"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -86782,6 +87804,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Herald of Plague",
+      "statIds": [
+        "herald_of_agony_poison_spread_on_kill_radius_base_magnitude_to_grant",
+        "hinder_chance_%_on_spreading_poioson",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "herald_of_agony_poison_spread_on_kill_radius_base_magnitude_to_grant": 18,
         "hinder_chance_%_on_spreading_poioson": 29
@@ -87178,6 +88205,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "herald_of_thunder_storm_max_hits",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "herald_of_thunder_storm_max_hits": 3
       },
@@ -87539,6 +88570,13 @@
         "Mana": 127
       },
       "statSetLabel": "Hexblast",
+      "statIds": [
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "show_curse_hexblastable"
+      ],
       "numericStats": {
         "hexblast_maximum_number_of_explosions": 10,
         "active_skill_base_area_of_effect_radius": 20,
@@ -88299,6 +89337,13 @@
         "Mana": 47
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -88775,6 +89820,23 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "full_armour_break_consume_uses_projectile_orientation",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "cannot_cancel_skill_before_contact_point",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_break_armour",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "broken_armour_consume_art_variation": 2,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -89713,6 +90775,15 @@
         "Mana": 0
       },
       "statSetLabel": "His Foul Emergence",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "comet_fall_time_uses_animation_length"
+      ],
       "numericStats": {
         "range_backflip_conditional_distance": 30,
         "total_cast_time_+_ms": 1000,
@@ -90600,6 +91671,15 @@
         "Mana": 0
       },
       "statSetLabel": "His Winnowing Flame",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "is_area_damage",
+        "active_skill_show_cull_range",
+        "kill_enemy_on_hit_if_under_10%_life",
+        "never_ignite",
+        "cannot_cancel_skill_before_contact_point"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 35,
         "flame_pillar_unique_maximum_pillars_per_skill_use": 20,
@@ -91282,6 +92362,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "skill_hyena_cackle_size",
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "skill_minion_summon_delay_interval_ms": 100,
         "skill_desired_amount_override": 1,
@@ -91729,6 +92814,16 @@
         "Mana": 74
       },
       "statSetLabel": "Ice Nova",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "is_area_damage",
+        "global_knockback",
+        "can_perform_skill_while_moving",
+        "active_skill_consumes_a_cold_infusion"
+      ],
       "numericStats": {
         "generic_knockback_+%_final_at_min_distance": 50,
         "generic_knockback_+%_final_at_max_distance": -90,
@@ -92692,6 +93787,13 @@
         "Mana": 85
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 16,
         "action_allowed_queue_time_override_ms": 1000
@@ -93170,6 +94272,23 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "projectiles_fire_at_ground",
+        "crossbow_barrage_recoil_target_location_override",
+        "disable_visual_hit_effect",
+        "action_do_not_face_target",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "quality_display_permafrost_shard_damage_+%_final_after_1_second_is_gem",
+        "base_projectiles_cannot_chain"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 60,
         "active_skill_override_turn_duration_ms": 100,
@@ -94020,6 +95139,18 @@
         "Mana": 40
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "disable_visual_hit_effect",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_chill_effect_+%_final": 50,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -94711,6 +95842,16 @@
         "Mana": 126
       },
       "statSetLabel": "Storm",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "cold_damage_cannot_chill",
+        "never_freeze",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "fire_storm_fireball_delay_ms": 150,
         "icestorm_max_number_of_storms": 3,
@@ -95678,6 +96819,10 @@
         "Mana": 36
       },
       "statSetLabel": "Normal Strikes",
+      "statIds": [
+        "is_area_damage",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "statset_index_for_final_animation_combo_index": 1,
@@ -96280,6 +97425,14 @@
       "baseMultiplier": 1.87,
       "costs": {},
       "statSetLabel": "Ice Fragments",
+      "statIds": [
+        "base_is_projectile",
+        "ballistic_projectiles_always_bounce",
+        "triggerable_in_any_set",
+        "is_area_damage",
+        "secondary_skill_triggered_by_primary_skill_of_gem",
+        "display_statset_hide_usage_stats"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 18,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 100,
@@ -97045,6 +98198,9 @@
         "Mana": 63
       },
       "statSetLabel": "Ice-Tipped Arrows",
+      "statIds": [
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -97763,6 +98919,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Impurity",
+      "statIds": [
+        "base_skill_buff_chaos_damage_resistance_%_to_apply",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "base_skill_buff_chaos_damage_resistance_%_to_apply": 29
@@ -98155,6 +99315,13 @@
         "Mana": 44
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -98630,6 +99797,21 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "projectiles_can_shotgun",
+        "has_modular_projectiles_enabled",
+        "disable_visual_hit_effect",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "cannot_cancel_skill_before_contact_point",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "projectiles_normal_distribution_height_mean": 3,
         "projectiles_normal_distribution_height_standard_deviation": 20,
@@ -99969,6 +101151,18 @@
       "critChance": 6,
       "costs": {},
       "statSetLabel": "Incinerate",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_fire_damage_to_deal_per_minute",
+        "incinerate_fuel_gain_per_mana_spent",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "active_skill_consumes_a_fire_infusion",
+        "active_skill_compounding_ignites"
+      ],
       "numericStats": {
         "incinerate_cone_angle": 20,
         "active_skill_base_area_of_effect_radius": 58,
@@ -101060,6 +102254,17 @@
       "critChance": 7,
       "costs": {},
       "statSetLabel": "Combust",
+      "statIds": [
+        "secondary_minimum_base_fire_damage",
+        "secondary_maximum_base_fire_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "damage_cannot_be_reflected",
+        "is_area_damage",
+        "triggered_by_infernal_cry",
+        "display_statset_hide_usage_stats",
+        "display_skill_deals_secondary_damage",
+        "triggerable_in_any_set"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "infernal_cry_explosion_fire_damage_+%_final_per_corpse_power": 10,
@@ -101576,6 +102781,14 @@
         "Mana": 85
       },
       "statSetLabel": "Infernal Cry",
+      "statIds": [
+        "infernal_cry_exerted_attack_all_damage_%_to_gain_as_fire_%",
+        "warcry_count_power_from_enemies",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage",
+        "warcry_minimum_benefit_if_monster_power_present",
+        "cannot_cancel_skill_before_contact_point"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "active_skill_base_area_of_effect_radius": 40,
@@ -102417,6 +103630,11 @@
         "Mana": 0
       },
       "statSetLabel": "Iron Ward",
+      "statIds": [
+        "is_area_damage",
+        "display_statset_hide_usage_stats",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 60,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -103052,6 +104270,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Iron Ward",
+      "statIds": [
+        "warding_steel_maximum_stored_mitigated_physical_damage",
+        "warding_steel_gains_%_of_damage_from_mitigated_physical_damage",
+        "base_deal_no_damage",
+        "quality_display_warding_steel_is_gem"
+      ],
       "numericStats": {
         "warding_steel_maximum_stored_mitigated_physical_damage": 22886,
         "warding_steel_gains_%_of_damage_from_mitigated_physical_damage": 480
@@ -103442,6 +104666,16 @@
         "Mana": 42
       },
       "statSetLabel": "Killing Palm",
+      "statIds": [
+        "kill_enemy_on_hit_if_under_10%_life",
+        "active_skill_show_cull_range",
+        "skill_can_add_multiple_charges_per_action",
+        "global_always_hit",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "skill_can_flicker"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "base_melee_dash_range": 65,
@@ -104164,6 +105398,13 @@
         "Mana": 97
       },
       "statSetLabel": "Leap Slam",
+      "statIds": [
+        "active_skill_hit_damage_stun_multiplier_+%_final",
+        "is_area_damage",
+        "leap_slam_always_knockback_within_range",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_break_armour"
+      ],
       "numericStats": {
         "broken_armour_consume_art_variation": 1,
         "total_attack_time_+_ms": 650,
@@ -105017,6 +106258,20 @@
         "Mana": 40
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "lightning_arrow_maximum_number_of_extra_targets",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "base_projectiles_cannot_chain",
+        "should_use_additive_aiming_animation",
+        "quality_display_lightning_arrow_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
         "active_skill_base_area_of_effect_radius": 32,
@@ -105744,6 +106999,12 @@
         "Mana": 0
       },
       "statSetLabel": "Lightning Bolt",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_shock_chance_+%_final": 200,
         "active_skill_base_area_of_effect_radius": 8,
@@ -106471,6 +107732,12 @@
         "Mana": 195
       },
       "statSetLabel": "Lightning Conduit",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "lightning_conduit_x_additional_strikes_if_consumed_a_shock",
+        "never_shock"
+      ],
       "numericStats": {
         "range_backflip_conditional_distance": 30,
         "total_cast_time_+_ms": 1000,
@@ -107281,6 +108548,14 @@
         "Mana": 30
       },
       "statSetLabel": "Lightning Rod",
+      "statIds": [
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 20000,
         "active_skill_base_area_of_effect_radius": 20,
@@ -108090,6 +109365,22 @@
         "Mana": 46
       },
       "statSetLabel": "Spear",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_display_projectile_total_is_limit",
+        "lightning_burst_display",
+        "can_perform_skill_while_moving",
+        "quality_display_base_number_of_projectiles_is_gem",
+        "cannot_pierce",
+        "base_projectiles_cannot_chain",
+        "projectiles_cannot_fork",
+        "projectiles_cannot_return",
+        "projectiles_can_split_from_terrain",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 50,
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
@@ -108904,6 +110195,14 @@
         "Mana": 83
       },
       "statSetLabel": "Lightning Warp",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "active_skill_show_cull_range",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 30,
         "base_secondary_skill_effect_duration": 8000,
@@ -109663,6 +110962,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -109943,6 +111245,13 @@
         "Mana": 85
       },
       "statSetLabel": "Living Bomb",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 15000,
         "active_skill_base_area_of_effect_radius": 25,
@@ -110748,6 +112057,11 @@
         "Mana": 46
       },
       "statSetLabel": "Base",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
         "melee_conditional_step_distance": 12,
@@ -111342,6 +112656,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "igneous_shield_gain_endurance_charge_on_block",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_igneous_shield_grants_block_chance_+%": 25,
         "igneous_shield_charge_up_time_ms": 8000,
@@ -111780,6 +113098,18 @@
       "critChance": 5,
       "costs": {},
       "statSetLabel": "Magma Spray",
+      "statIds": [
+        "off_hand_weapon_minimum_fire_damage",
+        "off_hand_weapon_maximum_fire_damage",
+        "off_hand_minimum_added_fire_damage_per_15_shield_armour",
+        "off_hand_maximum_added_fire_damage_per_15_shield_armour",
+        "off_hand_minimum_added_fire_damage_per_15_shield_evasion",
+        "off_hand_maximum_added_fire_damage_per_15_shield_evasion",
+        "base_skill_show_average_damage_instead_of_dps",
+        "display_statset_hide_usage_stats",
+        "is_area_damage",
+        "secondary_skill_triggered_by_primary_skill_of_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 28,
         "igneous_shield_explosion_angle_degrees": 157,
@@ -112500,6 +113830,12 @@
         "Mana": 162
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "projectile_uses_contact_position",
+        "quality_display_base_number_of_projectiles_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 10,
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
@@ -113055,6 +114391,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Malice",
+      "statIds": [
+        "critical_chance_against_aura_apply_brittle_every_x_ms",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 4000,
         "skill_desired_amount_override": 1,
@@ -113489,6 +114829,10 @@
         "Mana": 0
       },
       "statSetLabel": "Mana Drain",
+      "statIds": [
+        "mana_drain_base_mana_leech_amount",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -114085,6 +115429,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Mana Remnants",
+      "statIds": [
+        "mana_remnants_mana_gain_per_globe",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "mana_remnants_spawn_remnant_on_crit_vs_elemental_ailment_enemy_every_X_ms": 2000,
         "mana_remnants_chance_to_spawn_orb_on_killing_enemy_with_elemental_ailment_%": 25,
@@ -114567,6 +115915,15 @@
         "ManaPercentPerMinute": 60
       },
       "statSetLabel": "Mana Tempest",
+      "statIds": [
+        "non_skill_base_all_damage_%_to_gain_as_lightning_with_spells_from_buff",
+        "mana_tempest_empowered_spells_split_to_X_additional_targets",
+        "base_deal_no_damage",
+        "do_not_apply_area_modifiers",
+        "display_this_skill_cooldown_does_not_recover_during_buff",
+        "can_perform_skill_while_moving",
+        "quality_display_mana_tempest_is_gem"
+      ],
       "numericStats": {
         "mana_tempest_mana_cost_%_to_add_to_cost_per_second": 30,
         "active_skill_base_area_of_effect_radius": 26,
@@ -115368,6 +116725,13 @@
         "Mana": 0
       },
       "statSetLabel": "Mantra of Destruction",
+      "statIds": [
+        "mantra_of_destruction_grant_all_damage_%_to_gain_as_chaos_with_attacks",
+        "can_perform_skill_while_moving",
+        "combo_only_stacks_from_hits_with_weapon_restriction",
+        "base_deal_no_damage",
+        "quality_display_active_skill_required_number_of_combo_stacks_is_gem"
+      ],
       "numericStats": {
         "active_skill_required_number_of_combo_stacks": 8,
         "base_combo_stacks_decay_delay_ms": 8000,
@@ -116174,6 +117538,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Barrier Invocation",
+      "statIds": [
+        "energy_generated_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_maximum_energy": 500,
         "barrier_invocation_gain_1_energy_per_X_energy_shield_damage_taken_when_hit": 10,
@@ -116690,6 +118058,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Curse on Block",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_block_gain_X_centienergy_on_block": 2500,
         "skill_desired_amount_override": 1,
@@ -117121,6 +118495,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Thundergod's Wrath",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_lightning_spell_on_hit_gain_X_centienergy_per_monster_power_on_hit": 300,
         "skill_desired_amount_override": 1,
@@ -117557,6 +118937,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Block",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_block_gain_X_centienergy_on_block": 2500,
         "skill_desired_amount_override": 1,
@@ -117992,6 +119378,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Critical",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_crit_gain_X_centienergy_per_monster_power_on_crit": 100,
         "energy_generated_+%": 57
@@ -118386,6 +119778,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Dodge",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_dodge_roll_gain_X_centienergy_per_unit_travelled_while_dodge_rolling": 200,
         "energy_generated_+%": 57
@@ -118783,6 +120181,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Elemental Ailment",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_ignite_gain_X_centienergy_per_monster_power_on_ignite": 100,
         "cast_on_shock_gain_X_centienergy_per_monster_power_on_shock": 100,
@@ -119259,6 +120663,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Melee Kill",
+      "statIds": [
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_melee_kill_gain_X_centienergy_per_monster_power_on_melee_kill": 300
       },
@@ -119294,6 +120703,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Melee Stun",
+      "statIds": [
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_melee_stun_gain_X_centienergy_per_monster_power_on_stun": 200,
         "cast_on_melee_stun_gain_X_centienergy_per_monster_power_on_heavy_stun": 1000
@@ -119334,6 +120748,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Cast on Minion Death",
+      "statIds": [
+        "energy_generated_+%",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "cast_on_minion_death_gain_1_energy_per_X_minion_relative_defensiveness_%": 2,
         "energy_generated_+%": 57
@@ -119736,6 +121156,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Elemental Invocation",
+      "statIds": [
+        "energy_generated_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_maximum_energy": 500,
         "elemental_invocation_gain_X_centienergy_per_monster_power_on_shock": 100,
@@ -120338,6 +121762,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Feral Invocation",
+      "statIds": [
+        "energy_generated_+%",
+        "base_deal_no_damage_over_time",
+        "hide_minion_frame"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_maximum_energy": 500,
         "feral_invocation_clone_spawn_delay_ms": 400,
@@ -120933,6 +122362,7 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Mirage Archer",
+      "statIds": [],
       "numericStats": {},
       "qualityStats": [
         {
@@ -121209,6 +122639,18 @@
         "Mana": 121
       },
       "statSetLabel": "Mortar Cannon",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "base_skill_summons_totems",
+        "is_totem",
+        "skill_is_deploy_skill",
+        "is_ranged_attack_totem",
+        "quality_display_base_totem_duration_is_gem",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage",
+        "totem_targets_ignoring_action_distance"
+      ],
       "numericStats": {
         "base_totem_duration": 8000,
         "base_totem_range": 120,
@@ -121934,6 +123376,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Reaper's Invocation",
+      "statIds": [
+        "energy_generated_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_maximum_energy": 500,
         "melee_kill_invocation_gain_X_centienergy_per_monster_power_on_melee_kill": 3000,
@@ -122454,6 +123900,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Spellslinger",
+      "statIds": [
+        "energy_generated_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_maximum_energy": 500,
         "spellslinger_invocation_gain_X_centienergy_per_10ms_base_cast_time": 20,
@@ -123009,6 +124459,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Mirror of Refraction",
+      "statIds": [
+        "base_cooldown_modifiable_repeat_interval_ms",
+        "base_is_projectile",
+        "cooldown_recovery_modifiers_also_apply_to_repeat_interval"
+      ],
       "numericStats": {
         "base_mirror_of_refraction_limit": 4,
         "base_skill_effect_duration": 8000,
@@ -123532,6 +124987,14 @@
         "Mana": 40
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "is_area_damage",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "double_number_of_projectiles_from_dual_wielding",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 60,
@@ -124381,6 +125844,10 @@
         "Mana": 97
       },
       "statSetLabel": "Molten Crash",
+      "statIds": [
+        "quality_display_base_skill_effect_duration_is_gem",
+        "is_area_damage"
+      ],
       "numericStats": {
         "molten_crash_number_of_additional_fissures_from_rage_consumption": 1,
         "base_skill_effect_duration": 8000,
@@ -125191,6 +126658,17 @@
         "ManaPerMinute": 2430
       },
       "statSetLabel": "Base",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_target_distance",
+        "is_area_damage",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "maintain_projectile_direction_when_using_contact_position",
+        "projectiles_barrage",
+        "projectiles_fire_at_ground",
+        "skill_do_not_elapse_channel_time_while_barraging"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 21,
         "electric_spit_maximum_secondary_explosions": 10,
@@ -126289,6 +127767,19 @@
         "Mana": 60
       },
       "statSetLabel": "Primary Grenade",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "projectiles_cannot_fork"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "ground_oil_art_variation": 2000,
@@ -127346,6 +128837,15 @@
         "Mana": 129
       },
       "statSetLabel": "Orb of Storms",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "number_of_chains",
+        "skill_can_add_multiple_charges_per_action",
+        "damage_cannot_be_reflected_or_leech_if_used_by_other_object",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "arc_chain_distance": 35,
         "active_skill_base_area_of_effect_radius": 56,
@@ -128392,6 +129892,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Overwhelming Presence",
+      "statIds": [
+        "skill_overwhelming_pressure_aura_enemy_stun_threshold_+%",
+        "skill_overwhelming_pressure_aura_enemy_ailment_threshold_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_overwhelming_pressure_aura_enemy_stun_threshold_+%": -25,
         "skill_overwhelming_pressure_aura_enemy_ailment_threshold_+%": -24
@@ -128790,6 +130295,13 @@
         "Mana": 110
       },
       "statSetLabel": "Pain Offering",
+      "statIds": [
+        "pain_offering_attack_and_cast_speed_+%",
+        "pain_offering_damage_+%",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "base_secondary_skill_effect_duration": 6000,
@@ -129553,6 +131065,11 @@
         "ManaPerMinute": 2515
       },
       "statSetLabel": "Normal Strikes",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "perfect_strike_timing_window_base_ms": 300,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 40,
@@ -130230,6 +131747,13 @@
         "Mana": 44
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -130711,6 +132235,24 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "projectile_base_number_of_targets_to_pierce",
+        "active_skill_chill_effect_+%_final",
+        "base_is_projectile",
+        "projectiles_can_shotgun",
+        "has_modular_projectiles_enabled",
+        "disable_visual_hit_effect",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "cannot_cancel_skill_before_contact_point",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "projectiles_normal_distribution_height_mean": 3,
         "projectiles_normal_distribution_height_standard_deviation": 20,
@@ -131845,6 +133387,17 @@
         "Mana": 40
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_fire": 20,
         "base_skill_effect_duration": 1500,
@@ -132483,6 +134036,14 @@
         "Mana": 0
       },
       "statSetLabel": "Plague Bearer",
+      "statIds": [
+        "can_perform_skill_while_moving",
+        "active_skill_poisons_are_not_stored_by_plague_bearer",
+        "visual_hit_effect_physical_is_green",
+        "display_statset_hide_usage_stats",
+        "display_skill_deals_secondary_damage",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 18,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -133153,6 +134714,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Plague Bearer",
+      "statIds": [
+        "plague_bearer_maximum_stored_poison_damage",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "plague_bearer_gains_%_of_damage_from_inflicted_poisons": 4,
         "plague_bearer_maximum_stored_poison_damage": 15257
@@ -133546,6 +135111,14 @@
         "Mana": 122
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000
@@ -134020,6 +135593,19 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "always_pierce",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
@@ -134950,6 +136536,18 @@
         "Mana": 38
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "disable_visual_hit_effect",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -135508,6 +137106,14 @@
         "Mana": 0
       },
       "statSetLabel": "Power Siphon",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "chance_to_gain_1_more_charge_%",
+        "active_skill_show_cull_range",
+        "can_perform_skill_while_moving",
+        "spells_have_culling_strike"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -136189,6 +137795,12 @@
         "Mana": 38
       },
       "statSetLabel": "Normal Strikes",
+      "statIds": [
+        "is_area_damage",
+        "primal_strikes_stag_is_scaled_with_area_of_effect",
+        "never_shock",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "statset_index_for_final_animation_combo_index": 2,
         "melee_range_+": 5,
@@ -137041,6 +138653,11 @@
         "Mana": 65
       },
       "statSetLabel": "Profane Ritual",
+      "statIds": [
+        "base_chaos_damage_to_deal_per_minute",
+        "can_perform_skill_while_moving",
+        "spell_damage_modifiers_apply_to_skill_dot"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 2000,
         "ritual_of_power_maximum_number_of_rituals": 5,
@@ -137720,6 +139337,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Purity of Fire",
+      "statIds": [
+        "base_skill_buff_fire_damage_resistance_%_to_apply",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "base_skill_buff_fire_damage_resistance_%_to_apply": 41
@@ -138114,6 +139735,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Purity of Ice",
+      "statIds": [
+        "base_skill_buff_cold_damage_resistance_%_to_apply",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "base_skill_buff_cold_damage_resistance_%_to_apply": 41
@@ -138508,6 +140133,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Purity of Lightning",
+      "statIds": [
+        "base_skill_buff_lightning_damage_resistance_%_to_apply",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "skill_desired_amount_override": 1,
         "base_skill_buff_lightning_damage_resistance_%_to_apply": 41
@@ -138909,6 +140538,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Raging Spirits",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_number_of_raging_spirits_allowed": 10,
         "display_minion_monster_type": 20,
@@ -139476,6 +141108,15 @@
         "Mana": 103
       },
       "statSetLabel": "Rain of Arrows",
+      "statIds": [
+        "base_number_of_projectiles",
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "quality_display_base_number_of_projectiles_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 36,
         "active_skill_base_secondary_area_of_effect_radius": 7,
@@ -140368,6 +142009,11 @@
         "Mana": 102
       },
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "power_charged_zombie_hit_damage_+%_final",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 1,
         "zombie_decay_rate_increase_+%_final": 25,
@@ -141213,6 +142859,12 @@
         "Mana": 40
       },
       "statSetLabel": "Dash",
+      "statIds": [
+        "is_area_damage",
+        "quality_display_spear_puncture_is_gem",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "base_melee_dash_range": 50,
         "base_additional_damage_from_distance_+%_final": 100,
@@ -142017,6 +143669,11 @@
         "Mana": 69
       },
       "statSetLabel": "Normal Strikes",
+      "statIds": [
+        "melee_defer_damage_prediction",
+        "is_area_damage",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_range_+": 6,
         "animation_cancelling_lockout_time_+%": -60,
@@ -142570,6 +144227,14 @@
         "Mana": 186
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "base_number_of_crossbow_bolts": 100
@@ -143044,6 +144709,22 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "maximum_number_of_crossbow_heat_stacks",
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "disable_visual_hit_effect",
+        "action_do_not_face_target",
+        "can_perform_skill_while_moving",
+        "quality_display_rapid_shot_maximum_num_of_stacks_is_gem",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 60,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 60,
@@ -143975,6 +145656,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Ravenous Swarm",
+      "statIds": [
+        "base_skill_effect_duration",
+        "display_statset_no_hit_damage",
+        "cooldown_recovery_modifiers_also_apply_to_repeat_interval"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 40,
         "base_cooldown_modifiable_repeat_interval_ms": 6000,
@@ -144457,6 +146143,16 @@
         "Mana": 0
       },
       "statSetLabel": "Reap",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "active_skill_life_gained_on_cull",
+        "is_area_damage",
+        "active_skill_show_cull_range",
+        "kill_enemy_on_hit_if_under_10%_life",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "cannot_cancel_skill_before_contact_point"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 25,
         "base_skill_effect_duration": 6000,
@@ -145100,6 +146796,19 @@
         "ManaPerMinute": 2816
       },
       "statSetLabel": "Resonating Shield",
+      "statIds": [
+        "off_hand_weapon_minimum_physical_damage",
+        "off_hand_weapon_maximum_physical_damage",
+        "off_hand_minimum_added_physical_damage_per_15_shield_armour",
+        "off_hand_maximum_added_physical_damage_per_15_shield_armour",
+        "apply_X_armour_break_on_hit",
+        "can_perform_skill_while_moving",
+        "active_skill_does_not_decay_heavy_stun_during_action",
+        "attack_speed_modifiers_apply_to_over_time_cost",
+        "cannot_be_empowered_by_warcries",
+        "replace_off_hand_unarmed_attack_stats_with_shield_type",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 23,
         "active_skill_heavy_stun_decay_after_action_delay_ms": 2000,
@@ -146027,6 +147736,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Rhoa Mount",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "minion_base_resummon_time_ms": 12000,
         "minion_accuracy_rating_+%": 100,
@@ -146469,6 +148182,17 @@
         "Mana": 83
       },
       "statSetLabel": "Rolling Magma",
+      "statIds": [
+        "number_of_chains",
+        "active_skill_base_area_of_effect_radius",
+        "is_area_damage",
+        "base_is_projectile",
+        "display_projectiles_chain_when_impacting_ground",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "can_perform_skill_while_moving",
+        "disable_quadruped_head_control"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -147514,6 +149238,12 @@
         "Mana": 96
       },
       "statSetLabel": "Rolling Slam",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "console_do_not_cancel_from_turn_angle",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "total_attack_time_+_ms": 1000,
         "melee_conditional_step_distance": 15,
@@ -148192,6 +149922,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Sacrifice",
+      "statIds": [
+        "harvester_minion_resummon_speed_+%_final",
+        "base_deal_no_damage",
+        "display_skill_reserves_in_all_weapon_sets"
+      ],
       "numericStats": {
         "harvester_minion_resummon_speed_+%_final": -40
       },
@@ -148541,6 +150276,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Savage Fury",
+      "statIds": [
+        "wild_beast_damage_+%_final",
+        "usable_with_talisman",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "wild_beast_life_lost_%_per_minute_nonlethal": 180,
         "base_skill_effect_duration": 500,
@@ -149096,6 +150836,7 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Savage Fury",
+      "statIds": [],
       "numericStats": {
         "wild_beast_energy_per_hit": 1,
         "wild_beast_maximum_energy": 20
@@ -149489,6 +151230,16 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "blazing_cluster_maximum_number_of_projectiles_allowed",
+        "number_of_chains",
+        "base_is_projectile",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_position",
+        "quality_display_ember_fusilade_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 700,
         "base_secondary_skill_effect_duration": 1200,
@@ -150371,6 +152122,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Scavenged Plating",
+      "statIds": [
+        "scavenged_plating_thorns_minimum_physical_damage",
+        "scavenged_plating_thorns_maximum_physical_damage",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "scavenged_plating_maximum_stacks_display": 10,
@@ -150894,6 +152650,18 @@
         "Mana": 85
       },
       "statSetLabel": "Seismic Cry",
+      "statIds": [
+        "secondary_minimum_base_physical_damage",
+        "secondary_maximum_base_physical_damage",
+        "global_knockback",
+        "cannot_cancel_skill_before_contact_point",
+        "is_area_damage",
+        "display_skill_deals_secondary_damage",
+        "can_perform_skill_while_moving",
+        "crushing_blow",
+        "active_skill_show_crush_range",
+        "warcry_minimum_benefit_if_monster_power_present"
+      ],
       "numericStats": {
         "warcry_empowers_per_X_monster_power": 10,
         "warcry_empowers_per_X_monster_power_mp_cap": 50,
@@ -151737,6 +153505,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Shard Scavenger",
+      "statIds": [
+        "base_secondary_skill_effect_duration",
+        "base_skill_effect_duration",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "base_secondary_skill_effect_duration": 6050,
         "base_skill_effect_duration": 3000
@@ -152131,6 +153904,14 @@
       "baseMultiplier": 3.74,
       "costs": {},
       "statSetLabel": "Explosion",
+      "statIds": [
+        "is_area_damage",
+        "attack_is_not_melee_override",
+        "triggered_by_freezing_word_bomb",
+        "display_statset_hide_usage_stats",
+        "triggerable_in_any_set",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "active_skill_base_physical_damage_%_to_convert_to_cold": 100
@@ -152565,6 +154346,13 @@
         "Mana": 40
       },
       "statSetLabel": "Melee",
+      "statIds": [
+        "shattering_palm_debuff_damage_threshold",
+        "global_always_hit",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "base_melee_dash_range": 65,
@@ -153204,6 +154992,10 @@
         "Mana": 0
       },
       "statSetLabel": "Shattering Spite",
+      "statIds": [
+        "cannot_inflict_bloodstone_lance",
+        "life_leech_also_recovers_based_on_elemental_damage_types"
+      ],
       "numericStats": {
         "damage_per_bloodstone_lance_+%_final": 20,
         "active_skill_base_area_of_effect_radius": 15,
@@ -154010,6 +155802,19 @@
         "ManaPerMinute": 2921
       },
       "statSetLabel": "Area of Effect",
+      "statIds": [
+        "off_hand_weapon_minimum_physical_damage",
+        "off_hand_weapon_maximum_physical_damage",
+        "off_hand_minimum_added_physical_damage_per_15_shield_armour",
+        "off_hand_maximum_added_physical_damage_per_15_shield_armour",
+        "base_movement_velocity_+%",
+        "is_area_damage",
+        "attack_is_melee_override",
+        "base_skill_show_average_damage_instead_of_dps",
+        "active_block_cannot_be_stunned",
+        "replace_off_hand_unarmed_attack_stats_with_shield_type",
+        "display_charge_speed_is_move_speed"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 24,
         "base_minimum_channel_time_ms": 1300,
@@ -155144,6 +156949,20 @@
         "Mana": 92
       },
       "statSetLabel": "Shield Wall",
+      "statIds": [
+        "off_hand_weapon_minimum_physical_damage",
+        "off_hand_weapon_maximum_physical_damage",
+        "wall_maximum_length",
+        "shield_wall_maximum_life",
+        "off_hand_minimum_added_physical_damage_per_15_shield_armour",
+        "off_hand_maximum_added_physical_damage_per_15_shield_armour",
+        "skill_does_not_pathfind",
+        "is_shield_barricade_segment",
+        "shield_wall_segment_display_stat",
+        "quality_display_shield_wall_is_gem",
+        "replace_off_hand_unarmed_attack_stats_with_shield_type",
+        "is_area_damage"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "wall_expand_delay_ms": 40,
@@ -156146,6 +157965,15 @@
         "Mana": 100
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "base_number_of_crossbow_bolts",
+        "action_can_be_used_in_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "active_skill_reload_speed_+%_final": -20,
@@ -156668,6 +158496,21 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "has_modular_projectiles_enabled",
+        "action_requires_aiming_stance",
+        "should_use_additive_aiming_animation",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "projectiles_crossbow_barrage",
+        "disable_visual_hit_effect",
+        "action_do_not_face_target",
+        "can_perform_skill_while_moving",
+        "never_shock",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 60,
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 40,
@@ -157523,6 +159366,19 @@
         "Mana": 68
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "always_pierce_non_shocked_enemies_if_targeting_shocked_enemy",
+        "never_shock",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -158293,6 +160149,21 @@
         "Mana": 73
       },
       "statSetLabel": "Voltaic Grenade",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "active_skill_electrocutes_as_though_dealt_damage_+%_final",
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "base_lightning_damage_can_electrocute",
+        "projectiles_cannot_fork"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -159299,6 +161170,16 @@
         "Mana": 103
       },
       "statSetLabel": "Totem",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "is_totem",
+        "skill_is_deploy_skill",
+        "totem_targets_ignoring_action_distance",
+        "quality_display_base_totem_duration_is_gem",
+        "cannot_create_jagged_ground",
+        "is_melee_attack_totem"
+      ],
       "numericStats": {
         "base_totem_duration": 12000,
         "base_totem_range": 80,
@@ -160022,6 +161903,12 @@
       "baseMultiplier": 0.66,
       "costs": {},
       "statSetLabel": "Slam",
+      "statIds": [
+        "is_area_damage",
+        "attack_is_melee_override",
+        "base_skill_is_totemified",
+        "cannot_create_jagged_ground"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 30,
         "skill_disabled_unless_cloned": 2
@@ -160453,6 +162340,17 @@
         "Mana": 121
       },
       "statSetLabel": "Ballista",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "skill_is_deploy_skill",
+        "is_totem",
+        "is_ranged_attack_totem",
+        "can_perform_skill_while_moving",
+        "totem_targets_ignoring_action_distance",
+        "base_deal_no_damage",
+        "quality_display_base_totem_duration_is_gem"
+      ],
       "numericStats": {
         "base_totem_range": 80,
         "base_totem_duration": 8000,
@@ -161178,6 +163076,14 @@
       "baseMultiplier": 0.66,
       "costs": {},
       "statSetLabel": "Artillery",
+      "statIds": [
+        "base_is_projectile",
+        "is_area_damage",
+        "siege_cascade_is_artillery_ballista",
+        "base_skill_is_totemified",
+        "active_skill_ignores_crossbow_manager",
+        "base_skill_is_ballistified"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "base_number_of_projectiles": 3,
@@ -161939,6 +163845,14 @@
         "Mana": 81
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "action_can_be_used_in_upward_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 1,
         "action_allowed_queue_time_override_ms": 1000,
@@ -162463,6 +164377,15 @@
         "Mana": 0
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "base_is_projectile",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "has_modular_projectiles_enabled",
+        "action_requires_upward_aiming_stance",
+        "never_freeze",
+        "quality_display_active_skill_damage_+%_final_vs_immobilised_enemies_is_gem"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "base_number_of_projectiles": 1,
@@ -163312,6 +165235,12 @@
         "Mana": 0
       },
       "statSetLabel": "Sigil of Power",
+      "statIds": [
+        "circle_of_power_spell_damage_+%_final_per_stage",
+        "base_skill_effect_duration",
+        "display_sigil_of_power_stage_gain_delay",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "circle_of_power_max_stages": 4,
         "base_number_of_sigil_of_power_allowed": 1,
@@ -164156,6 +166085,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Siphon Elements",
+      "statIds": [
+        "remnant_pickup_range_+%",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "infusion_remnants_%_chance_to_spawn_cold_infusion_on_freezing_an_enemy": 5,
         "infusion_remnants_%_chance_to_spawn_fire_infusion_on_igniting_an_enemy": 5,
@@ -164645,6 +166578,14 @@
         "Mana": 47
       },
       "statSetLabel": "Dash",
+      "statIds": [
+        "skill_can_add_multiple_charges_per_action",
+        "is_area_damage",
+        "never_shock",
+        "global_knockback",
+        "base_consume_enemy_shock_on_hit",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "base_melee_dash_range": 65,
@@ -165260,6 +167201,17 @@
         "Mana": 89
       },
       "statSetLabel": "Cold",
+      "statIds": [
+        "spell_minimum_base_cold_damage",
+        "spell_maximum_base_cold_damage",
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "skill_is_infusion_skill",
+        "never_freeze",
+        "never_shock",
+        "never_ignite",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -166230,6 +168182,20 @@
         "ManaPerMinute": 7114
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "attack_speed_modifiers_apply_to_over_time_cost",
+        "channel_start_lock_cancelling_scales_with_attack_speed",
+        "skill_moving_start_slowdown",
+        "never_freeze",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "active_skill_override_turn_duration_ms": 120,
         "skill_animation_duration_multiplier_override": 2,
@@ -166956,6 +168922,11 @@
         "Mana": 79
       },
       "statSetLabel": "Sniper's Mark",
+      "statIds": [
+        "enemy_additional_critical_strike_multiplier_against_self",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -167684,6 +169655,13 @@
         "Mana": 0
       },
       "statSetLabel": "Pulse",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 10000,
         "active_skill_base_area_of_effect_radius": 25,
@@ -168487,6 +170465,12 @@
         "Mana": 141
       },
       "statSetLabel": "Soul Offering",
+      "statIds": [
+        "power_offering_buff_spell_damage_+%",
+        "can_perform_skill_while_moving",
+        "display_statset_no_hit_damage",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "base_number_of_power_offerings_allowed": 1,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -169134,6 +171118,14 @@
         "Mana": 0
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "base_is_projectile",
+        "always_pierce",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_projectile_speed_+%_variation_final": 25,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -169821,6 +171813,17 @@
         "Mana": 56
       },
       "statSetLabel": "Base",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "base_number_of_projectiles",
+        "base_is_projectile",
+        "projectiles_should_collide_with_flying_monsters",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 2000,
         "spark_pathing_width_bounds": 20,
@@ -170665,6 +172668,12 @@
         "Mana": 39
       },
       "statSetLabel": "Spearfield",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "is_area_damage",
+        "global_maim_on_hit",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "spear_wall_maximum_active_spears": 70,
         "base_skill_effect_duration": 10000,
@@ -171393,6 +173402,13 @@
         "Mana": 91
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "is_area_damage",
+        "has_modular_projectiles_enabled",
+        "base_is_projectile",
+        "global_always_hit",
+        "base_skill_enabled_while_mounted"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 20,
         "attack_maximum_action_distance_+": 60,
@@ -172161,6 +174177,15 @@
         "Mana": 64
       },
       "statSetLabel": "Spiral Volley",
+      "statIds": [
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "active_skill_enable_movement_cancelling",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 25,
         "active_skill_base_area_of_effect_radius": 60,
@@ -172842,6 +174867,10 @@
         "Mana": 0
       },
       "statSetLabel": "Consecrate",
+      "statIds": [
+        "consecrated_ground_effect_+%",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "active_skill_base_area_of_effect_radius": 22,
@@ -173483,6 +175512,15 @@
         "Mana": 47
       },
       "statSetLabel": "Staggering Palm",
+      "statIds": [
+        "global_always_hit",
+        "is_area_damage",
+        "active_skill_show_crush_range",
+        "crushing_blow",
+        "base_skill_show_average_damage_instead_of_dps",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "skill_can_flicker"
+      ],
       "numericStats": {
         "melee_conditional_step_distance": 10,
         "base_melee_dash_range": 65,
@@ -174114,6 +176152,14 @@
       "baseMultiplier": 2.04,
       "costs": {},
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "always_pierce",
+        "triggered_by_staggering_palm_on_hit_with_other_skill",
+        "visual_hit_effect_physical_is_wind",
+        "display_statset_hide_usage_stats",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 1
       },
@@ -174511,6 +176557,13 @@
         "Mana": 65
       },
       "statSetLabel": "Footsteps",
+      "statIds": [
+        "is_area_damage",
+        "attack_is_melee_override",
+        "base_skill_show_average_damage_instead_of_dps",
+        "can_create_jagged_ground",
+        "display_charge_speed_is_move_speed"
+      ],
       "numericStats": {
         "shield_charge_base_movement_speed": 70,
         "shield_charge_extra_distance": 53,
@@ -175311,6 +177364,15 @@
         "Mana": 63
       },
       "statSetLabel": "Ammunition",
+      "statIds": [
+        "action_can_be_used_in_aiming_stance",
+        "action_can_be_used_in_upward_aiming_stance",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "display_statset_hide_usage_stats",
+        "quality_display_base_number_of_crossbow_bolts_is_gem",
+        "can_be_used_instantly_in_any_set"
+      ],
       "numericStats": {
         "base_number_of_crossbow_bolts": 5,
         "action_allowed_queue_time_override_ms": 1000
@@ -175794,6 +177856,13 @@
         "Mana": 0
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "base_is_projectile",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "has_modular_projectiles_enabled",
+        "action_requires_upward_aiming_stance"
+      ],
       "numericStats": {
         "action_required_target_facing_angle_tolerance_degrees": 90,
         "base_number_of_projectiles": 3,
@@ -176682,6 +178751,17 @@
         "Mana": 50
       },
       "statSetLabel": "Arrow",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_lightning": 80,
         "base_skill_effect_duration": 1500,
@@ -177373,6 +179453,17 @@
         "Mana": 46
       },
       "statSetLabel": "Projectile",
+      "statIds": [
+        "base_is_projectile",
+        "can_perform_skill_while_moving",
+        "projectile_ballistic_angle_from_target_distance",
+        "should_use_additive_aiming_animation",
+        "has_modular_projectiles_enabled",
+        "projectile_uses_contact_direction",
+        "always_pierce",
+        "base_projectiles_cannot_chain",
+        "projectiles_move_with_precise_movement"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -178298,6 +180389,11 @@
         "Mana": 54
       },
       "statSetLabel": "Storm Wave",
+      "statIds": [
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "quality_display_active_skill_base_secondary_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 80,
         "active_skill_base_secondary_area_of_effect_radius": 10,
@@ -179082,6 +181178,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "active_skill_minion_damage_+%_final",
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage",
+        "monster_no_life_es_scaling_from_rarity"
+      ],
       "numericStats": {
         "minion_base_resummon_time_ms": 12000,
         "skill_desired_initial_amount": 1,
@@ -179523,6 +181625,17 @@
         "Mana": 121
       },
       "statSetLabel": "Spell Totem",
+      "statIds": [
+        "totem_elemental_resistance_%",
+        "totem_chaos_resistance_%",
+        "base_number_of_totems_allowed",
+        "base_skill_summons_totems",
+        "is_totem",
+        "skill_is_deploy_skill",
+        "is_spell_totem",
+        "quality_display_base_totem_duration_is_gem",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_totem_duration": 8000,
         "base_totem_range": 80,
@@ -180413,6 +182526,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -180857,6 +182974,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -181294,6 +183415,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -181739,6 +183864,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -182180,6 +184309,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -182665,6 +184798,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -183109,6 +185246,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -183549,6 +185690,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -184090,6 +186235,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "minion_base_resummon_time_ms": 12000,
         "spectre_warp_start_distance": 100,
@@ -184580,6 +186729,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "tangmazu_raven_added_to_your_flock_every_x_msec_a_rare_or_unique_enemy_is_in_your_presence",
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage",
+        "display_statset_hide_usage_stats"
+      ],
       "numericStats": {
         "display_minion_monster_type": 2,
         "minion_base_resummon_time_ms": 12000,
@@ -185100,6 +187255,12 @@
         "Mana": 106
       },
       "statSetLabel": "Wave",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "cannot_break_armour",
+        "skill_effect_duration_is_sundered_armour_duration"
+      ],
       "numericStats": {
         "sunder_wave_radius_+_per_step": 2,
         "sunder_wave_max_steps": 5,
@@ -186026,6 +188187,12 @@
         "ManaPerMinute": 3203
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "channel_start_lock_cancelling_scales_with_attack_speed",
+        "quality_display_supercharged_slam_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 16,
         "channelled_slam_damage_+%_final_per_stage": 40,
@@ -186700,6 +188867,15 @@
         "Mana": 99
       },
       "statSetLabel": "Tame Beast",
+      "statIds": [
+        "base_skill_effect_duration",
+        "base_deal_no_damage",
+        "skill_can_see_monster_categories",
+        "can_perform_skill_while_moving",
+        "quality_display_base_skill_effect_duration_is_gem",
+        "display_tame_beast_mod_limit",
+        "usable_with_talisman"
+      ],
       "numericStats": {
         "spell_maximum_action_distance_+%": -82,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -187349,6 +189525,16 @@
         "Mana": 98
       },
       "statSetLabel": "Tempest Bell",
+      "statIds": [
+        "base_number_of_tempest_bells_allowed",
+        "is_area_damage",
+        "skill_show_tempest_bell_on_staff",
+        "cannot_damage_bell",
+        "skill_cannot_be_stunned",
+        "base_skill_show_average_damage_instead_of_dps",
+        "base_deal_no_damage",
+        "combo_only_stacks_from_hits_with_weapon_restriction"
+      ],
       "numericStats": {
         "active_skill_required_number_of_combo_stacks": 4,
         "melee_conditional_step_distance": 21,
@@ -188150,6 +190336,10 @@
         "Mana": 37
       },
       "statSetLabel": "Normal Strikes",
+      "statIds": [
+        "is_area_damage",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "statset_index_for_third_animation_combo_index": 1,
         "statset_index_for_final_animation_combo_index": 2,
@@ -188834,6 +191024,15 @@
         "Mana": 178
       },
       "statSetLabel": "Temporal Chains",
+      "statIds": [
+        "base_skill_effect_duration",
+        "active_skill_base_area_of_effect_radius",
+        "base_skill_debuff_action_speed_+%_final_to_inflict",
+        "base_temporal_chains_other_buff_time_passed_+%_to_apply",
+        "skill_curses_cannot_apply_to_targets_above_level",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "curse_delay_duration_ms": 1500,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -189605,6 +191804,12 @@
         "Mana": 152
       },
       "statSetLabel": "Thrashing Vines",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "awakened_forest_spawn_vines_per_X%_cast_time": 50,
         "active_skill_base_area_of_effect_radius": 25,
@@ -190697,6 +192902,11 @@
         "Mana": 76
       },
       "statSetLabel": "Thunderous Leap",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem"
+      ],
       "numericStats": {
         "spear_lightning_warp_teleport_delay_ms": 2000,
         "active_skill_base_area_of_effect_radius": 25,
@@ -191384,6 +193594,15 @@
         "Mana": 129
       },
       "statSetLabel": "Thunderstorm",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "thunderstorm_wet_debuff_cannot_apply_to_targets_above_level",
+        "disable_visual_hit_effect",
+        "can_perform_skill_while_moving",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 23,
         "active_skill_base_secondary_area_of_effect_radius": 8,
@@ -192475,6 +194694,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Time of Need",
+      "statIds": [
+        "base_cooldown_modifiable_repeat_interval_ms",
+        "skill_time_of_need_gain_x_life",
+        "base_deal_no_damage",
+        "cooldown_recovery_modifiers_also_apply_to_repeat_interval"
+      ],
       "numericStats": {
         "base_cooldown_modifiable_repeat_interval_ms": 8100,
         "skill_time_of_need_gain_x_life": 628
@@ -192878,6 +195103,14 @@
         "Mana": 110
       },
       "statSetLabel": "Tornado",
+      "statIds": [
+        "base_physical_damage_to_deal_per_minute",
+        "active_skill_base_elemental_damage_to_deal_per_minute",
+        "is_area_damage",
+        "can_perform_skill_while_moving",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "spell_damage_modifiers_apply_to_skill_dot"
+      ],
       "numericStats": {
         "number_of_tornados_allowed": 1,
         "base_skill_effect_duration": 8000,
@@ -193861,6 +196094,15 @@
         "Mana": 88
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "tornado_shot_number_of_hits_allowed",
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "quality_display_tornado_shot_is_gem"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 10,
         "active_skill_base_secondary_area_of_effect_radius": 30,
@@ -194628,6 +196870,11 @@
         "Mana": 106
       },
       "statSetLabel": "Toxic Bloom",
+      "statIds": [
+        "toxic_domain_healing_per_minute_+",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -195521,6 +197768,21 @@
         "Mana": 86
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "active_skill_base_area_of_effect_radius",
+        "base_is_projectile",
+        "projectile_ballistic_angle_from_reference_event",
+        "projectile_uses_contact_position",
+        "is_area_damage",
+        "action_can_be_used_in_aiming_stance",
+        "ballistic_projectiles_always_bounce",
+        "can_perform_skill_while_moving",
+        "projectile_uses_contact_direction",
+        "base_skill_show_average_damage_instead_of_dps",
+        "visual_hit_effect_physical_is_green",
+        "projectiles_cannot_fork",
+        "quality_display_active_skill_ground_effect_area_of_effect_+%_final_per_second_max_is_gem"
+      ],
       "numericStats": {
         "action_allowed_queue_time_override_ms": 1000,
         "action_required_target_facing_angle_tolerance_degrees": 90,
@@ -196410,6 +198672,20 @@
         "Mana": 98
       },
       "statSetLabel": "Pustules",
+      "statIds": [
+        "toxic_pustule_burst_1%_more_damage_per_x_stored_poison",
+        "toxic_pustule_duration_expires_1%_faster_per_x_stored_poison_damage_multiplied_by_sixty",
+        "toxic_pustule_burst_base_radius_+1_per_x_stored_poison",
+        "pustules_grow_as_though_dealing_X_poison_damage_per_minute_when_wet",
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "can_perform_skill_while_moving",
+        "has_modular_projectiles_enabled",
+        "projectiles_fire_at_ground",
+        "disable_visual_hit_effect",
+        "quality_display_base_number_of_projectiles_is_gem",
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 8,
         "base_skill_detonation_time": 15000,
@@ -197585,6 +199861,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Trail of Caltrops",
+      "statIds": [
+        "base_deal_no_damage",
+        "generic_ongoing_trigger_does_not_use_energy"
+      ],
       "numericStats": {
         "caltrops_on_dodge_X_triggers": 3,
         "caltrops_on_dodge_first_trigger_at_%_dodge": 5,
@@ -198014,6 +200294,10 @@
         "Mana": 0
       },
       "statSetLabel": "Grisly Pyre",
+      "statIds": [
+        "never_ignite",
+        "is_area_damage"
+      ],
       "numericStats": {
         "triggered_by_flame_pillar_unique_%": 100,
         "unique_flame_pillar_fire_damage_equal_to_%_of_remaining_ignite_damage": 30,
@@ -198616,6 +200900,19 @@
         "Mana": 0
       },
       "statSetLabel": "Caltrops",
+      "statIds": [
+        "main_hand_weapon_minimum_physical_damage",
+        "main_hand_weapon_maximum_physical_damage",
+        "triggered_by_generic_ongoing_trigger",
+        "global_maim_on_hit",
+        "additive_thorns_damage_modifiers_apply_to_attack_damage",
+        "replace_main_hand_unarmed_attack_stats_with_nothing_type",
+        "base_is_projectile",
+        "is_hazard",
+        "caltrops_only_spawn_laterally",
+        "projectiles_not_offset",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "base_number_of_projectiles": 1,
         "active_skill_base_area_of_effect_radius": 5,
@@ -199339,6 +201636,13 @@
         "Mana": 0
       },
       "statSetLabel": "Gale Force",
+      "statIds": [
+        "global_knockback",
+        "triggerable_in_any_set",
+        "quality_display_active_skill_base_area_of_effect_radius_is_gem",
+        "visual_hit_effect_physical_is_wind",
+        "is_area_damage"
+      ],
       "numericStats": {
         "chance_to_trigger_wind_dancer_on_taken_hit_%": 100,
         "active_skill_base_area_of_effect_radius": 16,
@@ -200056,6 +202360,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Trinity",
+      "statIds": [
+        "trinity_damage_+%_final_to_grant_per_50_resonance",
+        "trinity_resonance_to_grant",
+        "quality_display_trinity_is_gem"
+      ],
       "numericStats": {
         "trinity_resonance_decay_delay_ms": 8000,
         "trinity_resonance_loss_per_second": 10,
@@ -200580,6 +202889,16 @@
         "Mana": 32
       },
       "statSetLabel": "Twister",
+      "statIds": [
+        "can_perform_skill_while_moving",
+        "is_area_damage",
+        "skill_can_add_multiple_charges_per_action",
+        "twister_consumes_wind_storm",
+        "visual_hit_effect_physical_is_wind",
+        "base_is_projectile",
+        "always_pierce",
+        "active_skill_ignore_setting_aim_stance"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 3000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -201558,6 +203877,15 @@
         "Mana": 76
       },
       "statSetLabel": "Unearth",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "base_number_of_skeletal_constructs_allowed",
+        "minion_aggro_radius_+%",
+        "can_perform_skill_while_moving",
+        "quality_display_base_skill_effect_duration_is_gem",
+        "is_area_damage"
+      ],
       "numericStats": {
         "unearth_base_cone_speed_multiplier": 50,
         "active_skill_base_area_of_effect_radius": 60,
@@ -202501,6 +204829,12 @@
         "Mana": 0
       },
       "statSetLabel": "Lightning Bolt",
+      "statIds": [
+        "spell_minimum_base_lightning_damage",
+        "spell_maximum_base_lightning_damage",
+        "is_area_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_shock_chance_+%_final": 200,
         "active_skill_base_area_of_effect_radius": 8,
@@ -203338,6 +205672,10 @@
         "Mana": 0
       },
       "statSetLabel": "Unleash",
+      "statIds": [
+        "staff_unleash_cooldown_%_of_cast_time",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 4000,
         "staff_unleash_number_of_seals_for_next_skill": 2,
@@ -204065,6 +206403,11 @@
         "Mana": 0
       },
       "statSetLabel": "Buff",
+      "statIds": [
+        "cast_on_damage_taken_threshold",
+        "cast_on_damage_taken_only_tracks_lightning",
+        "should_have_cast_when_damage_taken_charge_buff"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 30,
         "cast_on_damage_taken_%": 100,
@@ -204703,6 +207046,11 @@
         "Mana": 83
       },
       "statSetLabel": "Vaulting Impact",
+      "statIds": [
+        "is_area_damage",
+        "visual_hit_effect_physical_is_wind",
+        "cannot_daze"
+      ],
       "numericStats": {
         "total_attack_time_+_ms": 1000,
         "attack_maximum_action_distance_+": 42,
@@ -205309,6 +207657,15 @@
         "Mana": 0
       },
       "statSetLabel": "His Vile Intrusion",
+      "statIds": [
+        "spell_minimum_base_physical_damage",
+        "spell_maximum_base_physical_damage",
+        "number_of_additional_impaled_debuffs_to_apply",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "active_skill_show_cull_range",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 40,
         "base_secondary_skill_effect_duration": 0,
@@ -206204,6 +208561,14 @@
         "Mana": 47
       },
       "statSetLabel": "Impact",
+      "statIds": [
+        "number_of_vine_arrow_pod_allowed",
+        "base_is_projectile",
+        "skill_can_fire_arrows",
+        "has_modular_projectiles_enabled",
+        "can_perform_skill_while_moving",
+        "disable_visual_hit_effect"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "active_skill_base_area_of_effect_radius": 8,
@@ -207013,6 +209378,11 @@
         "Mana": 0
       },
       "statSetLabel": "Volatile Dead",
+      "statIds": [
+        "is_area_damage",
+        "base_skill_show_average_damage_instead_of_dps",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "volatile_dead_base_number_of_corpses_to_consume": 1,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -207656,6 +210026,10 @@
         "Mana": 41
       },
       "statSetLabel": "Volcanic Fissure",
+      "statIds": [
+        "is_area_damage",
+        "quality_display_base_skill_effect_duration_is_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 12000,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 80,
@@ -208346,6 +210720,17 @@
         "ManaPerMinute": 3680
       },
       "statSetLabel": "Eruption",
+      "statIds": [
+        "spell_minimum_base_fire_damage",
+        "spell_maximum_base_fire_damage",
+        "is_area_damage",
+        "show_number_of_projectiles",
+        "base_skill_show_average_damage_instead_of_dps",
+        "projectiles_not_offset",
+        "cast_speed_modifiers_apply_to_over_time_cost",
+        "channel_start_lock_cancelling_scales_with_cast_speed",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "volcano_fires_projectiles_every_x_ms": 500,
@@ -209647,6 +212032,12 @@
         "Mana": 79
       },
       "statSetLabel": "Mark",
+      "statIds": [
+        "thaumaturgist_mark_hit_damage_electrocute_multiplier_+%",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving",
+        "active_skill_show_overload_range_from_voltaic_mark"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -210455,6 +212846,14 @@
         "Mana": 178
       },
       "statSetLabel": "Vulnerability",
+      "statIds": [
+        "base_skill_effect_duration",
+        "active_skill_base_area_of_effect_radius",
+        "base_skill_buff_total_armour_-_to_grant",
+        "skill_curses_cannot_apply_to_targets_above_level",
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving"
+      ],
       "numericStats": {
         "curse_delay_duration_ms": 1500,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -211174,6 +213573,14 @@
       "baseMultiplier": 2.45,
       "costs": {},
       "statSetLabel": "Small Meteor",
+      "statIds": [
+        "is_area_damage",
+        "attack_is_not_melee_override",
+        "triggerable_in_any_set",
+        "base_skill_show_average_damage_instead_of_dps",
+        "display_statset_hide_usage_stats",
+        "triggered_by_walking_calamity"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 8,
         "active_skill_base_physical_damage_%_to_convert_to_fire": 100
@@ -211606,6 +214013,11 @@
         "Mana": 166
       },
       "statSetLabel": "Walking Calamity",
+      "statIds": [
+        "base_deal_no_damage",
+        "disable_quadruped_head_movement_when_turning",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "active_skill_requires_X_glory": 50,
         "base_skill_effect_duration": 10000,
@@ -212530,6 +214942,15 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "War Banner",
+      "statIds": [
+        "base_skill_effect_duration",
+        "base_skill_buff_attack_damage_+%_final_to_apply",
+        "base_skill_buff_banner_accuracy_+%_to_apply",
+        "base_skill_buff_banner_attack_speed_+%_to_apply",
+        "can_perform_skill_while_moving",
+        "base_deal_no_damage",
+        "active_skill_can_generate_glory_even_if_an_instance_of_this_skill_is_active"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 60,
         "active_skill_requires_X_glory": 200,
@@ -213123,6 +215544,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "War Banner",
+      "statIds": [
+        "base_deal_no_damage"
+      ],
       "numericStats": {},
       "qualityStats": [
         {
@@ -213397,6 +215821,13 @@
         "Mana": 100
       },
       "statSetLabel": "Wave of Frost",
+      "statIds": [
+        "active_skill_hit_damage_freeze_multiplier_+%_final",
+        "active_skill_chill_effect_+%_final",
+        "is_area_damage",
+        "has_freeze_cull",
+        "active_skill_show_freeze_range"
+      ],
       "numericStats": {
         "active_skill_base_physical_damage_%_to_convert_to_cold": 80,
         "active_skill_base_area_of_effect_radius": 60,
@@ -214041,6 +216472,18 @@
         "Mana": 0
       },
       "statSetLabel": "Chaos Bolt",
+      "statIds": [
+        "spell_minimum_base_chaos_damage",
+        "spell_maximum_base_chaos_damage",
+        "apply_x_wither_on_hit",
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "maintain_projectile_direction_when_using_contact_position",
+        "can_perform_skill_while_moving",
+        "should_use_additive_aiming_animation",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "monster_projectile_variation": 1109,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -214800,6 +217243,15 @@
         "Mana": 126
       },
       "statSetLabel": "Whirling Assault",
+      "statIds": [
+        "area_of_effect_+%_final_from_whirling_assault_level",
+        "melee_defer_damage_prediction",
+        "cannot_cancel_skill_before_contact_point",
+        "visual_hit_effect_physical_is_wind",
+        "base_skill_show_average_damage_instead_of_dps",
+        "is_area_damage",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "total_attack_time_+_ms": 1000,
         "attack_maximum_action_distance_+": 42,
@@ -215399,6 +217851,13 @@
         "Mana": 39
       },
       "statSetLabel": "Melee",
+      "statIds": [
+        "visual_hit_effect_physical_is_wind",
+        "is_area_damage",
+        "sandstorm_swipe_display",
+        "global_knockback",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "generic_knockback_+%_final_at_min_distance": 50,
         "generic_knockback_+%_final_at_max_distance": -90,
@@ -216006,6 +218465,15 @@
         "Mana": 46
       },
       "statSetLabel": "Spear",
+      "statIds": [
+        "base_is_projectile",
+        "projectile_uses_contact_position",
+        "projectile_uses_contact_direction",
+        "check_for_targets_between_initiator_and_projectile_source",
+        "can_perform_skill_while_moving",
+        "has_modular_projectiles_enabled",
+        "quality_display_sandstorm_swipe_is_gem"
+      ],
       "numericStats": {
         "movement_speed_+%_final_while_performing_action": -70,
         "movement_speed_acceleration_+%_per_second_while_performing_action": 160,
@@ -216600,6 +219068,10 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Buff",
+      "statIds": [
+        "wind_dancer_stages_gained_every_x_ms",
+        "base_deal_no_damage"
+      ],
       "numericStats": {
         "wind_dancer_maximum_number_of_stages": 3,
         "wind_dancer_evasion_rating_+%_final_per_stage": 10,
@@ -217034,6 +219506,11 @@
         "Mana": 69
       },
       "statSetLabel": "Thrust",
+      "statIds": [
+        "is_area_damage",
+        "visual_hit_effect_physical_is_wind",
+        "precise_cursor_targeting_uses_contact_point_height_offset"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 100,
         "active_skill_base_secondary_area_of_effect_radius": 17,
@@ -217675,6 +220152,16 @@
         "Mana": 55
       },
       "statSetLabel": "Wing Blast",
+      "statIds": [
+        "global_knockback",
+        "visual_hit_effect_physical_is_wind",
+        "is_area_damage",
+        "active_skill_show_crush_range",
+        "crushing_blow",
+        "disable_quadruped_head_control",
+        "precise_cursor_targeting_uses_contact_point_height_offset",
+        "skill_can_add_multiple_charges_per_action"
+      ],
       "numericStats": {
         "generic_knockback_+%_final_at_min_distance": 200,
         "generic_knockback_+%_final_at_max_distance": -90,
@@ -218559,6 +221046,9 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Withering Presence",
+      "statIds": [
+        "skill_withering_presence_frequency_ms"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 6000,
         "skill_withering_presence_frequency_ms": 1420
@@ -218954,6 +221444,9 @@
         "Mana": 0
       },
       "statSetLabel": "Wither",
+      "statIds": [
+        "active_skill_withered_base_duration_ms"
+      ],
       "numericStats": {
         "chaos_damage_taken_+%": 6,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -219638,6 +222131,23 @@
         "Mana": 85
       },
       "statSetLabel": "Arctic Howl",
+      "statIds": [
+        "secondary_minimum_base_cold_damage",
+        "secondary_maximum_base_cold_damage",
+        "wolf_warcry_buff_cold_damage_min_per_5_power_up_to_cap",
+        "wolf_warcry_buff_cold_damage_max_per_5_power_up_to_cap",
+        "wolf_warcry_empowered_attack_cold_damage_min_per_5_power_up_to_cap",
+        "wolf_warcry_empowered_attack_cold_damage_max_per_5_power_up_to_cap",
+        "global_knockback",
+        "cannot_cancel_skill_before_contact_point",
+        "is_area_damage",
+        "display_skill_deals_secondary_damage",
+        "can_perform_skill_while_moving",
+        "warcry_minimum_benefit_if_monster_power_present",
+        "has_freeze_cull",
+        "wolf_warcry_apply_effect_on_freeze",
+        "active_skill_show_freeze_range"
+      ],
       "numericStats": {
         "warcry_empowers_per_X_monster_power_mp_cap": 50,
         "base_skill_effect_duration": 8000,
@@ -220770,6 +223280,9 @@
         "Mana": 67
       },
       "statSetLabel": "Cross Slash",
+      "statIds": [
+        "is_area_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 47,
         "active_skill_base_secondary_area_of_effect_radius": 16,
@@ -221611,6 +224124,14 @@
       "baseMultiplier": 2.35,
       "costs": {},
       "statSetLabel": "Moonbeam",
+      "statIds": [
+        "wolf_lunar_blessing_beam_attack_extra_beams_to_trigger",
+        "is_area_damage",
+        "triggerable_in_any_set",
+        "attack_is_not_melee_override",
+        "base_skill_show_average_damage_instead_of_dps",
+        "secondary_skill_triggered_by_primary_skill_of_gem"
+      ],
       "numericStats": {
         "wolf_lunar_blessing_beam_attack_delay_ms": 950,
         "active_skill_base_area_of_effect_radius": 16,
@@ -222286,6 +224807,11 @@
         "Mana": 166
       },
       "statSetLabel": "Lunar Blessing",
+      "statIds": [
+        "wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage",
+        "global_knockback",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 40,
         "base_skill_effect_duration": 5000,
@@ -222967,6 +225493,11 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Minion Info",
+      "statIds": [
+        "skill_wolf_pack_size",
+        "is_resummoning_minion",
+        "display_statset_no_hit_damage"
+      ],
       "numericStats": {
         "skill_minion_summon_delay_interval_ms": 100,
         "skill_wolf_pack_size": 6
@@ -223361,6 +225892,12 @@
       "attackSpeedMultiplier": 0,
       "costs": {},
       "statSetLabel": "Predator's Mark",
+      "statIds": [
+        "base_deal_no_damage",
+        "can_perform_skill_while_moving",
+        "triggerable_in_any_set",
+        "secondary_skill_triggered_by_primary_skill_of_gem"
+      ],
       "numericStats": {
         "base_skill_effect_duration": 8000,
         "movement_speed_+%_final_while_performing_action": -70,
@@ -223972,6 +226509,11 @@
         "Mana": 102
       },
       "statSetLabel": "Pounce",
+      "statIds": [
+        "is_area_damage",
+        "leap_slam_always_knockback_within_range",
+        "base_skill_show_average_damage_instead_of_dps"
+      ],
       "numericStats": {
         "total_attack_time_+_ms": 200,
         "active_skill_base_area_of_effect_radius": 20,
@@ -224606,6 +227148,15 @@
         "Mana": 0
       },
       "statSetLabel": "Summon Wolf",
+      "statIds": [
+        "number_of_wolves_allowed",
+        "no_minion_duration",
+        "any_weapon_type_allowed",
+        "usable_with_talisman",
+        "triggerable_in_any_set",
+        "display_statset_no_hit_damage",
+        "secondary_skill_triggered_by_primary_skill_of_gem"
+      ],
       "numericStats": {
         "skill_cross_slash_triggered_summon_+_wolves_if_rare": 0,
         "skill_cross_slash_triggered_summon_+_wolves_if_unique": 1,
@@ -225128,6 +227679,12 @@
         "Mana": 55
       },
       "statSetLabel": "Devour",
+      "statIds": [
+        "wyvern_devour_life_restoration",
+        "active_skill_show_cull_range",
+        "disable_quadruped_head_control",
+        "is_area_damage"
+      ],
       "numericStats": {
         "base_melee_dash_range": 40,
         "active_skill_base_area_of_effect_radius": 18,
@@ -226067,6 +228624,14 @@
         "RagePerMinute": 360
       },
       "statSetLabel": "Flame Breath",
+      "statIds": [
+        "is_area_damage",
+        "disable_quadruped_head_movement_when_turning",
+        "skill_cannot_gain_rage_during_use",
+        "active_skill_compounding_ignites",
+        "channelled_skill_do_not_go_on_cooldown_on_finishing_channel",
+        "skill_can_be_queued_on_cooldown"
+      ],
       "numericStats": {
         "active_skill_base_area_of_effect_radius": 70,
         "active_skill_base_secondary_area_of_effect_radius": 20,
@@ -227190,6 +229755,10 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_triggerer_is_invocation_skill"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227220,6 +229789,12 @@
         "CanHaveBlessing",
         "Triggered"
       ],
+      "statIds": [
+        "support_blasphemy_curse_effect_+%_final",
+        "active_skill_base_area_of_effect_radius",
+        "curse_apply_as_aura",
+        "curse_supported_by_blasphemy"
+      ],
       "numericStats": {
         "support_blasphemy_curse_effect_+%_final": -50,
         "active_skill_base_area_of_effect_radius": 10
@@ -227240,6 +229815,10 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_triggerer_is_invocation_skill"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227259,6 +229838,11 @@
       "addSkillTypes": [
         "Triggered",
         "UsableWhileShapeshifted"
+      ],
+      "statIds": [
+        "warcry_grant_damage_+%_to_exerted_attacks",
+        "damage_+%",
+        "display_bear_warcry"
       ],
       "numericStats": {
         "chance_to_cast_on_bear_warcry_%": 100,
@@ -227282,6 +229866,10 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227303,6 +229891,12 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "damage_+%",
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "no_cost"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10,
         "damage_+%": 10
@@ -227323,6 +229917,11 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy",
+        "no_cost"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227341,6 +229940,10 @@
       ],
       "addSkillTypes": [
         "Triggered"
+      ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
       ],
       "numericStats": {
         "trigger_meta_gem_damage_+%_final": -20,
@@ -227362,6 +229965,10 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227380,6 +229987,10 @@
       ],
       "addSkillTypes": [
         "Triggered"
+      ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
       ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
@@ -227400,6 +230011,10 @@
       "addSkillTypes": [
         "Triggered",
         "Cooldown"
+      ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
       ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10,
@@ -227422,6 +230037,10 @@
         "Triggered",
         "Cooldown"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227442,6 +230061,10 @@
       "addSkillTypes": [
         "Triggered"
       ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_trigger_triggers_at_maximum_energy"
+      ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
       },
@@ -227460,6 +230083,10 @@
       ],
       "addSkillTypes": [
         "Triggered"
+      ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_triggerer_is_invocation_skill"
       ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
@@ -227481,6 +230108,10 @@
       ],
       "addSkillTypes": [
         "Triggered"
+      ],
+      "statIds": [
+        "triggered_by_generic_ongoing_trigger",
+        "generic_ongoing_triggerer_is_invocation_skill"
       ],
       "numericStats": {
         "generic_ongoing_trigger_1_maximum_energy_per_Xms_total_cast_time": 10
@@ -308257,5 +310888,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "6869035ab927794258d1f5aa0874c7877cc77a5ea859528aede5f6c3c369e1e9"
+  "contentHash": "6580ecd3b7fa2eeaab57d7ebe80fa7082767c91a49087f7eb1ba56966d19f629"
 }

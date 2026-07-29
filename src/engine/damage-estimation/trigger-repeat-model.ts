@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.5.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.6.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 
 type NumericSkill = (typeof reference.skills)[number]
@@ -35,6 +35,9 @@ export interface ResolvedTriggerRepeatSource {
   condition?: string
   intervalMs?: number
   targetSkillId?: string
+  targetSkillName?: string
+  socketedTargetCount?: number
+  triggersAllSocketedSkills?: boolean
   energyRequirement?: number
   baseEnergyPerEvent?: number
   energyGenerationModifierPercent?: number
@@ -90,6 +93,11 @@ const recordFor = (definition: SkillGemDefinition | undefined): NumericSkill | u
 
 const internalSupportFor = (record: NumericSkill): InternalTriggerSupport | undefined =>
   reference.internalTriggerSupports.find(value => value.sourceRecordId === `Support${record.sourceRecordId}`)
+
+const hasStatId = (
+  value: { statIds?: readonly string[] },
+  statId: string,
+): boolean => value.statIds?.some(candidate => candidate === statId) === true
 
 const targetCompatible = (target: NumericSkill, support: InternalTriggerSupport | undefined): boolean => {
   if (!support) return false
@@ -149,6 +157,10 @@ export function resolveTriggerRepeatModel(input: {
 
     const condition = triggerConditionByName[record.name.toLocaleLowerCase('en')]
     const internalSupport = internalSupportFor(record)
+    const triggersAllSocketedSkills = hasStatId(record,
+      'generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills',
+    ) && internalSupport != null
+      && hasStatId(internalSupport, 'generic_ongoing_trigger_triggers_at_maximum_energy')
     const targets = (setup.embeddedSkillIds ?? [])
       .map(targetSkillId => input.skills.find(value => value.id === targetSkillId))
       .filter((value): value is SkillGemDefinition => Boolean(value))
@@ -216,50 +228,56 @@ export function resolveTriggerRepeatModel(input: {
       && energyPerSecond != null
       ? Math.min(eventRatePerSecond!, energyPerSecond / energyRequirement)
       : undefined
-    const targetBaseCooldownSeconds = targetRecords.length === 1
-      && Number.isFinite(targetRecords[0]?.cooldown)
-      && Number(targetRecords[0]?.cooldown) > 0
-      ? Number(targetRecords[0]?.cooldown)
-      : undefined
-    const serverTickRoundedCooldownSeconds = targetBaseCooldownSeconds == null
-      ? undefined
-      : Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
-        * POB2_SERVER_TICK_SECONDS
-    const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
-      ? undefined
-      : 1 / serverTickRoundedCooldownSeconds
-    const triggerRatePerSecond = uncappedTriggerRatePerSecond == null
-      ? undefined
-      : cooldownRateCapPerSecond == null
-        ? uncappedTriggerRatePerSecond
-        : Math.min(uncappedTriggerRatePerSecond, cooldownRateCapPerSecond)
-    const secondsPerTrigger = triggerRatePerSecond != null && triggerRatePerSecond > 0
-      ? 1 / triggerRatePerSecond
-      : undefined
     const energyPerSecondAtMonsterPowerOne = eventRatePerSecond != null
       && effectiveEnergyPerEventAtMonsterPowerOne != null
       ? eventRatePerSecond * effectiveEnergyPerEventAtMonsterPowerOne
       : undefined
-    const triggerRatePerSecondAtMonsterPowerOne = energyRequirement != null
+    const uncappedTriggerRatePerSecondAtMonsterPowerOne = energyRequirement != null
       && energyRequirement > 0
       && energyPerSecondAtMonsterPowerOne != null
-      ? energyPerSecondAtMonsterPowerOne / energyRequirement
-      : undefined
-    const secondsPerTriggerAtMonsterPowerOne = triggerRatePerSecondAtMonsterPowerOne != null
-      && triggerRatePerSecondAtMonsterPowerOne > 0
-      ? 1 / triggerRatePerSecondAtMonsterPowerOne
+      ? Math.min(eventRatePerSecond!, energyPerSecondAtMonsterPowerOne / energyRequirement)
       : undefined
     const stable = (value: number): number => Math.round(value * 1_000_000) / 1_000_000
 
     for (const target of targets.length ? targets : [undefined]) {
       const targetRecord = recordFor(target)
       const compatible = targetRecord ? targetCompatible(targetRecord, internalSupport) : false
+      const targetBaseCooldownSeconds = Number.isFinite(targetRecord?.cooldown)
+        && Number(targetRecord?.cooldown) > 0
+        ? Number(targetRecord?.cooldown)
+        : undefined
+      const serverTickRoundedCooldownSeconds = targetBaseCooldownSeconds == null
+        ? undefined
+        : Math.ceil(targetBaseCooldownSeconds / POB2_SERVER_TICK_SECONDS)
+          * POB2_SERVER_TICK_SECONDS
+      const cooldownRateCapPerSecond = serverTickRoundedCooldownSeconds == null
+        ? undefined
+        : 1 / serverTickRoundedCooldownSeconds
+      const triggerRatePerSecond = uncappedTriggerRatePerSecond == null
+        ? undefined
+        : cooldownRateCapPerSecond == null
+          ? uncappedTriggerRatePerSecond
+          : Math.min(uncappedTriggerRatePerSecond, cooldownRateCapPerSecond)
+      const secondsPerTrigger = triggerRatePerSecond != null && triggerRatePerSecond > 0
+        ? 1 / triggerRatePerSecond
+        : undefined
+      const triggerRatePerSecondAtMonsterPowerOne = uncappedTriggerRatePerSecondAtMonsterPowerOne == null
+        ? undefined
+        : cooldownRateCapPerSecond == null
+          ? uncappedTriggerRatePerSecondAtMonsterPowerOne
+          : Math.min(uncappedTriggerRatePerSecondAtMonsterPowerOne, cooldownRateCapPerSecond)
+      const secondsPerTriggerAtMonsterPowerOne = triggerRatePerSecondAtMonsterPowerOne != null
+        && triggerRatePerSecondAtMonsterPowerOne > 0
+        ? 1 / triggerRatePerSecondAtMonsterPowerOne
+        : undefined
       sources.push({
         sourceSkillId: definition.id,
         sourceSkillName: definition.displayNameDe,
         kind: 'meta-trigger',
         ...(condition ? { condition } : {}),
-        ...(target ? { targetSkillId: target.id } : {}),
+        ...(target ? { targetSkillId: target.id, targetSkillName: target.displayNameDe } : {}),
+        socketedTargetCount: targets.length,
+        triggersAllSocketedSkills,
         ...(energyRequirement == null ? {} : { energyRequirement }),
         ...(baseEnergyPerEvent == null ? {} : { baseEnergyPerEvent }),
         ...(Number.isFinite(energyGenerationModifierPercent) ? { energyGenerationModifierPercent } : {}),
@@ -295,11 +313,20 @@ export function resolveTriggerRepeatModel(input: {
           ...(condition ? [`damage-reference:${record.name}:name`] : []),
           ...(target ? [`build-profile:${setup.id}:embeddedSkillIds:${target.id}`] : []),
           ...(internalSupport ? [`damage-reference:${internalSupport.sourceRecordId}`] : []),
+          ...(hasStatId(record, 'generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills')
+            ? [`damage-reference:${record.sourceRecordId}:generic_ongoing_trigger_maximum_energy_is_total_of_socketed_skills`]
+            : []),
+          ...(internalSupport != null
+            && hasStatId(internalSupport, 'generic_ongoing_trigger_triggers_at_maximum_energy')
+            ? [`damage-reference:${internalSupport.sourceRecordId}:generic_ongoing_trigger_triggers_at_maximum_energy`]
+            : []),
         ],
         detail: target && compatible
           ? eventRatePerSecond != null
             ? triggerRatePerSecond != null
-              ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate, Monsterstärke, Zustands-Schwelle und Energieaufbau sind geschlossen berechnet. Der Zielschaden wird nach der isolierten Zielberechnung ergänzt; weitere Cooldown- und Server-Tick-Grenzen bleiben gesondert zu prüfen.`
+              ? triggersAllSocketedSkills
+                ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Der gemeinsame Energiebedarf umfasst alle ${targets.length} eingebetteten Fertigkeiten; bei voller Energie werden alle eingebetteten Fertigkeiten ausgelöst. Die eigene Cooldown-Grenze dieses Ziels wird separat im gepinnten Server-Takt angewendet.`
+                : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Ereignisrate und Energieaufbau sind geschlossen berechnet; die eigene Cooldown-Grenze dieses Ziels wird separat im gepinnten Server-Takt angewendet.`
               : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate und Energieaufbau sind bei normierter Monsterstärke 1 berechnet; tatsächliche Monsterstärke oder Zustands-Schwelle fehlen noch, daher entsteht noch kein zusätzlicher DPS-Wert.`
             : `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
           : target

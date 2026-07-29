@@ -219,6 +219,48 @@ describe('Trigger- und Wiederholungsmodell', () => {
     })
   })
 
+  it('berechnet mehrere eingebettete Fertigkeiten mit gemeinsamem Energiebedarf und eigenen Cooldowns', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const comet = skill('comet', 'Comet')
+    const snap = skill('snap', 'Snap')
+    const result = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [comet.id, snap.id] },
+      ],
+      skills: [primary, trigger, comet, snap],
+      primaryActionContext: {
+        actionsPerSecond: 10,
+        hitChancePercent: 100,
+        criticalHitChancePercent: 100,
+        criticalHitDamageBeforeMitigation: 10_000,
+        monsterPower: 20,
+        enemyAilmentThreshold: 100,
+      },
+    })
+
+    expect(result.sources).toHaveLength(2)
+    expect(result.sources[0]).toMatchObject({
+      targetSkillId: 'comet',
+      targetSkillName: 'Comet',
+      socketedTargetCount: 2,
+      triggersAllSocketedSkills: true,
+      energyRequirement: 150,
+      triggerRatePerSecond: 10,
+    })
+    expect(result.sources[1]).toMatchObject({
+      targetSkillId: 'snap',
+      targetSkillName: 'Snap',
+      socketedTargetCount: 2,
+      triggersAllSocketedSkills: true,
+      energyRequirement: 150,
+      serverTickRoundedCooldownSeconds: 4.026,
+      triggerRatePerSecond: 0.248385,
+    })
+  })
+
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('coc', 'Cast on Critical')

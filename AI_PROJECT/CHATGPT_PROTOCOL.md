@@ -2853,3 +2853,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Weiter offen sind Cooldown-Recovery/Overrides, Sonderfälle gespeicherter
   Nutzungen und die Rotation mehrerer Triggerziele.
 - Trigger-Teilmodell `1.5.0`.
+
+# Fortsetzung: Schritt 50 – gemeinsame Meta-Auslösung und Ziel-Cooldowns
+
+- Der gepinnte PoB2-Referenzexport enthält jetzt die exakten Stat-IDs der
+  aktiven Fertigkeiten und internen Trigger-Supports.
+- Für die belegten Meta-Fertigkeiten wird der gemeinsame Energiebedarf aus
+  allen eingebetteten Wirkzeiten gebildet und bei voller Energie werden alle
+  eingebetteten Fertigkeiten ausgelöst.
+- Jede eingebettete Fertigkeit wird danach unabhängig durch ihren eigenen,
+  auf `0,033` Sekunden gerundeten Cooldown begrenzt.
+- Die Oberfläche zeigt den deutschen Zielnamen und die Zahl gemeinsam
+  eingebetteter Fertigkeiten statt einer rohen internen Ziel-ID.
+- Weiter offen: Cooldown-Recovery/Overrides, echte Rotations-Trigger und
+  Sonderfälle gespeicherter Nutzungen.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_META_MULTI_TARGET_COOLDOWN_STEP_50.md`.
