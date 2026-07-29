@@ -10,6 +10,7 @@ import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './te
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
 import { collectDamagingAilments } from './damaging-ailments'
+import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
 import { resolveAttackHitChance } from './attack-hit-chance'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
@@ -209,6 +210,7 @@ export function estimateHitDamage(input:{
     passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
   }):undefined
   damageOverTime=collectDamageOverTime(skill,resolvedEnemyProfile)
+  const conditionalAilmentEffects=resolveConditionalAilmentEffects(input.equipment)
   const damagingAilments=collectDamagingAilments({
     skill,
     components,
@@ -225,6 +227,9 @@ export function estimateHitDamage(input:{
     }),
     criticalChancePercent: effectiveCriticalChance,
     criticalHitDamageMultiplier: 1 + totalCriticalDamageBonus / 100,
+    bleedingChanceOnCriticalHitPercent: conditionalAilmentEffects.bleedingChanceOnCriticalHitPercent,
+    poisonChanceOnCriticalHitPercent: conditionalAilmentEffects.poisonChanceOnCriticalHitPercent,
+    conditionalAilmentSourceReferences: conditionalAilmentEffects.sourceReferences,
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)

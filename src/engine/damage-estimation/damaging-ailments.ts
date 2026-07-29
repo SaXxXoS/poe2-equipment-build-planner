@@ -3,7 +3,7 @@ import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.3.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.4.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -112,6 +112,9 @@ export function collectDamagingAilments(input: {
   bleedingPassiveEffect?: BleedingPassiveEffect
   criticalChancePercent?: number
   criticalHitDamageMultiplier?: number
+  bleedingChanceOnCriticalHitPercent?: number
+  poisonChanceOnCriticalHitPercent?: number
+  conditionalAilmentSourceReferences?: string[]
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -130,6 +133,7 @@ export function collectDamagingAilments(input: {
       durationMs: reference.ailmentConstants.baseBleedingDurationSeconds * 1000,
       effectStats: ['active_skill_bleeding_effect_+%_final', 'support_deep_cuts_bleeding_effect_+%_final'],
       durationStats: [] as string[],
+      chanceOnCriticalHitPercent: input.bleedingChanceOnCriticalHitPercent,
     },
     {
       kind: 'poison' as const,
@@ -140,11 +144,18 @@ export function collectDamagingAilments(input: {
       durationMs: reference.ailmentConstants.basePoisonDurationSeconds * 1000,
       effectStats: ['support_deadly_poison_poison_effect_+%_final'],
       durationStats: ['support_multi_poison_poison_duration_+%_final'],
+      chanceOnCriticalHitPercent: input.poisonChanceOnCriticalHitPercent,
     },
   ]
 
   for (const definition of definitions) {
-    const chancePercent = Math.min(100, Math.max(0, sum(allStats, definition.chanceStat)))
+    const chanceOnHitPercent = Math.min(100, Math.max(0, sum(allStats, definition.chanceStat)))
+    const chanceOnCriticalHitPercent = Math.min(
+      100,
+      Math.max(0, definition.chanceOnCriticalHitPercent ?? chanceOnHitPercent),
+    )
+    const chancePercent = chanceOnHitPercent * (1 - criticalChance)
+      + chanceOnCriticalHitPercent * criticalChance
     if (chancePercent <= 0) continue
     const range = componentRange(input.components, definition.sourceTypes)
     if (
@@ -182,8 +193,8 @@ export function collectDamagingAilments(input: {
     const roll = weightedRoll(applicationStacks, maximumStacks)
     const nonCriticalSourceDamage = range.minimum + (range.maximum - range.minimum) * roll
     const criticalSourceDamage = nonCriticalSourceDamage * criticalHitDamageMultiplier
-    const chanceFromHit = chancePercent * (1 - criticalChance)
-    const chanceFromCriticalHit = chancePercent * criticalChance
+    const chanceFromHit = chanceOnHitPercent * (1 - criticalChance)
+    const chanceFromCriticalHit = chanceOnCriticalHitPercent * criticalChance
     const sourceDamage = chanceFromHit + chanceFromCriticalHit > 0
       ? (nonCriticalSourceDamage * chanceFromHit + criticalSourceDamage * chanceFromCriticalHit)
         / (chanceFromHit + chanceFromCriticalHit)
@@ -207,6 +218,7 @@ export function collectDamagingAilments(input: {
       ...(definition.kind === 'poison' && maximumStacks > 1 ? ['number_of_additional_poison_stacks'] : []),
       ...(bleedingPassiveEffect?.sourceReferences ?? []),
       ...(criticalChance > 0 ? ['CalcOffence.calcAilmentDamage', 'CalcOffence.ailmentCritChance'] : []),
+      ...(definition.chanceOnCriticalHitPercent != null ? input.conditionalAilmentSourceReferences ?? [] : []),
     ]
     const resistance = definition.damageType === 'physical'
       ? 0
@@ -231,8 +243,8 @@ export function collectDamagingAilments(input: {
       totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
       ...(bleedingPassiveEffect ? { aggravated: true } : {}),
-      chanceOnHitPercent: round(chancePercent),
-      chanceOnCriticalHitPercent: round(chancePercent),
+      chanceOnHitPercent: round(chanceOnHitPercent),
+      chanceOnCriticalHitPercent: round(chanceOnCriticalHitPercent),
       ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),
       weightedSourceDamage: round(sourceDamage),
       sourceReferences,

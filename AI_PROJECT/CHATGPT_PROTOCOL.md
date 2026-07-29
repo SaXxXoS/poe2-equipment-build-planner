@@ -2743,3 +2743,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die Zustands-Kritwahrscheinlichkeit bleibt eine getrennte Kennzahl und wird
   nicht als zusätzlicher Schadensmultiplikator missbraucht.
 - Bedingte Krit-Zustandsstats bleiben weiter fail-closed.
+
+# Fortsetzung: Schritt 41 – bedingte kritische Zustandschance
+
+- Normale und kritische Gift-/Blutungschancen sind getrennt modelliert.
+- Die exakte PoB2-Unique-Zeile `Critical Hits Poison the enemy` setzt
+  ausschließlich die Giftchance kritischer Treffer auf 100 Prozent.
+- Die Auflösung erfolgt über stabile `pob2:`-ID, ausgewählte Variante und
+  exakte englische Quellzeile; OCR, Freitext und deutsche Anzeigetexte sind
+  ausgeschlossen.
+- Weitere bedingte Zustandsstats bleiben bis zu einer vollständigen
+  gepinnten Stat- und Bedingungskette fail-closed.

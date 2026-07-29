@@ -197,3 +197,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   Zustands wird separat ausgewiesen.
 - Bedingte Krit-Zustandsstats bleiben ohne vollständige Quelle-, Waffen- und
   Bedingungskette fail-closed.
+# Schritt 41 – bedingte kritische Zustandschance
+
+- Normale und kritische Gift-/Blutungschancen können getrennt transportiert
+  und nach effektiver Kritchance gewichtet werden.
+- `Critical Hits Poison the enemy` wird über stabile Unique-ID, exakte
+  englische PoB2-Zeile und den gepinnten Modifikatorpfad aufgelöst.
+- Variantenbezug wird fail-closed geprüft.
+- OCR, Freitext, deutsche Anzeige und Ähnlichkeitssuche erzeugen keine
+  technische Zustandswirkung.
+- Weitere bedingte Zustandsstats bleiben offen.

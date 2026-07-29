@@ -217,6 +217,31 @@ describe('belegte schädigende Zustände', () => {
     })
   })
 
+  it('trennt eine exakt belegte kritische Giftchance von der normalen Trefferchance', () => {
+    const supports = [support('poison', 'Poison I')]
+    const result = collectDamagingAilments({
+      skill: record('Arc'),
+      components: [{ type: 'chaos', minimum: 100, maximum: 100 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      criticalChancePercent: 50,
+      criticalHitDamageMultiplier: 2,
+      poisonChanceOnCriticalHitPercent: 100,
+      conditionalAilmentSourceReferences: ['pob2:test:critical-poison'],
+      setup: setup(['poison']),
+      supports,
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'poison',
+      chanceOnHitPercent: 40,
+      chanceOnCriticalHitPercent: 100,
+      chancePercent: 70,
+      expectedActiveStacks: 1,
+      weightedSourceDamage: 171.43,
+    })
+    expect(result.effects[0].sourceReferences).toContain('pob2:test:critical-poison')
+  })
+
   it('blockiert Angriffs-Zustände ohne belegte Trefferchance', () => {
     const result = collectDamagingAilments({
       skill: record('Rake'),
