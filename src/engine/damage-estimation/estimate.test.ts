@@ -16,6 +16,17 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
   })
+  it('verwendet die exakt gewählte Skill-Levelzeile für Schaden und Kosten',()=>{
+    const selected={...setup('ball'),level:19}
+    const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('ball','Ball Lightning')]})
+    expect(result.status).toBe('partial')
+    expect(result.gemLevel).toBe(19)
+    expect(result.hitDamage).toMatchObject({minimum:5,maximum:93,average:49})
+    expect(result.resourceSpiritModel?.skillCostChains[0]).toMatchObject({
+      baseCostStatus:'structured-exact-level',
+      baseCosts:[{resource:'mana',cadence:'per-use',baseAmount:87}],
+    })
+  })
   it('verwendet Waffenbasis und Angriffsmultiplikator für Angriffe',()=>{
     const result=estimateHitDamage({equipment:[weapon('Crude Bow')],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
     expect(result.status).toBe('partial')
@@ -299,11 +310,11 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.stages?.map(stage=>stage.id)).toContain('prepared-next-hit')
   })
   it('blockiert eine nicht referenzierte Gemmenstufe statt Stufe 20 zu verwenden',()=>{
-    const mismatched={...setup('arc'),level:19}
+    const mismatched={...setup('arc'),level:99}
     const result=estimateHitDamage({equipment:[],setups:[mismatched],skills:[skill('arc','Arc')]})
     expect(result.status).toBe('unavailable')
     expect(result.gemLevel).toBeUndefined()
-    expect(result.gemLevelQualityModel).toMatchObject({requestedSkillLevel:19,availableSkillLevel:20,productive:false})
+    expect(result.gemLevelQualityModel).toMatchObject({requestedSkillLevel:99,productive:false})
     expect(result.warnings.join(' ')).toContain('keine exakte numerische Referenz')
   })
 })

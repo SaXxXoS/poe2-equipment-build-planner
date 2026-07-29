@@ -7,6 +7,7 @@ import type { DamageEstimate } from './types'
 export const RESOURCE_SPIRIT_MODEL_VERSION = '7.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
+type NumericSkillLevel = NumericSkill['levels'][number]
 const byName = new Map<string, NumericSkill>()
 for (const skill of reference.skills) {
   const key = skill.name.toLocaleLowerCase('en')
@@ -16,6 +17,11 @@ for (const skill of reference.skills) {
 
 const recordFor = (definition: SkillGemDefinition | undefined): NumericSkill | undefined =>
   definition?.nameEn ? byName.get(definition.nameEn.toLocaleLowerCase('en')) : undefined
+const levelFor = (record: NumericSkill | undefined, setup: SkillSetup): NumericSkillLevel | undefined => {
+  if (!record) return undefined
+  const requested = setup.level ?? 20
+  return record.levels.find(value => value.level === requested)
+}
 
 export interface ResolvedResourceSpiritSource {
   sourceSkillId: string
@@ -55,7 +61,7 @@ interface SkillResourceCostChain {
   effectiveManaPool: number | null
   effectiveManaRegenerationPerSecond: number | null
   confirmedFlatSpiritContribution: number
-  baseCostStatus: 'structured-exact-level-20' | 'structured-exact-zero-cost' | 'blocked-missing-exact-base-cost'
+  baseCostStatus: 'structured-exact-level' | 'structured-exact-zero-cost' | 'blocked-missing-exact-base-cost'
   supportMultiplierStatus: 'structured-exact-all-selected-supports' | 'structured-exact-no-supports' | 'blocked-missing-exact-support-cost-multipliers'
   poolStatus: 'confirmed-minimum-pool' | 'confirmed-pool-with-passive-effects' | 'blocked-missing-character-level'
   sustainStatus: 'sustainable-on-confirmed-minimum' | 'burst-affordable-on-confirmed-minimum' | 'unusable-confirmed-zero-mana' | 'blocked-missing-action-frequency' | 'blocked-missing-character-level' | 'blocked-missing-exact-cost-chain'
@@ -188,10 +194,11 @@ export function resolveResourceSpiritModel(input: {
     if (!setup.skillId) continue
     const definition = input.skills.find(value => value.id === setup.skillId)
     const record = recordFor(definition)
+    const level = levelFor(record, setup)
     if (!definition || !record) continue
     const hasReservation = record.skillTypes.includes('HasReservation')
     const hasMultipleReservation = record.skillTypes.includes('MultipleReservation')
-    const numericEffects = Object.entries(record.numericStats)
+    const numericEffects = Object.entries(level?.numericStats ?? {})
       .filter(([statId, value]) => /mana|spirit|resource|reservation/i.test(statId) && Number.isFinite(Number(value)))
       .map(([statId, value]) => ({ statId, value: Number(value) }))
       .sort((a, b) => a.statId.localeCompare(b.statId))
@@ -357,6 +364,7 @@ export function resolveResourceSpiritModel(input: {
     .map(setup => {
       const definition = input.skills.find(value => value.id === setup.skillId)
       const record = recordFor(definition)
+      const skillLevel = levelFor(record, setup)
       const supportCostMultipliers = setup.supportGemIds
         .map(id => input.supports.find(value => value.id === id))
         .flatMap(support => support && Number.isFinite(support.costMultiplierPercent) ? [{
@@ -370,20 +378,20 @@ export function resolveResourceSpiritModel(input: {
       const combinedSupportMultiplier = allSupportMultipliersKnown
         ? floorFour(supportCostMultipliers.reduce((value, support) => value * support.multiplierPercent / 100, 1))
         : null
-      const hasStructuredCostTable = Boolean(record && Object.keys(record.costs).length)
-      const hasOnlyZeroCosts = hasStructuredCostTable && Object.values(record!.costs).every(value => Number(value) === 0)
+      const hasStructuredCostTable = Boolean(skillLevel && Object.keys(skillLevel.costs).length)
+      const hasOnlyZeroCosts = hasStructuredCostTable && Object.values(skillLevel!.costs).every(value => Number(value) === 0)
       const baseCostStatus = !hasStructuredCostTable
         ? 'blocked-missing-exact-base-cost' as const
         : hasOnlyZeroCosts
           ? 'structured-exact-zero-cost' as const
-          : 'structured-exact-level-20' as const
+          : 'structured-exact-level' as const
       const supportMultiplierStatus = setup.supportGemIds.length === 0
         ? 'structured-exact-no-supports' as const
         : allSupportMultipliersKnown
           ? 'structured-exact-all-selected-supports' as const
           : 'blocked-missing-exact-support-cost-multipliers' as const
-      const baseCosts = record && combinedSupportMultiplier != null
-        ? Object.entries(record.costs).flatMap(([sourceResource, rawAmount]) => {
+      const baseCosts = skillLevel && combinedSupportMultiplier != null
+        ? Object.entries(skillLevel.costs).flatMap(([sourceResource, rawAmount]) => {
           const descriptor = costDescriptor(sourceResource)
           if (!descriptor || !Number.isFinite(Number(rawAmount))) return []
           const baseAmount = Number((Number(rawAmount) / descriptor.divisor).toFixed(2))
@@ -500,7 +508,7 @@ export function resolveResourceSpiritModel(input: {
     limitations: [
       'Der bestätigte Mindestpool verwendet Charakterlevel, gepinnte Grundwerte und eindeutig erkannte flache Ausrüstungsbeiträge. Nicht vollständig transportierte Passive-, Aszendenz- und bedingte Wirkungen werden nicht erfunden.',
       'Exakte Geistreservierungen werden über die gepinnte Gem-zu-Fertigkeit-Kette verbunden. Quest-Geist wird aus Charakterlevel und gepinnten Belohnungsstufen nur als obere Planungsschätzung abgeleitet; das Level beweist keinen Questabschluss.',
-      'Fertigkeits-Grundkosten auf Stufe 20 und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Kostenketten bleiben blockiert.',
+      'Fertigkeits-Grundkosten der exakt gewählten, vorhandenen Stufe und Support-Kostenmultiplikatoren werden nur über die gepinnten strukturierten Quellen verbunden; fehlende Stufen oder Kostenketten bleiben blockiert.',
       'Unbedingte, exakt lesbare Mana-, Regenerations-, Kosten-, Geist- und allgemeine Reservierungseffizienzwirkungen vergebener Passive- und Aszendenzknoten werden waffensetspezifisch angewandt. Bedingte und fertigkeitsspezifische Effizienz bleibt fail-closed.',
       'Dauerhafte Nutzbarkeit wird nur positiv bestätigt, wenn bereits die konservative Mindest-Manaregeneration den belegten Verbrauch deckt. Ein negatives Urteil wird aus dem Mindestpool nicht abgeleitet.',
     ],

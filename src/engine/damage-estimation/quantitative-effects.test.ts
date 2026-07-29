@@ -78,6 +78,33 @@ describe('quantitative Wirkungskette', () => {
     ])
   })
 
+  it('führt Umwandlungen in der PoE-Reihenfolge mehrstufig aus und erhält die Herkunftsskalierung', () => {
+    const conversions = [
+      { id: 'p-l', source: 'passive' as const, sourceId: 'p1', from: 'physical' as const, to: 'lightning' as const, percent: 100 },
+      { id: 'l-c', source: 'passive' as const, sourceId: 'p2', from: 'lightning' as const, to: 'cold' as const, percent: 50 },
+      { id: 'c-f', source: 'passive' as const, sourceId: 'p3', from: 'cold' as const, to: 'fire' as const, percent: 100 },
+    ]
+    expect(applyConversions([{ type: 'physical', minimum: 100, maximum: 100 }], conversions)).toEqual([
+      { type: 'fire', minimum: 50, maximum: 50 },
+      { type: 'lightning', minimum: 50, maximum: 50 },
+    ])
+    expect(applyDamageModifiers(
+      [{ type: 'physical', minimum: 100, maximum: 100 }],
+      conversions,
+      [{ id: 'physical', source: 'passive', sourceId: 'p4', label: 'physical', percent: 20, appliesTo: ['physical'] }],
+    )).toEqual([
+      { type: 'fire', minimum: 60, maximum: 60 },
+      { type: 'lightning', minimum: 60, maximum: 60 },
+    ])
+  })
+
+  it('ignoriert rückwärts gerichtete Konversionsketten fail-closed', () => {
+    expect(applyConversions(
+      [{ type: 'fire', minimum: 100, maximum: 100 }],
+      [{ id: 'backwards', source: 'passive', sourceId: 'p1', from: 'fire', to: 'cold', percent: 100 }],
+    )).toEqual([{ type: 'fire', minimum: 100, maximum: 100 }])
+  })
+
   it('importiert ausschließlich unbedingte exakte Gain-as-extra-Zeilen aus vergebenen Knoten', () => {
     const result = collectQuantitativeEffects({
       equipment: [],

@@ -122,11 +122,18 @@ const levelRow = (body, level) => {
   const match = new RegExp(`\\[${level}\\]\\s*=\\s*\\{`).exec(levels)
   return match ? balanced(levels, levels.indexOf('{', match.index)) : undefined
 }
+const levelNumbers = body => {
+  const levels = tableFor(body, 'levels')
+  return levels
+    ? [...levels.matchAll(/\[(\d+)\]\s*=\s*\{/g)].map(([, value]) => Number(value)).filter(Number.isFinite)
+    : []
+}
 const positional = row => {
   if (!row) return []
   const head = row.slice(1, row.indexOf('statInterpolation') >= 0 ? row.indexOf('statInterpolation') : -1)
   return head.split(',').map(value => value.trim()).filter(value => /^-?\d+(?:\.\d+)?$/.test(value)).map(Number)
 }
+const uniqueSortedNumbers = values => [...new Set(values)].sort((a, b) => a - b)
 const namedNumericTable = (body, key) => {
   const table = tableFor(body, key)
   if (!table) return {}
@@ -172,7 +179,30 @@ for (const file of skillFiles) {
     const statsTable = firstSet && tableFor(firstSet, 'stats')
     const stats = statsTable ? [...statsTable.matchAll(/"([^"]+)"/g)].map(value => value[1]) : []
     const values = positional(firstSet && levelRow(firstSet, gemLevel))
-    const numericStats = Object.fromEntries(stats.map((stat, index) => [stat, values[index]]).filter(([, value]) => Number.isFinite(value)))
+    const constantStats = constantNumericStats(firstSet ?? '')
+    const numericStats = {
+      ...constantStats,
+      ...Object.fromEntries(stats.map((stat, index) => [stat, values[index]]).filter(([, value]) => Number.isFinite(value))),
+    }
+    const availableLevels = uniqueSortedNumbers([
+      ...levelNumbers(body),
+      ...(firstSet ? levelNumbers(firstSet) : []),
+    ])
+    const levels = availableLevels.map(level => {
+      const mainRow = levelRow(body, level)
+      const statValues = positional(firstSet && levelRow(firstSet, level))
+      return {
+        level,
+        attackSpeedMultiplier: number(mainRow ?? '', 'attackSpeedMultiplier') ?? 0,
+        baseMultiplier: number(mainRow ?? '', 'baseMultiplier'),
+        critChance: number(mainRow ?? '', 'critChance'),
+        costs: namedNumericTable(mainRow ?? '', 'cost'),
+        numericStats: {
+          ...constantStats,
+          ...Object.fromEntries(stats.map((stat, index) => [stat, statValues[index]]).filter(([, value]) => Number.isFinite(value))),
+        },
+      }
+    })
     skills.push({
       sourceRecordId: key, name, gemLevel,
       kind: skillTypes.includes('Attack') ? 'attack' : skillTypes.includes('Spell') ? 'spell' : 'other',
@@ -184,6 +214,7 @@ for (const file of skillFiles) {
       costs: namedNumericTable(mainLevel ?? '', 'cost'),
       statSetLabel: firstSet ? string(firstSet, 'label') : undefined,
       numericStats,
+      levels,
       sourceFile: relative,
     })
   }
@@ -205,6 +236,22 @@ for (const file of supportFiles) {
     const statNames = statsTable ? [...statsTable.matchAll(/"([^"]+)"/g)].map(value => value[1]) : []
     const values = positional(firstSet && levelRow(firstSet, 1))
     const levelStats = Object.fromEntries(statNames.map((stat, index) => [stat, values[index]]).filter(([, value]) => Number.isFinite(value)))
+    const availableLevels = uniqueSortedNumbers([
+      ...levelNumbers(body),
+      ...(firstSet ? levelNumbers(firstSet) : []),
+    ])
+    const levels = availableLevels.map(level => {
+      const mainRow = levelRow(body, level)
+      const statValues = positional(firstSet && levelRow(firstSet, level))
+      return {
+        level,
+        manaMultiplierPercent: number(mainRow ?? '', 'manaMultiplier') ?? 0,
+        numericStats: {
+          ...constantNumericStats(firstSet ?? ''),
+          ...Object.fromEntries(statNames.map((stat, index) => [stat, statValues[index]]).filter(([, value]) => Number.isFinite(value))),
+        },
+      }
+    })
     supports.push({
       sourceRecordId: key,
       name,
@@ -214,6 +261,7 @@ for (const file of supportFiles) {
       addSkillTypes: skillTypesFor(body, 'addSkillTypes'),
       manaMultiplierPercent: number(mainLevel ?? '', 'manaMultiplier') ?? 0,
       numericStats: { ...constantNumericStats(firstSet ?? ''), ...levelStats },
+      levels,
       sourceFile: relative,
     })
   }
@@ -279,7 +327,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 6,
+  schemaVersion: 7,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,
@@ -302,7 +350,7 @@ const payload = {
     'Bounded hit estimate; not Path of Building parity.',
     'Multi-hit frequency, ailments, damage over time, minions and conditional mechanics are not included.',
     'PoB2 calculation reference is not represented as a technical GGG identity chain.',
-    'Skill costs are the structured level-20 values from the pinned PoB2 skill rows; missing resources remain unresolved.',
+    'Skill and support level rows are retained exactly where the pinned PoB2 source provides them; missing levels and resources remain unresolved.',
     'Support records retain exact structured compatibility types and numeric stats; conditional stats are not automatically treated as unconditional effects.',
     'Quest Spirit rewards are exact, but character level only provides a planning upper bound and does not prove quest completion.',
   ],

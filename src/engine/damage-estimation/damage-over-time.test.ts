@@ -23,15 +23,27 @@ describe('getrennter Schaden über Zeit', () => {
     expect(result.totalSingleApplicationDamagePerSecond).toBe(59.58)
   })
 
-  it.each(['Contagion', 'Incinerate', 'Profane Ritual', 'Tornado'])(
-    'blockiert %s ohne geschlossene Wirkungsdauer',
-    name => {
-      const result = collectDamageOverTime(byName(name))
-      expect(result.effects).toEqual([])
-      expect(result.blockedEffects.length).toBeGreaterThan(0)
-      expect(result.blockedEffects[0].detail).toContain('keine gemeinsam gepinnte Wirkungsdauer')
-    },
-  )
+  it.each([
+    ['Contagion', 'chaos', 93.92, 5000],
+    ['Profane Ritual', 'chaos', 652.17, 2000],
+    ['Tornado', 'physical', 146.08, 8000],
+  ] as const)('berechnet %s aus konstantem Dauerwert und Levelwert', (name, damageType, damagePerSecond, durationMs) => {
+    const result = collectDamageOverTime(byName(name))
+    expect(result.effects).toEqual([expect.objectContaining({
+      damageType,
+      damagePerSecond,
+      durationMs,
+      status: 'single-application-window',
+    })])
+    expect(result.blockedEffects).toEqual([])
+  })
+
+  it('blockiert Incinerate ohne geschlossene Wirkungsdauer', () => {
+    const result = collectDamageOverTime(byName('Incinerate'))
+    expect(result.effects).toEqual([])
+    expect(result.blockedEffects.length).toBeGreaterThan(0)
+    expect(result.blockedEffects[0].detail).toContain('keine gemeinsam gepinnte Wirkungsdauer')
+  })
 
   it('erfindet für einen reinen Trefferschaden-Skill keinen DoT', () => {
     const result = collectDamageOverTime(byName('Arc'))

@@ -15,6 +15,7 @@ export interface GemLevelQualityModel {
   modelVersion: string
   requestedSkillLevel?: number
   availableSkillLevel?: number
+  availableSkillLevels: number[]
   appliedSkillLevel?: number
   skillLevelStatus: 'exact' | 'default-reference-level' | 'blocked-level-mismatch' | 'blocked-missing-reference'
   skillQualityStatus: 'blocked-not-transported-and-no-reference'
@@ -32,8 +33,12 @@ export function resolveGemLevelQualityModel(input: {
 }): GemLevelQualityModel {
   const record = input.skill?.nameEn ? byName.get(input.skill.nameEn.toLocaleLowerCase('en')) : undefined
   const requestedSkillLevel = input.setup?.level
-  const availableSkillLevel = record?.gemLevel
-  const exact = requestedSkillLevel != null && availableSkillLevel === requestedSkillLevel
+  const availableSkillLevels = record?.levels.map(value => value.level) ?? []
+  const defaultLevel = availableSkillLevels.includes(20) ? 20 : availableSkillLevels.at(-1)
+  const availableSkillLevel = requestedSkillLevel != null && availableSkillLevels.includes(requestedSkillLevel)
+    ? requestedSkillLevel
+    : defaultLevel
+  const exact = requestedSkillLevel != null && availableSkillLevels.includes(requestedSkillLevel)
   const defaultReference = requestedSkillLevel == null && availableSkillLevel != null
   const skillLevelStatus: GemLevelQualityModel['skillLevelStatus'] = !record
     ? 'blocked-missing-reference'
@@ -43,16 +48,17 @@ export function resolveGemLevelQualityModel(input: {
     modelVersion: GEM_LEVEL_QUALITY_MODEL_VERSION,
     ...(requestedSkillLevel == null ? {} : { requestedSkillLevel }),
     ...(availableSkillLevel == null ? {} : { availableSkillLevel }),
+    availableSkillLevels,
     ...(productive && availableSkillLevel != null ? { appliedSkillLevel: availableSkillLevel } : {}),
     skillLevelStatus,
     skillQualityStatus: 'blocked-not-transported-and-no-reference',
     supportLevelStatus: 'blocked-not-transported',
     supportQualityStatus: 'blocked-not-transported-and-no-reference',
     productive,
-    sourceReferences: record ? [`damage-reference:${record.name}:gemLevel:${record.gemLevel}`] : [],
+    sourceReferences: record && availableSkillLevel != null ? [`damage-reference:${record.name}:gemLevel:${availableSkillLevel}`] : [],
     limitations: [
-      'Der gepinnte numerische Bestand enthält ausschließlich Fertigkeitswerte auf Gemmenstufe 20.',
-      'Eine abweichende angeforderte Gemmenstufe wird nicht aus Stufe 20 skaliert oder interpoliert.',
+      'Es werden ausschließlich exakt vorhandene Stufenzeilen des gepinnten PoB2-Bestands verwendet.',
+      'Fehlende Gemmenstufen werden weder skaliert noch interpoliert.',
       'Fertigkeitsqualität wird weder im SkillSetup transportiert noch mit numerischen Qualitätswirkungen referenziert.',
       'Supportstufen und Supportqualität sind nicht als geschlossene numerische Wirkungskette vorhanden.',
     ],

@@ -10,6 +10,9 @@
     "src/Data/Skills/act_str.lua",
     "src/Data/Skills/act_dex.lua",
     "src/Data/Skills/act_int.lua",
+    "src/Data/Skills/sup_str.lua",
+    "src/Data/Skills/sup_dex.lua",
+    "src/Data/Skills/sup_int.lua",
     "src/Data/Costs.lua",
     "src/Data/Misc.lua",
     "src/Data/QuestRewards.lua",
@@ -17,7 +20,9 @@
     "src/Data/Bases/*.lua"
   ],
   "allowedOutput": "generated/pob2/damage-reference.json",
-  "allowedPurpose": "bounded-offline-hit-damage-level-20-skill-cost-character-resource-quest-spirit-and-reservation-formula-reference",
+  "contractVersion": 2,
+  "allowedPurpose": "bounded-offline-hit-damage-exact-available-skill-and-support-level-rows-cost-character-resource-quest-spirit-and-reservation-formula-reference",
+  "levelRowPolicy": "retain-only-exact-structured-rows-from-the-already-approved-pinned-skill-and-support-files; never interpolate-or-invent-missing-levels",
   "forbiddenPurposes": [
     "full-pob-parity-claim",
     "technical-ggg-identity-claim",

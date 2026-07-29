@@ -45,7 +45,7 @@ const model = (): ResourceModel => ({
     effectiveManaPool: 520,
     effectiveManaRegenerationPerSecond: 20.8,
     confirmedFlatSpiritContribution: 0,
-    baseCostStatus: 'structured-exact-level-20',
+    baseCostStatus: 'structured-exact-level',
     supportMultiplierStatus: 'structured-exact-all-selected-supports',
     poolStatus: 'confirmed-pool-with-passive-effects',
     sustainStatus: 'burst-affordable-on-confirmed-minimum',

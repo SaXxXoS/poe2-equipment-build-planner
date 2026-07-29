@@ -20,9 +20,14 @@ describe('fail-closed Gemmenstufen- und Qualitätsmodell', () => {
       availableSkillLevel: 20, appliedSkillLevel: 20, skillLevelStatus: 'default-reference-level', productive: true,
     })
   })
-  it('blockiert eine abweichende Stufe statt Stufe 20 stillschweigend zu verwenden', () => {
+  it('wendet eine weitere exakt vorhandene Stufe an', () => {
     expect(resolveGemLevelQualityModel({ setup: setup(19), skill: skill(), supports: [] })).toMatchObject({
-      requestedSkillLevel: 19, availableSkillLevel: 20, skillLevelStatus: 'blocked-level-mismatch', productive: false,
+      requestedSkillLevel: 19, availableSkillLevel: 19, appliedSkillLevel: 19, skillLevelStatus: 'exact', productive: true,
+    })
+  })
+  it('blockiert eine nicht vorhandene Stufe statt Werte zu interpolieren', () => {
+    expect(resolveGemLevelQualityModel({ setup: setup(99), skill: skill(), supports: [] })).toMatchObject({
+      requestedSkillLevel: 99, skillLevelStatus: 'blocked-level-mismatch', productive: false,
     })
   })
   it('weist Qualität und Supportstufen ausdrücklich als nicht belegt aus', () => {

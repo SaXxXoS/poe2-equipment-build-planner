@@ -2604,3 +2604,25 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Hauptdokument: `docs/POB2_ENGINE_PARITY_ROADMAP.md`.
 - Nächster Rechenblock: mehrstufige Umwandlungspriorität und vollständige
   Modifier-Anwendbarkeit; danach Gemmenlevel/Qualität und Ailments/DoT.
+
+## PoB2-Rechenparität: Levelzeilen und Umwandlungsketten (2026-07-29)
+
+- Mehrstufige Umwandlungen laufen deterministisch in der belegten
+  Schadensreihenfolge Physisch, Blitz, Kälte, Feuer, Chaos.
+- Die Modifier-Anwendbarkeit behält die belegte Herkunftslinie jeder
+  umgewandelten Komponente.
+- Der gepinnte Referenzdatensatz enthält nun alle exakt vorhandenen
+  Skill-Levelzeilen: `13.402` Zeilen für `337` Skills.
+- Levelabhängige Basiswerte, kritische Trefferchance und Kosten werden aus
+  der exakt gewählten Zeile übernommen; konstante Skillwerte bleiben dabei
+  erhalten.
+- Nicht vorhandene Level bleiben blockiert. Es gibt keine Interpolation und
+  keine erfundenen Werte.
+- Der Referenzdatensatz verwendet Schema `7`; sein fachlicher Inhaltshash
+  wird bei jeder deterministischen Generierung neu geprüft.
+- Supportquellen des bestehenden PoB2-Pins liefern in diesem Stand jeweils
+  nur die vorhandene Level-1-Zeile. Eine nicht belegte Support-Levelskalierung
+  wird deshalb weiterhin nicht behauptet.
+- Weiter offen: Qualität, Skill-vor-globaler Umwandlungspräzedenz,
+  Ailments/DoT, projektil- und triggerspezifische Trefferketten, Minions sowie
+  reproduzierbare Referenzbuild-Parität.

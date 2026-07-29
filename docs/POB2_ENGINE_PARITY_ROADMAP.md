@@ -38,7 +38,7 @@ Die notwendige Reihenfolge ist sinngemäß:
 10. Ressourcen, Geist, Kosten und Aufrechterhaltbarkeit prüfen
 11. jeden Beitrag in einem Rechenprotokoll ausweisen
 
-## In diesem Schritt geschlossen
+## Geschlossene Rechenblöcke
 
 `Gain … as Extra Damage` ist nun ein eigener Effekt und keine
 Schadensumwandlung:
@@ -53,10 +53,23 @@ Damit ist ein zuvor fehlender zentraler Teil der PoE-Schadensreihenfolge
 geschlossen. Eine vollständige PoB-Gesamt-DPS wird weiterhin nicht
 behauptet.
 
+Zusätzlich verarbeitet die Engine jetzt:
+
+- mehrstufige Umwandlungen in der belegten PoE-Reihenfolge
+  `Physisch -> Blitz -> Kälte -> Feuer -> Chaos`
+- Herkunftslinien für umgewandelten Schaden, damit belegte Modifikatoren der
+  Ausgangs- und Zielschadensarten erhalten bleiben
+- sämtliche exakt vorhandenen Skill-Levelzeilen des gepinnten PoB2-Stands
+- levelabhängige Basiswerte, kritische Trefferchance und Ressourcenkosten
+- konstante Skillwerte gemeinsam mit der jeweiligen Levelzeile
+- fail-closed Verhalten für nicht vorhandene Level; es wird weder
+  interpoliert noch ein Wert erfunden
+
 ## Bereits vorhandene Teilmodelle
 
 - Waffen- und Zauberbasiswerte
-- einstufige Umwandlungen
+- mehrstufige Umwandlungen mit geordneter Herkunftslinie
+- exakt vorhandene Skill-Level und levelabhängige Kosten
 - additive Schadens- und Geschwindigkeitswerte
 - ausgewählte strukturierte Support-Multiplikatoren
 - kritischer Erwartungswert bei belegter Basis
@@ -67,8 +80,8 @@ behauptet.
 
 ## Noch notwendige Arbeit
 
-1. mehrstufige Umwandlungspriorität und vollständige Modifier-Anwendbarkeit
-2. Gemmenlevel, Qualität und Variantenformeln
+1. Qualität und fertigkeitsspezifische Variantenformeln
+2. exakte Trennung von Skill- und globaler Umwandlungspriorität
 3. Entzünden, Gift, Blutung, Stapelung und Ailment-Magnitude
 4. fertigkeitsspezifische Projektile, Mehrfachtreffer, Fork und Return
 5. geschlossene Trigger- und Wiederholungsketten

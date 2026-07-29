@@ -82,7 +82,7 @@ export function estimateHitDamage(input:{
   const skillId=setup?.skillId||input.fallbackSkillId
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
-  const skill=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
+  const skillReference=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
   const resourceSpiritModel=resolveResourceSpiritModel({equipment:input.equipment,setups:input.setups,skills:input.skills,supports:input.supports??[],characterLevel:input.characterLevel,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning})
   const spiritWarnings=resourceSpiritModel.spiritCapacityByWeaponSet.flatMap(state=>{
     if(state.status==='blocked-incomplete-reservation-chain')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Mindestens eine Geistreservierung besitzt keine exakte, lokal belegte Höhe.`]
@@ -93,9 +93,12 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.5.0'}
-  if(!skill)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
-  if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Verfügbar ist ausschließlich Stufe ${skill.gemLevel}; eine Skalierung wird nicht erfunden.`]}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.6.0'}
+  if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
+  if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
+  const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
+  if(!selectedLevel)return{...base,status:'unavailable',warnings:['Die ausgewählte Gemmenstufe besitzt keine vollständige strukturierte Stufenzeile.']}
+  const skill={...skillReference,...selectedLevel,gemLevel:selectedLevel.level} as unknown as NumericSkill
   const damageOverTime=collectDamageOverTime(skill)
   const projectileHitModel=resolveProjectileHitModel(skill)
   const triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills})

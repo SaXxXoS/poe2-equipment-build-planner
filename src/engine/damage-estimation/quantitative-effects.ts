@@ -39,6 +39,7 @@ export interface QuantitativeEffectSummary {
 }
 
 const damageTypes = ['physical', 'fire', 'cold', 'lightning', 'chaos'] as const
+const conversionOrder = ['physical', 'lightning', 'cold', 'fire', 'chaos'] as const
 const stripMarkup = (value: string) => value
   .replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1')
   .replace(/\[([A-Za-z][^\]]*)\]/g, '$1')
@@ -191,24 +192,52 @@ export function applyGainAsExtra(
 
 export function applyConversions(components: DamageComponent[], conversions: QuantitativeConversion[]): DamageComponent[] {
   const result = new Map<DamageComponent['type'], { minimum: number; maximum: number }>(damageTypes.map(type => [type, { minimum: 0, maximum: 0 }]))
-  for (const component of components) {
-    const applicable = conversions.filter(value => value.from === component.type)
-    const declaredTotal = applicable.reduce((sum, value) => sum + value.percent, 0)
-    const retainedPercent = Math.max(0, 100 - Math.min(100, declaredTotal))
-    const retained = result.get(component.type)!
-    retained.minimum += component.minimum * retainedPercent / 100
-    retained.maximum += component.maximum * retainedPercent / 100
-    const scale = declaredTotal > 100 ? 100 / declaredTotal : 1
-    for (const conversion of applicable) {
-      const target = result.get(conversion.to)!
-      target.minimum += component.minimum * conversion.percent * scale / 100
-      target.maximum += component.maximum * conversion.percent * scale / 100
-    }
+  for (const slice of conversionSlices(components, conversions)) {
+    const target = result.get(slice.type)!
+    target.minimum += slice.minimum
+    target.maximum += slice.maximum
   }
   return damageTypes.flatMap(type => {
     const value = result.get(type)!
     return value.minimum || value.maximum ? [{ type, minimum: value.minimum, maximum: value.maximum }] : []
   })
+}
+
+interface ConversionSlice extends DamageComponent {
+  lineage: DamageComponent['type'][]
+}
+
+function conversionSlices(components: DamageComponent[], conversions: QuantitativeConversion[]): ConversionSlice[] {
+  const slices: ConversionSlice[] = components.map(component => ({ ...component, lineage: [component.type] }))
+  for (const from of conversionOrder) {
+    const fromIndex = conversionOrder.indexOf(from)
+    const applicable = conversions.filter(value =>
+      value.from === from
+      && conversionOrder.indexOf(value.to) > fromIndex
+      && value.percent > 0,
+    )
+    if (!applicable.length) continue
+    const declaredTotal = applicable.reduce((sum, value) => sum + value.percent, 0)
+    const scale = declaredTotal > 100 ? 100 / declaredTotal : 1
+    const retainedFraction = Math.max(0, 1 - Math.min(100, declaredTotal) / 100)
+    const current = slices.filter(slice => slice.type === from)
+    for (const slice of current) {
+      const originalMinimum = slice.minimum
+      const originalMaximum = slice.maximum
+      slice.minimum *= retainedFraction
+      slice.maximum *= retainedFraction
+      for (const conversion of applicable) {
+        const fraction = conversion.percent * scale / 100
+        slices.push({
+          type: conversion.to,
+          minimum: originalMinimum * fraction,
+          maximum: originalMaximum * fraction,
+          lineage: unique([...slice.lineage, conversion.to]),
+        })
+      }
+    }
+  }
+  return slices.filter(slice => slice.minimum || slice.maximum)
 }
 
 export function applyDamageModifiers(
@@ -225,16 +254,10 @@ export function applyDamageModifiers(
     target.minimum += minimum * multiplier
     target.maximum += maximum * multiplier
   }
+  for (const slice of conversionSlices(components, conversions)) {
+    add(slice.type, slice.minimum, slice.maximum, slice.lineage)
+  }
   for (const component of components) {
-    const applicable = conversions.filter(value => value.from === component.type)
-    const declaredTotal = applicable.reduce((sum, value) => sum + value.percent, 0)
-    const retainedPercent = Math.max(0, 100 - Math.min(100, declaredTotal))
-    add(component.type, component.minimum * retainedPercent / 100, component.maximum * retainedPercent / 100, [component.type])
-    const scale = declaredTotal > 100 ? 100 / declaredTotal : 1
-    for (const conversion of applicable) {
-      const fraction = conversion.percent * scale / 100
-      add(conversion.to, component.minimum * fraction, component.maximum * fraction, [component.type, conversion.to])
-    }
     for (const gain of gainAsExtra) {
       const applies =
         gain.from === 'all'

@@ -162,7 +162,7 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
     const model = resolveResourceSpiritModel({ setups: [setup(definition.id)], skills: [definition], supports: [] })
     expect(model.skillCostChains).toEqual([expect.objectContaining({
       skillId: definition.id,
-      baseCostStatus: 'structured-exact-level-20',
+      baseCostStatus: 'structured-exact-level',
       supportMultiplierStatus: 'structured-exact-no-supports',
       combinedSupportMultiplier: 1,
       baseCosts: [{ resource: 'mana', cadence: 'per-use', baseAmount: 81, supportAdjustedAmount: 81, resourceAdjustedAmount: 81, sourceResource: 'Mana' }],
