@@ -2636,9 +2636,26 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die gewichtete Schadensroll-Behandlung folgt dem inspizierten
   `CalcOffence.lua`-Referenzpfad.
 - Zaubertreffer verwenden in diesem Teilmodell 100 % Trefferchance.
-  Angriffs-Zustände bleiben bis zur vollständigen Accuracy-Gegnerkette
-  fail-closed.
+  Angriffs-Zustände verwenden die belegte Accuracy-Gegnerkette; bedingte
+  Genauigkeits-Sonderfälle bleiben fail-closed.
 - Entzünden bleibt bis zur belegten Gegner-Ailment-Schwellen- und
   Aufbaulogik gesperrt.
 - Eine vollständige PoB2-Parität oder Meta-Überlegenheit wird weiterhin
   nicht behauptet.
+
+## PoB2-Rechenparität: Angriffstrefferchance (2026-07-29)
+
+- Die allgemeine PoB2-Trefferformel ist mit Rundung und 5–100-Prozent-Grenze
+  integriert.
+- Genauigkeit berücksichtigt Level, Klassen-Geschicklichkeit, exakt
+  transportierte Attribute und Genauigkeit sowie lokale Werte nur aus dem
+  aktiven Waffenset.
+- Gegner-Ausweichen stammt aus der gepinnten 100-stufigen PoB2-Tabelle.
+- Treffer-, Krit-Erwartungs- und Gegnerabwehrwerte werden zusätzlich
+  trefferbereinigt ausgegeben; der bisherige theoretische Aktionswert bleibt
+  zum transparenten Vergleich separat sichtbar.
+- Die UI zeigt Genauigkeit, Gegnerlevel, Gegner-Ausweichen, Trefferchance und
+  die verwendete Vergleichsdistanz.
+- Gegnerblocken und bedingte Genauigkeits-Sonderfälle bleiben offen.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_ATTACK_ACCURACY_STEP_32.md`.

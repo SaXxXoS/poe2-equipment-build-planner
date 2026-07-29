@@ -1,7 +1,7 @@
 import type { GoalProfile } from '../../domain'
 import type { EnemyMitigationProfile } from './types'
 
-export const AUTOMATIC_ENEMY_PROFILE_VERSION='poe2-0.4-reference-v2'
+export const AUTOMATIC_ENEMY_PROFILE_VERSION='poe2-0.4-reference-v3'
 
 const common={
   source:'automatic-season-reference' as const,
@@ -15,9 +15,11 @@ const common={
  * monster or boss. The automatic profiles therefore differ in purpose and
  * disclosed limitations, not through invented defence values.
  */
-export function automaticEnemyProfile(goal:GoalProfile):EnemyMitigationProfile {
+export function automaticEnemyProfile(goal:GoalProfile, characterLevel?:number):EnemyMitigationProfile {
+  const level=Number.isFinite(characterLevel)?Math.max(1,Math.min(100,Math.trunc(characterLevel!))):undefined
   if(goal==='boss')return{
     ...common,
+    ...(level==null?{}:{level}),
     id:'automatic-boss-sustained',
     label:'Automatischer Boss-Vergleich (anhaltender Kampf)',
     targetRarity:'unique',
@@ -28,6 +30,7 @@ export function automaticEnemyProfile(goal:GoalProfile):EnemyMitigationProfile {
   }
   if(goal==='mapping')return{
     ...common,
+    ...(level==null?{}:{level}),
     id:'automatic-mapping',
     label:'Automatischer Mapping-Grundvergleich',
     targetRarity:'rare',
@@ -38,6 +41,7 @@ export function automaticEnemyProfile(goal:GoalProfile):EnemyMitigationProfile {
   }
   return{
     ...common,
+    ...(level==null?{}:{level}),
     id:'automatic-allround',
     label:'Automatischer Allround-Grundvergleich',
     targetRarity:'rare',

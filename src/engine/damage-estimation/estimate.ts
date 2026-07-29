@@ -10,6 +10,7 @@ import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './te
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
 import { collectDamagingAilments } from './damaging-ailments'
+import { resolveAttackHitChance } from './attack-hit-chance'
 import { projectileHitOutput, resolveProjectileHitModel } from './projectile-hit-model'
 import { resolveTriggerRepeatModel, triggerRepeatOutput } from './trigger-repeat-model'
 import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-companion-model'
@@ -78,6 +79,7 @@ export function estimateHitDamage(input:{
   enemyProfile?:EnemyMitigationProfile
   rotationAnalysis?:RotationAnalysis
   characterLevel?:number
+  characterClassId?:string
 }):DamageEstimate {
   const setup=input.setups.find(value=>value.role==='main'&&value.skillId)||input.setups.find(value=>value.skillId)
   const skillId=setup?.skillId||input.fallbackSkillId
@@ -149,11 +151,22 @@ export function estimateHitDamage(input:{
   actionsPerSecond*=1+speedIncrease/100
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
+  const attackHitChance=skill.kind==='attack'?resolveAttackHitChance({
+    characterLevel:input.characterLevel,
+    characterClassId:input.characterClassId,
+    equipment:input.equipment,
+    activeSet,
+    passiveTree:input.passiveTree,
+    realPassivePlanning:input.realPassivePlanning,
+    enemyLevel:input.enemyProfile?.level,
+    enemyEvasion:input.enemyProfile?.evasion,
+  }):undefined
+  const hitChancePercent=skill.kind==='spell'?100:attackHitChance?.hitChancePercent
   const damagingAilments=collectDamagingAilments({
     skill,
     components,
     actionsPerSecond,
-    hitChancePercent: skill.kind === 'spell' ? 100 : undefined,
+    hitChancePercent,
     setup,
     supports: input.supports??[],
   })
@@ -179,6 +192,13 @@ export function estimateHitDamage(input:{
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
   const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:average*criticalExpectationMultiplier
   const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
+  const accuracyMultiplier=hitChancePercent==null?undefined:hitChancePercent/100
+  const accuracyAdjustedCriticalChance=effectiveCriticalChance==null||accuracyMultiplier==null?undefined:effectiveCriticalChance*accuracyMultiplier
+  const accuracyAdjustedCriticalMultiplier=accuracyAdjustedCriticalChance==null?undefined:1+accuracyAdjustedCriticalChance/100*totalCriticalDamageBonus/100
+  const accuracyAdjustedDamagePerSecond=accuracyMultiplier==null?undefined:average*actionsPerSecond*accuracyMultiplier
+  const accuracyAdjustedExpectedCriticalDamagePerSecond=accuracyMultiplier==null
+    ? undefined
+    : average*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)
   const temporalMinimum=temporalComponents.reduce((sum,value)=>sum+value.minimum,0)
   const temporalMaximum=temporalComponents.reduce((sum,value)=>sum+value.maximum,0)
   const temporalAverage=(temporalMinimum+temporalMaximum)/2
@@ -197,6 +217,9 @@ export function estimateHitDamage(input:{
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const expectedDamageAfterMitigation=enemyMitigation?.average==null?undefined:enemyMitigation.average*(criticalExpectationMultiplier??1)
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
+  const accuracyAdjustedDamagePerSecondAfterMitigation=enemyMitigation?.average==null||accuracyMultiplier==null
+    ? undefined
+    : enemyMitigation.average*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)
   const temporalEnemyMitigation=resolvedEnemyProfile&&temporal.appliedEffects.length?applyEnemyMitigation(temporalComponents,resolvedEnemyProfile):undefined
   const activeWindowDamagePerSecondAfterMitigation=temporalEnemyMitigation
     ? temporalEnemyMitigation.average*(criticalExpectationMultiplier??1)*temporalActionsPerSecond
@@ -207,6 +230,7 @@ export function estimateHitDamage(input:{
     : undefined
   return{
     ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
+    ...(attackHitChance?{attackHitChance}:{}),
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
       {id:'conversion',label:'Nach bestätigten Umwandlungen',components:convertedComponents},
@@ -241,6 +265,9 @@ export function estimateHitDamage(input:{
     confirmedGainAsExtra:quantitative.gainAsExtra.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(effectiveCriticalChance==null?{}:{criticalChance:{base:round(baseCriticalChance!),increasedPercent:round(criticalChanceIncrease),effective:round(effectiveCriticalChance)}}),
     ...(effectiveCriticalChance==null?{}:{criticalDamageBonus:round(totalCriticalDamageBonus),criticalExpectationMultiplier:round(criticalExpectationMultiplier!),expectedCriticalHitDamage:round(expectedCriticalHitDamage!),expectedCriticalHitDamagePerSecond:round(expectedCriticalHitDamagePerSecond!)}),
+    ...(accuracyAdjustedDamagePerSecond==null?{}:{accuracyAdjustedDamagePerSecond:round(accuracyAdjustedDamagePerSecond)}),
+    ...(accuracyAdjustedExpectedCriticalDamagePerSecond==null?{}:{accuracyAdjustedExpectedCriticalDamagePerSecond:round(accuracyAdjustedExpectedCriticalDamagePerSecond)}),
+    ...(accuracyAdjustedDamagePerSecondAfterMitigation==null?{}:{accuracyAdjustedDamagePerSecondAfterMitigation:round(accuracyAdjustedDamagePerSecondAfterMitigation)}),
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
     ...(activeWindowDamagePerSecond==null?{}:{activeWindowDamagePerSecond:round(activeWindowDamagePerSecond)}),
     ...(activeWindowDamagePerSecondAfterMitigation==null?{}:{activeWindowDamagePerSecondAfterMitigation:round(activeWindowDamagePerSecondAfterMitigation)}),
@@ -251,6 +278,6 @@ export function estimateHitDamage(input:{
     hitDamagePerSecond:round(average*actionsPerSecond),
     included,
     excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damagingAilments.effects.length?['nicht vollständig belegte Entzünden-, Gift- und Blutungs-Sonderfälle sowie gegnerische DoT-Abwehr']:['Entzünden, Gift und Blutung ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
-    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
+    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }

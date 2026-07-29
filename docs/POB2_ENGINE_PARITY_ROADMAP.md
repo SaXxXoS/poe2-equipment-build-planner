@@ -112,12 +112,24 @@ strukturierte Werte aus dem gepinnten PoB2-Stand:
 - Grundschaden pro Sekunde und Grunddauer
 - Auslösechance
 - relevante ungeminderte Ausgangsschadensarten
-- Wirkfrequenz und Trefferchance
+- Wirkfrequenz; die allgemeine Angriffstrefferchance ist inzwischen aus
+  Genauigkeit und Gegner-Ausweichen integriert
 - Zustandswirkung, Dauer und maximale Stapelzahl
 - die von PoB2 verwendete gewichtete Schadensroll-Behandlung
 
-Angriffs-Zustände bleiben gesperrt, solange die Accuracy-Gegnerkette nicht
-vollständig vorliegt. Entzünden bleibt ebenfalls gesperrt, bis
+Angriffs-Zustände verwenden nun die vollständig belegte allgemeine
+Accuracy-Gegnerkette. Bedingte Genauigkeits-Sonderfälle bleiben fail-closed.
+Entzünden bleibt weiterhin gesperrt, bis
 Gegner-Ailment-Schwelle und Aufbau reproduzierbar modelliert sind. Damit
 erzeugt eine bloß plausible, aber unvollständige Zustandskette keinen
 positiven Schaden.
+
+## Angriffstrefferchance
+
+Der allgemeine Angriffspfad verwendet nun die PoB2-Formel, die
+levelabhängige Basisgenauigkeit, Klassengeschicklichkeit, exakt belegte
+Attribut-/Genauigkeitswerte und die gepinnte Gegner-Ausweichtabelle.
+Lokale Genauigkeit stammt ausschließlich aus der aktiven Waffe. Die
+Ergebnisansicht trennt theoretischen Aktionswert, trefferbereinigten Wert und
+den Wert nach Gegnerabwehr. Gegnerblocken und bedingte Genauigkeit bleiben
+bis zu einer vollständigen technischen Kette ausgeschlossen.

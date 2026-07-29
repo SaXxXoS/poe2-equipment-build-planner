@@ -29,6 +29,8 @@ export interface EnemyMitigationProfile {
   source:'manual-comparison-profile'|'automatic-season-reference'
   sourceVersion?:string
   targetRarity?:EnemyTargetRarity
+  level?:number
+  evasion?:number
   limitations?:string[]
   armour?:number
   armourBreak?:number
@@ -73,6 +75,26 @@ export interface DamageEstimate {
   hitDamage?:{minimum:number;maximum:number;average:number}
   actionsPerSecond?:number
   hitDamagePerSecond?:number
+  accuracyAdjustedDamagePerSecond?:number
+  accuracyAdjustedExpectedCriticalDamagePerSecond?:number
+  accuracyAdjustedDamagePerSecondAfterMitigation?:number
+  attackHitChance?:{
+    modelVersion:string
+    status:'exact'|'blocked-missing-character-level'|'blocked-unknown-class'
+    playerAccuracy?:number
+    enemyLevel?:number
+    enemyEvasion?:number
+    hitChancePercent?:number
+    baseAccuracyFromLevel?:number
+    baseDexterity?:number
+    additionalDexterity?:number
+    accuracyFromDexterity?:number
+    flatAccuracy?:number
+    increasedAccuracyPercent?:number
+    comparisonDistanceMetres:number
+    sourceReferences:readonly string[]
+    limitations:readonly string[]
+  }
   expectedCriticalHitDamage?:number
   expectedCriticalHitDamagePerSecond?:number
   enemyProfile?:EnemyMitigationProfile

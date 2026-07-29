@@ -197,15 +197,24 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Ø pro Treffer</dt><dd>{formatDamage(analysis.damageEstimate?.hitDamage?.average)}</dd></div>
           <div><dt>Aktionen pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate?.actionsPerSecond)}</dd></div>
           <div><dt>Trefferschaden pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate?.hitDamagePerSecond)}</dd></div>
+          {analysis.damageEstimate?.attackHitChance?.status==='exact' && <div><dt>Angriffstrefferchance</dt><dd>{formatDamage(analysis.damageEstimate.attackHitChance.hitChancePercent)} %</dd></div>}
+          {analysis.damageEstimate?.accuracyAdjustedDamagePerSecond != null && <div><dt>Trefferbereinigter Schaden/s</dt><dd>{formatDamage(analysis.damageEstimate.accuracyAdjustedDamagePerSecond)}</dd></div>}
+          {analysis.damageEstimate?.accuracyAdjustedExpectedCriticalDamagePerSecond != null && <div><dt>Treffer- und kritbereinigter Schaden/s</dt><dd>{formatDamage(analysis.damageEstimate.accuracyAdjustedExpectedCriticalDamagePerSecond)}</dd></div>}
           {analysis.damageEstimate?.expectedCriticalHitDamagePerSecond != null && <div><dt>Erwartungswert mit kritischen Treffern</dt><dd>{formatDamage(analysis.damageEstimate.expectedCriticalHitDamagePerSecond)}</dd></div>}
           {analysis.damageEstimate?.criticalChance && <div><dt>Kritische Trefferchance</dt><dd>{formatDamage(analysis.damageEstimate.criticalChance.effective)} %</dd></div>}
           {analysis.damageEstimate?.criticalDamageBonus != null && <div><dt>Gesamter kritischer Schadensbonus</dt><dd>+{formatDamage(analysis.damageEstimate.criticalDamageBonus)} %</dd></div>}
           {analysis.damageEstimate?.expectedDamagePerSecondAfterMitigation != null && <div><dt>Nach Gegnerabwehr</dt><dd>{formatDamage(analysis.damageEstimate.expectedDamagePerSecondAfterMitigation)}</dd></div>}
+          {analysis.damageEstimate?.accuracyAdjustedDamagePerSecondAfterMitigation != null && <div><dt>Nach Trefferchance und Gegnerabwehr</dt><dd>{formatDamage(analysis.damageEstimate.accuracyAdjustedDamagePerSecondAfterMitigation)}</dd></div>}
           {analysis.damageEstimate?.activeWindowDamagePerSecond != null && <div><dt>Im belegten Bufffenster</dt><dd>{formatDamage(analysis.damageEstimate.activeWindowDamagePerSecondAfterMitigation??analysis.damageEstimate.activeWindowDamagePerSecond)}</dd></div>}
           {analysis.damageEstimate?.preparedNextHitDamage != null && <div><dt>Vorbereiteter nächster Treffer</dt><dd>{formatDamage(analysis.damageEstimate.preparedNextHitDamageAfterMitigation??analysis.damageEstimate.preparedNextHitDamage)}</dd></div>}
           {analysis.damageEstimate?.damageOverTime?.totalSingleApplicationDamagePerSecond != null && <div><dt>Belegter DoT pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate.damageOverTime.totalSingleApplicationDamagePerSecond)}</dd></div>}
           {analysis.damageEstimate?.damagingAilments?.totalSustainedDamagePerSecond != null && <div><dt>Schädigende Zustände pro Sekunde</dt><dd>{formatDamage(analysis.damageEstimate.damagingAilments.totalSustainedDamagePerSecond)}</dd></div>}
         </dl>
+        {analysis.damageEstimate?.attackHitChance?.status==='exact'?<div><b>Genauigkeit gegen Ausweichen:</b><ul>
+          <li>Genauigkeit: {analysis.damageEstimate.attackHitChance.playerAccuracy}</li>
+          <li>Gegner Stufe {analysis.damageEstimate.attackHitChance.enemyLevel}: {analysis.damageEstimate.attackHitChance.enemyEvasion} Ausweichen</li>
+          <li>Vergleichsdistanz: {analysis.damageEstimate.attackHitChance.comparisonDistanceMetres} m</li>
+        </ul><p className="muted">{analysis.damageEstimate.attackHitChance.limitations.join(' ')}</p></div>:null}
         {analysis.damageEstimate?.damageOverTime?.effects.length?<div><b>Eigenständiger Schaden über Zeit:</b><ul>{analysis.damageEstimate.damageOverTime.effects.map(effect=><li key={`${effect.sourceRecordId}:${effect.damageType}`}>{damageText[effect.damageType]}: {formatDamage(effect.damagePerSecond)} pro Sekunde für {(effect.durationMs/1000).toLocaleString('de-DE')} s · {formatDamage(effect.totalDamagePerApplication)} je Einzelanwendung</li>)}</ul><p className="muted">Dieser Wert bleibt vom Trefferschaden getrennt. Er beschreibt genau eine belegte Anwendung, keine dauerhafte Uptime und keine zusätzlichen Stapel.</p></div>:null}
         {analysis.damageEstimate?.damageOverTime?.blockedEffects.length?<div><b>Nicht angewandte DoT-Teilwerte:</b><ul>{analysis.damageEstimate.damageOverTime.blockedEffects.map(effect=><li key={`${effect.sourceRecordId}:${effect.kind}`}>{effect.sourceLabel}: {effect.detail}</li>)}</ul></div>:null}
         {analysis.damageEstimate?.damageOverTime?<p className="muted">{analysis.damageEstimate.damageOverTime.limitations.join(' ')}</p>:null}

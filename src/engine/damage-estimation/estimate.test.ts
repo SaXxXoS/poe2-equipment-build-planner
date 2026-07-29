@@ -34,6 +34,24 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.actionsPerSecond).toBe(1.08)
     expect(result.hitDamagePerSecond).toBe(20.25)
   })
+  it('weist Angriffsschaden mit exakter PoB2-Trefferchance separat aus',()=>{
+    const result=estimateHitDamage({
+      equipment:[weapon('Crude Bow')],
+      setups:[setup('arrow')],
+      skills:[skill('arrow','Lightning Arrow')],
+      characterLevel:80,
+      characterClassId:'class-official-8',
+      enemyProfile:{id:'target',label:'Stufe 80',source:'manual-comparison-profile',level:80,evasion:853},
+    })
+    expect(result.attackHitChance).toMatchObject({
+      status:'exact',
+      playerAccuracy:564,
+      enemyEvasion:853,
+      hitChancePercent:86,
+    })
+    expect(result.accuracyAdjustedDamagePerSecond).toBe(17.41)
+    expect(result.accuracyAdjustedDamagePerSecondAfterMitigation).toBe(17.41)
+  })
   it('erfindet ohne zuordenbare Waffenbasis keinen Angriffsschaden',()=>{
     const result=estimateHitDamage({equipment:[weapon('Unbekannter Bogen')],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
     expect(result.status).toBe('unavailable')
