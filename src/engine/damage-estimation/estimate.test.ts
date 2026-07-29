@@ -4,6 +4,7 @@ import type { RotationAnalysis } from '../common/types'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { estimateHitDamage } from './estimate'
+import { pob2QuantitativeEffectsFor } from '../../gems/pob2-support-reference'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,displayNameDe:nameEn,nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const setup=(skillId:string,weaponSet:'set-1'|'set-2'='set-1'):SkillSetup=>({id:'setup',skillId,role:'main',weaponSet,supportGemIds:[],level:20})
@@ -17,6 +18,20 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.status).toBe('partial')
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
+  })
+  it('wendet Hourglass-Schaden und den belegten Cooldown-Override gemeinsam an',()=>{
+    const hourglass:SupportGemDefinition={
+      id:'hourglass',displayNameDe:'Sanduhr',nameEn:'Hourglass',tags:[],dataVersion:'test',
+      source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[],
+      quantitativeEffects:pob2QuantitativeEffectsFor('Hourglass'),
+    }
+    const selected={...setup('spark'),supportGemIds:[hourglass.id]}
+    const baseline=estimateHitDamage({equipment:[],setups:[setup('spark')],skills:[skill('spark','Spark')],supports:[hourglass]})
+    const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('spark','Spark')],supports:[hourglass]})
+    expect(result.actionsPerSecond).toBe(0.1)
+    expect(result.hitDamage!.average).toBeCloseTo(baseline.hitDamage!.average*1.3,2)
+    expect(result.hitDamagePerSecond).toBeLessThan(result.hitDamage!.average)
+    expect(result.included).toContain('supportbedingter Cooldown-Override mit nachhaltiger Nutzungsrate')
   })
   it('wendet einen exakt belegten Lucky-Trefferschadensknoten im Erwartungswert an',()=>{
     const passiveTree={nodes:[{

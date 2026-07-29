@@ -4,7 +4,9 @@ import {
   attachNormalizedTriggeredTargetDamage,
   effectiveCooldownSeconds,
   resolveTriggerRepeatModel,
+  supportedSkillCooldownFor,
 } from './trigger-repeat-model'
+import damageReference from '../../../generated/pob2/damage-reference.json'
 
 const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   id, displayNameDe: nameEn, nameEn, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
@@ -18,6 +20,24 @@ const support = (id: string, nameEn: string): SupportGemDefinition => ({
 })
 
 describe('Trigger- und Wiederholungsmodell', () => {
+  it('wendet Hourglass als belegten 10-Sekunden-Cooldown-Override an', () => {
+    const spark = damageReference.skills.find(value => value.name === 'Spark')
+    expect(spark).toBeDefined()
+    const hourglass = support('hourglass', 'Hourglass')
+    const result = supportedSkillCooldownFor(
+      spark!,
+      { ...setup('spark', 'main'), supportGemIds: [hourglass.id] },
+      [hourglass],
+    )
+    expect(result).toMatchObject({
+      baseCooldownSeconds: 10,
+      overrideCooldownSeconds: 10,
+      effectiveCooldownSeconds: 10.032,
+      storedUses: 1,
+      sustainedUseRatePerSecond: 0.099681,
+    })
+  })
+
   it('blockiert eine eingebaute Triggerfertigkeit ohne belegte Auslöserkette', () => {
     const primary = skill('blood-explosion', 'Blood Explosion')
     const result = resolveTriggerRepeatModel({ primarySkill: primary, setups: [setup(primary.id, 'main')], skills: [primary] })

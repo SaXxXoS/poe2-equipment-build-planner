@@ -5,6 +5,7 @@ import type { DamageEstimate } from './types'
 
 export const TRIGGER_REPEAT_MODEL_VERSION = '1.9.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
+const stableNumber = (value: number): number => Math.round(value * 1_000_000) / 1_000_000
 
 type NumericSkill = (typeof reference.skills)[number]
 type InternalTriggerSupport = (typeof reference.internalTriggerSupports)[number]
@@ -122,9 +123,68 @@ const supportCompatible = (
 ): boolean => {
   if (!support) return false
   const targetTypes = new Set(target.skillTypes)
+  if (support.sourceRecordId === 'SupportHourglassPlayer') {
+    const supportedDamageTypes = support.requireSkillTypes.filter(value => value !== 'AND')
+    const explicitlyExcluded = support.excludeSkillTypes.filter(value => !['AND', 'NOT'].includes(value))
+    return supportedDamageTypes.some(value => targetTypes.has(value))
+      && explicitlyExcluded.every(value => !targetTypes.has(value))
+  }
   const required = support.requireSkillTypes.filter(value => value !== 'AND')
   return required.every(value => targetTypes.has(value))
-    && support.excludeSkillTypes.every(value => !targetTypes.has(value))
+    && support.excludeSkillTypes.filter(value => !['AND', 'NOT'].includes(value)).every(value => !targetTypes.has(value))
+}
+
+export interface SupportedSkillCooldown {
+  baseCooldownSeconds: number
+  overrideCooldownSeconds?: number
+  cooldownRecoveryPercent: number
+  effectiveCooldownSeconds: number
+  storedUses: number
+  sustainedUseRatePerSecond: number
+  sourceReferences: string[]
+}
+
+export function supportedSkillCooldownFor(
+  target: NumericSkill,
+  setup: SkillSetup | undefined,
+  supports: SupportGemDefinition[],
+): SupportedSkillCooldown | undefined {
+  if (!setup) return undefined
+  const baseCooldownSeconds = Number(target.cooldown)
+  let overrideCooldownSeconds: number | undefined
+  let cooldownRecoveryPercent = 0
+  const sourceReferences: string[] = []
+  for (const supportId of setup.supportGemIds) {
+    const definition = supports.find(value => value.id === supportId)
+    const record = pob2SupportReferenceFor(definition?.nameEn)
+    if (!record || !supportCompatible(target, record)) continue
+    const overrideMs = Number(record.numericStats.support_hourglass_display_cooldown_time_ms)
+    if (Number.isFinite(overrideMs) && overrideMs > 0) {
+      overrideCooldownSeconds = overrideMs / 1000
+      sourceReferences.push(`damage-reference:${record.sourceFile}#${record.sourceRecordId}:support_hourglass_display_cooldown_time_ms`)
+    }
+    const recovery = Number(record.numericStats['support_cooldown_reduction_cooldown_recovery_+%'])
+    if (Number.isFinite(recovery) && recovery !== 0) {
+      cooldownRecoveryPercent += recovery
+      sourceReferences.push(`damage-reference:${record.sourceFile}#${record.sourceRecordId}:support_cooldown_reduction_cooldown_recovery_+%`)
+    }
+  }
+  const selectedBase = overrideCooldownSeconds ?? baseCooldownSeconds
+  if (!Number.isFinite(selectedBase) || selectedBase <= 0) return undefined
+  const rawEffective = effectiveCooldownSeconds(selectedBase, cooldownRecoveryPercent)
+  const storedUses = Number.isFinite(Number(target.storedUses)) ? Math.max(1, Number(target.storedUses)) : 1
+  const effective = storedUses > 1
+    ? rawEffective
+    : Math.ceil(rawEffective / POB2_SERVER_TICK_SECONDS) * POB2_SERVER_TICK_SECONDS
+  return {
+    baseCooldownSeconds: Number.isFinite(baseCooldownSeconds) && baseCooldownSeconds > 0 ? baseCooldownSeconds : selectedBase,
+    ...(overrideCooldownSeconds == null ? {} : { overrideCooldownSeconds }),
+    cooldownRecoveryPercent,
+    effectiveCooldownSeconds: stableNumber(effective),
+    storedUses,
+    sustainedUseRatePerSecond: stableNumber(1 / effective),
+    sourceReferences,
+  }
 }
 
 const cooldownRecoveryFor = (

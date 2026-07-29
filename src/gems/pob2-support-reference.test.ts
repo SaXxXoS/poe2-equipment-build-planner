@@ -17,6 +17,13 @@ describe('pinned PoB2 support reference', () => {
         evidence: 'structured-exact',
       }),
     ])
+    expect(pob2QuantitativeEffectsFor('Hourglass')).toEqual([
+      expect.objectContaining({
+        kind: 'more-damage',
+        percent: 30,
+        evidence: 'structured-exact',
+      }),
+    ])
     expect(pob2QuantitativeEffectsFor('Biting Frost I')).toBeUndefined()
   })
 
