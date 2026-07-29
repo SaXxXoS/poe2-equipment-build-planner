@@ -2985,3 +2985,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Tests: 33 erfolgreich; Typecheck erfolgreich.
 - Technische Details:
   `docs/BUILD_ASSISTANT_ATTACK_ACTION_FREQUENCY_STEP_64.md`.
+
+# Schritt 65 – erfolgreiche Treffer in der Ressourcenbilanz
+
+- Das Ressourcenmodell 14.0.0 erhält für den Hauptangriff die abschließend
+  berechnete Aktionsfrequenz und die exakte Trefferchance gegen das
+  Vergleichsziel.
+- Raserei pro Nahkampftreffer wird nur bei strukturiertem `Melee`-Typ und
+  belegter erfolgreicher Trefferfrequenz in einen Sekundenwert umgerechnet.
+- Globale Geschwindigkeit, Supports und Cooldownbegrenzungen sind damit in
+  der Hauptangriffs-Ressourcenrate enthalten.
+- Mehrfachtreffer, Projektile, Flächenüberlappungen und mehrere Ziele bleiben
+  getrennte, noch nicht pauschal eingerechnete Mechaniken.
+- Fokussierte Tests: 75 erfolgreich; Typecheck erfolgreich.
+- Technische Details:
+  `docs/BUILD_ASSISTANT_SUCCESSFUL_HIT_RESOURCE_STEP_65.md`.

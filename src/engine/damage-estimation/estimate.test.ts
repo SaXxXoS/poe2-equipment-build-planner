@@ -147,6 +147,34 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.accuracyAdjustedDamagePerSecond).toBe(17.41)
     expect(result.accuracyAdjustedDamagePerSecondAfterMitigation).toBe(17.41)
   })
+  it('übergibt die belegte erfolgreiche Trefferfrequenz an die Raserei-Ressourcenkette',()=>{
+    const rage:SupportGemDefinition={
+      id:'rage-three',displayNameDe:'Raserei III',nameEn:'Rage III',tags:[],dataVersion:'test',
+      source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[],
+      costMultiplierPercent:100,
+    }
+    const selected={...setup('leap'),supportGemIds:[rage.id]}
+    const result=estimateHitDamage({
+      equipment:[weapon('Akoyan Club')],
+      setups:[selected],
+      skills:[skill('leap','Leap Slam')],
+      supports:[rage],
+      characterLevel:80,
+      characterClassId:'class-official-8',
+      enemyProfile:{id:'target',label:'Stufe 80',source:'manual-comparison-profile',level:80,evasion:853},
+    })
+    const chain=result.resourceSpiritModel?.skillCostChains[0]
+    expect(result.attackHitChance?.status).toBe('exact')
+    expect(chain).toMatchObject({
+      rageGenerationPerHit:5,
+      rageSustainStatus:'no-rage-cost',
+    })
+    expect(chain?.actionFrequencyPerSecond).toBe(result.actionsPerSecond)
+    expect(chain?.rageGenerationPerSecond).toBeCloseTo(
+      result.actionsPerSecond!*result.attackHitChance!.hitChancePercent!/100*5,
+      2,
+    )
+  })
   it('erfindet ohne zuordenbare Waffenbasis keinen Angriffsschaden',()=>{
     const result=estimateHitDamage({equipment:[weapon('Unbekannter Bogen')],setups:[setup('arrow')],skills:[skill('arrow','Lightning Arrow')]})
     expect(result.status).toBe('unavailable')

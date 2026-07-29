@@ -91,7 +91,7 @@ export function estimateHitDamage(input:{
   const definition=input.skills.find(value=>value.id===skillId)
   const referenceName=definition?.nameEn??(skillId?curatedEnglishNames[skillId]:undefined)
   const skillReference=referenceName?skillsByName.get(referenceName.toLocaleLowerCase('en')):undefined
-  const resourceSpiritModel=resolveResourceSpiritModel({equipment:input.equipment,setups:input.setups,skills:input.skills,supports:input.supports??[],characterLevel:input.characterLevel,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning})
+  let resourceSpiritModel=resolveResourceSpiritModel({equipment:input.equipment,setups:input.setups,skills:input.skills,supports:input.supports??[],characterLevel:input.characterLevel,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning})
   const spiritWarnings=resourceSpiritModel.spiritCapacityByWeaponSet.flatMap(state=>{
     if(state.status==='blocked-incomplete-reservation-chain')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Mindestens eine Geistreservierung besitzt keine exakte, lokal belegte Höhe.`]
     if(state.status==='fits-level-derived-quest-estimate')return [`${state.weaponSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Die Reservierung passt nur unter der automatischen Quest-Geist-Schätzung. Das Charakterlevel beweist den Abschluss der zugehörigen Quests nicht.`]
@@ -198,6 +198,20 @@ export function estimateHitDamage(input:{
     enemyEvasion:input.enemyProfile?.evasion,
   }):undefined
   const hitChancePercent=skill.kind==='spell'?100:attackHitChance?.hitChancePercent
+  if(setup&&skill.kind==='attack'&&hitChancePercent!=null){
+    resourceSpiritModel=resolveResourceSpiritModel({
+      equipment:input.equipment,
+      setups:input.setups,
+      skills:input.skills,
+      supports:input.supports??[],
+      characterLevel:input.characterLevel,
+      passiveTree:input.passiveTree,
+      realPassivePlanning:input.realPassivePlanning,
+      resolvedActionFrequencyPerSecondBySetup:{[setup.id]:actionsPerSecond},
+      resolvedSuccessfulHitFrequencyPerSecondBySetup:{[setup.id]:actionsPerSecond*hitChancePercent/100},
+    })
+    base.resourceSpiritModel=resourceSpiritOutput(resourceSpiritModel)
+  }
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalGainComponents=manaTempestEffect?.percent
     ? applyQuantitativeSupports({

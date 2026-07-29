@@ -584,6 +584,31 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       rageSustainStatus: 'requires-hit-frequency-and-rage-pool',
     })
   })
+  it('verrechnet Raserei pro Treffer erst mit einer extern belegten erfolgreichen Trefferfrequenz', () => {
+    const definition = skill('rampage', 'Rampage')
+    const rageSupport = {
+      id: 'rage-three',
+      nameEn: 'Rage III',
+      displayNameDe: 'Raserei III',
+      costMultiplierPercent: 100,
+    } as SupportGemDefinition
+    const selectedSetup = { ...setup(definition.id, [rageSupport.id], 'set-1'), level: 20 }
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [selectedSetup],
+      skills: [definition],
+      supports: [rageSupport],
+      resolvedActionFrequencyPerSecondBySetup: { [selectedSetup.id]: 1.05 },
+      resolvedSuccessfulHitFrequencyPerSecondBySetup: { [selectedSetup.id]: 0.84 },
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      actionFrequencyPerSecond: 1.05,
+      rageGenerationPerHit: 5,
+      rageGenerationPerSecond: 4.2,
+      rageNetDemandPerSecond: 0.8,
+      rageSustainStatus: 'initially-suppressed-then-requires-rage-pool',
+    })
+  })
   it('vermischt unterschiedliche Waffenset-Geschwindigkeiten bei beidseitigen Skills nicht', () => {
     const definition = skill('rampage', 'Rampage')
     const model = resolveResourceSpiritModel({

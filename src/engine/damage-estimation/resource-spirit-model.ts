@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '13.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '14.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -346,6 +346,8 @@ export function resolveResourceSpiritModel(input: {
   characterLevel?: number
   passiveTree?: RealPassiveTree
   realPassivePlanning?: RealPassivePlanningIntegrationResult
+  resolvedActionFrequencyPerSecondBySetup?: Record<string, number>
+  resolvedSuccessfulHitFrequencyPerSecondBySetup?: Record<string, number>
 }): ResourceSpiritModel {
   const sources: ResolvedResourceSpiritSource[] = []
   for (const setup of input.setups) {
@@ -613,9 +615,12 @@ export function resolveResourceSpiritModel(input: {
         ? Math.max(0, Math.floor(cost.supportAdjustedAmount * combinedResourceCostMultiplier / combinedResourceCostEfficiency))
         : cost.supportAdjustedAmount
       const attackFrequency = attackFrequencyFor(input.equipment, setup, record)
-      const actionFrequencyPerSecond = attackFrequency ?? (record?.kind === 'spell' && record.castTime > 0
-        ? Number((1 / record.castTime).toFixed(4))
-        : record?.kind === 'other' ? 1 : null)
+      const resolvedActionFrequency = input.resolvedActionFrequencyPerSecondBySetup?.[setup.id]
+      const actionFrequencyPerSecond = Number.isFinite(resolvedActionFrequency) && resolvedActionFrequency! > 0
+        ? resolvedActionFrequency!
+        : attackFrequency ?? (record?.kind === 'spell' && record.castTime > 0
+          ? Number((1 / record.castTime).toFixed(4))
+          : record?.kind === 'other' ? 1 : null)
       const manaDemandPerSecond = exactCostChain && effectiveManaPool != null
         ? baseCosts.reduce<number | null>((sum, cost) => {
           if (sum == null || cost.resource === 'rage') return sum
@@ -633,17 +638,20 @@ export function resolveResourceSpiritModel(input: {
         const stats = numeric.levels[0]?.numericStats ?? numeric.numericStats
         const melee = Number((stats as Record<string, number | undefined>).gain_x_rage_on_melee_hit)
         const attack = Number((stats as Record<string, number | undefined>).gain_x_rage_on_attack_hit)
-        return sum + (Number.isFinite(melee) ? melee : Number.isFinite(attack) ? attack : 0)
+        if (Number.isFinite(attack)) return sum + attack
+        return sum + (Number.isFinite(melee) && record?.skillTypes.includes('Melee') ? melee : 0)
       }, 0)
       const rageDemandPerSecond = exactCostChain && rageCost
         ? rageCost.cadence === 'per-second'
           ? rageCost.resourceAdjustedAmount
           : actionFrequencyPerSecond == null ? null : rageCost.resourceAdjustedAmount * actionFrequencyPerSecond
         : exactCostChain ? 0 : null
-      // Attack actions are not guaranteed successful hits. Accuracy, target
-      // contact and multi-hit behaviour must be connected before an on-hit
-      // Rage gain can safely be expressed as a per-second value.
-      const rageGenerationPerSecond = rageGenerationPerHit === 0 ? 0 : null
+      const successfulHitFrequency = input.resolvedSuccessfulHitFrequencyPerSecondBySetup?.[setup.id]
+      const rageGenerationPerSecond = rageGenerationPerHit === 0
+        ? 0
+        : Number.isFinite(successfulHitFrequency) && successfulHitFrequency! >= 0
+          ? Number((rageGenerationPerHit * successfulHitFrequency!).toFixed(2))
+          : null
       const rageNetDemandPerSecond = rageDemandPerSecond == null || rageGenerationPerSecond == null
         ? null
         : Number(Math.max(0, rageDemandPerSecond - rageGenerationPerSecond).toFixed(2))
