@@ -150,7 +150,7 @@ export function supportedSkillCooldownFor(
   target: NumericSkill,
   setup: SkillSetup | undefined,
   supports: SupportGemDefinition[],
-  additionalUses: { count: number; sourceReferences: string[] } = { count: 0, sourceReferences: [] },
+  externalModifiers: { count: number; recoveryPercent?: number; sourceReferences: string[] } = { count: 0, sourceReferences: [] },
 ): SupportedSkillCooldown | undefined {
   if (!setup) return undefined
   const baseCooldownSeconds = Number(target.cooldown)
@@ -174,9 +174,10 @@ export function supportedSkillCooldownFor(
   }
   const selectedBase = overrideCooldownSeconds ?? baseCooldownSeconds
   if (!Number.isFinite(selectedBase) || selectedBase <= 0) return undefined
+  cooldownRecoveryPercent += Math.max(0, externalModifiers.recoveryPercent ?? 0)
   const rawEffective = effectiveCooldownSeconds(selectedBase, cooldownRecoveryPercent)
   const baseStoredUses = Number.isFinite(Number(target.storedUses)) ? Math.max(1, Number(target.storedUses)) : 1
-  const additionalStoredUses = Math.max(0, Math.trunc(additionalUses.count))
+  const additionalStoredUses = Math.max(0, Math.trunc(externalModifiers.count))
   const storedUses = baseStoredUses + additionalStoredUses
   const effective = storedUses > 1 || additionalStoredUses > 0
     ? rawEffective
@@ -190,7 +191,7 @@ export function supportedSkillCooldownFor(
     additionalStoredUses,
     storedUses,
     sustainedUseRatePerSecond: stableNumber(1 / effective),
-    sourceReferences: [...new Set([...sourceReferences, ...additionalUses.sourceReferences])].sort((a, b) => a.localeCompare(b, 'en')),
+    sourceReferences: [...new Set([...sourceReferences, ...externalModifiers.sourceReferences])].sort((a, b) => a.localeCompare(b, 'en')),
   }
 }
 

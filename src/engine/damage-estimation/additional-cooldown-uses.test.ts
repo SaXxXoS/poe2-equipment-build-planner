@@ -43,6 +43,7 @@ describe('Zusätzliche Cooldown-Nutzungen', () => {
       } as unknown as RealPassivePlanningIntegrationResult,
     })
     expect(result.count).toBe(3)
+    expect(result.recoveryPercent).toBe(0)
     expect(result.sourceReferences).toEqual([
       'equipment:crossbow:slot-weapon-set-1-left:GrenadeSkillAdditionalCooldownUse:grenade_skill_cooldown_count_+',
       'poe2-tree:58714:stats:0',
@@ -56,6 +57,60 @@ describe('Zusätzliche Cooldown-Nutzungen', () => {
       weaponSet: 'set-1',
       passiveTree,
       planning: { pipelineResult: { allocatedNodeIds: ['58714'] } } as unknown as RealPassivePlanningIntegrationResult,
-    })).toEqual({ count: 0, sourceReferences: [] })
+    })).toEqual({ count: 0, recoveryPercent: 0, sourceReferences: [] })
+  })
+
+  it('addiert allgemeine und Grenade-spezifische Recovery, aber blockiert Grenade-Recovery für andere Skills', () => {
+    const recoveryTree = {
+      ...passiveTree,
+      nodes: [
+        { id: 'generic', stats: [{ sourceText: '6% increased [CooldownRecovery|Cooldown Recovery Rate]' }] },
+        { id: 'grenade', stats: [{ sourceText: '15% increased Cooldown Recovery Rate for [Grenade] Skills' }] },
+      ],
+    } as unknown as RealPassiveTree
+    const planning = {
+      weaponSetPlanning: {
+        'set-1': { allocatedNodeIds: ['generic', 'grenade'] },
+        'set-2': { allocatedNodeIds: [] },
+      },
+    } as unknown as RealPassivePlanningIntegrationResult
+    const grenade = additionalCooldownUsesFor({
+      skillTypes: ['Grenade'],
+      equipment: [],
+      weaponSet: 'set-1',
+      passiveTree: recoveryTree,
+      planning,
+    })
+    const spell = additionalCooldownUsesFor({
+      skillTypes: ['Spell'],
+      equipment: [],
+      weaponSet: 'set-1',
+      passiveTree: recoveryTree,
+      planning,
+    })
+    expect(grenade.recoveryPercent).toBe(21)
+    expect(spell.recoveryPercent).toBe(6)
+  })
+
+  it('liest technische Grenade-Recovery nur aus der aktiven Waffe', () => {
+    const recoveryEquipment = (slotId: string, value: number): EquipmentEntry => ({
+      id: `recovery:${slotId}`,
+      slotId,
+      itemClassId: 'Crossbows',
+      modifierValues: [{
+        id: `recovery-mod:${slotId}`,
+        modifierId: 'GrenadeSkillCooldownRecovery',
+        value,
+        statValues: [{ statId: 'grenade_skill_cooldown_speed_+%', value }],
+      }],
+    })
+    expect(additionalCooldownUsesFor({
+      skillTypes: ['Grenade'],
+      equipment: [
+        recoveryEquipment('slot-weapon-set-1-left', 30),
+        recoveryEquipment('slot-weapon-set-2-left', 20),
+      ],
+      weaponSet: 'set-1',
+    }).recoveryPercent).toBe(30)
   })
 })

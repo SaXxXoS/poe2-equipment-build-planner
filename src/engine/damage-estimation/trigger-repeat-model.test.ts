@@ -45,15 +45,16 @@ describe('Trigger- und Wiederholungsmodell', () => {
       grenade!,
       setup('cluster-grenade', 'main'),
       [],
-      { count: 2, sourceReferences: ['equipment:crossbow:grenade_skill_cooldown_count_+'] },
+      { count: 2, recoveryPercent: 25, sourceReferences: ['equipment:crossbow:grenade_skill_cooldown_count_+'] },
     )
     expect(result).toMatchObject({
       baseCooldownSeconds: 10,
       baseStoredUses: 1,
       additionalStoredUses: 2,
       storedUses: 3,
-      effectiveCooldownSeconds: 10,
-      sustainedUseRatePerSecond: 0.1,
+      cooldownRecoveryPercent: 25,
+      effectiveCooldownSeconds: 8,
+      sustainedUseRatePerSecond: 0.125,
     })
     expect(result?.sourceReferences).toContain('equipment:crossbow:grenade_skill_cooldown_count_+')
   })

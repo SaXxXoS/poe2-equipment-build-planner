@@ -170,6 +170,7 @@ export function estimateHitDamage(input:{
       ? 'nach Server-Takt begrenzte nachhaltige Cooldown-Nutzungsrate'
       : 'supportbedingter Cooldown-Override mit nachhaltiger Nutzungsrate')
     if(supportedCooldown.additionalStoredUses>0)included.push(`${supportedCooldown.additionalStoredUses} belegte zusätzliche Cooldown-Nutzung${supportedCooldown.additionalStoredUses===1?'':'en'} aus aktivem Waffenset und Passivplan`)
+    if(additionalCooldownUses.recoveryPercent>0)included.push(`${additionalCooldownUses.recoveryPercent}% belegte Abklingzeiterholung aus aktivem Waffenset und Passivplan`)
   }
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const attackHitChance=skill.kind==='attack'?resolveAttackHitChance({
