@@ -534,6 +534,27 @@ describe('fail-closed Ressourcen- und Geistmodell', () => {
       reason: 'requires-valid-normal-quality',
     }))
   })
+  it('verbindet Rage-Supports mit exakter Erzeugung pro Treffer ohne Trefferfrequenz zu erfinden', () => {
+    const definition = skill('rampage', 'Rampage')
+    const rageSupport = {
+      id: 'rage-three',
+      nameEn: 'Rage III',
+      displayNameDe: 'Raserei III',
+      costMultiplierPercent: 100,
+    } as SupportGemDefinition
+    const model = resolveResourceSpiritModel({
+      characterLevel: 100,
+      setups: [{ ...setup(definition.id, [rageSupport.id]), level: 20 }],
+      skills: [definition],
+      supports: [rageSupport],
+    })
+    expect(model.skillCostChains[0]).toMatchObject({
+      rageGenerationPerHit: 5,
+      rageGenerationPerSecond: null,
+      rageNetDemandPerSecond: null,
+      rageSustainStatus: 'requires-hit-frequency-and-rage-pool',
+    })
+  })
   it('bleibt deterministisch', () => {
     const definition = skill('barkskin', 'Barkskin')
     const input = { setups: [setup(definition.id)], skills: [definition], supports: [] }

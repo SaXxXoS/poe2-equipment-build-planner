@@ -2961,3 +2961,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Erzeugungskette unbekannt.
 - Ungültige Qualität wird fail-closed blockiert.
 - Datenpins, Produktdaten und Runtime-Offlineregeln bleiben unverändert.
+# Schritt 63 – Raserei-Erzeugung pro Treffer
+
+- Das Ressourcenmodell 12.0.0 verbindet gepinnte Rage-Supports mit ihrem
+  exakten Rasereigewinn pro Treffer.
+- Trefferbasierter Gewinn, Sekundengewinn und Nettoverbrauch werden getrennt.
+- Ohne tatsächliche Trefferfrequenz wird kein Sekundenwert erfunden.
+- Der nächste Ressourcenbaustein ist die belegte Verbindung von Waffen-
+  Angriffsgeschwindigkeit, Trefferzahl und Rasereivorrat.

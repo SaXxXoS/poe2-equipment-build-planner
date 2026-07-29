@@ -4,7 +4,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { DamageEstimate } from './types'
 
-export const RESOURCE_SPIRIT_MODEL_VERSION = '11.0.0'
+export const RESOURCE_SPIRIT_MODEL_VERSION = '12.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type NumericSkillLevel = NumericSkill['levels'][number]
@@ -14,6 +14,7 @@ for (const skill of reference.skills) {
   const current = byName.get(key)
   if (!current || Object.keys(skill.numericStats).length > Object.keys(current.numericStats).length) byName.set(key, skill)
 }
+const supportByName = new Map(reference.supports.map(support => [support.name.toLocaleLowerCase('en'), support]))
 
 const recordFor = (definition: SkillGemDefinition | undefined): NumericSkill | undefined =>
   definition?.nameEn ? byName.get(definition.nameEn.toLocaleLowerCase('en')) : undefined
@@ -71,8 +72,11 @@ interface SkillResourceCostChain {
   actionFrequencyPerSecond: number | null
   manaDemandPerSecond: number | null
   rageDemandPerSecond: number | null
+  rageGenerationPerHit: number
+  rageGenerationPerSecond: number | null
+  rageNetDemandPerSecond: number | null
   rageSuppressionDurationMs: number | null
-  rageSustainStatus: 'no-rage-cost' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'blocked-missing-exact-cost-chain'
+  rageSustainStatus: 'no-rage-cost' | 'initially-suppressed-then-requires-rage-pool' | 'requires-rage-pool' | 'requires-hit-frequency-and-rage-pool' | 'blocked-missing-exact-cost-chain'
 }
 
 export interface ResourceSpiritModel {
@@ -591,16 +595,33 @@ export function resolveResourceSpiritModel(input: {
         : null
       const rageCost = baseCosts.find(cost => cost.resource === 'rage')
       const rageEffect = appliedIntrinsicSkillCostEffects.find(effect => effect.kind === 'rage-cost-suppressed-window')
+      const rageGenerationPerHit = setup.supportGemIds.reduce((sum, id) => {
+        const support = input.supports.find(value => value.id === id)
+        const numeric = support?.nameEn ? supportByName.get(support.nameEn.toLocaleLowerCase('en')) : undefined
+        if (!numeric) return sum
+        const stats = numeric.levels[0]?.numericStats ?? numeric.numericStats
+        const melee = Number((stats as Record<string, number | undefined>).gain_x_rage_on_melee_hit)
+        const attack = Number((stats as Record<string, number | undefined>).gain_x_rage_on_attack_hit)
+        return sum + (Number.isFinite(melee) ? melee : Number.isFinite(attack) ? attack : 0)
+      }, 0)
       const rageDemandPerSecond = exactCostChain && rageCost
         ? rageCost.cadence === 'per-second'
           ? rageCost.resourceAdjustedAmount
           : actionFrequencyPerSecond == null ? null : rageCost.resourceAdjustedAmount * actionFrequencyPerSecond
         : exactCostChain ? 0 : null
+      const rageGenerationPerSecond = rageGenerationPerHit > 0 && actionFrequencyPerSecond != null
+        ? Number((rageGenerationPerHit * actionFrequencyPerSecond).toFixed(2))
+        : rageGenerationPerHit === 0 ? 0 : null
+      const rageNetDemandPerSecond = rageDemandPerSecond == null || rageGenerationPerSecond == null
+        ? null
+        : Number(Math.max(0, rageDemandPerSecond - rageGenerationPerSecond).toFixed(2))
       const rageSuppressionDurationMs = rageEffect?.suppressionDurationMs ?? null
       const rageSustainStatus = !exactCostChain
         ? 'blocked-missing-exact-cost-chain' as const
         : !rageCost
           ? 'no-rage-cost' as const
+          : rageGenerationPerHit > 0 && rageGenerationPerSecond == null
+            ? 'requires-hit-frequency-and-rage-pool' as const
           : rageSuppressionDurationMs != null
             ? 'initially-suppressed-then-requires-rage-pool' as const
             : 'requires-rage-pool' as const
@@ -647,6 +668,9 @@ export function resolveResourceSpiritModel(input: {
         actionFrequencyPerSecond,
         manaDemandPerSecond: manaDemandPerSecond == null ? null : Number(manaDemandPerSecond.toFixed(2)),
         rageDemandPerSecond: rageDemandPerSecond == null ? null : Number(rageDemandPerSecond.toFixed(2)),
+        rageGenerationPerHit,
+        rageGenerationPerSecond,
+        rageNetDemandPerSecond,
         rageSuppressionDurationMs,
         rageSustainStatus,
       }
