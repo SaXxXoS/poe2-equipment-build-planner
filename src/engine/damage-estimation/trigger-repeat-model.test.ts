@@ -149,6 +149,46 @@ describe('Trigger- und Wiederholungsmodell', () => {
     expect(result.productive).toBe(false)
   })
 
+  it('berechnet Cast on Critical mit Monsterstärke, Rohkrit und Zustands-Schwelle produktiv', () => {
+    const primary = skill('arc', 'Arc')
+    const trigger = skill('coc', 'Cast on Critical')
+    const target = skill('comet', 'Comet')
+    const energyModel = resolveTriggerRepeatModel({
+      primarySkill: primary,
+      setups: [
+        setup(primary.id, 'main'),
+        { ...setup(trigger.id), embeddedSkillIds: [target.id] },
+      ],
+      skills: [primary, trigger, target],
+      primaryActionContext: {
+        actionsPerSecond: 2,
+        hitChancePercent: 80,
+        criticalHitChancePercent: 25,
+        criticalHitDamageBeforeMitigation: 1000,
+        monsterPower: 20,
+        enemyAilmentThreshold: 100,
+      },
+    })
+    const result = attachNormalizedTriggeredTargetDamage(
+      energyModel,
+      new Map([['comet', { expectedHitDamage: 1000, expectedHitDamageAfterMitigation: 750 }]]),
+    )
+
+    expect(result.sources[0]).toMatchObject({
+      status: 'productive-target-damage',
+      monsterPower: 20,
+      enemyAilmentThreshold: 100,
+      criticalHitDamageBeforeMitigation: 1000,
+      ailmentThresholdRatio: 10,
+      effectiveEnergyPerEvent: 314,
+      eventRatePerSecond: 0.4,
+      triggerRatePerSecond: 0.4,
+      triggeredDamagePerSecond: 320,
+      triggeredDamagePerSecondAfterMitigation: 240,
+    })
+    expect(result.productive).toBe(true)
+  })
+
   it('behandelt eine unbekannte eingebettete ID nicht als belegtes Triggerziel', () => {
     const primary = skill('arc', 'Arc')
     const trigger = skill('coc', 'Cast on Critical')

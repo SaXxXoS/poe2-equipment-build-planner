@@ -53,7 +53,7 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(result.damageEstimate?.enemyProfile).toMatchObject({
       id: profileId,
       source: 'automatic-season-reference',
-      sourceVersion: 'poe2-0.4-reference-v3',
+      sourceVersion: 'poe2-0.4-reference-v4',
     })
   })
 

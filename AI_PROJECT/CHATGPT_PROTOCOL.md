@@ -2819,3 +2819,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Erwarteter Zieltreffer und normierter Trigger-DPS bei Monsterstärke eins
   werden ausgewiesen, aber ohne reale Monsterstärke noch nicht zum
   Gesamt-DPS addiert.
+
+# Fortsetzung: Schritt 48 – Meta-Trigger mit Monsterstärke
+
+- Die gepinnten PoB2-Standardwerte für Monsterstärke sind jetzt Bestandteil
+  des automatischen Gegnerprofils: selten 10 für Mapping/Allround und
+  einzigartig 20 für Boss.
+- `Cast on Critical` verbindet kritischen Rohschaden, levelabhängige
+  Zustands-Schwelle, Monsterstärke, Energiebonus und Energiebedarf zu einer
+  tatsächlichen Auslöserate.
+- Überschüssige Energie eines einzelnen kritischen Treffers erzeugt nicht
+  mehrere Auslösungen desselben Ereignisses.
+- Bei vollständig geschlossener Wirkungskette werden Hauptfertigkeit,
+  ausgelöste Fertigkeit und gemeinsamer belegter Vergleichs-DPS getrennt
+  ausgewiesen.
+- Fehlende Zielidentität, Kompatibilität, Ereignisrate, Monsterstärke,
+  Zustands-Schwelle oder Zielschaden bleiben fail-closed.
+- Weiter offen sind exakte Cooldown-/Server-Tick-Grenzen, Rotation mehrerer
+  Triggerziele, weitere Triggerbedingungen sowie Projektilüberlappung,
+  Rückkehr- und Fork-Ketten.
+- Trigger-Teilmodell `1.4.0`.

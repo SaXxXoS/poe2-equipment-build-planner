@@ -66,9 +66,13 @@
         "Cast on Critical derives its critical-event rate from action rate, hit chance and effective critical chance",
         "normalized energy buildup and trigger rate at monster power one are exposed without adding uncalculated target damage",
         "compatible embedded target skills are calculated through a recursion-safe isolated hit calculation",
-        "the internal trigger damage multiplier and optional enemy mitigation are applied to the normalized target result"
+        "the internal trigger damage multiplier and optional enemy mitigation are applied to the normalized target result",
+        "pinned rarity defaults supply monster power 10 for rare comparison targets and 20 for unique boss targets",
+        "Cast on Critical energy uses critical raw hit damage divided by the pinned level-specific ailment threshold",
+        "energy overflow is capped so one critical hit cannot create more than one trigger",
+        "a fully closed Cast on Critical chain contributes its embedded target to a separately exposed combined comparison DPS"
       ],
-      "nextGap": "connect actual monster power or explicit event profiles and exact trigger caps before adding trigger damage to total DPS; then add overlaps and return/fork chains"
+      "nextGap": "add exact cooldown and server-tick caps, multi-target trigger rotation, other trigger event profiles, overlaps and return/fork chains"
     },
     {
       "referenceArea": "minions and companions",

@@ -199,11 +199,22 @@ export function estimateHitDamage(input:{
   const accuracyMultiplier=hitChancePercent==null?undefined:hitChancePercent/100
   const accuracyAdjustedCriticalChance=effectiveCriticalChance==null||accuracyMultiplier==null?undefined:effectiveCriticalChance*accuracyMultiplier
   if(effectiveCriticalChance!=null&&hitChancePercent!=null){
+    const enemyLevel=input.enemyProfile?.level
+    const enemyAilmentThreshold=enemyLevel==null
+      ? undefined
+      : reference.monsterAilmentThresholdTable[Math.max(0,Math.min(reference.monsterAilmentThresholdTable.length-1,Math.trunc(enemyLevel)-1))]
     triggerRepeatModel=resolveTriggerRepeatModel({
       primarySkill:definition,
       setups:input.setups,
       skills:input.skills,
-      primaryActionContext:{actionsPerSecond,hitChancePercent,criticalHitChancePercent:effectiveCriticalChance},
+      primaryActionContext:{
+        actionsPerSecond,
+        hitChancePercent,
+        criticalHitChancePercent:effectiveCriticalChance,
+        criticalHitDamageBeforeMitigation:rollExpectedAverage*(1+totalCriticalDamageBonus/100),
+        monsterPower:input.enemyProfile?.monsterPower,
+        enemyAilmentThreshold,
+      },
     })
   }
   const accuracyAdjustedCriticalMultiplier=accuracyAdjustedCriticalChance==null?undefined:1+accuracyAdjustedCriticalChance/100*totalCriticalDamageBonus/100
@@ -293,6 +304,16 @@ export function estimateHitDamage(input:{
     }
     triggerRepeatModel=attachNormalizedTriggeredTargetDamage(triggerRepeatModel,targetDamage)
   }
+  const triggeredDamagePerSecond=triggerRepeatModel.sources.reduce((sum,source)=>sum+(source.triggeredDamagePerSecond??0),0)
+  const triggeredDamagePerSecondAfterMitigation=triggerRepeatModel.sources.reduce((sum,source)=>sum+(source.triggeredDamagePerSecondAfterMitigation??0),0)
+  const primaryComparableDamagePerSecond=accuracyAdjustedExpectedCriticalDamagePerSecond??expectedCriticalHitDamagePerSecond
+  const primaryComparableDamagePerSecondAfterMitigation=accuracyAdjustedDamagePerSecondAfterMitigation??expectedDamagePerSecondAfterMitigation
+  const combinedDamagePerSecond=primaryComparableDamagePerSecond==null
+    ? undefined
+    : primaryComparableDamagePerSecond+triggeredDamagePerSecond
+  const combinedDamagePerSecondAfterMitigation=primaryComparableDamagePerSecondAfterMitigation==null
+    ? undefined
+    : primaryComparableDamagePerSecondAfterMitigation+triggeredDamagePerSecondAfterMitigation
   return{
     ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),
@@ -339,6 +360,8 @@ export function estimateHitDamage(input:{
     ...(accuracyAdjustedExpectedCriticalDamagePerSecond==null?{}:{accuracyAdjustedExpectedCriticalDamagePerSecond:round(accuracyAdjustedExpectedCriticalDamagePerSecond)}),
     ...(accuracyAdjustedDamagePerSecondAfterMitigation==null?{}:{accuracyAdjustedDamagePerSecondAfterMitigation:round(accuracyAdjustedDamagePerSecondAfterMitigation)}),
     ...(resolvedEnemyProfile&&enemyMitigation?{enemyProfile:resolvedEnemyProfile,mitigatedComponents:enemyMitigation.components,expectedDamageAfterMitigation:round(expectedDamageAfterMitigation!),expectedDamagePerSecondAfterMitigation:round(expectedDamagePerSecondAfterMitigation!)}:{}),
+    ...(combinedDamagePerSecond==null?{}:{combinedDamagePerSecond:round(combinedDamagePerSecond)}),
+    ...(combinedDamagePerSecondAfterMitigation==null?{}:{combinedDamagePerSecondAfterMitigation:round(combinedDamagePerSecondAfterMitigation)}),
     ...(activeWindowDamagePerSecond==null?{}:{activeWindowDamagePerSecond:round(activeWindowDamagePerSecond)}),
     ...(activeWindowDamagePerSecondAfterMitigation==null?{}:{activeWindowDamagePerSecondAfterMitigation:round(activeWindowDamagePerSecondAfterMitigation)}),
     ...(preparedNextHitAverage==null?{}:{preparedNextHitDamage:round(preparedNextHitAverage)}),

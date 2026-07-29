@@ -183,6 +183,39 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     }))
     expect(result.triggerRepeatModel?.productive).toBe(false)
   })
+  it('nimmt ein vollständig belegtes Cast-on-Critical-Ziel in den kombinierten Vergleichsschaden auf',()=>{
+    const main=skill('arc','Arc')
+    const trigger=skill('coc','Cast on Critical')
+    const target=skill('comet','Comet')
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[
+        setup(main.id),
+        {...setup(trigger.id),id:'trigger',role:'utility',embeddedSkillIds:[target.id]},
+      ],
+      skills:[main,trigger,target],
+      enemyProfile:{
+        id:'test-unique',
+        label:'Testgegner',
+        source:'manual-comparison-profile',
+        level:1,
+        monsterPower:20,
+        monsterPowerEvidence:'manual-exact',
+        resistances:{fire:0,cold:0,lightning:0,chaos:0},
+      },
+    })
+    expect(result.triggerRepeatModel?.productive).toBe(true)
+    expect(result.triggerRepeatModel?.sources).toContainEqual(expect.objectContaining({
+      sourceSkillId:'coc',
+      targetSkillId:'comet',
+      status:'productive-target-damage',
+      monsterPower:20,
+      enemyAilmentThreshold:15,
+      triggeredDamagePerSecond:expect.any(Number),
+    }))
+    expect(result.combinedDamagePerSecond).toBeGreaterThan(result.accuracyAdjustedExpectedCriticalDamagePerSecond!)
+    expect(result.combinedDamagePerSecondAfterMitigation).toBeGreaterThan(result.accuracyAdjustedDamagePerSecondAfterMitigation!)
+  })
   it('berechnet eine Minion-Hauptfertigkeit nicht fälschlich mit Spielerwaffe und Spielertempo',()=>{
     const result=estimateHitDamage({
       equipment:[weapon('Crude Bow')],

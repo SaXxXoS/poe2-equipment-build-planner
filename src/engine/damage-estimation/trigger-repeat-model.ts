@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.3.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.4.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type InternalTriggerSupport = (typeof reference.internalTriggerSupports)[number]
@@ -43,11 +43,21 @@ export interface ResolvedTriggerRepeatSource {
   energyPerSecondAtMonsterPowerOne?: number
   triggerRatePerSecondAtMonsterPowerOne?: number
   secondsPerTriggerAtMonsterPowerOne?: number
+  monsterPower?: number
+  enemyAilmentThreshold?: number
+  criticalHitDamageBeforeMitigation?: number
+  ailmentThresholdRatio?: number
+  effectiveEnergyPerEvent?: number
+  energyPerSecond?: number
+  triggerRatePerSecond?: number
+  secondsPerTrigger?: number
   targetDamageMultiplier?: number
   targetExpectedHitDamage?: number
   targetExpectedHitDamageAfterMitigation?: number
   normalizedTriggeredDamagePerSecondAtMonsterPowerOne?: number
   normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne?: number
+  triggeredDamagePerSecond?: number
+  triggeredDamagePerSecondAfterMitigation?: number
   status:
     | 'blocked-missing-target'
     | 'blocked-incompatible-target'
@@ -55,6 +65,7 @@ export interface ResolvedTriggerRepeatSource {
     | 'blocked-missing-interval'
     | 'normalized-event-rate-only'
     | 'normalized-target-damage-only'
+    | 'productive-target-damage'
     | 'interval-only'
   evidence: 'structured-exact'
   sourceReferences: string[]
@@ -64,7 +75,7 @@ export interface ResolvedTriggerRepeatSource {
 export interface TriggerRepeatModel {
   modelVersion: string
   primarySkillTriggered: boolean
-  productive: false
+  productive: boolean
   sources: ResolvedTriggerRepeatSource[]
   limitations: string[]
 }
@@ -100,6 +111,9 @@ export function resolveTriggerRepeatModel(input: {
     actionsPerSecond: number
     hitChancePercent: number
     criticalHitChancePercent: number
+    criticalHitDamageBeforeMitigation?: number
+    monsterPower?: number
+    enemyAilmentThreshold?: number
   }
 }): TriggerRepeatModel {
   const primaryRecord = recordFor(input.primarySkill)
@@ -167,6 +181,39 @@ export function resolveTriggerRepeatModel(input: {
         * input.primaryActionContext.hitChancePercent / 100
         * input.primaryActionContext.criticalHitChancePercent / 100
       : undefined
+    const criticalHitDamageBeforeMitigation = input.primaryActionContext?.criticalHitDamageBeforeMitigation
+    const monsterPower = input.primaryActionContext?.monsterPower
+    const enemyAilmentThreshold = input.primaryActionContext?.enemyAilmentThreshold
+    const ailmentThresholdRatio = criticalHitDamageBeforeMitigation != null
+      && enemyAilmentThreshold != null
+      && enemyAilmentThreshold > 0
+      ? criticalHitDamageBeforeMitigation / enemyAilmentThreshold
+      : undefined
+    const effectiveEnergyPerEvent = baseEnergyPerEvent != null
+      && monsterPower != null
+      && ailmentThresholdRatio != null
+      ? baseEnergyPerEvent * monsterPower * ailmentThresholdRatio * (
+        Number.isFinite(energyGenerationModifierPercent)
+          ? 1 + energyGenerationModifierPercent / 100
+          : 1
+      )
+      : undefined
+    // A single critical hit can trigger at most once. Energy above the
+    // socketed spell's maximum is discarded by the meta skill.
+    const cappedEnergyPerEvent = effectiveEnergyPerEvent == null || energyRequirement == null
+      ? undefined
+      : Math.min(effectiveEnergyPerEvent, energyRequirement)
+    const energyPerSecond = eventRatePerSecond != null && cappedEnergyPerEvent != null
+      ? eventRatePerSecond * cappedEnergyPerEvent
+      : undefined
+    const triggerRatePerSecond = energyRequirement != null
+      && energyRequirement > 0
+      && energyPerSecond != null
+      ? Math.min(eventRatePerSecond!, energyPerSecond / energyRequirement)
+      : undefined
+    const secondsPerTrigger = triggerRatePerSecond != null && triggerRatePerSecond > 0
+      ? 1 / triggerRatePerSecond
+      : undefined
     const energyPerSecondAtMonsterPowerOne = eventRatePerSecond != null
       && effectiveEnergyPerEventAtMonsterPowerOne != null
       ? eventRatePerSecond * effectiveEnergyPerEventAtMonsterPowerOne
@@ -200,11 +247,19 @@ export function resolveTriggerRepeatModel(input: {
         ...(energyPerSecondAtMonsterPowerOne == null ? {} : { energyPerSecondAtMonsterPowerOne: stable(energyPerSecondAtMonsterPowerOne) }),
         ...(triggerRatePerSecondAtMonsterPowerOne == null ? {} : { triggerRatePerSecondAtMonsterPowerOne: stable(triggerRatePerSecondAtMonsterPowerOne) }),
         ...(secondsPerTriggerAtMonsterPowerOne == null ? {} : { secondsPerTriggerAtMonsterPowerOne: stable(secondsPerTriggerAtMonsterPowerOne) }),
+        ...(monsterPower == null ? {} : { monsterPower: stable(monsterPower) }),
+        ...(enemyAilmentThreshold == null ? {} : { enemyAilmentThreshold: stable(enemyAilmentThreshold) }),
+        ...(criticalHitDamageBeforeMitigation == null ? {} : { criticalHitDamageBeforeMitigation: stable(criticalHitDamageBeforeMitigation) }),
+        ...(ailmentThresholdRatio == null ? {} : { ailmentThresholdRatio: stable(ailmentThresholdRatio) }),
+        ...(effectiveEnergyPerEvent == null ? {} : { effectiveEnergyPerEvent: stable(effectiveEnergyPerEvent) }),
+        ...(energyPerSecond == null ? {} : { energyPerSecond: stable(energyPerSecond) }),
+        ...(triggerRatePerSecond == null ? {} : { triggerRatePerSecond: stable(triggerRatePerSecond) }),
+        ...(secondsPerTrigger == null ? {} : { secondsPerTrigger: stable(secondsPerTrigger) }),
         targetDamageMultiplier: stable(targetDamageMultiplier),
         status: !target
           ? 'blocked-missing-target'
           : compatible
-            ? eventRatePerSecond == null
+            ? triggerRatePerSecond == null && triggerRatePerSecondAtMonsterPowerOne == null
               ? 'blocked-missing-interval'
               : 'normalized-event-rate-only'
             : 'blocked-incompatible-target',
@@ -217,7 +272,9 @@ export function resolveTriggerRepeatModel(input: {
         ],
         detail: target && compatible
           ? eventRatePerSecond != null
-            ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate und Energieaufbau sind bei normierter Monsterstärke 1 berechnet; Zielschaden, tatsächliche Monsterstärke und Trigger-Obergrenzen fehlen noch, daher entsteht noch kein zusätzlicher DPS-Wert.`
+            ? triggerRatePerSecond != null
+              ? `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate, Monsterstärke, Zustands-Schwelle und Energieaufbau sind geschlossen berechnet. Der Zielschaden wird nach der isolierten Zielberechnung ergänzt; weitere Cooldown- und Server-Tick-Grenzen bleiben gesondert zu prüfen.`
+              : `Das eingebettete Ziel „${target.displayNameDe}“ ist kompatibel. Kritische Ereignisrate und Energieaufbau sind bei normierter Monsterstärke 1 berechnet; tatsächliche Monsterstärke oder Zustands-Schwelle fehlen noch, daher entsteht noch kein zusätzlicher DPS-Wert.`
             : `Das eingebettete Ziel „${target.displayNameDe}“ und die Triggerquelle sind strukturiert verbunden. Energiebedarf und Energie pro Ereignis werden ausgewiesen, aber die vollständige Ereignisfrequenz fehlt; daher entsteht noch kein zusätzlicher DPS-Wert.`
           : target
             ? `Das eingebettete Ziel „${target.displayNameDe}“ erfüllt die strukturierten Fertigkeitsanforderungen der Triggerquelle nicht und wird nicht produktiv berechnet.`
@@ -264,7 +321,7 @@ export function attachNormalizedTriggeredTargetDamage(
     if (
       source.status !== 'normalized-event-rate-only'
       || !source.targetSkillId
-      || source.triggerRatePerSecondAtMonsterPowerOne == null
+      || (source.triggerRatePerSecond == null && source.triggerRatePerSecondAtMonsterPowerOne == null)
     ) return source
     const target = targetDamage.get(source.targetSkillId)
     if (!target) return source
@@ -273,25 +330,33 @@ export function attachNormalizedTriggeredTargetDamage(
     const targetExpectedHitDamageAfterMitigation = target.expectedHitDamageAfterMitigation == null
       ? undefined
       : target.expectedHitDamageAfterMitigation * multiplier
+    const productive = source.triggerRatePerSecond != null
+    const appliedRate = source.triggerRatePerSecond ?? source.triggerRatePerSecondAtMonsterPowerOne!
     return {
       ...source,
-      status: 'normalized-target-damage-only' as const,
+      status: productive ? 'productive-target-damage' as const : 'normalized-target-damage-only' as const,
       targetExpectedHitDamage: Math.round(targetExpectedHitDamage * 1_000_000) / 1_000_000,
       ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
         targetExpectedHitDamageAfterMitigation: Math.round(targetExpectedHitDamageAfterMitigation * 1_000_000) / 1_000_000,
       }),
       normalizedTriggeredDamagePerSecondAtMonsterPowerOne: Math.round(
-        targetExpectedHitDamage * source.triggerRatePerSecondAtMonsterPowerOne * 1_000_000,
+        targetExpectedHitDamage * (source.triggerRatePerSecondAtMonsterPowerOne ?? appliedRate) * 1_000_000,
       ) / 1_000_000,
       ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
         normalizedTriggeredDamagePerSecondAfterMitigationAtMonsterPowerOne: Math.round(
-          targetExpectedHitDamageAfterMitigation * source.triggerRatePerSecondAtMonsterPowerOne * 1_000_000,
+          targetExpectedHitDamageAfterMitigation * (source.triggerRatePerSecondAtMonsterPowerOne ?? appliedRate) * 1_000_000,
         ) / 1_000_000,
       }),
+      ...(productive ? {
+        triggeredDamagePerSecond: Math.round(targetExpectedHitDamage * appliedRate * 1_000_000) / 1_000_000,
+        ...(targetExpectedHitDamageAfterMitigation == null ? {} : {
+          triggeredDamagePerSecondAfterMitigation: Math.round(targetExpectedHitDamageAfterMitigation * appliedRate * 1_000_000) / 1_000_000,
+        }),
+      } : {}),
       detail: `${source.detail} Der Erwartungsschaden des eingebetteten Ziels ist mit dem internen Trigger-Schadensfaktor verbunden; das Ergebnis bleibt auf Monsterstärke 1 normiert und wird nicht als tatsächlicher Gesamt-DPS ausgegeben.`,
     }
   })
-  return { ...model, sources }
+  return { ...model, productive: sources.some(source => source.status === 'productive-target-damage'), sources }
 }
 
 export const triggerRepeatOutput = (
@@ -300,6 +365,10 @@ export const triggerRepeatOutput = (
   modelVersion: model.modelVersion,
   primarySkillTriggered: model.primarySkillTriggered,
   productive: model.productive,
+  ...(model.productive ? {
+    triggeredDamagePerSecond: model.sources.reduce((sum, source) => sum + (source.triggeredDamagePerSecond ?? 0), 0),
+    triggeredDamagePerSecondAfterMitigation: model.sources.reduce((sum, source) => sum + (source.triggeredDamagePerSecondAfterMitigation ?? 0), 0),
+  } : {}),
   sources: model.sources.map(value => ({ ...value, sourceReferences: [...value.sourceReferences] })),
   limitations: [...model.limitations],
 })

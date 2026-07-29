@@ -1,7 +1,7 @@
 import type { GoalProfile } from '../../domain'
 import type { EnemyMitigationProfile } from './types'
 
-export const AUTOMATIC_ENEMY_PROFILE_VERSION='poe2-0.4-reference-v3'
+export const AUTOMATIC_ENEMY_PROFILE_VERSION='poe2-0.4-reference-v4'
 
 const common={
   source:'automatic-season-reference' as const,
@@ -23,6 +23,8 @@ export function automaticEnemyProfile(goal:GoalProfile, characterLevel?:number):
     id:'automatic-boss-sustained',
     label:'Automatischer Boss-Vergleich (anhaltender Kampf)',
     targetRarity:'unique',
+    monsterPower:20,
+    monsterPowerEvidence:'pinned-rarity-default',
     limitations:[
       'Individuelle Bosswiderstände und Bossrüstung sind nicht allgemein belegt.',
       'Die zeitlich abklingende Anti-Burst-Reduktion ist nicht numerisch enthalten.',
@@ -34,6 +36,8 @@ export function automaticEnemyProfile(goal:GoalProfile, characterLevel?:number):
     id:'automatic-mapping',
     label:'Automatischer Mapping-Grundvergleich',
     targetRarity:'rare',
+    monsterPower:10,
+    monsterPowerEvidence:'pinned-rarity-default',
     limitations:[
       'Seltene Monster- und Kartenmodifikatoren sind nicht pauschal eingerechnet.',
       'Individuelle Monsterrüstung ist ohne gepinnten Zielrecord unbekannt.',
@@ -45,6 +49,8 @@ export function automaticEnemyProfile(goal:GoalProfile, characterLevel?:number):
     id:'automatic-allround',
     label:'Automatischer Allround-Grundvergleich',
     targetRarity:'rare',
+    monsterPower:10,
+    monsterPowerEvidence:'pinned-rarity-default',
     limitations:[
       'Der Wert ist ein neutraler Vergleich vor individuellen Monstermodifikatoren.',
       'Individuelle Monsterrüstung ist ohne gepinnten Zielrecord unbekannt.',
