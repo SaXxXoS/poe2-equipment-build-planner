@@ -139,4 +139,64 @@ describe('vollständige Build-Variantenoptimierung', () => {
     }
     expect(optimizeBuildVariants(input)).toEqual(optimizeBuildVariants(input))
   })
+
+  it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {
+    const isolated = skill('isolated', ['spell', 'fire'])
+    const coherent = skill('coherent', ['spell', 'lightning'])
+    const result = optimizeBuildVariants({
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      equipment: initialEquipment,
+      setups: createEmptySkillSetups(),
+      skills: [isolated, coherent],
+      supports: [],
+      skillScores: [score('isolated', 100), score('coherent', 60)],
+      evaluatePackage: candidate => candidate.skillId === 'isolated'
+        ? {
+            status: 'blocked',
+            totalScore: 95,
+            components: { equipment: 90, skill: 100, supports: 0, passives: 0, jewels: 0, uniques: 0, resources: 20, rotation: 0 },
+            evidence: [],
+            blockers: ['Kein technisch gültiges Gesamtpaket.'],
+          }
+        : {
+            status: 'coherent',
+            totalScore: 78,
+            components: { equipment: 70, skill: 75, supports: 80, passives: 85, jewels: 60, uniques: 55, resources: 90, rotation: 75 },
+            evidence: ['Alle Analyzer stützen dasselbe Paket.'],
+            blockers: [],
+          },
+    })
+
+    expect(result.selected).toMatchObject({
+      skillId: 'coherent',
+      packageStatus: 'coherent',
+      packageScore: 78,
+    })
+    expect(result.selected?.reasons).toContain('Alle Analyzer stützen dasselbe Paket.')
+    expect(result.alternatives.some(candidate => candidate.skillId === 'isolated')).toBe(false)
+  })
+
+  it('wählt keinen ungeprüften Kandidaten, wenn das geprüfte Paket blockiert ist', () => {
+    const result = optimizeBuildVariants({
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      equipment: initialEquipment,
+      setups: createEmptySkillSetups(),
+      skills: [skill('first', ['spell', 'fire']), skill('second', ['spell', 'cold'])],
+      supports: [],
+      skillScores: [score('first', 100), score('second', 50)],
+      maximumPackageEvaluations: 1,
+      evaluatePackage: () => ({
+        status: 'blocked',
+        totalScore: 0,
+        components: { equipment: 0, skill: 0, supports: 0, passives: 0, jewels: 0, uniques: 0, resources: 0, rotation: 0 },
+        evidence: [],
+        blockers: ['Blockiert.'],
+      }),
+    })
+
+    expect(result.status).toBe('no-compatible-variant')
+    expect(result.selected).toBeNull()
+  })
 })

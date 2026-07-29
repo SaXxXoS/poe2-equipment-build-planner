@@ -2440,3 +2440,22 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   fehlgeschlagenen Vollbaum-/Lokalisierungstests anschließend seriell
   `50/50` erfolgreich. Lint, Typecheck, Produktions-Build, Pages-Build,
   JSON-Validierung (`161` Dateien) und `git diff --check` erfolgreich.
+
+## Gemeinsame Build-Paket-Optimierung (2026-07-29)
+
+- Ausgangscommit: `7d4719940fd7122479fa41f4dc152ed2a27b6934`.
+- Der bestehende Variantenoptimierer prüft die höchstbewerteten acht
+  Skill-Waffen-Varianten jetzt erneut als vollständige Build-Pakete.
+- Equipment, Skill, Supports, Passive, Juwelen und Uniques sowie Ressourcen
+  und Rotation liefern getrennte sichtbare Teilwerte.
+- Ein technisch blockierter Hauptskill oder Support blockiert das gesamte
+  Paket. Ein hoher isolierter Score kann diese Sperre nicht überstimmen.
+- Equipment-first, harte Waffenregeln, Ressourcenregeln und die vorhandenen
+  sechs Analyzer bleiben maßgeblich.
+- Die Ergebnisansicht zeigt Paketstatus, gemeinsamen Paketwert und alle acht
+  Teilwerte. Fehlende Belege bleiben sichtbar und erzeugen keinen Bonus.
+- Dokumentation:
+  `docs/BUILD_ASSISTANT_COHERENT_PACKAGE_OPTIMIZER.md`.
+- Audit:
+  `docs/audits/build-assistant-coherent-package-optimizer.json`.
+- Keine neue Datenquelle, kein Runtime-Netzwerk und keine zweite Build-Engine.

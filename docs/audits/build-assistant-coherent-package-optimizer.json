@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "scope": "build-assistant-coherent-package-optimizer",
+  "mainAnalyzerCount": 6,
+  "packageComponents": [
+    "equipment",
+    "skill",
+    "supports",
+    "passives",
+    "jewels",
+    "uniques",
+    "resources",
+    "rotation"
+  ],
+  "componentWeights": {
+    "equipment": 0.14,
+    "skill": 0.24,
+    "supports": 0.16,
+    "passives": 0.16,
+    "jewels": 0.07,
+    "uniques": 0.07,
+    "resources": 0.1,
+    "rotation": 0.06
+  },
+  "maximumFullyEvaluatedPackages": 8,
+  "hardBlockers": [
+    "invalid-main-skill",
+    "invalid-selected-support",
+    "related-blocking-analyzer-violation"
+  ],
+  "equipmentFirst": true,
+  "deterministic": true,
+  "runtimeNetwork": false,
+  "newDataSource": false,
+  "replacesExistingAnalyzers": false,
+  "status": "implemented"
+}

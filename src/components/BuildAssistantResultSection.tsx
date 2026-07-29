@@ -160,6 +160,27 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Set-2-Setup</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
         </dl>
         <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>
+        {variantOptimization.selected.packageComponents && <>
+          <h4>Gemeinsame Build-Paketprüfung</h4>
+          <p>
+            Status: {variantOptimization.selected.packageStatus === 'coherent'
+              ? 'Zusammenhängend belegt'
+              : variantOptimization.selected.packageStatus === 'limited'
+                ? 'Teilweise belegt'
+                : 'Blockiert'}
+            {' · '}Paketwert {variantOptimization.selected.packageScore}/100
+          </p>
+          <dl className="result-grid">
+            <div><dt>Ausrüstung</dt><dd>{variantOptimization.selected.packageComponents.equipment}</dd></div>
+            <div><dt>Hauptskill</dt><dd>{variantOptimization.selected.packageComponents.skill}</dd></div>
+            <div><dt>Supports</dt><dd>{variantOptimization.selected.packageComponents.supports}</dd></div>
+            <div><dt>Passive</dt><dd>{variantOptimization.selected.packageComponents.passives}</dd></div>
+            <div><dt>Juwelen</dt><dd>{variantOptimization.selected.packageComponents.jewels}</dd></div>
+            <div><dt>Uniques</dt><dd>{variantOptimization.selected.packageComponents.uniques}</dd></div>
+            <div><dt>Ressourcen</dt><dd>{variantOptimization.selected.packageComponents.resources}</dd></div>
+            <div><dt>Rotation</dt><dd>{variantOptimization.selected.packageComponents.rotation}</dd></div>
+          </dl>
+        </>}
         <ul>{variantOptimization.selected.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul>
         {variantOptimization.alternatives.length > 0 && <><h4>Belegte Alternativen</h4><ol>{variantOptimization.alternatives.slice(0, 3).map(candidate => <li key={`${candidate.skillId}-${candidate.weaponType}`}><b>{definitionName(candidate.skillId)}</b> mit {candidate.weaponLabel} · Variantenwert {candidate.totalScore}</li>)}</ol></>}
         <p className="muted">Die Auswahl ist eine deterministische Optimierung aus vorhandenen Skill-, Waffen-, Support-, Aszendenz- und Tree-Signalen. Sie behauptet keine vollständige Path-of-Building-DPS-Simulation; der tatsächlich berechnete Passive-Pfad bleibt die abschließende Pfadprüfung.</p>

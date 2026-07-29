@@ -15,6 +15,7 @@ import { fillRecommendedSupportSlots } from './features/skills/automatic-support
 import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
 import { optimizeBuildVariants, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
+import { evaluateAnalyzedBuildPackage } from './features/skills/build-package-evaluation'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
 import { BuildAssistantResultSection } from './components/BuildAssistantResultSection'
@@ -116,6 +117,42 @@ export default function App() {
               true,
             )]
           }, [])
+        const evaluatePackage = (
+          candidate: NonNullable<BuildVariantOptimization['selected']>,
+          characterForAnalysis: CharacterConfiguration,
+          baseSetups: typeof setups,
+        ) => {
+          let setupAssigned = false
+          const packageSetups = baseSetups.map((setup, index) => {
+            if (index === 0) return {
+              ...setup,
+              skillId: candidate.skillId,
+              role: 'main' as const,
+              weaponSet: candidate.mainWeaponSet,
+              supportGemIds: candidate.compatibleSupportIds,
+              origin: 'recommended' as const,
+            }
+            if (!setupAssigned && candidate.setupSkillId && !setup.skillId) {
+              setupAssigned = true
+              return {
+                ...setup,
+                skillId: candidate.setupSkillId,
+                role: 'utility' as const,
+                weaponSet: candidate.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const,
+                supportGemIds: [],
+                origin: 'recommended' as const,
+                synergyReason: candidate.setupReason,
+              }
+            }
+            return setup
+          })
+          const packageAnalysis = runBuildAssistantV1({
+            character: { ...characterForAnalysis, desiredMainSkillId: candidate.skillId },
+            equipment,
+            setups: packageSetups,
+          })
+          return evaluateAnalyzedBuildPackage(candidate, packageAnalysis)
+        }
         let result = runBuildAssistantV1(input)
         completedAnalyzerResult=result
         let effectiveSetups = preparedSetups
@@ -136,6 +173,7 @@ export default function App() {
             supports: buildAssistantCandidates.supports,
             skillScores: result.skillAnalysis.allCandidates,
             characterLevel: character.level || undefined,
+            evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
           })
           setVariantOptimization(optimization)
           const recommendation = mainCandidates.find(value => value.skillId === optimization.selected?.skillId) ?? selectAutomaticMainSkill({
@@ -213,6 +251,7 @@ export default function App() {
                 ? value
                 : { ...value, valid: false }),
               characterLevel: character.level || undefined,
+              evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
             }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length)

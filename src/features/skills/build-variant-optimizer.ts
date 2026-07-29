@@ -1,5 +1,6 @@
 import {
   type EquipmentEntry,
+  type MechanicTag,
   type SkillGemDefinition,
   type SkillSetup,
   type SupportGemDefinition,
@@ -44,6 +45,7 @@ const rangedWeapons = new Set<SyntheticWeaponType>(['bow', 'crossbow', 'wand'])
 
 export interface BuildVariantCandidate {
   skillId: string
+  skillTags?: MechanicTag[]
   weaponType: SyntheticWeaponType
   weaponLabel: string
   mainWeaponSet: 'set-1' | 'set-2'
@@ -59,6 +61,20 @@ export interface BuildVariantCandidate {
   resourcePenalty?: number
   totalScore: number
   metaReferenceScore?: number
+  packageScore?: number
+  packageStatus?: 'coherent' | 'limited' | 'blocked'
+  packageComponents?: {
+    equipment: number
+    skill: number
+    supports: number
+    passives: number
+    jewels: number
+    uniques: number
+    resources: number
+    rotation: number
+  }
+  packageEvidence?: string[]
+  packageBlockers?: string[]
   reasons: string[]
 }
 
@@ -75,6 +91,14 @@ export interface BuildVariantOptimization {
 export interface VariantSkillScore extends SkillSynergyScore {
   valid: boolean
   possibleRoles: string[]
+}
+
+export interface BuildPackageEvaluation {
+  status: 'coherent' | 'limited' | 'blocked'
+  totalScore: number
+  components: NonNullable<BuildVariantCandidate['packageComponents']>
+  evidence: string[]
+  blockers: string[]
 }
 
 function equipmentWeaponSets(equipment: EquipmentEntry[]) {
@@ -168,6 +192,8 @@ export function optimizeBuildVariants(input: {
   supports: SupportGemDefinition[]
   skillScores: VariantSkillScore[]
   characterLevel?: number
+  evaluatePackage?: (candidate: BuildVariantCandidate) => BuildPackageEvaluation
+  maximumPackageEvaluations?: number
 }): BuildVariantOptimization {
   const equipped = equipmentWeaponSets(input.equipment)
   const equipmentFirst = equipped['set-1'].size + equipped['set-2'].size > 0
@@ -182,7 +208,7 @@ export function optimizeBuildVariants(input: {
     skill.enabled !== false && characterAllowsSkill(skill, input.classId, input.ascendancyId),
   )
   let blockedCombinationCount = 0
-  const variants = eligibleSkills.flatMap((skill): BuildVariantCandidate[] => {
+  let variants = eligibleSkills.flatMap((skill): BuildVariantCandidate[] => {
     const weapons = candidateWeapons(skill, equipped)
     if (!weapons.length) {
       blockedCombinationCount += 1
@@ -290,6 +316,7 @@ export function optimizeBuildVariants(input: {
       ]
       return [{
         skillId: skill.id,
+        skillTags: [...skill.tags],
         weaponType: weapon,
         weaponLabel: weaponLabelFor(weapon),
         mainWeaponSet,
@@ -314,13 +341,43 @@ export function optimizeBuildVariants(input: {
     || left.skillId.localeCompare(right.skillId)
     || left.weaponType.localeCompare(right.weaponType),
   )
+  if (input.evaluatePackage) {
+    const limit = Math.max(1, input.maximumPackageEvaluations ?? 8)
+    variants = variants.map((candidate, index) => {
+      if (index >= limit) return candidate
+      const evaluation = input.evaluatePackage!(candidate)
+      return {
+        ...candidate,
+        packageScore: evaluation.totalScore,
+        packageStatus: evaluation.status,
+        packageComponents: evaluation.components,
+        packageEvidence: evaluation.evidence,
+        packageBlockers: evaluation.blockers,
+        totalScore: evaluation.status === 'blocked'
+          ? Number.NEGATIVE_INFINITY
+          : candidate.totalScore + evaluation.totalScore,
+        reasons: [...candidate.reasons, ...evaluation.evidence],
+      }
+    }).sort((left, right) =>
+      (left.packageStatus === 'blocked' ? 1 : 0) - (right.packageStatus === 'blocked' ? 1 : 0)
+      || right.totalScore - left.totalScore
+      || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
+      || left.skillId.localeCompare(right.skillId)
+      || left.weaponType.localeCompare(right.weaponType),
+    )
+  }
+  const selectable = variants.filter(candidate =>
+    input.evaluatePackage
+      ? candidate.packageStatus !== undefined && candidate.packageStatus !== 'blocked'
+      : true,
+  )
   return {
     evaluatedSkillCount: eligibleSkills.length,
     evaluatedCombinationCount: variants.length,
     blockedCombinationCount,
     equipmentFirst,
-    selected: variants[0] ?? null,
-    alternatives: variants.slice(1, 6),
-    status: variants.length ? 'selected' : 'no-compatible-variant',
+    selected: selectable[0] ?? null,
+    alternatives: selectable.slice(1, 6),
+    status: selectable.length ? 'selected' : 'no-compatible-variant',
   }
 }
