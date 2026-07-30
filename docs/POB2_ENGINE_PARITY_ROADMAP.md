@@ -308,3 +308,16 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Aufladungsmodell `1.0.0`, Schadensrechner `3.22.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_CHARGED_SKILLS_STEP_81.md`.
+
+# Fortschritt Schritt 82 – reproduzierbare Mikro-Parität
+
+- Fünf unabhängige Erwartungsfälle prüfen Basiszauber, Krit-Erwartung,
+  elementare Gegnerabwehr, Waffenangriff, Kanalisierung und Aufladung.
+- Jeder Fall ist an den freigegebenen PoB2-Commit und konkrete
+  Quelldateien gebunden.
+- Zusätzliche Projektile bleiben ohne Trefferbeleg ein sichtbarer
+  Mechanikwert und kein erfundener Einzelzielmultiplikator.
+- Die Suite belegt einzelne Rechenketten; vollständige Build-Parität bleibt
+  ausdrücklich offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_POB2_MICRO_PARITY_STEP_82.md`.

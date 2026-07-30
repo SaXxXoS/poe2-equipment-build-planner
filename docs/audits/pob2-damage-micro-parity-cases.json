@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "scope": "pob2-damage-micro-parity",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "calculatorContract": "independent-pinned-input-output-cases",
+  "publishedOutputPrecision": 2,
+  "limitations": [
+    "Die Fälle belegen einzelne Rechenketten, keine vollständige Build-Parität.",
+    "Erwartungswerte werden aus gepinnten PoB2-Eingabewerten und den jeweils genannten Formeln abgeleitet.",
+    "Projektile, Trigger, Minions und nicht explizit konfigurierte Zustände werden nicht stillschweigend vervielfacht."
+  ],
+  "cases": [
+    {
+      "id": "spell-base-ball-lightning-l20",
+      "kind": "spell-base",
+      "skill": "Ball Lightning",
+      "level": 20,
+      "sourceReferences": [
+        "src/Data/Skills/act_int.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "minimumLightningDamage": 6,
+        "maximumLightningDamage": 105,
+        "castTimeSeconds": 1,
+        "criticalChancePercent": 9,
+        "criticalDamageBonusPercent": 100
+      },
+      "expected": {
+        "minimumHit": 6,
+        "maximumHit": 105,
+        "averageHit": 55.5,
+        "actionsPerSecond": 1,
+        "criticalExpectationMultiplier": 1.09,
+        "expectedCriticalDamagePerSecond": 60.5
+      }
+    },
+    {
+      "id": "enemy-resistance-ball-lightning-l20",
+      "kind": "enemy-elemental-mitigation",
+      "skill": "Ball Lightning",
+      "level": 20,
+      "sourceReferences": [
+        "src/Modules/CalcDefence.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "baseResistancePercent": 50,
+        "penetrationPercent": 10,
+        "resistanceReductionPercent": 5
+      },
+      "expected": {
+        "effectiveResistancePercent": 35,
+        "expectedDamagePerSecondAfterMitigation": 39.32
+      }
+    },
+    {
+      "id": "channelled-full-stage-flameblast-l20",
+      "kind": "channelled-stage",
+      "skill": "Flameblast",
+      "level": 20,
+      "sourceReferences": [
+        "src/Data/Skills/act_int.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "minimumFireDamage": 244,
+        "maximumFireDamage": 367,
+        "maximumStages": 10,
+        "finalDamagePerStagePercent": 75,
+        "minimumChannelTimeMs": 490,
+        "criticalChancePercent": 8,
+        "criticalDamageBonusPercent": 100
+      },
+      "expected": {
+        "averageBaseHit": 305.5,
+        "fullStageDamageMultiplier": 8.5,
+        "minimumChannelTimeMs": 490,
+        "maximumPreparedHitWithCriticalExpectation": 2804.49
+      }
+    },
+    {
+      "id": "charged-detonating-arrow-shortbow-l20",
+      "kind": "charged-attack",
+      "skill": "Detonating Arrow",
+      "level": 20,
+      "weapon": "Shortbow",
+      "sourceReferences": [
+        "src/Data/Skills/act_dex.lua",
+        "src/Data/Bases/bow.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "weaponPhysicalMinimum": 7,
+        "weaponPhysicalMaximum": 14,
+        "weaponAttacksPerSecond": 1.25,
+        "skillBaseMultiplier": 1.92,
+        "skillAttackSpeedMultiplierPercent": -55,
+        "maximumStages": 4,
+        "gainAsFirePerStagePercent": 120
+      },
+      "expected": {
+        "minimumBaseHit": 13.44,
+        "maximumBaseHit": 26.88,
+        "averageBaseHit": 20.16,
+        "actionsPerSecond": 0.56,
+        "fullStageGainAsFirePercent": 480,
+        "maximumPreparedHit": 116.93
+      }
+    },
+    {
+      "id": "charged-volcano-l20",
+      "kind": "charged-spell",
+      "skill": "Volcano",
+      "level": 20,
+      "sourceReferences": [
+        "src/Data/Skills/act_str.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "minimumFireDamage": 121,
+        "maximumFireDamage": 181,
+        "maximumStages": 4,
+        "finalInitialExplosionDamagePerAdditionalStagePercent": 150,
+        "additionalProjectilesPerAdditionalStage": 4,
+        "criticalChancePercent": 8,
+        "criticalDamageBonusPercent": 100
+      },
+      "expected": {
+        "averageBaseHit": 151,
+        "fullStageDamageMultiplier": 5.5,
+        "fullStageAdditionalProjectiles": 12,
+        "maximumPreparedHitWithCriticalExpectation": 896.94
+      }
+    }
+  ]
+}

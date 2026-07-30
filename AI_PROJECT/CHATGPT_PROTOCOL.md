@@ -3230,3 +3230,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Detaildokument:
   `docs/BUILD_ASSISTANT_CHARGED_SKILLS_STEP_81.md`.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+
+## PoB2 micro parity - Schritt 82 (2026-07-30)
+
+- Fünf versionierte, vom Rechner getrennte Erwartungsfälle sind an den
+  gepinnten PoB2-Commit gebunden.
+- Die Tests decken Ball Lightning, elementare Gegnerabwehr, Flameblast,
+  Detonating Arrow mit Shortbow und Volcano ab.
+- Die geprüften Basis-, Krit-, Widerstands-, Tempo-, Kanal- und
+  Aufladungswerte müssen reproduzierbar mit den festgeschriebenen
+  Erwartungen übereinstimmen.
+- Das ist ein belastbarer Teilnachweis, aber noch kein Nachweis vollständiger
+  PoB2-Gleichwertigkeit für ganze Builds.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_POB2_MICRO_PARITY_STEP_82.md`.
