@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "sourceRelease": "0.5.2",
+  "totalNodes": 5150,
+  "totalStatLines": 5962,
+  "classifierVersion": "1.10.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "full-life-recovery",
+    "unlucky-enemy-hits",
+    "ice-crystal",
+    "trigger-energy-refund",
+    "shocked-ground",
+    "equipped-jewellery-effect",
+    "infernal-flame",
+    "delayed-damage",
+    "low-life"
+  ],
+  "coverageBefore": 98.15,
+  "coverageAfter": 98.37,
+  "classifiedStatLinesBefore": 5852,
+  "classifiedStatLinesAfter": 5865,
+  "unresolvedStatLinesBefore": 110,
+  "unresolvedStatLinesAfter": 97,
+  "effectDirectionSeparated": true,
+  "inventedProfileEffects": false,
+  "status": "measured-fail-closed"
+}

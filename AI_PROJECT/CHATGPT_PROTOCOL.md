@@ -3442,3 +3442,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_COMBAT_SYSTEMS_STEP_96.md`.
+
+## Schritt 97 – bedingte Passivwirkungen
+
+- Lebenswiederherstellung bei Tötung, Unlucky-Gegnertreffer, Ice Crystals,
+  Trigger-Energierückerstattung, Shocked Ground, Schmuckboni, Infernal Flame,
+  zeitversetzter Schaden und Low Life werden fail-closed erkannt.
+- Reduziertes Ice-Crystal-Leben, Infernal-Flame-Verlust und nachgelagerter
+  Eigenschaden sind negativ; verhinderter und später verlorener
+  Lebenswert ist gemischt.
+- Keine Regel erfindet Triggerfrequenz, Uptime, Elementarschaden oder DPS.
+- Baum-Coverage: 5.865 von 5.962 Statzeilen, entsprechend 98,37 %.
+- 97 Statzeilen bleiben ungelöst.
+- Passivklassifikator: `1.10.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_EFFECTS_STEP_97.md`.

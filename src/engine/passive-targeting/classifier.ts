@@ -22,6 +22,7 @@ const beneficialDirectionPatterns=[
  /\breduced effect of (?:chill|freeze|shock|ignite|ailments?|curses?|debuffs?) on you\b/,
  /\benem(?:y|ies).*(?:deal|deals) \d+(?:\.\d+)?% reduced damage\b/,
  /\benem(?:y|ies|targets?).*increased damage taken\b/,
+ /\blife loss from hits is prevented\b/,
 ]
 const harmfulDirectionPatterns=[
  /\b(?:you|skills?|attacks?|spells?|minions?|detonator skills) .*reduced damage\b/,
@@ -34,6 +35,10 @@ const harmfulDirectionPatterns=[
  /^-\d+(?:\.\d+)?%.*damage prevented\b/,
  /\breduced light radius\b/,
  /\bofferings?.* have .*reduced (?:duration|maximum life)\b/,
+ /\breduced ice crystal life\b/,
+ /\binfernal flame lost\b/,
+ /\blife is lost over \d+(?:\.\d+)? seconds\b/,
+ /\bafter being damaged by an enemy hit, take damage equal\b/,
 ]
 export function derivePassiveEffectDirection(normalizedText:string,matched:boolean):PassiveEffectDirection{
  if(!matched)return'unknown'

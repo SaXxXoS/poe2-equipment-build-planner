@@ -455,3 +455,16 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_COMBAT_SYSTEMS_STEP_96.md`.
+
+## Schritt 97 – bedingte Passivwirkungen
+
+- Vollständige Lebenswiederherstellung, Unlucky-Gegnertreffer, Ice Crystals,
+  Trigger-Energierückerstattung, Shocked Ground, Schmuckboni, Infernal Flame,
+  zeitversetzter Schaden und Low Life werden getrennt klassifiziert.
+- Positive, negative und gemischte Wirkungsrichtungen bleiben getrennt.
+- Offizielle Coverage: 5.865 von 5.962 Statzeilen, entsprechend 98,37 %.
+- 97 Statzeilen bleiben fail-closed ungelöst.
+- Passivklassifikator: `1.10.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_EFFECTS_STEP_97.md`.

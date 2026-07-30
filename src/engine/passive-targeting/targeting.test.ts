@@ -178,6 +178,30 @@ describe('offizielle Statklassifikation',()=>{
   expect(classifyPassiveText('[SinisterJewelSockets|Sinister] [Jewel] Socket','jewel-socket').tags).toContain('sinister-jewel-socket')
   expect(classifyPassiveText('100% increased Effect of bonuses gained from Socketed [Jewel]','jewel-socket').tags).toContain('socketed-jewel-effect')
  })
+ it.each([
+  ['2% chance to Recover all Life when you Kill an Enemy','full-life-recovery'],
+  ['20% chance for Damage of Enemies [HitDamage|Hitting] you to be [Unlucky]','unlucky-enemy-hits'],
+  ['200% increased [IceCrystals|Ice Crystal] Life','ice-crystal'],
+  ['25% chance for [Trigger] skills to refund half of [Energy] Spent','trigger-energy-refund'],
+  ['25% chance on [Shock|Shocking] Enemies to created [ShockedGround|Shocked Ground]','shocked-ground'],
+  ['25% increased bonuses gained from Equipped Rings and Amulets','equipped-jewellery-effect'],
+  ['25% of Infernal Flame lost per second if none was gained in the past 2 seconds','infernal-flame'],
+  ['25% of Life Loss from [HitDamage|Hits] is prevented, then that much Life is lost over 4 seconds instead','delayed-damage'],
+  ['5% increased Damage taken while on [LowLife|Low Life]','low-life'],
+ ])('klassifiziert die verbleibende Sonderwirkung %s ohne freie Profilannahme',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining([
+   'damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos',
+  ]))
+ })
+ it('trennt positive, negative und gemischte Sonderwirkungen',()=>{
+  expect(classifyPassiveText('200% increased [IceCrystals|Ice Crystal] Life','normal').effectDirection).toBe('positive')
+  expect(classifyPassiveText('60% reduced [IceCrystals|Ice Crystal] Life','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('25% of Infernal Flame lost per second if none was gained in the past 2 seconds','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('4 seconds after being Damaged by an Enemy [HitDamage|Hit], take Damage equal to 30% of that [HitDamage|Hit] Damage','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('25% of Life Loss from [HitDamage|Hits] is prevented, then that much Life is lost over 4 seconds instead','normal').effectDirection).toBe('mixed')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
