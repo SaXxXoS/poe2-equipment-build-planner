@@ -1,12 +1,12 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 
-export const PERSISTENT_STAGE_STATE_MODEL_VERSION = '1.0.0'
+export const PERSISTENT_STAGE_STATE_MODEL_VERSION = '1.1.0'
 
 export interface PersistentStageState {
   skillId: string
   label: string
-  kind: 'stationary-retaliation' | 'mana-built-spell-buff'
+  kind: 'stationary-retaliation' | 'mana-built-spell-buff' | 'monster-power-warcry' | 'rage-extended-gain-as-cold'
   appliedSkillLevel: number
   skillLevelStatus: 'exact' | 'default-reference-level'
   maximumStages: number
@@ -21,6 +21,18 @@ export interface PersistentStageState {
   fullStageSpellDamageMultiplier?: number
   manaPercentSpendPerUpgrade?: number
   effectDurationMs?: number
+  monsterPowerStep?: number
+  monsterPowerCap?: number
+  minimumColdDamagePerPowerStep?: number
+  maximumColdDamagePerPowerStep?: number
+  empoweredAttackMinimumColdDamagePerPowerStep?: number
+  empoweredAttackMaximumColdDamagePerPowerStep?: number
+  fullPowerMinimumColdDamage?: number
+  fullPowerMaximumColdDamage?: number
+  fullPowerEmpoweredAttackMinimumColdDamage?: number
+  fullPowerEmpoweredAttackMaximumColdDamage?: number
+  gainAsColdPercent?: number
+  durationExtensionPerRageMs?: number
   status: 'maximum-scenario-known-current-state-unknown'
   evidence: 'structured-exact'
   sourceReferences: string[]
@@ -48,7 +60,7 @@ export function resolvePersistentStageState(input: {
   const setups = new Map(input.setups.filter(value => Boolean(value.skillId)).map(value => [value.skillId, value]))
   const skills = input.skills.flatMap<PersistentStageState>(skill => {
     const setup = setups.get(skill.id)
-    if (!setup || !skill.nameEn || !['Arctic Armour', 'Sigil of Power'].includes(skill.nameEn)) return []
+    if (!setup || !skill.nameEn || !['Arctic Armour', 'Sigil of Power', 'Arctic Howl', 'Lunar Blessing'].includes(skill.nameEn)) return []
     const record = byName.get(skill.nameEn.toLocaleLowerCase('en'))
     const requestedLevel = setup.level
     const availableLevels = record?.levels.map(value => value.level) ?? []
@@ -89,6 +101,53 @@ export function resolvePersistentStageState(input: {
           'base_active_skill_buff_stack_gain_frequency_ms',
         ],
         detail: `Auf Gemmenstufe ${appliedSkillLevel} sind ${minimumAddedColdDamagePerStage}–${maximumAddedColdDamagePerStage} zusätzlicher Kälteschaden je stationärem Stapel, maximal ${maximumStages} Stapel und ${stageGainIntervalMs} ms Aufbau je Stapel belegt. Das vollständig vorbereitete Vergeltungsszenario enthält nach ${(fullPreparationTimeMs / 1000).toLocaleString('de-DE')} s ${maximumStages * minimumAddedColdDamagePerStage}–${maximumStages * maximumAddedColdDamagePerStage} zusätzlichen Kälteschaden. Stationäre Dauer und auslösender gegnerischer Treffer sind nicht belegt; deshalb entsteht kein Dauerschaden.`,
+      }]
+    }
+
+    if (skill.nameEn === 'Arctic Howl') {
+      const monsterPowerStep = stats.warcry_empowers_per_X_monster_power
+      const monsterPowerCap = stats.warcry_empowers_per_X_monster_power_mp_cap
+      const minimumColdDamagePerPowerStep = stats.wolf_warcry_buff_cold_damage_min_per_5_power_up_to_cap
+      const maximumColdDamagePerPowerStep = stats.wolf_warcry_buff_cold_damage_max_per_5_power_up_to_cap
+      const empoweredAttackMinimumColdDamagePerPowerStep = stats.wolf_warcry_empowered_attack_cold_damage_min_per_5_power_up_to_cap
+      const empoweredAttackMaximumColdDamagePerPowerStep = stats.wolf_warcry_empowered_attack_cold_damage_max_per_5_power_up_to_cap
+      const effectDurationMs = stats.base_skill_effect_duration
+      const values = [monsterPowerStep, monsterPowerCap, minimumColdDamagePerPowerStep, maximumColdDamagePerPowerStep,
+        empoweredAttackMinimumColdDamagePerPowerStep, empoweredAttackMaximumColdDamagePerPowerStep, effectDurationMs]
+      if (!values.every(value => Number.isFinite(value) && value > 0) || monsterPowerCap % monsterPowerStep !== 0) return []
+      const steps = monsterPowerCap / monsterPowerStep
+      return [{
+        skillId: skill.id, label: skill.displayNameDe, kind: 'monster-power-warcry',
+        appliedSkillLevel, skillLevelStatus: requestedLevel == null ? 'default-reference-level' : 'exact',
+        maximumStages: steps, monsterPowerStep, monsterPowerCap, minimumColdDamagePerPowerStep,
+        maximumColdDamagePerPowerStep, empoweredAttackMinimumColdDamagePerPowerStep,
+        empoweredAttackMaximumColdDamagePerPowerStep, effectDurationMs,
+        fullPowerMinimumColdDamage: steps * minimumColdDamagePerPowerStep,
+        fullPowerMaximumColdDamage: steps * maximumColdDamagePerPowerStep,
+        fullPowerEmpoweredAttackMinimumColdDamage: steps * empoweredAttackMinimumColdDamagePerPowerStep,
+        fullPowerEmpoweredAttackMaximumColdDamage: steps * empoweredAttackMaximumColdDamagePerPowerStep,
+        status: 'maximum-scenario-known-current-state-unknown', evidence: 'structured-exact',
+        sourceReferences: ['warcry_empowers_per_X_monster_power', 'warcry_empowers_per_X_monster_power_mp_cap',
+          'wolf_warcry_buff_cold_damage_min_per_5_power_up_to_cap', 'wolf_warcry_buff_cold_damage_max_per_5_power_up_to_cap',
+          'wolf_warcry_empowered_attack_cold_damage_min_per_5_power_up_to_cap',
+          'wolf_warcry_empowered_attack_cold_damage_max_per_5_power_up_to_cap', 'base_skill_effect_duration'],
+        detail: `Auf Gemmenstufe ${appliedSkillLevel} skaliert der Buff je ${monsterPowerStep} Monster-Power bis ${monsterPowerCap}. Das belegte Vollmacht-Szenario gewährt ${steps * minimumColdDamagePerPowerStep}–${steps * maximumColdDamagePerPowerStep} Kälteschaden im Buff und ${steps * empoweredAttackMinimumColdDamagePerPowerStep}–${steps * empoweredAttackMaximumColdDamagePerPowerStep} für den verstärkten Angriff während ${effectDurationMs / 1000} s. Tatsächliche Monster-Power und betroffener Folgeangriff sind unbekannt.`,
+      }]
+    }
+
+    if (skill.nameEn === 'Lunar Blessing') {
+      const gainAsColdPercent = stats['wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage']
+      const effectDurationMs = stats.base_skill_effect_duration
+      const durationExtensionPerRageMs = stats.skill_lunar_blessing_extend_buff_by_X_ms_per_rage
+      if (![gainAsColdPercent, effectDurationMs, durationExtensionPerRageMs].every(value => Number.isFinite(value) && value > 0)) return []
+      return [{
+        skillId: skill.id, label: skill.displayNameDe, kind: 'rage-extended-gain-as-cold',
+        appliedSkillLevel, skillLevelStatus: requestedLevel == null ? 'default-reference-level' : 'exact',
+        maximumStages: 0, gainAsColdPercent, effectDurationMs, durationExtensionPerRageMs,
+        status: 'maximum-scenario-known-current-state-unknown', evidence: 'structured-exact',
+        sourceReferences: ['wolf_lunar_blessing_all_damage_%_to_gain_as_cold_damage', 'base_skill_effect_duration',
+          'skill_lunar_blessing_extend_buff_by_X_ms_per_rage'],
+        detail: `Auf Gemmenstufe ${appliedSkillLevel} werden ${gainAsColdPercent} % des Schadens als Kälteschaden gewonnen. Die Grunddauer beträgt ${effectDurationMs / 1000} s und steigt um ${durationExtensionPerRageMs} ms je Rage. Aktuelle Rage, Formbedingung und Uptime sind unbekannt; deshalb wird der Gewinn nicht dauerhaft eingerechnet.`,
       }]
     }
 

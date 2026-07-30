@@ -350,3 +350,6 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 # Schritt 85: Elementarzustände und Resonanz
 
 Elemental Conflux und Trinity sind als strukturierte, nicht produktive Zustandsszenarien integriert. Aktives Element und aktuelle Resonanz bleiben ohne belegten Laufzeitzustand unbekannt; dadurch entsteht kein erfundener Dauerschadensbonus. Details: `BUILD_ASSISTANT_ELEMENTAL_STATES_STEP_85.md`.
+# Schritt 86: Warcry-Power und Rage-abhängige Buffs
+
+Arctic Howl und Lunar Blessing sind als exakte, nicht automatisch aktive Szenarien integriert. Monster-Power, Rage, Formbedingung und Uptime bleiben ohne belegten Buildzustand unbekannt. Details: `BUILD_ASSISTANT_WARCRY_RAGE_STATES_STEP_86.md`.

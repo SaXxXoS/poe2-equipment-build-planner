@@ -3281,3 +3281,9 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Trinity Stufe 20: 13 Resonanzgewinn, 6 % finaler Schaden je 50 Resonanz, 8 Sekunden Verfallsverzögerung, 10 Verlust/s und 3 Verlust/Treffer.
 - Aktives Element und aktuelle Resonanz werden nicht erfunden; die Szenarien bleiben ohne Zustandseintrag außerhalb der DPS.
 - Modellversionen: Elementarzustand `1.0.0`, zeitabhängige Offensive `1.4.0`, Schadensrechner `3.25.0`.
+# Schritt 86 – Warcry-Power und Rage
+
+- Arctic Howl Stufe 20 modelliert 5er-Monster-Power-Schritte bis 50 und die daraus belegbaren Kälteschadensszenarien.
+- Lunar Blessing Stufe 20 modelliert 59 % Gewinn als Kälteschaden, 5 Sekunden Grunddauer und 200 ms Verlängerung je Rage.
+- Unbekannte aktuelle Monster-Power, Rage, Formbedingung, Folgeangriff und Uptime erzeugen keinen dauerhaften DPS-Bonus.
+- Modellversionen: persistenter Zustand `1.1.0`, Schadensrechner `3.26.0`.

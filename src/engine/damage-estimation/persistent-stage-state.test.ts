@@ -50,4 +50,22 @@ describe('persistente Stufenzustände', () => {
     const input = { setups: [setup(value.id, 20)], skills: [value] }
     expect(resolvePersistentStageState(input)).toEqual(resolvePersistentStageState(input))
   })
+
+  it('modelliert Arctic Howl als Monster-Power-Szenario', () => {
+    const value = skill('howl', 'Arctic Howl')
+    expect(resolvePersistentStageState({ setups: [setup(value.id, 20)], skills: [value] }).skills[0]).toMatchObject({
+      kind: 'monster-power-warcry', monsterPowerStep: 5, monsterPowerCap: 50,
+      fullPowerMinimumColdDamage: 370, fullPowerMaximumColdDamage: 560,
+      fullPowerEmpoweredAttackMinimumColdDamage: 1210, fullPowerEmpoweredAttackMaximumColdDamage: 1860,
+      effectDurationMs: 8000,
+    })
+  })
+
+  it('modelliert Lunar Blessing ohne aktuelle Rage oder Uptime zu erfinden', () => {
+    const value = skill('lunar', 'Lunar Blessing')
+    expect(resolvePersistentStageState({ setups: [setup(value.id, 20)], skills: [value] }).skills[0]).toMatchObject({
+      kind: 'rage-extended-gain-as-cold', gainAsColdPercent: 59,
+      effectDurationMs: 5000, durationExtensionPerRageMs: 200,
+    })
+  })
 })
