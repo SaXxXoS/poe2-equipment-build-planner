@@ -3274,3 +3274,10 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ladungszustandsmodell `1.2.0`, Schadensrechner `3.24.0`.
 - Hauptdokument:
   `docs/BUILD_ASSISTANT_CHARGED_STAFF_STEP_84.md`.
+# Schritt 85 – Elementarzustände und Resonanz
+
+- Elemental Conflux und Trinity werden aus dem gepinnten Schadensreferenzprodukt auf exakter Gemmenstufe modelliert.
+- Elemental Conflux Stufe 20: 59 % finaler Schaden des aktiven Elements, 8 Sekunden Fenster.
+- Trinity Stufe 20: 13 Resonanzgewinn, 6 % finaler Schaden je 50 Resonanz, 8 Sekunden Verfallsverzögerung, 10 Verlust/s und 3 Verlust/Treffer.
+- Aktives Element und aktuelle Resonanz werden nicht erfunden; die Szenarien bleiben ohne Zustandseintrag außerhalb der DPS.
+- Modellversionen: Elementarzustand `1.0.0`, zeitabhängige Offensive `1.4.0`, Schadensrechner `3.25.0`.

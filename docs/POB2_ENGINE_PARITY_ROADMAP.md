@@ -347,3 +347,6 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Ladungszustandsmodell `1.2.0`, Schadensrechner `3.24.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_CHARGED_STAFF_STEP_84.md`.
+# Schritt 85: Elementarzustände und Resonanz
+
+Elemental Conflux und Trinity sind als strukturierte, nicht produktive Zustandsszenarien integriert. Aktives Element und aktuelle Resonanz bleiben ohne belegten Laufzeitzustand unbekannt; dadurch entsteht kein erfundener Dauerschadensbonus. Details: `BUILD_ASSISTANT_ELEMENTAL_STATES_STEP_85.md`.

@@ -10,8 +10,9 @@ import { resolveProjectileAccumulationState, type ProjectileAccumulationResult }
 import { resolveChannelledStageState, type ChannelledStageResult } from './channelled-stage-state'
 import { resolveChargedSkillState, type ChargedSkillStateResult } from './charged-skill-state'
 import { resolvePersistentStageState, type PersistentStageStateResult } from './persistent-stage-state'
+import { resolveElementalState, type ElementalStateResult } from './elemental-state'
 
-export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.3.0'
+export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.4.0'
 export interface TemporalOffensiveEffect {
   sourceId: string
   label: string
@@ -39,6 +40,7 @@ export interface TemporalOffensiveEffectResult {
   channelledStageState: ChannelledStageResult
   chargedSkillState: ChargedSkillStateResult
   persistentStageState: PersistentStageStateResult
+  elementalState: ElementalStateResult
 }
 
 const byName = new Map<string, (typeof reference.skills)[number]>()
@@ -101,6 +103,7 @@ export function collectTemporalOffensiveEffects(input: {
   const channelledStageState = resolveChannelledStageState({ setups: input.setups, skills: input.skills })
   const chargedSkillState = resolveChargedSkillState({ setups: input.setups, skills: input.skills })
   const persistentStageState = resolvePersistentStageState({ setups: input.setups, skills: input.skills })
+  const elementalState = resolveElementalState({ setups: input.setups, skills: input.skills })
   const selected = new Set(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => setup.skillId))
   const bossSteps = input.rotationAnalysis?.bossRotation.steps ?? []
   for (const definition of input.skills.filter(skill => selected.has(skill.id))) {
@@ -233,6 +236,7 @@ export function collectTemporalOffensiveEffects(input: {
     channelledStageState,
     chargedSkillState,
     persistentStageState,
+    elementalState,
   }
 }
 
