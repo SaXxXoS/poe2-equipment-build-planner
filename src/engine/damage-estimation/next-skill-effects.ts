@@ -3,14 +3,14 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis, RotationStepAnalysis } from '../common/types'
 import type { DamageComponent } from './types'
 
-export const NEXT_SKILL_EFFECT_MODEL_VERSION = '2.1.0'
+export const NEXT_SKILL_EFFECT_MODEL_VERSION = '3.0.0'
 
 export interface NextSkillEffect {
   sourceId: string
   sourceLabel: string
   targetSkillId?: string
   targetSkillLabel?: string
-  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'repeated-projectile-sequence' | 'charge-dependent-repeats' | 'blocked'
+  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'repeated-projectile-sequence' | 'repeated-spell-sequence' | 'charge-dependent-repeats' | 'blocked'
   percent?: number
   repeatCount?: number
   sequenceDamageMultiplier?: number
@@ -62,7 +62,7 @@ export function resolveNextSkillEffects(input: {
   let components = input.components.map(value => ({ ...value }))
 
   for (const source of input.skills.filter(value => selected.has(value.id))) {
-    if (!source.nameEn || !['Emergency Reload', 'Infernal Cry', 'Mantra of Destruction', 'Barrage'].includes(source.nameEn)) continue
+    if (!source.nameEn || !['Emergency Reload', 'Infernal Cry', 'Mantra of Destruction', 'Barrage', 'Unleash'].includes(source.nameEn)) continue
     const record = byName.get(source.nameEn.toLocaleLowerCase('en'))
     if (!record || !main) continue
     const stats = record.numericStats as Record<string, number>
@@ -166,6 +166,42 @@ export function resolveNextSkillEffects(input: {
           detail: !compatibleTarget
             ? 'Barrage kann den gewählten Folgeangriff laut gepinntem Skilltyp nicht wiederholen.'
             : 'Barrage und der konkrete wiederholbare Folgeangriff sind in der Bossrotation nicht unmittelbar verbunden.',
+        })
+      }
+    }
+
+    if (source.nameEn === 'Unleash') {
+      const targetRecord = main.nameEn ? byName.get(main.nameEn.toLocaleLowerCase('en')) : undefined
+      const seals = stats.staff_unleash_number_of_seals_for_next_skill
+      const compatibleTarget = targetRecord?.skillTypes.includes('Unleashable') === true
+      if (adjacent && compatibleTarget && Number.isFinite(seals) && seals > 0) {
+        const repeatCount = seals
+        const sequenceDamageMultiplier = 1 + repeatCount
+        effects.push({
+          ...common,
+          kind: 'repeated-spell-sequence',
+          repeatCount,
+          sequenceDamageMultiplier,
+          status: 'prepared-next-sequence',
+          evidence: 'structured-exact',
+          sourceReferences: [
+            'staff_unleash_number_of_seals_for_next_skill',
+            'skillTypes:Unleashable',
+            'rotation:direct-next-skill',
+          ],
+          detail: `${source.displayNameDe} versieht den unmittelbar folgenden entfesselbaren Zauber ${main.displayNameDe} mit ${seals} Siegeln. Der ursprüngliche Zauber und ${repeatCount} belegte Wiederholungen ergeben eine vorbereitete Sequenz von ${sequenceDamageMultiplier} Zaubertreffern.`,
+        })
+        components = scale(components, sequenceDamageMultiplier)
+      } else {
+        effects.push({
+          ...common,
+          kind: 'blocked',
+          status: 'blocked',
+          evidence: 'unresolved',
+          sourceReferences: ['staff_unleash_number_of_seals_for_next_skill'],
+          detail: !compatibleTarget
+            ? 'Unleash kann den gewählten Folgezauber laut gepinntem Skilltyp nicht wiederholen.'
+            : 'Unleash und der konkrete entfesselbare Folgezauber sind in der Bossrotation nicht unmittelbar verbunden.',
         })
       }
     }

@@ -157,4 +157,38 @@ describe('vorbereitete Folgeangriffswirkungen', () => {
     expect(result.appliedEffects).toHaveLength(0)
     expect(result.blockedEffects[0].detail).toContain('nicht wiederholen')
   })
+
+  it('berechnet zwei Unleash-Siegel nur für einen unmittelbar folgenden Unleashable-Zauber', () => {
+    const main = skill('main', 'Spark', { tags: ['spell', 'projectile'] })
+    const unleash = skill('unleash', 'Unleash')
+    const result = resolveNextSkillEffects({
+      components: [{ type: 'lightning', minimum: 10, maximum: 20 }],
+      setups: [setup('unleash-setup', unleash.id, 'utility'), setup('main-setup', main.id, 'main')],
+      skills: [unleash, main],
+      mainSkill: main,
+      rotationAnalysis: rotation(unleash.id, main.id),
+    })
+    expect(result.appliedEffects).toContainEqual(expect.objectContaining({
+      kind: 'repeated-spell-sequence',
+      repeatCount: 2,
+      sequenceDamageMultiplier: 3,
+      status: 'prepared-next-sequence',
+    }))
+    expect(result.components).toEqual([{ type: 'lightning', minimum: 30, maximum: 60 }])
+  })
+
+  it('blockiert Unleash bei einem Angriff trotz direkter Rotation', () => {
+    const main = skill('main', 'Lightning Arrow', { tags: ['attack', 'projectile'] })
+    const unleash = skill('unleash', 'Unleash')
+    const result = resolveNextSkillEffects({
+      components: [{ type: 'lightning', minimum: 10, maximum: 20 }],
+      setups: [setup('unleash-setup', unleash.id, 'utility'), setup('main-setup', main.id, 'main')],
+      skills: [unleash, main],
+      mainSkill: main,
+      rotationAnalysis: rotation(unleash.id, main.id),
+    })
+    expect(result.appliedEffects).toHaveLength(0)
+    expect(result.blockedEffects[0].detail).toContain('nicht wiederholen')
+    expect(result.components).toEqual([{ type: 'lightning', minimum: 10, maximum: 20 }])
+  })
 })

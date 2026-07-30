@@ -3159,5 +3159,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Ladungszustandsmodell `1.1.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_BARRAGE_CHARGE_TRACE_STEP_75.md`.
+
+## Unleash sequence - Schritt 76 (2026-07-30)
+
+- Zwei gepinnte Unleash-Siegel erzeugen fuer einen unmittelbar folgenden,
+  technisch als `Unleashable` belegten Zauber eine vorbereitete Sequenz aus
+  Original und zwei Wiederholungen.
+- Angriffe und nicht direkt verbundene Fertigkeiten bleiben fail-closed.
+- Folgefertigkeitsmodell `3.0.0`, Schadensrechner `3.17.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_UNLEASH_SEQUENCE_STEP_76.md`.
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.

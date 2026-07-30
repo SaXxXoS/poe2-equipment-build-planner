@@ -244,3 +244,14 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   `Disengage` transportiert seine bedingten drei Ladungen. Beide bleiben
   ohne vollständige Auslösekette nicht produktiv.
 - Folgefertigkeitsmodell `2.1.0`, Ladungszustandsmodell `1.1.0`.
+
+# Fortschritt Schritt 76 – Unleash-Folgezaubersequenz
+
+- Zwei gepinnte Unleash-Siegel werden als zwei Wiederholungen des unmittelbar
+  folgenden Zaubers verarbeitet.
+- Nur ein ausdrücklich `Unleashable` markierter Zielzauber erhält den
+  vorbereiteten Sequenzfaktor `3`; Angriffe und nicht direkt verbundene
+  Fertigkeiten bleiben blockiert.
+- Der Faktor beschreibt eine vorbereitete Sequenz und wird nicht als
+  dauerhafter DPS-Multiplikator ausgegeben.
+- Folgefertigkeitsmodell `3.0.0`, Schadensrechner `3.17.0`.
