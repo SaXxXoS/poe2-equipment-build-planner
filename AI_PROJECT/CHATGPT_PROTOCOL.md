@@ -3410,3 +3410,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_REMAINING_MECHANICS_STEP_94.md`.
+
+## Schritt 95 – spezielle Passivsysteme
+
+- Invocation, Offering, Orb, Plant, Lucky Hit, zufälliger elementarer
+  Extraschaden, Lichtradius und Azmeri-Geist-Besessenheit werden getrennt
+  klassifiziert.
+- Ohne belegte Wirkungsformel erzeugen diese Tags keinen freien Schaden,
+  Elementarbonus oder DPS.
+- Reduzierte Offering-Dauer beziehungsweise Offering-Leben und reduzierter
+  Lichtradius werden als negative Wirkungen behandelt.
+- Offizielle Coverage: 5.833 von 5.962 Statzeilen, entsprechend 97,84 %.
+- 129 Statzeilen bleiben fail-closed ungelöst.
+- Passivklassifikator: `1.8.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.

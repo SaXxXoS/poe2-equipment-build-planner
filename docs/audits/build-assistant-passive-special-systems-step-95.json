@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "sourceRelease": "0.5.2",
+  "totalNodes": 5150,
+  "totalStatLines": 5962,
+  "classifierVersion": "1.8.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "invocation",
+    "offering",
+    "orb",
+    "plant",
+    "lucky-hit",
+    "random-element-gain",
+    "light-radius",
+    "spirit-possession"
+  ],
+  "coverageBefore": 97.6,
+  "coverageAfter": 97.84,
+  "classifiedStatLinesBefore": 5819,
+  "classifiedStatLinesAfter": 5833,
+  "unresolvedStatLinesBefore": 143,
+  "unresolvedStatLinesAfter": 129,
+  "inventedProfileEffects": false,
+  "status": "measured-fail-closed"
+}

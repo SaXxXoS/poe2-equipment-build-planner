@@ -430,3 +430,13 @@ Deflection-Schadensverhinderung ist negativ. Die Coverage steigt von
 fail-closed ungelöst. Vollständige Path-of-Building-2-Gleichwertigkeit bleibt
 offen. Details:
 `BUILD_ASSISTANT_PASSIVE_REMAINING_MECHANICS_STEP_94.md`.
+
+### Schritt 95 – spezielle Passivsysteme
+
+Invocation, Offering, Orb, Plant, Lucky Hit, zufälliger elementarer
+Extraschaden, Lichtradius und Azmeri-Geist-Besessenheit werden getrennt
+erkannt. Ohne belegte Formel entsteht kein freier Profil- oder DPS-Bonus.
+Negative Licht- und Offering-Formen werden von positiven Formen getrennt.
+Die Coverage steigt von 97,60 % auf 97,84 %; 129 von 5.962 Statzeilen bleiben
+fail-closed ungelöst. Vollständige Path-of-Building-2-Gleichwertigkeit bleibt
+offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.

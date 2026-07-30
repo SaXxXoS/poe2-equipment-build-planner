@@ -131,6 +131,25 @@ describe('offizielle Statklassifikation',()=>{
   expect(result.tags).toContain('deflection')
   expect(result.effectDirection).toBe('negative')
  })
+ it.each([
+  ['[Invoke|Invocated] skills have 30% increased Maximum [Energy]','invocation'],
+  ['[Offering|Offerings] cannot be damaged if they have been created [Recently]','offering'],
+  ['[Orb] Skills have +1 to [Limit]','orb'],
+  ['[Plant|Plants] have a 20% chance to immediately [Plant|Overgrow]','plant'],
+  ['[HitDamage|Damage with Hits] is [Lucky|Lucky] against Enemies that are on [LowLife|Low Life]','lucky-hit'],
+  ['[Gain] 10% of Damage as Extra Damage of a random [ElementalDamage|Element]','random-element-gain'],
+  ['20% increased [LightRadius|Light Radius]','light-radius'],
+  ['[Rarity|Unique] Tamed Beasts are [SpiritPossessed|Possessed] by random [AzmeriSpirit|Azmeri Spirits], changing every 20 seconds','spirit-possession'],
+ ])('klassifiziert weitere offizielle Restfamilie %s ohne erfundene Profilwirkung',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
+ })
+ it('trennt negative Licht- und Offering-Wirkungen von positiven Formen',()=>{
+  expect(classifyPassiveText('23% reduced [LightRadius|Light Radius]','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('[Offering] Skills have 30% reduced Duration','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('[Offering] Skills have 20% increased Duration','normal').effectDirection).toBe('positive')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
