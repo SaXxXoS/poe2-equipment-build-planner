@@ -353,3 +353,13 @@ Elemental Conflux und Trinity sind als strukturierte, nicht produktive Zustandss
 # Schritt 86: Warcry-Power und Rage-abhängige Buffs
 
 Arctic Howl und Lunar Blessing sind als exakte, nicht automatisch aktive Szenarien integriert. Monster-Power, Rage, Formbedingung und Uptime bleiben ohne belegten Buildzustand unbekannt. Details: `BUILD_ASSISTANT_WARCRY_RAGE_STATES_STEP_86.md`.
+
+# Schritt 87: Charge Regulation
+
+Charge Regulation transportiert seine drei ladungsabhängigen Effekte
+stufengenau: Fertigkeitsgeschwindigkeit durch Frenzy Charges, finale
+kritische Trefferchance durch Power Charges und finale
+Rüstung/Ausweichen/Energieschild durch Endurance Charges. Der aktuelle
+Ladungszustand bleibt unbekannt und erzeugt daher keinen automatischen
+Schadens- oder Verteidigungsbonus. Details:
+`BUILD_ASSISTANT_CHARGE_REGULATION_STEP_87.md`.

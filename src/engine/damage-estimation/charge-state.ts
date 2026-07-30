@@ -1,7 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 
-export const CHARGE_STATE_MODEL_VERSION = '1.2.0'
+export const CHARGE_STATE_MODEL_VERSION = '1.3.0'
 
 export type ChargeType = 'power' | 'frenzy' | 'endurance'
 export type ChargeAvailability = 'unavailable' | 'conditional-unresolved' | 'available-window'
@@ -45,11 +45,28 @@ export interface ChargeBuffScenario {
   detail: string
 }
 
+export interface ChargeRegulationScenario {
+  sourceId: string
+  label: string
+  appliedSkillLevel: number
+  skillLevelStatus: 'exact' | 'default-reference-level'
+  frenzySkillSpeedPercent: number
+  powerFinalCriticalChancePercent: number
+  enduranceFinalDefencePercent: number
+  consumptionIntervalMs: number
+  currentChargeState: 'unknown'
+  status: 'charge-effects-known-current-state-unknown'
+  sourceReferences: string[]
+  evidence: 'structured-exact'
+  detail: string
+}
+
 export interface ChargeStateResult {
   relevant: boolean
   states: ChargeTypeState[]
   consumptions: ChargeConsumption[]
   buffScenarios: ChargeBuffScenario[]
+  regulationScenarios: ChargeRegulationScenario[]
   productive: boolean
   modelVersion: string
 }
@@ -120,9 +137,21 @@ export function resolveChargeState(input: {
   }
   const consumptions: ChargeConsumption[] = []
   const buffScenarios: ChargeBuffScenario[] = []
+  const regulationScenarios: ChargeRegulationScenario[] = []
   const regulation = selectedByName.get('charge regulation')
   const regulationRecord = byName.get('charge regulation')
-  const intervalMs = regulationRecord?.numericStats.consume_frenzy_power_and_endurance_charge_every_x_ms
+  const regulationSetup = regulation
+    ? input.setups.find(value => value.skillId === regulation.id)
+    : undefined
+  const requestedRegulationLevel = regulationSetup?.level
+  const regulationLevels = regulationRecord?.levels.map(value => value.level) ?? []
+  const appliedRegulationLevel = requestedRegulationLevel
+    ?? (regulationLevels.includes(20) ? 20 : regulationLevels.at(-1))
+  const regulationLevel = appliedRegulationLevel == null
+    ? undefined
+    : regulationRecord?.levels.find(value => value.level === appliedRegulationLevel)
+  const regulationStats = regulationLevel?.numericStats as Record<string, number> | undefined
+  const intervalMs = regulationStats?.consume_frenzy_power_and_endurance_charge_every_x_ms
   if (regulation) {
     consumptions.push({
       sourceId: regulation.id,
@@ -135,6 +164,39 @@ export function resolveChargeState(input: {
         ? `Verbraucht alle ${intervalMs! / 1000} Sekunden je eine Frenzy-, Power- und Endurance-Charge; die vorherige Erzeugung ist nicht belegt.`
         : 'Der Ladungsverbrauch ist nicht vollständig numerisch belegt.',
     })
+  }
+  if (regulation && regulationLevel) {
+    const frenzySkillSpeedPercent = regulationStats?.['charge_mastery_skill_speed_+%_with_frenzy_charges']
+    const powerFinalCriticalChancePercent = regulationStats?.['charge_mastery_crit_chance_+%_final_with_power_charges']
+    const enduranceFinalDefencePercent = regulationStats?.['charge_mastery_armour_evasion_energy_shield_+%_final_with_endurance_charges']
+    if (
+      (requestedRegulationLevel == null || regulationLevel.level === requestedRegulationLevel)
+      && Number.isFinite(frenzySkillSpeedPercent)
+      && Number.isFinite(powerFinalCriticalChancePercent)
+      && Number.isFinite(enduranceFinalDefencePercent)
+      && Number.isFinite(intervalMs) && intervalMs! > 0
+    ) {
+      regulationScenarios.push({
+        sourceId: regulation.id,
+        label: regulation.displayNameDe,
+        appliedSkillLevel: regulationLevel.level,
+        skillLevelStatus: requestedRegulationLevel == null ? 'default-reference-level' : 'exact',
+        frenzySkillSpeedPercent: frenzySkillSpeedPercent!,
+        powerFinalCriticalChancePercent: powerFinalCriticalChancePercent!,
+        enduranceFinalDefencePercent: enduranceFinalDefencePercent!,
+        consumptionIntervalMs: intervalMs!,
+        currentChargeState: 'unknown',
+        status: 'charge-effects-known-current-state-unknown',
+        sourceReferences: [
+          'charge_mastery_skill_speed_+%_with_frenzy_charges',
+          'charge_mastery_crit_chance_+%_final_with_power_charges',
+          'charge_mastery_armour_evasion_energy_shield_+%_final_with_endurance_charges',
+          'consume_frenzy_power_and_endurance_charge_every_x_ms',
+        ],
+        evidence: 'structured-exact',
+        detail: `Auf Gemmenstufe ${regulationLevel.level} sind ${frenzySkillSpeedPercent}% Fertigkeitsgeschwindigkeit mit Frenzy Charges, ${powerFinalCriticalChancePercent}% finale kritische Trefferchance mit Power Charges und ${enduranceFinalDefencePercent}% finale Rüstung, Ausweichen und Energieschild mit Endurance Charges belegt. Der aktuelle Ladungszustand ist unbekannt; deshalb werden diese Boni nicht automatisch auf Schaden oder Verteidigung angerechnet.`,
+      })
+    }
   }
   const chargedStaff = selectedByName.get('charged staff')
   if (chargedStaff) {
@@ -197,6 +259,7 @@ export function resolveChargeState(input: {
     states,
     consumptions,
     buffScenarios,
+    regulationScenarios,
     productive: states.some(state => state.availability === 'available-window'),
     modelVersion: CHARGE_STATE_MODEL_VERSION,
   }

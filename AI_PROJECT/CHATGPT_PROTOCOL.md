@@ -3287,3 +3287,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Lunar Blessing Stufe 20 modelliert 59 % Gewinn als Kälteschaden, 5 Sekunden Grunddauer und 200 ms Verlängerung je Rage.
 - Unbekannte aktuelle Monster-Power, Rage, Formbedingung, Folgeangriff und Uptime erzeugen keinen dauerhaften DPS-Bonus.
 - Modellversionen: persistenter Zustand `1.1.0`, Schadensrechner `3.26.0`.
+
+## Schritt 87 – Charge Regulation
+
+- Charge Regulation transportiert die belegten Effekte für Frenzy-, Power-
+  und Endurance-Charges getrennt und gemmenstufengenau.
+- Stufe 20: 25 % Fertigkeitsgeschwindigkeit, 26 % finale kritische
+  Trefferchance, 20 % finale Rüstung/Ausweichen/Energieschild und
+  Verbrauch alle 10 Sekunden.
+- Ohne belegten aktuellen Ladungszustand werden diese Werte weder DPS noch
+  Verteidigung automatisch zugerechnet.
+- Unbekannte Gemmenstufen bleiben fail-closed.
+- Modellversionen: Ladungszustand `1.3.0`, Schadensrechner `3.27.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHARGE_REGULATION_STEP_87.md`.

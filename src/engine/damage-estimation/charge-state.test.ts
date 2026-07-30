@@ -43,6 +43,40 @@ describe('automatisches Ladungszustandsmodell', () => {
         evidence: 'structured-exact',
       }),
     ])
+    expect(result.regulationScenarios[0]).toMatchObject({
+      appliedSkillLevel: 20,
+      skillLevelStatus: 'default-reference-level',
+      frenzySkillSpeedPercent: 25,
+      powerFinalCriticalChancePercent: 26,
+      enduranceFinalDefencePercent: 20,
+      consumptionIntervalMs: 10_000,
+      currentChargeState: 'unknown',
+      status: 'charge-effects-known-current-state-unknown',
+    })
+  })
+
+  it('bindet Charge Regulation an die exakt gewählte Gemmenstufe', () => {
+    const regulation = skill('regulation', 'Charge Regulation')
+    expect(resolveChargeState({
+      setups: [setup(regulation.id, 10)],
+      skills: [regulation],
+    }).regulationScenarios[0]).toMatchObject({
+      appliedSkillLevel: 10,
+      skillLevelStatus: 'exact',
+      frenzySkillSpeedPercent: 23,
+      powerFinalCriticalChancePercent: 23,
+      enduranceFinalDefencePercent: 17,
+    })
+  })
+
+  it('ersetzt eine unbekannte Charge-Regulation-Stufe nicht durch Referenzwerte', () => {
+    const regulation = skill('regulation', 'Charge Regulation')
+    const result = resolveChargeState({
+      setups: [setup(regulation.id, 99)],
+      skills: [regulation],
+    })
+    expect(result.regulationScenarios).toEqual([])
+    expect(result.consumptions[0]).not.toHaveProperty('intervalMs')
   })
 
   it('erfasst Disengage nur als bedingte Frenzy-Quelle', () => {
