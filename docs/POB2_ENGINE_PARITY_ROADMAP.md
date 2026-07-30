@@ -264,3 +264,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Ohne bestätigten aktuellen Siegelstand entsteht kein erfundener
   Sequenz- oder DPS-Multiplikator.
 - Siegelzustandsmodell `1.0.0`, Schadensrechner `3.18.0`.
+
+# Fortschritt Schritt 78 – aufladbare Projektilfolgen
+
+- Ember Fusillade transportiert maximal zehn Projektile, 100 ms
+  Freigabeabstand, 1.300 ms Wirkzeit und 5 % finalen Schaden je
+  abgefeuertem Ember.
+- Ohne aktuellen Emberstand, bestätigte Trefferzahl und Zielüberlappung wird
+  kein falscher DPS-Multiplikator erzeugt.
+- Siegel- und Projektilzustände werden nun im Ergebnis sichtbar erklärt.
+- Projektilaufbaumodell `1.0.0`, Schadensrechner `3.19.0`.

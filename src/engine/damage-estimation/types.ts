@@ -154,6 +154,7 @@ export interface DamageEstimate {
   itemValueScopeModel?:{modelVersion:string;entries:ItemValueScopeEntry[];blockedItemIds:string[];observedFinalValueItemIds:string[];localModifiersExcludedFromGlobalScaling:number;limitations:string[]}
   chargeState?:{modelVersion:string;productive:boolean;states:AppliedChargeState[];consumptions:AppliedChargeConsumption[]}
   sealState?:{modelVersion:string;productive:false;skills:Array<{skillId:string;label:string;maximumSeals:number;repeatsPerBrokenSeal:number;sealGainIntervalMs:number;fullPreparationTimeMs:number;status:'capacity-known-current-state-unknown';detail:string}>}
+  projectileAccumulationState?:{modelVersion:string;productive:false;skills:Array<{skillId:string;label:string;maximumProjectiles:number;releaseIntervalMs:number;effectDurationMs:number;finalDamagePerReleasedProjectilePercent:number;maximumReleaseWindowMs:number;status:'capacity-known-current-state-unknown';detail:string}>}
     confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'skill'|'equipment'|'passive'|'ascendancy';sourceId:string}>
   confirmedGainAsExtra?:Array<{from:DamageComponent['type']|'all'|'elemental';to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy'|'skill';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}

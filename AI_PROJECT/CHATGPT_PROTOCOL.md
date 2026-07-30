@@ -3177,5 +3177,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   erfundenen Schadensbonus.
 - Siegelzustandsmodell `1.0.0`, Schadensrechner `3.18.0`.
 - Hauptdokument: `docs/BUILD_ASSISTANT_SEAL_STATE_STEP_77.md`.
+
+## Projectile accumulation - Schritt 78 (2026-07-30)
+
+- Ember Fusillade transportiert maximal zehn Projektile, 100 ms Abstand,
+  1.300 ms Wirkzeit und 5 % finalen Schaden je abgefeuertem Ember.
+- Aktuelle Emberzahl, Einzelzieltreffer und Ueberlappung bleiben unbekannt
+  und erzeugen keinen erfundenen DPS-Multiplikator.
+- Siegel- und Projektilzustand sind nun im Ergebnis sichtbar.
+- Projektilaufbaumodell `1.0.0`, Schadensrechner `3.19.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_PROJECTILE_ACCUMULATION_STEP_78.md`.
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.
