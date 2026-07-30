@@ -3201,3 +3201,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Hauptdokument: `docs/BUILD_ASSISTANT_STATE_GEM_LEVEL_STEP_79.md`.
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.
+
+## Channelled stages - Schritt 80 (2026-07-30)
+
+- Flameblast und Supercharged Slam transportieren ihre strukturiert belegte
+  Höchststufe, den finalen Schaden je Stufe und die Mindestkanalzeit.
+- Der Schadensrechner `3.21.0` weist daraus einen vorbereiteten
+  Vollstufentreffer aus, ohne den dauerhaften Schadenswert künstlich zu
+  erhöhen.
+- Eine ungültige angeforderte Gemmenstufe bleibt fail-closed.
+- Kanalstufenmodell `1.0.0`; 64 fokussierte Tests, Typecheck, Lint und
+  Produktions-Build erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHANNELLED_STAGE_STEP_80.md`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen und wird
+  autonom über weitere reproduzierbare Rechenketten verfolgt.

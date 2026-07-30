@@ -7,6 +7,7 @@ import type { ResourceSpiritModel } from './resource-spirit-model'
 import { resolveChargeState, type ChargeStateResult } from './charge-state'
 import { resolveSealState, type SealStateResult } from './seal-state'
 import { resolveProjectileAccumulationState, type ProjectileAccumulationResult } from './projectile-accumulation-state'
+import { resolveChannelledStageState, type ChannelledStageResult } from './channelled-stage-state'
 
 export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.2.0'
 export interface TemporalOffensiveEffect {
@@ -33,6 +34,7 @@ export interface TemporalOffensiveEffectResult {
   chargeState: ChargeStateResult
   sealState: SealStateResult
   projectileAccumulationState: ProjectileAccumulationResult
+  channelledStageState: ChannelledStageResult
 }
 
 const byName = new Map<string, (typeof reference.skills)[number]>()
@@ -92,6 +94,7 @@ export function collectTemporalOffensiveEffects(input: {
   const chargeState = resolveChargeState({ setups: input.setups, skills: input.skills })
   const sealState = resolveSealState({ setups: input.setups, skills: input.skills })
   const projectileAccumulationState = resolveProjectileAccumulationState({ setups: input.setups, skills: input.skills })
+  const channelledStageState = resolveChannelledStageState({ setups: input.setups, skills: input.skills })
   const selected = new Set(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => setup.skillId))
   const bossSteps = input.rotationAnalysis?.bossRotation.steps ?? []
   for (const definition of input.skills.filter(skill => selected.has(skill.id))) {
@@ -221,6 +224,7 @@ export function collectTemporalOffensiveEffects(input: {
     chargeState,
     sealState,
     projectileAccumulationState,
+    channelledStageState,
   }
 }
 

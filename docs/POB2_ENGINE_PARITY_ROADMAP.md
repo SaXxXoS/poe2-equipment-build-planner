@@ -284,3 +284,15 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Nicht vorhandene angeforderte Stufen werden weder interpoliert noch durch
   einen Referenzhöchstwert ersetzt.
 - Siegelzustand `1.1.0`, Projektilaufbau `1.1.0`, Schadensrechner `3.20.0`.
+
+# Fortschritt Schritt 80 – kanalisierte Fertigkeitsstufen
+
+- Flameblast und Supercharged Slam besitzen jetzt ein strukturiertes,
+  gemmenstufengebundenes Vollstufenszenario.
+- Voll aufgeladene Treffer werden getrennt vom normalen Dauerschaden vor und
+  nach verfügbarer Gegnerabwehr ausgewiesen.
+- Ein aktueller Stufenstand oder eine dauerhafte Vollaufladung wird nicht
+  erfunden.
+- Kanalstufenmodell `1.0.0`, Schadensrechner `3.21.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHANNELLED_STAGE_STEP_80.md`.

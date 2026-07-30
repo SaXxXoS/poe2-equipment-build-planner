@@ -19,6 +19,25 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
   })
+  it('weist Flameblast bei voller Kanalisierung als getrennten vorbereiteten Treffer aus',()=>{
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup('flameblast')],
+      skills:[skill('flameblast','Flameblast')],
+    })
+    expect(result.channelledStageState?.skills[0]).toMatchObject({
+      maximumStages:10,
+      fullStageDamageMultiplier:8.5,
+      appliedSkillLevel:20,
+    })
+    expect(result.maximumChannelledHitDamage).toBeCloseTo(result.criticalDamageBonus == null
+      ? result.hitDamage!.average*8.5
+      : result.hitDamage!.average*result.criticalExpectationMultiplier!*8.5,2)
+    expect(result.stages).toContainEqual(expect.objectContaining({
+      id:'maximum-channelled-hit',
+      label:'Voll aufgeladener vorbereiteter Treffer',
+    }))
+  })
   it('wendet Archmage-Kosten und zusätzlichen Blitzschaden nur im aktiven Waffenset an',()=>{
     const arc=skill('arc','Arc')
     const archmage=skill('archmage','Archmage')
