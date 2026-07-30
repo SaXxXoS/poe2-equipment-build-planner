@@ -3244,3 +3244,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   PoB2-Gleichwertigkeit für ganze Builds.
 - Hauptdokument:
   `docs/BUILD_ASSISTANT_POB2_MICRO_PARITY_STEP_82.md`.
+
+## Persistent stage states - Schritt 83 (2026-07-30)
+
+- Arktische Rüstung besitzt ein getrenntes Vollstapel-Szenario mit fünf
+  Stapeln, 725 ms Aufbau je Stapel und 505–760 zusätzlichem Kälteschaden auf
+  Referenzstufe 20.
+- Siegel der Macht besitzt ein getrenntes Vollstufen-Szenario mit vier
+  Stufen, 14 % finalem Zauberschaden je Stufe und Faktor 1,56.
+- Ohne belegte stationäre Dauer, Auslösetreffer beziehungsweise tatsächliche
+  Siegelstufe wird keiner dieser Werte als dauerhafte DPS verwendet.
+- Persistentes Stufenmodell `1.0.0`, zeitabhängiges Offensivmodell `1.3.0`,
+  Schadensrechner `3.23.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_PERSISTENT_STAGE_STATES_STEP_83.md`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen; die
+  autonome Arbeit wird mit der nächsten reproduzierbaren Mechanikkette
+  fortgesetzt.

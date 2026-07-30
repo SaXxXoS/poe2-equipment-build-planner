@@ -321,3 +321,17 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   ausdrücklich offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_POB2_MICRO_PARITY_STEP_82.md`.
+
+# Fortschritt Schritt 83 – persistente Stufenzustände
+
+- Arktische Rüstung transportiert auf Gemmenstufe 20 fünf stationäre Stapel,
+  725 ms Aufbau je Stapel und ein vollständig vorbereitetes
+  Vergeltungsszenario von 505–760 zusätzlichem Kälteschaden.
+- Siegel der Macht transportiert vier Stufen, 14 % finalen Zauberschaden je
+  Stufe und damit Faktor 1,56 im Vollstufenszenario.
+- Beide Szenarien bleiben ohne belegten aktuellen Zustand vom Dauerschaden
+  getrennt.
+- Persistentes Stufenmodell `1.0.0`, zeitabhängiges Offensivmodell `1.3.0`,
+  Schadensrechner `3.23.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PERSISTENT_STAGE_STATES_STEP_83.md`.
