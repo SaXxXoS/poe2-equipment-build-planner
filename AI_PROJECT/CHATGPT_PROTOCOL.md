@@ -3393,3 +3393,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_DIRECTION_STEP_93.md`.
+
+## Schritt 94 – weitere offizielle Passivmechaniken
+
+- Leichenverbrauch, Bolzen, Banner, Leben bei Tötung, zusätzliche Gifte,
+  Deflection, Decimating Strike und Maim werden als getrennte offizielle
+  Mechanikfamilien erkannt.
+- Die neuen Tags besitzen bewusst keine erfundenen Elementar-, Schadens- oder
+  Profilfelder.
+- Verringerte Deflection-Schadensverhinderung wird als negative Wirkung
+  behandelt.
+- Baum-Coverage: 5.819 von 5.962 Statzeilen, entsprechend 97,60 %.
+- 143 Statzeilen bleiben fail-closed ungelöst.
+- Passivklassifikator: `1.7.0`; Passivziel-Analyzer: `1.1.0`.
+- Fokussierter Lauf: 108 Tests erfolgreich; vollständiger Baum verarbeitet.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_REMAINING_MECHANICS_STEP_94.md`.

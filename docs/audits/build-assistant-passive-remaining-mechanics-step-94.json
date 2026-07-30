@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "source": {
+    "path": "generated/poe2-tree/tree.json",
+    "releaseTag": "0.5.2",
+    "nodeCount": 5150,
+    "statLineCount": 5962
+  },
+  "classifierVersion": "1.7.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "corpse",
+    "bolt",
+    "banner",
+    "life-on-kill",
+    "poison-limit",
+    "deflection",
+    "decimating-strike",
+    "maim"
+  ],
+  "coverage": {
+    "before": {
+      "classifiedStatLines": 5786,
+      "unresolvedStatLines": 176,
+      "percent": 97.05
+    },
+    "after": {
+      "classifiedStatLines": 5819,
+      "unresolvedStatLines": 143,
+      "percent": 97.6
+    },
+    "newlyClassifiedStatLines": 33
+  },
+  "guards": {
+    "profileFieldsInventedForNewTags": false,
+    "negativeDeflectionPreventionCreatesPositiveScore": false,
+    "germanDisplayTextUsedAsSource": false,
+    "fuzzyMatchingUsed": false,
+    "runtimeNetworkAdded": false
+  },
+  "status": "measured-fail-closed"
+}

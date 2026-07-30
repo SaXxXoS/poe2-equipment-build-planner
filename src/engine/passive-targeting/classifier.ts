@@ -31,6 +31,7 @@ const harmfulDirectionPatterns=[
  /\blose (?:all |\d+% of )/,
  /\breduced maximum (?:life|mana|energy shield|spirit|resistance)\b/,
  /^(?!.*\b(?:enem(?:y|ies)|targets?)\b).*\bincreased damage taken\b/,
+ /^-\d+(?:\.\d+)?%.*damage prevented\b/,
 ]
 export function derivePassiveEffectDirection(normalizedText:string,matched:boolean):PassiveEffectDirection{
  if(!matched)return'unknown'

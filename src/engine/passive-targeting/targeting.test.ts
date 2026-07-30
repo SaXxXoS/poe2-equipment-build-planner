@@ -112,6 +112,25 @@ describe('offizielle Statklassifikation',()=>{
   expect(classifyPassiveText('50% reduced effect of Archon Buffs on you','normal').effectDirection).toBe('negative')
   expect(classifyPassiveText('You cannot Regenerate Mana','normal').effectDirection).toBe('negative')
  })
+ it.each([
+  ['15% chance to not destroy [Corpse|Corpses] when Consuming [Corpse|Corpses]','corpse'],
+  ['8% increased Bolt Speed','bolt'],
+  ['Banner Skills have 12% increased Aura [BuffMagnitude|Magnitudes]','banner'],
+  ['Gain 5 Life per enemy killed','life-on-kill'],
+  ['Targets can be affected by +1 of your [Poison|Poisons] at the same time','poison-limit'],
+  ['Gain [Deflect|Deflection Rating] equal to 8% of [Evasion|Evasion Rating]','deflection'],
+  ['[DecimatingStrike|Decimating Strike]','decimating-strike'],
+  ['Enemies you [ArmourBreak|Fully Armour Break] are [Maim|Maimed]','maim'],
+ ])('klassifiziert die verbleibende explizite PoE2-Mechanik %s fail-closed',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
+ })
+ it('markiert verringerte Deflection-Schadensverhinderung als negativ',()=>{
+  const result=classifyPassiveText('-5% to amount of [HitDamage|Damage] Prevented by [Deflect|Deflection]','normal')
+  expect(result.tags).toContain('deflection')
+  expect(result.effectDirection).toBe('negative')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

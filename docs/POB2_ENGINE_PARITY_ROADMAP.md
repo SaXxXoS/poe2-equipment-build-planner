@@ -419,3 +419,14 @@ Schadensbonus mehr; verringerte Kosten, weniger erlittener Schaden und
 verringerter Flucheffekt auf den Spieler werden nicht fälschlich als
 Nachteile behandelt. Die Coverage steigt von 96,96 % auf 97,05 %.
 Details: `BUILD_ASSISTANT_PASSIVE_EFFECT_DIRECTION_STEP_93.md`.
+
+### Schritt 94 – weitere offizielle Passivmechaniken
+
+Leichenverbrauch, Bolzen, Banner, Leben bei Tötung, zusätzliche Gifte,
+Deflection, Decimating Strike und Maim werden als getrennte Mechanikfamilien
+erkannt, ohne unbelegte Profilwirkung zu erzeugen. Verringerte
+Deflection-Schadensverhinderung ist negativ. Die Coverage steigt von
+97,05 % auf 97,60 % (5.819 von 5.962 Statzeilen); 143 Zeilen bleiben
+fail-closed ungelöst. Vollständige Path-of-Building-2-Gleichwertigkeit bleibt
+offen. Details:
+`BUILD_ASSISTANT_PASSIVE_REMAINING_MECHANICS_STEP_94.md`.
