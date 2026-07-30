@@ -3501,3 +3501,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   die numerische Wirkungsberechnung. PoB2-Parität bleibt unbewiesen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_FULL_STAT_COVERAGE_STEP_100.md`.
+
+## Schritt 101 – numerische Wirkungsgrenze
+
+- Semantische Coverage und rechnerische Coverage werden nun maschinenlesbar
+  getrennt gemessen.
+- 5.091/5.962 Statzeilen besitzen eine Profil- oder Bedarfsverknüpfung.
+- 871 Statzeilen sind ausschließlich semantisch erkannt.
+- 5.716 Statzeilen enthalten extrahierte Quellzahlen; derzeit werden 0 dieser
+  Quellzahlen numerisch durch den Passivzielbewerter angewendet.
+- Damit ist die konkrete nächste Paritätslücke belegt: ein strukturiertes
+  Wirkungsmodell statt weiterer freier Rankinggewichte.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_NUMERICAL_EFFECT_GAP_STEP_101.md`.

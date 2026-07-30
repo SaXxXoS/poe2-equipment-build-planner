@@ -509,3 +509,16 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
   Wirkungsberechnung und keine belegte Path-of-Building-2-Parität.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_FULL_STAT_COVERAGE_STEP_100.md`.
+
+## Schritt 101 – numerische Wirkungsgrenze gemessen
+
+- 5.091 von 5.962 Baumzeilen (85,39 %) sind mit Profil- oder Bedarfsfeldern
+  verbunden; 871 bleiben bewusst nur semantisch.
+- 5.716 Zeilen enthalten extrahierte Zahlen, aber noch keine Quellzahl wird
+  durch das Zielbewertungsmodul numerisch angewendet.
+- Das bisherige Ranking ist damit mechanik- und affinitaetsbasiert, nicht
+  gleichwertig mit einer vollständigen PoB2-Wirkungsrechnung.
+- Der nächste Baustein ist ein strukturiertes Wirkungsmodell für Einheiten,
+  additive/erhöhte/mehr-Multiplikatoren, Bedingungen und Geltungsbereiche.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_NUMERICAL_EFFECT_GAP_STEP_101.md`.

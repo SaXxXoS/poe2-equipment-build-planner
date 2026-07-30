@@ -1,0 +1,29 @@
+{
+  "step": 101,
+  "scope": "official-passive-tree-numerical-effect-gap",
+  "sourceRelease": "0.5.2",
+  "totalStatLines": 5962,
+  "semanticallyClassifiedStatLines": 5962,
+  "profileLinkedStatLines": 5091,
+  "profileLinkedPercent": 85.39,
+  "semanticOnlyStatLines": 871,
+  "extractedNumericStatLines": 5716,
+  "numericallyAppliedStatLines": 0,
+  "numericalApplicationPercent": 0,
+  "largestSemanticOnlyFamilies": {
+    "debuff": 65,
+    "stun-buildup": 65,
+    "totem": 53,
+    "slow": 48,
+    "granted-skill": 45,
+    "rage": 41,
+    "flask": 28,
+    "charm": 27,
+    "glory": 25,
+    "remnant": 25,
+    "warcry": 21
+  },
+  "semanticCoverageComplete": true,
+  "numericalEffectParity": false,
+  "nextBoundary": "structured-passive-effect-model"
+}
