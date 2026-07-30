@@ -1,8 +1,8 @@
 import type { Confidence, ScoreCategory } from '../common/types'
 import type { PassiveTargetNodeType, PassiveTargetScoreCategory, PassiveTargetTag } from './types'
 
-export const PASSIVE_TARGET_ANALYZER_VERSION = '1.0.0'
-export const PASSIVE_TARGET_CLASSIFIER_VERSION = '1.5.0'
+export const PASSIVE_TARGET_ANALYZER_VERSION = '1.1.0'
+export const PASSIVE_TARGET_CLASSIFIER_VERSION = '1.6.0'
 export const PASSIVE_TARGET_CONFIG = {
   scoreMin: 0, scoreMax: 100, defaultMaximumResults: 20,
   profileStrong: 60, profileWeak: 20, profileConflict: 10, profileWeight: .45,
@@ -16,6 +16,5 @@ export const PASSIVE_TARGET_CONFIG = {
   nodeTypes: ['normal', 'notable', 'keystone', 'class-start', 'ascendancy-start', 'ascendancy', 'jewel-socket', 'unknown'] as PassiveTargetNodeType[],
   mappingTags: ['area', 'projectile', 'movement-speed', 'attack-speed', 'cast-speed', 'movement', 'area-of-effect'] as PassiveTargetTag[],
   bossTags: ['critical', 'damage-over-time', 'curse', 'mark', 'life', 'recovery', 'regeneration', 'leech', 'mana', 'resource-cost'] as PassiveTargetTag[],
-  negativeEffectPatterns: [' reduced ', ' less ', ' lose ', ' loses ', ' cannot ', ' no longer ', ' take ', ' cost '],
   restrictionPatterns: [' only ', ' while ', ' if ', ' cannot ', ' requires ', ' limited '],
 } as const

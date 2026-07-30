@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "source": {
+    "path": "generated/poe2-tree/tree.json",
+    "releaseTag": "0.5.2",
+    "nodeCount": 5150,
+    "statLineCount": 5962
+  },
+  "classifierVersion": "1.6.0",
+  "analyzerVersion": "1.1.0",
+  "effectDirections": [
+    "positive",
+    "negative",
+    "mixed",
+    "unknown"
+  ],
+  "verifiedCases": {
+    "reducedOwnDamage": "negative",
+    "reducedManaCost": "positive",
+    "reducedCurseEffectOnPlayer": "positive",
+    "lessDamageTaken": "positive",
+    "reducedArchonBuffEffectOnPlayer": "negative",
+    "cannotRegenerateMana": "negative"
+  },
+  "coverage": {
+    "before": {
+      "classifiedStatLines": 5781,
+      "unresolvedStatLines": 181,
+      "percent": 96.96
+    },
+    "after": {
+      "classifiedStatLines": 5786,
+      "unresolvedStatLines": 176,
+      "percent": 97.05
+    },
+    "newlyClassifiedStatLines": 5
+  },
+  "guards": {
+    "negativeEffectCanCreatePositiveRuleScore": false,
+    "damageTakenCanCreateGenericOffensiveScore": false,
+    "germanDisplayTextUsedAsSource": false,
+    "fuzzyMatchingUsed": false,
+    "runtimeNetworkAdded": false
+  },
+  "status": "measured-fail-closed"
+}

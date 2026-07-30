@@ -410,3 +410,12 @@ Die Coverage steigt von 96,13 % auf 96,96 %; weitere 50 Statzeilen sind
 klassifiziert. Die neuen Kategorien besitzen ohne separate Wirkungsregel
 weiterhin keine frei angenommene profilbezogene numerische Wirkung. Details:
 `BUILD_ASSISTANT_PASSIVE_SPECIAL_EFFECT_SEMANTICS_STEP_92.md`.
+
+# Schritt 93: Wirkungsrichtung im Passivbaum
+
+Passivzeilen werden kontextgebunden als positiv, negativ, gemischt oder
+unbekannt klassifiziert. Verringerter eigener Schaden erzeugt keinen
+Schadensbonus mehr; verringerte Kosten, weniger erlittener Schaden und
+verringerter Flucheffekt auf den Spieler werden nicht fälschlich als
+Nachteile behandelt. Die Coverage steigt von 96,96 % auf 97,05 %.
+Details: `BUILD_ASSISTANT_PASSIVE_EFFECT_DIRECTION_STEP_93.md`.

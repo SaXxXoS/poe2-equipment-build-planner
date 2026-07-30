@@ -1,6 +1,6 @@
 import { PASSIVE_TARGET_CLASSIFIER_VERSION, PASSIVE_TARGET_CONFIG } from './config'
 import { PASSIVE_TARGET_RULES } from './rules'
-import type { PassiveNodeClassification, PassiveStatClassification, PassiveTargetNode, PassiveTargetNodeType, PassiveTargetRule, PassiveTargetTag } from './types'
+import type { PassiveEffectDirection, PassiveNodeClassification, PassiveStatClassification, PassiveTargetNode, PassiveTargetNodeType, PassiveTargetRule, PassiveTargetTag } from './types'
 
 export function normalizePassiveText(source:string):string{return source.normalize('NFKC').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,'-').replace(/\[([^\]|]+)\|([^\]]+)\]/g,'$2').replace(/\[([^\]]+)\]/g,'$1').replace(/\s+/g,' ').trim().toLowerCase()}
 export function derivePassiveTargetNodeType(node:PassiveTargetNode):PassiveTargetNodeType{if(node.isClassStart)return'class-start';if(node.isAscendancyStart)return'ascendancy-start';if(node.isJewelSocket)return'jewel-socket';if(node.ascendancyId)return'ascendancy';return['normal','notable','keystone'].includes(node.nodeType)?node.nodeType as PassiveTargetNodeType:'unknown'}
@@ -14,6 +14,30 @@ const tokenMatch=(text:string,pattern:string)=>{
  return expression.test(text)
 }
 function matches(rule:PassiveTargetRule,text:string){if(rule.excludedPatterns?.some(value=>text.includes(normalizePassiveText(value))))return false;return rule.patterns.some(raw=>{const pattern=normalizePassiveText(raw);if(rule.matchMode==='exact')return text===pattern;if(rule.matchMode==='token')return tokenMatch(text,pattern);if(rule.matchMode==='regular-expression')return new RegExp(raw,'i').test(text);return text.includes(pattern)})}
-export function classifyPassiveText(sourceText:string,nodeType:PassiveTargetNodeType,rules:PassiveTargetRule[]=PASSIVE_TARGET_RULES):PassiveStatClassification{const normalizedText=normalizePassiveText(sourceText);const matched=rules.filter(rule=>rule.enabled&&rule.applicableNodeTypes.includes(nodeType)&&matches(rule,normalizedText)).sort((a,b)=>b.priority-a.priority||a.ruleId.localeCompare(b.ruleId));const tags=[...new Set(matched.flatMap(rule=>rule.classificationTags))].sort() as PassiveTargetTag[];const fields=[...new Set(matched.flatMap(rule=>rule.affectedProfileFields))].sort();const numbers=[...normalizedText.matchAll(/[-+]?\d+(?:\.\d+)?/g)].map(value=>Number(value[0]));const padded=` ${normalizedText} `;const negative=PASSIVE_TARGET_CONFIG.negativeEffectPatterns.some(value=>padded.includes(value));const restricted=PASSIVE_TARGET_CONFIG.restrictionPatterns.some(value=>padded.includes(value));return{sourceText,normalizedText,matchedRuleIds:matched.map(rule=>rule.ruleId),tags,numericValues:numbers.length?numbers:undefined,affectedProfileFields:fields,positiveEffects:matched.length&&!negative?[...tags]:[],negativeEffects:negative?[...tags]:[],restrictions:restricted?[sourceText]:[],confidence:matched.length>=2?'high':matched.length?'medium':'low',unresolved:matched.length===0}}
+const beneficialDirectionPatterns=[
+ /\b(?:take|taken?) \d+(?:\.\d+)?% less damage\b/,
+ /\b(?:reduced|less) damage taken\b/,
+ /\bdamage taken (?:is )?recouped\b/,
+ /\breduced (?:mana |life |skill )?cost\b/,
+ /\breduced effect of (?:chill|freeze|shock|ignite|ailments?|curses?|debuffs?) on you\b/,
+ /\benem(?:y|ies).*(?:deal|deals) \d+(?:\.\d+)?% reduced damage\b/,
+ /\benem(?:y|ies|targets?).*increased damage taken\b/,
+]
+const harmfulDirectionPatterns=[
+ /\b(?:you|skills?|attacks?|spells?|minions?|detonator skills) .*reduced damage\b/,
+ /^\d+(?:\.\d+)?% reduced damage\b/,
+ /\breduced effect of (?:archon )?buffs? on you\b/,
+ /\byou (?:cannot|have no|lose|take \d+(?:\.\d+)?% more)\b/,
+ /\blose (?:all |\d+% of )/,
+ /\breduced maximum (?:life|mana|energy shield|spirit|resistance)\b/,
+ /^(?!.*\b(?:enem(?:y|ies)|targets?)\b).*\bincreased damage taken\b/,
+]
+export function derivePassiveEffectDirection(normalizedText:string,matched:boolean):PassiveEffectDirection{
+ if(!matched)return'unknown'
+ const beneficial=beneficialDirectionPatterns.some(pattern=>pattern.test(normalizedText))
+ const harmful=harmfulDirectionPatterns.some(pattern=>pattern.test(normalizedText))
+ return beneficial&&harmful?'mixed':harmful?'negative':'positive'
+}
+export function classifyPassiveText(sourceText:string,nodeType:PassiveTargetNodeType,rules:PassiveTargetRule[]=PASSIVE_TARGET_RULES):PassiveStatClassification{const normalizedText=normalizePassiveText(sourceText);const matched=rules.filter(rule=>rule.enabled&&rule.applicableNodeTypes.includes(nodeType)&&matches(rule,normalizedText)).sort((a,b)=>b.priority-a.priority||a.ruleId.localeCompare(b.ruleId));const tags=[...new Set(matched.flatMap(rule=>rule.classificationTags))].sort() as PassiveTargetTag[];const fields=[...new Set(matched.flatMap(rule=>rule.affectedProfileFields))].sort();const numbers=[...normalizedText.matchAll(/[-+]?\d+(?:\.\d+)?/g)].map(value=>Number(value[0]));const padded=` ${normalizedText} `;const direction=derivePassiveEffectDirection(normalizedText,matched.length>0);const restricted=PASSIVE_TARGET_CONFIG.restrictionPatterns.some(value=>padded.includes(value));return{sourceText,normalizedText,matchedRuleIds:matched.map(rule=>rule.ruleId),tags,numericValues:numbers.length?numbers:undefined,affectedProfileFields:fields,effectDirection:direction,positiveEffects:direction==='positive'||direction==='mixed'?[...tags]:[],negativeEffects:direction==='negative'||direction==='mixed'?[...tags]:[],restrictions:restricted?[sourceText]:[],confidence:matched.length>=2?'high':matched.length?'medium':'low',unresolved:matched.length===0}}
 export function classifyPassiveNode(node:PassiveTargetNode):PassiveNodeClassification{const nodeType=derivePassiveTargetNodeType(node);const name=classifyPassiveText(node.name.sourceText??'',nodeType);const stats=node.stats.filter(value=>value.sourceText!==null).map(value=>classifyPassiveText(value.sourceText!,nodeType));const all=[name,...stats],matchedRuleIds=[...new Set(all.flatMap(value=>value.matchedRuleIds))].sort(),tags=[...new Set(all.flatMap(value=>value.tags))].sort() as PassiveTargetTag[];return{nodeId:node.id,nodeType,name,stats,tags,matchedRuleIds,unresolvedStatCount:stats.filter(value=>value.unresolved).length,recognizedStatCount:stats.filter(value=>!value.unresolved).length,fullyUnresolved:matchedRuleIds.length===0}}
 export{PASSIVE_TARGET_CLASSIFIER_VERSION}

@@ -3375,3 +3375,21 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_SPECIAL_EFFECT_SEMANTICS_STEP_92.md`.
+
+## Schritt 93 – Wirkungsrichtung im Passivbaum
+
+- Die pauschale Negativklassifikation über einzelne Wörter wurde durch
+  kontextgebundene Wirkungsrichtungen ersetzt.
+- `reduced Damage` auf eigenen Fähigkeiten ist negativ und erzeugt keinen
+  positiven Schadensscore.
+- Reduzierte Kosten, weniger erlittener Schaden und reduzierter Flucheffekt
+  auf den Spieler bleiben positive Wirkungen.
+- `Damage taken` wird nicht als allgemeiner offensiver Schaden gewertet.
+- Offizielle Coverage: 96,96 % → 97,05 %.
+- Klassifizierte Statzeilen: 5.781 → 5.786.
+- Ungelöste Statzeilen: 181 → 176.
+- Passivklassifikator: `1.6.0`; Passivziel-Analyzer: `1.1.0`.
+- Fokussierter Lauf: 98 Tests erfolgreich; vollständiger Baum verarbeitet.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_DIRECTION_STEP_93.md`.

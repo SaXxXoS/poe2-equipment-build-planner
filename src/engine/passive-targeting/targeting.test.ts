@@ -104,6 +104,14 @@ describe('offizielle Statklassifikation',()=>{
   expect(tags('15% reduced [BuffEffect|effect] of [Curse|Curses] on you')).toContain('curse')
   expect(tags('[Ignite|Ignites] you inflict deal Damage 4% faster')).toContain('ailment')
  })
+ it('unterscheidet schädliche Reduktionen von vorteilhaften Schutz- und Kostenzeilen',()=>{
+  expect(classifyPassiveText('10% reduced Damage','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('10% reduced Mana Cost of Skills','normal').effectDirection).toBe('positive')
+  expect(classifyPassiveText('15% reduced Effect of Curses on you','normal').effectDirection).toBe('positive')
+  expect(classifyPassiveText('Take 30% less Damage','normal').effectDirection).toBe('positive')
+  expect(classifyPassiveText('50% reduced effect of Archon Buffs on you','normal').effectDirection).toBe('negative')
+  expect(classifyPassiveText('You cannot Regenerate Mana','normal').effectDirection).toBe('negative')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
@@ -114,6 +122,22 @@ describe('regelbasierte Zielbewertung',()=>{
  it('Mapping- und Bossranglisten unterscheiden sich',()=>{const result=evaluatePassiveTargets(input([node('area','20% increased Area of Effect'),node('boss','10% increased [Critical|Critical Hit Chance]')],PASSIVE_TARGET_TEST_PROFILES.physicalMeleeCritical,{targetProfile:'mapping'}));expect(result.topMappingTargets[0].nodeId).toBe('area');expect(result.topBossTargets[0].nodeId).toBe('boss')})
  it('niedrige Datenabdeckung senkt Confidence',()=>{const n={...node('mixed','10% increased [Lightning] Damage'),stats:[{sourceText:'10% increased [Lightning] Damage'},{sourceText:'unknown zorb'}]};expect(evaluatePassiveTargets(input([n])).allCandidates[0].confidence).not.toBe('high')})
  it('hoher Score garantiert bei Keystone keine hohe Confidence',()=>{const result=evaluatePassiveTargets(input([node('key','100% increased [Lightning] Damage','keystone')])).allCandidates[0];expect(result.totalScore).toBeGreaterThan(0);expect(result.confidence).not.toBe('high');expect(result.requiresReoptimization).toBe(true)})
+ it('bewertet reduzierten eigenen Schaden nicht als Schadensverbesserung',()=>{
+  const positive=evaluatePassiveTargets(input([node('positive','10% increased Damage')])).allCandidates[0]
+  const negative=evaluatePassiveTargets(input([node('negative','10% reduced Damage')])).allCandidates[0]
+  expect(positive.damageScore).toBeGreaterThan(negative.damageScore)
+  expect(negative.damageScore).toBe(0)
+  expect(negative.lostMechanics).toContain('generic-damage')
+  expect(negative.conflictingTags).toContain('generic-damage')
+ })
+ it('macht reduzierte Kosten nicht zum Ressourcenverlust und Schaden genommen nicht zum Offensivbonus',()=>{
+  const resourceProfile={...PASSIVE_TARGET_TEST_PROFILES.coldSpell,requirements:{...PASSIVE_TARGET_TEST_PROFILES.coldSpell.requirements,resourceNeed:80}}
+  const cost=evaluatePassiveTargets(input([node('cost','10% reduced Mana Cost of Skills')],resourceProfile)).allCandidates[0]
+  const mitigation=evaluatePassiveTargets(input([node('mitigation','10% reduced Damage taken')],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0]
+  expect(cost.lostMechanics).not.toContain('resource-cost')
+  expect(cost.resourceScore).toBeGreaterThan(0)
+  expect(mitigation.damageScore).toBe(0)
+ })
 })
 describe('Grenzen und Ranglisten',()=>{
  it('blockiert fremde oder kontextlose Aszendenzknoten und erlaubt passende',()=>{const n=node('asc','10% increased [Spell] Damage','normal',{ascendancyId:'Asc-A'});expect(evaluatePassiveTargets(input([n])).allCandidates[0].eligibility).toBe('blocked');expect(evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell,{ascendancyId:'Asc-A'})).allCandidates[0].eligibility).toBe('eligible')})
