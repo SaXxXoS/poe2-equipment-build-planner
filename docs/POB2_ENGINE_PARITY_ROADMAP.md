@@ -255,3 +255,12 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Der Faktor beschreibt eine vorbereitete Sequenz und wird nicht als
   dauerhafter DPS-Multiplikator ausgegeben.
 - Folgefertigkeitsmodell `3.0.0`, Schadensrechner `3.17.0`.
+
+# Fortschritt Schritt 77 – Fertigkeitssiegel
+
+- `Freezing Salvo` transportiert seine belegten zehn Siegel, eine
+  Wiederholung je Siegel, 750 ms Aufbauintervall und 7.500 ms vollständige
+  Vorbereitungszeit.
+- Ohne bestätigten aktuellen Siegelstand entsteht kein erfundener
+  Sequenz- oder DPS-Multiplikator.
+- Siegelzustandsmodell `1.0.0`, Schadensrechner `3.18.0`.

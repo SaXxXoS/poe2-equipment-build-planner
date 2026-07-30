@@ -5,6 +5,7 @@ import type { RotationStepTiming } from '../rotations/timing'
 import type { DamageComponent } from './types'
 import type { ResourceSpiritModel } from './resource-spirit-model'
 import { resolveChargeState, type ChargeStateResult } from './charge-state'
+import { resolveSealState, type SealStateResult } from './seal-state'
 
 export const TEMPORAL_OFFENSIVE_EFFECT_MODEL_VERSION = '1.2.0'
 export interface TemporalOffensiveEffect {
@@ -29,6 +30,7 @@ export interface TemporalOffensiveEffectResult {
   actionSpeedMultiplier: number
   gainAsLightningPercent: number
   chargeState: ChargeStateResult
+  sealState: SealStateResult
 }
 
 const byName = new Map<string, (typeof reference.skills)[number]>()
@@ -86,6 +88,7 @@ export function collectTemporalOffensiveEffects(input: {
 }): TemporalOffensiveEffectResult {
   const effects: TemporalOffensiveEffect[] = []
   const chargeState = resolveChargeState({ setups: input.setups, skills: input.skills })
+  const sealState = resolveSealState({ setups: input.setups, skills: input.skills })
   const selected = new Set(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => setup.skillId))
   const bossSteps = input.rotationAnalysis?.bossRotation.steps ?? []
   for (const definition of input.skills.filter(skill => selected.has(skill.id))) {
@@ -213,6 +216,7 @@ export function collectTemporalOffensiveEffects(input: {
     actionSpeedMultiplier: 1 + appliedEffects.filter(effect => effect.kind === 'increased-action-speed').reduce((sum, effect) => sum + effect.percent!, 0) / 100,
     gainAsLightningPercent: appliedEffects.filter(effect => effect.kind === 'gain-as-lightning').reduce((sum, effect) => sum + effect.percent!, 0),
     chargeState,
+    sealState,
   }
 }
 

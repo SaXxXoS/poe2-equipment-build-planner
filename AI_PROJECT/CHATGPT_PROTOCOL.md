@@ -3168,5 +3168,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Angriffe und nicht direkt verbundene Fertigkeiten bleiben fail-closed.
 - Folgefertigkeitsmodell `3.0.0`, Schadensrechner `3.17.0`.
 - Hauptdokument: `docs/BUILD_ASSISTANT_UNLEASH_SEQUENCE_STEP_76.md`.
+
+## Skill seals - Schritt 77 (2026-07-30)
+
+- Freezing Salvo transportiert zehn Siegel, eine Wiederholung je Siegel,
+  750 ms Aufbauintervall und 7.500 ms volle Vorbereitungszeit.
+- Der aktuelle Siegelstand bleibt unbekannt und erzeugt deshalb keinen
+  erfundenen Schadensbonus.
+- Siegelzustandsmodell `1.0.0`, Schadensrechner `3.18.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_SEAL_STATE_STEP_77.md`.
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.
