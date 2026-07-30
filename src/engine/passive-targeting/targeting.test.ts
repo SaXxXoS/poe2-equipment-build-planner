@@ -221,6 +221,22 @@ describe('offizielle Statklassifikation',()=>{
  it('markiert verringerte Fokusboni als Nachteil',()=>{
   expect(classifyPassiveText('50% reduced bonuses gained from Equipped [Focus]','normal').effectDirection).toBe('negative')
  })
+ it.each([
+  ['Grants Skill: <underline>{Demon Form}','granted-skill'],
+  ['Grants Skill: <underline>{Temporal Rift}','granted-skill'],
+  ['Grants [Chronobuff|Sands of Time]','granted-buff'],
+  ['Grants [ThaumaturgicalDynamism|Thaumaturgical Dynamism]','granted-buff'],
+  ['Grants [UnravellingBuff|Unravelling]','granted-buff'],
+  ['Grants 2 additional Skill Slots','additional-skill-slot'],
+ ])('erfasst gewährte Aszendenzfunktionen %s als Quellen-Evidenz',(text,expected)=>{
+  const result=classifyPassiveText(text,'ascendancy')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).toEqual([])
+  expect(result.effectDirection).toBe('positive')
+ })
+ it('verwechselt beliebigen Grants-Text nicht mit einer gewährten Fertigkeit',()=>{
+  expect(classifyPassiveText('Grants an unknown temporary property','ascendancy').tags).not.toContain('granted-skill')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "sourceRelease": "0.5.2",
+  "totalNodes": 5150,
+  "totalStatLines": 5962,
+  "classifierVersion": "1.12.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "granted-skill",
+    "granted-buff",
+    "additional-skill-slot"
+  ],
+  "coverageBefore": 98.54,
+  "coverageAfter": 99.31,
+  "classifiedStatLinesBefore": 5875,
+  "classifiedStatLinesAfter": 5921,
+  "unresolvedStatLinesBefore": 87,
+  "unresolvedStatLinesAfter": 41,
+  "grantedSkillEffectsInvented": false,
+  "inventedProfileEffects": false,
+  "status": "measured-fail-closed"
+}

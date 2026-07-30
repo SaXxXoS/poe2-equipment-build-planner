@@ -482,3 +482,18 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_SYSTEMS_STEP_98.md`.
+
+## Schritt 99 – gewährte Aszendenzfunktionen
+
+- Gewährte Fertigkeiten, drei konkret benannte Buffs und zusätzliche
+  Fertigkeitsplätze werden als getrennte Quellen-Evidenz klassifiziert.
+- Beliebiger `Grants`-Text wird nicht pauschal als gewährte Fertigkeit
+  behandelt.
+- Ohne weitere strukturierte Daten entstehen keine erfundenen Skillwerte,
+  Triggerfrequenzen, Kosten, Uptime oder DPS.
+- Baum-Coverage: 5.921 von 5.962 Statzeilen, entsprechend 99,31 %.
+- 41 Statzeilen bleiben fail-closed ungelöst.
+- Passivklassifikator: `1.12.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_GRANTED_FUNCTIONS_STEP_99.md`.

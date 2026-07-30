@@ -3473,3 +3473,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_SYSTEMS_STEP_98.md`.
+
+## Schritt 99 – gewährte Aszendenzfunktionen
+
+- Gewährte Fertigkeiten, konkret benannte Buffs und zusätzliche
+  Fertigkeitsplätze sind nun getrennte, fail-closed Quellen-Evidenz.
+- Die Klassifikation erzeugt ohne belegte Wirkungsdaten keine erfundenen
+  Schadenswerte, Uptime, Kosten, Triggerfrequenz oder DPS.
+- Offizielle Coverage: 98,54 % → 99,31 %.
+- Klassifizierte Statzeilen: 5.875 → 5.921.
+- Ungelöste Statzeilen: 87 → 41.
+- Passivklassifikator: `1.12.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_GRANTED_FUNCTIONS_STEP_99.md`.
