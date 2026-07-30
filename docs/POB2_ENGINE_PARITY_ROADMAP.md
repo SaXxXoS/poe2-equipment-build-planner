@@ -296,3 +296,15 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Kanalstufenmodell `1.0.0`, Schadensrechner `3.21.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_CHANNELLED_STAGE_STEP_80.md`.
+
+# Fortschritt Schritt 81 – aufgeladene Fertigkeitsszenarien
+
+- Detonating Arrow transportiert vier Stufen und im Vollstufenszenario
+  480 % des Schadens als zusätzlichen Feuerschaden.
+- Volcano transportiert drei zusätzliche Stufen, Faktor 5,5 für die
+  Anfangsexplosion und zwölf zusätzliche Projektile.
+- Unbelegte Projektilüberlappung und dauerhafte Vollaufladung werden nicht
+  als Schaden angenommen.
+- Aufladungsmodell `1.0.0`, Schadensrechner `3.22.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHARGED_SKILLS_STEP_81.md`.

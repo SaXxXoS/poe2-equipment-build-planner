@@ -48,7 +48,7 @@ export interface EnemyMitigationProfile {
   heavyStunned?:boolean
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
-export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'multiple-damage-expectation'|'prepared-next-hit'|'maximum-channelled-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
+export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'multiple-damage-expectation'|'prepared-next-hit'|'maximum-channelled-hit'|'maximum-charged-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
 export interface AppliedLuckyHitEffect { damageType:DamageComponent['type']|'all';chancePercent:number;sourceNodeId:string;sourceText:string;condition:'unconditional'|'enemy-low-life'|'enemy-heavy-stunned';evidence:'text-pattern-exact' }
 export interface BlockedLuckyHitEffect { sourceNodeId:string;sourceText:string;condition:'enemy-low-life'|'enemy-heavy-stunned';reason:'enemy-state-not-confirmed';evidence:'text-pattern-exact' }
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
@@ -158,6 +158,9 @@ export interface DamageEstimate {
   channelledStageState?:{modelVersion:string;productive:false;skills:Array<{skillId:string;label:string;appliedSkillLevel:number;skillLevelStatus:'exact'|'default-reference-level';maximumStages:number;finalDamagePerStagePercent:number;fullStageMoreDamagePercent:number;fullStageDamageMultiplier:number;minimumChannelTimeMs?:number;status:'maximum-scenario-known-current-state-unknown';detail:string}>}
   maximumChannelledHitDamage?:number
   maximumChannelledHitDamageAfterMitigation?:number
+  chargedSkillState?:{modelVersion:string;productive:false;skills:Array<{skillId:string;label:string;appliedSkillLevel:number;skillLevelStatus:'exact'|'default-reference-level';maximumStages:number;additionalStages:number;fullStageDamageMultiplier?:number;gainAsFirePerStagePercent?:number;fullStageGainAsFirePercent?:number;additionalProjectilesPerAdditionalStage?:number;fullStageAdditionalProjectiles?:number;status:'maximum-scenario-known-current-state-unknown';detail:string}>}
+  maximumChargedHitDamage?:number
+  maximumChargedHitDamageAfterMitigation?:number
     confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'skill'|'equipment'|'passive'|'ascendancy';sourceId:string}>
   confirmedGainAsExtra?:Array<{from:DamageComponent['type']|'all'|'elemental';to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy'|'skill';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}

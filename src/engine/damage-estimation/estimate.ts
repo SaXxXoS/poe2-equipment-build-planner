@@ -102,7 +102,7 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.21.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.22.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -275,6 +275,13 @@ export function estimateHitDamage(input:{
   const maximumChannelledHitDamage=primaryChannelledStage
     ? rollExpectedAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*primaryChannelledStage.fullStageDamageMultiplier
     : undefined
+  const primaryChargedSkill=temporal.chargedSkillState.skills.find(value=>value.skillId===skillId)
+  const chargedScenarioComponents=primaryChargedSkill?.fullStageGainAsFirePercent
+    ? applyGainAsExtra(components,[{id:`skill:${skillId}:full-stages`,source:'skill',sourceId:skillId!,from:'all',to:'fire',percent:primaryChargedSkill.fullStageGainAsFirePercent}],components)
+    : components
+  const maximumChargedHitDamage=primaryChargedSkill
+    ? expectedLuckyHitDamage(chargedScenarioComponents,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*(primaryChargedSkill.fullStageDamageMultiplier??1)
+    : undefined
   const expectedCriticalHitDamage=criticalExpectationMultiplier==null?undefined:rollExpectedAverage*criticalExpectationMultiplier*multipleDamageMultiplier
   const expectedCriticalHitDamagePerSecond=expectedCriticalHitDamage==null?undefined:expectedCriticalHitDamage*actionsPerSecond
   const accuracyMultiplier=hitChancePercent==null?undefined:hitChancePercent/100
@@ -345,6 +352,10 @@ export function estimateHitDamage(input:{
   const expectedDamageAfterMitigation=mitigatedRollAverage==null?undefined:mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier
   const maximumChannelledHitDamageAfterMitigation=primaryChannelledStage&&mitigatedRollAverage!=null
     ? mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*primaryChannelledStage.fullStageDamageMultiplier
+    : undefined
+  const chargedEnemyMitigation=primaryChargedSkill&&resolvedEnemyProfile?applyEnemyMitigation(chargedScenarioComponents,resolvedEnemyProfile):undefined
+  const maximumChargedHitDamageAfterMitigation=chargedEnemyMitigation
+    ? expectedLuckyHitDamage(chargedEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*(primaryChargedSkill?.fullStageDamageMultiplier??1)
     : undefined
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
   const accuracyAdjustedDamagePerSecondAfterMitigation=enemyMitigation?.average==null||accuracyMultiplier==null
@@ -503,6 +514,7 @@ export function estimateHitDamage(input:{
       ...(luckyHitEffects.length?[{id:'lucky-hit-expectation' as const,label:'Erwartungswert mit belegten Lucky-Schadenswürfen',components,value:round(rollExpectedAverage)}]:[]),
       ...(multipleDamageEffect.sources.length?[{id:'multiple-damage-expectation' as const,label:'Erwartungswert mit belegtem Doppel-/Dreifachschaden',components,value:round(rollExpectedAverage*multipleDamageMultiplier)}]:[]),
       ...(maximumChannelledHitDamage==null?[]:[{id:'maximum-channelled-hit' as const,label:'Voll aufgeladener vorbereiteter Treffer',components,value:round(maximumChannelledHitDamage)}]),
+      ...(maximumChargedHitDamage==null?[]:[{id:'maximum-charged-hit' as const,label:'Vollstufiges Fertigkeitsszenario',components:chargedScenarioComponents,value:round(maximumChargedHitDamage)}]),
       ...(preparedNextHitAverage==null?[]:[{id:'prepared-next-hit' as const,label:'Einmalig vorbereiteter nächster Treffer',components:nextSkill.components,value:round(preparedNextHitAverage)}]),
       ...(activeWindowDamagePerSecond==null?[]:[{id:'temporal-active-window' as const,label:'Im belegten aktiven Bufffenster',components:temporalComponents,value:round(activeWindowDamagePerSecond)}]),
       {id:'speed',label:'Aktionen pro Sekunde',components:[],value:round(actionsPerSecond)},
@@ -533,6 +545,7 @@ export function estimateHitDamage(input:{
     ...(temporal.sealState.relevant?{sealState:{modelVersion:temporal.sealState.modelVersion,productive:temporal.sealState.productive,skills:temporal.sealState.skills.map(value=>({skillId:value.skillId,label:value.label,maximumSeals:value.maximumSeals,repeatsPerBrokenSeal:value.repeatsPerBrokenSeal,sealGainIntervalMs:value.sealGainIntervalMs,fullPreparationTimeMs:value.fullPreparationTimeMs,appliedSkillLevel:value.appliedSkillLevel,skillLevelStatus:value.skillLevelStatus,status:value.status,detail:value.detail}))}}:{}),
     ...(temporal.projectileAccumulationState.relevant?{projectileAccumulationState:{modelVersion:temporal.projectileAccumulationState.modelVersion,productive:temporal.projectileAccumulationState.productive,skills:temporal.projectileAccumulationState.skills.map(value=>({skillId:value.skillId,label:value.label,maximumProjectiles:value.maximumProjectiles,releaseIntervalMs:value.releaseIntervalMs,effectDurationMs:value.effectDurationMs,finalDamagePerReleasedProjectilePercent:value.finalDamagePerReleasedProjectilePercent,maximumReleaseWindowMs:value.maximumReleaseWindowMs,appliedSkillLevel:value.appliedSkillLevel,skillLevelStatus:value.skillLevelStatus,status:value.status,detail:value.detail}))}}:{}),
     ...(temporal.channelledStageState.relevant?{channelledStageState:{modelVersion:temporal.channelledStageState.modelVersion,productive:temporal.channelledStageState.productive,skills:temporal.channelledStageState.skills.map(value=>({skillId:value.skillId,label:value.label,appliedSkillLevel:value.appliedSkillLevel,skillLevelStatus:value.skillLevelStatus,maximumStages:value.maximumStages,finalDamagePerStagePercent:value.finalDamagePerStagePercent,fullStageMoreDamagePercent:value.fullStageMoreDamagePercent,fullStageDamageMultiplier:value.fullStageDamageMultiplier,minimumChannelTimeMs:value.minimumChannelTimeMs,status:value.status,detail:value.detail}))}}:{}),
+    ...(temporal.chargedSkillState.relevant?{chargedSkillState:{modelVersion:temporal.chargedSkillState.modelVersion,productive:temporal.chargedSkillState.productive,skills:temporal.chargedSkillState.skills.map(value=>({skillId:value.skillId,label:value.label,appliedSkillLevel:value.appliedSkillLevel,skillLevelStatus:value.skillLevelStatus,maximumStages:value.maximumStages,additionalStages:value.additionalStages,fullStageDamageMultiplier:value.fullStageDamageMultiplier,gainAsFirePerStagePercent:value.gainAsFirePerStagePercent,fullStageGainAsFirePercent:value.fullStageGainAsFirePercent,additionalProjectilesPerAdditionalStage:value.additionalProjectilesPerAdditionalStage,fullStageAdditionalProjectiles:value.fullStageAdditionalProjectiles,status:value.status,detail:value.detail}))}}:{}),
     confirmedConversions:quantitative.conversions.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     confirmedGainAsExtra:quantitative.gainAsExtra.map(value=>({from:value.from,to:value.to,percent:value.percent,source:value.source,sourceId:value.sourceId})),
     ...(luckyHitEffects.length||luckyHitEffectModel.blockedEffects.length?{luckyHitEffects:{modelVersion:'2.0.0' as const,expectedHitDamage:round(rollExpectedAverage),effects:luckyHitEffects,blockedEffects:luckyHitEffectModel.blockedEffects}}:{}),
@@ -552,6 +565,8 @@ export function estimateHitDamage(input:{
     ...(preparedNextHitDamageAfterMitigation==null?{}:{preparedNextHitDamageAfterMitigation:round(preparedNextHitDamageAfterMitigation)}),
     ...(maximumChannelledHitDamage==null?{}:{maximumChannelledHitDamage:round(maximumChannelledHitDamage)}),
     ...(maximumChannelledHitDamageAfterMitigation==null?{}:{maximumChannelledHitDamageAfterMitigation:round(maximumChannelledHitDamageAfterMitigation)}),
+    ...(maximumChargedHitDamage==null?{}:{maximumChargedHitDamage:round(maximumChargedHitDamage)}),
+    ...(maximumChargedHitDamageAfterMitigation==null?{}:{maximumChargedHitDamageAfterMitigation:round(maximumChargedHitDamageAfterMitigation)}),
     hitDamage:{minimum:round(minimum),maximum:round(maximum),average:round(average)},
     actionsPerSecond:round(actionsPerSecond),
     hitDamagePerSecond:round(rollExpectedAverage*actionsPerSecond*multipleDamageMultiplier),

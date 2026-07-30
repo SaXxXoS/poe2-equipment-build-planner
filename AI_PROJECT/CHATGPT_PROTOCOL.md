@@ -3216,3 +3216,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/BUILD_ASSISTANT_CHANNELLED_STAGE_STEP_80.md`.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen und wird
   autonom über weitere reproduzierbare Rechenketten verfolgt.
+
+## Charged skill scenarios - Schritt 81 (2026-07-30)
+
+- Detonating Arrow und Volcano besitzen getrennte, gemmenstufengebundene
+  Vollstufenszenarien.
+- Der Feuergewinn von Detonating Arrow und der Anfangsexplosionsfaktor von
+  Volcano wirken nur im vorbereiteten Szenario.
+- Zusätzliche Volcano-Projektile erzeugen ohne Trefferbeleg keinen
+  Einzelzielmultiplikator.
+- Aufladungsmodell `1.0.0`, Schadensrechner `3.22.0`; 66 fokussierte Tests,
+  Typecheck, Lint und Produktions-Build erfolgreich.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHARGED_SKILLS_STEP_81.md`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.

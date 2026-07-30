@@ -38,6 +38,32 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       label:'Voll aufgeladener vorbereiteter Treffer',
     }))
   })
+  it('wendet Detonating Arrows Vollstufen-Feuergewinn nur im vorbereiteten Szenario an',()=>{
+    const result=estimateHitDamage({
+      equipment:[weapon('Shortbow')],
+      setups:[setup('detonating-arrow')],
+      skills:[skill('detonating-arrow','Detonating Arrow')],
+    })
+    expect(result.chargedSkillState?.skills[0]).toMatchObject({
+      maximumStages:4,
+      fullStageGainAsFirePercent:480,
+    })
+    expect(result.maximumChargedHitDamage).toBeGreaterThan(result.hitDamagePerSecond!)
+    expect(result.stages).toContainEqual(expect.objectContaining({id:'maximum-charged-hit'}))
+  })
+  it('weist Volcano-Projektile nicht als Einzelzielmultiplikator aus',()=>{
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[setup('volcano')],
+      skills:[skill('volcano','Volcano')],
+    })
+    expect(result.chargedSkillState?.skills[0]).toMatchObject({
+      maximumStages:4,
+      fullStageDamageMultiplier:5.5,
+      fullStageAdditionalProjectiles:12,
+    })
+    expect(result.maximumChargedHitDamage).toBeCloseTo(result.expectedCriticalHitDamage!*5.5,2)
+  })
   it('wendet Archmage-Kosten und zusätzlichen Blitzschaden nur im aktiven Waffenset an',()=>{
     const arc=skill('arc','Arc')
     const archmage=skill('archmage','Archmage')
