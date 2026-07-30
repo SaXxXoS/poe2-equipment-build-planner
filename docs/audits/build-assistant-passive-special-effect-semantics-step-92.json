@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "source": {
+    "path": "generated/poe2-tree/tree.json",
+    "releaseTag": "0.5.2",
+    "nodeCount": 5150,
+    "statLineCount": 5962
+  },
+  "classifierVersion": "1.5.0",
+  "addedTags": [
+    "quality",
+    "jagged-ground",
+    "parry",
+    "culling-strike",
+    "seal",
+    "withered",
+    "darkness"
+  ],
+  "pluralCorrections": [
+    {
+      "visibleSourceForm": "Curses",
+      "classification": "curse"
+    },
+    {
+      "visibleSourceForm": "Ignites",
+      "classification": "ailment"
+    }
+  ],
+  "coverage": {
+    "before": {
+      "classifiedStatLines": 5731,
+      "unresolvedStatLines": 231,
+      "percent": 96.13
+    },
+    "after": {
+      "classifiedStatLines": 5781,
+      "unresolvedStatLines": 181,
+      "percent": 96.96
+    },
+    "newlyClassifiedStatLines": 50
+  },
+  "guards": {
+    "germanDisplayTextUsedAsSource": false,
+    "fuzzyMatchingUsed": false,
+    "inventedTechnicalIds": false,
+    "newProfileEffectsAssigned": false,
+    "runtimeNetworkAdded": false
+  },
+  "status": "measured-fail-closed"
+}

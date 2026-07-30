@@ -86,6 +86,24 @@ describe('offizielle Statklassifikation',()=>{
   expect(tags('10% increased [Flask|Flask] Charges gained')).not.toEqual(expect.arrayContaining(['endurance-charge','frenzy-charge','power-charge']))
   expect(tags('10% increased [Charm] Charges gained')).not.toEqual(expect.arrayContaining(['endurance-charge','frenzy-charge','power-charge']))
  })
+ it.each([
+  ['+2% to [Quality] of all Skills','quality'],
+  ['15% increased [BuffMagnitude|Magnitude] of [JaggedGround|Jagged Ground] you create','jagged-ground'],
+  ['20% increased [Parry] Damage','parry'],
+  ['5% increased [CullingStrike|Culling Strike] Threshold','culling-strike'],
+  ['[Seal|Sealed] Skills have 10% increased [Seal] gain frequency','seal'],
+  ['10% increased [Withered|Withered] [BuffMagnitude|Magnitude]','withered'],
+  ['10% increased maximum Darkness','darkness'],
+ ])('klassifiziert die offizielle Spezialmechanik %s getrennt und ohne freie Wirkung',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).toEqual([])
+  expect(result.positiveEffects).toContain(expected)
+ })
+ it('erkennt sichtbare Pluralformen aus dem offiziellen Markup',()=>{
+  expect(tags('15% reduced [BuffEffect|effect] of [Curse|Curses] on you')).toContain('curse')
+  expect(tags('[Ignite|Ignites] you inflict deal Damage 4% faster')).toContain('ailment')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

@@ -3358,3 +3358,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_CHARGE_RESERVATION_SEMANTICS_STEP_91.md`.
+
+## Schritt 92 – Spezialeffekt-Semantik im Passivbaum
+
+- Neue getrennte Tags: Quality, Jagged Ground, Parry, Culling Strike, Seal,
+  Withered und Darkness.
+- Die sichtbaren offiziellen Markup-Pluralformen `Curses` und `Ignites`
+  werden jetzt von den vorhandenen Curse- und Ailment-Regeln erfasst.
+- Offizielle Coverage: 96,13 % → 96,96 %.
+- Klassifizierte Statzeilen: 5.731 → 5.781.
+- Ungelöste Statzeilen: 231 → 181.
+- Die 50 neu aufgelösten Zeilen erzeugen ohne passende Wirkungsregel keinen
+  erfundenen profilbezogenen Schadens- oder Ressourcenbonus.
+- Passivklassifikator: `1.5.0`.
+- Fokussierter Lauf: 96 Tests erfolgreich.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_SPECIAL_EFFECT_SEMANTICS_STEP_92.md`.

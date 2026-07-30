@@ -398,3 +398,15 @@ Flask- und Charm-Charges werden nicht mit Kampf-Ladungen vermischt. Die
 Coverage steigt von 94,55 % auf 96,13 %; weitere 94 Statzeilen sind
 aufgelöst. Details:
 `BUILD_ASSISTANT_PASSIVE_CHARGE_RESERVATION_SEMANTICS_STEP_91.md`.
+
+# Schritt 92: Spezialeffekt-Semantik und Markup-Pluralformen
+
+Quality, Jagged Ground, Parry, Culling Strike, Seal, Withered und Darkness
+werden als getrennte offizielle Mechanikfamilien erkannt. Die sichtbaren
+Markup-Pluralformen `Curses` und `Ignites` schließen keine bereits belegten
+Regeln mehr aus.
+
+Die Coverage steigt von 96,13 % auf 96,96 %; weitere 50 Statzeilen sind
+klassifiziert. Die neuen Kategorien besitzen ohne separate Wirkungsregel
+weiterhin keine frei angenommene profilbezogene numerische Wirkung. Details:
+`BUILD_ASSISTANT_PASSIVE_SPECIAL_EFFECT_SEMANTICS_STEP_92.md`.
