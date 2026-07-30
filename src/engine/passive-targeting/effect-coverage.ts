@@ -1,4 +1,5 @@
 import { classifyPassiveNode } from './classifier'
+import { structurePassiveStatEffect } from './effect-model'
 import type { PassiveTargetNode, PassiveTargetTag } from './types'
 
 const DIRECT_NEED_TAGS = new Set<PassiveTargetTag>([
@@ -14,6 +15,10 @@ export interface PassiveEffectCoverageReport {
   semanticallyClassifiedStatLines: number
   profileLinkedStatLines: number
   extractedNumericStatLines: number
+  structuredNumericStatLines: number
+  aggregationReadyStatLines: number
+  conditionBlockedStatLines: number
+  targetBlockedStatLines: number
   numericallyAppliedStatLines: number
   semanticOnlyStatLines: number
   profileLinkedPercent: number
@@ -45,12 +50,25 @@ export function measurePassiveEffectCoverage(
   const extractedNumeric = classified.filter(
     (stat) => (stat.numericValues?.length ?? 0) > 0,
   )
+  const structuredEffects = classified
+    .map(structurePassiveStatEffect)
+    .filter((effect) => effect !== null)
 
   return {
     totalStatLines: stats.length,
     semanticallyClassifiedStatLines: classified.length,
     profileLinkedStatLines: profileLinked.length,
     extractedNumericStatLines: extractedNumeric.length,
+    structuredNumericStatLines: structuredEffects.length,
+    aggregationReadyStatLines: structuredEffects.filter(
+      (effect) => effect.aggregationStatus === 'ready',
+    ).length,
+    conditionBlockedStatLines: structuredEffects.filter(
+      (effect) => effect.aggregationStatus === 'blocked-condition',
+    ).length,
+    targetBlockedStatLines: structuredEffects.filter(
+      (effect) => effect.aggregationStatus === 'blocked-target',
+    ).length,
     numericallyAppliedStatLines: 0,
     semanticOnlyStatLines: classified.length - profileLinked.length,
     profileLinkedPercent: percent(profileLinked.length, stats.length),

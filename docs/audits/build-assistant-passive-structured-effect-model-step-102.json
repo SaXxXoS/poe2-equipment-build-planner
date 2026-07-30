@@ -1,0 +1,27 @@
+{
+  "step": 102,
+  "scope": "official-passive-tree-structured-effect-model",
+  "sourceRelease": "0.5.2",
+  "totalStatLines": 5962,
+  "extractedNumericStatLines": 5716,
+  "structuredNumericStatLines": 4030,
+  "aggregationReadyStatLines": 3008,
+  "conditionBlockedStatLines": 571,
+  "targetBlockedStatLines": 451,
+  "numericallyAppliedStatLines": 0,
+  "operators": [
+    "flat-add",
+    "increased",
+    "reduced",
+    "more",
+    "less"
+  ],
+  "units": [
+    "flat",
+    "percent"
+  ],
+  "conditionsFailClosed": true,
+  "unknownTargetsFailClosed": true,
+  "rankingChanged": false,
+  "pathOfBuildingParity": false
+}

@@ -3514,3 +3514,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Wirkungsmodell statt weiterer freier Rankinggewichte.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_NUMERICAL_EFFECT_GAP_STEP_101.md`.
+
+## Schritt 102 – strukturiertes Passivwirkungsmodell
+
+- Eindeutige Baumtexte besitzen nun eine getrennte Struktur für Quellwert,
+  Einheit, Operator, Richtung, Ziel und Bedingtheit.
+- Vollbaum: 4.030 strukturiert normalisierte Effekte; davon 3.008
+  aggregationsbereit, 571 bedingt blockiert und 451 ohne Ziel blockiert.
+- Komplexe oder mehrdeutige Formen erzeugen keinen Effekt.
+- Das Modul ist noch nicht mit Endwerten oder Ranking verbunden; numerische
+  PoB2-Parität bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_STRUCTURED_EFFECT_MODEL_STEP_102.md`.

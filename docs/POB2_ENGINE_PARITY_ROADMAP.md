@@ -522,3 +522,16 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
   additive/erhöhte/mehr-Multiplikatoren, Bedingungen und Geltungsbereiche.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_NUMERICAL_EFFECT_GAP_STEP_101.md`.
+
+## Schritt 102 – strukturiertes Passivwirkungsmodell
+
+- Eindeutige Quellformen werden in Wert, Einheit, Operator, Richtung,
+  Zielbereich und Bedingtheit zerlegt.
+- 4.030/5.962 Statzeilen sind eng strukturiert normalisierbar.
+- 3.008 davon sind ohne offene Bedingung und mit belegtem Ziel für eine
+  spätere Aggregation vorbereitet.
+- 571 bedingte und 451 ziellose Effekte bleiben fail-closed blockiert.
+- Noch kein Wert wird in Endwerte eingerechnet; das Ranking bleibt
+  unverändert.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_STRUCTURED_EFFECT_MODEL_STEP_102.md`.

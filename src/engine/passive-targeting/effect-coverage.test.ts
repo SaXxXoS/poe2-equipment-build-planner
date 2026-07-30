@@ -14,6 +14,8 @@ describe('numerische Wirkungs-Coverage des offiziellen Passivbaums', () => {
     expect(report.profileLinkedStatLines).toBeGreaterThan(0)
     expect(report.profileLinkedStatLines).toBeLessThan(report.totalStatLines)
     expect(report.extractedNumericStatLines).toBeGreaterThan(0)
+    expect(report.structuredNumericStatLines).toBeGreaterThan(0)
+    expect(report.aggregationReadyStatLines).toBeGreaterThan(0)
     expect(report.numericallyAppliedStatLines).toBe(0)
     expect(report.numericalApplicationPercent).toBe(0)
   })
