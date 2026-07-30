@@ -1,0 +1,27 @@
+{
+  "step": 100,
+  "scope": "official-passive-tree-visible-stat-line-semantic-coverage",
+  "sourceRelease": "0.5.2",
+  "nodes": 5150,
+  "statLines": 5962,
+  "classifierVersion": "1.13.0",
+  "analyzerVersion": "1.1.0",
+  "before": {
+    "classifiedStatLines": 5921,
+    "unresolvedStatLines": 41,
+    "coveragePercent": 99.31
+  },
+  "after": {
+    "classifiedStatLines": 5962,
+    "unresolvedStatLines": 0,
+    "coveragePercent": 100.0
+  },
+  "semanticStatLineCoverageComplete": true,
+  "numericalEffectParity": false,
+  "inventedProfileEffects": false,
+  "limitations": [
+    "Semantic recognition does not prove complete numerical effect evaluation.",
+    "No uptime, trigger frequency, damage or ranking bonus is inferred without a separate tested formula.",
+    "Path of Building 2 parity remains unproven."
+  ]
+}

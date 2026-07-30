@@ -3487,3 +3487,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_GRANTED_FUNCTIONS_STEP_99.md`.
+
+## Schritt 100 – vollständige semantische Baum-Statzeilen-Coverage
+
+- Die semantische Coverage des gepinnten offiziellen Baums erreicht
+  reproduzierbar 100,00 %: 5.962 von 5.962 sichtbaren Statzeilen.
+- Alternative Klassenstarts, spezielle Juwelregeln, Immunitäten,
+  Fissure-/Tailwind-/Jade-/Charge-Systeme und die übrigen Sonderformen
+  besitzen getrennte fail-closed Mechaniktags.
+- Ungelöste sichtbare Statzeilen: 41 → 0.
+- Passivklassifikator: `1.13.0`; Passivziel-Analyzer: `1.1.0`.
+- Diese Vollständigkeit betrifft die semantische Erkennung, nicht automatisch
+  die numerische Wirkungsberechnung. PoB2-Parität bleibt unbewiesen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_FULL_STAT_COVERAGE_STEP_100.md`.

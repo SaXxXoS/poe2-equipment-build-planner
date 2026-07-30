@@ -497,3 +497,15 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_GRANTED_FUNCTIONS_STEP_99.md`.
+
+## Schritt 100 – vollständige semantische Baum-Statzeilen-Coverage
+
+- Die letzten 41 sichtbaren Originalzeilen wurden in eng begrenzte
+  Mechanikfamilien eingeordnet.
+- Offizielle Coverage: 5.962 von 5.962 Statzeilen, entsprechend 100,00 %.
+- Keine sichtbare Statzeile des gepinnten Baums bleibt semantisch ungelöst.
+- Passivklassifikator: `1.13.0`; Passivziel-Analyzer: `1.1.0`.
+- Die vollständige Textklassifikation ist keine vollständige numerische
+  Wirkungsberechnung und keine belegte Path-of-Building-2-Parität.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_FULL_STAT_COVERAGE_STEP_100.md`.

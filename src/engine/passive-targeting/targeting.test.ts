@@ -237,6 +237,58 @@ describe('offizielle Statklassifikation',()=>{
  it('verwechselt beliebigen Grants-Text nicht mit einer gewährten Fertigkeit',()=>{
   expect(classifyPassiveText('Grants an unknown temporary property','ascendancy').tags).not.toContain('granted-skill')
  })
+ it.each([
+  ["Can Allocate Passive Skills from the Sorceress's starting point",'alternative-class-start'],
+  ["Can Allocate Passive Skills from the Warrior's starting point",'alternative-class-start'],
+  ['Can Socket a [ItemRarity|non-Unique] [BasicJewel|Basic Jewel] into the Phylactery','phylactery-jewel'],
+  ['Cannot be [HeavyStun|Heavy Stunned] while Sprinting','stun-immunity'],
+  ["Cannot be [LightStun|Light Stunned] if you haven't been [HitDamage|Hit] [Recently]",'stun-immunity'],
+  ['Carry a Chest which adds 20 Inventory Slots','inventory-capacity'],
+  ['Demonflame has no maximum','demonflame-cap'],
+  ['Dodging can expend up to 3 Owl Feathers, granting Primal Bounty 100% more [Empowered|Empowerment] effect per additional Feather expended','owl-feather'],
+  ['Double [Adaptation] Effect','adaptation'],
+  ['Double the number of your [Poison|Poisons] that targets can be affected by at the same time','poison-limit'],
+  ["Enemies regain 10% of [Concentration] every second if they haven't lost [Concentration] in the past 5 seconds",'concentration-recovery'],
+  ['Fissure Skills have +1 to [Limit]','fissure'],
+  ['Gain [Tailwind] on Skill use','tailwind'],
+  ['Gain a Primal Owl Feather every 4 seconds, up to a maximum of 3','owl-feather'],
+  ['Gain a stack of [Jade] every second','jade'],
+  ['Gain a Vivid Wisp when Vivid Stampede ends','vivid-wisp'],
+  ['Gain Owl Feathers 50% faster','owl-feather'],
+  ['Gain the benefits of [ShamanOnlyMods|Bonded] modifiers on [Rune|Runes] and [Idol|Idols]','bonded-modifier'],
+  ['Gloves you equip have their [BaseType|Base Type] transformed to [HandWraps|Fists of Stone] while equipped','item-transformation'],
+  ['If you would gain a [Charges|Charge], [Allies] in your [Presence] gain that [Charges|Charge] instead','charge-transfer'],
+  ['Immune to [CorruptedBlood|Corrupted Blood]','corrupted-blood-immunity'],
+  ['Immune to [Hinder]','hinder-immunity'],
+  ['Lose all [Tailwind] when [HitDamage|Hit]','tailwind'],
+  ['Maximum Chance to [Evasion|Evade] is 50%','evade-cap'],
+  ['Non-[Rarity|Unique] Time-Lost [Jewel|Jewels] have 40% increased radius','time-lost-jewel'],
+  ['Non-Keystone Passive Skills in Medium Radius of allocated Keystone Passive Skills can be allocated without being connected to your tree','disconnected-allocation'],
+  ['On [Freeze|Freezing] Enemies create [ChilledGround|Chilled Ground]','chilled-ground'],
+  ['Skills have 10% chance to not remove [Charges|Charges] but still count as consuming them','charge-retention'],
+  ['Skills which create Fissures have a 20% chance to create an additional Fissure','fissure'],
+  ['Tame Beast can capture [Rarity|Unique] Beasts','tamed-beast'],
+  ['Targets can be affected by two of your [Chill]s at the same time','chill-limit'],
+  ['Targets can be affected by two of your [Shock]s at the same time','shock-limit'],
+  ['Vivid Stags leap towards enemies','vivid-wisp'],
+  ['Walk the [OraclePaths|Paths Not Taken]','paths-not-taken'],
+  ['You can equip a [Focus] while wielding a [Staff]','focus-equip'],
+  ["You cannot be [LightStun|Light Stunned] if you've been [Stun|Stunned] [Recently]",'stun-immunity'],
+  ['You take 20% of damage from [Block|Blocked] [HitDamage|Hits]','blocked-hit-damage'],
+  ['Your [HitDamage|Hits] are [CrushingBlow|Crushing Blows]','crushing-blow'],
+  ['Your [HitDamage|Hits] cannot be [Evasion|Evaded] by [HeavyStun|Heavy Stunned] Enemies','heavy-stun-accuracy'],
+  ['Your speed is unaffected by [Slow|Slows]','slow-immunity'],
+  ['Enemies in your [Presence|Presence] are [Slow|Slowed] by 20%','slow'],
+ ])('klassifiziert die verbleibende offizielle Sonderregel %s fail-closed',(text,expected)=>{
+  const result=classifyPassiveText(text,'ascendancy')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining([
+   'damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos',
+  ]))
+ })
+ it('behandelt Schaden aus geblockten Treffern als Nachteil',()=>{
+  expect(classifyPassiveText('You take 20% of damage from [Block|Blocked] [HitDamage|Hits]','ascendancy').effectDirection).toBe('negative')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

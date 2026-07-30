@@ -37,6 +37,7 @@ const harmfulDirectionPatterns=[
  /\bofferings?.* have .*reduced (?:duration|maximum life)\b/,
  /\breduced ice crystal life\b/,
  /\breduced bonuses gained from equipped focus\b/,
+ /\byou take \d+(?:\.\d+)?% of damage from blocked hits\b/,
  /\binfernal flame lost\b/,
  /\blife is lost over \d+(?:\.\d+)? seconds\b/,
  /\bafter being damaged by an enemy hit, take damage equal\b/,
