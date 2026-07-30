@@ -3301,3 +3301,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Modellversionen: Ladungszustand `1.3.0`, Schadensrechner `3.27.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_CHARGE_REGULATION_STEP_87.md`.
+
+## Schritt 88 – PoE2-spezifische Passivsemantik
+
+- Neue getrennte Tags: Stun Buildup, Daze, Pin, Slow, Warcry und Grenade.
+- `Ailments` wird zusätzlich zur Singularform sicher erkannt.
+- Offizielle Coverage: 85,32 % → 89,06 %.
+- Klassifizierte Statzeilen: 5.087 → 5.310.
+- Ungelöste Statzeilen: 875 → 652.
+- Die 223 neu aufgelösten Zeilen erzeugen ohne passendes Profilfeld keinen
+  erfundenen Schadens- oder Elementarbonus.
+- Passivklassifikator: `1.1.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_CONTROL_SEMANTICS_STEP_88.md`.

@@ -2,7 +2,7 @@ import type { Confidence, ScoreCategory } from '../common/types'
 import type { PassiveTargetNodeType, PassiveTargetScoreCategory, PassiveTargetTag } from './types'
 
 export const PASSIVE_TARGET_ANALYZER_VERSION = '1.0.0'
-export const PASSIVE_TARGET_CLASSIFIER_VERSION = '1.0.0'
+export const PASSIVE_TARGET_CLASSIFIER_VERSION = '1.1.0'
 export const PASSIVE_TARGET_CONFIG = {
   scoreMin: 0, scoreMax: 100, defaultMaximumResults: 20,
   profileStrong: 60, profileWeak: 20, profileConflict: 10, profileWeight: .45,

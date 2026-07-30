@@ -20,6 +20,19 @@ describe('offizielle Statklassifikation',()=>{
   expect(tags('[Aura] Skills have 5% increased [BuffMagnitude|Magnitudes]')).toContain('skill-effect')
   expect(tags('10% increased Damage')).not.toEqual(expect.arrayContaining(['fire','cold','lightning','physical','chaos']))
  })
+ it.each([
+  ['15% increased [Stun] Buildup','stun-buildup'],
+  ['5% chance to [Daze] on [HitDamage|Hit]','daze'],
+  ['15% increased [Pinned|Pin] Buildup','pin'],
+  ['8% reduced [Slow|Slowing] Potency of [Debuff|Debuffs] on You','slow'],
+  ['16% increased [Warcry|Warcry] Speed','warcry'],
+  ['12% increased [Grenade] Damage','grenade'],
+  ['10% increased chance to inflict [Ailments]','ailment'],
+ ])('klassifiziert PoE2-spezifische Kontrollmechanik %s ohne fremde Schadensart',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.tags).not.toEqual(expect.arrayContaining(['fire','cold','lightning','physical','chaos']))
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

@@ -363,3 +363,11 @@ Rüstung/Ausweichen/Energieschild durch Endurance Charges. Der aktuelle
 Ladungszustand bleibt unbekannt und erzeugt daher keinen automatischen
 Schadens- oder Verteidigungsbonus. Details:
 `BUILD_ASSISTANT_CHARGE_REGULATION_STEP_87.md`.
+
+# Schritt 88: PoE2-spezifische Passivsemantik
+
+Stun Buildup, Daze, Pin, Slow, Warcry und Grenade werden jetzt als getrennte
+Mechaniken klassifiziert. Die gemessene Coverage des offiziellen Baums steigt
+von 85,32 % auf 89,06 %; 223 weitere Statzeilen sind aufgelöst. Ohne
+passendes BuildProfile-Feld entsteht daraus kein erfundener Schadensscore.
+Details: `BUILD_ASSISTANT_PASSIVE_CONTROL_SEMANTICS_STEP_88.md`.
