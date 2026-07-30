@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "sourceRelease": "0.5.2",
+  "totalNodes": 5150,
+  "totalStatLines": 5962,
+  "classifierVersion": "1.11.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "onslaught",
+    "incision",
+    "small-passive-effect",
+    "focus-effect",
+    "flames-of-chayula",
+    "debilitate",
+    "concentration-break"
+  ],
+  "extendedTags": [
+    "knockback"
+  ],
+  "coverageBefore": 98.37,
+  "coverageAfter": 98.54,
+  "classifiedStatLinesBefore": 5865,
+  "classifiedStatLinesAfter": 5875,
+  "unresolvedStatLinesBefore": 97,
+  "unresolvedStatLinesAfter": 87,
+  "effectDirectionSeparated": true,
+  "inventedProfileEffects": false,
+  "status": "measured-fail-closed"
+}

@@ -202,6 +202,25 @@ describe('offizielle Statklassifikation',()=>{
   expect(classifyPassiveText('4 seconds after being Damaged by an Enemy [HitDamage|Hit], take Damage equal to 30% of that [HitDamage|Hit] Damage','normal').effectDirection).toBe('negative')
   expect(classifyPassiveText('25% of Life Loss from [HitDamage|Hits] is prevented, then that much Life is lost over 4 seconds instead','normal').effectDirection).toBe('mixed')
  })
+ it.each([
+  ['50% chance to gain [Onslaught|Onslaught] on Killing Blow with [Axe|Axes]','onslaught'],
+  ['50% increased effect of [Incision]','incision'],
+  ['50% increased effect of [SmallPassive|Small Passive] Skills','small-passive-effect'],
+  ['50% reduced bonuses gained from Equipped [Focus]','focus-effect'],
+  ['All [FlamesOfChayula|Flames of Chayula] that you manifest are [BlueFlamesOfChayula|Blue]','flames-of-chayula'],
+  ['Apply [Debilitate] to Enemies 30 Metres in front of you while your [Shield] is raised','debilitate'],
+  ['Break enemy [Concentration] on [HitDamage|Hit] equal to 100% of Damage Dealt','concentration-break'],
+  ['Area Skills have 20% chance to [Knockback|Knock Enemies Back] on [HitDamage|Hit]','knockback'],
+ ])('klassifiziert die belegte konditionale Restfamilie %s ohne erfundene Profilwirkung',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining([
+   'damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos',
+  ]))
+ })
+ it('markiert verringerte Fokusboni als Nachteil',()=>{
+  expect(classifyPassiveText('50% reduced bonuses gained from Equipped [Focus]','normal').effectDirection).toBe('negative')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

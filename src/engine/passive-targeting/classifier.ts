@@ -36,6 +36,7 @@ const harmfulDirectionPatterns=[
  /\breduced light radius\b/,
  /\bofferings?.* have .*reduced (?:duration|maximum life)\b/,
  /\breduced ice crystal life\b/,
+ /\breduced bonuses gained from equipped focus\b/,
  /\binfernal flame lost\b/,
  /\blife is lost over \d+(?:\.\d+)? seconds\b/,
  /\bafter being damaged by an enemy hit, take damage equal\b/,

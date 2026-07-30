@@ -3458,3 +3458,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_EFFECTS_STEP_97.md`.
+
+## Schritt 98 – weitere bedingte Passivsysteme
+
+- Onslaught, Incision, Wirkung kleiner Passivfertigkeiten, Focus-Boni,
+  Flames of Chayula, Debilitate und Concentration-Break sind getrennte
+  fail-closed Mechanikfamilien.
+- `Knock Enemies Back` wird als Rückstoß-Markupform erkannt.
+- Verringerte Focus-Boni sind negativ; es wird keine freie numerische
+  Wirkungsformel erzeugt.
+- Baum-Coverage: 5.875 von 5.962 Statzeilen, entsprechend 98,54 %.
+- 87 Statzeilen bleiben ungelöst.
+- Passivklassifikator: `1.11.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_CONDITIONAL_SYSTEMS_STEP_98.md`.
