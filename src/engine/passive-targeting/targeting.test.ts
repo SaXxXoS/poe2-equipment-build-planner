@@ -49,6 +49,23 @@ describe('offizielle Statklassifikation',()=>{
   expect(result.tags).toContain(expected)
   expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
  })
+ it.each([
+  ['[Buff|Buffs] on you expire 10% slower','buff'],
+  ['15% increased Effect of [PuppetMaster|Puppet Master]','puppet-master'],
+  ['15% increased Mana Cost [Efficiency] of [Command] Skills','command'],
+  ['15% increased [Ballista] damage','ballista'],
+  ['15% increased [BuffEffect|effect] of [ArcaneSurge|Arcane Surge] on you','arcane-surge'],
+  ['16% increased [Thorns|Thorns] damage','thorns'],
+  ['20% increased [Knockback] Distance','knockback'],
+  ['3% chance to gain [Volatility] on Kill','volatility'],
+  ['10% increased [Blind] Effect','blind'],
+  ['10% increased [Exposure] Effect','exposure'],
+  ['10% increased effect of [Archon] [Buff|Buffs] on you','archon'],
+ ])('erfasst die offizielle Buff- und Kontrollfamilie %s ohne freien Schadensbonus',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

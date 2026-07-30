@@ -380,3 +380,12 @@ gemessene Coverage steigt von 89,06 % auf 92,64 %; weitere 213 Statzeilen
 sind aufgelöst. Ohne passendes BuildProfile-Feld entsteht kein erfundener
 Rankingbonus. Details:
 `BUILD_ASSISTANT_PASSIVE_RESOURCE_SEMANTICS_STEP_89.md`.
+
+# Schritt 90: Buff-, Kontroll- und Konstruktionsemantik
+
+Buff, Puppet Master, Command, Ballista, Arcane Surge, Thorns, Knockback,
+Volatility, Blind, Exposure und Archon werden als getrennte Mechaniken
+klassifiziert. Die gemessene Coverage steigt von 92,64 % auf 94,55 %;
+weitere 114 Statzeilen sind aufgelöst. Ohne passendes BuildProfile-Feld
+entsteht kein erfundener Schadens- oder Rankingbonus. Details:
+`BUILD_ASSISTANT_PASSIVE_BUFF_SEMANTICS_STEP_90.md`.

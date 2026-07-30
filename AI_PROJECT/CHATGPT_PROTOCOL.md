@@ -3327,3 +3327,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Passivklassifikator: `1.2.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_RESOURCE_SEMANTICS_STEP_89.md`.
+
+## Schritt 90 – Buff-, Kontroll- und Konstruktionsemantik im Passivbaum
+
+- Neue getrennte Tags: Buff, Puppet Master, Command, Ballista, Arcane Surge,
+  Thorns, Knockback, Volatility, Blind, Exposure und Archon.
+- Offizielle Coverage: 92,64 % → 94,55 %.
+- Klassifizierte Statzeilen: 5.523 → 5.637.
+- Ungelöste Statzeilen: 439 → 325.
+- Die 114 neu aufgelösten Zeilen erzeugen ohne passendes Profilfeld keinen
+  erfundenen Schadens-, Elementar- oder Rankingbonus.
+- Passivklassifikator: `1.3.0`.
+- Fokussierter Lauf: 77 Tests erfolgreich.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_BUFF_SEMANTICS_STEP_90.md`.
