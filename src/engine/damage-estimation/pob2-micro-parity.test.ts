@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import cases from '../../../docs/audits/pob2-damage-micro-parity-cases.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup } from '../../domain'
 import { estimateHitDamage } from './estimate'
+import { resolveChargeState } from './charge-state'
 
 const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   id,
@@ -40,7 +41,7 @@ const requiredNumber = (value: number | undefined, label: string): number => {
 describe('PoB2-Mikro-Parität am gepinnten Commit', () => {
   it('bindet jeden Erwartungsfall an den freigegebenen PoB2-Pin', () => {
     expect(cases.sourceCommit).toBe('c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0')
-    expect(cases.cases).toHaveLength(5)
+    expect(cases.cases).toHaveLength(6)
     expect(new Set(cases.cases.map(value => value.id)).size).toBe(cases.cases.length)
     for (const value of cases.cases) {
       expect(value.sourceReferences.length).toBeGreaterThan(0)
@@ -153,5 +154,28 @@ describe('PoB2-Mikro-Parität am gepinnten Commit', () => {
       2,
     )
     expect(result.projectileHitModel?.singleTargetHitMultiplier).toBe(1)
+  })
+
+  it('reproduziert Charged Staff je Power Charge ohne eine Ladungszahl zu erfinden', () => {
+    const pinned = byId.get('charged-staff-per-power-charge-l20')!
+    const definition = skill('charged-staff', 'Charged Staff')
+    const state = resolveChargeState({
+      setups: [setup(definition.id)],
+      skills: [definition],
+    })
+    expect(state.buffScenarios[0]).toMatchObject({
+      appliedSkillLevel: pinned.level,
+      requiredCharges: pinned.inputs.requiredPowerCharges,
+      minimumAddedDamagePerCharge: pinned.inputs.minimumAddedLightningDamagePerCharge,
+      maximumAddedDamagePerCharge: pinned.inputs.maximumAddedLightningDamagePerCharge,
+      durationPerChargeMs: pinned.inputs.durationPerChargeMs,
+    })
+    expect(
+      (state.buffScenarios[0]!.minimumAddedDamagePerCharge
+        + state.buffScenarios[0]!.maximumAddedDamagePerCharge) / 2,
+    ).toBe(pinned.expected.averageAddedLightningDamagePerCharge)
+    expect(state.states.find(value => value.type === 'power')?.count).toBeUndefined()
+    expect(state.productive).toBe(false)
+    expect(pinned.expected.appliedSustainedDamageBonus).toBe(0)
   })
 })

@@ -42,7 +42,7 @@ Schadensmultiplikator verwendet.
 
 ## Prüfung
 
-- fünf versionierte Referenzfälle,
+- sechs versionierte Referenzfälle,
 - sechs fokussierte Paritätstests,
 - stabiler PoB2-Pin,
 - keine Runtime-Lua-Ausführung,

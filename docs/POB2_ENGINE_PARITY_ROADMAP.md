@@ -311,7 +311,7 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 
 # Fortschritt Schritt 82 – reproduzierbare Mikro-Parität
 
-- Fünf unabhängige Erwartungsfälle prüfen Basiszauber, Krit-Erwartung,
+- Sechs unabhängige Erwartungsfälle prüfen Basiszauber, Krit-Erwartung,
   elementare Gegnerabwehr, Waffenangriff, Kanalisierung und Aufladung.
 - Jeder Fall ist an den freigegebenen PoB2-Commit und konkrete
   Quelldateien gebunden.
@@ -335,3 +335,15 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   Schadensrechner `3.23.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PERSISTENT_STAGE_STATES_STEP_83.md`.
+
+# Fortschritt Schritt 84 – Charged Staff je Power Charge
+
+- Charged Staff liest Schaden und Dauer je verbrauchter Power Charge aus der
+  exakt angewandten Gemmenstufe.
+- Stufe 20 ergibt 1–22 zusätzlichen Blitzschaden und 6 Sekunden Dauer je
+  Charge; Stufe 10 ergibt 1–7.
+- Eine nicht belegte Ladungszahl erzeugt keinen permanenten Bonus.
+- Der Mikro-Paritätsbestand umfasst nun sechs Fälle.
+- Ladungszustandsmodell `1.2.0`, Schadensrechner `3.24.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_CHARGED_STAFF_STEP_84.md`.

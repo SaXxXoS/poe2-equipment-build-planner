@@ -12,12 +12,13 @@ const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   status: 'verified',
 })
 
-const setup = (skillId: string): SkillSetup => ({
+const setup = (skillId: string, level?: number): SkillSetup => ({
   id: `setup:${skillId}`,
   skillId,
   role: 'utility',
   weaponSet: 'set-1',
   supportGemIds: [],
+  ...(level == null ? {} : { level }),
 })
 
 describe('automatisches Ladungszustandsmodell', () => {
@@ -78,6 +79,37 @@ describe('automatisches Ladungszustandsmodell', () => {
       chargeTypes: ['power'],
     }))
     expect(result.productive).toBe(false)
+    expect(result.buffScenarios[0]).toMatchObject({
+      appliedSkillLevel: 20,
+      skillLevelStatus: 'default-reference-level',
+      requiredCharges: 1,
+      minimumAddedDamagePerCharge: 1,
+      maximumAddedDamagePerCharge: 22,
+      damageType: 'lightning',
+      durationPerChargeMs: 6000,
+      status: 'per-charge-scenario-known-current-count-unknown',
+    })
+  })
+
+  it('bindet das Charged-Staff-Szenario exakt an die gewählte Gemmenstufe', () => {
+    const chargedStaff = skill('charged-staff', 'Charged Staff')
+    expect(resolveChargeState({
+      setups: [setup(chargedStaff.id, 10)],
+      skills: [chargedStaff],
+    }).buffScenarios[0]).toMatchObject({
+      appliedSkillLevel: 10,
+      skillLevelStatus: 'exact',
+      minimumAddedDamagePerCharge: 1,
+      maximumAddedDamagePerCharge: 7,
+    })
+  })
+
+  it('ersetzt eine unbekannte angeforderte Charged-Staff-Stufe nicht durch einen Referenzwert', () => {
+    const chargedStaff = skill('charged-staff', 'Charged Staff')
+    expect(resolveChargeState({
+      setups: [setup(chargedStaff.id, 99)],
+      skills: [chargedStaff],
+    }).buffScenarios).toEqual([])
   })
 
   it('liefert bei identischer Eingabe identische Zustände', () => {

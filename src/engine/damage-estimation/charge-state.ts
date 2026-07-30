@@ -1,7 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 
-export const CHARGE_STATE_MODEL_VERSION = '1.1.0'
+export const CHARGE_STATE_MODEL_VERSION = '1.2.0'
 
 export type ChargeType = 'power' | 'frenzy' | 'endurance'
 export type ChargeAvailability = 'unavailable' | 'conditional-unresolved' | 'available-window'
@@ -28,10 +28,28 @@ export interface ChargeConsumption {
   detail: string
 }
 
+export interface ChargeBuffScenario {
+  sourceId: string
+  label: string
+  chargeType: ChargeType
+  appliedSkillLevel: number
+  skillLevelStatus: 'exact' | 'default-reference-level'
+  requiredCharges: number
+  minimumAddedDamagePerCharge: number
+  maximumAddedDamagePerCharge: number
+  damageType: 'lightning'
+  durationPerChargeMs: number
+  status: 'per-charge-scenario-known-current-count-unknown'
+  sourceReferences: string[]
+  evidence: 'structured-exact'
+  detail: string
+}
+
 export interface ChargeStateResult {
   relevant: boolean
   states: ChargeTypeState[]
   consumptions: ChargeConsumption[]
+  buffScenarios: ChargeBuffScenario[]
   productive: boolean
   modelVersion: string
 }
@@ -101,6 +119,7 @@ export function resolveChargeState(input: {
     })
   }
   const consumptions: ChargeConsumption[] = []
+  const buffScenarios: ChargeBuffScenario[] = []
   const regulation = selectedByName.get('charge regulation')
   const regulationRecord = byName.get('charge regulation')
   const intervalMs = regulationRecord?.numericStats.consume_frenzy_power_and_endurance_charge_every_x_ms
@@ -119,6 +138,48 @@ export function resolveChargeState(input: {
   }
   const chargedStaff = selectedByName.get('charged staff')
   if (chargedStaff) {
+    const chargedStaffRecord = byName.get('charged staff')
+    const chargedStaffSetup = input.setups.find(value => value.skillId === chargedStaff.id)
+    const requestedLevel = chargedStaffSetup?.level
+    const availableLevels = chargedStaffRecord?.levels.map(value => value.level) ?? []
+    const appliedSkillLevel = requestedLevel ?? (availableLevels.includes(20) ? 20 : availableLevels.at(-1))
+    const level = appliedSkillLevel == null
+      ? undefined
+      : chargedStaffRecord?.levels.find(value => value.level === appliedSkillLevel)
+    const stats = level?.numericStats as Record<string, number> | undefined
+    const requiredCharges = stats?.active_skill_requires_X_power_charges
+    const minimumAddedDamagePerCharge = stats?.charged_staff_attack_minimum_added_lightning_damage_per_stack
+    const maximumAddedDamagePerCharge = stats?.charged_staff_attack_maximum_added_lightning_damage_per_stack
+    const durationPerChargeMs = stats?.charged_staff_buff_duration_per_stack_ms
+    if (
+      level && (requestedLevel == null || level.level === requestedLevel)
+      && Number.isFinite(requiredCharges) && requiredCharges! > 0
+      && Number.isFinite(minimumAddedDamagePerCharge)
+      && Number.isFinite(maximumAddedDamagePerCharge)
+      && Number.isFinite(durationPerChargeMs) && durationPerChargeMs! > 0
+    ) {
+      buffScenarios.push({
+        sourceId: chargedStaff.id,
+        label: chargedStaff.displayNameDe,
+        chargeType: 'power',
+        appliedSkillLevel: level.level,
+        skillLevelStatus: requestedLevel == null ? 'default-reference-level' : 'exact',
+        requiredCharges: requiredCharges!,
+        minimumAddedDamagePerCharge: minimumAddedDamagePerCharge!,
+        maximumAddedDamagePerCharge: maximumAddedDamagePerCharge!,
+        damageType: 'lightning',
+        durationPerChargeMs: durationPerChargeMs!,
+        status: 'per-charge-scenario-known-current-count-unknown',
+        sourceReferences: [
+          'active_skill_requires_X_power_charges',
+          'charged_staff_attack_minimum_added_lightning_damage_per_stack',
+          'charged_staff_attack_maximum_added_lightning_damage_per_stack',
+          'charged_staff_buff_duration_per_stack_ms',
+        ],
+        evidence: 'structured-exact',
+        detail: `Auf Gemmenstufe ${level.level} gewährt jede verbrauchte Power Charge ${minimumAddedDamagePerCharge}–${maximumAddedDamagePerCharge} zusätzlichen Blitzschaden für ${durationPerChargeMs! / 1000} Sekunden. Die tatsächliche Ladungszahl und ihre Erzeugung sind nicht belegt; deshalb wird kein dauerhafter Angriffsschaden addiert.`,
+      })
+    }
     consumptions.push({
       sourceId: chargedStaff.id,
       label: chargedStaff.displayNameDe,
@@ -135,6 +196,7 @@ export function resolveChargeState(input: {
     relevant,
     states,
     consumptions,
+    buffScenarios,
     productive: states.some(state => state.availability === 'available-window'),
     modelVersion: CHARGE_STATE_MODEL_VERSION,
   }

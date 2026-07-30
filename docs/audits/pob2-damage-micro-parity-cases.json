@@ -133,6 +133,28 @@
         "fullStageAdditionalProjectiles": 12,
         "maximumPreparedHitWithCriticalExpectation": 896.94
       }
+    },
+    {
+      "id": "charged-staff-per-power-charge-l20",
+      "kind": "charge-buff",
+      "skill": "Charged Staff",
+      "level": 20,
+      "sourceReferences": [
+        "src/Data/Skills/act_int.lua",
+        "src/Modules/CalcOffence.lua"
+      ],
+      "inputs": {
+        "requiredPowerCharges": 1,
+        "minimumAddedLightningDamagePerCharge": 1,
+        "maximumAddedLightningDamagePerCharge": 22,
+        "durationPerChargeMs": 6000
+      },
+      "expected": {
+        "averageAddedLightningDamagePerCharge": 11.5,
+        "durationPerChargeSeconds": 6,
+        "currentChargeCount": null,
+        "appliedSustainedDamageBonus": 0
+      }
     }
   ]
 }

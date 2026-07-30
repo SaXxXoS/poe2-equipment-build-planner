@@ -3233,7 +3233,7 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 
 ## PoB2 micro parity - Schritt 82 (2026-07-30)
 
-- Fünf versionierte, vom Rechner getrennte Erwartungsfälle sind an den
+- Sechs versionierte, vom Rechner getrennte Erwartungsfälle sind an den
   gepinnten PoB2-Commit gebunden.
 - Die Tests decken Ball Lightning, elementare Gegnerabwehr, Flameblast,
   Detonating Arrow mit Shortbow und Volcano ab.
@@ -3261,3 +3261,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen; die
   autonome Arbeit wird mit der nächsten reproduzierbaren Mechanikkette
   fortgesetzt.
+
+## Charged Staff per Power Charge - Schritt 84 (2026-07-30)
+
+- Charged Staff transportiert stufengenau den zusätzlichen Blitzschaden und
+  die Buffdauer je verbrauchter Power Charge.
+- Referenzstufe 20 ergibt 1–22 Blitzschaden und 6 Sekunden je Charge;
+  Gemmenstufe 10 ergibt 1–7.
+- Eine unbekannte angeforderte Stufe wird nicht ersetzt. Ohne belegte
+  Power-Charge-Anzahl entsteht kein dauerhafter Schadensbonus.
+- Der unabhängige Mikro-Paritätsbestand wurde auf sechs Fälle erweitert.
+- Ladungszustandsmodell `1.2.0`, Schadensrechner `3.24.0`.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_CHARGED_STAFF_STEP_84.md`.
