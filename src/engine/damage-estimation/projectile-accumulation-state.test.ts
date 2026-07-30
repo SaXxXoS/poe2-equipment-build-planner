@@ -11,12 +11,13 @@ const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   source: 'local-placeholder',
   status: 'verified',
 })
-const setup = (skillId: string): SkillSetup => ({
+const setup = (skillId: string, level?: number): SkillSetup => ({
   id: `setup:${skillId}`,
   skillId,
   role: 'main',
   weaponSet: 'set-1',
   supportGemIds: [],
+  ...(level == null ? {} : { level }),
 })
 
 describe('projectile accumulation state', () => {
@@ -38,13 +39,29 @@ describe('projectile accumulation state', () => {
     expect(result.skills[0]).not.toHaveProperty('currentProjectiles')
   })
 
+  it('verwendet die exakte stufenabhängige Projektilgrenze', () => {
+    const ember = skill('ember-fusillade', 'Ember Fusillade')
+    const result = resolveProjectileAccumulationState({ setups: [setup(ember.id, 1)], skills: [ember] })
+    expect(result.skills[0]).toMatchObject({
+      maximumProjectiles: 6,
+      maximumReleaseWindowMs: 500,
+      appliedSkillLevel: 1,
+      skillLevelStatus: 'exact',
+    })
+  })
+
+  it('blockiert eine nicht vorhandene angeforderte Gemmenstufe', () => {
+    const ember = skill('ember-fusillade', 'Ember Fusillade')
+    expect(resolveProjectileAccumulationState({ setups: [setup(ember.id, 99)], skills: [ember] }).skills).toEqual([])
+  })
+
   it('bleibt für andere Projektilfertigkeiten ohne geschlossene Aufbaukette irrelevant', () => {
     const spark = skill('spark', 'Spark')
     expect(resolveProjectileAccumulationState({ setups: [setup(spark.id)], skills: [spark] })).toEqual({
       relevant: false,
       productive: false,
       skills: [],
-      modelVersion: '1.0.0',
+      modelVersion: '1.1.0',
     })
   })
 })

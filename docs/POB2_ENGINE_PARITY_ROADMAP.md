@@ -274,3 +274,13 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
   kein falscher DPS-Multiplikator erzeugt.
 - Siegel- und Projektilzustände werden nun im Ergebnis sichtbar erklärt.
 - Projektilaufbaumodell `1.0.0`, Schadensrechner `3.19.0`.
+
+# Fortschritt Schritt 79 – stufengenaue Zustandskapazität
+
+- Siegel und aufladbare Projektile werden aus der exakt angewandten
+  Gemmenstufe gelesen.
+- Ember Fusillade besitzt dadurch auf Stufe 1 sechs, auf Stufe 10 sieben und
+  auf Stufe 20 zehn mögliche Projektile.
+- Nicht vorhandene angeforderte Stufen werden weder interpoliert noch durch
+  einen Referenzhöchstwert ersetzt.
+- Siegelzustand `1.1.0`, Projektilaufbau `1.1.0`, Schadensrechner `3.20.0`.

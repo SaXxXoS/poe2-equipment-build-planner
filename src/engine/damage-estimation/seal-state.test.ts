@@ -11,12 +11,13 @@ const skill = (id: string, nameEn: string): SkillGemDefinition => ({
   source: 'local-placeholder',
   status: 'verified',
 })
-const setup = (skillId: string): SkillSetup => ({
+const setup = (skillId: string, level?: number): SkillSetup => ({
   id: `setup-${skillId}`,
   skillId,
   role: 'main',
   weaponSet: 'set-1',
   supportGemIds: [],
+  ...(level == null ? {} : { level }),
 })
 
 describe('seal state', () => {
@@ -37,13 +38,28 @@ describe('seal state', () => {
     expect(result.skills[0]).not.toHaveProperty('availableSeals')
   })
 
+  it('bindet die Siegelparameter an die angeforderte Gemmenstufe', () => {
+    const salvo = skill('freezing-salvo', 'Freezing Salvo')
+    const result = resolveSealState({ setups: [setup(salvo.id, 1)], skills: [salvo] })
+    expect(result.skills[0]).toMatchObject({
+      maximumSeals: 10,
+      appliedSkillLevel: 1,
+      skillLevelStatus: 'exact',
+    })
+  })
+
+  it('blockiert eine nicht vorhandene angeforderte Gemmenstufe', () => {
+    const salvo = skill('freezing-salvo', 'Freezing Salvo')
+    expect(resolveSealState({ setups: [setup(salvo.id, 99)], skills: [salvo] }).skills).toEqual([])
+  })
+
   it('bleibt für Fertigkeiten ohne Siegel irrelevant', () => {
     const spark = skill('spark', 'Spark')
     expect(resolveSealState({ setups: [setup(spark.id)], skills: [spark] })).toEqual({
       relevant: false,
       productive: false,
       skills: [],
-      modelVersion: '1.0.0',
+      modelVersion: '1.1.0',
     })
   })
 })

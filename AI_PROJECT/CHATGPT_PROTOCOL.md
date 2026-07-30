@@ -3188,5 +3188,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Projektilaufbaumodell `1.0.0`, Schadensrechner `3.19.0`.
 - Hauptdokument:
   `docs/BUILD_ASSISTANT_PROJECTILE_ACCUMULATION_STEP_78.md`.
+
+## Level-bound state capacity - Schritt 79 (2026-07-30)
+
+- Siegel- und Projektilkapazitaet verwenden jetzt dieselbe exakte
+  Gemmenstufe wie die restliche Fertigkeitsberechnung.
+- Ember Fusillade besitzt auf Stufe 1 sechs und auf Stufe 20 zehn
+  Projektile; eine unbekannte angeforderte Stufe bleibt blockiert.
+- Es gibt keine Interpolation und keinen Ersatz durch einen Hoechstwert.
+- Siegelzustand `1.1.0`, Projektilaufbau `1.1.0`,
+  Schadensrechner `3.20.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_STATE_GEM_LEVEL_STEP_79.md`.
 - Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
   autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.

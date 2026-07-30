@@ -1,7 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 
-export const SEAL_STATE_MODEL_VERSION = '1.0.0'
+export const SEAL_STATE_MODEL_VERSION = '1.1.0'
 
 export interface SkillSealState {
   skillId: string
@@ -10,6 +10,8 @@ export interface SkillSealState {
   repeatsPerBrokenSeal: number
   sealGainIntervalMs: number
   fullPreparationTimeMs: number
+  appliedSkillLevel: number
+  skillLevelStatus: 'exact' | 'default-reference-level'
   availableSeals?: number
   status: 'capacity-known-current-state-unknown'
   evidence: 'structured-exact'
@@ -37,14 +39,21 @@ export function resolveSealState(input: {
   setups: SkillSetup[]
   skills: SkillGemDefinition[]
 }): SealStateResult {
-  const selectedIds = new Set(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => setup.skillId))
+  const selectedSetups = new Map(input.setups.filter(setup => Boolean(setup.skillId)).map(setup => [setup.skillId, setup]))
+  const selectedIds = new Set(selectedSetups.keys())
   const skills = input.skills
     .filter(skill => selectedIds.has(skill.id) && Boolean(skill.nameEn))
     .flatMap<SkillSealState>(skill => {
       const record = byName.get(skill.nameEn!.toLocaleLowerCase('en'))
-      const maximumSeals = record?.numericStats.base_maximum_seals_for_skill
-      const repeatsPerBrokenSeal = record?.numericStats.skill_rapid_fire_repeats_per_broken_seal
-      const sealGainIntervalMs = record?.numericStats.base_skill_seal_gain_interval_ms
+      const requestedLevel = selectedSetups.get(skill.id)?.level
+      const availableLevels = record?.levels.map(value => value.level) ?? []
+      const appliedSkillLevel = requestedLevel ?? (availableLevels.includes(20) ? 20 : availableLevels.at(-1))
+      const level = appliedSkillLevel == null ? undefined : record?.levels.find(value => value.level === appliedSkillLevel)
+      if (!level || (requestedLevel != null && level.level !== requestedLevel)) return []
+      const stats = level.numericStats as Record<string, number>
+      const maximumSeals = stats.base_maximum_seals_for_skill
+      const repeatsPerBrokenSeal = stats.skill_rapid_fire_repeats_per_broken_seal
+      const sealGainIntervalMs = stats.base_skill_seal_gain_interval_ms
       if (
         !Number.isFinite(maximumSeals) || maximumSeals! <= 0
         || !Number.isFinite(repeatsPerBrokenSeal) || repeatsPerBrokenSeal! <= 0
@@ -58,6 +67,8 @@ export function resolveSealState(input: {
         repeatsPerBrokenSeal: repeatsPerBrokenSeal!,
         sealGainIntervalMs: sealGainIntervalMs!,
         fullPreparationTimeMs,
+        appliedSkillLevel,
+        skillLevelStatus: requestedLevel == null ? 'default-reference-level' : 'exact',
         status: 'capacity-known-current-state-unknown',
         evidence: 'structured-exact',
         sourceReferences: [
@@ -66,7 +77,7 @@ export function resolveSealState(input: {
           'skill_rapid_fire_repeats_per_broken_seal',
           'base_skill_seal_gain_interval_ms',
         ],
-        detail: `Maximal ${maximumSeals} Siegel, ${repeatsPerBrokenSeal} Wiederholung je gebrochenem Siegel und ${sealGainIntervalMs! / 1000} Sekunden Aufbauintervall sind belegt. Der aktuelle Siegelstand und der tatsächliche Auslösezeitpunkt sind nicht Teil des Buildzustands; deshalb entsteht noch kein Schadensmultiplikator.`,
+        detail: `Auf Gemmenstufe ${appliedSkillLevel} sind maximal ${maximumSeals} Siegel, ${repeatsPerBrokenSeal} Wiederholung je gebrochenem Siegel und ${sealGainIntervalMs! / 1000} Sekunden Aufbauintervall belegt. Der aktuelle Siegelstand und der tatsächliche Auslösezeitpunkt sind nicht Teil des Buildzustands; deshalb entsteht noch kein Schadensmultiplikator.`,
       }]
     })
   return {
