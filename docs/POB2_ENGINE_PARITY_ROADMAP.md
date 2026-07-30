@@ -371,3 +371,12 @@ Mechaniken klassifiziert. Die gemessene Coverage des offiziellen Baums steigt
 von 85,32 % auf 89,06 %; 223 weitere Statzeilen sind aufgelöst. Ohne
 passendes BuildProfile-Feld entsteht daraus kein erfundener Schadensscore.
 Details: `BUILD_ASSISTANT_PASSIVE_CONTROL_SEMANTICS_STEP_88.md`.
+
+# Schritt 89: Ressourcen- und Gegenstandssemantik im Passivbaum
+
+Meta-Energie, Glory, Hazard, Rage, Debuff, Remnant, Charm, Crossbow,
+Electrocute und Flask werden als getrennte Mechaniken klassifiziert. Die
+gemessene Coverage steigt von 89,06 % auf 92,64 %; weitere 213 Statzeilen
+sind aufgelöst. Ohne passendes BuildProfile-Feld entsteht kein erfundener
+Rankingbonus. Details:
+`BUILD_ASSISTANT_PASSIVE_RESOURCE_SEMANTICS_STEP_89.md`.

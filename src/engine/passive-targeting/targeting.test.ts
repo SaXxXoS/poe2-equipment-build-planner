@@ -33,6 +33,22 @@ describe('offizielle Statklassifikation',()=>{
   expect(result.tags).toContain(expected)
   expect(result.tags).not.toEqual(expect.arrayContaining(['fire','cold','lightning','physical','chaos']))
  })
+ it.each([
+  ['[Meta] Skills gain 8% increased [Energy]','meta-skill'],
+  ['15% increased [Glory] generation','glory'],
+  ['16% increased [Hazard] Damage','hazard'],
+  ['Gain 2 [Rage] when [HitDamage|Hit] by an Enemy','rage'],
+  ['[Debuff|Debuffs] on you expire 10% faster','debuff'],
+  ['[Remnant|Remnants] can be collected from 20% further away','remnant'],
+  ['10% increased [Charm] Charges gained','charm'],
+  ['15% increased [Crossbow|Crossbow] Reload Speed','crossbow'],
+  ['15% increased [Electrocute|Electrocute Buildup]','electrocute'],
+  ['15% increased Life [Flask|Flask] Charges gained','flask'],
+ ])('erkennt die offizielle Ressourcen- und Gegenstandsmechanik %s fail-closed',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})

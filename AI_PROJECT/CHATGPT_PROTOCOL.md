@@ -3314,3 +3314,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Passivklassifikator: `1.1.0`.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_CONTROL_SEMANTICS_STEP_88.md`.
+
+## Schritt 89 – Ressourcen- und Gegenstandssemantik im Passivbaum
+
+- Neue getrennte Tags: Meta Skill, Glory, Hazard, Rage, Debuff, Remnant,
+  Charm, Crossbow, Electrocute und Flask.
+- Offizielle Coverage: 89,06 % → 92,64 %.
+- Klassifizierte Statzeilen: 5.310 → 5.523.
+- Ungelöste Statzeilen: 652 → 439.
+- Die 213 neu aufgelösten Zeilen erzeugen ohne passendes Profilfeld keinen
+  erfundenen Schadens-, Waffen- oder Rankingbonus.
+- Passivklassifikator: `1.2.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_RESOURCE_SEMANTICS_STEP_89.md`.
