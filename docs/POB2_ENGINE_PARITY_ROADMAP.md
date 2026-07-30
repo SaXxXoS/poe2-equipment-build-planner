@@ -389,3 +389,12 @@ klassifiziert. Die gemessene Coverage steigt von 92,64 % auf 94,55 %;
 weitere 114 Statzeilen sind aufgelöst. Ohne passendes BuildProfile-Feld
 entsteht kein erfundener Schadens- oder Rankingbonus. Details:
 `BUILD_ASSISTANT_PASSIVE_BUFF_SEMANTICS_STEP_90.md`.
+
+# Schritt 91: Projektil-, Ladungs- und Reservierungssemantik
+
+Pierce, Immobilisation, Combo, Endurance/Frenzy/Power Charges, Reservation,
+Herald, Quiver und passive Zusatzpunkte werden getrennt klassifiziert.
+Flask- und Charm-Charges werden nicht mit Kampf-Ladungen vermischt. Die
+Coverage steigt von 94,55 % auf 96,13 %; weitere 94 Statzeilen sind
+aufgelöst. Details:
+`BUILD_ASSISTANT_PASSIVE_CHARGE_RESERVATION_SEMANTICS_STEP_91.md`.

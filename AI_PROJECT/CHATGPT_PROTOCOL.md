@@ -3342,3 +3342,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_BUFF_SEMANTICS_STEP_90.md`.
+
+## Schritt 91 – Projektil-, Ladungs- und Reservierungssemantik
+
+- Neue getrennte Tags: Pierce, Immobilisation, Combo, Endurance Charge,
+  Frenzy Charge, Power Charge, Reservation, Herald, Quiver und Passive Point.
+- Flask- und Charm-Charges bleiben von den drei Kampf-Ladungen getrennt.
+- Offizielle Coverage: 94,55 % → 96,13 %.
+- Klassifizierte Statzeilen: 5.637 → 5.731.
+- Ungelöste Statzeilen: 325 → 231.
+- Die 94 neu aufgelösten Zeilen erzeugen ohne passende Wirkungsregel keinen
+  erfundenen Schadens- oder Ressourcenbonus.
+- Passivklassifikator: `1.4.0`.
+- Fokussierter Lauf: 88 Tests erfolgreich; Typecheck erfolgreich.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_CHARGE_RESERVATION_SEMANTICS_STEP_91.md`.

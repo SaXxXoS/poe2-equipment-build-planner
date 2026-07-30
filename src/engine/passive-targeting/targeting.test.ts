@@ -66,6 +66,26 @@ describe('offizielle Statklassifikation',()=>{
   expect(result.tags).toContain(expected)
   expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
  })
+ it.each([
+  ['15% chance to [Pierce|Pierce] an Enemy','pierce'],
+  ['15% increased [Immobilised|Immobilisation] buildup','immobilisation'],
+  ['5% Chance to build an additional [Combo] on [HitDamage|Hit]','combo'],
+  ['+1 to Maximum [Charges|Endurance Charges]','endurance-charge'],
+  ['+1 to Maximum [Charges|Frenzy Charges]','frenzy-charge'],
+  ['+1 to Maximum [Charges|Power Charges]','power-charge'],
+  ['6% increased [Reservation] [Efficiency] of [Herald] Skills','reservation'],
+  ['[Herald] Skills deal 20% increased Damage','herald'],
+  ['6% increased bonuses gained from Equipped [Quiver]','quiver'],
+  ['Grants 1 Passive Skill Point','passive-point'],
+ ])('trennt die offizielle Projektil-, Ladungs- und Reservierungsfamilie %s',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining(['damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos']))
+ })
+ it('verwechselt Fläschchen- und Charm-Ladungen nicht mit Kampf-Ladungen',()=>{
+  expect(tags('10% increased [Flask|Flask] Charges gained')).not.toEqual(expect.arrayContaining(['endurance-charge','frenzy-charge','power-charge']))
+  expect(tags('10% increased [Charm] Charges gained')).not.toEqual(expect.arrayContaining(['endurance-charge','frenzy-charge','power-charge']))
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
