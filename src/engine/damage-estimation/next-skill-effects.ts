@@ -3,14 +3,14 @@ import type { SkillGemDefinition, SkillSetup } from '../../domain'
 import type { RotationAnalysis, RotationStepAnalysis } from '../common/types'
 import type { DamageComponent } from './types'
 
-export const NEXT_SKILL_EFFECT_MODEL_VERSION = '2.0.0'
+export const NEXT_SKILL_EFFECT_MODEL_VERSION = '2.1.0'
 
 export interface NextSkillEffect {
   sourceId: string
   sourceLabel: string
   targetSkillId?: string
   targetSkillLabel?: string
-  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'repeated-projectile-sequence' | 'blocked'
+  kind: 'more-damage' | 'gain-as-fire' | 'gain-as-chaos' | 'repeated-projectile-sequence' | 'charge-dependent-repeats' | 'blocked'
   percent?: number
   repeatCount?: number
   sequenceDamageMultiplier?: number
@@ -120,6 +120,7 @@ export function resolveNextSkillEffects(input: {
     if (source.nameEn === 'Barrage') {
       const targetRecord = main.nameEn ? byName.get(main.nameEn.toLocaleLowerCase('en')) : undefined
       const repeats = stats['empower_barrage_base_number_of_barrage_repeats']
+      const repeatsPerFrenzyCharge = stats['empower_barrage_number_of_barrage_repeats_per_frenzy_charge']
       const lessDamage = stats['empower_barrage_damage_-%_final_with_repeated_projectiles']
       const compatibleTarget = targetRecord?.skillTypes.includes('Barrageable') === true
       if (adjacent && compatibleTarget && Number.isFinite(repeats) && repeats > 0 && Number.isFinite(lessDamage) && lessDamage >= 0 && lessDamage <= 100) {
@@ -141,6 +142,20 @@ export function resolveNextSkillEffects(input: {
           detail: `${source.displayNameDe} lässt den unmittelbar folgenden Projektilangriff ${main.displayNameDe} ${repeats}-mal wiederholen. Jede Wiederholung verursacht ${lessDamage} % weniger Schaden; die belegte Sequenz entspricht damit ${sequenceDamageMultiplier} Trefferschäden. Zusätzliche Wiederholungen pro Raserei-Ladung bleiben ohne bestätigte Ladungszahl ausgeschlossen.`,
         })
         components = scale(components, sequenceDamageMultiplier)
+        if (Number.isFinite(repeatsPerFrenzyCharge) && repeatsPerFrenzyCharge > 0) {
+          effects.push({
+            ...common,
+            kind: 'charge-dependent-repeats',
+            repeatCount: repeatsPerFrenzyCharge,
+            status: 'blocked',
+            evidence: 'structured-exact',
+            sourceReferences: [
+              'empower_barrage_number_of_barrage_repeats_per_frenzy_charge',
+              'charge-state:confirmed-frenzy-count-required',
+            ],
+            detail: `Jede beim Einsatz bestätigte Raserei-Ladung würde ${repeatsPerFrenzyCharge} weitere Barrage-Wiederholung hinzufügen. Da der aktuelle Buildzustand keine exakte verfügbare Ladungszahl bestätigt, bleibt dieser Zusatz getrennt ausgewiesen und verändert den Schadenswert nicht.`,
+          })
+        }
       } else {
         effects.push({
           ...common,

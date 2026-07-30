@@ -233,3 +233,14 @@ nur den verbleibenden Anteil; mehrstufige Vorwärtsketten bleiben erhalten.
 - Die Nutzungszahl wird sichtbar ausgewiesen, aber nicht fälschlich als
   dauerhafter Schadensmultiplikator verwendet.
 - Trigger-Teilmodell `1.7.0`.
+
+# Fortschritt Schritt 75 – ladungsabhängige Barrage-Wiederholungen
+
+- Die gepinnte Regel `+1 Barrage-Wiederholung pro Raserei-Ladung` wird im
+  Rechennachweis getrennt von den sicheren Basiswiederholungen ausgewiesen.
+- Ohne bestätigte verfügbare Ladungszahl entsteht kein erfundener
+  Schadensbonus.
+- `Combat Frenzy` transportiert sein belegtes Erzeugungsintervall;
+  `Disengage` transportiert seine bedingten drei Ladungen. Beide bleiben
+  ohne vollständige Auslösekette nicht produktiv.
+- Folgefertigkeitsmodell `2.1.0`, Ladungszustandsmodell `1.1.0`.

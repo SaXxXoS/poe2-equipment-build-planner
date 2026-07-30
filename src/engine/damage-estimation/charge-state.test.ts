@@ -57,6 +57,18 @@ describe('automatisches Ladungszustandsmodell', () => {
     expect(result.productive).toBe(false)
   })
 
+  it('erfasst Combat Frenzy nur mit belegtem Intervall und ohne erfundene Ladungszahl', () => {
+    const combatFrenzy = skill('combat-frenzy', 'Combat Frenzy')
+    const result = resolveChargeState({ setups: [setup(combatFrenzy.id)], skills: [combatFrenzy] })
+    expect(result.states.find(state => state.type === 'frenzy')).toEqual(expect.objectContaining({
+      availability: 'conditional-unresolved',
+      durationMs: 6_100,
+      evidence: 'structured-exact',
+    }))
+    expect(result.states.find(state => state.type === 'frenzy')).not.toHaveProperty('count')
+    expect(result.productive).toBe(false)
+  })
+
   it('blockiert Charged Staff ohne belegte Power Charges', () => {
     const chargedStaff = skill('charged-staff', 'Charged Staff')
     const result = resolveChargeState({ setups: [setup(chargedStaff.id)], skills: [chargedStaff] })

@@ -1,7 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillGemDefinition, SkillSetup } from '../../domain'
 
-export const CHARGE_STATE_MODEL_VERSION = '1.0.0'
+export const CHARGE_STATE_MODEL_VERSION = '1.1.0'
 
 export type ChargeType = 'power' | 'frenzy' | 'endurance'
 export type ChargeAvailability = 'unavailable' | 'conditional-unresolved' | 'available-window'
@@ -74,6 +74,19 @@ export function resolveChargeState(input: {
     detail: `Keine vollständig belegte Erzeugung von ${labels[type]} in den ausgewählten Fertigkeiten.`,
   }))
   const frenzy = states.find(state => state.type === 'frenzy')!
+  const combatFrenzy = selectedByName.get('combat frenzy')
+  const combatFrenzyRecord = byName.get('combat frenzy')
+  const combatFrenzyCooldown = combatFrenzyRecord?.numericStats.skill_combat_frenzy_x_ms_cooldown
+  if (combatFrenzy && Number.isFinite(combatFrenzyCooldown) && combatFrenzyCooldown! > 0) {
+    Object.assign(frenzy, {
+      availability: 'conditional-unresolved' as const,
+      durationMs: combatFrenzyCooldown,
+      sourceIds: [combatFrenzy.id],
+      sourceReferences: ['skillTypes:GeneratesCharges', 'skill_combat_frenzy_x_ms_cooldown'],
+      evidence: 'structured-exact' as const,
+      detail: `${combatFrenzy.displayNameDe} besitzt ein belegtes Erzeugungsintervall von ${combatFrenzyCooldown! / 1000} Sekunden. Auslösezustand, tatsächlich erzeugte Ladungszahl und fortlaufende Verfügbarkeit sind im gepinnten Produktdatensatz nicht vollständig aufgelöst.`,
+    })
+  }
   const disengage = selectedByName.get('disengage')
   const disengageRecord = byName.get('disengage')
   const disengageCount = disengageRecord?.numericStats.consume_parry_debuff_on_hit_to_gain_X_frenzy_charges
@@ -81,8 +94,8 @@ export function resolveChargeState(input: {
     Object.assign(frenzy, {
       availability: 'conditional-unresolved' as const,
       count: disengageCount,
-      sourceIds: [disengage.id],
-      sourceReferences: ['consume_parry_debuff_on_hit_to_gain_X_frenzy_charges'],
+      sourceIds: [...frenzy.sourceIds, disengage.id],
+      sourceReferences: [...frenzy.sourceReferences, 'consume_parry_debuff_on_hit_to_gain_X_frenzy_charges'],
       evidence: 'structured-exact' as const,
       detail: `${disengageCount} Frenzy Charges sind nach Verbrauch eines Parry-Debuffs belegt; Erzeugung und Verfügbarkeit dieses Debuffs sind im Buildzustand nicht aufgelöst.`,
     })

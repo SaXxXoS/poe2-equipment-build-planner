@@ -3146,3 +3146,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `docs/BUILD_ASSISTANT_BARRAGE_SEQUENCE_STEP_74.md`.
 - Die autonome PoB2-Paritätsarbeit wird mit weiteren reproduzierbaren
   Wiederholungs-, Trigger- und Projektilketten fortgesetzt.
+# Schritt 75 – ladungsabhängige Barrage-Wiederholungen
+
+- Die exakt gepinnte Barrage-Regel von einer zusätzlichen Wiederholung pro
+  verfügbarer Raserei-Ladung ist jetzt ein eigener Rechenschritt.
+- Ohne bestätigte Ladungszahl bleibt dieser Schritt sichtbar blockiert und
+  verändert weder Sequenz- noch Dauerschaden.
+- `Combat Frenzy` liefert sein strukturiertes Intervall von 6,1 Sekunden,
+  aber keine erfundene Ladungszahl. `Disengage` bleibt an den noch
+  unaufgelösten Parry-Debuff gebunden.
+- Schadensrechner `3.16.0`, Folgefertigkeitsmodell `2.1.0`,
+  Ladungszustandsmodell `1.1.0`.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_BARRAGE_CHARGE_TRACE_STEP_75.md`.
+- Die PoB2-Gleichwertigkeit ist weiterhin nicht vollständig belegt; die
+  autonome Arbeit setzt mit der nächsten reproduzierbaren Rechenkette fort.

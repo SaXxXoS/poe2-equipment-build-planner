@@ -133,6 +133,14 @@ describe('vorbereitete Folgeangriffswirkungen', () => {
       sequenceDamageMultiplier: 2,
       status: 'prepared-next-sequence',
     })
+    expect(result.blockedEffects).toContainEqual(expect.objectContaining({
+      kind: 'charge-dependent-repeats',
+      repeatCount: 1,
+      evidence: 'structured-exact',
+      status: 'blocked',
+    }))
+    expect(result.blockedEffects.find(value => value.kind === 'charge-dependent-repeats')?.detail)
+      .toContain('keine exakte verfügbare Ladungszahl')
     expect(result.components).toEqual([{ type: 'lightning', minimum: 200, maximum: 400 }])
   })
 
