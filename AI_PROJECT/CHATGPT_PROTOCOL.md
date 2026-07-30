@@ -3426,3 +3426,19 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
+
+## Schritt 96 – regelrelevante Passivsysteme
+
+- Reveal Weakness, besondere Juwelsockel, Strike/Splash, Dodge Roll,
+  zusätzliche Ring-Slots, Aftershock, gesockelte Juwelboni, Slam,
+  Shapeshift und Surrounded werden getrennt und fail-closed erkannt.
+- Stattexte an Klassenstarts, Aszendenzstarts und Juwelsockeln werden
+  klassifiziert; deren Sperr- und Sockelregeln bleiben unverändert.
+- Keine neue Regel erfindet Elementarschaden, Attribute, DPS oder
+  Trefferwahrscheinlichkeiten.
+- Baum-Coverage: 5.852 von 5.962 Statzeilen, entsprechend 98,15 %.
+- 110 Statzeilen bleiben ungelöst.
+- Passivklassifikator: `1.9.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_COMBAT_SYSTEMS_STEP_96.md`.

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditDate": "2026-07-30",
+  "sourceRelease": "0.5.2",
+  "totalNodes": 5150,
+  "totalStatLines": 5962,
+  "classifierVersion": "1.9.0",
+  "analyzerVersion": "1.1.0",
+  "addedTags": [
+    "reveal-weakness",
+    "sinister-jewel-socket",
+    "strike",
+    "splash-damage",
+    "dodge-roll",
+    "ring-slot",
+    "aftershock",
+    "socketed-jewel-effect",
+    "slam",
+    "shapeshift",
+    "surrounded"
+  ],
+  "coverageBefore": 97.84,
+  "coverageAfter": 98.15,
+  "classifiedStatLinesBefore": 5833,
+  "classifiedStatLinesAfter": 5852,
+  "unresolvedStatLinesBefore": 129,
+  "unresolvedStatLinesAfter": 110,
+  "specialNodeTextsClassified": true,
+  "eligibilityRulesChanged": false,
+  "inventedProfileEffects": false,
+  "status": "measured-fail-closed"
+}

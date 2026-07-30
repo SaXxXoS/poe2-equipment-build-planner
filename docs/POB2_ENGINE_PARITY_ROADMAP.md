@@ -440,3 +440,18 @@ Negative Licht- und Offering-Formen werden von positiven Formen getrennt.
 Die Coverage steigt von 97,60 % auf 97,84 %; 129 von 5.962 Statzeilen bleiben
 fail-closed ungelöst. Vollständige Path-of-Building-2-Gleichwertigkeit bleibt
 offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
+
+## Schritt 96 – regelrelevante Passivsysteme
+
+- Reveal Weakness, Sinister Jewel Socket, Strike/Splash, Dodge Roll,
+  Ring-Slots, Aftershock, gesockelte Juwelboni, Slam, Shapeshift und
+  Surrounded werden getrennt klassifiziert.
+- Zusammengesetzte Originalzeilen behalten mehrere belegte Mechaniktags.
+- Spezialtexte an Start- und Juwelknoten werden erfasst, ohne deren
+  Eligibility zu verändern.
+- Offizielle Coverage: 5.852 von 5.962 Statzeilen, entsprechend 98,15 %.
+- 110 Statzeilen bleiben fail-closed ungelöst.
+- Passivklassifikator: `1.9.0`; Passivziel-Analyzer: `1.1.0`.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_COMBAT_SYSTEMS_STEP_96.md`.

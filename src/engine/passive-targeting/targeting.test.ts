@@ -150,6 +150,34 @@ describe('offizielle Statklassifikation',()=>{
   expect(classifyPassiveText('[Offering] Skills have 30% reduced Duration','normal').effectDirection).toBe('negative')
   expect(classifyPassiveText('[Offering] Skills have 20% increased Duration','normal').effectDirection).toBe('positive')
  })
+ it.each([
+  ['[RevealWeakness|Reveal Weaknesses] against [Rarity|Rare and Unique] enemies','reveal-weakness'],
+  ['[SinisterJewelSockets|Sinister] [Jewel] Socket','sinister-jewel-socket'],
+  ['[Strike|Strikes] deal [MeleeSplash|Splash Damage]','splash-damage'],
+  ['+0.5 metres to Dodge Roll distance while [Surrounded]','dodge-roll'],
+  ['+1 Ring Slot','ring-slot'],
+  ['10% chance for [Mace] [Slam] Skills you use yourself to cause an additional [Aftershock]','aftershock'],
+  ['100% increased Effect of bonuses gained from Socketed [Jewel]','socketed-jewel-effect'],
+  ['15% chance for [Shapeshift] [Slam] Skills you use yourself to cause an additional [Aftershock]','shapeshift'],
+  ['25% increased [Attack|Attack] Damage while [Surrounded|Surrounded]','surrounded'],
+ ])('klassifiziert die regelrelevante offizielle Restfamilie %s ohne freie Zahlenwirkung',(text,expected)=>{
+  const result=classifyPassiveText(text,'normal')
+  expect(result.tags).toContain(expected)
+  expect(result.affectedProfileFields).not.toEqual(expect.arrayContaining([
+   'damageTypes.fire','damageTypes.cold','damageTypes.lightning','damageTypes.physical','damageTypes.chaos',
+   'requirements.strengthNeed','requirements.dexterityNeed','requirements.intelligenceNeed',
+  ]))
+ })
+ it('erhält zusammengesetzte Strike-, Slam- und Shapeshift-Evidenz getrennt',()=>{
+  const strike=classifyPassiveText('[Strike] Skills you use yourself with [Mace|Maces] have 10% chance to deal [MeleeSplash|Splash Damage]','normal')
+  expect(strike.tags).toEqual(expect.arrayContaining(['strike','splash-damage']))
+  const slam=classifyPassiveText('15% chance for [Shapeshift] [Slam] Skills you use yourself to cause an additional [Aftershock]','normal')
+  expect(slam.tags).toEqual(expect.arrayContaining(['shapeshift','slam','aftershock']))
+ })
+ it('klassifiziert belegte Spezialtexte auch an Juwel- und Startknoten, ohne deren Eligibility zu verändern',()=>{
+  expect(classifyPassiveText('[SinisterJewelSockets|Sinister] [Jewel] Socket','jewel-socket').tags).toContain('sinister-jewel-socket')
+  expect(classifyPassiveText('100% increased Effect of bonuses gained from Socketed [Jewel]','jewel-socket').tags).toContain('socketed-jewel-effect')
+ })
 })
 describe('regelbasierte Zielbewertung',()=>{
  it('bevorzugt Lightning nur beim Lightning-Profil',()=>{const n=node('lightning','12% increased [Lightning] Damage');const lightning=evaluatePassiveTargets(input([n])).allCandidates[0];const cold=evaluatePassiveTargets(input([n],PASSIVE_TARGET_TEST_PROFILES.coldSpell)).allCandidates[0];expect(lightning.damageScore).toBeGreaterThan(cold.damageScore);expect(cold.conflictingTags).toContain('lightning')})
