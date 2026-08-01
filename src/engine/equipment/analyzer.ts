@@ -50,9 +50,12 @@ function analyzeProfile(values: DefinitionValue[], goal: EngineRequest['input'][
   profile.defence.resistanceNeed = normalizeAffinity((config.resistanceTarget - resistanceTotal) / config.resistanceTarget * config.resistanceNeedScale, config)
   const defenceTotal = profile.defence.lifeAffinity + profile.defence.armourAffinity + profile.defence.evasionAffinity + profile.defence.energyShieldAffinity
   profile.defence.generalDefenceNeed = normalizeAffinity((config.defenceTarget - defenceTotal) / config.defenceTarget * config.affinityMax, config)
-  profile.requirements.strengthNeed = normalizeAffinity(config.attributeTargets.strength - attributes.strength, config)
-  profile.requirements.dexterityNeed = normalizeAffinity(config.attributeTargets.dexterity - attributes.dexterity, config)
-  profile.requirements.intelligenceNeed = normalizeAffinity(config.attributeTargets.intelligence - attributes.intelligence, config)
+  // Ohne konkrete Gegenstands- oder Gemmenanforderung existiert kein fachlicher
+  // Attribut-Zielwert. Die frühere pauschale 60er-Schwelle erzeugte falsche
+  // Skill-Sperren und unnötige Attributpfade.
+  profile.requirements.strengthNeed = 0
+  profile.requirements.dexterityNeed = 0
+  profile.requirements.intelligenceNeed = 0
   reasons.push({ code: 'equipment-resistance-need', category: 'defence', messageKey: 'engine.equipment.resistanceNeed', impact: -profile.defence.resistanceNeed, polarity: profile.defence.resistanceNeed > config.affinityMax / 2 ? 'negative' : 'neutral', sourceType: 'equipment', affectedTags: ['defensive'], details: { syntheticTarget: config.resistanceTarget, resistanceTotal, result: profile.defence.resistanceNeed } })
   reasons.push({ code: 'equipment-general-defence-need', category: 'defence', messageKey: 'engine.equipment.generalDefenceNeed', impact: -profile.defence.generalDefenceNeed, polarity: profile.defence.generalDefenceNeed > config.affinityMax / 2 ? 'negative' : 'neutral', sourceType: 'equipment', affectedTags: ['defensive'], details: { syntheticTarget: config.defenceTarget, defenceTotal, result: profile.defence.generalDefenceNeed } })
   return { profile, reasons, contributions, tags, attributes, resistanceTotal }

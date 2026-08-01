@@ -108,12 +108,12 @@ const immutableFiles = {
   // removes the unrequested range input. Source scopes and socketable product
   // boundaries remain unchanged.
   '../../src/components/AffixDialog.tsx': '2fbb21ddb511567b1c1b17420a4b5f7a45011ea904a3ae963302e5af03143415',
-  '../../src/engine/common/types.ts': 'ae1657637df03da215ae79eacf81e11e977c2e2cf9e2121138bd210043dcf2d2',
+  '../../src/engine/common/types.ts': 'a7cdacb39688ed328a2fb0b9f8492f23da01bef2f995ba348a6e808c54ef4cba',
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
-  '../../src/engine/equipment/analyzer.ts': 'cdb37e2dbba3ef0ed89c3fcdda1fe6e0c791acde42526be80d88b688e9e28aec',
+  '../../src/engine/equipment/analyzer.ts': 'b3187ad6592f11dfbd5ee9d3fa547a13781bcb84148598f81f5f9afc73847bd6',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
-  '../../src/engine/uniques/analyzer.ts': '747a787d681a6b6b0823a9a781283b636a77fad91345a1aa110394e54cb4ef32',
-  '../../src/engine/orchestration/analyze-build.ts': '700281cc5fb78b46108f427869e0d8d296fa3ff85ac4126e7a78d49596b839c0',
+  '../../src/engine/uniques/analyzer.ts': '552bdd987371735bc175e02824511cc5bf7bd0943e0ea3ef14b7cee2d756187b',
+  '../../src/engine/orchestration/analyze-build.ts': '822fdd46020e99d12532303d76a8a539c5cb8b23eb3cf496329b20771bb72b5a',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',
 }

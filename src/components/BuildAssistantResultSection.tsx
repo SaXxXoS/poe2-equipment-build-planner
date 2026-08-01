@@ -45,6 +45,18 @@ export function CharacterDefencePanel({ model }: { model: NonNullable<NonNullabl
     <p className="muted">{model.limitations.join(' ')}</p>
   </div>
 }
+const attributeLabel = { strength: 'StÃ¤rke', dexterity: 'Geschicklichkeit', intelligence: 'Intelligenz' } as const
+export function CharacterAttributePanel({ models }: { models: NonNullable<BuildAnalysis['characterAttributes']> }) {
+  return <div className="character-attribute-model"><b>Belegte Charakterattribute</b>
+    <dl className="summary-grid">{(['set-1', 'set-2'] as const).flatMap(set => (Object.keys(models[set].total) as Array<keyof typeof attributeLabel>).map(attribute => <div key={`${set}:${attribute}`}>
+      <dt>{attributeLabel[attribute]} Â· {set === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dt>
+      <dd>{models[set].total[attribute]}</dd>
+      <small>Basis {models[set].base[attribute]} Â· AusrÃ¼stung {models[set].equipment[attribute]} Â· Passive/Aszendenz {models[set].passives[attribute]}</small>
+    </div>))}</dl>
+    {models['set-1'].status !== 'exact-confirmed-sources' ? <p className="warning">Die Klassen-Grundattribute konnten nicht sicher aufgelÃ¶st werden.</p> : null}
+    {[...new Set([...models['set-1'].blockedPassiveLines, ...models['set-2'].blockedPassiveLines])].length ? <p className="warning">Bedingte oder nicht exakt strukturierte Attributzeilen bleiben unangewandt.</p> : null}
+  </div>
+}
 const issueText = (issue: ConstraintViolation) => {
   const known: Record<string, string> = {
     'skill-wrong-weapon': 'Die gewählte Fertigkeit passt nicht zur erkannten Waffenart.',
@@ -54,6 +66,10 @@ const issueText = (issue: ConstraintViolation) => {
     'equipment-conflict': 'Ausrüstungsschwerpunkte stehen teilweise im Konflikt.',
     'level-requirement': 'Die Levelanforderung ist noch nicht erfüllt.',
     'synthetic-attribute-deficit': 'Mindestens eine Attributanforderung ist noch nicht ausreichend gedeckt.',
+    'skill-attribute-deficit': 'Die konkrete Attributanforderung der Fertigkeit ist noch nicht erfÃ¼llt.',
+    'attribute-requirement-strength': 'Die StÃ¤rkeanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
+    'attribute-requirement-dexterity': 'Die Geschicklichkeitsanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
+    'attribute-requirement-intelligence': 'Die Intelligenzanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
     redundant: 'Dieser Wert überschneidet sich mit einer anderen Empfehlung.',
     'required-skill-tag-missing': 'Dem Hauptangriff fehlt die erforderliche Mechanik.',
     'required-mechanic-missing': 'Die benötigte Mechanik ist nicht vorhanden.',
@@ -252,6 +268,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           {analysis.damageEstimate.minionCompanionModel.sources.map(source=><li key={`${source.sourceSkillId}:${source.kind}`}><b>{source.sourceSkillName}:</b> {source.maximumCount?`Maximalanzahl ${source.maximumCount} · `:''}{source.durationMs?`Dauer ${(source.durationMs/1000).toLocaleString('de-DE')} s · `:''}{source.damageBonusPercent?`${source.damageBonusPercent} % Minion-Schaden · `:''}{source.speedBonusPercent?`${source.speedBonusPercent} % Minion-Tempo · `:''}{source.reservationRequired?'Reservierung erforderlich · ':''}{source.detail}</li>)}
         </ul><p className="muted">{analysis.damageEstimate.minionCompanionModel.limitations.join(' ')}</p></div>:null}
         {analysis.damageEstimate?.resourceSpiritModel ? <ResourceBalancePanel model={analysis.damageEstimate.resourceSpiritModel}/> : null}
+        {analysis.characterAttributes ? <CharacterAttributePanel models={analysis.characterAttributes}/> : null}
         {analysis.damageEstimate?.characterDefenceModel ? <CharacterDefencePanel model={analysis.damageEstimate.characterDefenceModel}/> : null}
         {analysis.damageEstimate?.rageDamageComparison?<p className="muted"><b>Wut und Schaden:</b> {analysis.damageEstimate.rageDamageComparison.detail}{analysis.damageEstimate.rageDamageComparison.durationWithoutFurtherHitOrGainSeconds!=null?` Ohne weitere Treffer oder Wutgewinne hält dieses Vergleichsfenster höchstens ${analysis.damageEstimate.rageDamageComparison.durationWithoutFurtherHitOrGainSeconds.toLocaleString('de-DE')} s.`:''}</p>:null}
         {analysis.damageEstimate?.multipleDamageEffect?<p className="muted"><b>Doppel-/Dreifachschaden:</b> {analysis.damageEstimate.multipleDamageEffect.doubleDamageChancePercent.toLocaleString('de-DE')} % Doppelchance, {analysis.damageEstimate.multipleDamageEffect.tripleDamageChancePercent.toLocaleString('de-DE')} % Dreifachchance; nach der PoB2-Überlappungsreihenfolge ergibt das den Trefferschadensfaktor {analysis.damageEstimate.multipleDamageEffect.expectedDamageMultiplier.toLocaleString('de-DE',{maximumFractionDigits:3})}. Nur {analysis.damageEstimate.multipleDamageEffect.sources.length} exakt belegte aktive Wirkung{analysis.damageEstimate.multipleDamageEffect.sources.length===1?'':'en'} wurde{analysis.damageEstimate.multipleDamageEffect.sources.length===1?'':'n'} eingerechnet.</p>:null}

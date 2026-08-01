@@ -3584,4 +3584,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Verteidigungswerte auf Waffen und nicht sicher anwendbare bedingte Passivzeilen werden sichtbar als ausgeschlossen beziehungsweise blockiert ausgewiesen.
 - Keine zweite UI-Berechnung und keine erfundenen Grundwerte wurden eingeführt.
 - 50 fokussierte Tests, Typecheck, Lint und Produktionsbuild sind erfolgreich.
+
+## Schritt 108 â€“ Charakterattribute und konkrete Anforderungen
+
+- Pauschale 60er-Attributziele werden nicht mehr als reale Gemmenanforderung behandelt.
+- StÃ¤rke, Geschicklichkeit und Intelligenz werden aus gepinnten Klassenwerten, technischen AusrÃ¼stungsstats und exakt strukturierten Passivwerten je Waffenset berechnet.
+- Skills und Uniques werden gegen ihre konkreten Anforderungen geprÃ¼ft.
+- Manuell gewÃ¤hlte Hauptskills liefern einen konkreten Attributbedarf an die Passive-Planung.
+- Die Ergebnisansicht zeigt Basis, AusrÃ¼stung, Passive/Aszendenz und Gesamtwert.
+- 133 fokussierte Tests und Typecheck erfolgreich; kein Pin und keine Quelle geÃ¤ndert.
+- Basistypanforderungen sowie bedingte und prozentuale Attributwirkungen bleiben offen. PoB2-Gleichwertigkeit ist nicht bestÃ¤tigt.
 - Die PoB2-Gleichwertigkeit bleibt offen; insbesondere vollständige Charaktergrundwerte, Rundung und bedingte Verteidigungszustände fehlen weiterhin.

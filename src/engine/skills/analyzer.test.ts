@@ -34,7 +34,23 @@ describe('regelbasierter synthetischer Skill Analyzer', () => {
   it('ausgeschlossene Klasse blockiert Skill', () => expect(recommendation('fixture-invalid').eligibility).toBe('blocked'))
   it('Aszendenzpräferenz erzeugt positive Synergie', () => expect(recommendation('fixture-main').ascendancySynergyScore).toBeGreaterThan(0))
   it('ausgeschlossene Aszendenz blockiert Skill', () => { const skill = candidate('excluded-asc', ['buff'], { excludedAscendancyIds: ['fixture-ascendancy-storm'] }); expect(report(fixtureD, [skill]).blockedCandidates[0].violations[0].blocking).toBe(true) })
-  it('Attributdefizit erzeugt ConstraintViolation', () => { const skill = candidate('attribute-skill', ['buff'], { attributeRequirements: { strength: 10 } }); expect(report(fixtureD, [skill]).blockedCandidates[0].violations.map(item => item.code)).toContain('skill-attribute-deficit') })
+  it('konkretes Attributdefizit erzeugt ConstraintViolation', () => {
+    const skill = candidate('attribute-skill', ['buff'], { attributeRequirements: { strength: 10 } })
+    const equipmentReport = equipment(fixtureD)
+    const attributes = { modelVersion: 'pinned-tree-0.5.2-v1' as const, activeSet: 'set-1' as const, status: 'exact-confirmed-sources' as const, base: { strength: 7, dexterity: 7, intelligence: 15 }, equipment: { strength: 0, dexterity: 0, intelligence: 0 }, passives: { strength: 0, dexterity: 0, intelligence: 0 }, total: { strength: 7, dexterity: 7, intelligence: 15 }, blockedPassiveLines: [], sourceReferences: [] }
+    const result = skillAnalyzer.analyzeRanked(equipmentReport.combinedProfile, [skill], context(), { ...input(equipmentReport), characterAttributes: { 'set-1': attributes, 'set-2': { ...attributes, activeSet: 'set-2' } } })
+    expect(result.blockedCandidates[0].violations.map(item => item.code)).toContain('skill-attribute-deficit')
+  })
+  it('ordnet einen Skill nur einem Waffenset zu, das seine Attribute erfuellt', () => {
+    const skill = candidate('set-attribute-skill', ['spell', 'lightning'], { attributeRequirements: { intelligence: 20 } })
+    const equipmentReport = equipment(fixtureD)
+    const base = { modelVersion: 'pinned-tree-0.5.2-v1' as const, status: 'exact-confirmed-sources' as const, base: { strength: 7, dexterity: 7, intelligence: 15 }, equipment: { strength: 0, dexterity: 0, intelligence: 0 }, passives: { strength: 0, dexterity: 0, intelligence: 0 }, blockedPassiveLines: [], sourceReferences: [] }
+    const result = skillAnalyzer.analyzeRanked(equipmentReport.combinedProfile, [skill], context(), { ...input(equipmentReport), characterAttributes: {
+      'set-1': { ...base, activeSet: 'set-1', total: { strength: 7, dexterity: 7, intelligence: 15 } },
+      'set-2': { ...base, activeSet: 'set-2', equipment: { strength: 0, dexterity: 0, intelligence: 10 }, total: { strength: 7, dexterity: 7, intelligence: 25 } },
+    } })
+    expect(result.eligibleCandidates[0].preferredWeaponSet).toBe('set-2')
+  })
   it('falsche Waffenart blockiert Skill', () => expect(report(fixtureA, [syntheticSkillFixtures[0]], 'mapping', ['melee-weapon']).blockedCandidates[0].violations.map(item => item.code)).toContain('skill-wrong-weapon'))
   it('Attack-Skill wird in reinem Spell-Profil blockiert', () => expect(recommendation('fixture-main', report(fixtureB)).eligibility).toBe('blocked'))
   it('gemischtes Profil blockiert nicht automatisch', () => expect(recommendation('fixture-main', report(fixtureC)).eligibility).toBe('eligible'))

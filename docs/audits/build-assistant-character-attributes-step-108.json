@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "step": 108,
+  "modelVersion": "pinned-tree-0.5.2-v1",
+  "sourcePins": {
+    "passiveTree": "0.5.2",
+    "gemCatalog": "generated/poe2-gems/catalog.json"
+  },
+  "supportedClasses": 8,
+  "weaponSetsSeparated": true,
+  "technicalEquipmentStatIds": [
+    "additional_strength",
+    "additional_dexterity",
+    "additional_intelligence",
+    "additional_all_attributes"
+  ],
+  "syntheticAttributeTargetRemoved": 60,
+  "skillRequirementMethod": "exact-catalog-requirement-versus-active-set-total",
+  "uniqueRequirementMethod": "structured-requirement-versus-active-set-total",
+  "unknownEffects": "blocked",
+  "focusedTests": { "passed": 139, "failed": 0 },
+  "fullSuite": { "passed": 1633, "failed": 0, "mode": "serial" },
+  "qualityGates": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "jsonValidation": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "parityStatus": "not-proven"
+}

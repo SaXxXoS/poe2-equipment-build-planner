@@ -30,7 +30,7 @@ describe('regelbasierter synthetischer Equipment Analyzer', () => {
     expect(result.buildProfile.technicalItems?.[0]).toMatchObject({quality:27,defences:{evasion:2084,energyShield:621},modifiers:[]})
     expect(result.equipmentAnalysis.reasons.map(value=>value.code)).toEqual(expect.arrayContaining(['equipment-final-evasion','equipment-final-energy-shield']))
   })
-  it('Attribute und künstliche Anforderungen werden getrennt analysiert', () => { const result = analyze('fixture-strength', 40); expect(result.buildProfile.requirements.strengthNeed).toBe(20); expect(result.equipmentAnalysis.recognizedRequirements).toContain('dexterityNeed') })
+  it('erfindet ohne konkrete Gemmen- oder Gegenstandsanforderung kein Attributdefizit', () => { const result = analyze('fixture-strength', 40); expect(result.buildProfile.requirements.strengthNeed).toBe(0); expect(result.buildProfile.requirements.dexterityNeed).toBe(0) })
   it('Waffen-Sets werden getrennt analysiert', () => { const result = analysis(fixtureE); expect(result.profileSet1.damageTypes.lightning).toBeGreaterThan(0); expect(result.profileSet2.mechanics.debuff).toBeGreaterThan(0) })
   it('dominantes Waffen-Set wird stabil bestimmt', () => expect(analysis(fixtureE).dominantWeaponSet).toBe('set-1'))
   it('gleich starke Waffen-Sets bleiben balanced', () => { const input = syntheticInput([{ modifierId: 'fixture-fire-damage', value: 40, weaponSet: 'set-1' }, { modifierId: 'fixture-cold-damage', value: 40, weaponSet: 'set-2' }]); expect(equipmentAnalyzer.analyze({ input, candidates: engineCandidatesFixture }, context(), engineModifierFixtures).value.equipmentAnalysis.dominantWeaponSet).toBe('balanced') })

@@ -2,9 +2,10 @@ import type { CharacterConfiguration, GoalProfile, SkillGemDefinition, SkillRole
 import type { AnalyzerContext, BuildProfile, ConstraintViolation, EquipmentAnalysis, ScoreCategory, ScoreReason, SkillAnalysis, SkillRecommendation } from '../common/types'
 import { SYNTHETIC_SKILL_CONFIG, type SkillAnalyzerConfig } from './config'
 import { SKILL_RULES } from './rules'
+import type { CharacterAttributeModel } from '../character-attributes/model'
 
 export const SKILL_ANALYZER_VERSION = '0.3.0-synthetic'
-export interface SkillAnalyzerInput { equipmentAnalysis: EquipmentAnalysis; character: CharacterConfiguration; goalProfile: GoalProfile; availableWeaponTypes?: SyntheticWeaponType[] }
+export interface SkillAnalyzerInput { equipmentAnalysis: EquipmentAnalysis; character: CharacterConfiguration; goalProfile: GoalProfile; availableWeaponTypes?: SyntheticWeaponType[]; characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel> }
 export interface SkillAnalyzer {
   analyze(profile: BuildProfile, candidates: SkillGemDefinition[], context: AnalyzerContext, input?: SkillAnalyzerInput, config?: SkillAnalyzerConfig): SkillRecommendation[]
   analyzeRanked(profile: BuildProfile, candidates: SkillGemDefinition[], context: AnalyzerContext, input?: SkillAnalyzerInput, config?: SkillAnalyzerConfig): SkillAnalysis
@@ -16,6 +17,12 @@ const reason = (code: string, category: ScoreCategory, impact: number, skill: Sk
 const violation = (code: string, skill: SkillGemDefinition, relatedIds: string[] = []): ConstraintViolation => ({ code, severity: 'error', messageKey: `engine.skill.constraint.${code}`, sourceId: skill.id, relatedIds: [skill.id, ...relatedIds], blocking: true })
 const warning = (code: string, skill: SkillGemDefinition): ConstraintViolation => ({ code, severity: 'warning', messageKey: `engine.skill.warning.${code}`, sourceId: skill.id, relatedIds: [skill.id], blocking: false })
 const stable = <T extends { skillId: string }>(values: T[], score: (value: T) => number) => [...values].sort((a, b) => score(b) - score(a) || a.skillId.localeCompare(b.skillId))
+const setMeetsAttributeRequirements = (skill: SkillGemDefinition, attributes: CharacterAttributeModel | undefined): boolean => {
+  if (!attributes) return true
+  return Object.entries(skill.attributeRequirements ?? {}).every(([attribute, requirement]) =>
+    (requirement ?? 0) <= attributes.total[attribute as keyof CharacterAttributeModel['total']],
+  )
+}
 const defaultInput = (profile: BuildProfile, config: SkillAnalyzerConfig): SkillAnalyzerInput => ({ equipmentAnalysis: { combinedProfile: profile, profileSet1: profile, profileSet2: profile, detectedTags: [], recognizedTags: [], recognizedWeaponSets: [], recognizedRequirements: [], dominantWeaponSet: 'balanced', weaponSetDifferences: [], weaponSetSpecializations: { 'set-1': [], 'set-2': [] }, profileClarity: config.scoreMax, conflictLevel: config.scoreMin, unusedModifierIds: [], weaklyUsedModifierIds: [], conflictingModifierIds: [], reasons: [], violations: [], warnings: [], status: 'placeholder', analyzerVersion: 'compatibility', score: { totalScore: 0, reasons: [], violations: [], categoryScores: {}, confidence: 'low', status: 'placeholder' } }, character: { classId: 'fixture-class', ascendancyId: 'fixture-ascendancy-storm', level: 1, goalProfile: 'balanced' }, goalProfile: 'balanced', availableWeaponTypes: ['any'] })
 
 function profileMatchScore(skill: SkillGemDefinition, profile: BuildProfile, config: SkillAnalyzerConfig): { score: number; matched: string[]; weak: string[] } {
@@ -54,7 +61,11 @@ function hardChecks(skill: SkillGemDefinition, profile: BuildProfile, input: Ski
   if (skill.excludedAscendancyIds?.includes(input.character.ascendancyId)) result.push(violation('skill-excluded-ascendancy', skill, [input.character.ascendancyId]))
   for (const tag of skill.requiredMechanics ?? []) if (!skill.tags.includes(tag)) result.push(violation('skill-required-tag-missing', skill, [tag]))
   for (const tag of skill.excludedMechanics ?? []) if (skill.tags.includes(tag)) result.push(violation('skill-excluded-tag-present', skill, [tag]))
-  for (const [attribute, requirement] of Object.entries(skill.attributeRequirements ?? {})) if ((requirement ?? 0) > 0 && profile.requirements[`${attribute}Need` as keyof BuildProfile['requirements']] > config.attributeDeficitThreshold) result.push(violation('skill-attribute-deficit', skill, [attribute]))
+  for (const [attribute, requirement] of Object.entries(skill.attributeRequirements ?? {})) {
+    if ((requirement ?? 0) <= 0 || !input.characterAttributes) continue
+    const available = Math.max(input.characterAttributes['set-1'].total[attribute as keyof CharacterAttributeModel['total']], input.characterAttributes['set-2'].total[attribute as keyof CharacterAttributeModel['total']])
+    if (available < (requirement ?? 0)) result.push(violation('skill-attribute-deficit', skill, [attribute, `required:${requirement}`, `available:${available}`]))
+  }
   return result
 }
 
@@ -90,6 +101,9 @@ function recommend(skill: SkillGemDefinition, profile: BuildProfile, input: Skil
   const setDifference = set1.score - set2.score
   let preferredWeaponSet: SkillRecommendation['preferredWeaponSet'] = Math.abs(setDifference) <= config.setTieTolerance || roles.recommended === 'utility' || roles.recommended === 'movement' ? 'both' : setDifference > 0 ? 'set-1' : 'set-2'
   if (skill.preferredWeaponSet && skill.preferredWeaponSet !== 'both' && Math.abs(setDifference) <= config.preferredSetBonus) preferredWeaponSet = skill.preferredWeaponSet
+  const set1MeetsAttributes = setMeetsAttributeRequirements(skill, input.characterAttributes?.['set-1'])
+  const set2MeetsAttributes = setMeetsAttributeRequirements(skill, input.characterAttributes?.['set-2'])
+  if (set1MeetsAttributes !== set2MeetsAttributes) preferredWeaponSet = set1MeetsAttributes ? 'set-1' : 'set-2'
   reasons.push(reason('weapon-set-fit', 'equipment-synergy', Math.max(set1.score, set2.score), skill, [preferredWeaponSet]))
   reasons.push(reason('recommended-role', roles.recommended === 'main' ? 'damage' : 'utility', config.utilityTagBonus, skill, [roles.recommended]))
   const categoryScores = Object.fromEntries(reasons.map(item => [item.category, clamp(reasons.filter(other => other.category === item.category).reduce((sum, other) => sum + other.impact, 0), config)]))
