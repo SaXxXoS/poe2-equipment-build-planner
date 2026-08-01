@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 12,
+  "schemaVersion": 13,
   "scope": "poe2-pob2-damage-calculation-reference",
   "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
   "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
@@ -36,7 +36,13 @@
     "baseBleedingDurationSeconds": 5,
     "basePoisonDurationSeconds": 2,
     "baseIgniteDurationSeconds": 4,
-    "bloodstainedMultiplierWhenMovingOrBleedingAggravated": 2
+    "bloodstainedMultiplierWhenMovingOrBleedingAggravated": 2,
+    "shockChanceMultiplier": 25,
+    "baseShockMagnitudePercent": 20,
+    "maximumShockMagnitudePercent": 100,
+    "baseShockDurationSeconds": 8,
+    "shockMagnitudeFormulaCoefficient": 50,
+    "shockMagnitudeFormulaExponent": 0.4
   },
   "monsterAilmentThresholdTable": [
     15,
@@ -310896,5 +310902,5 @@
       "sourceFile": "src/Data/Bases/body.lua"
     }
   ],
-  "contentHash": "990d334f4072e1ad05b13789ea250ad41d9c790dc8fd9d6777f2b735b2d788ca"
+  "contentHash": "59ab4801faedf03d317c8979c4148b5e77e6cfe2f12654f70f7e9934219f1523"
 }

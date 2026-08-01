@@ -1,0 +1,59 @@
+{
+  "step": 128,
+  "scope": "enemy-shock-damage-taken",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFiles": [
+    "src/Data/Misc.lua",
+    "src/Modules/CalcOffence.lua",
+    "src/Modules/CalcPerform.lua",
+    "generated/pob2/damage-reference.json"
+  ],
+  "constants": {
+    "shockChanceMultiplier": 25,
+    "baseShockMagnitudePercent": 20,
+    "maximumShockMagnitudePercent": 100,
+    "baseShockDurationSeconds": 8,
+    "magnitudeCoefficient": 50,
+    "magnitudeExponent": 0.4
+  },
+  "formula": {
+    "chance": "min(100, unmitigatedLightningHit / enemyAilmentThreshold * 25 * intrinsicChanceMultiplier)",
+    "magnitude": "clamp(20, 100, 50 * pow(weightedSourceLightningHit / enemyAilmentThreshold, 0.4) * intrinsicEffectModifiers)",
+    "applicationRate": "actionsPerSecond * weightedShockChance / 100",
+    "productiveUptime": "applicationRate * 8 >= 1",
+    "damageTaken": "all five damage types receive the maintainable shock magnitude"
+  },
+  "modelVersions": {
+    "damageCalculator": "3.42.0",
+    "shock": "1.0.0",
+    "temporalEnemyEffects": "2.0.0",
+    "damageReferenceSchema": 13
+  },
+  "focusedTests": {
+    "files": 3,
+    "tests": 63,
+    "status": "passed"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "fullSuite": "passed-partitioned-serial",
+    "fullSuiteFiles": 140,
+    "fullSuiteTests": 1717,
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "blockedOrUnresolved": [
+    "passive and ascendancy shock chance/effect modifiers",
+    "support shock chance/effect modifiers beyond intrinsic selected skill stats",
+    "equipment shock modifiers without a confirmed typed chain",
+    "shocked ground and external shock sources",
+    "strongest-shock replacement across multiple sources"
+  ],
+  "limitations": [
+    "A non-maintainable shock remains observable but produces no positive damage bonus.",
+    "Missing hit, critical, threshold or lightning-component evidence remains fail-closed.",
+    "The result is a sustained comparison scenario, not guaranteed combat uptime."
+  ]
+}

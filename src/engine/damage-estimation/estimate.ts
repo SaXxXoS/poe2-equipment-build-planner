@@ -112,7 +112,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.41.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.42.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -350,6 +350,13 @@ export function estimateHitDamage(input:{
       ...damageOverTime.effects.map(value=>value.damageType),
     ])],weaponSet:activeSet,
     primarySkillId:skillId,primaryActionsPerSecond:actionsPerSecond,
+    primaryShockContext:input.enemyProfile.level!=null&&hitChancePercent!=null&&effectiveCriticalChance!=null&&components.some(value=>value.type==='lightning')?{
+      skillId:skillId!,
+      enemyAilmentThreshold:reference.monsterAilmentThresholdTable[Math.max(0,Math.min(reference.monsterAilmentThresholdTable.length-1,Math.trunc(input.enemyProfile.level)-1))],
+      lightningHitAverage:components.filter(value=>value.type==='lightning').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0),
+      lightningCriticalHitAverage:components.filter(value=>value.type==='lightning').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)*(1+totalCriticalDamageBonus/100),
+      hitChancePercent,criticalHitChancePercent:effectiveCriticalChance,actionsPerSecond,
+    }:undefined,
     passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
   }):undefined
   damageOverTime=collectDamageOverTime(skill,resolvedEnemyProfile)

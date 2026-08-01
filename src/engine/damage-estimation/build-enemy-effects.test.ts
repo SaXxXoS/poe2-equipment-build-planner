@@ -59,6 +59,46 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(wrongType.damageTakenIncreased).toBeUndefined()
   })
 
+  it('berechnet einen aufrechterhaltbaren Schock aus Treffer, Schwelle, Chance und intrinsischem Skillmodifikator',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('ball','ball')],skills:[skill('ball','Ball Lightning')],
+      activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,
+        hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2,
+      },
+    })
+    expect(result.damageTakenIncreased).toEqual({physical:22.33,fire:22.33,cold:22.33,lightning:22.33,chaos:22.33})
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      sourceId:'ball',kind:'damage-taken-increased',value:22.33,effectiveValue:22.33,
+      durationMs:8000,applicationRatePerSecond:0.285,estimatedUptime:1,
+      uptimeStatus:'maintainable',state:'fully-active',evidence:'structured-exact',
+    })])
+  })
+
+  it('erzeugt ohne aufrechterhaltbare Schockrate keinen produktiven Schadensbonus',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('ball','ball')],skills:[skill('ball','Ball Lightning')],
+      activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:10,lightningCriticalHitAverage:20,
+        hitChancePercent:50,criticalHitChancePercent:5,actionsPerSecond:0.1,
+      },
+    })
+    expect(result.damageTakenIncreased).toBeUndefined()
+    expect(result.appliedEffects?.[0]).toMatchObject({effectiveValue:0,uptimeStatus:'unresolved',state:'building'})
+  })
+
+  it('wendet den Schockkontext nicht auf einen anderen Skill oder Waffensatz an',()=>{
+    const set2={...setup('ball','ball'),weaponSet:'set-2' as const}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[set2],skills:[skill('ball','Ball Lightning')],activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{skillId:'ball',enemyAilmentThreshold:100,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2},
+    })
+    expect(result.damageTakenIncreased).toBeUndefined()
+    expect(result.appliedEffects).toEqual([])
+  })
+
   it('verwendet für Withered die exakt gewählte Gemmenstufe',()=>{
     const levelOne={...setup('wither','wither'),level:1}
     const result=applyBuildEnemyEffects({profile,setups:[levelOne],skills:[skill('wither','Wither')],activeDamageTypes:['chaos'],weaponSet:'set-1'})

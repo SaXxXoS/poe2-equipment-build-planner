@@ -73,6 +73,12 @@ const ailmentConstants = {
   basePoisonDurationSeconds: gameConstant('BasePoisonDuration', 2),
   baseIgniteDurationSeconds: gameConstant('BaseIgniteDuration', 4),
   bloodstainedMultiplierWhenMovingOrBleedingAggravated: gameConstant('BloodstainedMultiplierWhenMovingOrBleedingAggravated', 2),
+  shockChanceMultiplier: gameConstant('ShockChanceMultiplier', 25),
+  baseShockMagnitudePercent: gameConstant('BaseShockMagnitude', 20),
+  maximumShockMagnitudePercent: 100,
+  baseShockDurationSeconds: gameConstant('BaseShockDuration', 8),
+  shockMagnitudeFormulaCoefficient: 50,
+  shockMagnitudeFormulaExponent: 0.4,
 }
 const monsterAilmentThresholdTable = numericTable('monsterAilmentThresholdTable')
 if (monsterAilmentThresholdTable.length !== 100) {
@@ -410,7 +416,7 @@ for (const file of fs.readdirSync(baseDir).filter(value => value.endsWith('.lua'
 }
 
 const payload = {
-  schemaVersion: 12,
+  schemaVersion: 13,
   scope: 'poe2-pob2-damage-calculation-reference',
   sourceRepository: 'PathOfBuildingCommunity/PathOfBuilding-PoE2',
   sourceCommit,

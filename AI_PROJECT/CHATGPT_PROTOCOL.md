@@ -3808,3 +3808,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Dokumentation: `docs/BUILD_ASSISTANT_ENEMY_DAMAGE_TAKEN_STEP_127.md`.
 - Audit: `docs/audits/build-assistant-step-127-enemy-damage-taken.json`.
 - Nächster Baustein: Schock und weitere generische gegnerseitige `DamageTaken`-Zustände mit vollständig belegter Anwendung, Magnitude und Uptime.
+
+## Schritt 128 – gegnerseitiger Schock
+
+- Der Schadensrechner verwendet `3.42.0`; das neue Schockmodell verwendet `1.0.0` und die generierte Damage-Reference Schema `13`.
+- Gepinnte PoB2-Konstanten sind jetzt produktiv verbunden: Chance-Multiplikator 25, Grundmagnitude 20 %, Maximalmagnitude 100 %, Grunddauer 8 Sekunden sowie die Formel `50 × (Treffer/Schwelle)^0,4`.
+- Nichtkritische und kritische Blitztreffer werden getrennt berechnet und mit Treffer- sowie kritischer Trefferchance gewichtet.
+- Schock erhöht als generischer Gegnerzustand alle fünf Schadensarten, jedoch nur wenn Aktionsrate und Chance innerhalb der achtsekündigen Dauer eine erneute Anwendung belegen.
+- Nicht aufrechterhaltbarer oder unvollständig belegter Schock bleibt fail-closed mit effektiv null Bonus.
+- Waffenset- und Hauptskilltrennung bleiben verbindlich; unbelegte externe Schockquellen werden nicht angenommen.
+- Fokussierte Prüfung: 3 Dateien und 63 Tests erfolgreich. Kontrolliert partitionierte Gesamtsuite: 140 Dateien und 1.717 Tests erfolgreich. Lint, Typecheck, Produktions- und Pages-Build erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_SHOCK_STEP_128.md` und `docs/audits/build-assistant-step-128-shock.json`.
+- Nächster Baustein: belegte Schockmodifikatoren aus Baum, Aszendenz, Supports und Ausrüstung sowie stärkste konkurrierende Schockquelle.
