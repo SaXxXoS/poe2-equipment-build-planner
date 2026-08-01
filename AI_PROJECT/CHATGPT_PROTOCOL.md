@@ -3669,3 +3669,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Alternative Basen, bedingte Wirkungen und inhärente Attribut-Sonderregeln bleiben fail-closed in `blockedLines`.
 - Produktpins und Produktdateien bleiben unverändert; Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
 - Hauptdokument: `docs/BUILD_ASSISTANT_CHARACTER_SURVIVABILITY_STEP_115.md`.
+
+# Schritt 116 – Sonderregeln für Leben und Betäubungsschwelle
+
+- Inhärente Attribut-Sonderregeln werden nun in der von PoB2 belegten Reihenfolge gerechnet: entfernt, halbiert und verdoppelt werden nicht mehr pauschal blockiert.
+- Chaos Inoculation setzt maximales Leben auf eins und bewahrt das Leben vor CI als Betäubungsschwellenbasis.
+- Bestätigte prozentuale Mana- oder Energieschildbasen sowie zusätzliche Energieschildanteile können die Betäubungsschwelle exakt bestimmen.
+- Fehlende Bezugsgrößen und widersprüchliche alternative Basisregeln bleiben fail-closed in `blockedLines`.
+- Calculator-Version: `3.30.0`; Produktpins und Produktdateien bleiben unverändert.
+- Hauptdokument: `docs/BUILD_ASSISTANT_SURVIVABILITY_SPECIAL_RULES_STEP_116.md`.

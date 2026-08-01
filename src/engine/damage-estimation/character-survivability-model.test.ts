@@ -12,6 +12,12 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('ailment-dex', '+4 to [AilmentThreshold|Ailment Threshold] per [Dexterity|Dexterity]'),
   node('life-percent', '10% increased maximum Life'),
   node('blocked', 'Stun Threshold is based on 30% of your Energy Shield instead of Life'),
+  node('giants-blood', 'You can wield Two-Handed Axes in one hand\nInherent Life granted by Strength is halved'),
+  node('double-attributes', 'Inherent bonuses gained from Attributes are doubled'),
+  node('no-strength-life', 'Strength provides no bonus to maximum Life'),
+  node('chaos-inoculation', 'Maximum Life is 1\nImmune to Chaos Damage and Bleeding'),
+  node('mana-threshold', 'Stun Threshold is based on 40% of your Mana instead of Life'),
+  node('es-addition', '20% of your Energy Shield is added to your Stun Threshold'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -20,7 +26,7 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
   it('berechnet Leben aus Level, Stärke, Ausrüstung und exakt belegten Passivwirkungen', () => {
     const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment, weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['life-dex', 'life-percent']) })
     expect(result.life).toEqual(expect.objectContaining({ baseFromLevel: 312, fromStrength: 14, fromDexterityPassives: 1, flatFromEquipment: 50, increasedReducedPercent: 10, maximum: 414 }))
-    expect(result.stunThreshold?.baseFromLife).toBe(414)
+    expect(result.stunThreshold?.baseValue).toBe(414)
     expect(result.ailmentThreshold?.baseFromLife).toBe(207)
   })
   it('wendet Attributbeiträge auf Betäubungs- und Beeinträchtigungsschwelle exakt an', () => {
@@ -37,5 +43,30 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     const input = { classId: 'class-official-1', equipment: [], weaponSet: 'set-1' as const }
     expect(resolveCharacterSurvivabilityModel(input)).toEqual(resolveCharacterSurvivabilityModel(input))
     expect(resolveCharacterSurvivabilityModel(input).status).toBe('blocked-missing-level')
+  })
+  it('wendet halbierte, verdoppelte und entfernte inhärente Stärke-Lebensboni in PoB2-Reihenfolge an', () => {
+    const halved = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['giants-blood']) })
+    const halvedAndDoubled = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['giants-blood', 'double-attributes']) })
+    const removed = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['no-strength-life', 'double-attributes']) })
+    expect(halved.life).toEqual(expect.objectContaining({ strengthLifePerPoint: 1, inherentAttributeMultiplier: 1, fromStrength: 7, maximum: 319 }))
+    expect(halvedAndDoubled.life).toEqual(expect.objectContaining({ strengthLifePerPoint: 1, inherentAttributeMultiplier: 2, fromStrength: 14, maximum: 326 }))
+    expect(removed.life).toEqual(expect.objectContaining({ strengthLifePerPoint: 0, fromStrength: 0, maximum: 312 }))
+  })
+  it('setzt Chaos Inoculation auf ein Leben und verwendet für Betäubung das Leben davor', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['chaos-inoculation']) })
+    expect(result.life).toEqual(expect.objectContaining({ preOverrideMaximum: 326, maximum: 1, override: 'chaos-inoculation' }))
+    expect(result.stunThreshold).toEqual(expect.objectContaining({ baseKind: 'pre-chaos-inoculation-life', baseValue: 326, total: 326 }))
+    expect(result.ailmentThreshold?.baseFromLife).toBe(0.5)
+  })
+  it('verwendet bestätigte Mana- und Energieschildwerte für alternative Betäubungsbasen', () => {
+    const mana = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['mana-threshold', 'es-addition']), maximumMana: 500, maximumEnergyShield: 200 })
+    expect(mana.status).toBe('exact-confirmed-components')
+    expect(mana.stunThreshold).toEqual(expect.objectContaining({ baseKind: 'mana', basePercent: 40, baseValue: 200, additionalFromEnergyShield: 40, total: 240 }))
+  })
+  it('blockiert widersprüchliche alternative Betäubungsbasen deterministisch', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['blocked', 'mana-threshold']), maximumMana: 500, maximumEnergyShield: 200 })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.stunThreshold?.baseKind).toBe('life')
+    expect(result.blockedLines).toHaveLength(2)
   })
 })

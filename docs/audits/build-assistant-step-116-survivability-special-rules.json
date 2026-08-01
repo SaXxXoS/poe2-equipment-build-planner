@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "step": 116,
+  "calculatorVersion": "3.30.0",
+  "sourceTreeRelease": "0.5.2",
+  "sourceProductCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "implemented": [
+    "halved-life-from-strength",
+    "removed-life-from-strength",
+    "removed-inherent-attribute-bonuses",
+    "doubled-inherent-attribute-bonuses",
+    "chaos-inoculation-life-override",
+    "pre-chaos-inoculation-stun-basis",
+    "energy-shield-stun-basis",
+    "mana-stun-basis",
+    "additional-energy-shield-to-stun-threshold",
+    "conflicting-threshold-bases-fail-closed"
+  ],
+  "blocked": [
+    "shield-raised-runtime-condition",
+    "recently-stunned-runtime-condition",
+    "incoming-hit-dependent-stun-avoidance",
+    "uncapped-chaos-resistance-ailment-threshold",
+    "unconfirmed-threshold-reference-pool"
+  ],
+  "productPinsChanged": false,
+  "pathOfBuildingParityClaimed": false
+}

@@ -10,8 +10,8 @@ export interface CharacterSurvivabilityModel {
   modelVersion: typeof CHARACTER_SURVIVABILITY_MODEL_VERSION
   weaponSet: 'set-1' | 'set-2'
   status: 'exact-confirmed-components' | 'blocked-missing-level' | 'blocked-unknown-class' | 'partial-blocked-special-cases'
-  life?: { baseFromLevel: number; fromStrength: number; fromDexterityPassives: number; flatFromEquipment: number; flatFromPassives: number; increasedReducedPercent: number; moreLessMultiplier: number; maximum: number }
-  stunThreshold?: { baseFromLife: number; flatFromAttributes: number; flatOther: number; increasedReducedPercent: number; moreLessMultiplier: number; total: number }
+  life?: { baseFromLevel: number; fromStrength: number; strengthLifePerPoint: number; inherentAttributeMultiplier: number; fromDexterityPassives: number; flatFromEquipment: number; flatFromPassives: number; increasedReducedPercent: number; moreLessMultiplier: number; preOverrideMaximum: number; maximum: number; override?: 'chaos-inoculation' }
+  stunThreshold?: { baseKind: 'life' | 'pre-chaos-inoculation-life' | 'energy-shield' | 'mana'; basePercent: number; baseValue: number; additionalFromEnergyShield: number; flatFromAttributes: number; flatOther: number; increasedReducedPercent: number; moreLessMultiplier: number; total: number }
   ailmentThreshold?: { baseFromLife: number; flatFromAttributes: number; flatOther: number; increasedReducedPercent: number; moreLessMultiplier: number; total: number }
   sourceNodeIds: string[]
   sourceTexts: string[]
@@ -42,7 +42,7 @@ const equipmentValue = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2', pat
   .filter(stat => pattern.test(stat.statId))
   .reduce((sum, stat) => sum + stat.value, 0)
 
-export function resolveCharacterSurvivabilityModel(input: { classId?: string; characterLevel?: number; equipment: EquipmentEntry[]; weaponSet: 'set-1' | 'set-2'; passiveTree?: RealPassiveTree; realPassivePlanning?: RealPassivePlanningIntegrationResult }): CharacterSurvivabilityModel {
+export function resolveCharacterSurvivabilityModel(input: { classId?: string; characterLevel?: number; equipment: EquipmentEntry[]; weaponSet: 'set-1' | 'set-2'; passiveTree?: RealPassiveTree; realPassivePlanning?: RealPassivePlanningIntegrationResult; maximumEnergyShield?: number; maximumMana?: number }): CharacterSurvivabilityModel {
   const base = {
     modelVersion: CHARACTER_SURVIVABILITY_MODEL_VERSION as typeof CHARACTER_SURVIVABILITY_MODEL_VERSION,
     weaponSet: input.weaponSet,
@@ -59,9 +59,13 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
   let flatLife = 0, lifePercent = 0, lifeMore = 1, lifePerDexterity = 0
   let stunFromAttributes = 0, stunFlat = 0, stunPercent = 0, stunMore = 1
   let ailmentFromAttributes = 0, ailmentFlat = 0, ailmentPercent = 0, ailmentMore = 1
+  let halvesLifeFromStrength = false, noStrengthLife = false, noAttributeBonuses = false, doubledAttributeBonuses = false, chaosInoculation = false
+  const thresholdBases: Array<{ kind: 'energy-shield' | 'mana'; percent: number; sourceText: string; nodeId: string }> = []
+  let additionalEnergyShieldToStunPercent = 0
   for (const node of allocatedNodes(input.passiveTree, input.realPassivePlanning, input.weaponSet)) {
     for (const sourceText of node.stats.map(stat => stat.sourceText).filter((value): value is string => Boolean(value))) {
-      const text = clean(sourceText)
+      for (const rawLine of sourceText.split(/\r?\n/)) {
+      const text = clean(rawLine)
       let matched = false
       const lifePerDex = text.match(/^\+1 Life per (\d+) Dexterity$/i)
       const stunPerDex = text.match(/^\+(\d+) to Stun Threshold per Dexterity$/i)
@@ -71,7 +75,18 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       const lifePercentMatch = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|more|less) maximum Life$/i)
       const flatThreshold = text.match(/^\+(\d+) to (Stun|(?:Elemental )?Ailment) Threshold$/i)
       const thresholdPercent = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced|more|less) (Stun|(?:Elemental )?Ailment) Threshold$/i)
-      if (lifePerDex) { lifePerDexterity += Math.floor(attributes.total.dexterity / Number(lifePerDex[1])); matched = true }
+      const energyShieldBase = text.match(/^Stun Threshold is based on (?:(\d+(?:\.\d+)?)% of your )?Energy Shield instead of Life$/i)
+      const manaBase = text.match(/^Stun Threshold is based on (\d+(?:\.\d+)?)% of your Mana instead of Life$/i)
+      const addEnergyShield = text.match(/^(\d+(?:\.\d+)?)% of your Energy Shield is added to your Stun Threshold$/i)
+      if (/^Inherent Life granted by Strength is halved$/i.test(text)) { halvesLifeFromStrength = true; matched = true }
+      else if (/^(?:Strength provides no (?:inherent )?bonus to maximum Life|Gain no inherent bonus(?:es)? from Strength)$/i.test(text)) { noStrengthLife = true; matched = true }
+      else if (/^Gain no inherent bonuses from Attributes$/i.test(text)) { noAttributeBonuses = true; matched = true }
+      else if (/^Inherent bonuses (?:from Intelligence, Strength and Dexterity|gained from Attributes) are doubled$/i.test(text)) { doubledAttributeBonuses = true; matched = true }
+      else if (/^Maximum Life is 1$/i.test(text) || /^Chaos Inoculation$/i.test(node.name.sourceText ?? '')) { chaosInoculation = true; matched = true }
+      else if (energyShieldBase) { thresholdBases.push({ kind: 'energy-shield', percent: Number(energyShieldBase[1] ?? 100), sourceText, nodeId: node.id }); matched = true }
+      else if (manaBase) { thresholdBases.push({ kind: 'mana', percent: Number(manaBase[1]), sourceText, nodeId: node.id }); matched = true }
+      else if (addEnergyShield) { additionalEnergyShieldToStunPercent += Number(addEnergyShield[1]); matched = true }
+      else if (lifePerDex) { lifePerDexterity += Math.floor(attributes.total.dexterity / Number(lifePerDex[1])); matched = true }
       else if (stunPerDex) { stunFromAttributes += Number(stunPerDex[1]) * attributes.total.dexterity; matched = true }
       else if (stunPerStr) { stunFromAttributes += Number(stunPerStr[1]) * attributes.total.strength; matched = true }
       else if (ailmentPerDex) { ailmentFromAttributes += Number(ailmentPerDex[1]) * attributes.total.dexterity; matched = true }
@@ -96,26 +111,41 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       }
       if (matched) { base.sourceNodeIds.push(node.id); base.sourceTexts.push(sourceText) }
       else if (/\b(?:Life|Stun Threshold|Ailment Threshold)\b/i.test(text)) base.blockedLines.push(sourceText)
+      }
     }
   }
 
   const baseFromLevel = reference.resourceConstants.lifePerLevel * (level + reference.resourceConstants.lifeLevelOffset)
-  const fromStrength = attributes.total.strength * 2
+  const inherentAttributeMultiplier = noAttributeBonuses ? 0 : doubledAttributeBonuses ? 2 : 1
+  const strengthLifePerPoint = noAttributeBonuses || noStrengthLife ? 0 : halvesLifeFromStrength ? 1 : 2
+  const fromStrength = attributes.total.strength * strengthLifePerPoint * inherentAttributeMultiplier
   const flatFromEquipment = equipmentValue(input.equipment, input.weaponSet, /^(?:base_)?maximum_life$/)
   const equipmentLifePercent = equipmentValue(input.equipment, input.weaponSet, /^(?:maximum_)?life_\+%$/)
-  const maximumLife = Math.floor((baseFromLevel + fromStrength + lifePerDexterity + flatFromEquipment + flatLife) * Math.max(0, 1 + (lifePercent + equipmentLifePercent) / 100) * Math.max(0, lifeMore))
+  const preOverrideMaximumLife = Math.floor((baseFromLevel + fromStrength + lifePerDexterity + flatFromEquipment + flatLife) * Math.max(0, 1 + (lifePercent + equipmentLifePercent) / 100) * Math.max(0, lifeMore))
+  const maximumLife = chaosInoculation ? 1 : preOverrideMaximumLife
   const equipmentStunFlat = equipmentValue(input.equipment, input.weaponSet, /^(?:base_)?stun_threshold$/)
   const equipmentStunPercent = equipmentValue(input.equipment, input.weaponSet, /^stun_threshold_\+%$/)
   const equipmentAilmentFlat = equipmentValue(input.equipment, input.weaponSet, /^(?:base_)?(?:elemental_)?ailment_threshold$/)
   const equipmentAilmentPercent = equipmentValue(input.equipment, input.weaponSet, /^(?:elemental_)?ailment_threshold_\+%$/)
-  const stunTotal = (maximumLife + stunFromAttributes + stunFlat + equipmentStunFlat) * Math.max(0, 1 + (stunPercent + equipmentStunPercent) / 100) * Math.max(0, stunMore)
+  const distinctThresholdBases = unique(thresholdBases.map(value => `${value.kind}:${value.percent}`))
+  const selectedThresholdBase = distinctThresholdBases.length === 1 ? thresholdBases[0] : undefined
+  if (distinctThresholdBases.length > 1) base.blockedLines.push(...thresholdBases.map(value => value.sourceText))
+  let stunBaseKind: NonNullable<CharacterSurvivabilityModel['stunThreshold']>['baseKind'] = chaosInoculation ? 'pre-chaos-inoculation-life' : 'life'
+  let stunBasePercent = 100
+  let stunBaseValue = chaosInoculation ? preOverrideMaximumLife : maximumLife
+  if (selectedThresholdBase?.kind === 'energy-shield' && input.maximumEnergyShield != null) { stunBaseKind = 'energy-shield'; stunBasePercent = selectedThresholdBase.percent; stunBaseValue = input.maximumEnergyShield * selectedThresholdBase.percent / 100 }
+  else if (selectedThresholdBase?.kind === 'mana' && input.maximumMana != null) { stunBaseKind = 'mana'; stunBasePercent = selectedThresholdBase.percent; stunBaseValue = input.maximumMana * selectedThresholdBase.percent / 100 }
+  else if (selectedThresholdBase) base.blockedLines.push(selectedThresholdBase.sourceText)
+  const additionalFromEnergyShield = input.maximumEnergyShield == null ? 0 : input.maximumEnergyShield * additionalEnergyShieldToStunPercent / 100
+  if (additionalEnergyShieldToStunPercent > 0 && input.maximumEnergyShield == null) base.blockedLines.push(`${additionalEnergyShieldToStunPercent}% of your Energy Shield is added to your Stun Threshold`)
+  const stunTotal = (stunBaseValue + additionalFromEnergyShield + stunFromAttributes + stunFlat + equipmentStunFlat) * Math.max(0, 1 + (stunPercent + equipmentStunPercent) / 100) * Math.max(0, stunMore)
   const ailmentBase = maximumLife * 0.5
   const ailmentTotal = (ailmentBase + ailmentFromAttributes + ailmentFlat + equipmentAilmentFlat) * Math.max(0, 1 + (ailmentPercent + equipmentAilmentPercent) / 100) * Math.max(0, ailmentMore)
   const blockedLines = unique([...base.blockedLines, ...attributes.blockedPassiveLines])
   return {
     ...base, status: blockedLines.length ? 'partial-blocked-special-cases' : 'exact-confirmed-components',
-    life: { baseFromLevel, fromStrength, fromDexterityPassives: lifePerDexterity, flatFromEquipment, flatFromPassives: flatLife, increasedReducedPercent: round(lifePercent + equipmentLifePercent), moreLessMultiplier: round(lifeMore), maximum: maximumLife },
-    stunThreshold: { baseFromLife: maximumLife, flatFromAttributes: stunFromAttributes, flatOther: stunFlat + equipmentStunFlat, increasedReducedPercent: round(stunPercent + equipmentStunPercent), moreLessMultiplier: round(stunMore), total: round(stunTotal) },
+    life: { baseFromLevel, fromStrength, strengthLifePerPoint, inherentAttributeMultiplier, fromDexterityPassives: lifePerDexterity, flatFromEquipment, flatFromPassives: flatLife, increasedReducedPercent: round(lifePercent + equipmentLifePercent), moreLessMultiplier: round(lifeMore), preOverrideMaximum: preOverrideMaximumLife, maximum: maximumLife, ...(chaosInoculation ? { override: 'chaos-inoculation' as const } : {}) },
+    stunThreshold: { baseKind: stunBaseKind, basePercent: stunBasePercent, baseValue: round(stunBaseValue), additionalFromEnergyShield: round(additionalFromEnergyShield), flatFromAttributes: stunFromAttributes, flatOther: stunFlat + equipmentStunFlat, increasedReducedPercent: round(stunPercent + equipmentStunPercent), moreLessMultiplier: round(stunMore), total: round(stunTotal) },
     ailmentThreshold: { baseFromLife: round(ailmentBase), flatFromAttributes: ailmentFromAttributes, flatOther: ailmentFlat + equipmentAilmentFlat, increasedReducedPercent: round(ailmentPercent + equipmentAilmentPercent), moreLessMultiplier: round(ailmentMore), total: round(ailmentTotal) },
     sourceNodeIds: unique(base.sourceNodeIds), sourceTexts: unique(base.sourceTexts), blockedLines,
   }
