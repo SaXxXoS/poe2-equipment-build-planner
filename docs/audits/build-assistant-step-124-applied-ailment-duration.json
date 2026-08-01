@@ -1,0 +1,59 @@
+{
+  "step": 124,
+  "scope": "applied-ailment-duration-on-player",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFiles": [
+    "src/Data/Misc.lua",
+    "src/Modules/Data.lua",
+    "src/Modules/CalcDefence.lua"
+  ],
+  "baseDurationsSeconds": {
+    "ignite": 4,
+    "chillPlayer": 2,
+    "freezePlayer": 2,
+    "shockPlayer": 4,
+    "bleed": 5,
+    "poison": 2
+  },
+  "unknownBaseDurations": [
+    "blind",
+    "scorch",
+    "brittle",
+    "sap"
+  ],
+  "formula": "baseSeconds * durationMultiplierPercent / 100",
+  "outputMeaning": "effective-duration-of-one-successful-application",
+  "uptimeClaimed": false,
+  "modelVersions": {
+    "characterSurvivability": "1.8.0",
+    "damageCalculator": "3.38.0"
+  },
+  "focusedTests": {
+    "files": 3,
+    "tests": 90,
+    "status": "passed"
+  },
+  "heavyTreeRegression": {
+    "files": 3,
+    "tests": 236,
+    "status": "passed-isolated"
+  },
+  "validation": {
+    "fullSuite": "passed-partitioned",
+    "fullSuiteFiles": 136,
+    "fullSuiteTests": 1699,
+    "parallelRunnerStatus": "two-test-timeouts-and-worker-rpc-timeouts",
+    "parallelRunnerExplanation": "Die zwei zeitkritischen Tests und die reale Pipeline bestanden isoliert mit 236 von 236 Tests.",
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Die Ausgabe beschreibt eine einzelne erfolgreiche Anwendung, nicht die Uptime.",
+    "Wiederanwendung und Uptime benötigen belegte Anwendungshäufigkeit und Stapelregeln.",
+    "Für Blindheit, Versengen, Sprödigkeit und Saft wird ohne lokale Grunddauer kein Sekundenwert erzeugt.",
+    "Ausgehende Zustände auf Gegnern sind ein getrennter Folgeschritt."
+  ]
+}

@@ -11,6 +11,10 @@ describe('reale PoE2-Referenzen fuer Beeintraechtigungsdauer auf dem Charakter',
   it('wendet Shimmering Mirage auf alle Beeintraechtigungen an', () => {
     const result = resolveCharacterSurvivabilityModel(input(['5335']))
     expect(result.debuffDurationOnSelf?.ailments).toEqual({ ignite: 90, chill: 90, freeze: 90, shock: 90, scorch: 90, brittle: 90, sap: 90, bleed: 90, poison: 90 })
+    expect(result.debuffDurationOnSelf?.effectiveWhenAppliedSeconds).toEqual({
+      ignite: { base: 4, effective: 3.6 }, chill: { base: 2, effective: 1.8 }, freeze: { base: 2, effective: 1.8 },
+      shock: { base: 4, effective: 3.6 }, bleed: { base: 5, effective: 4.5 }, poison: { base: 2, effective: 1.8 },
+    })
   })
 
   it('wendet Feel the Earth nur auf Schockdauer an', () => {

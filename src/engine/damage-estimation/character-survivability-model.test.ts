@@ -275,6 +275,11 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
       debuffDurationMultiplierPercent: 83.333333,
       blindPercent: 62.5,
       ailments: { ignite: 62.5, chill: 62.5, freeze: 62.5, shock: 41.666667, scorch: 62.5, brittle: 62.5, sap: 62.5, bleed: 41.666667, poison: 75 },
+      effectiveWhenAppliedSeconds: {
+        ignite: { base: 4, effective: 2.5 }, chill: { base: 2, effective: 1.25 }, freeze: { base: 2, effective: 1.25 },
+        shock: { base: 4, effective: 1.666667 }, bleed: { base: 5, effective: 2.083333 }, poison: { base: 2, effective: 1.5 },
+      },
+      unknownBaseDuration: ['blind', 'scorch', 'brittle', 'sap'],
     })
   })
   it('addiert mehrere Raten fuer schnelleres Ablaufen statt Prozentwerte direkt abzuziehen', () => {
@@ -300,5 +305,13 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toContain('25% reduced Shock Duration on you while on Low Life')
     expect(result.debuffDurationOnSelf?.ailments.shock).toBe(100)
+  })
+  it('verwendet ausschliesslich gepinnte Grunddauern fuer Sekundenwerte', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning([]) })
+    expect(result.debuffDurationOnSelf?.effectiveWhenAppliedSeconds).toEqual({
+      ignite: { base: 4, effective: 4 }, chill: { base: 2, effective: 2 }, freeze: { base: 2, effective: 2 },
+      shock: { base: 4, effective: 4 }, bleed: { base: 5, effective: 5 }, poison: { base: 2, effective: 2 },
+    })
+    expect(result.debuffDurationOnSelf?.unknownBaseDuration).toEqual(['blind', 'scorch', 'brittle', 'sap'])
   })
 })

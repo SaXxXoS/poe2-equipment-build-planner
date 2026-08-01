@@ -3755,3 +3755,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Referenzprüfung: 3 Dateien und 89 Tests erfolgreich. Kontrollierte Gesamtsuite: 136 Dateien und 1.698 Tests ohne fachlichen Testfehler; die bekannte Worker-RPC-Grenze des großen kombinierten Laufs bleibt dokumentiert. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Dokumentation: `docs/BUILD_ASSISTANT_DEBUFF_DURATION_ON_SELF_STEP_123.md`.
 - Audit: `docs/audits/build-assistant-step-123-debuff-duration-on-self.json`.
+
+## Schritt 124 – konkrete Dauer angewendeter Zustände
+
+- Das Charakter-Schutzmodell wurde auf `1.8.0`, der Schadensrechner auf `3.38.0` erweitert.
+- Sechs gepinnte PoB2-Grunddauern werden mit den relativen Dauermultiplikatoren verbunden: Entzünden 4 s, Kühlen 2 s, Einfrieren 2 s, Schock 4 s, Blutung 5 s und Gift 2 s.
+- `effectiveWhenAppliedSeconds` beschreibt ausschließlich die Dauer einer erfolgreichen Anwendung auf dem Spieler.
+- Blindheit, Versengen, Sprödigkeit und Saft bleiben ohne gleichwertige lokale Grunddauer explizit unbekannt.
+- Eine Uptime wird nicht erfunden: Dafür fehlen je nach Quelle noch Anwendungshäufigkeit, Chance sowie Ersetzungs- und Stapelregeln.
+- Fokussierte Referenzprüfung: 3 Dateien und 90 Tests erfolgreich. Drei zeitkritische reale Baumdateien bestanden isoliert mit 236 Tests. Kontrolliert partitioniert umfasst die Gesamtsuite 136 Dateien und 1.699 Tests ohne fachlichen Fehler.
+- Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich. Die bekannten parallelen Vitest-Worker-Timeouts bleiben als Runner-Grenze dokumentiert.
+- Dokumentation: `docs/BUILD_ASSISTANT_APPLIED_AILMENT_DURATION_STEP_124.md`.
+- Audit: `docs/audits/build-assistant-step-124-applied-ailment-duration.json`.
+- Nächster Baustein: ausgehende Zustände auf Gegnern mit belegten Chancen, Grundschäden, Dauer und Stapelregeln.

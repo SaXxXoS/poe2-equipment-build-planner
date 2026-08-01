@@ -4,7 +4,7 @@ import { resolveCharacterAttributes } from '../character-attributes/model'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 
-export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.7.0'
+export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.8.0'
 
 type AilmentProtection = {
   chance: number
@@ -44,6 +44,15 @@ type DebuffDurationOnSelf = {
     bleed: number
     poison: number
   }
+  effectiveWhenAppliedSeconds: {
+    ignite: { base: 4; effective: number }
+    chill: { base: 2; effective: number }
+    freeze: { base: 2; effective: number }
+    shock: { base: 4; effective: number }
+    bleed: { base: 5; effective: number }
+    poison: { base: 2; effective: number }
+  }
+  unknownBaseDuration: ['blind', 'scorch', 'brittle', 'sap']
 }
 
 export interface CharacterSurvivabilityModel {
@@ -108,7 +117,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
     modelVersion: CHARACTER_SURVIVABILITY_MODEL_VERSION as typeof CHARACTER_SURVIVABILITY_MODEL_VERSION,
     weaponSet: input.weaponSet,
     sourceNodeIds: [] as string[], sourceTexts: [] as string[], blockedLines: [] as string[],
-    sourceReferences: ['generated/pob2/damage-reference.json:resourceConstants', 'PoB2 src/Modules/CalcPerform.lua:Strength grants 2 Life', 'PoB2 src/Modules/CalcSetup.lua:Ailment Threshold is 50% of Life', 'PoB2 src/Modules/CalcDefence.lua:Stun Threshold, ailment avoidance, CurseEffectOnSelf, secondary debuff protection and ailment duration on self', 'PoB2 src/Modules/ModParser.lua:threshold, avoidance, immunity, duration and unaffected mappings', 'data-sources/poe2-tree/raw/0.5.2/data.json', 'generated/poe2-affixes/technical-affixes.json'],
+    sourceReferences: ['generated/pob2/damage-reference.json:resourceConstants', 'PoB2 src/Data/Misc.lua:pinned player ailment base durations', 'PoB2 src/Modules/CalcPerform.lua:Strength grants 2 Life', 'PoB2 src/Modules/CalcSetup.lua:Ailment Threshold is 50% of Life', 'PoB2 src/Modules/CalcDefence.lua:Stun Threshold, ailment avoidance, CurseEffectOnSelf, secondary debuff protection and ailment duration on self', 'PoB2 src/Modules/ModParser.lua:threshold, avoidance, immunity, duration and unaffected mappings', 'data-sources/poe2-tree/raw/0.5.2/data.json', 'generated/poe2-affixes/technical-affixes.json'],
     limitations: ['Bedingte Schwellenwirkungen und alternative Schwellenbasen werden ohne bestätigten Laufzeitzustand nicht angewandt.', 'Nur technische Gegenstandswerte und exakt erkannte, unbedingte Passivtexte werden verrechnet.'],
   }
   const level = Number.isInteger(input.characterLevel) && Number(input.characterLevel) >= 1 ? Math.min(100, Number(input.characterLevel)) : undefined
@@ -325,6 +334,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
   specificAilmentDuration.poison += equipmentValue(input.equipment, input.weaponSet, /^self_poison_duration_\+%$/)
   const durationPercent = (key: keyof typeof specificAilmentDuration, elemental: boolean) => round(Math.max(0, (100 + generalAilmentDuration + (elemental ? elementalAilmentDuration : 0) + specificAilmentDuration[key]) * 100 / Math.max(1, 100 + debuffExpirationRate)))
   const debuffDurationMultiplierPercent = round(10000 / Math.max(1, 100 + debuffExpirationRate))
+  const durationSeconds = (baseSeconds: number, percent: number) => round(baseSeconds * percent / 100)
   const blockedLines = unique([...base.blockedLines, ...attributes.blockedPassiveLines])
   return {
     ...base, status: blockedLines.length ? 'partial-blocked-special-cases' : 'exact-confirmed-components',
@@ -350,6 +360,15 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
         scorch: durationPercent('scorch', true), brittle: durationPercent('brittle', true), sap: durationPercent('sap', true),
         bleed: durationPercent('bleed', false), poison: durationPercent('poison', false),
       },
+      effectiveWhenAppliedSeconds: {
+        ignite: { base: 4, effective: durationSeconds(4, durationPercent('ignite', true)) },
+        chill: { base: 2, effective: durationSeconds(2, durationPercent('chill', true)) },
+        freeze: { base: 2, effective: durationSeconds(2, durationPercent('freeze', true)) },
+        shock: { base: 4, effective: durationSeconds(4, durationPercent('shock', true)) },
+        bleed: { base: 5, effective: durationSeconds(5, durationPercent('bleed', false)) },
+        poison: { base: 2, effective: durationSeconds(2, durationPercent('poison', false)) },
+      },
+      unknownBaseDuration: ['blind', 'scorch', 'brittle', 'sap'],
     },
     sourceNodeIds: unique(base.sourceNodeIds), sourceTexts: unique(base.sourceTexts), blockedLines,
   }
