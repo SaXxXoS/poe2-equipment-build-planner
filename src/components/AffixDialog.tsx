@@ -7,6 +7,7 @@ import { itemSupportsDefenceValues, weaponStatsAreValid } from '../features/equi
 import { appliedModifierId, clearItem, createAppliedModifier, inferItemRarity, migrateEquipmentEntry } from '../features/equipment-editor/model'
 import { defenceBaseDisplayName, defenceBaseValueById, defenceBaseValuesFor, utilityBaseDisplayName, utilityBaseValueById, utilityBaseValuesFor, weaponBaseDisplayName, weaponBaseValueById, weaponBaseValuesFor, weaponStatsFromBase } from '../features/equipment-editor/weapon-base-values'
 import type { ItemOcrResult } from '../features/item-ocr'
+import { resolveExactBaseIdentity } from '../features/equipment-editor/base-identity-resolution'
 import { ItemOcrPanel } from './ItemOcrPanel'
 
 const rarityText: Record<ItemRarity, string> = { normal: 'Normal', magic: 'Magisch', rare: 'Selten', unique: 'Einzigartig' }
@@ -99,7 +100,11 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
   function applyOcr(result:ItemOcrResult,selectedIds:Set<string>){
     const ocrClass=result.itemClassId??itemClassId
     const ocrSupportsDefences=itemSupportsDefenceValues(ocrClass)
-    setItemLevel(result.itemLevel);setQuality(result.quality);setArmour(ocrSupportsDefences?result.defences?.armour:undefined);setEvasion(ocrSupportsDefences?result.defences?.evasion:undefined);setEnergyShield(ocrSupportsDefences?result.defences?.energyShield:undefined);setDefencesSource(ocrSupportsDefences&&result.defences?'observed-final':undefined);setWeaponStats(result.weaponStats??{});setWeaponStatsSource(result.weaponStats?'observed-final':undefined);setBaseItemId('')
+    const resolvedBase=resolveExactBaseIdentity(result.baseDisplayName,ocrClass)
+    const pinnedDefence=resolvedBase?.kind==='defence'?resolvedBase.base.defences:undefined
+    const pinnedWeapon=resolvedBase?.kind==='weapon'?weaponStatsFromBase(resolvedBase.base):undefined
+    const observedDefences=ocrSupportsDefences&&result.defences
+    setItemLevel(result.itemLevel);setQuality(result.quality);setArmour(observedDefences?result.defences?.armour:pinnedDefence?.armour??undefined);setEvasion(observedDefences?result.defences?.evasion:pinnedDefence?.evasion??undefined);setEnergyShield(observedDefences?result.defences?.energyShield:pinnedDefence?.energyShield??undefined);setDefencesSource(observedDefences?'observed-final':pinnedDefence?'pinned-base':undefined);setWeaponStats(result.weaponStats??pinnedWeapon??{});setWeaponStatsSource(result.weaponStats?'observed-final':pinnedWeapon?'pinned-base':undefined);setBaseItemId(resolvedBase?.base.id??'')
     setObservedItemLines(result.observedLines)
     setObservedImplicitLines(result.unique?.observedImplicitLines??result.affixes.filter(match=>match.affixSide==='implicit'&&selectedIds.has(match.affixId)).map(match=>match.sourceText))
     setProperties(current=>current.filter(value=>value.source==='manual'||value.kind!=='unknown'))
@@ -116,7 +121,7 @@ export function AffixDialog({ entry, slotName, onSave, onClose }: { entry: Equip
       const index=sameSide.indexOf(match)
       return[{...createAppliedModifier(entry.id,affix,match.affixSide,index,match.values,nextClass),sourceOrder:match.sourceOrder}]
     })
-    setRarity(nextRarity);setItemClassId(nextClass);setItemLevel(result.itemLevel);setBaseDisplayName(result.baseDisplayName??'');setAdded(next);setStep('editor');setPicker(undefined)
+    setRarity(nextRarity);setItemClassId(nextClass);setItemLevel(result.itemLevel);setBaseDisplayName(resolvedBase?.base.displayNameDe??resolvedBase?.base.nameEn??result.baseDisplayName??'');setAdded(next);setStep('editor');setPicker(undefined)
   }
   function applyAffix() {
     if (!picker || !chosen) return

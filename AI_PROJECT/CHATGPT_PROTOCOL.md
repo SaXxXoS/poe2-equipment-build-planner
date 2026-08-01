@@ -3623,3 +3623,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Passive-Targeting-Tests überschritten dort das Fünf-Sekunden-Limit, sind
   aber im isolierten Wiederholungslauf zusammen mit insgesamt 197 Tests
   vollständig erfolgreich.
+
+## Schritt 111 – Exakte sichtbare Basistypidentität
+
+- Deutsche und englische sichtbare Basistypnamen werden nur bei exakter,
+  eindeutiger Übereinstimmung innerhalb der Itemklasse an eine gepinnte
+  technische Basis gebunden.
+- Interpunktion, Leerzeichen, Akzente und Großschreibung werden deterministisch
+  normalisiert; Fuzzy-Matching, Teilnamen und OCR-Reparatur bleiben verboten.
+- Neue OCR-Einträge erhalten bei sicherem Treffer die technische Basis-ID;
+  bereits gespeicherte exakte Anzeigenamen werden in der Anforderungsprüfung
+  ebenfalls aufgelöst.
+- Beobachtete Tooltip-Endwerte haben Vorrang. Gepinnte Grundwerte werden nur
+  eingesetzt, wenn keine beobachteten Endwerte vorhanden sind.
+- Produktpins bleiben unverändert; Path-of-Building-2-Gleichwertigkeit ist
+  weiterhin nicht belegt.

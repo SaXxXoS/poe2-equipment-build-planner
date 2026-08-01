@@ -1,0 +1,37 @@
+{
+  "step": 111,
+  "scope": "exact-visible-base-identity",
+  "allowedInputs": [
+    "pinned German base display name",
+    "pinned English base name",
+    "OCR or manually entered visible base name"
+  ],
+  "normalization": [
+    "case",
+    "unicode diacritics",
+    "whitespace",
+    "punctuation"
+  ],
+  "forbiddenMethods": [
+    "fuzzy matching",
+    "partial-name promotion",
+    "OCR spelling repair",
+    "invented technical identity"
+  ],
+  "effects": {
+    "technicalBaseIdStoredAfterExactOcrMatch": true,
+    "persistedVisibleNamesResolvedForRequirements": true,
+    "pinnedBaseValuesUsedOnlyWithoutObservedFinalValues": true,
+    "ambiguousNamesFailClosed": true
+  },
+  "verification": {
+    "focusedTestsPassed": 18,
+    "typecheck": "passed",
+    "lint": "passed"
+  },
+  "limitations": [
+    "Misspelled OCR names remain unresolved.",
+    "Path of Building 2 parity is not established."
+  ]
+}
+

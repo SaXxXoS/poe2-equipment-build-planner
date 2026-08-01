@@ -1,6 +1,7 @@
 import type { EquipmentEntry } from '../../domain'
 import { defenceBaseValueById, utilityBaseValueById, weaponBaseValueById } from '../../features/equipment-editor/weapon-base-values'
 import { evaluateBaseRequirements, type BaseRequirementInput } from '../../features/equipment-editor/base-requirements'
+import { resolveExactBaseIdentity } from '../../features/equipment-editor/base-identity-resolution'
 import type { CharacterAttributeModel, CharacterAttributeValues } from '../character-attributes/model'
 import type { ConstraintViolation } from '../common/types'
 
@@ -33,6 +34,13 @@ export const baseRequirementById = (id: string | undefined): BaseRequirementInpu
   return base ? { requiredLevel: base.requiredLevel, requirements: { ...base.requirements } } : undefined
 }
 
+const baseRequirementForEntry = (entry: EquipmentEntry): BaseRequirementInput | undefined => {
+  const byId = baseRequirementById(entry.itemDefinitionId)
+  if (byId) return byId
+  const exact = resolveExactBaseIdentity(entry.baseDisplayName, entry.itemClassId)
+  return exact ? { requiredLevel: exact.base.requiredLevel, requirements: { ...exact.base.requirements } } : undefined
+}
+
 export const entryActiveSets = (entry: EquipmentEntry): ('set-1' | 'set-2')[] =>
   entry.slotId.includes('weapon-set-1') ? ['set-1'] : entry.slotId.includes('weapon-set-2') ? ['set-2'] : ['set-1', 'set-2']
 
@@ -55,7 +63,7 @@ export function assessEquipmentBaseRequirements(input: {
   attributesWithoutEntry: (entry: EquipmentEntry, activeSet: 'set-1' | 'set-2') => CharacterAttributeModel
 }): EquipmentRequirementAssessment {
   const items = input.equipment.filter(isEnteredNormalItem).map(entry => {
-    const base = baseRequirementById(entry.itemDefinitionId)
+    const base = baseRequirementForEntry(entry)
     const activeSets = entryActiveSets(entry)
     if (!base) return {
       entryId: entry.id, slotId: entry.slotId, itemDefinitionId: entry.itemDefinitionId,
@@ -82,7 +90,7 @@ export function assessEquipmentBaseRequirements(input: {
 export function maximumEquipmentRequirements(equipment: EquipmentEntry[], activeSet?: 'set-1' | 'set-2') {
   const applicable = equipment.filter(entry => isEnteredNormalItem(entry) && (!activeSet || entryActiveSets(entry).includes(activeSet)))
   return applicable.reduce((maximum, entry) => {
-    const base = baseRequirementById(entry.itemDefinitionId)
+    const base = baseRequirementForEntry(entry)
     if (!base) return maximum
     for (const attribute of ['strength', 'dexterity', 'intelligence'] as const) maximum[attribute] = Math.max(maximum[attribute], base.requirements[attribute] ?? 0)
     return maximum

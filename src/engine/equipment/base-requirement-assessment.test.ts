@@ -30,4 +30,9 @@ describe('equipment base requirement assessment',()=>{
     expect(result.unresolvedItems).toHaveLength(1)
     expect(maximumEquipmentRequirements([entry()],'set-1').dexterity).toBe(104)
   })
+  it('resolves an exact visible OCR base name without fuzzy matching',()=>{
+    const helmet=entry({id:'helmet',slotId:'slot-helmet',itemDefinitionId:undefined,itemClassId:'Helmets',baseDisplayName:'AHNENTIARA'})
+    const result=assessEquipmentBaseRequirements({equipment:[helmet],characterLevel:80,attributesWithoutEntry:(_,set)=>model({strength:20,dexterity:20,intelligence:115},set)})
+    expect(result.items[0]).toMatchObject({status:'met',requiredLevel:80})
+  })
 })
