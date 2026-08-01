@@ -21,6 +21,8 @@ const tree = {
     { id: 'shared', name: { sourceText: 'Lightning Damage' }, stats: [{ sourceText: '20% increased [Lightning|Lightning] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'asc', name: { sourceText: 'Cast Speed' }, stats: [{ sourceText: '10% increased Cast Speed' }], nodeType: 'ascendancy', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: 'Stormweaver', isJewelSocket: false },
     { id: 'extra', name: { sourceText: 'Extra Lightning' }, stats: [{ sourceText: '[Gain] 12% of [Physical] Damage as Extra [Lightning] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'spell-more', name: { sourceText: 'Arcane Force' }, stats: [{ sourceText: '12% more Spell Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'conditional-damage', name: { sourceText: 'Conditional Force' }, stats: [{ sourceText: '40% increased Lightning Damage while on Full Life' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-physical', name: { sourceText: 'Bestial Rage' }, stats: [{ sourceText: 'Every 10 [Rage|Rage] also grants 12% increased [Physical|Physical] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-spell-more', name: { sourceText: 'Druidic Champion' }, stats: [{ sourceText: 'Every 2 [Rage|Rage] also grants 1% more Spell damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-ambiguous', name: { sourceText: 'Unknown Rage' }, stats: [{ sourceText: 'Gain lots of Damage for every Rage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
@@ -36,6 +38,27 @@ describe('quantitative Wirkungskette', () => {
     const result = collectQuantitativeEffects({ equipment: [], skill, passiveTree: tree, realPassivePlanning: planning, weaponSet: 'set-1' })
     expect(result.damageModifiers).toEqual([expect.objectContaining({ source: 'passive', percent: 20, appliesTo: ['lightning'] })])
     expect(result.speedModifiers).toEqual([expect.objectContaining({ source: 'ascendancy', percent: 10 })])
+  })
+
+  it('wendet strukturierte Mehr-Multiplikatoren getrennt an und blockiert Bedingungen', () => {
+    const result = collectQuantitativeEffects({
+      equipment: [],
+      skill,
+      passiveTree: tree,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['shared', 'spell-more', 'conditional-damage'] },
+      } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1',
+    })
+    expect(result.damageModifiers).toEqual([
+      expect.objectContaining({ sourceId: 'shared', percent: 20, kind: 'increased' }),
+      expect.objectContaining({ sourceId: 'spell-more', percent: 12, kind: 'more' }),
+    ])
+    expect(applyDamageModifiers(
+      [{ type: 'lightning', minimum: 100, maximum: 100 }],
+      [],
+      result.damageModifiers,
+    )).toEqual([{ type: 'lightning', minimum: 134.4, maximum: 134.4 }])
   })
 
   it('erhält die Schadenssumme bei einer bestätigten Umwandlung', () => {

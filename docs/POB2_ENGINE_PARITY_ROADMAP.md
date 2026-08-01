@@ -546,3 +546,17 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
 - Noch keine Verbindung zu finalen Skill-, Gegner- oder Defensivformeln.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_AGGREGATION_STEP_103.md`.
+
+## Schritt 104 – Passivwirkungen in der Schadenskette
+
+- Vergebene Passiv-, Waffenset- und Aszendenzknoten werden nun über den
+  vollständigen Klassifikator in die quantitative Schadenskette geführt.
+- Schadensart, Fertigkeitsmechanik, Angriff-/Zaubertempo und kritische
+  Trefferchance werden nur bei belegter Kompatibilität angewendet.
+- `increased/reduced` bleibt additiv; `more/less` wird separat
+  multiplikativ berechnet.
+- Bedingte, ziellose oder unpassende Wirkungen bleiben fail-closed.
+- Verteidigung, Attribute, Ressourcen und komplexe Bedingungen bilden die
+  nächste numerische Paritätslücke.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_DAMAGE_INTEGRATION_STEP_104.md`.

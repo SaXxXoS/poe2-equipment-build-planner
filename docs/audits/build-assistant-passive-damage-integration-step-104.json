@@ -1,0 +1,45 @@
+{
+  "step": 104,
+  "scope": "allocated-passive-and-ascendancy-damage-effects",
+  "sourceTreeVersion": "0.5.2",
+  "classifierVersion": "1.13.0",
+  "structuredEffectsMeasured": 4030,
+  "aggregationReadyEffectsMeasured": 3008,
+  "integratedDomains": [
+    "damage-scaling",
+    "attack-speed",
+    "cast-speed",
+    "critical-hit-chance"
+  ],
+  "integratedOperators": [
+    "increased",
+    "reduced",
+    "more",
+    "less"
+  ],
+  "selectionScope": [
+    "shared-passives",
+    "weapon-set-1-passives",
+    "weapon-set-2-passives",
+    "ascendancy-passives"
+  ],
+  "blocked": [
+    "conditional-effects-without-confirmed-state",
+    "effects-without-structured-target",
+    "skill-mechanic-mismatch",
+    "unresolved-effects"
+  ],
+  "calculationOrder": [
+    "base",
+    "conversion",
+    "gain-as-extra",
+    "increased-reduced",
+    "more-less",
+    "supports",
+    "speed",
+    "critical-expectation",
+    "enemy-mitigation"
+  ],
+  "parityStatus": "partial-not-pob2-equivalent",
+  "nextGap": "structured-defence-attribute-resource-and-conditional-effect-application"
+}

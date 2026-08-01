@@ -3538,3 +3538,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Noch keine finale DPS- oder Defensivberechnung; PoB2-Parität bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_AGGREGATION_STEP_103.md`.
+
+## Schritt 104 – strukturierte Passivwirkung in der Schadensberechnung
+
+- Der vollständige Passivklassifikator ersetzt die bisherige schmale
+  Sonder-Regex als primäre Quelle normaler Schadens-, Tempo- und
+  Krit-Wirkungen vergebener Knoten.
+- Gemeinsame, waffensetspezifische und Aszendenzwirkungen werden nur für das
+  aktive Set und eine kompatible Fertigkeit numerisch angewendet.
+- Additive und multiplikative Operatoren bleiben mathematisch getrennt.
+- Unbestätigte Bedingungen erzeugen keinen Bonus.
+- PoB2-Parität bleibt offen; als Nächstes folgen Verteidigungs-, Attribut- und
+  Ressourcenendwerte sowie kontrollierte Zustandsauswertung.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_DAMAGE_INTEGRATION_STEP_104.md`.

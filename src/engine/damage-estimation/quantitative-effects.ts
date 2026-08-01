@@ -1,6 +1,8 @@
 import type { EquipmentEntry, SkillGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
+import { classifyPassiveText, derivePassiveTargetNodeType } from '../passive-targeting/classifier'
+import { structurePassiveStatEffect } from '../passive-targeting/effect-model'
 import type { DamageComponent } from './types'
 
 export type QuantitativeEffectSource = 'equipment' | 'passive' | 'ascendancy'
@@ -11,6 +13,7 @@ export interface QuantitativeDamageModifier {
   label: string
   percent: number
   appliesTo: string[]
+  kind?: 'increased' | 'more'
 }
 export interface QuantitativeConversion {
   id: string
@@ -134,27 +137,32 @@ function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassive
     const node = nodes.get(nodeId)
     if (!node) continue
     const source: QuantitativeEffectSource = node.ascendancyId ? 'ascendancy' : 'passive'
+    const nodeType = derivePassiveTargetNodeType(node)
     for (const sourceText of node.stats.map(value => value.sourceText).filter((value): value is string => Boolean(value))) {
+      const stat = classifyPassiveText(sourceText, nodeType)
       const text = stripMarkup(sourceText)
-      const damage = text.match(/^(-?\d+(?:\.\d+)?)% increased (?:(Physical|Fire|Cold|Lightning|Chaos|Elemental|Attack|Spell|Projectile|Melee|Area) )?Damage$/i)
-      if (damage) {
-        const qualifier = damage[2]?.toLocaleLowerCase('en')
+      const effect = structurePassiveStatEffect(stat)
+      if (effect?.aggregationStatus === 'ready' && effect.unit === 'percent') {
+        const tagSet = new Set<string>(effect.tags)
+        const mechanicTags = ['attack', 'spell', 'projectile', 'melee', 'area']
+        const requiredMechanics = mechanicTags.filter(tag => tagSet.has(tag))
+        const mechanicCompatible = requiredMechanics.every(tag => skillTags.has(tag))
+        const hasDamageTarget = effect.targetProfileFields.some(field => field.startsWith('damageTypes.') || field.startsWith('mechanics.'))
+          && (tagSet.has('generic-damage') || tagSet.has('elemental') || damageTypes.some(type => tagSet.has(type)) || requiredMechanics.length > 0)
+        if (hasDamageTarget && mechanicCompatible && ['increased', 'reduced', 'more', 'less'].includes(effect.operator)) {
+          const qualifier = tagSet.has('elemental') ? 'elemental' : damageTypes.find(type => tagSet.has(type))
         const appliesTo =
           !qualifier ? [...damageTypes]
           : qualifier === 'elemental' ? ['fire', 'cold', 'lightning']
           : (damageTypes as readonly string[]).includes(qualifier) ? [qualifier]
-          : skillTags.has(qualifier) ? [...damageTypes]
           : []
-        if (appliesTo.length) result.damageModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: Number(damage[1]), appliesTo })
-        continue
+          const signed = effect.operator === 'reduced' || effect.operator === 'less' ? -effect.value : effect.value
+          if (appliesTo.length) result.damageModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: signed, appliesTo, kind: effect.operator === 'more' || effect.operator === 'less' ? 'more' : 'increased' })
+        }
+        if (tagSet.has('attack-speed') && skillTags.has('attack')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['attack'] })
+        if (tagSet.has('cast-speed') && skillTags.has('spell')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['cast'] })
+        if (tagSet.has('critical') && /critical hit chance/i.test(text)) result.criticalChanceModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['critical'] })
       }
-      const speed = text.match(/^(-?\d+(?:\.\d+)?)% increased (Attack|Cast) Speed$/i)
-      if (speed && skillTags.has(speed[2].toLocaleLowerCase('en') === 'attack' ? 'attack' : 'spell')) {
-        result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: Number(speed[1]), appliesTo: [speed[2].toLocaleLowerCase('en')] })
-        continue
-      }
-      const criticalChance = text.match(/^(-?\d+(?:\.\d+)?)% increased Critical Hit Chance$/i)
-      if (criticalChance) result.criticalChanceModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: Number(criticalChance[1]), appliesTo: ['critical'] })
       const criticalMultiplier = text.match(/^\+?(-?\d+(?:\.\d+)?)% to Critical Damage Bonus$/i)
       if (criticalMultiplier) result.criticalMultiplierModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: Number(criticalMultiplier[1]), appliesTo: ['critical'] })
       const conversion = text.match(/^(\d+(?:\.\d+)?)% of (Physical|Fire|Cold|Lightning|Chaos) Damage (?:is )?Converted to (Physical|Fire|Cold|Lightning|Chaos) Damage$/i)
@@ -359,8 +367,10 @@ export function applyDamageModifiers(
 ): DamageComponent[] {
   const result = new Map<DamageComponent['type'], { minimum: number; maximum: number }>(damageTypes.map(type => [type, { minimum: 0, maximum: 0 }]))
   const add = (type: DamageComponent['type'], minimum: number, maximum: number, applicableTypes: string[]) => {
-    const increase = modifiers.filter(effect => effect.appliesTo.some(value => applicableTypes.includes(value))).reduce((sum, effect) => sum + effect.percent, 0)
-    const multiplier = 1 + increase / 100
+    const applicable = modifiers.filter(effect => effect.appliesTo.some(value => applicableTypes.includes(value)))
+    const increase = applicable.filter(effect => (effect.kind ?? 'increased') === 'increased').reduce((sum, effect) => sum + effect.percent, 0)
+    const more = applicable.filter(effect => effect.kind === 'more').reduce((product, effect) => product * (1 + effect.percent / 100), 1)
+    const multiplier = Math.max(0, 1 + increase / 100) * Math.max(0, more)
     const target = result.get(type)!
     target.minimum += minimum * multiplier
     target.maximum += maximum * multiplier
