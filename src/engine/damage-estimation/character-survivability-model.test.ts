@@ -18,6 +18,11 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('chaos-inoculation', 'Maximum Life is 1\nImmune to Chaos Damage and Bleeding'),
   node('mana-threshold', 'Stun Threshold is based on 40% of your Mana instead of Life'),
   node('es-addition', '20% of your Energy Shield is added to your Stun Threshold'),
+  node('threshold-es', 'Gain additional [AilmentThreshold|Ailment Threshold] equal to 15% of maximum [EnergyShield|Energy Shield]\nGain additional [StunThreshold|Stun Threshold] equal to 15% of maximum [EnergyShield|Energy Shield]'),
+  node('evasion-ailment', '[Gain] 100% of [Evasion|Evasion Rating] as extra [AilmentThreshold|Ailment Threshold]'),
+  node('helmet-lowest', 'Gain [StunThreshold|Stun Threshold] equal to the lowest of [Evasion|Evasion] and [Armour|Armour] on your Helmet'),
+  node('boots-lowest', 'Gain [AilmentThreshold|Ailment Threshold] equal to the lowest of [Evasion|Evasion] and [Armour|Armour] on your Boots'),
+  node('armour-items', 'Gain additional [StunThreshold|Stun Threshold] equal to 30% of [ItemArmour|Item Armour] on [EquipArmour|Equipped Armour Items]'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -68,5 +73,27 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.stunThreshold?.baseKind).toBe('life')
     expect(result.blockedLines).toHaveLength(2)
+  })
+  it('wendet globale Energieschild- und Ausweichbeiträge auf die richtigen Schwellen an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['threshold-es', 'evasion-ailment']), maximumEnergyShield: 200, totalArmour: 100, totalEvasion: 300 })
+    expect(result.stunThreshold).toEqual(expect.objectContaining({ additionalFromEnergyShield: 30, additionalFromDefences: 0, total: 356 }))
+    expect(result.ailmentThreshold).toEqual(expect.objectContaining({ additionalFromEnergyShield: 30, additionalFromDefences: 300, total: 493 }))
+  })
+  it('verwendet Helm, Schuhe und Rüstungsteile positionsgenau', () => {
+    const positionalEquipment: EquipmentEntry[] = [
+      { id: 'helmet', slotId: 'slot-helmet', modifierValues: [], defences: { armour: 100, evasion: 80 } },
+      { id: 'boots', slotId: 'slot-boots', modifierValues: [], defences: { armour: 40, evasion: 60 } },
+      { id: 'gloves', slotId: 'slot-gloves', modifierValues: [], defences: { armour: 20 } },
+      { id: 'body', slotId: 'slot-body-armour', modifierValues: [], defences: { armour: 200 } },
+      { id: 'weapon', slotId: 'slot-weapon-set-1-left', modifierValues: [], defences: { armour: 999, evasion: 999 } },
+    ]
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: positionalEquipment, weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['helmet-lowest', 'boots-lowest', 'armour-items']), maximumEnergyShield: 0, totalArmour: 360, totalEvasion: 140 })
+    expect(result.stunThreshold).toEqual(expect.objectContaining({ additionalFromEquipmentPositions: 188, total: 514 }))
+    expect(result.ailmentThreshold).toEqual(expect.objectContaining({ additionalFromEquipmentPositions: 40, total: 203 }))
+  })
+  it('blockiert globale Defensive-Beiträge ohne berechneten Quellwert', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['evasion-ailment']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toContain('Additional threshold from Evasion Rating')
   })
 })

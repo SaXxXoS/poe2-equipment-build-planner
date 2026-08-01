@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 117,
+  "modelVersion": "1.1.0",
+  "calculatorVersion": "3.31.0",
+  "sourcePin": "PathOfBuildingCommunity/PathOfBuilding-PoE2@c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "implementedRules": [
+    "percentage-of-global-armour-or-evasion-as-threshold",
+    "percentage-of-maximum-energy-shield-as-threshold",
+    "lowest-armour-evasion-on-helmet-as-stun-threshold",
+    "lowest-armour-evasion-on-boots-as-ailment-threshold",
+    "armour-on-equipped-armour-items-as-stun-threshold"
+  ],
+  "equipmentSlotsIncludedForArmourItemRule": [
+    "slot-helmet",
+    "slot-gloves",
+    "slot-boots",
+    "slot-body-armour"
+  ],
+  "weaponDefencesIncluded": false,
+  "failClosed": [
+    "missing-global-armour",
+    "missing-global-evasion",
+    "missing-maximum-energy-shield",
+    "conditional-threshold-effects"
+  ],
+  "productPinsChanged": false,
+  "pob2Parity": "not-proven"
+}

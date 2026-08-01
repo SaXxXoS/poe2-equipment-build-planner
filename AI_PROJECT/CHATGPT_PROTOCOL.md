@@ -3678,3 +3678,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fehlende Bezugsgrößen und widersprüchliche alternative Basisregeln bleiben fail-closed in `blockedLines`.
 - Calculator-Version: `3.30.0`; Produktpins und Produktdateien bleiben unverändert.
 - Hauptdokument: `docs/BUILD_ASSISTANT_SURVIVABILITY_SPECIAL_RULES_STEP_116.md`.
+
+# Schritt 117 – Defensive Beiträge zu Charakter-Schwellenwerten
+
+- Unbedingte PoB2-Regeln können Schwellenwerte jetzt aus globaler Rüstung, globalem Ausweichwert und maximalem Energieschild ableiten.
+- Helm und Schuhe werden für die belegten Niedrigster-von-Rüstung-und-Ausweichen-Regeln positionsgenau ausgewertet.
+- Die Rüstung-aus-ausgerüsteten-Rüstungsteilen-Regel umfasst ausschließlich Helm, Handschuhe, Schuhe und Körperrüstung; Waffen werden ausgeschlossen.
+- Energie-, globale Defensive- und Positionsbeiträge bleiben im Ergebnis getrennt nachvollziehbar.
+- Fehlende Bezugsgrößen und bedingte Zustände bleiben fail-closed.
+- Calculator-Version: `3.31.0`; Produktpins und Produktdateien bleiben unverändert.
+- Hauptdokument: `docs/BUILD_ASSISTANT_DEFENCE_THRESHOLD_CONTRIBUTIONS_STEP_117.md`.
