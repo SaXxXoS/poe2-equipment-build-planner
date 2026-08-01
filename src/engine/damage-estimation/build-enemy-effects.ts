@@ -14,7 +14,7 @@ const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magi
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
-export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.2.0'
+export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -183,6 +183,30 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
         uptimeStatus:'maintainable',state:'fully-active',
         sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: active_skill_all_elemental_exposure_magnitude + frost_bomb_exposure_does_not_apply_to_enemies_of_level_higher_than_X + base_secondary_skill_effect_duration + cooldown${potentExposure?' + exposure_effect_+%':''}`,
         stateDetail:`Der belegte Grundwert von ${effectiveMagnitude}% Exposition kann bei Einsatz auf Abklingzeit innerhalb des ${frostBombDurationMs/1000}-Sekunden-Fensters erneuert werden. Die zeitlich anwachsende Stärke wird mangels vollständig belegter Reset- und Überlappungsregel nicht addiert.`,
+      })
+    }
+    const oilExposureMagnitude=Number(numericStats['skill_base_oil_exposure_-_to_total_elemental_resistance'])
+    const oilDurationMs=Number(numericStats.base_secondary_skill_effect_duration)
+    const oilCooldownSeconds=Number((selectedLevel as {cooldown?:number}|undefined)?.cooldown??numeric.cooldown)
+    const oilActivationMs=Number(numericStats.base_skill_detonation_time)
+    if(
+      definition.nameEn==='Oil Grenade'
+      && relevantElementalTypes.length>0
+      && Number.isFinite(oilExposureMagnitude)&&oilExposureMagnitude>0
+      && Number.isFinite(oilDurationMs)&&oilDurationMs>0
+      && Number.isFinite(oilCooldownSeconds)&&oilCooldownSeconds>0
+      && oilDurationMs/1000>=oilCooldownSeconds
+    ){
+      const effectiveMagnitude=Math.floor(oilExposureMagnitude*(1+exposureEffect/100))
+      candidates.push({
+        source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementare Ölexposition`,
+        kind:'resistance-reduction',effectGroup:'exposure',damageTypes:relevantElementalTypes,value:effectiveMagnitude,
+        evidence:'structured-exact',conditional:true,durationMs:oilDurationMs,
+        activationTimeMs:Number.isFinite(oilActivationMs)&&oilActivationMs>0?oilActivationMs:undefined,
+        applicationRatePerSecond:Number((1/oilCooldownSeconds).toFixed(4)),estimatedUptime:1,
+        uptimeStatus:'maintainable',state:'fully-active',
+        sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: skill_base_oil_exposure_-_to_total_elemental_resistance + base_secondary_skill_effect_duration + cooldown${potentExposure?' + exposure_effect_+%':''}`,
+        stateDetail:`Die belegte Ölfläche senkt die relevanten Elementarwiderstände um ${effectiveMagnitude}% und kann mit ${oilDurationMs/1000} Sekunden Dauer bei Einsatz auf ${oilCooldownSeconds} Sekunden Abklingzeit aufrechterhalten werden.`,
       })
     }
     const pushExposure=(supportDefinition:SupportGemDefinition,type:EnemyResistanceType,triggerStat:string,durationMs:number,applicationRatePerSecond:number,stateDetail:string)=>{

@@ -1,0 +1,47 @@
+{
+  "step": 136,
+  "scope": "oil-grenade-exposure-chain",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceRecordId": "OilGrenadePlayer",
+  "structuredStats": {
+    "baseExposurePercent": 20,
+    "durationMs": 6000,
+    "activationTimeMs": 1600,
+    "cooldownSeconds": 4,
+    "storedUses": 3
+  },
+  "productiveRules": [
+    "selected skill is Oil Grenade",
+    "setup is active in evaluated weapon set",
+    "at least one active elemental damage type",
+    "duration covers cooldown",
+    "Potent Exposure applies only when selected on the same setup",
+    "strongest exposure per element wins"
+  ],
+  "blocked": [
+    "wrong weapon set",
+    "physical-only or chaos-only damage",
+    "missing structured magnitude, duration or cooldown",
+    "Frost Bomb compounding exposure without complete pulse-reset-overlap chain",
+    "Exposing Cry without complete exert-hit application chain"
+  ],
+  "modelVersions": {
+    "damageCalculator": "3.50.0",
+    "exposure": "1.3.0",
+    "shock": "1.4.0",
+    "temporalEnemyEffects": "2.0.0"
+  },
+  "verification": {
+    "focusedTestFiles": 2,
+    "focusedTests": 86,
+    "fullTestFiles": 140,
+    "fullTests": 1745,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 208,
+    "gitDiffCheck": "passed"
+  }
+}

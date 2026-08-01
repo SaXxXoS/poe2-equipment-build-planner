@@ -396,6 +396,41 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(applyBuildEnemyEffects({...input,weaponSet:'set-2'}).resistanceReduction).toEqual({cold:20})
   })
 
+  it('wendet die belegte Ölexposition der Ölgranate auf relevante Elemente an',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('oil','oil')],skills:[skill('oil','Oil Grenade')],
+      activeDamageTypes:['fire','lightning'],weaponSet:'set-1',
+    })
+    expect(result.resistanceReduction).toEqual({fire:20,lightning:20})
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      source:'skill',sourceId:'oil',effectGroup:'exposure',value:20,
+      durationMs:6000,activationTimeMs:1600,applicationRatePerSecond:0.25,
+      estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
+    })])
+    expect(result.appliedEffects?.[0].sourceReference).toContain('skill_base_oil_exposure_-_to_total_elemental_resistance')
+  })
+
+  it('verstärkt Ölexposition mit gewählter Potent Exposure und trennt sie nach Waffenset',()=>{
+    const selected={...setup('oil','oil'),weaponSet:'set-2' as const,supportGemIds:['potent']}
+    const input={
+      profile,setups:[selected],skills:[skill('oil','Oil Grenade')],supports:[support('potent','Potent Exposure')],
+      activeDamageTypes:['cold' as const],
+    }
+    expect(applyBuildEnemyEffects({...input,weaponSet:'set-1'}).resistanceReduction).toBeUndefined()
+    const set2=applyBuildEnemyEffects({...input,weaponSet:'set-2'})
+    expect(set2.resistanceReduction).toEqual({cold:24})
+    expect(set2.appliedEffects?.[0]).toMatchObject({value:24,effectGroup:'exposure'})
+  })
+
+  it('wendet Ölexposition nicht auf rein physischen Schaden an',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('oil','oil')],skills:[skill('oil','Oil Grenade')],
+      activeDamageTypes:['physical'],weaponSet:'set-1',
+    })
+    expect(result.resistanceReduction).toBeUndefined()
+    expect(result.appliedEffects).toEqual([])
+  })
+
   it('berechnet Rüstungsbruch-Multiplikator, benötigte Treffer und vollständig gebrochene Rüstung',()=>{
     const oneHit=applyBuildEnemyEffects({
       profile:{...profile,targetRarity:'magic',armour:9000},

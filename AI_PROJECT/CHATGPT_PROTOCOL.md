@@ -3906,3 +3906,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien mit 83 Tests. Serielle Gesamtsuite: 140 Dateien mit 1.742 Tests. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_FROST_BOMB_EXPOSURE_STEP_135.md` und `docs/audits/build-assistant-step-135-frost-bomb-exposure.json`.
 - Nächster Baustein: anwachsende Frostbomben-Exposition nur bei vollständiger Regelkette; sonst die nächste reproduzierbar geschlossene Gegnerzustandswirkung.
+
+## Schritt 136 – Ölexposition
+
+- Der Schadensrechner verwendet `3.50.0`; das Expositionsmodell verwendet `1.3.0`.
+- `Oil Grenade` ist über den gepinnten Quellrecord `OilGrenadePlayer` mit 20 % elementarer Ölexposition, sechs Sekunden Wirkzeit, 1,6 Sekunden Aktivierungszeit und vier Sekunden Abklingzeit verbunden.
+- Die Wirkung gilt nur für relevante Elementarschadensarten und das aktive Waffenset. Rein physische und reine Chaos-Builds erhalten keinen Bonus.
+- Gewähltes `Potent Exposure` erhöht den Wert auf 24 %. Die stärkste-Exposition-Regel verhindert additive Doppelzählung gleicher Elemente.
+- Die anwachsende Frostbombenwirkung bleibt mangels lokaler Puls-/Reset-/Überlappungsregel blockiert. `Exposing Cry` bleibt mangels vollständig belegter Exert-/Trefferkette ebenfalls wirkungsneutral.
+- Fokussierte Prüfung: 2 Dateien mit 86 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien mit 1.745 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 208 JSON-Dateien erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_OIL_EXPOSURE_STEP_136.md` und `docs/audits/build-assistant-step-136-oil-exposure.json`.
+- Nächster Baustein: nächste vollständig geschlossene Gegnerwirkung; unvollständige Laufzeit- und Triggerketten bleiben fail-closed.
