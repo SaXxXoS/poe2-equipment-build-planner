@@ -3698,3 +3698,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Andere bedingte Vermeidungszeilen bleiben fail-closed in `blockedLines`.
 - Quellenpins und Offline-Grenzen bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_THRESHOLD_AVOIDANCE_STEP_118.md` und `docs/audits/build-assistant-step-118-threshold-avoidance.json`.
+## Schritt 119 – einzelne Elementarbeeinträchtigungen (2026-08-01)
+
+- Entzünden, Kühlen, Einfrieren und Schock werden im Überlebensmodell getrennt ausgewiesen.
+- Individuelle und allgemeine Elementarvermeidung werden nach der gepinnten PoB2-Regel addiert und je Typ bei 100 % gedeckelt.
+- Einzelimmunität wirkt nur auf den passenden Typ; allgemeine Elementarbeeinträchtigungsimmunität wirkt auf alle vier Typen.
+- Bedingte Vermeidung und Immunität bleiben ohne bestätigten Laufzeitzustand fail-closed.
+- Die lokale Baumversion 0.5.2 enthält keine exakt belegten Einzelvermeidungszeilen; dafür wird keine künstliche Coverage behauptet.
+- Modellversion: `1.3.0`; Schadensrechner: `3.33.0`.
+- Belege: `docs/BUILD_ASSISTANT_ELEMENTAL_AILMENT_PROTECTION_STEP_119.md` und `docs/audits/build-assistant-step-119-elemental-ailment-protection.json`.
+- Nächster Schritt: getrennte, belegte Vermeidung und Immunität für nicht-elementare Beeinträchtigungen.

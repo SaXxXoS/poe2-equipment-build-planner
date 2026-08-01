@@ -4,7 +4,13 @@ import { resolveCharacterAttributes } from '../character-attributes/model'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 
-export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.2.0'
+export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.3.0'
+
+type ElementalAilmentProtection = {
+  chance: number
+  immune: boolean
+  immunitySource: 'none' | 'individual' | 'elemental-ailment-immunity'
+}
 
 export interface CharacterSurvivabilityModel {
   modelVersion: typeof CHARACTER_SURVIVABILITY_MODEL_VERSION
@@ -13,7 +19,16 @@ export interface CharacterSurvivabilityModel {
   life?: { baseFromLevel: number; fromStrength: number; strengthLifePerPoint: number; inherentAttributeMultiplier: number; fromDexterityPassives: number; flatFromEquipment: number; flatFromPassives: number; increasedReducedPercent: number; moreLessMultiplier: number; preOverrideMaximum: number; maximum: number; override?: 'chaos-inoculation' }
   stunThreshold?: { baseKind: 'life' | 'pre-chaos-inoculation-life' | 'energy-shield' | 'mana'; basePercent: number; baseValue: number; additionalFromEnergyShield: number; additionalFromDefences: number; additionalFromEquipmentPositions: number; flatFromAttributes: number; flatOther: number; increasedReducedPercent: number; moreLessMultiplier: number; total: number }
   ailmentThreshold?: { baseFromLife: number; additionalFromEnergyShield: number; additionalFromDefences: number; additionalFromEquipmentPositions: number; flatFromAttributes: number; flatOther: number; increasedReducedPercent: number; moreLessMultiplier: number; total: number }
-  avoidance?: { stunChance: number; elementalAilmentChance: number; stunImmune: boolean; stunImmunitySource: 'none' | 'unconditional' | 'energy-shield-condition' }
+  avoidance?: {
+    stunChance: number
+    elementalAilmentChance: number
+    stunImmune: boolean
+    stunImmunitySource: 'none' | 'unconditional' | 'energy-shield-condition'
+    ignite: ElementalAilmentProtection
+    chill: ElementalAilmentProtection
+    freeze: ElementalAilmentProtection
+    shock: ElementalAilmentProtection
+  }
   sourceNodeIds: string[]
   sourceTexts: string[]
   blockedLines: string[]
@@ -29,6 +44,7 @@ const appliesToSet = (entry: EquipmentEntry, set: 'set-1' | 'set-2') => {
   return true
 }
 const round = (value: number) => Number(value.toFixed(6))
+const elementalAilmentKey = (value: string): 'ignite' | 'chill' | 'freeze' | 'shock' => ({ ignited: 'ignite', chilled: 'chill', frozen: 'freeze', shocked: 'shock' })[value.toLowerCase()] as 'ignite' | 'chill' | 'freeze' | 'shock'
 
 function allocatedNodes(tree: RealPassiveTree | undefined, planning: RealPassivePlanningIntegrationResult | undefined, set: 'set-1' | 'set-2') {
   if (!tree || !planning) return []
@@ -65,6 +81,8 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
   let stunFromAttributes = 0, stunFlat = 0, stunPercent = 0, stunMore = 1
   let ailmentFromAttributes = 0, ailmentFlat = 0, ailmentPercent = 0, ailmentMore = 1
   let stunAvoidance = 0, elementalAilmentAvoidance = 0, unconditionalStunImmune = false, energyShieldStunImmune = false
+  const elementalAvoidance = { ignite: 0, chill: 0, freeze: 0, shock: 0 }
+  const elementalImmunity = { all: false, ignite: false, chill: false, freeze: false, shock: false }
   let halvesLifeFromStrength = false, noStrengthLife = false, noAttributeBonuses = false, doubledAttributeBonuses = false, chaosInoculation = false
   const thresholdBases: Array<{ kind: 'energy-shield' | 'mana'; percent: number; sourceText: string; nodeId: string }> = []
   let additionalEnergyShieldToStunPercent = 0
@@ -93,6 +111,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       const armourItemsToStun = text.match(/^(?:Gain additional Stun Threshold equal to )?(\d+(?:\.\d+)?)% of (?:base |item )?Armour (?:from equipment|on Equipped Armour Items)$/i)
       const avoidStun = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid being Stunned$/i)
       const avoidElementalAilments = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid Elemental Ailments$/i)
+      const avoidIndividualAilment = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid being (Ignited|Chilled|Frozen|Shocked)$/i)
       if (/^Inherent Life granted by Strength is halved$/i.test(text)) { halvesLifeFromStrength = true; matched = true }
       else if (/^(?:Strength provides no (?:inherent )?bonus to maximum Life|Gain no inherent bonus(?:es)? from Strength)$/i.test(text)) { noStrengthLife = true; matched = true }
       else if (/^Gain no inherent bonuses from Attributes$/i.test(text)) { noAttributeBonuses = true; matched = true }
@@ -120,6 +139,19 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       else if (/^(?:Your )?Stun Threshold is doubled$/i.test(text)) { stunMore *= 2; matched = true }
       else if (avoidStun) { stunAvoidance += Number(avoidStun[1]); matched = true }
       else if (avoidElementalAilments) { elementalAilmentAvoidance += Number(avoidElementalAilments[1]); matched = true }
+      else if (avoidIndividualAilment) {
+        const ailment = elementalAilmentKey(avoidIndividualAilment[2])
+        elementalAvoidance[ailment] += Number(avoidIndividualAilment[1])
+        matched = true
+      }
+      else if (/^(?:You (?:are )?)?(?:Immune to Elemental Ailments|Cannot be affected by Elemental Ailments)$/i.test(text)) { elementalImmunity.all = true; matched = true }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) (Ignited|Chilled|Frozen|Shocked)$/i.test(text)) {
+        const ailment = elementalAilmentKey(text.match(/(Ignited|Chilled|Frozen|Shocked)$/i)![1])
+        elementalImmunity[ailment] = true
+        matched = true
+      }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) Ignited and Shocked$/i.test(text) || /^Immunity to Ignite and Shock$/i.test(text)) { elementalImmunity.ignite = true; elementalImmunity.shock = true; matched = true }
+      else if (/^(?:You )?Cannot be Chilled or Frozen$/i.test(text) || /^Immunity to Freeze and Chill$/i.test(text)) { elementalImmunity.chill = true; elementalImmunity.freeze = true; matched = true }
       else if (/^(?:You )?Cannot be Stunned$/i.test(text)) { unconditionalStunImmune = true; matched = true }
       else if (/^(?:You )?Cannot be Stunned while you have Energy Shield$/i.test(text)) {
         if (input.hasEnergyShield == null) base.blockedLines.push(sourceText)
@@ -150,7 +182,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
         matched = true
       }
       if (matched) { base.sourceNodeIds.push(node.id); base.sourceTexts.push(sourceText) }
-      else if (/\b(?:Life|Stun Threshold|Ailment Threshold|Avoid being Stunned|Avoid Elemental Ailments|Cannot be Stunned)\b/i.test(text)) base.blockedLines.push(sourceText)
+      else if (/\b(?:Life|Stun Threshold|Ailment Threshold|Avoid being Stunned|Avoid (?:being )?(?:Ignited|Chilled|Frozen|Shocked|Elemental Ailments)|Cannot be (?:Stunned|Ignited|Chilled|Frozen|Shocked)|Immun(?:e|ity) to (?:Ignite|Chill|Freeze|Shock|Elemental Ailments))\b/i.test(text)) base.blockedLines.push(sourceText)
       }
     }
   }
@@ -192,13 +224,21 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
   const ailmentBase = maximumLife * 0.5
   const ailmentTotal = (ailmentBase + additionalAilmentFromEnergyShield + ailmentFromDefences + ailmentFromEquipmentPositions + ailmentFromAttributes + ailmentFlat + equipmentAilmentFlat) * Math.max(0, 1 + (ailmentPercent + equipmentAilmentPercent) / 100) * Math.max(0, ailmentMore)
   const stunImmune = unconditionalStunImmune || energyShieldStunImmune
+  const protection = (ailment: Exclude<keyof typeof elementalImmunity, 'all'>): ElementalAilmentProtection => {
+    const immune = elementalImmunity.all || elementalImmunity[ailment]
+    return {
+      chance: immune ? 100 : Math.min(100, Math.max(0, round(elementalAilmentAvoidance + elementalAvoidance[ailment]))),
+      immune,
+      immunitySource: elementalImmunity.all ? 'elemental-ailment-immunity' : elementalImmunity[ailment] ? 'individual' : 'none',
+    }
+  }
   const blockedLines = unique([...base.blockedLines, ...attributes.blockedPassiveLines])
   return {
     ...base, status: blockedLines.length ? 'partial-blocked-special-cases' : 'exact-confirmed-components',
     life: { baseFromLevel, fromStrength, strengthLifePerPoint, inherentAttributeMultiplier, fromDexterityPassives: lifePerDexterity, flatFromEquipment, flatFromPassives: flatLife, increasedReducedPercent: round(lifePercent + equipmentLifePercent), moreLessMultiplier: round(lifeMore), preOverrideMaximum: preOverrideMaximumLife, maximum: maximumLife, ...(chaosInoculation ? { override: 'chaos-inoculation' as const } : {}) },
     stunThreshold: { baseKind: stunBaseKind, basePercent: stunBasePercent, baseValue: round(stunBaseValue), additionalFromEnergyShield: round(additionalFromEnergyShield), additionalFromDefences: round(stunFromDefences), additionalFromEquipmentPositions: round(stunFromEquipmentPositions), flatFromAttributes: stunFromAttributes, flatOther: stunFlat + equipmentStunFlat, increasedReducedPercent: round(stunPercent + equipmentStunPercent), moreLessMultiplier: round(stunMore), total: round(stunTotal) },
     ailmentThreshold: { baseFromLife: round(ailmentBase), additionalFromEnergyShield: round(additionalAilmentFromEnergyShield), additionalFromDefences: round(ailmentFromDefences), additionalFromEquipmentPositions: round(ailmentFromEquipmentPositions), flatFromAttributes: ailmentFromAttributes, flatOther: ailmentFlat + equipmentAilmentFlat, increasedReducedPercent: round(ailmentPercent + equipmentAilmentPercent), moreLessMultiplier: round(ailmentMore), total: round(ailmentTotal) },
-    avoidance: { stunChance: stunImmune ? 100 : Math.min(100, Math.max(0, round(stunAvoidance))), elementalAilmentChance: Math.min(100, Math.max(0, round(elementalAilmentAvoidance))), stunImmune, stunImmunitySource: unconditionalStunImmune ? 'unconditional' : energyShieldStunImmune ? 'energy-shield-condition' : 'none' },
+    avoidance: { stunChance: stunImmune ? 100 : Math.min(100, Math.max(0, round(stunAvoidance))), elementalAilmentChance: Math.min(100, Math.max(0, round(elementalAilmentAvoidance))), stunImmune, stunImmunitySource: unconditionalStunImmune ? 'unconditional' : energyShieldStunImmune ? 'energy-shield-condition' : 'none', ignite: protection('ignite'), chill: protection('chill'), freeze: protection('freeze'), shock: protection('shock') },
     sourceNodeIds: unique(base.sourceNodeIds), sourceTexts: unique(base.sourceTexts), blockedLines,
   }
 }

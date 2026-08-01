@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 119,
+  "calculatorVersion": "3.33.0",
+  "characterSurvivabilityModelVersion": "1.3.0",
+  "ailments": ["ignite", "chill", "freeze", "shock"],
+  "rules": {
+    "individualPlusGeneralAvoidance": true,
+    "capPerAilment": 100,
+    "individualImmunityScope": "matching-ailment-only",
+    "elementalImmunityScope": "all-four-elemental-ailments",
+    "immunityEffectiveAvoidance": 100
+  },
+  "failClosed": {
+    "conditionalImmunityWithoutRuntimeState": "blocked",
+    "conditionalAvoidanceWithoutRuntimeState": "blocked",
+    "textSimilarity": "forbidden",
+    "germanDisplayTextAsTechnicalSource": "forbidden"
+  },
+  "sourceEvidence": [
+    "pinned-pob2/src/Modules/ModParser.lua:AvoidIgnite-AvoidChill-AvoidFreeze-AvoidShock-and-immunity-flags",
+    "pinned-pob2/src/Modules/CalcDefence.lua:per-ailment-addition-cap-and-immunity",
+    "data-sources/poe2-tree/raw/0.5.2/data.json"
+  ],
+  "currentTreeExactIndividualAvoidanceLines": 0,
+  "limitations": [
+    "No current passive-tree coverage is claimed where the pinned local tree contains no exact individual avoidance line.",
+    "Conditional transfers between ailment avoidance types remain unresolved until separately modeled."
+  ],
+  "nextStep": 120
+}

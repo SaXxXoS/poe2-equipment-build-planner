@@ -27,6 +27,13 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('avoid-stun-a', '60% chance to Avoid being Stunned'),
   node('avoid-stun-b', '55% chance to Avoid being Stunned'),
   node('avoid-ailment', '35% chance to Avoid Elemental Ailments'),
+  node('avoid-ignite', '40% chance to Avoid being Ignited'),
+  node('avoid-freeze-a', '70% chance to Avoid being Frozen'),
+  node('avoid-freeze-b', '45% chance to Avoid being Frozen'),
+  node('immune-shock', 'Cannot be Shocked'),
+  node('immune-chill-freeze', 'You Cannot be Chilled or Frozen'),
+  node('immune-elemental', 'Immune to Elemental Ailments'),
+  node('conditional-immune-ignite', 'Cannot be Ignited while on Low Life'),
   node('stun-immune', 'Cannot be Stunned'),
   node('stun-immune-es', 'Cannot be Stunned while you have Energy Shield'),
   node('conditional-avoid', '25% chance to Avoid being Stunned while Channelling'),
@@ -109,7 +116,9 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
   })
   it('addiert unbedingte Vermeidung und deckelt sie wie PoB2 bei 100 Prozent', () => {
     const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-stun-a', 'avoid-stun-b', 'avoid-ailment']) })
-    expect(result.avoidance).toEqual({ stunChance: 100, elementalAilmentChance: 35, stunImmune: false, stunImmunitySource: 'none' })
+    expect(result.avoidance).toEqual(expect.objectContaining({ stunChance: 100, elementalAilmentChance: 35, stunImmune: false, stunImmunitySource: 'none' }))
+    expect(result.avoidance?.ignite.chance).toBe(35)
+    expect(result.avoidance?.shock.chance).toBe(35)
   })
   it('setzt unbedingte Betaeubungsimmunitaet auf effektive 100 Prozent Vermeidung', () => {
     const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['stun-immune']) })
@@ -128,5 +137,29 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toContain('25% chance to Avoid being Stunned while Channelling')
     expect(result.avoidance?.stunChance).toBe(0)
+  })
+  it('addiert allgemeine und individuelle Elementarvermeidung getrennt und deckelt jede Beeintraechtigung', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-ailment', 'avoid-ignite', 'avoid-freeze-a', 'avoid-freeze-b']) })
+    expect(result.avoidance?.ignite).toEqual({ chance: 75, immune: false, immunitySource: 'none' })
+    expect(result.avoidance?.freeze).toEqual({ chance: 100, immune: false, immunitySource: 'none' })
+    expect(result.avoidance?.chill.chance).toBe(35)
+    expect(result.avoidance?.shock.chance).toBe(35)
+  })
+  it('wendet individuelle Immunitaeten nur auf die zugehoerigen Elementarbeeintraechtigungen an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-shock', 'immune-chill-freeze']) })
+    expect(result.avoidance?.shock).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+    expect(result.avoidance?.chill).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+    expect(result.avoidance?.freeze).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+    expect(result.avoidance?.ignite).toEqual({ chance: 0, immune: false, immunitySource: 'none' })
+  })
+  it('setzt unbedingte Elementarbeeintraechtigungsimmunitaet fuer alle vier Typen', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-elemental']) })
+    for (const ailment of ['ignite', 'chill', 'freeze', 'shock'] as const) expect(result.avoidance?.[ailment]).toEqual({ chance: 100, immune: true, immunitySource: 'elemental-ailment-immunity' })
+  })
+  it('blockiert bedingte Einzelimmunitaet statt sie als permanente Immunitaet zu werten', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['conditional-immune-ignite']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toContain('Cannot be Ignited while on Low Life')
+    expect(result.avoidance?.ignite).toEqual({ chance: 0, immune: false, immunitySource: 'none' })
   })
 })
