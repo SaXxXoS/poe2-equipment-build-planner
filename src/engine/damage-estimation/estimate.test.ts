@@ -12,6 +12,32 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('verbindet Lightning Conduit mit der tatsÃ¤chlich belegten Schockwirkung des Ziels',()=>{
+    const conduit=skill('conduit','Lightning Conduit')
+    const ball=skill('ball','Ball Lightning')
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[
+        {...setup(conduit.id),id:'conduit'},
+        {...setup(ball.id),id:'ball',role:'utility'},
+      ],
+      skills:[conduit,ball],
+      enemyProfile:{id:'target',label:'Ziel',source:'manual-comparison-profile',level:1},
+    })
+    expect(result.conditionalHitEffects?.effects[0]).toMatchObject({
+      sourceRecordId:'LightningConduitPlayer',kind:'more-hit-damage-per-shock-effect',valuePerStep:10,
+    })
+    expect(result.conditionalHitEffects?.damageMultiplier).toBeGreaterThan(1)
+    expect(result.included).toContain('strukturierter fertigkeitseigener Trefferschadensbonus aus der belegten Schockwirkung auf dem Ziel')
+  })
+
+  it('blockiert Lightning Conduits Zielbonus ohne belegten Zielschock',()=>{
+    const conduit=skill('conduit','Lightning Conduit')
+    const result=estimateHitDamage({equipment:[],setups:[setup(conduit.id)],skills:[conduit]})
+    expect(result.conditionalHitEffects).toMatchObject({damageMultiplier:1,effects:[]})
+    expect(result.conditionalHitEffects?.blockedEffects[0]?.reason).toBe('enemy-shock-effect-not-confirmed')
+  })
+
   it('erh\u00f6ht Scharfsch\u00fctzenmal nur den kritischen Erwartungsanteil des aktiven Waffensets',()=>{
     const arc=skill('arc','Arc')
     const mark=skill('mark',"Sniper's Mark")

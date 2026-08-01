@@ -1,0 +1,42 @@
+{
+  "step": 141,
+  "scope": "lightning-conduit-target-shock-hit-scaling",
+  "calculatorVersion": "3.55.0",
+  "conditionalHitEffectModelVersion": "1.0.0",
+  "sourceRecord": "LightningConduitPlayer",
+  "sourceStat": "lightning_conduit_damage_+%_final_per_5%_increased_damage_taken_from_shock",
+  "valuePerFivePercentShockEffect": 10,
+  "implemented": [
+    "uses-resolved-applied-target-shock",
+    "floors-to-complete-five-percent-steps",
+    "applies-to-lightning-conduit-hit-results",
+    "preserves-damage-over-time-separation",
+    "shows-applied-or-blocked-effect-in-result-ui"
+  ],
+  "blocked": [
+    "bonus-without-confirmed-target-shock",
+    "fractional-shock-remainder-below-full-five-percent-step",
+    "other-skills-without-exact-source-identity",
+    "attrition-without-enemy-presence-duration",
+    "predators-mark-without-nearby-enemy-count"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "focusedTests": {
+    "files": 2,
+    "tests": 56,
+    "status": "passed"
+  },
+  "fullVerification": {
+    "suitePassedFiles": 140,
+    "suitePassedTests": 1761,
+    "suiteLoadTimeoutFiles": 2,
+    "isolatedRetryFiles": 2,
+    "isolatedRetryTests": 197,
+    "isolatedRetryStatus": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  }
+}

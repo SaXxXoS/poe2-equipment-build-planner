@@ -3959,3 +3959,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Schadensrechner verwendet `3.54.0`; das Zustandsaufbau-Markmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_AILMENT_MARK_BUILDUP_STEP_140.md` und `docs/audits/build-assistant-step-140-ailment-mark-buildup.json`.
 - Fokussierte Prüfung: 2 Dateien und 98 Tests erfolgreich. Im Gesamtlauf bestanden 139 Dateien und 1.756 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung sind erfolgreich.
+
+## Schritt 141 – Blitzableiter-Skalierung durch Schockwirkung
+
+- `Lightning Conduit` verwendet den strukturierten PoB2-Stat `lightning_conduit_damage_+%_final_per_5%_increased_damage_taken_from_shock`: pro vollständigem 5-%-Schritt bestätigter Schockwirkung auf dem Ziel entstehen 10 % mehr Trefferschaden.
+- Nur die bereits aufgelöste, tatsächlich angewandte Schockwirkung aktiviert den Bonus. Ohne bestätigten Zielschock bleibt die Wirkung mit dem Grund `enemy-shock-effect-not-confirmed` schadensneutral.
+- Die Berechnung rundet nicht auf: 23 % Schockwirkung ergeben vier Schritte und 40 % mehr Schaden. Andere Fertigkeiten und eigenständiger Schaden über Zeit bleiben unberührt.
+- Die Ergebnisansicht zeigt angewandte Zielwirkung und Multiplikator beziehungsweise den blockierten Grund sichtbar an.
+- Der Schadensrechner verwendet `3.55.0`; das Modell zielabhängiger Fertigkeitswirkungen verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_LIGHTNING_CONDUIT_SHOCK_SCALING_STEP_141.md` und `docs/audits/build-assistant-step-141-lightning-conduit-shock-scaling.json`.
+- Fokussierte Prüfung: 2 Dateien und 56 Tests erfolgreich. Im Gesamtlauf bestanden 140 Dateien und 1.761 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.

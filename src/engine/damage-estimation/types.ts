@@ -133,6 +133,12 @@ export interface DamageEstimate {
   mitigatedComponents?:MitigatedDamageComponent[]
   expectedDamageAfterMitigation?:number
   expectedDamagePerSecondAfterMitigation?:number
+  conditionalHitEffects?:{
+    modelVersion:string
+    damageMultiplier:number
+    effects:Array<{sourceRecordId:string;label:string;kind:'more-hit-damage-per-shock-effect';condition:'enemy-shocked';conditionValue:number;valuePerStep:number;stepSize:number;appliedSteps:number;totalMoreDamagePercent:number;damageMultiplier:number;evidence:'structured-exact';sourceReference:string;detail:string}>
+    blockedEffects:Array<{sourceRecordId:string;label:string;kind:'more-hit-damage-per-shock-effect';reason:'enemy-shock-effect-not-confirmed';evidence:'structured-exact';sourceReference:string;detail:string}>
+  }
   combinedDamagePerSecond?:number
   combinedDamagePerSecondAfterMitigation?:number
   rageDamageComparison?:{
