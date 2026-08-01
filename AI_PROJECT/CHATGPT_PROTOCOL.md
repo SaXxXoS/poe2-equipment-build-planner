@@ -3917,3 +3917,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien mit 86 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien mit 1.745 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 208 JSON-Dateien erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_OIL_EXPOSURE_STEP_136.md` und `docs/audits/build-assistant-step-136-oil-exposure.json`.
 - Nächster Baustein: nächste vollständig geschlossene Gegnerwirkung; unvollständige Laufzeit- und Triggerketten bleiben fail-closed.
+
+## Schritt 137 – Rüstungsbruch und vollständig gebrochene Rüstung
+
+- Der Schadensrechner verwendet `3.51.0`; das Rüstungsbruchmodell verwendet `2.0.0`.
+- Direkte Skillwerte, Gemmenqualität, `Armour Break I–III`, `Armour Demolisher I–II` und unbedingte zugewiesene Passivwerte bilden eine gemeinsame, fertigkeitsspezifische Bruchkette.
+- Der von Supports erzeugte Bruch verwendet den tatsächlich berechneten durchschnittlichen physischen Treffer und die Aktionsrate derselben Fertigkeitskarte.
+- Bruchmenge, Dauer und Wirkung bleiben waffensetgenau; Aszendenzknoten werden nur berücksichtigt, wenn sie tatsächlich zugewiesen sind.
+- Vollständig gebrochene Rüstung erhöht standardmäßig nur physischen Trefferschaden. Exakt zugewiesene Knoten erweitern dies auf Feuer, Kälte/Blitz oder alle Trefferschadensarten. Schaden über Zeit wird nicht verstärkt.
+- Bedingte Regeln, freie Addition unabhängiger Quellen und Überbrechen unter null bleiben ohne vollständige Zustandskette fail-closed.
+- Fokussierte Prüfung: 3 Dateien mit 90 Tests erfolgreich.
+- Gesamtlauf: 139 Dateien und 1.747 Tests erfolgreich; zwei Passivbaumdateien überschritten unter gemeinsamer Last ihr 5-Sekunden-Limit. Der isolierte serielle Wiederholungslauf bestand mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_ARMOUR_BREAK_STEP_137.md` und `docs/audits/build-assistant-step-137-armour-break.json`.
+- Nächster Baustein: nächste vollständig lokal belegbare Gegnerzustands- oder Schadensaufnahmekette.

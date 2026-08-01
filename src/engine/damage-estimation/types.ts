@@ -60,6 +60,8 @@ export interface EnemyMitigationProfile {
   appliedEffects?:AppliedEnemyMitigationEffect[]
   blockedEnemyEffects?:BlockedEnemyMitigationEffect[]
   fullyBrokenArmour?:boolean
+  /** Increased hit damage taken from the confirmed Fully Broken Armour state. */
+  fullyBrokenArmourEffect?:Partial<Record<DamageComponent['type'],number>>
   hitsToFullyBreakArmour?:number
   timeToFullyBreakArmourMs?:number
   temporalModelVersion?:string

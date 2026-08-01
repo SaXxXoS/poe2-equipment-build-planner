@@ -2,7 +2,7 @@ import { describe,expect,it } from 'vitest'
 import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyBuildEnemyEffects,resolveAllocatedShockModifiers } from './build-enemy-effects'
+import { applyBuildEnemyEffects,resolveAllocatedArmourBreakModifiers,resolveAllocatedShockModifiers } from './build-enemy-effects'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,nameEn,displayNameDe:nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const setup=(id:string,skillId:string):SkillSetup=>({id,skillId,role:'utility',weaponSet:'both',supportGemIds:[]})
@@ -467,6 +467,54 @@ describe('automatische belegte Gegnerwirkungen',()=>{
       state:'fully-active',uptimeStatus:'maintainable',
       applicationRatePerSecond:2,timeToFullEffectMs:1500,estimatedUptime:1,
     })
+  })
+
+  it('verbindet Gemmenqualität, Armour Demolisher und belegte passive Rüstungsbruchwerte',()=>{
+    const tree={metadata:{releaseTag:'test'},connections:[],nodes:[
+      {id:'amount',stats:[{sourceText:'[ArmourBreak|Break] 20% increased [Armour|Armour]'}]},
+      {id:'duration',stats:[{sourceText:'20% increased [ArmourBreak|Armour Break] Duration'}]},
+      {id:'effect',stats:[{sourceText:'15% increased effect of [ArmourBreak|Fully Broken Armour]'}]},
+      {id:'fire',stats:[{sourceText:'[ArmourBreak|Fully Broken Armour] you inflict also increases [Fire] Damage Taken from [HitDamage|Hits]'}]},
+    ]} as unknown as RealPassiveTree
+    const planning={pipelineResult:{allocatedNodeIds:['amount','duration','effect','fire']}} as unknown as RealPassivePlanningIntegrationResult
+    const selectedSetup={...setup('breaker','breaker'),quality:20,supportGemIds:['demolisher']}
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique',armour:5000},setups:[selectedSetup],
+      skills:[skill('breaker','Armour Breaker')],supports:[support('demolisher','Armour Demolisher I')],
+      activeDamageTypes:['physical','fire'],weaponSet:'set-1',passiveTree:tree,realPassivePlanning:planning,
+    })
+    expect(result.armourBreak).toBe(10622.88)
+    expect(result.appliedEffects?.[0]).toMatchObject({durationMs:14400,value:10622.88})
+    expect(result.fullyBrokenArmourEffect).toEqual({physical:23,fire:23})
+  })
+
+  it('berechnet Armour Break Support aus dem tatsächlichen physischen Treffer und seiner Aktionsrate',()=>{
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique',armour:100},
+      setups:[{...setup('strike','strike'),supportGemIds:['break']}],skills:[skill('strike','Spark')],
+      supports:[support('break','Armour Break I')],activeDamageTypes:['physical'],weaponSet:'set-1',
+      shockSourceContexts:[{
+        skillId:'strike',enemyAilmentThreshold:1000,lightningHitAverage:0,lightningCriticalHitAverage:0,
+        physicalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:0,actionsPerSecond:2,
+      }],
+    })
+    expect(result.armourBreak).toBe(30)
+    expect(result).toMatchObject({hitsToFullyBreakArmour:4,timeToFullyBreakArmourMs:2000,fullyBrokenArmour:true})
+    expect(result.appliedEffects?.[0]).toMatchObject({applicationRatePerSecond:2,state:'fully-active'})
+  })
+
+  it('trennt passive Rüstungsbruchmodifikatoren nach Waffenset und blockiert bedingte Muster',()=>{
+    const tree={metadata:{releaseTag:'test'},connections:[],nodes:[
+      {id:'set1',stats:[{sourceText:'[ArmourBreak|Break] 20% increased [Armour|Armour]'}]},
+      {id:'set2',stats:[{sourceText:'100% increased [ArmourBreak|Armour Break] Duration'}]},
+      {id:'conditional',stats:[{sourceText:'[HitDamage|Hits] [ArmourBreak|Break] 50% increased [Armour|Armour] on targets with [Ailments]'}]},
+    ]} as unknown as RealPassiveTree
+    const planning={
+      pipelineResult:{allocatedNodeIds:[]},
+      weaponSetPlanning:{'set-1':{allocatedNodeIds:['set1','conditional']},'set-2':{allocatedNodeIds:['set2']}},
+    } as unknown as RealPassivePlanningIntegrationResult
+    expect(resolveAllocatedArmourBreakModifiers(tree,planning,'set-1')).toMatchObject({amountIncreasedPercent:20,durationIncreasedPercent:0})
+    expect(resolveAllocatedArmourBreakModifiers(tree,planning,'set-2')).toMatchObject({amountIncreasedPercent:0,durationIncreasedPercent:100})
   })
 
   it('behauptet keinen vollständigen Rüstungsbruch, wenn der Aufbau vor Ablauf verfällt',()=>{

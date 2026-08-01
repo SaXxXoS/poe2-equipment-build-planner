@@ -1,0 +1,42 @@
+{
+  "step": 137,
+  "scope": "armour-break-and-fully-broken-armour",
+  "calculatorVersion": "3.51.0",
+  "armourBreakModelVersion": "2.0.0",
+  "implemented": [
+    "flat-skill-armour-break",
+    "physical-hit-derived-armour-break-support",
+    "armour-demolisher-final-multiplier",
+    "skill-quality-armour-break",
+    "weapon-set-specific-passive-break-amount",
+    "passive-break-duration",
+    "passive-fully-broken-effect",
+    "fire-cold-lightning-and-all-hit-extensions",
+    "source-specific-application-rate"
+  ],
+  "blocked": [
+    "conditional-break-against-ailments",
+    "critical-spell-break-without-condition-chain",
+    "pinning-and-heavy-stun-break-without-state-chain",
+    "imploding-impacts-overbreak-below-zero",
+    "unproven-cross-skill-break-accumulation"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "focusedTests": {
+    "files": 3,
+    "tests": 90,
+    "status": "passed"
+  },
+  "fullSuite": {
+    "initialRun": "139 files and 1747 tests passed; 2 timing-sensitive passive-tree files exceeded the shared 5-second limit",
+    "isolatedSerialRepeat": "2 files and 197 tests passed",
+    "status": "functionally-passed-with-isolated-timing-repeat"
+  },
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  }
+}

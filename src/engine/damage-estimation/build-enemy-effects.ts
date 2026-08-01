@@ -15,6 +15,7 @@ const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='norm
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
 export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
+export const ARMOUR_BREAK_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -24,10 +25,25 @@ export interface PrimaryShockContext{
   fireHitAverage?:number
   fireCriticalHitAverage?:number
   coldHitAverage?:number
+  physicalHitAverage?:number
   hitChancePercent:number
   criticalHitChancePercent:number
   actionsPerSecond:number
 }
+
+export interface ArmourBreakModifierSummary{
+  amountIncreasedPercent:number
+  durationIncreasedPercent:number
+  effectIncreasedPercent:number
+  additionalEffectDamageTypes:DamageComponent['type'][]
+  replacesWithAllHitDamage:boolean
+  sourceReferences:string[]
+}
+
+const emptyArmourBreakModifiers=():ArmourBreakModifierSummary=>({
+  amountIncreasedPercent:0,durationIncreasedPercent:0,effectIncreasedPercent:0,
+  additionalEffectDamageTypes:[],replacesWithAllHitDamage:false,sourceReferences:[],
+})
 
 export interface ShockModifierSummary{
   chanceIncreasedPercent:number
@@ -50,7 +66,7 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers()){
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers(),armourBreakModifiers:ArmourBreakModifierSummary=emptyArmourBreakModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
   const supportById=new Map(supports.map(support=>[support.id,support]))
@@ -60,6 +76,12 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
     if(!definition||!numeric)continue
     const selectedLevel=setup.level==null?undefined:numeric.levels.find(level=>level.level===setup.level)
     const numericStats=(selectedLevel?.numericStats??numeric.numericStats) as Record<string,number>
+    const selectedSupportDefinitions=(setup.supportGemIds??[])
+      .map(id=>supportById.get(id))
+      .filter((value):value is SupportGemDefinition=>Boolean(value))
+    const selectedSupportNumerics=selectedSupportDefinitions
+      .map(value=>supportsByName.get((value.nameEn??'').toLocaleLowerCase('en'))?.numericStats as Record<string,number>|undefined)
+      .filter((value):value is Record<string,number>=>Boolean(value))
     const elementalCurse=numericStats['base_skill_buff_all_elements_resistance_%_to_apply']
     if(Number.isFinite(elementalCurse)&&elementalCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementarwiderstände`,
@@ -78,12 +100,19 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
       activationTimeMs:numeric.castTime>0?numeric.castTime*1000:undefined,
       uptimeStatus:'windowed',state:'assumed-active',
     })
-    const armourBreak=numericStats.apply_X_armour_break_on_hit
+    const context=shockContexts.find(value=>value.skillId===setup.skillId)
+    const directArmourBreak=Number(numericStats.apply_X_armour_break_on_hit??numericStats.warcry_grant_break_X_armour_on_hit??0)
+    const supportBreakPercent=selectedSupportNumerics.reduce((sum,value)=>sum+Number(value['armour_break_physical_damage_%_dealt_as_armour_break']??0),0)
+    const supportBreak=context?.physicalHitAverage&&supportBreakPercent>0?context.physicalHitAverage*supportBreakPercent/100:0
+    const qualityIncrease=Number.isFinite(setup.quality)?Math.max(0,setup.quality??0):0
+    const supportMore=selectedSupportNumerics.reduce((product,value)=>product*(1+Number(value['support_increased_armour_break_armour_break_amount_+%_final']??0)/100),1)
+    const armourBreak=(directArmourBreak*(1+qualityIncrease/100)+supportBreak)*(1+armourBreakModifiers.amountIncreasedPercent/100)*supportMore
     if(Number.isFinite(armourBreak)&&armourBreak>0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Rüstungsbruch pro Treffer`,
-      kind:'armour-break',damageTypes:['physical'],value:armourBreak,
-      evidence:'structured-exact',sourceReference:'apply_X_armour_break_on_hit',conditional:true,
-      durationMs:12000,uptimeStatus:'ramping',state:'building',
+      kind:'armour-break',damageTypes:['physical'],value:Number(armourBreak.toFixed(4)),
+      evidence:'structured-exact',sourceReference:`${ARMOUR_BREAK_ENEMY_EFFECT_MODEL_VERSION}: ${directArmourBreak?'flat skill break':''}${supportBreak?' + physical-hit support break':''}${qualityIncrease?' + gem quality':''}${supportMore!==1?' + Armour Demolisher':''}${armourBreakModifiers.sourceReferences.length?' + allocated passive modifiers':''}`,conditional:true,
+      durationMs:12000*(1+armourBreakModifiers.durationIncreasedPercent/100),applicationRatePerSecond:context?.actionsPerSecond,
+      uptimeStatus:'ramping',state:'building',
     })
     const witherPerStack=numericStats['chaos_damage_taken_+%']
     const witherDurationMs=numericStats.active_skill_withered_base_duration_ms
@@ -146,12 +175,6 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
       candidates.push(shockEffect)
       if(maintainable)maintainableShock=shockEffect
     }
-    const selectedSupportDefinitions=(setup.supportGemIds??[])
-      .map(id=>supportById.get(id))
-      .filter((value):value is SupportGemDefinition=>Boolean(value))
-    const selectedSupportNumerics=selectedSupportDefinitions
-      .map(value=>supportsByName.get((value.nameEn??'').toLocaleLowerCase('en'))?.numericStats as Record<string,number>|undefined)
-      .filter((value):value is Record<string,number>=>Boolean(value))
     const selectedStat=(statId:string)=>Number(numericStats[statId]??0)+selectedSupportNumerics.reduce((sum,value)=>sum+Number(value[statId]??0),0)
     const potentExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Potent Exposure')
     const potentNumeric=potentExposure?supportsByName.get('potent exposure'):undefined
@@ -284,6 +307,37 @@ export function resolveAllocatedShockModifiers(tree:RealPassiveTree|undefined,pl
   return result
 }
 
+export function resolveAllocatedArmourBreakModifiers(tree:RealPassiveTree|undefined,planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'):ArmourBreakModifierSummary{
+  const result=emptyArmourBreakModifiers()
+  if(!tree||!planning)return result
+  const nodes=new Map(tree.nodes.map(node=>[node.id,node]))
+  for(const nodeId of allocatedNodeIds(planning,weaponSet)){
+    const node=nodes.get(nodeId)
+    if(!node)continue
+    for(const stat of node.stats){
+      const sourceText=stat.sourceText??''
+      const text=stripMarkup(sourceText)
+      const amount=text.match(/^(\d+(?:\.\d+)?)% increased (?:Armour Break|Break Armour|Break) Amount$/i)
+        ??text.match(/^Break (\d+(?:\.\d+)?)% increased Armour$/i)
+        ??text.match(/^Armour Breaks? (\d+(?:\.\d+)?)% increased Armour$/i)
+      const duration=text.match(/^(\d+(?:\.\d+)?)% increased Armour Break Duration$/i)
+      const effect=text.match(/^(\d+(?:\.\d+)?)% increased effect of Fully Broken Armour$/i)
+      let matched=true
+      if(amount)result.amountIncreasedPercent+=Number(amount[1])
+      else if(duration)result.durationIncreasedPercent+=Number(duration[1])
+      else if(effect)result.effectIncreasedPercent+=Number(effect[1])
+      else if(/^Fully Broken Armour you inflict also increases Cold and Lightning Damage Taken from Hits$/i.test(text))result.additionalEffectDamageTypes.push('cold','lightning')
+      else if(/^Fully Broken Armour you inflict also increases Fire Damage Taken from Hits$/i.test(text))result.additionalEffectDamageTypes.push('fire')
+      else if(/^Fully Broken Armour you inflict increases all Damage Taken from Hits instead$/i.test(text))result.replacesWithAllHitDamage=true
+      else matched=false
+      if(matched)result.sourceReferences.push(`${nodeId}:${sourceText}`)
+    }
+  }
+  result.additionalEffectDamageTypes=unique(result.additionalEffectDamageTypes)
+  result.sourceReferences.sort((a,b)=>a.localeCompare(b,'en'))
+  return result
+}
+
 const equipmentActiveInSet=(entry:EquipmentEntry,weaponSet:'set-1'|'set-2')=>!entry.slotId.includes('weapon-set-')||entry.slotId.includes(`weapon-${weaponSet}`)
 
 function resolveSelectedShockModifiers(input:{setup?:SkillSetup;supports?:SupportGemDefinition[];equipment?:EquipmentEntry[];weaponSet:'set-1'|'set-2'}):ShockModifierSummary{
@@ -375,12 +429,13 @@ export function applyBuildEnemyEffects(input:{
     resolveAllocatedShockModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet),
     resolveSelectedShockModifiers({supports:input.supports,equipment:input.equipment,weaponSet:input.weaponSet}),
   )
+  const armourBreakModifiers=resolveAllocatedArmourBreakModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet)
   const shockContexts=unique([...(input.shockSourceContexts??[]),...(input.primaryShockContext?[input.primaryShockContext]:[])])
   const effects=[
     ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.weaponSet,input.profile.level,shockContexts,setup=>mergeShockModifiers(
       commonShockModifiers,
       resolveSelectedShockModifiers({setup,supports:input.supports,weaponSet:input.weaponSet}),
-    )),
+    ),armourBreakModifiers),
     ...passiveEffects(input.passiveTree,input.realPassivePlanning,input.weaponSet),
   ]
   const rarity=input.profile.targetRarity
@@ -437,7 +492,8 @@ export function applyBuildEnemyEffects(input:{
   const armourBreak=Math.max(input.profile.armourBreak??0,...effects.filter(value=>value.kind==='armour-break').map(value=>value.effectiveValue??value.value))
   const hitsToFullyBreakArmour=input.profile.armour&&armourBreak?Math.ceil(input.profile.armour/armourBreak):undefined
   const primaryBreakEffect=effects.find(value=>value.kind==='armour-break'&&value.sourceId===input.primarySkillId)
-  const applicationRate=input.primaryActionsPerSecond&&input.primaryActionsPerSecond>0?input.primaryActionsPerSecond:undefined
+    ??[...effects].filter(value=>value.kind==='armour-break'&&(value.applicationRatePerSecond??0)>0).sort((a,b)=>(b.effectiveValue??b.value)-(a.effectiveValue??a.value)||a.sourceId.localeCompare(b.sourceId,'en'))[0]
+  const applicationRate=primaryBreakEffect?.applicationRatePerSecond??(input.primaryActionsPerSecond&&input.primaryActionsPerSecond>0?input.primaryActionsPerSecond:undefined)
   const timeToFullyBreakArmourMs=primaryBreakEffect&&hitsToFullyBreakArmour&&applicationRate
     ?Number((hitsToFullyBreakArmour/applicationRate*1000).toFixed(2))
     :undefined
@@ -450,6 +506,10 @@ export function applyBuildEnemyEffects(input:{
     &&timeToFullyBreakArmourMs<primaryBreakEffect.durationMs
   )
   const fullyBrokenArmour=Boolean(hitsToFullyBreakArmour===1||sustainedFullBreak)
+  const fullBreakTypes:DamageComponent['type'][]=armourBreakModifiers.replacesWithAllHitDamage
+    ?['physical','fire','cold','lightning','chaos']
+    :unique(['physical' as const,...armourBreakModifiers.additionalEffectDamageTypes])
+  const fullBreakEffect=Object.fromEntries(fullBreakTypes.map(type=>[type,20*(1+armourBreakModifiers.effectIncreasedPercent/100)])) as Partial<Record<DamageComponent['type'],number>>
   if(fullyBrokenArmour)for(const effect of effects.filter(value=>value.kind==='armour-break')){
     effect.state='fully-active'
     if(effect===primaryBreakEffect&&sustainedFullBreak){
@@ -488,6 +548,7 @@ export function applyBuildEnemyEffects(input:{
     ...(hitsToFullyBreakArmour?{hitsToFullyBreakArmour}:{}),
     ...(timeToFullyBreakArmourMs?{timeToFullyBreakArmourMs}:{}),
     ...(fullyBrokenArmour?{fullyBrokenArmour:true}:{}),
+    ...(fullyBrokenArmour?{fullyBrokenArmourEffect:fullBreakEffect}:{}),
     temporalModelVersion:TEMPORAL_ENEMY_EFFECT_MODEL_VERSION,
     limitations:unique(limitations),
   }
