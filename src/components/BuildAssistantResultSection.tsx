@@ -30,6 +30,21 @@ const evidenceText: Record<string, string> = {
   unresolved: 'Semantik nicht verfügbar',
 }
 const formatDamage=(value:number|undefined)=>value==null?'Nicht verfügbar':new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(value)
+const defenceLabel = { armour: 'Rüstung', evasion: 'Ausweichwert', energyShield: 'Energieschild' } as const
+
+export function CharacterDefencePanel({ model }: { model: NonNullable<NonNullable<BuildAnalysis['damageEstimate']>['characterDefenceModel']> }) {
+  const productive = model.contributions.filter(value => value.calculatedContribution !== 0)
+  return <div className="character-defence-model"><b>Belegte Charakterverteidigung · {model.weaponSet === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</b>
+    {productive.length ? <dl className="summary-grid">{productive.map(value => <div key={value.type}>
+      <dt>{defenceLabel[value.type]}</dt>
+      <dd>{formatDamage(value.calculatedContribution)}</dd>
+      <small>{formatDamage(value.equipmentBase)} aus Ausrüstung{value.flatPassive ? ` · ${value.flatPassive > 0 ? '+' : ''}${formatDamage(value.flatPassive)} flach` : ''}{value.increasedReducedPercent ? ` · ${value.increasedReducedPercent > 0 ? '+' : ''}${formatDamage(value.increasedReducedPercent)} % erhöht/verringert` : ''}{value.moreLessMultiplier !== 1 ? ` · Faktor ${formatDamage(value.moreLessMultiplier)}` : ''}</small>
+    </div>)}</dl> : <p>Keine bestätigten Verteidigungswerte für dieses Waffenset vorhanden.</p>}
+    {model.excludedWeaponItemIds.length ? <p className="warning"><b>Ausgeschlossen:</b> Verteidigungswerte auf {model.excludedWeaponItemIds.length} Waffen-Eintrag{model.excludedWeaponItemIds.length === 1 ? '' : 'en'} wurden nicht gerechnet.</p> : null}
+    {model.blockedPassiveLines.length ? <p className="warning">{model.blockedPassiveLines.length} bedingte oder noch nicht sicher strukturierte Passive-Wirkung{model.blockedPassiveLines.length === 1 ? '' : 'en'} bleibt unangewandt.</p> : null}
+    <p className="muted">{model.limitations.join(' ')}</p>
+  </div>
+}
 const issueText = (issue: ConstraintViolation) => {
   const known: Record<string, string> = {
     'skill-wrong-weapon': 'Die gewählte Fertigkeit passt nicht zur erkannten Waffenart.',
@@ -237,6 +252,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           {analysis.damageEstimate.minionCompanionModel.sources.map(source=><li key={`${source.sourceSkillId}:${source.kind}`}><b>{source.sourceSkillName}:</b> {source.maximumCount?`Maximalanzahl ${source.maximumCount} · `:''}{source.durationMs?`Dauer ${(source.durationMs/1000).toLocaleString('de-DE')} s · `:''}{source.damageBonusPercent?`${source.damageBonusPercent} % Minion-Schaden · `:''}{source.speedBonusPercent?`${source.speedBonusPercent} % Minion-Tempo · `:''}{source.reservationRequired?'Reservierung erforderlich · ':''}{source.detail}</li>)}
         </ul><p className="muted">{analysis.damageEstimate.minionCompanionModel.limitations.join(' ')}</p></div>:null}
         {analysis.damageEstimate?.resourceSpiritModel ? <ResourceBalancePanel model={analysis.damageEstimate.resourceSpiritModel}/> : null}
+        {analysis.damageEstimate?.characterDefenceModel ? <CharacterDefencePanel model={analysis.damageEstimate.characterDefenceModel}/> : null}
         {analysis.damageEstimate?.rageDamageComparison?<p className="muted"><b>Wut und Schaden:</b> {analysis.damageEstimate.rageDamageComparison.detail}{analysis.damageEstimate.rageDamageComparison.durationWithoutFurtherHitOrGainSeconds!=null?` Ohne weitere Treffer oder Wutgewinne hält dieses Vergleichsfenster höchstens ${analysis.damageEstimate.rageDamageComparison.durationWithoutFurtherHitOrGainSeconds.toLocaleString('de-DE')} s.`:''}</p>:null}
         {analysis.damageEstimate?.multipleDamageEffect?<p className="muted"><b>Doppel-/Dreifachschaden:</b> {analysis.damageEstimate.multipleDamageEffect.doubleDamageChancePercent.toLocaleString('de-DE')} % Doppelchance, {analysis.damageEstimate.multipleDamageEffect.tripleDamageChancePercent.toLocaleString('de-DE')} % Dreifachchance; nach der PoB2-Überlappungsreihenfolge ergibt das den Trefferschadensfaktor {analysis.damageEstimate.multipleDamageEffect.expectedDamageMultiplier.toLocaleString('de-DE',{maximumFractionDigits:3})}. Nur {analysis.damageEstimate.multipleDamageEffect.sources.length} exakt belegte aktive Wirkung{analysis.damageEstimate.multipleDamageEffect.sources.length===1?'':'en'} wurde{analysis.damageEstimate.multipleDamageEffect.sources.length===1?'':'n'} eingerechnet.</p>:null}
         {analysis.damageEstimate?.gemLevelQualityModel?<div><b>Gemmenstufe und Qualität:</b><ul>

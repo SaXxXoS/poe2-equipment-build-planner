@@ -579,3 +579,6 @@ Der Status bleibt bewusst partiell: Nicht durch den freigegebenen lokalen
 Bestand belegte Charakter-Grundformeln, Rundung und bedingte Uptime werden
 nicht erfunden. Details stehen in
 `docs/BUILD_ASSISTANT_CHARACTER_DEFENCE_INTEGRATION_STEP_106.md`.
+## Schritt 107 – Sichtbare Charakterverteidigung
+
+Das bestätigte Teilmodell aus Schritt 106 wird ohne parallele UI-Berechnung im Build-Ergebnis angezeigt. Herkunft, Rechenteile, ausgeschlossene Waffenwerte und blockierte bedingte Passive-Wirkungen bleiben nachvollziehbar. Der Schritt verbessert die Prüfbarkeit, stellt aber noch keine vollständige PoB2-Verteidigungsparität her.

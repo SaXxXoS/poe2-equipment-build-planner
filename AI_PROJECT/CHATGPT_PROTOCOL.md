@@ -3577,3 +3577,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Keine zusätzlichen PoB2-Rohdateien und keine Erweiterung des freigegebenen
   20-Dateien-Scopes.
 - Gleichwertigkeit mit Path of Building 2 bleibt nicht belegt.
+## Schritt 107 – Sichtbare Charakterverteidigung
+
+- `damageEstimate.characterDefenceModel` wird direkt in der bestehenden Build-Ergebnisansicht dargestellt.
+- Rüstung, Ausweichwert und Energieschild zeigen Ausrüstungsbasis und sicher angewandte Passiv-/Aszendenzwirkungen.
+- Verteidigungswerte auf Waffen und nicht sicher anwendbare bedingte Passivzeilen werden sichtbar als ausgeschlossen beziehungsweise blockiert ausgewiesen.
+- Keine zweite UI-Berechnung und keine erfundenen Grundwerte wurden eingeführt.
+- 50 fokussierte Tests, Typecheck, Lint und Produktionsbuild sind erfolgreich.
+- Die PoB2-Gleichwertigkeit bleibt offen; insbesondere vollständige Charaktergrundwerte, Rundung und bedingte Verteidigungszustände fehlen weiterhin.
