@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 120,
+  "calculatorVersion": "3.34.0",
+  "characterSurvivabilityModelVersion": "1.4.0",
+  "nonElementalAilments": ["bleed", "poison"],
+  "rules": {
+    "generalPlusIndividualAvoidance": true,
+    "capPerAilment": 100,
+    "immunityEffectiveAvoidance": 100,
+    "generalAvoidanceAlsoAppliesToElementalAilments": true,
+    "elementalAvoidanceAppliesToBleedOrPoison": false,
+    "chaosInoculationGrantsBleedImmunity": true
+  },
+  "failClosed": {
+    "conditionalImmunityWithoutRuntimeState": "blocked",
+    "pob2VisibleUniqueLineWithoutTechnicalIdentity": "not-applied",
+    "textSimilarity": "forbidden"
+  },
+  "sourceEvidence": [
+    "pinned-pob2/src/Modules/Data.lua:nonElementalAilmentTypeList",
+    "pinned-pob2/src/Modules/ModParser.lua:AvoidAilments-AvoidBleed-AvoidPoison-BleedImmune-PoisonImmune",
+    "pinned-pob2/src/Modules/CalcDefence.lua:non-elemental-ailment-addition-cap-and-immunity",
+    "data-sources/poe2-tree/raw/0.5.2/data.json"
+  ],
+  "currentTreeExactBleedAvoidanceLines": 0,
+  "currentTreeExactPoisonAvoidanceLines": 0,
+  "limitations": [
+    "No current passive-tree coverage is claimed without an exact local source line.",
+    "Conditional immunity states require a separately confirmed runtime condition.",
+    "Planner-visible unique lines remain separate from technical GGG-linked item effects."
+  ],
+  "nextStep": 121
+}

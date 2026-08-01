@@ -34,6 +34,13 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('immune-chill-freeze', 'You Cannot be Chilled or Frozen'),
   node('immune-elemental', 'Immune to Elemental Ailments'),
   node('conditional-immune-ignite', 'Cannot be Ignited while on Low Life'),
+  node('avoid-all-ailments', '20% chance to Avoid Ailments'),
+  node('avoid-bleed', '35% chance to Avoid Bleeding'),
+  node('avoid-poison-a', '55% chance to Avoid being Poisoned'),
+  node('avoid-poison-b', '40% chance to Avoid being Poisoned'),
+  node('immune-bleed', 'Bleeding cannot be inflicted on you'),
+  node('immune-poison', 'Cannot be Poisoned'),
+  node('conditional-immune-poison', 'Cannot be Poisoned while Bleeding'),
   node('stun-immune', 'Cannot be Stunned'),
   node('stun-immune-es', 'Cannot be Stunned while you have Energy Shield'),
   node('conditional-avoid', '25% chance to Avoid being Stunned while Channelling'),
@@ -161,5 +168,33 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toContain('Cannot be Ignited while on Low Life')
     expect(result.avoidance?.ignite).toEqual({ chance: 0, immune: false, immunitySource: 'none' })
+  })
+  it('wendet allgemeine Beeintraechtigungsvermeidung auf elementare, Blutungs- und Giftwerte an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-all-ailments', 'avoid-ailment', 'avoid-bleed', 'avoid-poison-a']) })
+    expect(result.avoidance).toEqual(expect.objectContaining({ ailmentChance: 20, elementalAilmentChance: 55 }))
+    expect(result.avoidance?.ignite.chance).toBe(55)
+    expect(result.avoidance?.bleed).toEqual({ chance: 55, immune: false, immunitySource: 'none' })
+    expect(result.avoidance?.poison).toEqual({ chance: 75, immune: false, immunitySource: 'none' })
+  })
+  it('addiert individuelle Giftvermeidung und deckelt sie bei 100 Prozent', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-all-ailments', 'avoid-poison-a', 'avoid-poison-b']) })
+    expect(result.avoidance?.poison).toEqual({ chance: 100, immune: false, immunitySource: 'none' })
+    expect(result.avoidance?.bleed.chance).toBe(20)
+  })
+  it('wendet Blutungs- und Giftimmunitaet getrennt an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-bleed', 'immune-poison']) })
+    expect(result.avoidance?.bleed).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+    expect(result.avoidance?.poison).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+    expect(result.avoidance?.ignite.chance).toBe(0)
+  })
+  it('erkennt Chaos Inoculation als belegte Blutungsimmunitaet', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['chaos-inoculation']) })
+    expect(result.avoidance?.bleed).toEqual({ chance: 100, immune: true, immunitySource: 'individual' })
+  })
+  it('blockiert bedingte Giftimmunitaet ohne bestaetigten Laufzeitzustand', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['conditional-immune-poison']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toContain('Cannot be Poisoned while Bleeding')
+    expect(result.avoidance?.poison).toEqual({ chance: 0, immune: false, immunitySource: 'none' })
   })
 })

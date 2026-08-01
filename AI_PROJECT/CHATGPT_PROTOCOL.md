@@ -3708,3 +3708,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Modellversion: `1.3.0`; Schadensrechner: `3.33.0`.
 - Belege: `docs/BUILD_ASSISTANT_ELEMENTAL_AILMENT_PROTECTION_STEP_119.md` und `docs/audits/build-assistant-step-119-elemental-ailment-protection.json`.
 - Nächster Schritt: getrennte, belegte Vermeidung und Immunität für nicht-elementare Beeinträchtigungen.
+## Schritt 120 – Blutungs- und Giftvermeidung (2026-08-01)
+
+- Blutung und Gift werden als die zwei von PoB2 belegten nicht-elementaren Beeinträchtigungen getrennt ausgewiesen.
+- Allgemeine Beeinträchtigungsvermeidung wird vor der 100-%-Deckelung zu individueller Blutungs- beziehungsweise Giftvermeidung addiert.
+- Dieselbe allgemeine Vermeidung fließt jetzt korrekt auch in alle vier Elementarbeeinträchtigungen ein; reine Elementarvermeidung wirkt nicht auf Blutung oder Gift.
+- Blutungs- und Giftimmunität werden getrennt verarbeitet; Chaos Inoculation übernimmt die in PoB2 belegte Blutungsimmunität.
+- Bedingte Immunitäten bleiben ohne bestätigten Laufzeitzustand fail-closed.
+- Sichtbare PoB2-Unique-Zeilen werden ohne technische Identitätskette weiterhin nicht als GGG-Gegenstandswirkung ausgegeben.
+- Modellversion: `1.4.0`; Schadensrechner: `3.34.0`.
+- Belege: `docs/BUILD_ASSISTANT_NON_ELEMENTAL_AILMENT_PROTECTION_STEP_120.md` und `docs/audits/build-assistant-step-120-non-elemental-ailment-protection.json`.
+- Nächster Schritt: Fluchvermeidung, Fluchimmunität und die Abgrenzung zu „unaffected“.
