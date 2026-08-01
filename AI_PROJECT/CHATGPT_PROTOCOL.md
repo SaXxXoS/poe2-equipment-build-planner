@@ -3560,3 +3560,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Rechentests: 60/60 erfolgreich; Typecheck erfolgreich.
 - Keine neue Quelle, kein Pin geändert, keine bedingte Wirkung erfunden.
 - Vollständige Path-of-Building-2-Gleichwertigkeit bleibt weiterhin unbestätigt.
+
+## Fortsetzung – Schritt 106
+
+- Neues `character-defence-model` für Rüstung, Ausweichwert und Energieschild.
+- Nutzt endgültige Nicht-Waffen-Gegenstandswerte sowie unbedingt wirksame,
+  strukturierte Passiv- und Aszendenzeffekte.
+- Waffenset 1 und Waffenset 2 werden getrennt ausgewertet.
+- Bedingte Effekte bleiben blockiert; Verteidigungswerte auf Waffen werden
+  ausgeschlossen.
+- Das Modell ist Bestandteil jedes Schadensresultats; Rechnerstand `3.28.0`.
+- 48 fokussierte Tests und Typecheck erfolgreich.
+- Gesamtsuite: 1.624/1.625 im parallelen Lauf; der zeitkritische
+  Vollbaum-Performance-Test anschließend isoliert in 44,12 s erfolgreich.
+- Lint, Produktions-Build, JSON-Validierung und `git diff --check` erfolgreich.
+- Keine zusätzlichen PoB2-Rohdateien und keine Erweiterung des freigegebenen
+  20-Dateien-Scopes.
+- Gleichwertigkeit mit Path of Building 2 bleibt nicht belegt.

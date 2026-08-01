@@ -22,6 +22,7 @@ import { minionCompanionOutput, resolveMinionCompanionModel } from './minion-com
 import { resourceSpiritOutput, resolveResourceSpiritModel } from './resource-spirit-model'
 import { applySkillQualityStats, gemLevelQualityOutput, resolveGemLevelQualityModel } from './gem-level-quality-model'
 import { itemValueScopeOutput, resolveItemValueScopeModel } from './item-value-scope-model'
+import { resolveCharacterDefenceModel } from './character-defence-model'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -102,7 +103,9 @@ export function estimateHitDamage(input:{
   })
   const gemLevelQualityModel=resolveGemLevelQualityModel({setup,skill:definition,supports:input.supports??[]})
   const itemValueScopeModel=resolveItemValueScopeModel(input.equipment)
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.27.0'}
+  const activeDefenceSet=setup?.weaponSet==='set-2'?'set-2':'set-1'
+  const characterDefenceModel=resolveCharacterDefenceModel({equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet})
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.28.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)

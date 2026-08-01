@@ -567,3 +567,15 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
 - Bedingte Werte bleiben ohne Zustandsnachweis blockiert.
 - Fokussierte Rechentests: 60/60 erfolgreich.
 - Vollständige PoB2-Parität bleibt offen.
+
+## Schritt 106 – belegbare Charakterverteidigung
+
+Rüstung, Ausweichwert und Energieschild aus eingegebenen endgültigen
+Gegenstandswerten werden nun mit unbedingt wirksamen strukturierten
+Passiv- und Aszendenzeffekten verbunden. Die Auswertung ist je Waffenset
+getrennt; Waffen können keine angezeigten Rüstungswerte beitragen.
+
+Der Status bleibt bewusst partiell: Nicht durch den freigegebenen lokalen
+Bestand belegte Charakter-Grundformeln, Rundung und bedingte Uptime werden
+nicht erfunden. Details stehen in
+`docs/BUILD_ASSISTANT_CHARACTER_DEFENCE_INTEGRATION_STEP_106.md`.

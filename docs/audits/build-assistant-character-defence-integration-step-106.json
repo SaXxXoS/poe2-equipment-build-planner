@@ -1,0 +1,38 @@
+{
+  "step": 106,
+  "modelVersion": "1.0.0",
+  "calculatorVersion": "3.28.0",
+  "status": "partial-confirmed-equipment-and-passives",
+  "domains": [
+    "armour",
+    "evasion",
+    "energyShield"
+  ],
+  "weaponSetSpecific": true,
+  "ascendancyIncluded": true,
+  "conditionalEffectsFailClosed": true,
+  "weaponDefencesExcluded": true,
+  "unknowns": [
+    "unapproved-character-base-formulas",
+    "global-rounding-rules",
+    "conditional-uptime",
+    "complete-damage-mitigation"
+  ],
+  "focusedTests": {
+    "files": 2,
+    "tests": 48,
+    "status": "passed"
+  },
+  "typecheck": "passed"
+  ,
+  "fullRegression": {
+    "parallelPassed": 1624,
+    "parallelTimeouts": 1,
+    "serialPerformanceRerunPassed": 1,
+    "finalStatus": "passed-with-required-serial-rerun"
+  },
+  "lint": "passed",
+  "productionBuild": "passed",
+  "jsonValidation": "passed",
+  "gitDiffCheck": "passed"
+}
