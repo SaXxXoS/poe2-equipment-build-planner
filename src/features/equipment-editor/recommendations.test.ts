@@ -2,6 +2,14 @@ import { describe,expect,it } from 'vitest'
 import type { EquipmentEntry } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
 import { createEquipmentSlotSuggestions } from './recommendations'
+import type { CharacterAttributeModel } from '../../engine/character-attributes/model'
+
+const attributes = (activeSet:'set-1'|'set-2', total={strength:200,dexterity:200,intelligence:200}):CharacterAttributeModel => ({
+  modelVersion:'pinned-tree-0.5.2-v1',activeSet,status:'exact-confirmed-sources',
+  base:{strength:0,dexterity:0,intelligence:0},equipment:{strength:0,dexterity:0,intelligence:0},passives:{strength:0,dexterity:0,intelligence:0},total,
+  blockedPassiveLines:[],sourceReferences:[],
+})
+const characterAttributes={'set-1':attributes('set-1'),'set-2':attributes('set-2')}
 
 const equipment=(['set-1','set-2'] as const).flatMap(set=>['left','right'].map(hand=>({
   id:`${set}-${hand}`,
@@ -27,6 +35,8 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       },
       uniqueRecommendations:[],
       uniqueNames:new Map(),
+      characterLevel:100,
+      characterAttributes,
     })
     expect(suggestions).toMatchObject([
       {slotId:'slot-weapon-set-1-left',itemClassId:'Wands',detail:'Waffenset 1 · Hauptwaffe für Funken'},
@@ -92,6 +102,8 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       },
       uniqueRecommendations:[],
       uniqueNames:new Map(),
+      characterLevel:100,
+      characterAttributes,
     })
     expect(suggestions[0]).toMatchObject({
       slotId:'slot-weapon-set-1-left',
@@ -104,6 +116,24 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     expect(suggestions[0].weaponStats?.physicalDamage?.maximum).toBeGreaterThan(0)
     expect(suggestions[0].requirements?.requiredLevel).not.toBeUndefined()
     expect(suggestions[0].reasons).toContainEqual(expect.stringContaining('Anforderungen:'))
+  })
+
+  it('begrenzt die konkrete Basis auf die tatsächlich tragbaren Anforderungen',()=>{
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment,
+      optimization:{
+        evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',equipmentFirst:false,status:'selected',alternatives:[],
+        selected:{skillId:'bow-skill',skillName:'Bogenfertigkeit',weaponType:'bow',weaponLabel:'Bogen',mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,passiveAffinityScore:1,analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[]},
+      },
+      uniqueRecommendations:[],uniqueNames:new Map(),characterLevel:1,
+      characterAttributes:{'set-1':attributes('set-1',{strength:0,dexterity:0,intelligence:0}),'set-2':attributes('set-2',{strength:0,dexterity:0,intelligence:0})},
+    })
+    expect(suggestions[0]).toMatchObject({source:'weapon-optimizer',requirementStatus:'met'})
+    expect(suggestions[0].requirements?.requiredLevel??0).toBeLessThanOrEqual(1)
+    expect(suggestions[0].requirements?.strength??0).toBe(0)
+    expect(suggestions[0].requirements?.dexterity??0).toBe(0)
+    expect(suggestions[0].requirements?.intelligence??0).toBe(0)
   })
 
   it('unterdrückt ein Unique ohne positive, widerspruchsfreie Build-Wirkung',()=>{

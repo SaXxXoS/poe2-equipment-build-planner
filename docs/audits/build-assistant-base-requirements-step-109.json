@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "step": 109,
+  "status": "implemented-with-disclosed-limitations",
+  "checks": [
+    "required-level",
+    "required-strength",
+    "required-dexterity",
+    "required-intelligence",
+    "weapon-set-specific-character-attributes",
+    "fail-closed-unknown-attributes"
+  ],
+  "productiveConsumers": [
+    "build-variant-reference-weapon",
+    "equipment-slot-suggestions"
+  ],
+  "fallback": "generic-weapon-type-without-invented-base-values",
+  "verification": {
+    "focusedTests": 18,
+    "fullSuiteTests": 1636,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "jsonValidation": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "unchanged": [
+    "source-pins",
+    "pob2-unique-product",
+    "normal-affix-product",
+    "runtime-network-policy"
+  ],
+  "limitations": [
+    "conditional-requirements-unresolved",
+    "dynamic-attribute-effects-partial",
+    "path-of-building-equivalence-not-proven"
+  ]
+}

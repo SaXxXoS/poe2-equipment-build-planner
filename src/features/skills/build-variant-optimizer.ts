@@ -7,6 +7,7 @@ import {
   type SyntheticWeaponType,
 } from '../../domain'
 import { estimateHitDamage } from '../../engine'
+import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import { technicalItemClasses } from '../../affixes/registry'
 import { planSynergisticSkills, type SkillSynergyScore } from './synergy-planner'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
@@ -23,6 +24,7 @@ import {
   weaponStatsFromBase,
   type WeaponBaseValue,
 } from '../equipment-editor/weapon-base-values'
+import { baseRequirementsMet } from '../equipment-editor/base-requirements'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
@@ -175,11 +177,12 @@ function rawWeaponOutput(base: WeaponBaseValue): number {
 function referenceWeapon(
   weapon: SyntheticWeaponType,
   characterLevel: number | undefined,
+  attributes: CharacterAttributeValues | undefined,
   set: 'set-1' | 'set-2',
 ): EquipmentEntry | null {
   const base = (weaponBaseClasses[weapon] ?? [])
     .flatMap(itemClassId => weaponBaseValuesFor(itemClassId))
-    .filter(value => value.requiredLevel === null || characterLevel === undefined || value.requiredLevel <= characterLevel)
+    .filter(value => baseRequirementsMet(value, characterLevel, attributes))
     .sort((left, right) => rawWeaponOutput(right) - rawWeaponOutput(left) || left.id.localeCompare(right.id))[0]
   if (!base) return null
   return {
@@ -200,6 +203,7 @@ function equipmentForEstimate(
   weapon: SyntheticWeaponType,
   set: 'set-1' | 'set-2',
   characterLevel: number | undefined,
+  attributes: CharacterAttributeValues | undefined,
 ): EquipmentEntry[] {
   if (!skill.tags.includes('attack')) return equipment
   const hasCompatibleWeapon = equipment.some(entry => {
@@ -209,7 +213,7 @@ function equipmentForEstimate(
     return concreteWeapons.some(type => technical?.includes(type) && type === weapon)
   })
   if (hasCompatibleWeapon) return equipment
-  const reference = referenceWeapon(weapon, characterLevel, set)
+  const reference = referenceWeapon(weapon, characterLevel, attributes, set)
   return reference ? [...equipment, reference] : equipment
 }
 
@@ -306,6 +310,7 @@ export function optimizeBuildVariants(input: {
   supports: SupportGemDefinition[]
   skillScores: VariantSkillScore[]
   characterLevel?: number
+  characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>
   evaluatePackage?: (candidate: BuildVariantCandidate) => BuildPackageEvaluation
   maximumPackageEvaluations?: number
 }): BuildVariantOptimization {
@@ -387,6 +392,7 @@ export function optimizeBuildVariants(input: {
       const mainWeaponSet = preferredSet(weapon, equipped)
       const estimateEquipment = equipmentForEstimate(
         input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
+        input.characterAttributes?.[mainWeaponSet].total,
       )
       const estimate = estimateHitDamage({
         equipment: estimateEquipment,

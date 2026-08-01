@@ -51,6 +51,7 @@ export default function App() {
     ],
     uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
     characterLevel:character.level,
+    characterAttributes:analysis.characterAttributes,
   }):[]
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -180,6 +181,7 @@ export default function App() {
             supports: buildAssistantCandidates.supports,
             skillScores: mainCandidates,
             characterLevel: character.level || undefined,
+            characterAttributes: result.characterAttributes,
             evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
           })
           setVariantOptimization(optimization)
@@ -259,6 +261,7 @@ export default function App() {
                 ? value
                 : { ...value, valid: false }),
               characterLevel: character.level || undefined,
+              characterAttributes: result.characterAttributes,
               evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
             }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))

@@ -1,5 +1,6 @@
 import type { EquipmentEntry, EquipmentWeaponStats, SyntheticWeaponType } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
+import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import {
   utilityBaseDisplayName,
   utilityBaseValuesFor,
@@ -11,6 +12,7 @@ import {
   weaponLabelFor,
   type BuildVariantOptimization,
 } from '../skills/build-variant-optimizer'
+import { baseRequirementsMet } from './base-requirements'
 
 export interface EquipmentSlotSuggestion {
   slotId: string
@@ -31,6 +33,7 @@ export interface EquipmentSlotSuggestion {
   properties?: string[]
   reasons?: string[]
   tradeOffs?: string[]
+  requirementStatus?: 'met'
 }
 
 const weaponItemClasses: Partial<Record<SyntheticWeaponType, string[]>> = {
@@ -65,10 +68,10 @@ function rangeText(label:string,range:{minimum:number;maximum:number}|undefined)
   return range?`${label}: ${range.minimum}–${range.maximum}`:undefined
 }
 
-function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel?:number, skillTags:string[]=[]){
+function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel:number|undefined, attributes:CharacterAttributeValues|undefined, skillTags:string[]=[]){
   if(weaponType==='wand'){
     const candidates=utilityBaseValuesFor('Wands')
-      .filter(base=>base.requiredLevel===null||characterLevel===undefined||base.requiredLevel<=characterLevel)
+      .filter(base=>baseRequirementsMet(base,characterLevel,attributes))
     const score=(implicit:string|null)=>{
       if(!implicit)return 0
       let result=0
@@ -90,12 +93,14 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
       baseDisplayName:selected.nameEn,
       weaponStats:undefined,
       requirements:baseRequirements(selected),
+      requirementStatus:'met' as const,
       properties:[
         selected.implicit?`Implizit: ${selected.implicit}`:undefined,
         selected.spirit!==null?`Geist: ${selected.spirit}`:undefined,
         selected.socketLimit!==null?`Maximale Sockel: ${selected.socketLimit}`:undefined,
       ].filter((value):value is string=>Boolean(value)),
       reasons:[
+        'Anforderungen im vorgesehenen Waffenset erfüllt.',
         `Anforderungen: Level ${selected.requiredLevel??'—'}, Stärke ${selected.requirements.strength??'—'}, Geschick ${selected.requirements.dexterity??'—'}, Intelligenz ${selected.requirements.intelligence??'—'}`,
         selected.implicit?`Belegte Eigenschaft: ${selected.implicit}`:'Keine zusätzliche Basis-Eigenschaft belegt.',
       ],
@@ -103,7 +108,7 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
   }
   const selected=(weaponItemClasses[weaponType]??[])
     .flatMap(itemClassId=>weaponBaseValuesFor(itemClassId))
-    .filter(base=>base.requiredLevel===null||characterLevel===undefined||base.requiredLevel<=characterLevel)
+    .filter(base=>baseRequirementsMet(base,characterLevel,attributes))
     .map(base=>({base,stats:weaponStatsFromBase(base)}))
     .sort((left,right)=>rawWeaponOutput(right.stats)-rawWeaponOutput(left.stats)||left.base.id.localeCompare(right.base.id))[0]
   if(!selected)return null
@@ -114,6 +119,7 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
     baseDisplayName:selected.base.nameEn,
     weaponStats:selected.stats,
     requirements:baseRequirements(selected.base),
+    requirementStatus:'met' as const,
     properties:[
       rangeText('Physischer Schaden',selected.stats.physicalDamage),
       rangeText('Feuerschaden',selected.stats.fireDamage),
@@ -126,6 +132,7 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
       selected.base.socketLimit!==null?`Maximale Sockel: ${selected.base.socketLimit}`:undefined,
     ].filter((value):value is string=>Boolean(value)),
     reasons:[
+      'Anforderungen im vorgesehenen Waffenset erfüllt.',
       `Anforderungen: Level ${selected.base.requiredLevel??'—'}, Stärke ${selected.base.requirements.strength??'—'}, Geschick ${selected.base.requirements.dexterity??'—'}, Intelligenz ${selected.base.requirements.intelligence??'—'}`,
       `Grundwerte: ${selected.stats.physicalDamage?.minimum??0}–${selected.stats.physicalDamage?.maximum??0} physisch, ${selected.stats.criticalHitChance}% Krit, ${selected.stats.attacksPerSecond} Angriffe/s`,
       ...(selected.base.implicit?[`Belegte Eigenschaft: ${selected.base.implicit}`]:[]),
@@ -180,6 +187,7 @@ export function createEquipmentSlotSuggestions(input:{
   uniqueRecommendations:UniqueRecommendation[]
   uniqueNames:Map<string,string>
   characterLevel?:number
+  characterAttributes?:Record<'set-1'|'set-2',CharacterAttributeModel>
 }):EquipmentSlotSuggestion[]{
   const suggestions:EquipmentSlotSuggestion[]=[]
   const selected=input.optimization?.selected
@@ -187,7 +195,7 @@ export function createEquipmentSlotSuggestions(input:{
 
   if(selected&&!input.optimization?.equipmentFirst){
     const slotId=firstEmptySlot([weaponSlot(mainSet)],input.equipment)
-    const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel,selected.skillTags)
+    const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel,input.characterAttributes?.[mainSet].total,selected.skillTags)
     if(slotId)suggestions.push({
       slotId,
       title:concrete?.title??selected.weaponLabel,
@@ -198,7 +206,7 @@ export function createEquipmentSlotSuggestions(input:{
     if(selected.setupSkillId&&selected.setupWeaponType){
       const setupSet=mainSet==='set-1'?'set-2':'set-1'
       const setupSlot=firstEmptySlot([weaponSlot(setupSet)],input.equipment)
-      const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel,selected.setupSkillTags)
+      const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel,input.characterAttributes?.[setupSet].total,selected.setupSkillTags)
       if(setupSlot)suggestions.push({
         slotId:setupSlot,
         title:setupConcrete?.title??weaponLabelFor(selected.setupWeaponType),

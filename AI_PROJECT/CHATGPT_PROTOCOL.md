@@ -3595,3 +3595,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - 133 fokussierte Tests und Typecheck erfolgreich; kein Pin und keine Quelle geÃ¤ndert.
 - Basistypanforderungen sowie bedingte und prozentuale Attributwirkungen bleiben offen. PoB2-Gleichwertigkeit ist nicht bestÃ¤tigt.
 - Die PoB2-Gleichwertigkeit bleibt offen; insbesondere vollständige Charaktergrundwerte, Rundung und bedingte Verteidigungszustände fehlen weiterhin.
+
+## Schritt 109 – Tragbare konkrete Ausrüstungsbasen
+
+- Konkrete Waffenbasen werden gegen Level, Stärke, Geschicklichkeit und Intelligenz des vorgesehenen Waffensets geprüft.
+- Dieselbe fail-closed Prüfung gilt für sichtbare Ausrüstungsvorschläge und interne Referenzwaffen der Variantenoptimierung.
+- Ohne belegbar erfüllte Anforderungen bleibt nur die allgemeine Waffenart; eine konkrete Basis oder deren Werte werden nicht erfunden.
+- Datenpins und Produktdateien bleiben unverändert. Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- 18 fokussierte Tests und die serielle Gesamtsuite mit 1.636 Tests sind erfolgreich; Typecheck, Lint und Produktions-Build ebenfalls.
