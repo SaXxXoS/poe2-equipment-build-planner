@@ -1,17 +1,18 @@
 import reference from '../../../generated/pob2/damage-reference.json'
-import type { SkillGemDefinition,SkillSetup } from '../../domain'
+import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { AppliedEnemyMitigationEffect,DamageComponent,EnemyMitigationProfile,EnemyResistanceType,EnemyTargetRarity } from './types'
 
 const elemental:EnemyResistanceType[]=['fire','cold','lightning']
 const skillsByName=new Map(reference.skills.map(skill=>[skill.name.toLocaleLowerCase('en'),skill]))
-const stripMarkup=(value:string)=>value.replace(/\[[^|\]]+\|([^\]]+)\]/g,'$1').replace(/\s+/g,' ').trim()
+const supportsByName=new Map(reference.supports.map(support=>[support.name.toLocaleLowerCase('en'),support]))
+const stripMarkup=(value:string)=>value.replace(/\[[^|\]]+\|([^\]]+)\]/g,'$1').replace(/\[([A-Za-z][^\]]*)\]/g,'$1').replace(/\s+/g,' ').trim()
 const unique=<T>(values:T[])=>[...new Set(values)]
 const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magic'?0.85:rarity==='rare'?0.7:rarity==='unique'?0.5:1
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
-export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.0.0'
+export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.1.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -23,6 +24,19 @@ export interface PrimaryShockContext{
   actionsPerSecond:number
 }
 
+export interface ShockModifierSummary{
+  chanceIncreasedPercent:number
+  chanceMoreMultiplier:number
+  magnitudeIncreasedPercent:number
+  magnitudeMoreMultiplier:number
+  durationIncreasedPercent:number
+  sourceReferences:string[]
+}
+
+const emptyShockModifiers=():ShockModifierSummary=>({
+  chanceIncreasedPercent:0,chanceMoreMultiplier:1,magnitudeIncreasedPercent:0,magnitudeMoreMultiplier:1,durationIncreasedPercent:0,sourceReferences:[],
+})
+
 function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'){
   const selected=planning?.weaponSetPlanning?.[weaponSet]??planning?.pipelineResult
   return unique([...(selected?.allocatedNodeIds??[]),...(planning?.ascendancyPlanning?.allocatedNodeIds??[])])
@@ -30,7 +44,7 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',primaryShockContext?:PrimaryShockContext){
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',primaryShockContext?:PrimaryShockContext,shockModifiers:ShockModifierSummary=emptyShockModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
   for(const setup of setups.filter(value=>Boolean(value.skillId)&&setupActiveInSet(value,weaponSet))){
@@ -86,9 +100,9 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       })
     }
     if(primaryShockContext?.skillId===setup.skillId&&primaryShockContext.lightningHitAverage>0&&primaryShockContext.enemyAilmentThreshold>0){
-      const chanceMore=1+Number(numericStats['active_skill_shock_chance_+%_final']??0)/100
-      const magnitudeEffect=1+Number(numericStats['shock_effect_+%']??0)/100
-      const magnitudeMore=1+Number(numericStats['active_skill_shock_effect_+%_final']??0)/100
+      const chanceMore=(1+Number(numericStats['active_skill_shock_chance_+%_final']??0)/100)*(1+shockModifiers.chanceIncreasedPercent/100)*shockModifiers.chanceMoreMultiplier
+      const magnitudeEffect=1+(Number(numericStats['shock_effect_+%']??0)+shockModifiers.magnitudeIncreasedPercent)/100
+      const magnitudeMore=(1+Number(numericStats['active_skill_shock_effect_+%_final']??0)/100)*shockModifiers.magnitudeMoreMultiplier
       const hitShockChance=Math.min(100,primaryShockContext.lightningHitAverage/primaryShockContext.enemyAilmentThreshold*reference.ailmentConstants.shockChanceMultiplier*chanceMore)
       const criticalShockChance=Math.min(100,primaryShockContext.lightningCriticalHitAverage/primaryShockContext.enemyAilmentThreshold*reference.ailmentConstants.shockChanceMultiplier*chanceMore)
       const nonCriticalShare=Math.max(0,100-primaryShockContext.criticalHitChancePercent)/100
@@ -102,12 +116,13 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       const calculatedMagnitude=reference.ailmentConstants.shockMagnitudeFormulaCoefficient*Math.pow(weightedSourceDamage/primaryShockContext.enemyAilmentThreshold,reference.ailmentConstants.shockMagnitudeFormulaExponent)*magnitudeEffect*magnitudeMore
       const magnitude=Number(Math.min(reference.ailmentConstants.maximumShockMagnitudePercent,Math.max(reference.ailmentConstants.baseShockMagnitudePercent,calculatedMagnitude)).toFixed(2))
       const applicationRate=primaryShockContext.actionsPerSecond*weightedChance/100
-      const durationMs=reference.ailmentConstants.baseShockDurationSeconds*1000
-      const maintainable=applicationRate*reference.ailmentConstants.baseShockDurationSeconds>=1
+      const durationSeconds=reference.ailmentConstants.baseShockDurationSeconds*(1+shockModifiers.durationIncreasedPercent/100)
+      const durationMs=durationSeconds*1000
+      const maintainable=applicationRate*durationSeconds>=1
       candidates.push({
         source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Schock`,
         kind:'damage-taken-increased',damageTypes:['physical','fire','cold','lightning','chaos'],value:magnitude,
-        evidence:'structured-exact',sourceReference:`${SHOCK_ENEMY_EFFECT_MODEL_VERSION}: ShockChanceMultiplier + BaseShockMagnitude + BaseShockDuration + monsterAilmentThresholdTable`,conditional:true,
+        evidence:'structured-exact',sourceReference:`${SHOCK_ENEMY_EFFECT_MODEL_VERSION}: ShockChanceMultiplier + BaseShockMagnitude + BaseShockDuration + monsterAilmentThresholdTable${shockModifiers.sourceReferences.length?' + allocated shock modifiers':''}`,conditional:true,
         durationMs,applicationRatePerSecond:Number(applicationRate.toFixed(4)),estimatedUptime:maintainable?1:Number(Math.min(1,applicationRate*reference.ailmentConstants.baseShockDurationSeconds).toFixed(4)),
         uptimeStatus:maintainable?'maintainable':'unresolved',state:maintainable?'fully-active':'building',effectiveValue:maintainable?magnitude:0,
         stateDetail:maintainable
@@ -121,6 +136,79 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
   const selectedCurse=[...relevantCurses].sort((left,right)=>right.value-left.value||left.sourceId.localeCompare(right.sourceId))[0]
   return candidates.filter(value=>value.kind!=='resistance-reduction'||value===selectedCurse)
 }
+
+export function resolveAllocatedShockModifiers(tree:RealPassiveTree|undefined,planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'):ShockModifierSummary{
+  const result=emptyShockModifiers()
+  if(!tree||!planning)return result
+  const nodes=new Map(tree.nodes.map(node=>[node.id,node]))
+  for(const nodeId of allocatedNodeIds(planning,weaponSet)){
+    const node=nodes.get(nodeId)
+    if(!node)continue
+    for(const stat of node.stats){
+      const sourceText=stat.sourceText??''
+      const text=stripMarkup(sourceText)
+      const chance=text.match(/^(\d+(?:\.\d+)?)% increased chance to Shock$/i)
+      const magnitude=text.match(/^(\d+(?:\.\d+)?)% increased (?:Magnitude of (?:Shock|Non-Damaging Ailments)|Shock Magnitude) you inflict$/i)
+        ??text.match(/^(\d+(?:\.\d+)?)% increased Magnitude of Shock$/i)
+      const lessMagnitude=text.match(/^(\d+(?:\.\d+)?)% less Magnitude of Shock you inflict$/i)
+      const duration=text.match(/^(\d+(?:\.\d+)?)% increased (?:Shock Duration|Duration of Ignite, Shock and Chill on Enemies)$/i)
+      if(chance)result.chanceIncreasedPercent+=Number(chance[1])
+      else if(magnitude)result.magnitudeIncreasedPercent+=Number(magnitude[1])
+      else if(lessMagnitude)result.magnitudeMoreMultiplier*=1-Number(lessMagnitude[1])/100
+      else if(duration)result.durationIncreasedPercent+=Number(duration[1])
+      else continue
+      result.sourceReferences.push(`${nodeId}:${sourceText}`)
+    }
+  }
+  result.magnitudeMoreMultiplier=Number(result.magnitudeMoreMultiplier.toFixed(8))
+  result.sourceReferences.sort((a,b)=>a.localeCompare(b,'en'))
+  return result
+}
+
+const equipmentActiveInSet=(entry:EquipmentEntry,weaponSet:'set-1'|'set-2')=>!entry.slotId.includes('weapon-set-')||entry.slotId.includes(`weapon-${weaponSet}`)
+
+function resolveSelectedShockModifiers(input:{setup?:SkillSetup;supports?:SupportGemDefinition[];equipment?:EquipmentEntry[];weaponSet:'set-1'|'set-2'}):ShockModifierSummary{
+  const result=emptyShockModifiers()
+  const selectedSupports=new Set(input.setup?.supportGemIds??[])
+  for(const support of (input.supports??[]).filter(value=>selectedSupports.has(value.id))){
+    const numeric=support.nameEn?supportsByName.get(support.nameEn.toLocaleLowerCase('en')):undefined
+    if(!numeric)continue
+    const stats=numeric.numericStats as Record<string,number>
+    const duration=Number(stats['shock_duration_+%']??0)
+    const magnitude=Number(stats['shock_effect_+%']??0)
+    const chanceFinal=Number(stats['support_lasting_shock_chance_to_shock_+%_final']??0)+Number(stats['support_conduction_chance_to_shock_+%_final']??0)
+    if(duration){result.durationIncreasedPercent+=duration;result.sourceReferences.push(`support:${support.id}:shock_duration_+%`)}
+    if(magnitude){result.magnitudeIncreasedPercent+=magnitude;result.sourceReferences.push(`support:${support.id}:shock_effect_+%`)}
+    if(chanceFinal){result.chanceMoreMultiplier*=1+chanceFinal/100;result.sourceReferences.push(`support:${support.id}:shock_chance_final`)}
+  }
+  for(const entry of (input.equipment??[]).filter(value=>equipmentActiveInSet(value,input.weaponSet))){
+    for(const modifier of entry.modifierValues){
+      if(modifier.isLocal===true)continue
+      for(const stat of modifier.statValues??[]){
+        if(!Number.isFinite(stat.value))continue
+        if(stat.statId==='shock_chance_+%'){
+          result.chanceIncreasedPercent+=stat.value
+          result.sourceReferences.push(`equipment:${entry.id}:${stat.statId}`)
+        }else if(stat.statId==='shock_effect_+%'){
+          result.magnitudeIncreasedPercent+=stat.value
+          result.sourceReferences.push(`equipment:${entry.id}:${stat.statId}`)
+        }
+      }
+    }
+  }
+  result.chanceMoreMultiplier=Number(result.chanceMoreMultiplier.toFixed(8))
+  result.sourceReferences.sort((a,b)=>a.localeCompare(b,'en'))
+  return result
+}
+
+const mergeShockModifiers=(...values:ShockModifierSummary[]):ShockModifierSummary=>({
+  chanceIncreasedPercent:values.reduce((sum,value)=>sum+value.chanceIncreasedPercent,0),
+  chanceMoreMultiplier:Number(values.reduce((product,value)=>product*value.chanceMoreMultiplier,1).toFixed(8)),
+  magnitudeIncreasedPercent:values.reduce((sum,value)=>sum+value.magnitudeIncreasedPercent,0),
+  magnitudeMoreMultiplier:Number(values.reduce((product,value)=>product*value.magnitudeMoreMultiplier,1).toFixed(8)),
+  durationIncreasedPercent:values.reduce((sum,value)=>sum+value.durationIncreasedPercent,0),
+  sourceReferences:unique(values.flatMap(value=>value.sourceReferences)).sort((a,b)=>a.localeCompare(b,'en')),
+})
 
 function passiveEffects(tree:RealPassiveTree|undefined,planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'){
   if(!tree||!planning)return[] as AppliedEnemyMitigationEffect[]
@@ -156,11 +244,18 @@ export function applyBuildEnemyEffects(input:{
   primarySkillId?:string
   primaryActionsPerSecond?:number
   primaryShockContext?:PrimaryShockContext
+  supports?:SupportGemDefinition[]
+  equipment?:EquipmentEntry[]
   passiveTree?:RealPassiveTree
   realPassivePlanning?:RealPassivePlanningIntegrationResult
 }):EnemyMitigationProfile{
+  const primarySetup=input.setups.find(value=>value.skillId===input.primaryShockContext?.skillId&&setupActiveInSet(value,input.weaponSet))
+  const shockModifiers=mergeShockModifiers(
+    resolveAllocatedShockModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet),
+    resolveSelectedShockModifiers({setup:primarySetup,supports:input.supports,equipment:input.equipment,weaponSet:input.weaponSet}),
+  )
   const effects=[
-    ...skillEffects(input.setups,input.skills,input.activeDamageTypes,input.weaponSet,input.primaryShockContext),
+    ...skillEffects(input.setups,input.skills,input.activeDamageTypes,input.weaponSet,input.primaryShockContext,shockModifiers),
     ...passiveEffects(input.passiveTree,input.realPassivePlanning,input.weaponSet),
   ]
   const rarity=input.profile.targetRarity

@@ -3820,3 +3820,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 3 Dateien und 63 Tests erfolgreich. Kontrolliert partitionierte Gesamtsuite: 140 Dateien und 1.717 Tests erfolgreich. Lint, Typecheck, Produktions- und Pages-Build erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_SHOCK_STEP_128.md` und `docs/audits/build-assistant-step-128-shock.json`.
 - Nächster Baustein: belegte Schockmodifikatoren aus Baum, Aszendenz, Supports und Ausrüstung sowie stärkste konkurrierende Schockquelle.
+
+## Schritt 129 – belegte Schockmodifikatoren
+
+- Der Schadensrechner verwendet `3.43.0`, das Schockmodell `1.1.0`.
+- 97 schockbezogene Baumzeilen wurden inventarisiert; 58 unbedingte, exakt lesbare Zeilen auf 56 Knoten sind produktiv. Vier davon stammen aus Aszendenzen.
+- Chance, Magnitude, Less-Magnitude und Dauer werden waffensetgenau aus tatsächlich zugewiesenen Knoten verrechnet.
+- `Lasting Shock`, `Overcharge` und `Shock` sind über gepinnte numerische Supportwerte verbunden.
+- Technische Ausrüstungswerte `shock_chance_+%` und `shock_effect_+%` wirken; Selbstschutzwerte werden nicht offensiv verwendet.
+- Bedingte Laufzeitzustände, freie Textähnlichkeit, mehrere Schocks und externe Quellen bleiben fail-closed.
+- Fokussierte Prüfung: 4 Dateien und 84 Tests erfolgreich. Serieller Gesamtlauf mit einem Worker: 139 Dateien und 1.719 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_SHOCK_MODIFIERS_STEP_129.md` und `docs/audits/build-assistant-step-129-shock-modifiers.json`.
+- Nächster Baustein: mehrere belegte Schockquellen und stärkste-Schock-Ersetzung.

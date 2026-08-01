@@ -1,0 +1,29 @@
+{
+  "step": 129,
+  "scope": "allocated-shock-modifiers",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "inventory": {
+    "shockRelatedTreeLines": 97,
+    "productiveExactTreeLines": 58,
+    "productiveTreeNodes": 56,
+    "productiveAscendancyLines": 4,
+    "shockRelatedSupportRecords": 19,
+    "productiveSupportRecords": 3,
+    "productiveEquipmentStatIds": ["shock_chance_+%", "shock_effect_+%"]
+  },
+  "productiveSupportNames": ["Lasting Shock", "Overcharge", "Shock"],
+  "modelVersions": {"damageCalculator": "3.43.0", "shock": "1.1.0", "temporalEnemyEffects": "2.0.0"},
+  "blocked": ["conditional runtime-state shock modifiers", "all damage contributes to shock", "multiple simultaneous shocks", "shocked ground and external sources", "display-text similarity"],
+  "verification": {
+    "focusedTestFiles": 4,
+    "focusedTests": 84,
+    "fullTestFiles": 139,
+    "fullTests": 1719,
+    "fullTestWorkers": 1,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  }
+}

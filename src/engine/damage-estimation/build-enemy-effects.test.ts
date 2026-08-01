@@ -1,11 +1,12 @@
 import { describe,expect,it } from 'vitest'
-import type { SkillGemDefinition,SkillSetup } from '../../domain'
+import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyBuildEnemyEffects } from './build-enemy-effects'
+import { applyBuildEnemyEffects,resolveAllocatedShockModifiers } from './build-enemy-effects'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,nameEn,displayNameDe:nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const setup=(id:string,skillId:string):SkillSetup=>({id,skillId,role:'utility',weaponSet:'both',supportGemIds:[]})
+const support=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,displayNameDe:nameEn,tags:[],requiredTags:[],excludedTags:[],ownTags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const profile={id:'automatic',label:'Automatisch',source:'automatic-season-reference' as const}
 
 describe('automatische belegte Gegnerwirkungen',()=>{
@@ -97,6 +98,59 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     })
     expect(result.damageTakenIncreased).toBeUndefined()
     expect(result.appliedEffects).toEqual([])
+  })
+
+  it('löst nur exakt belegte Schockchance, -stärke und -dauer aus den zugewiesenen Baumknoten auf',()=>{
+    const tree={metadata:{releaseTag:'test'},connections:[],nodes:[
+      {id:'chance',stats:[{sourceText:'20% increased chance to [Shock]'}]},
+      {id:'magnitude',stats:[{sourceText:'25% increased [BuffMagnitude|Magnitude] of [Shock|Shock] you inflict'}]},
+      {id:'ailments',stats:[{sourceText:'30% increased [BuffMagnitude|Magnitude] of [NonDamagingAilments|Non-Damaging Ailments] you inflict'}]},
+      {id:'duration',stats:[{sourceText:'10% increased Duration of [Ignite], [Shock] and [Chill] on Enemies'}]},
+      {id:'asc',ascendancyId:'stormweaver',stats:[{sourceText:'25% less [BuffMagnitude|Magnitude] of [Shock] you inflict'}]},
+      {id:'conditional',stats:[{sourceText:'40% increased Magnitude of Shock you inflict with Critical Hits'}]},
+    ]} as unknown as RealPassiveTree
+    const planning={pipelineResult:{allocatedNodeIds:['chance','magnitude','ailments','duration','conditional']},ascendancyPlanning:{allocatedNodeIds:['asc']}} as unknown as RealPassivePlanningIntegrationResult
+    expect(resolveAllocatedShockModifiers(tree,planning,'set-1')).toMatchObject({
+      chanceIncreasedPercent:20,magnitudeIncreasedPercent:55,magnitudeMoreMultiplier:0.75,durationIncreasedPercent:10,
+    })
+  })
+
+  it('wendet belegte Schockmodifikatoren waffensetgenau auf Stärke und Aufrechterhaltung an',()=>{
+    const tree={metadata:{releaseTag:'test'},connections:[],nodes:[
+      {id:'set1-chance',stats:[{sourceText:'40% increased chance to [Shock]'}]},
+      {id:'set1-effect',stats:[{sourceText:'25% increased [BuffMagnitude|Magnitude] of [Shock|Shock] you inflict'}]},
+      {id:'set1-duration',stats:[{sourceText:'50% increased [Shock] Duration'}]},
+    ]} as unknown as RealPassiveTree
+    const planning={
+      weaponSetPlanning:{'set-1':{allocatedNodeIds:['set1-chance','set1-effect','set1-duration']},'set-2':{allocatedNodeIds:[]}},
+    } as unknown as RealPassivePlanningIntegrationResult
+    const common={profile,setups:[setup('ball','ball')],skills:[skill('ball','Ball Lightning')],activeDamageTypes:['lightning' as const],primaryShockContext:{
+      skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,
+      hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2,
+    },passiveTree:tree,realPassivePlanning:planning}
+    const set1=applyBuildEnemyEffects({...common,weaponSet:'set-1'})
+    const set2=applyBuildEnemyEffects({...common,weaponSet:'set-2'})
+    expect(set1.appliedEffects?.[0]).toMatchObject({value:27.92,durationMs:12000,uptimeStatus:'maintainable'})
+    expect(set1.appliedEffects?.[0].applicationRatePerSecond).toBeGreaterThan(set2.appliedEffects?.[0].applicationRatePerSecond??0)
+    expect(set2.appliedEffects?.[0]).toMatchObject({value:22.33,durationMs:8000})
+  })
+
+  it('verbindet ausschließlich gewählte strukturierte Schock-Supports und technische Ausrüstungswerte',()=>{
+    const selected={...setup('ball','ball'),supportGemIds:['lasting','overcharge','shock']}
+    const equipment=[{
+      id:'ring',slotId:'slot-ring-1',modifierValues:[
+        {id:'chance',modifierId:'chance',value:60,isLocal:false,statValues:[{statId:'shock_chance_+%',value:60}]},
+        {id:'effect',modifierId:'effect',value:25,isLocal:false,statValues:[{statId:'shock_effect_+%',value:25}]},
+        {id:'self',modifierId:'self',value:50,isLocal:false,statValues:[{statId:'base_self_shock_duration_-%',value:50}]},
+      ],
+    }] as EquipmentEntry[]
+    const result=applyBuildEnemyEffects({
+      profile,setups:[selected],skills:[skill('ball','Ball Lightning')],supports:[support('lasting','Lasting Shock'),support('overcharge','Overcharge'),support('shock','Shock')],equipment,
+      activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2},
+    })
+    expect(result.appliedEffects?.[0]).toMatchObject({value:39.08,durationMs:16000,uptimeStatus:'maintainable'})
+    expect(result.appliedEffects?.[0].sourceReference).toContain('allocated shock modifiers')
   })
 
   it('verwendet für Withered die exakt gewählte Gemmenstufe',()=>{
