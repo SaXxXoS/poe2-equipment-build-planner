@@ -2,7 +2,7 @@ import type { EquipmentEntry } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 
-export const CHARACTER_ATTRIBUTE_MODEL_VERSION = 'pinned-tree-0.5.2-v1'
+export const CHARACTER_ATTRIBUTE_MODEL_VERSION = 'pinned-tree-0.5.2-v2-percentages'
 export type CharacterAttribute = 'strength' | 'dexterity' | 'intelligence'
 export type CharacterAttributeValues = Record<CharacterAttribute, number>
 
@@ -18,7 +18,7 @@ const baseByClassId: Record<string, CharacterAttributeValues> = {
 }
 
 export interface CharacterAttributeModel {
-  modelVersion: typeof CHARACTER_ATTRIBUTE_MODEL_VERSION
+  modelVersion: typeof CHARACTER_ATTRIBUTE_MODEL_VERSION | 'pinned-tree-0.5.2-v1'
   activeSet: 'set-1' | 'set-2'
   status: 'exact-confirmed-sources' | 'blocked-unknown-class'
   base: CharacterAttributeValues
@@ -45,7 +45,7 @@ const allocatedNodes = (tree: RealPassiveTree | undefined, planning: RealPassive
   return tree.nodes.filter(node => ids.has(node.id))
 }
 
-const clean = (value: string) => value.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').trim()
+const clean = (value: string) => value.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').replace(/\[([^\]]+)\]/g, '$1').trim()
 
 export function resolveCharacterAttributes(input: {
   classId: string
@@ -56,7 +56,9 @@ export function resolveCharacterAttributes(input: {
 }): CharacterAttributeModel {
   const base = baseByClassId[input.classId] ? { ...baseByClassId[input.classId] } : zero()
   const equipment = zero()
-  const passives = zero()
+  const passiveFlat = zero()
+  const increasedReduced = zero()
+  const moreLess: CharacterAttributeValues = { strength: 1, dexterity: 1, intelligence: 1 }
   const blockedPassiveLines: string[] = []
   for (const entry of input.equipment.filter(value => appliesToSet(value, input.activeSet))) {
     for (const modifier of entry.modifierValues) {
@@ -73,12 +75,30 @@ export function resolveCharacterAttributes(input: {
       const text = clean(raw)
       const single = text.match(/^\+?(-?\d+) to (Strength|Dexterity|Intelligence)$/i)
       const all = text.match(/^\+?(-?\d+) to all Attributes$/i)
-      if (single) passives[single[2].toLowerCase() as CharacterAttribute] += Number(single[1])
-      else if (all) for (const attribute of Object.keys(passives) as CharacterAttribute[]) passives[attribute] += Number(all[1])
+      const pair = text.match(/^\+?(-?\d+) to (Strength|Dexterity|Intelligence) and (Strength|Dexterity|Intelligence)$/i)
+      const percent = text.match(/^(\d+)% (increased|reduced|more|less) (Strength|Dexterity|Intelligence|Attributes)$/i)
+      if (single) passiveFlat[single[2].toLowerCase() as CharacterAttribute] += Number(single[1])
+      else if (all) for (const attribute of Object.keys(passiveFlat) as CharacterAttribute[]) passiveFlat[attribute] += Number(all[1])
+      else if (pair) {
+        passiveFlat[pair[2].toLowerCase() as CharacterAttribute] += Number(pair[1])
+        passiveFlat[pair[3].toLowerCase() as CharacterAttribute] += Number(pair[1])
+      } else if (percent) {
+        const targets = percent[3].toLowerCase() === 'attributes'
+          ? Object.keys(passiveFlat) as CharacterAttribute[]
+          : [percent[3].toLowerCase() as CharacterAttribute]
+        const value = Number(percent[1])
+        for (const attribute of targets) {
+          if (percent[2].toLowerCase() === 'increased') increasedReduced[attribute] += value
+          else if (percent[2].toLowerCase() === 'reduced') increasedReduced[attribute] -= value
+          else if (percent[2].toLowerCase() === 'more') moreLess[attribute] *= 1 + value / 100
+          else moreLess[attribute] *= 1 - value / 100
+        }
+      }
       else if (/attributes?|strength|dexterity|intelligence/i.test(text)) blockedPassiveLines.push(text)
     }
   }
-  const total = Object.fromEntries((Object.keys(base) as CharacterAttribute[]).map(attribute => [attribute, base[attribute] + equipment[attribute] + passives[attribute]])) as CharacterAttributeValues
+  const total = Object.fromEntries((Object.keys(base) as CharacterAttribute[]).map(attribute => [attribute, Math.floor((base[attribute] + equipment[attribute] + passiveFlat[attribute]) * (1 + increasedReduced[attribute] / 100) * moreLess[attribute])])) as CharacterAttributeValues
+  const passives = Object.fromEntries((Object.keys(base) as CharacterAttribute[]).map(attribute => [attribute, total[attribute] - base[attribute] - equipment[attribute]])) as CharacterAttributeValues
   return {
     modelVersion: CHARACTER_ATTRIBUTE_MODEL_VERSION,
     activeSet: input.activeSet,

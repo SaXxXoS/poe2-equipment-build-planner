@@ -3645,3 +3645,10 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fehlende Charakterattribute blockieren bekannte Anforderungen fail-closed und werden in der UI verständlich erklärt.
 - Der produktive PoB2-Bestand enthält derzeit 0/435 bestätigte Levelanforderungen und 0/435 bestätigte Attributanforderungen. Diese Lücke bleibt ausdrücklich unbekannt; sichtbare Namen werden nicht als technische Identität benutzt.
 - Architektur, PoB2-Produktdatei und Datenpins bleiben unverändert.
+# Schritt 113 – Vollständigere Attributaggregation
+
+- Das gepinnte Attributmodell verarbeitet jetzt flache Attributpaare sowie erhöhte, verringerte, mehr und weniger Attribute.
+- Gemeinsame, waffensetspezifische und Aszendenzknoten fließen weiterhin nur über ihre tatsächlich belegten Knoten-IDs ein.
+- 140 von 463 attributbezogenen Statzeilen-Vorkommen des Baums sind als Attributsumme strukturiert; 323 bedingte, wählbare oder sekundäre Wirkungen bleiben fail-closed.
+- Alte gespeicherte V1-Attributmodelle bleiben lesbar; neue Berechnungen verwenden `pinned-tree-0.5.2-v2-percentages`.
+- Keine Datenpins oder Produktdateien wurden verändert.

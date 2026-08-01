@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "step": 113,
+  "source": "data-sources/poe2-tree/raw/0.5.2/data.json",
+  "modelVersion": "pinned-tree-0.5.2-v2-percentages",
+  "attributeRelatedStatLineOccurrences": 463,
+  "supportedOccurrences": {
+    "singleFlatAttribute": 106,
+    "allFlatAttributes": 15,
+    "pairedFlatAttributes": 7,
+    "increasedReducedMoreLess": 12,
+    "total": 140
+  },
+  "blockedOccurrences": 323,
+  "ordering": [
+    "class-base",
+    "active-set-equipment-flat",
+    "allocated-passive-flat",
+    "increased-reduced",
+    "more-less",
+    "floor-to-integer"
+  ],
+  "weaponSetAware": true,
+  "ascendancyAware": true,
+  "backwardCompatibleModelVersions": [
+    "pinned-tree-0.5.2-v1",
+    "pinned-tree-0.5.2-v2-percentages"
+  ],
+  "failClosedExamples": [
+    "+5 to any Attribute",
+    "Body Armour grants 20% increased Strength",
+    "1% increased Damage per 15 Strength",
+    "Attribute Requirements of Gems can be satisified by your highest Attribute"
+  ]
+}

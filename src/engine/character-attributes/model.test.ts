@@ -35,4 +35,39 @@ describe('character attribute model', () => {
   it('blockiert unbekannte Klassen fail-closed', () => {
     expect(resolveCharacterAttributes({ classId: 'unknown', equipment: [], activeSet: 'set-1' })).toMatchObject({ status: 'blocked-unknown-class', total: { strength: 0, dexterity: 0, intelligence: 0 } })
   })
+
+  it('verarbeitet gepinnte kombinierte Attributzeilen deterministisch', () => {
+    const passiveTree = { metadata: { releaseTag: '0.5.2' }, connections: [], nodes: [{ id: 'pair', name: 'Strength and Dexterity', nodeType: 'normal', stats: [{ sourceText: '+10 to [Strength|Strength] and [Dexterity|Dexterity]' }] }] }
+    const realPassivePlanning = { pipelineResult: { allocatedNodeIds: ['pair'] } }
+    const result = resolveCharacterAttributes({ classId: 'class-official-9', equipment: [], activeSet: 'set-1', passiveTree: passiveTree as never, realPassivePlanning: realPassivePlanning as never })
+
+    expect(result.total).toEqual({ strength: 21, dexterity: 21, intelligence: 7 })
+    expect(result.blockedPassiveLines).toEqual([])
+  })
+
+  it('wendet erhöhte und weniger Attribute nach den flachen Werten an', () => {
+    const passiveTree = { metadata: { releaseTag: '0.5.2' }, connections: [], nodes: [
+      { id: 'flat', name: 'Strength', nodeType: 'normal', stats: [{ sourceText: '+10 to [Strength]' }] },
+      { id: 'increased', name: 'Attributes', nodeType: 'normal', stats: [{ sourceText: '20% increased [Attributes]' }] },
+      { id: 'less', name: 'Less Attributes', nodeType: 'notable', stats: [{ sourceText: '20% less [Attributes]' }] },
+    ] }
+    const realPassivePlanning = { pipelineResult: { allocatedNodeIds: ['flat', 'increased', 'less'] } }
+    const result = resolveCharacterAttributes({ classId: 'class-official-6', equipment: [], activeSet: 'set-1', passiveTree: passiveTree as never, realPassivePlanning: realPassivePlanning as never })
+
+    expect(result.total).toEqual({ strength: 24, dexterity: 6, intelligence: 6 })
+    expect(result.passives).toEqual({ strength: 9, dexterity: -1, intelligence: -1 })
+  })
+
+  it('lässt wählbare und bedingte Attributzeilen weiter fail-closed', () => {
+    const passiveTree = { metadata: { releaseTag: '0.5.2' }, connections: [], nodes: [
+      { id: 'choice', name: 'Attribute', nodeType: 'normal', stats: [{ sourceText: '+5 to any [Attributes|Attribute]' }] },
+      { id: 'conditional', name: 'Body Armour Strength', nodeType: 'notable', stats: [{ sourceText: 'Body Armour grants 20% increased [Strength]' }] },
+    ] }
+    const realPassivePlanning = { pipelineResult: { allocatedNodeIds: ['choice', 'conditional'] } }
+    const result = resolveCharacterAttributes({ classId: 'class-official-6', equipment: [], activeSet: 'set-1', passiveTree: passiveTree as never, realPassivePlanning: realPassivePlanning as never })
+
+    expect(result.total).toEqual({ strength: 15, dexterity: 7, intelligence: 7 })
+    expect(result.blockedPassiveLines).toEqual(['+5 to any Attribute', 'Body Armour grants 20% increased Strength'])
+  })
+
 })
