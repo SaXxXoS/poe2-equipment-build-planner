@@ -10,6 +10,32 @@ const support=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,displa
 const profile={id:'automatic',label:'Automatisch',source:'automatic-season-reference' as const}
 
 describe('automatische belegte Gegnerwirkungen',()=>{
+  it('wendet Scharfsch\u00fctzenmal stufen-, qualit\u00e4ts- und waffensetgenau auf kritische Treffer an',()=>{
+    const mark={...setup('mark','snipers-mark'),weaponSet:'set-1' as const,level:20,quality:20}
+    const input={profile,setups:[mark],skills:[skill('snipers-mark',"Sniper's Mark")],activeDamageTypes:['lightning' as const]}
+    const active=applyBuildEnemyEffects({...input,weaponSet:'set-1'})
+    const inactive=applyBuildEnemyEffects({...input,weaponSet:'set-2'})
+    expect(active.additionalCriticalDamageBonusAgainstTarget).toBe(92)
+    expect(active.appliedEffects).toContainEqual(expect.objectContaining({
+      sourceId:'snipers-mark',kind:'critical-damage-bonus-against-target',effectGroup:'mark',
+      value:92,effectiveValue:92,durationMs:8000,activationTimeMs:500,selectionStatus:'selected-strongest',
+    }))
+    expect(inactive.additionalCriticalDamageBonusAgainstTarget).toBeUndefined()
+  })
+
+  it('verwendet bei mehreren belegten Malen deterministisch nur den st\u00e4rksten Wert',()=>{
+    const weak={...setup('weak','snipers-mark'),level:1}
+    const strong={...setup('strong','snipers-mark'),level:20}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[weak,strong],skills:[skill('snipers-mark',"Sniper's Mark")],activeDamageTypes:['physical'],weaponSet:'set-1',
+    })
+    expect(result.additionalCriticalDamageBonusAgainstTarget).toBe(77)
+    expect(result.appliedEffects?.filter(value=>value.effectGroup==='mark')).toEqual([
+      expect.objectContaining({sourceId:'snipers-mark',value:20,effectiveValue:0,selectionStatus:'superseded-by-stronger'}),
+      expect.objectContaining({sourceId:'snipers-mark',value:77,effectiveValue:77,selectionStatus:'selected-strongest'}),
+    ])
+  })
+
   it('wendet Elementardurchdringung nur vom Support des berechneten Hauptskills an',()=>{
     const primary={...setup('primary','arc'),supportGemIds:['lightning-penetration']}
     const secondary={...setup('secondary','fireball'),supportGemIds:['fire-penetration']}

@@ -3944,3 +3944,7 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_ELEMENTAL_PENETRATION_SUPPORTS_STEP_138.md` und `docs/audits/build-assistant-step-138-elemental-penetration-supports.json`.
 - Nächster Baustein: nächste vollständig lokal belegbare gegnerbezogene Trefferwirkung; unvollständige Zustandsketten bleiben fail-closed.
+- Schritt 139 bindet `Sniper's Mark` erstmals als strukturierte zielgebundene Krit-Wirkung ein. Der gepinnte Stat `enemy_additional_critical_strike_multiplier_against_self` liefert auf Stufe 20 exakt 77 zusätzlichen kritischen Schadensbonus; normale Qualität nutzt 0,75 pro Qualität mit Abrundung gegen null (20 Qualität: insgesamt 92).
+- Die Markierung wirkt ausschließlich aus einer gewählten Fertigkeitskarte im aktiven Waffenset und ausschließlich auf den kritischen Erwartungsanteil gegen das markierte Ziel. Treffergrundwerte, normale Treffer und nativer Schaden über Zeit bleiben unverändert. Mehrere gleichartige Markierungen verwenden deterministisch nur den stärksten belegten Wert.
+- Die strukturierte Wirkzeit beträgt 8 Sekunden bei 0,5 Sekunden Wirkzeitbeginn durch das Wirken. Ohne Rotationsbeleg wird deshalb nur ein angenommenes aktives Wirkfenster, keine garantierte permanente Uptime, ausgewiesen.
+- Der Schadensrechner verwendet `3.53.0`; das Scharfschützenmal-Kritmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.

@@ -12,6 +12,20 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('erh\u00f6ht Scharfsch\u00fctzenmal nur den kritischen Erwartungsanteil des aktiven Waffensets',()=>{
+    const arc=skill('arc','Arc')
+    const mark=skill('mark',"Sniper's Mark")
+    const main={...setup(arc.id),id:'arc'}
+    const activeMark={...setup(mark.id),id:'mark',role:'utility' as const,level:20}
+    const inactiveMark={...activeMark,weaponSet:'set-2' as const}
+    const baseline=estimateHitDamage({equipment:[],setups:[main,inactiveMark],skills:[arc,mark]})
+    const result=estimateHitDamage({equipment:[],setups:[main,activeMark],skills:[arc,mark]})
+    expect(result.criticalDamageBonus).toBe((baseline.criticalDamageBonus??100)+77)
+    expect(result.expectedCriticalHitDamage).toBeGreaterThan(baseline.expectedCriticalHitDamage!)
+    expect(result.hitDamage).toEqual(baseline.hitDamage)
+    expect(result.included).toContain('Scharfsch\u00fctzenmal: strukturierter kritischer Schadensbonus gegen das markierte Ziel')
+  })
+
   it('berechnet strukturierte Zauberbasiswerte deterministisch',()=>{
     const first=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})
     const second=estimateHitDamage({equipment:[],setups:[setup('ball')],skills:[skill('ball','Ball Lightning')]})

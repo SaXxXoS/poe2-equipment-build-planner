@@ -1,0 +1,41 @@
+{
+  "step": 139,
+  "scope": "snipers-mark-target-critical-damage",
+  "calculatorVersion": "3.53.0",
+  "snipersMarkCriticalDamageModelVersion": "1.0.0",
+  "sourceRecordId": "SnipersMarkPlayer",
+  "structuredStatId": "enemy_additional_critical_strike_multiplier_against_self",
+  "implemented": [
+    "gem-level-specific-critical-damage-bonus",
+    "normal-quality-scaling-with-truncation",
+    "active-weapon-set-only",
+    "strongest-same-mark-selection",
+    "critical-hit-only-expectation",
+    "enemy-profile-provenance"
+  ],
+  "blocked": [
+    "guaranteed-permanent-mark-uptime-without-rotation-proof",
+    "non-critical-hit-amplification",
+    "native-damage-over-time-amplification",
+    "unknown-mark-effects"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "focusedTests": {
+    "files": 4,
+    "tests": 119,
+    "status": "passed"
+  },
+  "fullSuite": {
+    "initialRun": "139 files and 1754 tests passed; 2 timing-sensitive passive-tree files exceeded the shared 5-second limit",
+    "isolatedSerialRepeat": "2 files and 197 tests passed",
+    "status": "functionally-passed-with-isolated-timing-repeat"
+  },
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonValidation": "passed"
+  }
+}

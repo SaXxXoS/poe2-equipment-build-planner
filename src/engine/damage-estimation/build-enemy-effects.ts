@@ -17,6 +17,7 @@ export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
 export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
 export const ARMOUR_BREAK_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const ELEMENTAL_PENETRATION_SUPPORT_MODEL_VERSION='1.0.0'
+export const SNIPERS_MARK_CRITICAL_DAMAGE_MODEL_VERSION='1.0.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -66,6 +67,48 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 }
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
+
+function targetCriticalDamageEffects(setups:SkillSetup[],skills:SkillGemDefinition[],weaponSet:'set-1'|'set-2'){
+  const skillById=new Map(skills.map(skill=>[skill.id,skill]))
+  const effects:AppliedEnemyMitigationEffect[]=[]
+  for(const setup of setups.filter(value=>Boolean(value.skillId)&&setupActiveInSet(value,weaponSet))){
+    const definition=skillById.get(setup.skillId)
+    const numeric=definition?.nameEn?skillsByName.get(definition.nameEn.toLocaleLowerCase('en')):undefined
+    if(!definition||!numeric)continue
+    const selectedLevel=setup.level==null?undefined:numeric.levels.find(level=>level.level===setup.level)
+    const numericStats=(selectedLevel?.numericStats??numeric.numericStats) as Record<string,number>
+    const statId='enemy_additional_critical_strike_multiplier_against_self'
+    const baseValue=Number(numericStats[statId]??0)
+    if(!Number.isFinite(baseValue)||baseValue<=0)continue
+    const quality=Number.isInteger(setup.quality)&&setup.quality!>=0&&setup.quality!<=23?setup.quality!:0
+    const perQuality=Number(numeric.qualityStats.find(entry=>entry.statId===statId)?.perQuality??0)
+    const value=baseValue+Math.trunc(perQuality*quality)
+    effects.push({
+      source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: kritischer Schadensbonus gegen markiertes Ziel`,
+      kind:'critical-damage-bonus-against-target',effectGroup:'mark',damageTypes:['physical','fire','cold','lightning','chaos'],value,
+      evidence:'structured-exact',sourceReference:`${SNIPERS_MARK_CRITICAL_DAMAGE_MODEL_VERSION}: ${numeric.sourceRecordId}:${statId}${quality?' + qualityStats':''}`,
+      conditional:true,durationMs:Number(numericStats.base_skill_effect_duration)||undefined,
+      activationTimeMs:numeric.castTime>0?numeric.castTime*1000:undefined,
+      uptimeStatus:'windowed',state:'assumed-active',
+      stateDetail:'Der Bonus wirkt ausschlie\u00dflich auf kritische Treffer gegen das markierte Ziel; normale Treffer und reiner Schaden \u00fcber Zeit bleiben unver\u00e4ndert.',
+    })
+  }
+  const selected=[...effects].sort((left,right)=>right.value-left.value||left.sourceId.localeCompare(right.sourceId,'en'))[0]
+  for(const effect of effects){
+    if(effect===selected)effect.selectionStatus='selected-strongest'
+    else{
+      effect.selectionStatus='superseded-by-stronger'
+      effect.effectiveValue=0
+      effect.stateDetail='Nur ein belegtes Mal desselben Typs kann gleichzeitig auf dem Ziel wirken; der st\u00e4rkere strukturierte Wert wird verwendet.'
+    }
+  }
+  return effects
+}
+
+export function resolveSelectedTargetCriticalDamageBonus(input:{setups:SkillSetup[];skills:SkillGemDefinition[];weaponSet:'set-1'|'set-2'}){
+  return targetCriticalDamageEffects(input.setups,input.skills,input.weaponSet)
+    .reduce((maximum,effect)=>Math.max(maximum,effect.effectiveValue??effect.value),0)
+}
 
 function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],primaryHitDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,primarySkillId:string|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers(),armourBreakModifiers:ArmourBreakModifierSummary=emptyArmourBreakModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
@@ -452,6 +495,7 @@ export function applyBuildEnemyEffects(input:{
   const armourBreakModifiers=resolveAllocatedArmourBreakModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet)
   const shockContexts=unique([...(input.shockSourceContexts??[]),...(input.primaryShockContext?[input.primaryShockContext]:[])])
   const effects=[
+    ...targetCriticalDamageEffects(input.setups,input.skills,input.weaponSet),
     ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.primaryHitDamageTypes??[],input.weaponSet,input.profile.level,input.primarySkillId,shockContexts,setup=>mergeShockModifiers(
       commonShockModifiers,
       resolveSelectedShockModifiers({setup,supports:input.supports,weaponSet:input.weaponSet}),
@@ -494,6 +538,7 @@ export function applyBuildEnemyEffects(input:{
   const resistanceReduction={...(input.profile.resistanceReduction??{})}
   const resistanceReductionGroups=new Map<string,Partial<Record<EnemyResistanceType,number>>>()
   const damageTakenIncreased={...(input.profile.damageTakenIncreased??{})}
+  let additionalCriticalDamageBonusAgainstTarget=input.profile.additionalCriticalDamageBonusAgainstTarget??0
   for(const effect of effects){
     if((effect.effectiveValue??effect.value)<=0)continue
     if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+(effect.effectiveValue??effect.value)
@@ -504,6 +549,7 @@ export function applyBuildEnemyEffects(input:{
       resistanceReductionGroups.set(group,grouped)
     }
     if(effect.kind==='damage-taken-increased')for(const type of effect.damageTypes)damageTakenIncreased[type]=(damageTakenIncreased[type]??0)+(effect.effectiveValue??effect.value)
+    if(effect.kind==='critical-damage-bonus-against-target')additionalCriticalDamageBonusAgainstTarget=Math.max(additionalCriticalDamageBonusAgainstTarget,effect.effectiveValue??effect.value)
   }
   for(const grouped of resistanceReductionGroups.values())for(const type of elemental.concat('chaos')){
     const value=grouped[type]
@@ -560,6 +606,7 @@ export function applyBuildEnemyEffects(input:{
     ...(Object.keys(penetration).length?{penetration}:{}),
     ...(Object.keys(resistanceReduction).length?{resistanceReduction}:{}),
     ...(Object.keys(damageTakenIncreased).length?{damageTakenIncreased}:{}),
+    ...(additionalCriticalDamageBonusAgainstTarget?{additionalCriticalDamageBonusAgainstTarget}:{}),
     ...(armourBreak?{armourBreak}:{}),
     appliedEffects:effects,
     ...((input.profile.blockedEnemyEffects?.length||blockedFixedShockSources.length)

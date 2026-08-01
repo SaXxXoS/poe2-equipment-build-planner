@@ -5,7 +5,7 @@ import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions, quantitativePercentMultiplier } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
-import { applyBuildEnemyEffects } from './build-enemy-effects'
+import { applyBuildEnemyEffects, resolveSelectedTargetCriticalDamageBonus } from './build-enemy-effects'
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
@@ -112,7 +112,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.52.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.53.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -286,9 +286,11 @@ export function estimateHitDamage(input:{
   const criticalChanceIncrease=quantitative.criticalChanceModifiers.filter(effect=>(effect.kind??'increased')==='increased').reduce((sum,effect)=>sum+effect.percent,0)
   const criticalChanceMultiplier=quantitativePercentMultiplier(quantitative.criticalChanceModifiers)
   const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*criticalChanceMultiplier*supportEffects.criticalChanceMultiplier)
-  const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus
+  const targetCriticalDamageBonus=resolveSelectedTargetCriticalDamageBonus({setups:input.setups,skills:input.skills,weaponSet:activeSet})
+  const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus+targetCriticalDamageBonus
   const totalCriticalDamageBonus=100+additionalCriticalDamageBonus
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
+  if(targetCriticalDamageBonus>0)included.push('Scharfsch\u00fctzenmal: strukturierter kritischer Schadensbonus gegen das markierte Ziel')
   const multipleDamageEffect=resolveMultipleDamageEffect({
     passiveTree:input.passiveTree,
     planning:input.realPassivePlanning,
