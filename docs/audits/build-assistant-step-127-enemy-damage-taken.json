@@ -1,0 +1,71 @@
+{
+  "step": 127,
+  "scope": "enemy-damage-taken",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFiles": [
+    "src/Modules/CalcOffence.lua",
+    "src/Modules/CalcPerform.lua",
+    "generated/pob2/damage-reference.json"
+  ],
+  "productiveEffect": {
+    "sourceSkill": "Wither",
+    "damageType": "chaos",
+    "increasedDamageTakenPerStackPercent": 6,
+    "maximumStacks": 10,
+    "level20MaintainableStacks": 10,
+    "level20IncreasedDamageTakenPercent": 60,
+    "level1MaintainableStacks": 8,
+    "level1IncreasedDamageTakenPercent": 48,
+    "evidence": "structured-exact"
+  },
+  "formula": {
+    "maintainableStacks": "min(10, floor(witheredDurationMs / castTimeMs))",
+    "damageTakenMultiplier": "max(0, 1 + increasedDamageTakenPercent / 100)",
+    "applicationOrder": "base damage -> player modifiers -> enemy armour/resistance -> typed damage-taken multiplier"
+  },
+  "productiveCoverage": {
+    "hitDamage": true,
+    "nativeDamageOverTime": true,
+    "productiveDamagingAilments": [
+      "poison"
+    ],
+    "bleedingSourceIntegrated": false,
+    "igniteSourceIntegrated": false,
+    "weaponSetScoped": true,
+    "exactGemLevelScoped": true,
+    "dotOnlySkillsRetainEnemyEffects": true
+  },
+  "modelVersions": {
+    "damageCalculator": "3.41.0",
+    "temporalEnemyEffects": "2.0.0",
+    "nativeDamageOverTime": "3.0.0",
+    "damagingAilments": "2.8.0",
+    "enemyDamageTaken": "1.0.0"
+  },
+  "focusedTests": {
+    "files": 6,
+    "tests": 91,
+    "status": "passed"
+  },
+  "validation": {
+    "fullSuite": "passed-serial",
+    "fullSuiteFiles": 140,
+    "fullSuiteTests": 1714,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "blockedOrUnresolved": [
+    "Withering Touch application chance and target ailment threshold chain",
+    "Withering Presence exact application and uptime chain",
+    "Shock magnitude, application, replacement and uptime chain",
+    "Generic MORE DamageTaken sources without a fully resolved runtime state"
+  ],
+  "limitations": [
+    "The productive Wither result is a maintained-channel scenario, not guaranteed permanent combat uptime.",
+    "Interrupted channeling, movement and target changes can reduce the actual stack count.",
+    "Unknown or wrong-weapon-set effects remain fail-closed."
+  ]
+}

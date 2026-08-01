@@ -295,6 +295,20 @@ describe('belegte schädigende Zustände', () => {
     })
   })
 
+  it('wendet erhöhten erlittenen Chaosschaden auf Gift nach dem Widerstand an', () => {
+    const result = collectDamagingAilments({
+      skill: record('Arc'),
+      components: [{ type: 'chaos', minimum: 100, maximum: 100 }],
+      actionsPerSecond: 1, hitChancePercent: 100, enemyLevel: 1,
+      enemyProfile: {
+        id: 'withered-target', label: 'Withered-Ziel', source: 'manual-comparison-profile',
+        resistances: { chaos: 25 }, damageTakenIncreased: { chaos: 60 },
+      },
+      setup: setup(['poison']), supports: [support('poison', 'Poison I')],
+    })
+    expect(result.effects[0]).toMatchObject({kind:'poison',damagePerSecond:16,damagePerSecondAfterMitigation:19.2})
+  })
+
   it('trennt eine exakt belegte kritische Giftchance von der normalen Trefferchance', () => {
     const supports = [support('poison', 'Poison I')]
     const result = collectDamagingAilments({

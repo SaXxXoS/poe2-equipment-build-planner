@@ -666,7 +666,27 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       sourceId:'curse',kind:'resistance-reduction',durationMs:7400,
       activationTimeMs:700,uptimeStatus:'windowed',
     })
-    expect(result.enemyProfile?.temporalModelVersion).toBe('1.0.0')
+    expect(result.enemyProfile?.temporalModelVersion).toBe('2.0.0')
+  })
+  it('verbindet ausgewähltes Wither mit Chaos-Treffer und eigenständigem Chaos-DoT',()=>{
+    const witherSetup:SkillSetup={id:'wither-setup',skillId:'wither',role:'utility',weaponSet:'set-1',supportGemIds:[]}
+    const baseInput={
+      equipment:[],setups:[setup('essence-drain')],skills:[skill('essence-drain','Essence Drain'),skill('wither','Wither')],
+      enemyProfile:{id:'chaos-target',label:'Chaosziel',source:'manual-comparison-profile' as const,resistances:{chaos:0}},
+    }
+    const baseline=estimateHitDamage(baseInput)
+    const withWither=estimateHitDamage({...baseInput,setups:[...baseInput.setups,witherSetup]})
+    expect(withWither.enemyProfile?.damageTakenIncreased).toEqual({chaos:60})
+    expect(withWither.expectedDamageAfterMitigation).toBeCloseTo(baseline.expectedDamageAfterMitigation!*1.6,1)
+
+    const contagionInput={
+      equipment:[],setups:[setup('contagion')],skills:[skill('contagion','Contagion'),skill('wither','Wither')],
+      enemyProfile:{id:'chaos-dot-target',label:'Chaos-DoT-Ziel',source:'manual-comparison-profile' as const,resistances:{chaos:0}},
+    }
+    const contagionBaseline=estimateHitDamage(contagionInput)
+    const contagionWithWither=estimateHitDamage({...contagionInput,setups:[...contagionInput.setups,witherSetup]})
+    expect(contagionWithWither.damageOverTime?.totalSingleApplicationDamagePerSecondAfterMitigation)
+      .toBeCloseTo(contagionBaseline.damageOverTime!.totalSingleApplicationDamagePerSecondAfterMitigation!*1.6,1)
   })
   it('wendet den belegten 20-Prozent-Zustand vollständig gebrochener Rüstung an',()=>{
     const observed={...weapon('Gezackter Speer'),weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:0,attacksPerSecond:1,range:10}}

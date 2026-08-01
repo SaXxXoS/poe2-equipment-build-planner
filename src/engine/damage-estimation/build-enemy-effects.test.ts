@@ -37,6 +37,35 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.[0].sourceId).toBe('despair')
   })
 
+  it('berechnet Withered aus belegter Stapelwirkung, Wirkzeit und Kanalisierungszeit',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('wither','wither')],skills:[skill('wither','Wither')],
+      activeDamageTypes:['chaos'],weaponSet:'set-1',
+    })
+    expect(result.damageTakenIncreased).toEqual({chaos:60})
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      sourceId:'wither',kind:'damage-taken-increased',value:60,
+      stackCount:10,maximumStacks:10,durationMs:2950,activationTimeMs:250,
+      applicationRatePerSecond:4,timeToFullEffectMs:2500,
+      uptimeStatus:'maintainable',state:'fully-active',evidence:'structured-exact',
+    })])
+  })
+
+  it('wendet Withered weder auf den falschen Waffensatz noch auf Nicht-Chaosschaden an',()=>{
+    const set2={...setup('wither','wither'),weaponSet:'set-2' as const}
+    const wrongSet=applyBuildEnemyEffects({profile,setups:[set2],skills:[skill('wither','Wither')],activeDamageTypes:['chaos'],weaponSet:'set-1'})
+    const wrongType=applyBuildEnemyEffects({profile,setups:[setup('wither','wither')],skills:[skill('wither','Wither')],activeDamageTypes:['fire'],weaponSet:'set-1'})
+    expect(wrongSet.damageTakenIncreased).toBeUndefined()
+    expect(wrongType.damageTakenIncreased).toBeUndefined()
+  })
+
+  it('verwendet für Withered die exakt gewählte Gemmenstufe',()=>{
+    const levelOne={...setup('wither','wither'),level:1}
+    const result=applyBuildEnemyEffects({profile,setups:[levelOne],skills:[skill('wither','Wither')],activeDamageTypes:['chaos'],weaponSet:'set-1'})
+    expect(result.damageTakenIncreased).toEqual({chaos:48})
+    expect(result.appliedEffects?.[0]).toMatchObject({stackCount:8,durationMs:2000,timeToFullEffectMs:2000})
+  })
+
   it('erfasst strukturierten Rüstungsbruch, aber keine unbelegte Frost-Bomb-Exposition',()=>{
     const result=applyBuildEnemyEffects({
       profile,setups:[setup('breaker','breaker'),setup('bomb','bomb')],
@@ -78,7 +107,7 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     })
     expect(sustained).toMatchObject({
       hitsToFullyBreakArmour:3,timeToFullyBreakArmourMs:1500,
-      fullyBrokenArmour:true,temporalModelVersion:'1.0.0',
+      fullyBrokenArmour:true,temporalModelVersion:'2.0.0',
     })
     expect(sustained.appliedEffects?.[0]).toMatchObject({
       state:'fully-active',uptimeStatus:'maintainable',

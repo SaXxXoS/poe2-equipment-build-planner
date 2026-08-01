@@ -3793,3 +3793,18 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Dokumentation: `docs/BUILD_ASSISTANT_AILMENT_DAMAGE_RATE_STEP_126.md`.
 - Audit: `docs/audits/build-assistant-step-126-ailment-damage-rate.json`.
 - Nächster Baustein: gegnerseitige DoT-Schadensaufnahme nur aus vollständig belegten Debuff-, Fluch- oder Bodeneffektketten.
+
+## Schritt 127 – gegnerseitige Schadenserhöhung
+
+- Der Schadensrechner wurde auf `3.41.0`, das zeitliche Gegnerstatusmodell auf `2.0.0`, nativer DoT auf `3.0.0` und schädigende Zustände auf `2.8.0` erweitert.
+- `Wither` ist als erste vollständig belegte gegnerseitige Schadenserhöhung integriert: 6 % erhöhter erlittener Chaosschaden je Stapel, maximal 10 Stapel.
+- Stapel werden aus gepinnter Wirkungsdauer und Wirkzeit der gewählten Gemmenstufe ermittelt. Stufe 20 erreicht im aufrechterhaltenen Szenario 10 Stapel beziehungsweise 60 %, Stufe 1 acht Stapel beziehungsweise 48 %.
+- Treffer, nativer Chaos-DoT und Gift verwenden denselben typisierten Multiplikator nach Gegnerabwehr.
+- Reine DoT-Fertigkeiten ohne Trefferkomponente behalten die Gegnerstatusauflösung; der zuvor zu frühe Abbruch wurde geschlossen.
+- Waffenset, aktive Schadensart und Gemmenstufe werden strikt berücksichtigt. Unpassende oder unbelegte Effekte bleiben fail-closed.
+- Keine permanente reale Uptime wird behauptet; unterbrochenes Kanalisieren kann den Effekt reduzieren.
+- Fokussierte Referenzprüfung: 6 Dateien und 91 Tests erfolgreich.
+- Serielle Gesamtsuite: 140 Dateien und 1.714 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Dokumentation: `docs/BUILD_ASSISTANT_ENEMY_DAMAGE_TAKEN_STEP_127.md`.
+- Audit: `docs/audits/build-assistant-step-127-enemy-damage-taken.json`.
+- Nächster Baustein: Schock und weitere generische gegnerseitige `DamageTaken`-Zustände mit vollständig belegter Anwendung, Magnitude und Uptime.

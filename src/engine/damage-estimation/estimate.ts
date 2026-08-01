@@ -112,7 +112,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.40.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.41.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -154,7 +154,21 @@ export function estimateHitDamage(input:{
     components=spellComponents(skill)
     included.push('Zauber-Basisschaden','Basis-Zauberzeit')
   }
-  if(!components.length)return{...base,status:'unavailable',...(damageOverTime.effects.length||damageOverTime.blockedEffects.length?{damageOverTime:damageOverTimeOutput()}:{}),warnings:['Die primäre Schadenskomponente ist nicht eindeutig strukturiert verfügbar.']}
+  if(!components.length){
+    const dotEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
+      profile:input.enemyProfile,setups:input.setups,skills:input.skills,
+      activeDamageTypes:[...new Set(damageOverTime.effects.map(value=>value.damageType))],weaponSet:activeSet,
+      primarySkillId:skillId,primaryActionsPerSecond:actionsPerSecond,
+      passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
+    }):undefined
+    damageOverTime=collectDamageOverTime(skill,dotEnemyProfile)
+    return{
+      ...base,status:'unavailable',
+      ...(dotEnemyProfile?{enemyProfile:dotEnemyProfile}:{}),
+      ...(damageOverTime.effects.length||damageOverTime.blockedEffects.length?{damageOverTime:damageOverTimeOutput()}:{}),
+      warnings:['Die primäre Trefferschadenskomponente ist nicht eindeutig strukturiert verfügbar; ein vollständig belegter eigenständiger DoT bleibt separat auswertbar.'],
+    }
+  }
   const baseComponents=components.map(value=>({...value}))
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet,characterClassId:input.characterClassId})
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis,resourceSpiritModel})
@@ -331,7 +345,10 @@ export function estimateHitDamage(input:{
     : undefined
   const resolvedEnemyProfile=input.enemyProfile?applyBuildEnemyEffects({
     profile:input.enemyProfile,setups:input.setups,skills:input.skills,
-    activeDamageTypes:components.map(value=>value.type),weaponSet:activeSet,
+    activeDamageTypes:[...new Set([
+      ...components.map(value=>value.type),
+      ...damageOverTime.effects.map(value=>value.damageType),
+    ])],weaponSet:activeSet,
     primarySkillId:skillId,primaryActionsPerSecond:actionsPerSecond,
     passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
   }):undefined

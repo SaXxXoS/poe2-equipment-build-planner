@@ -1,7 +1,8 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
+import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '2.0.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -83,7 +84,7 @@ export function collectDamageOverTime(skill: NumericSkill, enemyProfile?: EnemyM
     }
     const damagePerSecond = perMinute / 60
     const resistance = resistanceAfterReduction(definition.type, enemyProfile)
-    const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100)
+    const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100) * enemyDamageTakenMultiplier(definition.type, enemyProfile)
     effects.push({
       sourceRecordId: skill.sourceRecordId,
       sourceLabel: skill.name,

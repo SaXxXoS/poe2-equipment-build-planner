@@ -1,10 +1,11 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
+import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
 import type { DamagingAilmentRateEffects } from './ailment-rate-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.7.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.8.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -266,7 +267,7 @@ export function collectDamagingAilments(input: {
       expectedActiveStacks: round(expectedActiveStacks),
       damagePerSecond: round(Math.min(damagePerSecond, 35_791_394)),
       ...(input.enemyProfile
-        ? { damagePerSecondAfterMitigation: round(Math.min(damagePerSecond * (1 - resistance / 100), 35_791_394)) }
+        ? { damagePerSecondAfterMitigation: round(Math.min(damagePerSecond * (1 - resistance / 100) * enemyDamageTakenMultiplier(definition.damageType, input.enemyProfile), 35_791_394)) }
         : {}),
       totalDamagePerApplication: round(singleStackDps * rateMultiplier * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),

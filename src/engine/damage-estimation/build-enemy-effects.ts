@@ -10,21 +10,24 @@ const stripMarkup=(value:string)=>value.replace(/\[[^|\]]+\|([^\]]+)\]/g,'$1').r
 const unique=<T>(values:T[])=>[...new Set(values)]
 const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magic'?0.85:rarity==='rare'?0.7:rarity==='unique'?0.5:1
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
-export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='1.0.0'
+export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 
 function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'){
   const selected=planning?.weaponSetPlanning?.[weaponSet]??planning?.pipelineResult
   return unique([...(selected?.allocatedNodeIds??[]),...(planning?.ascendancyPlanning?.allocatedNodeIds??[])])
 }
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDamageTypes:DamageComponent['type'][]){
+const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
+
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2'){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
-  for(const setup of setups.filter(value=>Boolean(value.skillId))){
+  for(const setup of setups.filter(value=>Boolean(value.skillId)&&setupActiveInSet(value,weaponSet))){
     const definition=skillById.get(setup.skillId)
     const numeric=definition?.nameEn?skillsByName.get(definition.nameEn.toLocaleLowerCase('en')):undefined
     if(!definition||!numeric)continue
-    const numericStats=numeric.numericStats as Record<string,number>
+    const selectedLevel=setup.level==null?undefined:numeric.levels.find(level=>level.level===setup.level)
+    const numericStats=(selectedLevel?.numericStats??numeric.numericStats) as Record<string,number>
     const elementalCurse=numericStats['base_skill_buff_all_elements_resistance_%_to_apply']
     if(Number.isFinite(elementalCurse)&&elementalCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementarwiderstände`,
@@ -50,6 +53,27 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       evidence:'structured-exact',sourceReference:'apply_X_armour_break_on_hit',conditional:true,
       durationMs:12000,uptimeStatus:'ramping',state:'building',
     })
+    const witherPerStack=numericStats['chaos_damage_taken_+%']
+    const witherDurationMs=numericStats.active_skill_withered_base_duration_ms
+    const applicationTimeMs=numeric.castTime>0?numeric.castTime*1000:undefined
+    if(
+      activeDamageTypes.includes('chaos')
+      && Number.isFinite(witherPerStack)&&witherPerStack>0
+      && Number.isFinite(witherDurationMs)&&witherDurationMs>0
+      && applicationTimeMs
+    ){
+      const maximumStacks=10
+      const maintainableStacks=Math.min(maximumStacks,Math.max(1,Math.floor(witherDurationMs/applicationTimeMs)))
+      candidates.push({
+        source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: erhöhter erlittener Chaosschaden`,
+        kind:'damage-taken-increased',damageTypes:['chaos'],value:witherPerStack*maintainableStacks,
+        evidence:'structured-exact',sourceReference:'chaos_damage_taken_+% + active_skill_withered_base_duration_ms + castTime',conditional:true,
+        durationMs:witherDurationMs,activationTimeMs:applicationTimeMs,applicationRatePerSecond:1000/applicationTimeMs,
+        timeToFullEffectMs:maintainableStacks*applicationTimeMs,stackCount:maintainableStacks,maximumStacks,
+        estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
+        stateDetail:`${maintainableStacks} Stapel sind bei fortgesetztem Kanalisieren innerhalb der belegten Wirkzeit aufrechterhaltbar.`,
+      })
+    }
   }
   const curses=candidates.filter(value=>value.kind==='resistance-reduction')
   const relevantCurses=curses.filter(value=>value.damageTypes.some(type=>activeDamageTypes.includes(type)))
@@ -94,7 +118,7 @@ export function applyBuildEnemyEffects(input:{
   realPassivePlanning?:RealPassivePlanningIntegrationResult
 }):EnemyMitigationProfile{
   const effects=[
-    ...skillEffects(input.setups,input.skills,input.activeDamageTypes),
+    ...skillEffects(input.setups,input.skills,input.activeDamageTypes,input.weaponSet),
     ...passiveEffects(input.passiveTree,input.realPassivePlanning,input.weaponSet),
   ]
   const rarity=input.profile.targetRarity
@@ -109,9 +133,11 @@ export function applyBuildEnemyEffects(input:{
   }
   const penetration={...(input.profile.penetration??{})}
   const resistanceReduction={...(input.profile.resistanceReduction??{})}
+  const damageTakenIncreased={...(input.profile.damageTakenIncreased??{})}
   for(const effect of effects){
     if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+(effect.effectiveValue??effect.value)
     if(effect.kind==='resistance-reduction')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))resistanceReduction[type]=Math.max(resistanceReduction[type]??0,effect.effectiveValue??effect.value)
+    if(effect.kind==='damage-taken-increased')for(const type of effect.damageTypes)damageTakenIncreased[type]=(damageTakenIncreased[type]??0)+(effect.effectiveValue??effect.value)
   }
   const armourBreak=Math.max(input.profile.armourBreak??0,...effects.filter(value=>value.kind==='armour-break').map(value=>value.effectiveValue??value.value))
   const hitsToFullyBreakArmour=input.profile.armour&&armourBreak?Math.ceil(input.profile.armour/armourBreak):undefined
@@ -147,11 +173,13 @@ export function applyBuildEnemyEffects(input:{
   const limitations=[...(input.profile.limitations??[])]
   if(effects.some(value=>value.kind==='resistance-reduction'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; seine strukturierte Wirkzeit ist bekannt, die tatsächliche Wiederholungsfrequenz ohne Rotationsbeleg jedoch nicht.')
   if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
+  if(effects.some(value=>value.kind==='damage-taken-increased'))limitations.push('Withered wird nur für eine im aktiven Waffenset gewählte Fertigkeit mit strukturierter Stapelwirkung berechnet; unterbrochenes Kanalisieren verringert die tatsächliche Wirkung.')
   if(primaryBreakEffect&&timeToFullyBreakArmourMs&&primaryBreakEffect.durationMs&&timeToFullyBreakArmourMs>primaryBreakEffect.durationMs)limitations.push('Die belegte Trefferfrequenz reicht nicht aus, um die Zielrüstung innerhalb des 12-Sekunden-Fensters vollständig zu brechen.')
   return{
     ...input.profile,
     ...(Object.keys(penetration).length?{penetration}:{}),
     ...(Object.keys(resistanceReduction).length?{resistanceReduction}:{}),
+    ...(Object.keys(damageTakenIncreased).length?{damageTakenIncreased}:{}),
     ...(armourBreak?{armourBreak}:{}),
     appliedEffects:effects,
     ...(hitsToFullyBreakArmour?{hitsToFullyBreakArmour}:{}),

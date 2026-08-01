@@ -7,7 +7,7 @@ export interface AppliedEnemyMitigationEffect {
   source:'skill'|'passive'|'ascendancy'
   sourceId:string
   label:string
-  kind:'resistance-reduction'|'penetration'|'armour-break'
+  kind:'resistance-reduction'|'penetration'|'armour-break'|'damage-taken-increased'
   damageTypes:Array<DamageComponent['type']>
   value:number
   evidence:'structured-exact'|'text-pattern-exact'
@@ -17,6 +17,8 @@ export interface AppliedEnemyMitigationEffect {
   activationTimeMs?:number
   applicationRatePerSecond?:number
   timeToFullEffectMs?:number
+  stackCount?:number
+  maximumStacks?:number
   estimatedUptime?:number
   uptimeStatus:TemporalEffectUptimeStatus
   effectiveValue?:number
@@ -39,6 +41,7 @@ export interface EnemyMitigationProfile {
   resistances?:Partial<Record<EnemyResistanceType,number>>
   penetration?:Partial<Record<EnemyResistanceType,number>>
   resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
+  damageTakenIncreased?:Partial<Record<DamageComponent['type'],number>>
   appliedEffects?:AppliedEnemyMitigationEffect[]
   fullyBrokenArmour?:boolean
   hitsToFullyBreakArmour?:number
