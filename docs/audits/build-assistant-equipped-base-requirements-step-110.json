@@ -1,0 +1,43 @@
+{
+  "step": 110,
+  "scope": "equipped-normal-item-base-requirements",
+  "modelVersion": "pinned-item-base-requirements-v1",
+  "sources": [
+    "generated/poe2-items/weapon-base-values.json",
+    "technical equipment statValues",
+    "pinned passive-tree attributes"
+  ],
+  "implemented": {
+    "requiredLevel": true,
+    "strength": true,
+    "dexterity": true,
+    "intelligence": true,
+    "weaponSetSpecific": true,
+    "sharedItemsCheckedInBothSets": true,
+    "selfGrantedAttributesExcluded": true,
+    "passivePlanningNeedTransport": true,
+    "visibleResult": true,
+    "nextImprovement": true
+  },
+  "failClosed": {
+    "unknownBaseIdentity": "unresolved-base",
+    "inventedRequirements": false,
+    "unknownAttributesGrantPass": false
+  },
+  "verification": {
+    "focusedTestsPassed": 13,
+    "fullSuiteTestsPassed": 1637,
+    "fullSuiteTimingFailures": 2,
+    "isolatedTimingTestsPassed": 197,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "jsonValidation": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "limitations": [
+    "Unique requirements remain in the separate Unique Analyzer.",
+    "Conditional attribute effects remain unresolved.",
+    "Path of Building 2 parity is not established."
+  ]
+}

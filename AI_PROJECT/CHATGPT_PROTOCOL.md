@@ -3603,3 +3603,23 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Ohne belegbar erfüllte Anforderungen bleibt nur die allgemeine Waffenart; eine konkrete Basis oder deren Werte werden nicht erfunden.
 - Datenpins und Produktdateien bleiben unverändert. Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
 - 18 fokussierte Tests und die serielle Gesamtsuite mit 1.636 Tests sind erfolgreich; Typecheck, Lint und Produktions-Build ebenfalls.
+
+## Schritt 110 – Anforderungen eingetragener Basistypen
+
+- Bereits eingetragene normale Gegenstände werden gegen die gepinnten Level-
+  und Attributanforderungen ihres technischen Basistyps geprüft.
+- Waffen werden set-spezifisch geprüft; gemeinsame Gegenstände müssen in
+  beiden Waffensets tragbar sein.
+- Eigene Attributaffixe dürfen die eigene Anforderung nicht fälschlich erfüllen.
+- Bekannte Defizite erreichen die Passive-Planung sowie Konflikte und nächste
+  Verbesserungen der sichtbaren Build-Auswertung.
+- Nicht technisch zugeordnete OCR-/Freitextbasen bleiben fail-closed
+  `unresolved-base`; Anforderungen werden nicht erfunden.
+- Produktpins bleiben unverändert. Path-of-Building-2-Gleichwertigkeit ist
+  weiterhin nicht belegt.
+- Prüfung: 13 fokussierte Tests, Typecheck, Lint, Produktions-Build,
+  JSON-Validierung und `git diff --check` sind erfolgreich. Im kombinierten
+  Gesamtlauf bestanden 1.637 Tests; zwei bekannte zeitkritische
+  Passive-Targeting-Tests überschritten dort das Fünf-Sekunden-Limit, sind
+  aber im isolierten Wiederholungslauf zusammen mit insgesamt 197 Tests
+  vollständig erfolgreich.

@@ -74,6 +74,10 @@ const issueText = (issue: ConstraintViolation) => {
     'required-skill-tag-missing': 'Dem Hauptangriff fehlt die erforderliche Mechanik.',
     'required-mechanic-missing': 'Die benötigte Mechanik ist nicht vorhanden.',
   }
+  if (issue.code === 'base-level-requirement') return 'Die Levelanforderung eines eingetragenen Basistyps ist noch nicht erfüllt.'
+  if (issue.code === 'base-attribute-requirement') return 'Die Attributanforderung eines eingetragenen Basistyps ist noch nicht erfüllt.'
+  if (issue.code === 'base-attributes-unknown') return 'Die Attribute für die Anforderungsprüfung sind nicht vollständig belegt.'
+  if (issue.code === 'base-identity-unresolved') return 'Der sichtbare Basistyp besitzt noch keine sichere technische Zuordnung; seine Anforderungen bleiben unbekannt.'
   return known[issue.code] ?? `Technischer Hinweis: ${issue.code}`
 }
 const topConfidence = (analysis: BuildAnalysis): Confidence => {
@@ -157,8 +161,14 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   const strongAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => !weakIds.has(id) && !conflictIds.has(id)))].slice(0, 8)
   const partialAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => weakIds.has(id)))].slice(0, 8)
   const unsuitableAffixes = [...new Set(appliedAffixes.map(value => value.modifierId).filter(id => conflictIds.has(id)))].slice(0, 8)
-  const fitCategory = !desiredSkill?.valid ? 'Schwach passend' : analysis.equipmentAnalysis.profileClarity >= 70 && confidence !== 'low' ? 'Sehr passend' : analysis.equipmentAnalysis.profileClarity >= 45 ? 'Gut passend' : 'Bedingt passend'
+  const blockedEquipmentRequirements=analysis.equipmentRequirementAssessment?.blockedItems??[]
+  const unresolvedEquipmentRequirements=analysis.equipmentRequirementAssessment?.unresolvedItems??[]
+  const fitCategory = !desiredSkill?.valid || blockedEquipmentRequirements.length ? 'Schwach passend' : analysis.equipmentAnalysis.profileClarity >= 70 && confidence !== 'low' ? 'Sehr passend' : analysis.equipmentAnalysis.profileClarity >= 45 ? 'Gut passend' : 'Bedingt passend'
   const nextSteps = [
+    ...blockedEquipmentRequirements.map(item=>item.status==='blocked-level'
+      ? `${item.label}: benötigtes Level ${item.requiredLevel ?? 'unbekannt'} erreichen oder Gegenstand ersetzen.`
+      : `${item.label}: fehlende Attribute ergänzen (${Object.entries(item.missing).filter(([,value])=>(value??0)>0).map(([attribute,value])=>`${attributeLabel[attribute as keyof typeof attributeLabel]} +${value}`).join(', ')}).`),
+    ...(unresolvedEquipmentRequirements.length?[`${unresolvedEquipmentRequirements.length} Basistyp${unresolvedEquipmentRequirements.length===1?'':'en'} technisch zuordnen, damit Anforderungen sicher geprüft werden können.`]:[]),
     ...(desiredSkill && !desiredSkill.valid ? ['Waffen- oder Skillkonflikt zuerst beheben.'] : []),
     ...(analysis.equipmentAnalysis.conflictingModifierIds.length ? ['Konfliktierende Affixe überprüfen.'] : []),
     ...(analysis.buildProfile.defence.resistanceNeed > 0 ? ['Widerstände als defensive Grundlage priorisieren.'] : []),
@@ -315,6 +325,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
     <details open><summary>Beste Schadensskalierungen</summary><div className="result-panel">{scalingAdvice.length ? <ul>{scalingAdvice.map(value => <li key={value}>{value}</li>)}</ul> : <p>Für die gewählte Fertigkeit sind noch keine belastbaren Schadensskalierungen verfügbar.</p>}<p><b>Wirkungsmodell:</b> {analysis.effectModel?.offenceEffects.filter(value => value.productive).length ?? 0} offensive, {analysis.effectModel?.defenceEffects.filter(value => value.productive).length ?? 0} defensive und {analysis.effectModel?.unresolvedEffects.length ?? 0} ungelöste Wirkungen.</p>{analysis.effectModel?.warnings.length ? <ul className="warning-list">{analysis.effectModel.warnings.map(value => <li key={value}>{value}</li>)}</ul> : null}<p className="muted">Diese Hinweise stammen aus der gemeinsamen Wirkungskette für Ausrüstung, Fertigkeiten, Supports, Passive, Waffensets und Aszendenz. Defensive Werte erzeugen keinen offensiven Bonus; unbekannte Zusammenhänge erzeugen keinen Bonus.</p></div></details>
     <details open><summary>Ausrüstung</summary><div className="result-panel"><p>{equipment.length - emptySlots.length} von {equipment.length} Slots enthalten Daten. {emptySlots.length ? 'Die Analyse bleibt möglich, besitzt aber geringere Sicherheit.' : 'Alle Slots wurden erfasst.'}</p>
       {equippedUniques.length > 0 && <><h4>Ausgerüstete Uniques</h4><ul>{equippedUniques.map(({ entry, unique }) => <li key={entry.id}>{unique?.name ?? entry.uniqueItemId} · {equipmentSlotDefinitions.find(slot => slot.id === entry.slotId)?.displayNameDe ?? entry.slotId}{entry.uniqueVariantId ? ` · Variante ${entry.uniqueVariantId}` : ''}</li>)}</ul></>}
+      {analysis.equipmentRequirementAssessment?.items.length ? <><h4>Level- und Attributanforderungen</h4><ul>{analysis.equipmentRequirementAssessment.items.map(item=><li key={item.entryId}><b>{item.label}</b> · {item.activeSets.length===2?'beide Waffensets':item.activeSets[0]==='set-1'?'Waffenset 1':'Waffenset 2'} · {item.status==='met'?'erfüllt':item.status==='blocked-level'?`Level ${item.requiredLevel ?? 'unbekannt'} noch nicht erreicht`:item.status==='blocked-attributes'?`fehlend: ${Object.entries(item.missing).filter(([,value])=>(value??0)>0).map(([attribute,value])=>`${attributeLabel[attribute as keyof typeof attributeLabel]} ${value}`).join(', ')}`:item.status==='unresolved-base'?'technische Basis unbekannt':'Attribute unbekannt'}</li>)}</ul></>:null}
       <p><b>Waffensets:</b> {analysis.equipmentAnalysis.dominantWeaponSet === 'balanced' ? 'Beide Sets sind ähnlich gewichtet.' : `${analysis.equipmentAnalysis.dominantWeaponSet === 'set-1' ? 'Set 1' : 'Set 2'} ist stärker ausgeprägt.`}</p>
       {analysis.warnings.length ? <ul className="warning-list">{analysis.warnings.slice(0, 8).map((warning, index) => <li key={`${warning.code}-${index}`}>{issueText(warning)}</li>)}</ul> : <p>Keine blockierenden Ausrüstungskonflikte erkannt.</p>}
     </div></details>
