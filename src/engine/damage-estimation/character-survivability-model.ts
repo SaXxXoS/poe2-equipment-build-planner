@@ -4,7 +4,7 @@ import { resolveCharacterAttributes } from '../character-attributes/model'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 
-export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.5.0'
+export const CHARACTER_SURVIVABILITY_MODEL_VERSION = '1.6.0'
 
 type AilmentProtection = {
   chance: number
@@ -18,6 +18,15 @@ type CurseProtection = {
   unaffected: boolean
   effectPercent: number
   reducedEffectPercent: number
+}
+
+type SecondaryDebuffProtection = {
+  blind: { avoidChance: number; immune: boolean }
+  impale: { avoidChance: number; immune: boolean }
+  corruptedBlood: { immune: boolean }
+  maim: { immune: boolean }
+  hinder: { immune: boolean }
+  silence: { avoidChance: number; immune: boolean; inheritedCurseAvoidance: number }
 }
 
 export interface CharacterSurvivabilityModel {
@@ -41,6 +50,7 @@ export interface CharacterSurvivabilityModel {
     poison: AilmentProtection
   }
   curseProtection?: CurseProtection
+  secondaryDebuffProtection?: SecondaryDebuffProtection
   sourceNodeIds: string[]
   sourceTexts: string[]
   blockedLines: string[]
@@ -80,7 +90,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
     modelVersion: CHARACTER_SURVIVABILITY_MODEL_VERSION as typeof CHARACTER_SURVIVABILITY_MODEL_VERSION,
     weaponSet: input.weaponSet,
     sourceNodeIds: [] as string[], sourceTexts: [] as string[], blockedLines: [] as string[],
-    sourceReferences: ['generated/pob2/damage-reference.json:resourceConstants', 'PoB2 src/Modules/CalcPerform.lua:Strength grants 2 Life', 'PoB2 src/Modules/CalcSetup.lua:Ailment Threshold is 50% of Life', 'PoB2 src/Modules/CalcDefence.lua:Stun Threshold, ailment avoidance and CurseEffectOnSelf', 'PoB2 src/Modules/ModParser.lua:threshold, avoidance, immunity and unaffected mappings', 'data-sources/poe2-tree/raw/0.5.2/data.json'],
+    sourceReferences: ['generated/pob2/damage-reference.json:resourceConstants', 'PoB2 src/Modules/CalcPerform.lua:Strength grants 2 Life', 'PoB2 src/Modules/CalcSetup.lua:Ailment Threshold is 50% of Life', 'PoB2 src/Modules/CalcDefence.lua:Stun Threshold, ailment avoidance, CurseEffectOnSelf and secondary debuff protection', 'PoB2 src/Modules/ModParser.lua:threshold, avoidance, immunity and unaffected mappings', 'data-sources/poe2-tree/raw/0.5.2/data.json'],
     limitations: ['Bedingte Schwellenwirkungen und alternative Schwellenbasen werden ohne bestätigten Laufzeitzustand nicht angewandt.', 'Nur technische Gegenstandswerte und exakt erkannte, unbedingte Passivtexte werden verrechnet.'],
   }
   const level = Number.isInteger(input.characterLevel) && Number(input.characterLevel) >= 1 ? Math.min(100, Number(input.characterLevel)) : undefined
@@ -98,6 +108,8 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
   const nonElementalAvoidance = { bleed: 0, poison: 0 }
   const nonElementalImmunity = { bleed: false, poison: false }
   let curseEffectPercent = 0, curseUnaffected = false
+  let blindAvoidance = 0, impaleAvoidance = 0
+  const secondaryImmunity = { blind: false, impale: false, corruptedBlood: false, maim: false, hinder: false, silence: false }
   let halvesLifeFromStrength = false, noStrengthLife = false, noAttributeBonuses = false, doubledAttributeBonuses = false, chaosInoculation = false
   const thresholdBases: Array<{ kind: 'energy-shield' | 'mana'; percent: number; sourceText: string; nodeId: string }> = []
   let additionalEnergyShieldToStunPercent = 0
@@ -131,6 +143,8 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       const avoidBleeding = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid Bleeding$/i)
       const avoidPoison = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid being Poisoned$/i)
       const curseEffect = text.match(/^(\d+(?:\.\d+)?)% (increased|reduced) effect of Curses on you$/i)
+      const avoidBlind = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid (?:being Blinded|Blind)$/i)
+      const avoidImpale = text.match(/^(\d+(?:\.\d+)?)% chance to Avoid being Impaled$/i)
       if (/^Inherent Life granted by Strength is halved$/i.test(text)) { halvesLifeFromStrength = true; matched = true }
       else if (/^(?:Strength provides no (?:inherent )?bonus to maximum Life|Gain no inherent bonus(?:es)? from Strength)$/i.test(text)) { noStrengthLife = true; matched = true }
       else if (/^Gain no inherent bonuses from Attributes$/i.test(text)) { noAttributeBonuses = true; matched = true }
@@ -168,6 +182,14 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
       else if (avoidPoison) { nonElementalAvoidance.poison += Number(avoidPoison[1]); matched = true }
       else if (curseEffect) { curseEffectPercent += (curseEffect[2].toLowerCase() === 'increased' ? 1 : -1) * Number(curseEffect[1]); matched = true }
       else if (/^(?:You are )?Unaffected by Curses$/i.test(text)) { curseUnaffected = true; matched = true }
+      else if (avoidBlind) { blindAvoidance += Number(avoidBlind[1]); matched = true }
+      else if (avoidImpale) { impaleAvoidance += Number(avoidImpale[1]); matched = true }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) Blinded$/i.test(text)) { secondaryImmunity.blind = true; matched = true }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) Impaled$/i.test(text)) { secondaryImmunity.impale = true; matched = true }
+      else if (/^(?:Corrupted Blood cannot be inflicted on you|(?:You are )?Immune to Corrupted Blood)$/i.test(text)) { secondaryImmunity.corruptedBlood = true; matched = true }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) Maim(?:ed)?$/i.test(text)) { secondaryImmunity.maim = true; matched = true }
+      else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) Hinder(?:ed)?$/i.test(text)) { secondaryImmunity.hinder = true; matched = true }
+      else if (/^(?:You )?Cannot be Cursed with Silence$/i.test(text)) { secondaryImmunity.silence = true; matched = true }
       else if (/^(?:You (?:are )?)?(?:Immune to Elemental Ailments|Cannot be affected by Elemental Ailments)$/i.test(text)) { elementalImmunity.all = true; matched = true }
       else if (/^(?:You )?(?:Cannot be|(?:are )?Immune to) (Ignited|Chilled|Frozen|Shocked)$/i.test(text)) {
         const ailment = elementalAilmentKey(text.match(/(Ignited|Chilled|Frozen|Shocked)$/i)![1])
@@ -208,7 +230,7 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
         matched = true
       }
       if (matched) { base.sourceNodeIds.push(node.id); base.sourceTexts.push(sourceText) }
-      else if (/\b(?:Life|Stun Threshold|Ailment Threshold|Avoid being Stunned|Avoid (?:being )?(?:Ignited|Chilled|Frozen|Shocked|Poisoned|Elemental Ailments|Status Ailments|Ailments)|Avoid Bleeding|Cannot be (?:Stunned|Ignited|Chilled|Frozen|Shocked|Poisoned|inflicted with Bleeding)|Immun(?:e|ity) to (?:Ignite|Chill|Freeze|Shock|Poison|Bleeding|Elemental Ailments|Curses)|Unaffected by Curses|effect of Curses on you)\b/i.test(text)) base.blockedLines.push(sourceText)
+      else if (/\b(?:Life|Stun Threshold|Ailment Threshold|Avoid being Stunned|Avoid (?:being )?(?:Ignited|Chilled|Frozen|Shocked|Poisoned|Blinded|Impaled|Elemental Ailments|Status Ailments|Ailments)|Avoid Bleeding|Cannot be (?:Stunned|Ignited|Chilled|Frozen|Shocked|Poisoned|Blinded|Impaled|Maimed|Hindered|Cursed with Silence|inflicted with (?:Bleeding|Maim))|cannot inflict Maim on you|Immun(?:e|ity) to (?:Ignite|Chill|Freeze|Shock|Poison|Bleeding|Blind|Impale|Maim|Hinder|Corrupted Blood|Elemental Ailments|Curses)|Unaffected by Curses|effect of Curses on you)\b/i.test(text)) base.blockedLines.push(sourceText)
       }
     }
   }
@@ -272,6 +294,14 @@ export function resolveCharacterSurvivabilityModel(input: { classId?: string; ch
     ailmentThreshold: { baseFromLife: round(ailmentBase), additionalFromEnergyShield: round(additionalAilmentFromEnergyShield), additionalFromDefences: round(ailmentFromDefences), additionalFromEquipmentPositions: round(ailmentFromEquipmentPositions), flatFromAttributes: ailmentFromAttributes, flatOther: ailmentFlat + equipmentAilmentFlat, increasedReducedPercent: round(ailmentPercent + equipmentAilmentPercent), moreLessMultiplier: round(ailmentMore), total: round(ailmentTotal) },
     avoidance: { stunChance: stunImmune ? 100 : Math.min(100, Math.max(0, round(stunAvoidance))), ailmentChance: Math.min(100, Math.max(0, round(generalAilmentAvoidance))), elementalAilmentChance: Math.min(100, Math.max(0, round(generalAilmentAvoidance + elementalAilmentAvoidance))), stunImmune, stunImmunitySource: unconditionalStunImmune ? 'unconditional' : energyShieldStunImmune ? 'energy-shield-condition' : 'none', ignite: protection('ignite'), chill: protection('chill'), freeze: protection('freeze'), shock: protection('shock'), bleed: nonElementalProtection('bleed'), poison: nonElementalProtection('poison') },
     curseProtection: { avoidChance: 0, immune: false, unaffected: curseUnaffected, effectPercent: round(effectiveCurseEffect), reducedEffectPercent: round(100 - effectiveCurseEffect) },
+    secondaryDebuffProtection: {
+      blind: { avoidChance: secondaryImmunity.blind ? 100 : Math.min(100, Math.max(0, round(blindAvoidance))), immune: secondaryImmunity.blind },
+      impale: { avoidChance: secondaryImmunity.impale ? 100 : Math.min(100, Math.max(0, round(impaleAvoidance))), immune: secondaryImmunity.impale },
+      corruptedBlood: { immune: secondaryImmunity.corruptedBlood },
+      maim: { immune: secondaryImmunity.maim },
+      hinder: { immune: secondaryImmunity.hinder },
+      silence: { avoidChance: secondaryImmunity.silence ? 100 : 0, immune: secondaryImmunity.silence, inheritedCurseAvoidance: 0 },
+    },
     sourceNodeIds: unique(base.sourceNodeIds), sourceTexts: unique(base.sourceTexts), blockedLines,
   }
 }

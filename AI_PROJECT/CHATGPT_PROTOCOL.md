@@ -3730,3 +3730,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Referenzprüfung: 2 Dateien und 74 Tests erfolgreich. Serielle Gesamtsuite: 136 Dateien und 1.684 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Dokumentation: `docs/BUILD_ASSISTANT_CURSE_PROTECTION_STEP_121.md`.
 - Audit: `docs/audits/build-assistant-step-121-curse-protection.json`.
+
+## Schritt 122 – sekundärer Beeinträchtigungsschutz
+
+- Das Charakter-Schutzmodell wurde auf `1.6.0`, der Schadensrechner auf `3.36.0` erweitert.
+- Blindheit, Aufspießen, verderbtes Blut, Maim, Hinder und Stille besitzen getrennte technische Schutzfelder.
+- Blindheits- und Aufspießvermeidung werden getrennt addiert, bei 100 Prozent gedeckelt und nur durch ihre jeweilige Immunität auf 100 Prozent gesetzt.
+- Stille bleibt entsprechend PoB2 ein Fluch und erbt Fluchvermeidung, sofern keine eigene Stille-Immunität vorliegt.
+- Im Baum 0.5.2 sind genau drei produktive Schutzknoten belegt: `monkchakra12`, `slow_mitigation8` und `physical_witch13`.
+- Bedingte Verwandlungs-, Deflect- und sonstige Laufzeitwirkungen bleiben fail-closed.
+- Fokussierte Referenzprüfung: 2 Dateien und 79 Tests erfolgreich. Die kontrolliert partitionierte Gesamtsuite umfasst 136 Dateien und 1.689 bestandene Tests. Der monolithische Runner meldet ausschließlich bekannte `onTaskUpdate`-RPC-Zeitüberschreitungen bei parallelen Performance-Suiten; die betroffenen Tests bestanden isoliert. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Dokumentation: `docs/BUILD_ASSISTANT_SECONDARY_DEBUFF_PROTECTION_STEP_122.md`.
+- Audit: `docs/audits/build-assistant-step-122-secondary-debuff-protection.json`.

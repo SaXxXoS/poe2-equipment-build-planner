@@ -51,6 +51,16 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('curse-unaffected', 'Unaffected by Curses'),
   node('curse-unaffected-conditional', 'Unaffected by Curses while affected by Zealotry'),
   node('curse-immune-conditional', 'Immunity to Curses while you have at least 25 Rage'),
+  node('avoid-blind-a', '35% chance to Avoid being Blinded'),
+  node('avoid-blind-b', '80% chance to Avoid Blind'),
+  node('avoid-impale', '45% chance to Avoid being Impaled'),
+  node('immune-blind', 'Cannot be Blinded'),
+  node('immune-impale', 'You Cannot be Impaled'),
+  node('immune-corrupted-blood', 'Immune to [CorruptedBlood|Corrupted Blood]'),
+  node('immune-maim-hinder', 'Immune to [Hinder]\nImmune to [Maim]'),
+  node('immune-silence', 'You cannot be Cursed with Silence'),
+  node('conditional-maim', 'Immune to Maim while Shapeshifted'),
+  node('conditional-deflect-maim', 'Deflected Hits cannot inflict Maim on you'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -221,5 +231,30 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toEqual(expect.arrayContaining(['Unaffected by Curses while affected by Zealotry', 'Immunity to Curses while you have at least 25 Rage']))
     expect(result.curseProtection).toEqual({ avoidChance: 0, immune: false, unaffected: false, effectPercent: 100, reducedEffectPercent: 0 })
+  })
+  it('addiert und deckelt Blindheitsvermeidung getrennt von Aufspiessvermeidung', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-blind-a', 'avoid-blind-b', 'avoid-impale']) })
+    expect(result.secondaryDebuffProtection?.blind).toEqual({ avoidChance: 100, immune: false })
+    expect(result.secondaryDebuffProtection?.impale).toEqual({ avoidChance: 45, immune: false })
+  })
+  it('setzt Blindheits- und Aufspiessimmunitaet auf effektive 100 Prozent Vermeidung', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-blind', 'immune-impale']) })
+    expect(result.secondaryDebuffProtection?.blind).toEqual({ avoidChance: 100, immune: true })
+    expect(result.secondaryDebuffProtection?.impale).toEqual({ avoidChance: 100, immune: true })
+  })
+  it('erkennt unbedingte Immunitaeten gegen verderbtes Blut, Maim und Hinder', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-corrupted-blood', 'immune-maim-hinder']) })
+    expect(result.secondaryDebuffProtection).toEqual(expect.objectContaining({ corruptedBlood: { immune: true }, maim: { immune: true }, hinder: { immune: true } }))
+  })
+  it('modelliert Stille als Fluchschutz und nicht als allgemeine Immunitaet', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['immune-silence']) })
+    expect(result.secondaryDebuffProtection?.silence).toEqual({ avoidChance: 100, immune: true, inheritedCurseAvoidance: 0 })
+    expect(result.curseProtection?.immune).toBe(false)
+  })
+  it('blockiert bedingte Maim-Schutzzeilen ohne belegten Laufzeitzustand', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['conditional-maim', 'conditional-deflect-maim']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toEqual(expect.arrayContaining(['Immune to Maim while Shapeshifted', 'Deflected Hits cannot inflict Maim on you']))
+    expect(result.secondaryDebuffProtection?.maim.immune).toBe(false)
   })
 })

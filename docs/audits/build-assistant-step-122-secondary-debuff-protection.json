@@ -1,0 +1,54 @@
+{
+  "step": 122,
+  "scope": "secondary-debuff-protection",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "treeRelease": "0.5.2",
+  "rawTreeEntries": 5151,
+  "normalizedProductNodes": 5150,
+  "productiveTreeCoverage": {
+    "blindImmunity": ["monkchakra12"],
+    "impaleImmunity": [],
+    "corruptedBloodImmunity": ["physical_witch13"],
+    "maimImmunity": ["slow_mitigation8"],
+    "hinderImmunity": ["slow_mitigation8"],
+    "silenceImmunity": [],
+    "blindAvoidance": [],
+    "impaleAvoidance": []
+  },
+  "implemented": {
+    "blindAvoidanceCap": 100,
+    "impaleAvoidanceCap": 100,
+    "immunityProducesEffectiveAvoidance": true,
+    "corruptedBloodSeparate": true,
+    "maimSeparate": true,
+    "hinderSeparate": true,
+    "silenceInheritsCurseAvoidance": true,
+    "conditionalEffectsFailClosed": true
+  },
+  "modelVersions": {
+    "characterSurvivability": "1.6.0",
+    "damageCalculator": "3.36.0"
+  },
+  "focusedTests": {
+    "files": 2,
+    "tests": 79,
+    "status": "passed"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "fullSuite": "passed-partitioned",
+    "fullSuiteFiles": 136,
+    "fullSuiteTests": 1689,
+    "monolithicRunnerStatus": "vitest-worker-rpc-timeout",
+    "monolithicRunnerNote": "Alle Tests bestanden in kontrollierten Teilmengen; der monolithische Lauf meldete ausschliesslich onTaskUpdate-RPC-Zeitueberschreitungen bei gleichzeitig laufenden Performance-Suiten.",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Der aktuelle Baum enthält keine unbedingte Aufspieß- oder Stille-Immunität.",
+    "Bedingte Schutzwirkungen werden ohne bestätigten Laufzeitzustand nicht aktiviert.",
+    "Gegnerische Beeinträchtigungsstärke und -dauer sind nicht Teil dieses Schritts."
+  ]
+}
