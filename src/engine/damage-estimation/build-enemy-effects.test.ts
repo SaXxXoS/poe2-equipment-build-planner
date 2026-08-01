@@ -335,7 +335,7 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.[0]).toMatchObject({stackCount:8,durationMs:2000,timeToFullEffectMs:2000})
   })
 
-  it('erfasst strukturierten Rüstungsbruch, aber keine unbelegte Frost-Bomb-Exposition',()=>{
+  it('wendet Frostbomben-Exposition nicht auf rein physischen Schaden an',()=>{
     const result=applyBuildEnemyEffects({
       profile,setups:[setup('breaker','breaker'),setup('bomb','bomb')],
       skills:[skill('breaker','Armour Breaker'),skill('bomb','Frost Bomb')],
@@ -344,6 +344,56 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.armourBreak).toBe(4918)
     expect(result.appliedEffects).toEqual([expect.objectContaining({sourceId:'breaker',kind:'armour-break',value:4918})])
     expect(result.resistanceReduction).toBeUndefined()
+  })
+
+  it('wendet den belegten Frostbomben-Grundwert auf relevante Elemente an',()=>{
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,level:100},setups:[setup('bomb','bomb')],
+      skills:[skill('bomb','Frost Bomb')],activeDamageTypes:['fire','cold','lightning'],weaponSet:'set-1',
+    })
+    expect(result.resistanceReduction).toEqual({fire:20,cold:20,lightning:20})
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      source:'skill',sourceId:'bomb',effectGroup:'exposure',value:20,
+      durationMs:8000,activationTimeMs:4000,applicationRatePerSecond:0.1667,
+      estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
+    })])
+    expect(result.appliedEffects?.[0].stateDetail).toContain('anwachsende Stärke')
+  })
+
+  it('beachtet die stufenabhängige Gegnerlevel-Grenze der Frostbombe fail-closed',()=>{
+    const levelOne={...setup('bomb','bomb'),level:1}
+    const allowed=applyBuildEnemyEffects({
+      profile:{...profile,level:20},setups:[levelOne],skills:[skill('bomb','Frost Bomb')],
+      activeDamageTypes:['cold'],weaponSet:'set-1',
+    })
+    const blockedByLevel=applyBuildEnemyEffects({
+      profile:{...profile,level:21},setups:[levelOne],skills:[skill('bomb','Frost Bomb')],
+      activeDamageTypes:['cold'],weaponSet:'set-1',
+    })
+    const blockedWithoutTargetLevel=applyBuildEnemyEffects({
+      profile,setups:[levelOne],skills:[skill('bomb','Frost Bomb')],
+      activeDamageTypes:['cold'],weaponSet:'set-1',
+    })
+    expect(allowed.resistanceReduction).toEqual({cold:20})
+    expect(blockedByLevel.resistanceReduction).toBeUndefined()
+    expect(blockedWithoutTargetLevel.resistanceReduction).toBeUndefined()
+  })
+
+  it('verstärkt Frostbomben-Exposition nur mit gewählter Potent Exposure',()=>{
+    const selected={...setup('bomb','bomb'),supportGemIds:['potent']}
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,level:100},setups:[selected],skills:[skill('bomb','Frost Bomb')],
+      supports:[support('potent','Potent Exposure')],activeDamageTypes:['cold'],weaponSet:'set-1',
+    })
+    expect(result.resistanceReduction).toEqual({cold:24})
+    expect(result.appliedEffects?.[0]).toMatchObject({value:24,effectGroup:'exposure'})
+  })
+
+  it('trennt die Frostbomben-Exposition nach Waffenset',()=>{
+    const set2={...setup('bomb','bomb'),weaponSet:'set-2' as const}
+    const input={profile:{...profile,level:100},setups:[set2],skills:[skill('bomb','Frost Bomb')],activeDamageTypes:['cold' as const]}
+    expect(applyBuildEnemyEffects({...input,weaponSet:'set-1'}).resistanceReduction).toBeUndefined()
+    expect(applyBuildEnemyEffects({...input,weaponSet:'set-2'}).resistanceReduction).toEqual({cold:20})
   })
 
   it('berechnet Rüstungsbruch-Multiplikator, benötigte Treffer und vollständig gebrochene Rüstung',()=>{

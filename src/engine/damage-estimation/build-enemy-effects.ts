@@ -14,7 +14,7 @@ const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magi
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
-export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.1.0'
+export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.2.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -50,7 +50,7 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers()){
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
   const supportById=new Map(supports.map(support=>[support.id,support]))
@@ -157,6 +157,34 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
     const potentNumeric=potentExposure?supportsByName.get('potent exposure'):undefined
     const exposureEffect=Number((potentNumeric?.numericStats as Record<string,number>|undefined)?.['exposure_effect_+%']??0)
     const exposureValue=Math.floor(20*(1+exposureEffect/100))
+    const frostBombMagnitude=Number(numericStats.active_skill_all_elemental_exposure_magnitude)
+    const frostBombLevelCap=Number(numericStats.frost_bomb_exposure_does_not_apply_to_enemies_of_level_higher_than_X)
+    const frostBombDurationMs=Number(numericStats.base_secondary_skill_effect_duration)
+    const frostBombCooldownSeconds=Number((selectedLevel as {cooldown?:number}|undefined)?.cooldown??numeric.cooldown)
+    const frostBombActivationMs=Number(numericStats.base_skill_detonation_time)
+    const relevantElementalTypes=elemental.filter(type=>activeDamageTypes.includes(type))
+    if(
+      definition.nameEn==='Frost Bomb'
+      && relevantElementalTypes.length>0
+      && Number.isFinite(targetLevel)
+      && Number.isFinite(frostBombLevelCap)&&targetLevel!<=frostBombLevelCap
+      && Number.isFinite(frostBombMagnitude)&&frostBombMagnitude>0
+      && Number.isFinite(frostBombDurationMs)&&frostBombDurationMs>0
+      && Number.isFinite(frostBombCooldownSeconds)&&frostBombCooldownSeconds>0
+      && frostBombDurationMs/1000>=frostBombCooldownSeconds
+    ){
+      const effectiveMagnitude=Math.floor(frostBombMagnitude*(1+exposureEffect/100))
+      candidates.push({
+        source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementare Exposition`,
+        kind:'resistance-reduction',effectGroup:'exposure',damageTypes:relevantElementalTypes,value:effectiveMagnitude,
+        evidence:'structured-exact',conditional:true,durationMs:frostBombDurationMs,
+        activationTimeMs:Number.isFinite(frostBombActivationMs)&&frostBombActivationMs>0?frostBombActivationMs:undefined,
+        applicationRatePerSecond:Number((1/frostBombCooldownSeconds).toFixed(4)),estimatedUptime:1,
+        uptimeStatus:'maintainable',state:'fully-active',
+        sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: active_skill_all_elemental_exposure_magnitude + frost_bomb_exposure_does_not_apply_to_enemies_of_level_higher_than_X + base_secondary_skill_effect_duration + cooldown${potentExposure?' + exposure_effect_+%':''}`,
+        stateDetail:`Der belegte Grundwert von ${effectiveMagnitude}% Exposition kann bei Einsatz auf Abklingzeit innerhalb des ${frostBombDurationMs/1000}-Sekunden-Fensters erneuert werden. Die zeitlich anwachsende Stärke wird mangels vollständig belegter Reset- und Überlappungsregel nicht addiert.`,
+      })
+    }
     const pushExposure=(supportDefinition:SupportGemDefinition,type:EnemyResistanceType,triggerStat:string,durationMs:number,applicationRatePerSecond:number,stateDetail:string)=>{
       if(!Number.isFinite(durationMs)||durationMs<=0||applicationRatePerSecond*durationMs/1000<1)return
       candidates.push({
@@ -325,7 +353,7 @@ export function applyBuildEnemyEffects(input:{
   )
   const shockContexts=unique([...(input.shockSourceContexts??[]),...(input.primaryShockContext?[input.primaryShockContext]:[])])
   const effects=[
-    ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.weaponSet,shockContexts,setup=>mergeShockModifiers(
+    ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.weaponSet,input.profile.level,shockContexts,setup=>mergeShockModifiers(
       commonShockModifiers,
       resolveSelectedShockModifiers({setup,supports:input.supports,weaponSet:input.weaponSet}),
     )),

@@ -3894,3 +3894,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien mit 79 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien mit 1.738 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 206 JSON-Dateien erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_ELEMENTAL_EXPOSURE_STEP_134.md` und `docs/audits/build-assistant-step-134-elemental-exposure.json`.
 - Nächster Baustein: weitere vollständig schließbare Gegnerzustände und Schadensaufnahmeeffekte aus gepinnten Skills, Supports, Passiven und Aszendenzen.
+
+## Schritt 135 – Frostbomben-Exposition
+
+- Der Schadensrechner verwendet `3.49.0`; das Expositionsmodell verwendet `1.2.0`.
+- `Frost Bomb` ist über den gepinnten Quellrecord `FrostBombPlayer` mit 20 % elementarem Expositionsgrundwert, acht Sekunden Wirkzeit, vier Sekunden Aktivierungszeit und sechs Sekunden Abklingzeit verbunden.
+- Die stufenabhängige Gegnerlevel-Grenze wird geprüft. Ohne bekanntes Ziellevel oder oberhalb der Grenze bleibt die Wirkung fail-closed.
+- Die Exposition gilt nur für relevante elementare Schadensarten und das aktive Waffenset. Rein physische und reine Chaos-Builds erhalten keinen Bonus.
+- Gewähltes `Potent Exposure` erhöht den Grundwert auf 24 %. Die bestehende stärkste-Exposition-Regel verhindert additive Doppelzählung gleicher Elemente.
+- Der strukturierte anwachsende Wert von 2 bis zur Obergrenze 50 bleibt blockiert, solange Puls-, Reset- und Überlappungsregel lokal nicht vollständig geschlossen sind.
+- Fokussierte Prüfung: 2 Dateien mit 83 Tests. Serielle Gesamtsuite: 140 Dateien mit 1.742 Tests. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_FROST_BOMB_EXPOSURE_STEP_135.md` und `docs/audits/build-assistant-step-135-frost-bomb-exposure.json`.
+- Nächster Baustein: anwachsende Frostbomben-Exposition nur bei vollständiger Regelkette; sonst die nächste reproduzierbar geschlossene Gegnerzustandswirkung.
