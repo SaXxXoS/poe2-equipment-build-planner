@@ -287,6 +287,35 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.every(effect=>effect.conditional===false)).toBe(true)
   })
 
+  it('weist belegten Schockboden aus, ohne den Gegnerstandort oder Schaden zu erfinden',()=>{
+    const equipment=[{
+      id:'boots',slotId:'boots',modifierValues:[],rarity:'unique',
+      uniqueItemId:'pob2:src/Data/Uniques/boots.lua#21',
+    }] satisfies EquipmentEntry[]
+    const result=applyBuildEnemyEffects({profile,setups:[],skills:[],equipment,activeDamageTypes:['lightning'],weaponSet:'set-1'})
+    expect(result.damageTakenIncreased).toBeUndefined()
+    expect(result.appliedEffects).toEqual([])
+    expect(result.blockedEnemyEffects).toEqual([expect.objectContaining({
+      sourceId:'pob2:src/Data/Uniques/boots.lua#21',kind:'fixed-shock',value:20,durationMs:8000,
+      reason:'enemy-ground-occupancy-unconfirmed',
+    })])
+    expect(result.limitations?.join(' ')).toContain('Standort des Gegners')
+  })
+
+  it('lässt einen belegten Trefferschock wirken, ohne den blockierten Schockboden zu addieren',()=>{
+    const equipment=[{
+      id:'boots',slotId:'boots',modifierValues:[],rarity:'unique',
+      uniqueItemId:'pob2:src/Data/Uniques/boots.lua#21',
+    }] satisfies EquipmentEntry[]
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('ball','ball')],skills:[skill('ball','Ball Lightning')],equipment,
+      activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2},
+    })
+    expect(result.damageTakenIncreased?.lightning).toBe(22.33)
+    expect(result.blockedEnemyEffects).toHaveLength(1)
+  })
+
   it('ist bei identischer Eingabe deterministisch',()=>{
     const input={profile,setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['fire' as const],weaponSet:'set-1' as const}
     expect(applyBuildEnemyEffects(input)).toEqual(applyBuildEnemyEffects(input))

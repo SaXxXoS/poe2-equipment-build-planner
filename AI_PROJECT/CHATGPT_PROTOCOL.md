@@ -3858,3 +3858,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Serielle Gesamtsuite: 139 Dateien und 1.723 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_SHOCK_STACKING_STEP_131.md` und `docs/audits/build-assistant-step-131-shock-stacking.json`.
 - Nächster Baustein: geschockter Boden und feste Schockquellen mit vollständig belegter Aktivierung, Dauer und Konkurrenzregel.
+
+## Schritt 132 – feste Schockquellen fail-closed
+
+- Der Schadensrechner verwendet `3.46.0`, das Schockmodell `1.4.0`.
+- `Wake of Destruction` ist als erste feste Schockquelle exakt identifiziert: produktive Unique-ID, gemeinsame Variantenzeile, 20 % Grundwirkung und acht Sekunden Wirkzeit sind gepinnt.
+- Die Gegnerposition auf geschocktem Boden ist durch das bloße Ausrüsten nicht belegt. Der Kandidat wird deshalb mit vollständiger Evidenz unter `blockedEnemyEffects` ausgewiesen, aber nicht auf den Schaden angewandt.
+- OCR, manueller Freitext, gemeinsame PoE1-Parserpfade und nicht produktiv vorhandene Fertigkeiten erzeugen keinen technischen Effekt.
+- Ein normal belegter Trefferschock bleibt wirksam; die blockierte Bodenquelle wird weder addiert noch als Konkurrenzquelle verwendet.
+- Fokussierte Prüfung: 2 Dateien und 27 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien und 1.729 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_FIXED_SHOCK_SOURCES_STEP_132.md` und `docs/audits/build-assistant-step-132-fixed-shock-sources.json`.
+- Nächster Baustein: eine weitere vollständig lokal belegbare Gegnerzustandskette; Bodeneffekt-Aktivierung erst bei reproduzierbar bestätigtem Laufzeitzustand.

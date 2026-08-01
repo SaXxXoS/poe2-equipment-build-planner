@@ -1,0 +1,38 @@
+{
+  "step": 132,
+  "scope": "fixed-shock-sources-fail-closed",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "productiveSource": {
+    "uniqueId": "pob2:src/Data/Uniques/boots.lua#21",
+    "name": "Wake of Destruction",
+    "sourceLineId": "src/Data/Uniques/boots.lua#21:line:4",
+    "sourceLine": "Drop Shocked Ground while moving, lasting 8 seconds",
+    "fixedShockPercent": 20,
+    "durationMs": 8000,
+    "activationCondition": "enemy-on-shocked-ground",
+    "applicationStatus": "blocked-enemy-ground-occupancy-unconfirmed"
+  },
+  "modelVersions": {
+    "damageCalculator": "3.46.0",
+    "shock": "1.4.0",
+    "temporalEnemyEffects": "2.0.0"
+  },
+  "blocked": [
+    "enemy ground occupancy without runtime evidence",
+    "OCR or manual display text without productive unique identity",
+    "shared PoE1 parser paths without current PoE2 product skill",
+    "flask ShockOverride without current product evidence",
+    "display-text similarity"
+  ],
+  "verification": {
+    "focusedTestFiles": 2,
+    "focusedTests": 27,
+    "fullTestFiles": 140,
+    "fullTests": 1729,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  }
+}

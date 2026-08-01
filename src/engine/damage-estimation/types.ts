@@ -27,6 +27,19 @@ export interface AppliedEnemyMitigationEffect {
   effectGroup?:'shock'
   selectionStatus?:'selected-strongest'|'selected-stacked'|'superseded-by-stronger'
 }
+export interface BlockedEnemyMitigationEffect {
+  source:'equipment'|'skill'|'passive'|'ascendancy'
+  sourceId:string
+  label:string
+  kind:'fixed-shock'
+  value:number
+  durationMs?:number
+  activationCondition:'enemy-on-shocked-ground'
+  reason:'enemy-ground-occupancy-unconfirmed'
+  evidence:'structured-exact'|'text-pattern-exact'
+  sourceReferences:string[]
+  detail:string
+}
 export interface EnemyMitigationProfile {
   id:string
   label:string
@@ -45,6 +58,7 @@ export interface EnemyMitigationProfile {
   resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
   damageTakenIncreased?:Partial<Record<DamageComponent['type'],number>>
   appliedEffects?:AppliedEnemyMitigationEffect[]
+  blockedEnemyEffects?:BlockedEnemyMitigationEffect[]
   fullyBrokenArmour?:boolean
   hitsToFullyBreakArmour?:number
   timeToFullyBreakArmourMs?:number

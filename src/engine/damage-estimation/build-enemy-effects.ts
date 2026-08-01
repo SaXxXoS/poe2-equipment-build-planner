@@ -3,6 +3,7 @@ import type { EquipmentEntry,SkillGemDefinition,SkillSetup,SupportGemDefinition 
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import type { AppliedEnemyMitigationEffect,DamageComponent,EnemyMitigationProfile,EnemyResistanceType,EnemyTargetRarity } from './types'
+import { resolveBlockedFixedShockSources } from './fixed-shock-sources'
 
 const elemental:EnemyResistanceType[]=['fire','cold','lightning']
 const skillsByName=new Map(reference.skills.map(skill=>[skill.name.toLocaleLowerCase('en'),skill]))
@@ -12,7 +13,7 @@ const unique=<T>(values:T[])=>[...new Set(values)]
 const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magic'?0.85:rarity==='rare'?0.7:rarity==='unique'?0.5:1
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
-export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
+export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -260,6 +261,7 @@ export function applyBuildEnemyEffects(input:{
   passiveTree?:RealPassiveTree
   realPassivePlanning?:RealPassivePlanningIntegrationResult
 }):EnemyMitigationProfile{
+  const blockedFixedShockSources=resolveBlockedFixedShockSources(input.equipment??[])
   const commonShockModifiers=mergeShockModifiers(
     resolveAllocatedShockModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet),
     resolveSelectedShockModifiers({supports:input.supports,equipment:input.equipment,weaponSet:input.weaponSet}),
@@ -351,6 +353,7 @@ export function applyBuildEnemyEffects(input:{
   if(shockEffects.length)limitations.push(shockStackLimit>1
     ?`Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Der zugewiesene Aszendenzknoten erlaubt ${shockStackLimit} gleichzeitige Schocks; die stärksten anhand von Anwendungsrate und Wirkzeit dauerhaft belegbaren Schockplätze wirken.`
     :'Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Normale konkurrierende Schocks addieren sich nicht; nur der stärkste zuverlässig aufrechterhaltbare Effekt wirkt.')
+  if(blockedFixedShockSources.length)limitations.push('Eine feste Schockquelle auf geschocktem Boden ist aus der Ausrüstung belegt, bleibt aber ohne bestätigten Standort des Gegners schadensneutral.')
   if(primaryBreakEffect&&timeToFullyBreakArmourMs&&primaryBreakEffect.durationMs&&timeToFullyBreakArmourMs>primaryBreakEffect.durationMs)limitations.push('Die belegte Trefferfrequenz reicht nicht aus, um die Zielrüstung innerhalb des 12-Sekunden-Fensters vollständig zu brechen.')
   return{
     ...input.profile,
@@ -359,6 +362,9 @@ export function applyBuildEnemyEffects(input:{
     ...(Object.keys(damageTakenIncreased).length?{damageTakenIncreased}:{}),
     ...(armourBreak?{armourBreak}:{}),
     appliedEffects:effects,
+    ...((input.profile.blockedEnemyEffects?.length||blockedFixedShockSources.length)
+      ?{blockedEnemyEffects:[...(input.profile.blockedEnemyEffects??[]),...blockedFixedShockSources]}
+      :{}),
     ...(hitsToFullyBreakArmour?{hitsToFullyBreakArmour}:{}),
     ...(timeToFullyBreakArmourMs?{timeToFullyBreakArmourMs}:{}),
     ...(fullyBrokenArmour?{fullyBrokenArmour:true}:{}),
