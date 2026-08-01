@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "step": 112,
+  "status": "analyzer-ready-product-data-unresolved",
+  "productUniqueItems": 435,
+  "productItemsWithConfirmedLevelRequirement": 0,
+  "productItemsWithConfirmedAttributeRequirements": 0,
+  "rules": {
+    "sharedUniqueCheckedInBothWeaponSets": true,
+    "setSpecificUniqueCheckedOnlyInAssignedSet": true,
+    "equippedWeaponSlotSetTakesPrecedence": true,
+    "knownRequirementWithoutCharacterAttributes": "blocked-fail-closed",
+    "deriveRequirementsFromVisibleNames": false
+  },
+  "sourceLimits": [
+    "The reduced pinned PoB2 product records contain no confirmed level requirements.",
+    "The reduced pinned PoB2 product records contain no confirmed strength, dexterity, or intelligence requirements.",
+    "No technical identity is inferred from a visible Unique or base display name."
+  ],
+  "tests": {
+    "sharedRequirementAcrossSets": true,
+    "setSpecificRequirement": true,
+    "missingAttributesFailClosed": true
+  }
+}

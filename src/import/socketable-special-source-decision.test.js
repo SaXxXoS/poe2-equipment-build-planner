@@ -112,7 +112,7 @@ const immutableFiles = {
   '../../src/runtime/real-passive-worker/contracts.ts': 'f48a7c3c51c6e2a60770696c147078c9d3b5ec8168181c4f18f7f18092c10365',
   '../../src/engine/equipment/analyzer.ts': 'b3187ad6592f11dfbd5ee9d3fa547a13781bcb84148598f81f5f9afc73847bd6',
   '../../src/engine/jewels/analyzer.ts': 'f0233feb4471f5798293e117ce8865b25a4edad50ea3d617aee5b4ee2a42e3c8',
-  '../../src/engine/uniques/analyzer.ts': '552bdd987371735bc175e02824511cc5bf7bd0943e0ea3ef14b7cee2d756187b',
+  '../../src/engine/uniques/analyzer.ts': '5a458de556548148faa6c3b06753d14f7ab7e76b2523c26818829e1b0bca0eff',
   '../../src/engine/orchestration/analyze-build.ts': '2dff76ed254fccbbf5d5244587ca6e08b3b914e7914013b6be47086224747b56',
   '../../src/tree-view/adapter.ts': '0a7199bdd6e8a59d251ed3e9de5926654afddb1c39fc2b6aa8336a2c44ddaaba',
   '../../src/tree-view/plan-visualization.ts': 'a5eb2d881e2b74d629668bb0fc9e35e83a48e1b8adee1416659e04f5c90d424c',

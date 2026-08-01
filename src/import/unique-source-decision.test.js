@@ -70,7 +70,7 @@ describe('5M.1B.0B Unique-Quellenentscheidung', () => {
 
 const immutableFiles = {
   '../../src/domain/uniques.ts': '4b8fc6fb4df5b126b6a3ef634adbab14156df6ab3722b184edc58ac7c2781775',
-  '../../src/engine/uniques/analyzer.ts': '552bdd987371735bc175e02824511cc5bf7bd0943e0ea3ef14b7cee2d756187b',
+  '../../src/engine/uniques/analyzer.ts': '5a458de556548148faa6c3b06753d14f7ab7e76b2523c26818829e1b0bca0eff',
   '../../src/engine/fixtures/index.ts': '709f04fe63e28bd9d334b0d50d9d110f7dc7f7b601e4128303ef4a6fd0c81b79',
   // V1.3 explicitly authorizes rarity/socket transport; source separation remains guarded below.
   '../../src/domain/equipment.ts': 'e4559afe880a20ab4bd19f859820744b98fefef65c1153ddd723a068b659ebb3',

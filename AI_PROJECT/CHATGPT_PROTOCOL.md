@@ -3638,3 +3638,10 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   eingesetzt, wenn keine beobachteten Endwerte vorhanden sind.
 - Produktpins bleiben unverändert; Path-of-Building-2-Gleichwertigkeit ist
   weiterhin nicht belegt.
+# Schritt 112 – Unique-Anforderungen je Waffenset
+
+- Belegte Unique-Attributanforderungen werden jetzt gegen das tatsächlich relevante Waffenset geprüft.
+- Gemeinsame Uniques müssen die Anforderungen in Set 1 und Set 2 erfüllen; setgebundene Uniques nur im zugeordneten Set.
+- Fehlende Charakterattribute blockieren bekannte Anforderungen fail-closed und werden in der UI verständlich erklärt.
+- Der produktive PoB2-Bestand enthält derzeit 0/435 bestätigte Levelanforderungen und 0/435 bestätigte Attributanforderungen. Diese Lücke bleibt ausdrücklich unbekannt; sichtbare Namen werden nicht als technische Identität benutzt.
+- Architektur, PoB2-Produktdatei und Datenpins bleiben unverändert.

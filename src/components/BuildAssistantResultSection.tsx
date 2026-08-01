@@ -78,6 +78,7 @@ const issueText = (issue: ConstraintViolation) => {
   if (issue.code === 'base-attribute-requirement') return 'Die Attributanforderung eines eingetragenen Basistyps ist noch nicht erfüllt.'
   if (issue.code === 'base-attributes-unknown') return 'Die Attribute für die Anforderungsprüfung sind nicht vollständig belegt.'
   if (issue.code === 'base-identity-unresolved') return 'Der sichtbare Basistyp besitzt noch keine sichere technische Zuordnung; seine Anforderungen bleiben unbekannt.'
+  if (issue.code === 'attribute-requirements-unknown') return 'Die belegten Attributanforderungen dieses Uniques können ohne vollständige Attributdaten nicht geprüft werden.'
   return known[issue.code] ?? `Technischer Hinweis: ${issue.code}`
 }
 const topConfidence = (analysis: BuildAnalysis): Confidence => {
