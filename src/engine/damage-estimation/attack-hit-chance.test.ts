@@ -67,6 +67,21 @@ describe('PoB2-Angriffstrefferchance', () => {
     expect(set2.playerAccuracy).toBeGreaterThan(set1.playerAccuracy!)
   })
 
+  it('verwendet fÃ¼r Genauigkeit dasselbe flache und prozentuale Geschicklichkeitsmodell wie die Anforderungen', () => {
+    const result = resolveAttackHitChance({
+      characterLevel: 80,
+      characterClassId: 'class-official-8',
+      activeSet: 'set-1',
+      equipment: [item('global', 'slot-helmet', [{ statId: 'additional_dexterity', value: 10 }])],
+      passiveTree: { metadata: { releaseTag: 'test' }, connections: [], nodes: [
+        { id: 'flat', stats: [{ sourceText: '+25 to [Dexterity]' }] },
+        { id: 'percent', stats: [{ sourceText: '20% increased [Dexterity]' }] },
+      ] } as never,
+      realPassivePlanning: { pipelineResult: { allocatedNodeIds: ['flat', 'percent'] } } as never,
+    })
+    expect(result).toMatchObject({ baseDexterity: 15, additionalDexterity: 45, accuracyFromDexterity: 360 })
+  })
+
   it('blockiert ohne belegtes Level oder bekannte Klasse', () => {
     expect(resolveAttackHitChance({ characterClassId: 'class-official-8', activeSet: 'set-1', equipment: [] }).status)
       .toBe('blocked-missing-character-level')

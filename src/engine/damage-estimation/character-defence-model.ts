@@ -3,6 +3,7 @@ import type { RealPassivePlanningIntegrationResult } from '../orchestration/real
 import { classifyPassiveText, derivePassiveTargetNodeType } from '../passive-targeting/classifier'
 import { structurePassiveStatEffect } from '../passive-targeting/effect-model'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
+import { resolveCharacterAttributes } from '../character-attributes/model'
 
 export const CHARACTER_DEFENCE_MODEL_VERSION = '1.0.0'
 export type CharacterDefenceType = 'armour' | 'evasion' | 'energyShield'
@@ -54,6 +55,7 @@ export function resolveCharacterDefenceModel(input: {
   passiveTree?: RealPassiveTree
   realPassivePlanning?: RealPassivePlanningIntegrationResult
   weaponSet: 'set-1' | 'set-2'
+  characterClassId?: string
 }): CharacterDefenceModel {
   const excludedWeaponItemIds = uniqueSorted(input.equipment
     .filter(item => isWeaponSlot(item.slotId) && types.some(type => (item.defences?.[type] ?? 0) !== 0))
@@ -70,11 +72,23 @@ export function resolveCharacterDefenceModel(input: {
   }])) as Record<CharacterDefenceType, Omit<CharacterDefenceContribution, 'calculatedContribution'>>
   const blockedPassiveLines: string[] = []
   const nodeIds = new Set(allocatedNodeIds(input.realPassivePlanning, input.weaponSet))
+  const attributes = input.characterClassId ? resolveCharacterAttributes({ classId: input.characterClassId, equipment: input.equipment, activeSet: input.weaponSet, passiveTree: input.passiveTree, realPassivePlanning: input.realPassivePlanning }) : undefined
 
   for (const node of input.passiveTree?.nodes ?? []) {
     if (!nodeIds.has(node.id)) continue
     const nodeType = derivePassiveTargetNodeType(node)
     for (const sourceText of node.stats.map(stat => stat.sourceText).filter((value): value is string => Boolean(value))) {
+      const cleanText = sourceText.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').replace(/\[([^\]]+)\]/g, '$1').trim()
+      const evasionPerIntelligence = cleanText.match(/^(\d+(?:\.\d+)?)% increased Evasion Rating per (\d+) Intelligence$/i)
+      if (evasionPerIntelligence && attributes?.status === 'exact-confirmed-sources') {
+        const percent = Number(evasionPerIntelligence[1]) * Math.floor(attributes.total.intelligence / Number(evasionPerIntelligence[2]))
+        if (percent > 0) {
+          working.evasion.increasedReducedPercent += percent
+          working.evasion.sourceNodeIds.push(node.id)
+          working.evasion.sourceTexts.push(sourceText)
+        }
+        continue
+      }
       const effect = structurePassiveStatEffect(classifyPassiveText(sourceText, nodeType))
       const targets = effect ? types.filter(type => effect.tags.includes(tagFor[type] as never)) : []
       if (!effect || targets.length === 0) continue

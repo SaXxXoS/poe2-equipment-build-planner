@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "step": 114,
+  "sourcePin": "poe2-tree-0.5.2",
+  "attributeModelVersion": "pinned-tree-0.5.2-v2-percentages",
+  "supportedExactPatterns": [
+    "increased-damage-per-strength",
+    "increased-spell-damage-per-strength",
+    "increased-attack-speed-per-dexterity",
+    "increased-damage-per-lowest-attribute",
+    "increased-evasion-per-intelligence"
+  ],
+  "thresholdRounding": "floor-completed-thresholds",
+  "weaponSetAware": true,
+  "ascendancyAware": true,
+  "sharedWithAttackHitChance": true,
+  "failClosed": true,
+  "blockedExamples": [
+    "+5 to any Attribute",
+    "Inherent bonuses gained from Attributes are doubled",
+    "Body Armour grants 20% increased Strength"
+  ]
+}

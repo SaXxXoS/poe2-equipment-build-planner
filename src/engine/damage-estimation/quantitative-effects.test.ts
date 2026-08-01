@@ -28,6 +28,10 @@ const tree = {
     { id: 'rage-physical', name: { sourceText: 'Bestial Rage' }, stats: [{ sourceText: 'Every 10 [Rage|Rage] also grants 12% increased [Physical|Physical] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-spell-more', name: { sourceText: 'Druidic Champion' }, stats: [{ sourceText: 'Every 2 [Rage|Rage] also grants 1% more Spell damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-ambiguous', name: { sourceText: 'Unknown Rage' }, stats: [{ sourceText: 'Gain lots of Damage for every Rage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'strength-damage', name: { sourceText: 'Strength Damage' }, stats: [{ sourceText: '1% increased Damage per 15 [Strength]' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'strength-spell', name: { sourceText: 'Strength Spell' }, stats: [{ sourceText: '2% increased Spell Damage per 10 [Strength]' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'dexterity-speed', name: { sourceText: 'Dexterity Speed' }, stats: [{ sourceText: '1% increased [Attack] Speed per 25 [Dexterity]' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'lowest-damage', name: { sourceText: 'Lowest Attribute' }, stats: [{ sourceText: '2% increased Damage per 5 of your lowest [Attributes|Attribute]' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
   ],
 } as RealPassiveTree
 const planning = {
@@ -240,5 +244,27 @@ describe('quantitative Wirkungskette', () => {
       skill: attack,
       effectiveRageEffect: 30,
     })).toEqual([])
+  })
+
+  it('wertet attributabhÃ¤ngigen Schaden und Angriffsgeschwindigkeit mit abgerundeten Schwellen aus', () => {
+    const equipment: EquipmentEntry[] = [{ id: 'attributes', slotId: 'slot-body-armour', modifierValues: [{ id: 'attributes', modifierId: 'attributes', value: 0, statValues: [{ statId: 'additional_strength', value: 20 }, { statId: 'additional_dexterity', value: 50 }] }] }]
+    const attack = { ...skill, tags: ['attack', 'physical'] as SkillGemDefinition['tags'], damageTypes: ['physical'] as SkillGemDefinition['damageTypes'] }
+    const result = collectQuantitativeEffects({
+      equipment, skill: attack, passiveTree: tree,
+      realPassivePlanning: { pipelineResult: { allocatedNodeIds: ['strength-damage', 'strength-spell', 'dexterity-speed', 'lowest-damage'] } } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1', characterClassId: 'class-official-6',
+    })
+    expect(result.damageModifiers).toEqual([expect.objectContaining({ sourceId: 'strength-damage', percent: 2 }), expect.objectContaining({ sourceId: 'lowest-damage', percent: 2 })])
+    expect(result.speedModifiers).toEqual([expect.objectContaining({ sourceId: 'dexterity-speed', percent: 2 })])
+  })
+
+  it('wendet die stÃ¤rkebasierte Zauberskalierung nur auf Zauber an', () => {
+    const result = collectQuantitativeEffects({
+      equipment: [{ id: 'strength', slotId: 'slot-body-armour', modifierValues: [{ id: 's', modifierId: 's', value: 0, statValues: [{ statId: 'additional_strength', value: 35 }] }] }],
+      skill, passiveTree: tree,
+      realPassivePlanning: { pipelineResult: { allocatedNodeIds: ['strength-spell'] } } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1', characterClassId: 'class-official-1',
+    })
+    expect(result.damageModifiers).toEqual([expect.objectContaining({ sourceId: 'strength-spell', percent: 8 })])
   })
 })

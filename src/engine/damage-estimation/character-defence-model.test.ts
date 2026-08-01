@@ -23,6 +23,7 @@ const tree: RealPassiveTree = {
     node('set-2', '25% increased Energy Shield'),
     node('asc', '+10 to maximum Energy Shield', 'stormweaver'),
     node('conditional', '30% increased Armour while stationary'),
+    node('intelligence-evasion', '3% increased [Evasion] Rating per 10 [Intelligence]'),
   ],
 }
 const projected = (allocatedNodeIds: string[]) => ({ allocatedNodeIds }) as never
@@ -63,5 +64,10 @@ describe('waffensetspezifisches Charakter-Defensivmodell', () => {
   it('ist bei identischer Eingabe deterministisch', () => {
     const input = { equipment, passiveTree: tree, realPassivePlanning: planning, weaponSet: 'set-2' as const }
     expect(resolveCharacterDefenceModel(input)).toEqual(resolveCharacterDefenceModel(input))
+  })
+
+  it('wertet Ausweichen pro voller Intelligenzschwelle aus', () => {
+    const result = resolveCharacterDefenceModel({ equipment, passiveTree: tree, realPassivePlanning: { pipelineResult: projected(['intelligence-evasion']) } as unknown as RealPassivePlanningIntegrationResult, weaponSet: 'set-1', characterClassId: 'class-official-1' })
+    expect(result.contributions.find(value => value.type === 'evasion')).toEqual(expect.objectContaining({ increasedReducedPercent: 3, calculatedContribution: 206 }))
   })
 })

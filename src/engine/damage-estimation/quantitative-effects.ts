@@ -4,6 +4,7 @@ import type { RealPassiveTree } from '../real-passive-pipeline/types'
 import { classifyPassiveText, derivePassiveTargetNodeType } from '../passive-targeting/classifier'
 import { structurePassiveStatEffect } from '../passive-targeting/effect-model'
 import type { DamageComponent } from './types'
+import { resolveCharacterAttributes, type CharacterAttributeValues } from '../character-attributes/model'
 
 export type QuantitativeEffectSource = 'equipment' | 'passive' | 'ascendancy'
 export interface QuantitativeDamageModifier {
@@ -141,7 +142,7 @@ function allocatedNodeIds(planning: RealPassivePlanningIntegrationResult | undef
   return unique([...(result?.allocatedNodeIds ?? []), ...(planning?.ascendancyPlanning?.allocatedNodeIds ?? [])])
 }
 
-function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassivePlanningIntegrationResult | undefined, weaponSet: 'set-1' | 'set-2', skill: SkillGemDefinition | undefined): QuantitativeEffectSummary {
+function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassivePlanningIntegrationResult | undefined, weaponSet: 'set-1' | 'set-2', skill: SkillGemDefinition | undefined, attributes?: CharacterAttributeValues): QuantitativeEffectSummary {
   const result: QuantitativeEffectSummary = { damageModifiers: [], speedModifiers: [], criticalChanceModifiers: [], criticalMultiplierModifiers: [], conversions: [], gainAsExtra: [], warnings: [] }
   if (!tree || !planning) return result
   const nodes = new Map(tree.nodes.map(node => [node.id, node]))
@@ -154,6 +155,20 @@ function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassive
     for (const sourceText of node.stats.map(value => value.sourceText).filter((value): value is string => Boolean(value))) {
       const stat = classifyPassiveText(sourceText, nodeType)
       const text = stripMarkup(sourceText)
+      const attributeScaled = attributes ? [
+        { match: text.match(/^(\d+(?:\.\d+)?)% increased Damage per (\d+) Strength$/i), attribute: attributes.strength, applies: [...damageTypes], speed: false },
+        { match: text.match(/^(\d+(?:\.\d+)?)% increased Spell Damage per (\d+) Strength$/i), attribute: attributes.strength, applies: skillTags.has('spell') ? [...damageTypes] : [], speed: false },
+        { match: text.match(/^(\d+(?:\.\d+)?)% increased Attack Speed per (\d+) Dexterity$/i), attribute: attributes.dexterity, applies: skillTags.has('attack') ? ['attack'] : [], speed: true },
+        { match: text.match(/^(\d+(?:\.\d+)?)% increased Damage per (\d+) of your lowest Attribute$/i), attribute: Math.min(attributes.strength, attributes.dexterity, attributes.intelligence), applies: [...damageTypes], speed: false },
+      ].find(value => value.match) : undefined
+      if (attributeScaled?.match && attributeScaled.applies.length) {
+        const percent = Number(attributeScaled.match[1]) * Math.floor(attributeScaled.attribute / Number(attributeScaled.match[2]))
+        if (percent > 0) {
+          const modifier = { id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: `${text} (${percent}%)`, percent, appliesTo: attributeScaled.applies }
+          if (attributeScaled.speed) result.speedModifiers.push(modifier)
+          else result.damageModifiers.push(modifier)
+        }
+      }
       const effect = structurePassiveStatEffect(stat)
       if (effect?.aggregationStatus === 'ready' && effect.unit === 'percent') {
         const tagSet = new Set<string>(effect.tags)
@@ -261,9 +276,10 @@ export function applyRageMoreDamageModifiers(
   })
 }
 
-export function collectQuantitativeEffects(input: { equipment: EquipmentEntry[]; skill?: SkillGemDefinition; passiveTree?: RealPassiveTree; realPassivePlanning?: RealPassivePlanningIntegrationResult; weaponSet: 'set-1' | 'set-2' }): QuantitativeEffectSummary {
+export function collectQuantitativeEffects(input: { equipment: EquipmentEntry[]; skill?: SkillGemDefinition; passiveTree?: RealPassiveTree; realPassivePlanning?: RealPassivePlanningIntegrationResult; weaponSet: 'set-1' | 'set-2'; characterClassId?: string }): QuantitativeEffectSummary {
   const equipment = equipmentSummary(input.equipment, input.skill)
-  const passive = passiveSummary(input.passiveTree, input.realPassivePlanning, input.weaponSet, input.skill)
+  const attributes = input.characterClassId ? resolveCharacterAttributes({ classId: input.characterClassId, equipment: input.equipment, activeSet: input.weaponSet, passiveTree: input.passiveTree, realPassivePlanning: input.realPassivePlanning }) : undefined
+  const passive = passiveSummary(input.passiveTree, input.realPassivePlanning, input.weaponSet, input.skill, attributes?.status === 'exact-confirmed-sources' ? attributes.total : undefined)
   const result: QuantitativeEffectSummary = {
     damageModifiers: [...equipment.damageModifiers, ...passive.damageModifiers],
     speedModifiers: [...equipment.speedModifiers, ...passive.speedModifiers],

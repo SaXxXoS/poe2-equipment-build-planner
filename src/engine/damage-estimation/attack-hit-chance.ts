@@ -1,6 +1,7 @@
 import type { EquipmentEntry } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
+import { resolveCharacterAttributes } from '../character-attributes/model'
 
 export const ATTACK_HIT_CHANCE_MODEL_VERSION = 'pob2-c5300ccd-accuracy-v1'
 export const DEFAULT_COMPARISON_DISTANCE_METRES = 2
@@ -104,20 +105,23 @@ export function resolveAttackHitChance(input: {
   if (baseDexterity == null) return { ...common, status: 'blocked-unknown-class' }
 
   const level = clampLevel(input.characterLevel!)
-  let additionalDexterity = statSum(input.equipment, new Set(['additional_dexterity', 'additional_all_attributes']), input.activeSet)
+  const attributeModel = resolveCharacterAttributes({
+    classId: input.characterClassId!,
+    equipment: input.equipment,
+    activeSet: input.activeSet,
+    passiveTree: input.passiveTree,
+    realPassivePlanning: input.realPassivePlanning,
+  })
+  const additionalDexterity = attributeModel.total.dexterity - baseDexterity
   let flatAccuracy = statSum(input.equipment, new Set(['accuracy_rating']), input.activeSet)
   let increasedAccuracyPercent = statSum(input.equipment, new Set(['accuracy_rating_+%']), input.activeSet)
   for (const node of allocatedNodes(input.passiveTree, input.realPassivePlanning, input.activeSet)) {
     for (const stat of node.stats) {
       const text = stat.sourceText?.replace(/\[[^|\]]+\|([^\]]+)\]/g, '$1').trim()
       if (!text) continue
-      const dexterity = text.match(/^\+?(-?\d+) to Dexterity$/i)
-      const attributes = text.match(/^\+?(-?\d+) to all Attributes$/i)
       const accuracy = text.match(/^\+?(-?\d+) to Accuracy Rating$/i)
       const increased = text.match(/^(-?\d+(?:\.\d+)?)% increased Accuracy Rating$/i)
-      if (dexterity) additionalDexterity += Number(dexterity[1])
-      else if (attributes) additionalDexterity += Number(attributes[1])
-      else if (accuracy) flatAccuracy += Number(accuracy[1])
+      if (accuracy) flatAccuracy += Number(accuracy[1])
       else if (increased) increasedAccuracyPercent += Number(increased[1])
     }
   }

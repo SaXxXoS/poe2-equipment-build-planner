@@ -3652,3 +3652,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - 140 von 463 attributbezogenen Statzeilen-Vorkommen des Baums sind als Attributsumme strukturiert; 323 bedingte, wählbare oder sekundäre Wirkungen bleiben fail-closed.
 - Alte gespeicherte V1-Attributmodelle bleiben lesbar; neue Berechnungen verwenden `pinned-tree-0.5.2-v2-percentages`.
 - Keine Datenpins oder Produktdateien wurden verändert.
+# Schritt 114 – Attributabhängige Sekundärwirkungen
+
+- Das vollständige Attributmodell speist nun fünf exakt belegte Sekundärformen in Schaden, Zauberschaden, Angriffsgeschwindigkeit und Ausweichen.
+- Schwellen werden ausschließlich für vollständig erreichte Attributintervalle gezählt.
+- Angriffstrefferchance und Ausrüstungsanforderungen verwenden jetzt dieselbe Geschicklichkeitsaggregation.
+- Aktives Waffenset und Aszendenzplanung bleiben getrennt erhalten.
+- Unvollständig modellierte Attributersatz-, Schwellen- und Sonderregeln bleiben fail-closed.
+- Hauptdokument: `docs/BUILD_ASSISTANT_ATTRIBUTE_SECONDARY_EFFECTS_STEP_114.md`.
