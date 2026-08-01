@@ -3660,3 +3660,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Aktives Waffenset und Aszendenzplanung bleiben getrennt erhalten.
 - Unvollständig modellierte Attributersatz-, Schwellen- und Sonderregeln bleiben fail-closed.
 - Hauptdokument: `docs/BUILD_ASSISTANT_ATTRIBUTE_SECONDARY_EFFECTS_STEP_114.md`.
+
+# Schritt 115 – Leben und Charakter-Schwellenwerte
+
+- Die Schadensschätzung liefert jetzt ein waffensetspezifisches `characterSurvivabilityModel` für maximales Leben, Betäubungsschwelle und elementare Beeinträchtigungsschwelle.
+- Exakt belegt und umgesetzt sind `12 × (Level + 16)` Grund-Leben, 2 Leben je Stärke, Leben als Standardbasis der Betäubungsschwelle und 50 % Leben als Standardbasis der Beeinträchtigungsschwelle.
+- Vier attributabhängige Baumformen sowie technische Gegenstandswerte und unbedingte prozentuale Lebens-/Schwellenwirkungen werden komponentenweise ausgewiesen.
+- Alternative Basen, bedingte Wirkungen und inhärente Attribut-Sonderregeln bleiben fail-closed in `blockedLines`.
+- Produktpins und Produktdateien bleiben unverändert; Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- Hauptdokument: `docs/BUILD_ASSISTANT_CHARACTER_SURVIVABILITY_STEP_115.md`.

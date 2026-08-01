@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "step": 115,
+  "modelVersion": "1.0.0",
+  "sourceTreeRelease": "0.5.2",
+  "sourceProductCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "implemented": ["level-derived-base-life", "two-life-per-strength", "flat-and-percent-life", "stun-threshold-based-on-life", "ailment-threshold-fifty-percent-of-life", "life-per-four-dexterity", "stun-threshold-per-dexterity", "stun-threshold-per-strength", "ailment-threshold-per-dexterity", "weapon-set-specific-allocation"],
+  "blocked": ["conditional-threshold-effects", "energy-shield-or-mana-threshold-replacement", "chaos-inoculation-threshold-basis", "halved-or-removed-strength-life", "doubled-inherent-attribute-bonuses", "runtime-state-dependent-more-effects"],
+  "productPinsChanged": false,
+  "pathOfBuildingParityClaimed": false
+}
