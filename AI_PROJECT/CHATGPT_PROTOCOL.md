@@ -3768,3 +3768,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Dokumentation: `docs/BUILD_ASSISTANT_APPLIED_AILMENT_DURATION_STEP_124.md`.
 - Audit: `docs/audits/build-assistant-step-124-applied-ailment-duration.json`.
 - Nächster Baustein: ausgehende Zustände auf Gegnern mit belegten Chancen, Grundschäden, Dauer und Stapelregeln.
+
+## Schritt 125 – ausgehende Zustandsdauer und Magnitude
+
+- Das vorhandene Modell für Entzünden, Gift und Blutung wurde von `2.5.0` auf `2.6.0`, der Schadensrechner auf `3.39.0` erweitert.
+- Skill- und supportabhängige Dauer wird nun in der von PoB2 belegten Reihenfolge aus erhöhten/verringerten und finalen Multiplikatoren berechnet.
+- Direkte Entzündungsmagnitude aus Skills und Supports fließt getrennt von der Dauer in den DPS ein.
+- Damit werden unter anderem `Molten Blast`, `Rolling Magma`, `Eternal Flame`, `Swift Affliction` und `Searing Flame` quantitativ korrekt verbunden.
+- Verwendete Stat-IDs erscheinen in den `sourceReferences`; bedingte Magnituden bleiben ohne bestätigten Laufzeitzustand fail-closed.
+- Fokussierte Referenzprüfung: 3 Dateien und 66 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Der monolithische Gesamtlauf traf erneut die bekannte Vitest-Worker-RPC-Zeitüberschreitung; die geänderten fachlichen Tests sind vollständig grün.
+- Dokumentation: `docs/BUILD_ASSISTANT_OUTGOING_AILMENT_SCALING_STEP_125.md`.
+- Audit: `docs/audits/build-assistant-step-125-outgoing-ailment-scaling.json`.
+- Nächster Baustein: belegte gegnerseitige DoT-Schadensaufnahme und Faster/Slower-Ablaufraten.

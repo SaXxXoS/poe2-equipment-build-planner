@@ -1,0 +1,46 @@
+{
+  "step": 125,
+  "scope": "outgoing-damaging-ailment-duration-and-magnitude",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFiles": [
+    "src/Modules/CalcOffence.lua",
+    "src/Modules/Data.lua",
+    "generated/pob2/damage-reference.json"
+  ],
+  "productiveStats": [
+    "ignite_duration_+%",
+    "active_skill_ignite_duration_+%_final",
+    "support_swift_affliction_skill_effect_and_damaging_ailment_duration_+%_final",
+    "support_multi_poison_poison_duration_+%_final",
+    "active_skill_ignite_effect_+%_final",
+    "support_stronger_ignites_ignite_effect_+%_final"
+  ],
+  "formula": {
+    "duration": "baseDuration * (1 + sum(increasedDuration) / 100) * product(1 + finalDuration / 100)",
+    "damagePerSecond": "weightedSourceDamage * basePercentPerSecond * magnitudeMultiplier * activeStacks"
+  },
+  "modelVersions": {
+    "damagingAilments": "2.6.0",
+    "damageCalculator": "3.39.0"
+  },
+  "focusedTests": {
+    "files": 3,
+    "tests": 66,
+    "status": "passed"
+  },
+  "validation": {
+    "fullSuite": "runner-timeout",
+    "fullSuiteExplanation": "Der monolithische Vitest-Lauf wurde durch die bekannte onTaskUpdate-Worker-RPC-Zeitüberschreitung beendet.",
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Bedingte Magnituden werden ohne bestätigten Laufzeitzustand nicht aktiviert.",
+    "Gegnerische Damage-over-Time-Schadensaufnahme ist noch nicht vollständig modelliert.",
+    "Spezielle Burning-Ground- und Caustic-Ground-Ableitungen bleiben ausgeschlossen.",
+    "Fehlende Chance-, Frequenz- oder Stapelketten bleiben fail-closed."
+  ]
+}

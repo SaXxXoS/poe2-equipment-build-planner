@@ -128,7 +128,7 @@ describe('belegte schädigende Zustände', () => {
     })])
   })
 
-  it('berechnet Entzünden mit der gepinnten levelabhängigen PoB2-Gegnerschwelle', () => {
+  it('berechnet Entzünden mit der gepinnten Schwelle und der skill-eigenen Dauer', () => {
     const result = collectDamagingAilments({
       skill: record('Molten Blast'),
       components: [{ type: 'fire', minimum: 100, maximum: 200 }],
@@ -141,13 +141,66 @@ describe('belegte schädigende Zustände', () => {
     expect(result.effects).toEqual([expect.objectContaining({
       kind: 'ignite',
       chancePercent: 100,
-      durationMs: 4000,
+      durationMs: 8000,
       maximumStacks: 1,
       expectedActiveStacks: 1,
       damagePerSecond: 30,
-      totalDamagePerApplication: 120,
+      totalDamagePerApplication: 240,
     })])
     expect(result.blockedEffects).toEqual([])
+  })
+
+  it('verbindet belegte Ignite-Dauer und -Magnitude aus ausgewählten Supports', () => {
+    const supports = [
+      support('duration', 'Eternal Flame I'),
+      support('magnitude', 'Searing Flame I'),
+    ]
+    const result = collectDamagingAilments({
+      skill: record('Molten Blast'),
+      components: [{ type: 'fire', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      enemyLevel: 1,
+      setup: setup(supports.map(value => value.id)),
+      supports,
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'ignite',
+      durationMs: 16000,
+      effectMultiplier: 1.75,
+      damagePerSecond: 52.5,
+      totalDamagePerApplication: 840,
+    })
+    expect(result.effects[0].sourceReferences).toEqual(expect.arrayContaining([
+      'active_skill_ignite_duration_+%_final',
+      'ignite_duration_+%',
+      'support_stronger_ignites_ignite_effect_+%_final',
+    ]))
+  })
+
+  it('wendet belegte Swift-Affliction-Dauer auf schädigende Zustände an', () => {
+    const supports = [
+      support('poison', 'Poison I'),
+      support('swift', 'Swift Affliction I'),
+    ]
+    const result = collectDamagingAilments({
+      skill: record('Arc'),
+      components: [{ type: 'chaos', minimum: 100, maximum: 100 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      setup: setup(supports.map(value => value.id)),
+      supports,
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'poison',
+      durationMs: 1600,
+      maximumStacks: 1,
+      expectedActiveStacks: 0.64,
+      damagePerSecond: 12.8,
+    })
+    expect(result.effects[0].sourceReferences).toContain(
+      'support_swift_affliction_skill_effect_and_damaging_ailment_duration_+%_final',
+    )
   })
 
   it('blockiert Entzünden weiterhin ohne Gegnerlevel', () => {
@@ -184,10 +237,10 @@ describe('belegte schädigende Zustände', () => {
       chanceOnHitPercent: 17.51,
       chanceOnCriticalHitPercent: 35.03,
       chancePercent: 26.27,
-      ailmentCriticalChancePercent: 51.73,
+      ailmentCriticalChancePercent: 76.7,
       weightedSourceDamage: 1666.67,
       damagePerSecond: 333.33,
-      totalDamagePerApplication: 1333.33,
+      totalDamagePerApplication: 2666.67,
     })
     expect(ignite.sourceReferences).toContain('CalcOffence.calcAilmentDamage')
     expect(ignite.sourceReferences).toContain('CalcOffence.ailmentCritChance')
