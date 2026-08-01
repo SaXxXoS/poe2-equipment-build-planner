@@ -112,7 +112,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.47.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.48.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -347,10 +347,13 @@ export function estimateHitDamage(input:{
   const enemyAilmentThreshold=input.enemyProfile?.level==null
     ? undefined
     : reference.monsterAilmentThresholdTable[Math.max(0,Math.min(reference.monsterAilmentThresholdTable.length-1,Math.trunc(input.enemyProfile.level)-1))]
-  const primaryShockContext=enemyAilmentThreshold!=null&&hitChancePercent!=null&&effectiveCriticalChance!=null&&components.some(value=>value.type==='lightning')?{
+  const primaryShockContext=enemyAilmentThreshold!=null&&hitChancePercent!=null&&effectiveCriticalChance!=null&&components.some(value=>['fire','cold','lightning'].includes(value.type))?{
     skillId:skillId!,enemyAilmentThreshold,
     lightningHitAverage:components.filter(value=>value.type==='lightning').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0),
     lightningCriticalHitAverage:components.filter(value=>value.type==='lightning').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)*(1+totalCriticalDamageBonus/100),
+    fireHitAverage:components.filter(value=>value.type==='fire').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0),
+    fireCriticalHitAverage:components.filter(value=>value.type==='fire').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)*(1+totalCriticalDamageBonus/100),
+    coldHitAverage:components.filter(value=>value.type==='cold').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0),
     hitChancePercent,criticalHitChancePercent:effectiveCriticalChance,actionsPerSecond,
   }:undefined
   const secondaryShockContexts=enemyAilmentThreshold==null?[]:input.setups
@@ -366,13 +369,16 @@ export function estimateHitDamage(input:{
       const lightningHitAverage=candidateEstimate.components
         .filter(value=>value.type==='lightning')
         .reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)
+      const fireHitAverage=candidateEstimate.components.filter(value=>value.type==='fire').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)
+      const coldHitAverage=candidateEstimate.components.filter(value=>value.type==='cold').reduce((sum,value)=>sum+(value.minimum+value.maximum)/2,0)
       const candidateHitChance=candidateEstimate.attackHitChance?.hitChancePercent??100
       const candidateCriticalChance=candidateEstimate.criticalChance?.effective
       const candidateActions=candidateEstimate.actionsPerSecond
-      if(!lightningHitAverage||candidateCriticalChance==null||candidateActions==null)return[]
+      if(!(lightningHitAverage||fireHitAverage||coldHitAverage)||candidateCriticalChance==null||candidateActions==null)return[]
       return[{
         skillId:candidate.skillId!,enemyAilmentThreshold,lightningHitAverage,
         lightningCriticalHitAverage:lightningHitAverage*(1+(candidateEstimate.criticalDamageBonus??100)/100),
+        fireHitAverage,fireCriticalHitAverage:fireHitAverage*(1+(candidateEstimate.criticalDamageBonus??100)/100),coldHitAverage,
         hitChancePercent:candidateHitChance,criticalHitChancePercent:candidateCriticalChance,actionsPerSecond:candidateActions,
       }]
     })

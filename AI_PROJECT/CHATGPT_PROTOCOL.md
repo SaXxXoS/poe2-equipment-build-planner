@@ -3882,3 +3882,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 1 Datei mit 27 Tests. Serielle Gesamtsuite: 140 Dateien mit 1.733 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_LIGHTNING_EXPOSURE_STEP_133.md` und `docs/audits/build-assistant-step-133-lightning-exposure.json`.
 - Nächster Baustein: Feuer- und Kälte-Exposition erst nach belegter Entzünden- beziehungsweise kritischer Kältetrefferkette.
+
+## Schritt 134 – vollständige elementare Exposition
+
+- Der Schadensrechner verwendet `3.48.0`; das Expositionsmodell verwendet `1.1.0`.
+- `Fire Exposure` ist über Feuertreffer, kritischen Feuertreffer, Gegner-Zustandsschwelle, Entzündungschance, Trefferchance und Aktionsrate bis zur achtsekündigen Anwendung geschlossen.
+- `Cold Exposure` ist über Kältetreffer, Trefferchance, Kritchance und Aktionsrate bis zur achtsekündigen Anwendung geschlossen.
+- Beide Effekte werden nur aktiv, wenn dieselbe Fertigkeitskarte die Exposition innerhalb ihrer Wirkzeit zuverlässig erneuert.
+- Der elementare Trefferkontext gilt für primäre und weitere aktive Fertigkeiten getrennt und waffensetgenau; keine parallele Engine wurde eingeführt.
+- `Potent Exposure`, stärkste-Exposition-Regel sowie additive Fluch-/Expositionsgruppen gelten einheitlich für Feuer, Kälte und Blitz.
+- Fokussierte Prüfung: 2 Dateien mit 79 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien mit 1.738 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 206 JSON-Dateien erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_ELEMENTAL_EXPOSURE_STEP_134.md` und `docs/audits/build-assistant-step-134-elemental-exposure.json`.
+- Nächster Baustein: weitere vollständig schließbare Gegnerzustände und Schadensaufnahmeeffekte aus gepinnten Skills, Supports, Passiven und Aszendenzen.

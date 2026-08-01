@@ -1,0 +1,49 @@
+{
+  "step": 134,
+  "scope": "fire-cold-lightning-exposure-complete-chain",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sources": [
+    { "sourceRecordId": "SupportFireExposurePlayer", "triggerStat": "inflict_exposure_for_x_ms_on_ignite", "durationMs": 8000 },
+    { "sourceRecordId": "SupportColdExposurePlayer", "triggerStat": "inflict_exposure_for_x_ms_on_cold_crit", "durationMs": 8000 },
+    { "sourceRecordId": "SupportLightningExposurePlayer", "triggerStat": "inflict_exposure_for_x_ms_on_shock", "durationMs": 8000 },
+    { "sourceRecordId": "SupportPotentExposurePlayer", "effectStat": "exposure_effect_+%", "effectIncreasedPercent": 20 }
+  ],
+  "baseExposurePercent": 20,
+  "potentExposurePercent": 24,
+  "applicationModels": {
+    "fire": "maintainable-ignite-rate-from-hit-threshold-and-cadence",
+    "cold": "maintainable-cold-critical-hit-rate",
+    "lightning": "maintainable-shock-rate"
+  },
+  "stacking": {
+    "sameElement": "strongest-only",
+    "differentElements": "independent-per-element",
+    "curseAndExposure": "additive-groups"
+  },
+  "modelVersions": {
+    "damageCalculator": "3.48.0",
+    "exposure": "1.1.0",
+    "shock": "1.4.0",
+    "temporalEnemyEffects": "2.0.0"
+  },
+  "blocked": [
+    "support on another setup",
+    "missing matching elemental hit",
+    "application rate below one per exposure window",
+    "missing enemy ailment threshold",
+    "display-text inference"
+  ],
+  "verification": {
+    "focusedTestFiles": 2,
+    "focusedTests": 79,
+    "fullTestFiles": 140,
+    "fullTests": 1738,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 206,
+    "gitDiffCheck": "passed"
+  }
+}

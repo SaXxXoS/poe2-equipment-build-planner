@@ -8,6 +8,7 @@ import { pob2QuantitativeEffectsFor } from '../../gems/pob2-support-reference'
 
 const skill=(id:string,nameEn:string):SkillGemDefinition=>({id,displayNameDe:nameEn,nameEn,tags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const setup=(skillId:string,weaponSet:'set-1'|'set-2'='set-1'):SkillSetup=>({id:'setup',skillId,role:'main',weaponSet,supportGemIds:[],level:20})
+const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,displayNameDe:nameEn,tags:[],requiredTags:[],excludedTags:[],ownTags:[],dataVersion:'test',source:'local-placeholder',status:'verified'})
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
@@ -682,6 +683,20 @@ describe('begrenzte Trefferschadenberechnung',()=>{
       activationTimeMs:700,uptimeStatus:'windowed',
     })
     expect(result.enemyProfile?.temporalModelVersion).toBe('2.0.0')
+  })
+  it('führt eine gewählte Fire-Exposure-Unterstützung über den realen Trefferkontext bis zur Schadensminderung',()=>{
+    const fireSetup={...setup('fireball'),supportGemIds:['fire-exposure']}
+    const baseline=estimateHitDamage({
+      equipment:[],setups:[setup('fireball')],skills:[skill('fireball','Fireball')],
+      enemyProfile:{id:'fire-target',label:'Feuerziel',source:'manual-comparison-profile',level:1,resistances:{fire:40}},
+    })
+    const exposed=estimateHitDamage({
+      equipment:[],setups:[fireSetup],skills:[skill('fireball','Fireball')],supports:[supportDef('fire-exposure','Fire Exposure')],
+      enemyProfile:{id:'fire-target',label:'Feuerziel',source:'manual-comparison-profile',level:1,resistances:{fire:40}},
+    })
+    expect(exposed.enemyProfile?.resistanceReduction?.fire).toBe(20)
+    expect(exposed.enemyProfile?.appliedEffects).toContainEqual(expect.objectContaining({sourceId:'fire-exposure',effectGroup:'exposure'}))
+    expect(exposed.expectedDamagePerSecondAfterMitigation).toBeGreaterThan(baseline.expectedDamagePerSecondAfterMitigation!)
   })
   it('verbindet ausgewähltes Wither mit Chaos-Treffer und eigenständigem Chaos-DoT',()=>{
     const witherSetup:SkillSetup={id:'wither-setup',skillId:'wither',role:'utility',weaponSet:'set-1',supportGemIds:[]}

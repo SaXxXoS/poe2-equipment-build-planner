@@ -152,6 +152,67 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.find(effect=>effect.effectGroup==='exposure')?.effectiveValue).toBe(20)
   })
 
+  it('wendet Fire Exposure nur bei einer zuverlässig erneuerbaren Entzündung derselben Fertigkeit an',()=>{
+    const fireSetup={...setup('fireball','fireball'),supportGemIds:['fire-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[fireSetup],skills:[skill('fireball','Fireball')],supports:[support('fire-exposure','Fire Exposure')],
+      activeDamageTypes:['fire'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'fireball',enemyAilmentThreshold:1000,lightningHitAverage:0,lightningCriticalHitAverage:0,
+        fireHitAverage:100,fireCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:10,
+      },
+    })
+    expect(result.resistanceReduction?.fire).toBe(20)
+    expect(result.appliedEffects).toContainEqual(expect.objectContaining({
+      sourceId:'fire-exposure',effectGroup:'exposure',damageTypes:['fire'],durationMs:8000,
+      uptimeStatus:'maintainable',state:'fully-active',
+    }))
+  })
+
+  it('blockiert Fire Exposure, wenn die belegte Entzündungsrate das Fenster nicht erneuert',()=>{
+    const fireSetup={...setup('fireball','fireball'),supportGemIds:['fire-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[fireSetup],skills:[skill('fireball','Fireball')],supports:[support('fire-exposure','Fire Exposure')],
+      activeDamageTypes:['fire'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'fireball',enemyAilmentThreshold:100000,lightningHitAverage:0,lightningCriticalHitAverage:0,
+        fireHitAverage:1,fireCriticalHitAverage:2,hitChancePercent:100,criticalHitChancePercent:0,actionsPerSecond:0.1,
+      },
+    })
+    expect(result.resistanceReduction).toBeUndefined()
+    expect(result.appliedEffects?.some(effect=>effect.sourceId==='fire-exposure')).toBe(false)
+  })
+
+  it('wendet Cold Exposure nur bei ausreichend häufigen kritischen Kältetreffern an',()=>{
+    const coldSetup={...setup('cold-skill','cold-skill'),supportGemIds:['cold-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[coldSetup],skills:[skill('cold-skill','Frostbolt')],supports:[support('cold-exposure','Cold Exposure')],
+      activeDamageTypes:['cold'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'cold-skill',enemyAilmentThreshold:1000,lightningHitAverage:0,lightningCriticalHitAverage:0,
+        coldHitAverage:100,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:1,
+      },
+    })
+    expect(result.resistanceReduction?.cold).toBe(20)
+    expect(result.appliedEffects).toContainEqual(expect.objectContaining({
+      sourceId:'cold-exposure',effectGroup:'exposure',damageTypes:['cold'],applicationRatePerSecond:0.2,durationMs:8000,
+    }))
+  })
+
+  it('blockiert Cold Exposure ohne ausreichend häufige kritische Kältetreffer',()=>{
+    const coldSetup={...setup('cold-skill','cold-skill'),supportGemIds:['cold-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[coldSetup],skills:[skill('cold-skill','Frostbolt')],supports:[support('cold-exposure','Cold Exposure')],
+      activeDamageTypes:['cold'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'cold-skill',enemyAilmentThreshold:1000,lightningHitAverage:0,lightningCriticalHitAverage:0,
+        coldHitAverage:100,hitChancePercent:100,criticalHitChancePercent:5,actionsPerSecond:0.1,
+      },
+    })
+    expect(result.resistanceReduction).toBeUndefined()
+    expect(result.appliedEffects?.some(effect=>effect.sourceId==='cold-exposure')).toBe(false)
+  })
+
   it('verwendet bei mehreren normalen Schockquellen nur den stärksten aufrechterhaltbaren Schock',()=>{
     const weak={skillId:'arc',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:20}
     const strong={skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:400,lightningCriticalHitAverage:800,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2}

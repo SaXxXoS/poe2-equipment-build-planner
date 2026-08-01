@@ -14,13 +14,16 @@ const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magi
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
-export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.0.0'
+export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.1.0'
 
 export interface PrimaryShockContext{
   skillId:string
   enemyAilmentThreshold:number
   lightningHitAverage:number
   lightningCriticalHitAverage:number
+  fireHitAverage?:number
+  fireCriticalHitAverage?:number
+  coldHitAverage?:number
   hitChancePercent:number
   criticalHitChancePercent:number
   actionsPerSecond:number
@@ -146,25 +149,51 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
     const selectedSupportDefinitions=(setup.supportGemIds??[])
       .map(id=>supportById.get(id))
       .filter((value):value is SupportGemDefinition=>Boolean(value))
+    const selectedSupportNumerics=selectedSupportDefinitions
+      .map(value=>supportsByName.get((value.nameEn??'').toLocaleLowerCase('en'))?.numericStats as Record<string,number>|undefined)
+      .filter((value):value is Record<string,number>=>Boolean(value))
+    const selectedStat=(statId:string)=>Number(numericStats[statId]??0)+selectedSupportNumerics.reduce((sum,value)=>sum+Number(value[statId]??0),0)
+    const potentExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Potent Exposure')
+    const potentNumeric=potentExposure?supportsByName.get('potent exposure'):undefined
+    const exposureEffect=Number((potentNumeric?.numericStats as Record<string,number>|undefined)?.['exposure_effect_+%']??0)
+    const exposureValue=Math.floor(20*(1+exposureEffect/100))
+    const pushExposure=(supportDefinition:SupportGemDefinition,type:EnemyResistanceType,triggerStat:string,durationMs:number,applicationRatePerSecond:number,stateDetail:string)=>{
+      if(!Number.isFinite(durationMs)||durationMs<=0||applicationRatePerSecond*durationMs/1000<1)return
+      candidates.push({
+        source:'support',sourceId:supportDefinition.id,label:`${supportDefinition.displayNameDe}: ${type==='fire'?'Feuer':type==='cold'?'Kälte':'Blitz'}-Exposition`,
+        kind:'resistance-reduction',effectGroup:'exposure',damageTypes:[type],value:exposureValue,
+        evidence:'structured-exact',conditional:true,durationMs,
+        applicationRatePerSecond:Number(applicationRatePerSecond.toFixed(4)),estimatedUptime:1,
+        uptimeStatus:'maintainable',state:'fully-active',
+        sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: ${triggerStat} + PoB2 generic 20% exposure${potentExposure?' + exposure_effect_+%':''}`,
+        stateDetail,
+      })
+    }
     const lightningExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Lightning Exposure')
     if(lightningExposure&&maintainableShock&&activeDamageTypes.includes('lightning')){
       const exposureNumeric=supportsByName.get('lightning exposure')
       const exposureDurationMs=Number((exposureNumeric?.numericStats as Record<string,number>|undefined)?.inflict_exposure_for_x_ms_on_shock)
-      const potentExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Potent Exposure')
-      const potentNumeric=potentExposure?supportsByName.get('potent exposure'):undefined
-      const exposureEffect=Number((potentNumeric?.numericStats as Record<string,number>|undefined)?.['exposure_effect_+%']??0)
-      if(Number.isFinite(exposureDurationMs)&&exposureDurationMs>0){
-        const value=Math.floor(20*(1+exposureEffect/100))
-        candidates.push({
-          source:'support',sourceId:lightningExposure.id,label:`${lightningExposure.displayNameDe}: Blitz-Exposition`,
-          kind:'resistance-reduction',effectGroup:'exposure',damageTypes:['lightning'],value,
-          evidence:'structured-exact',conditional:true,durationMs:exposureDurationMs,
-          applicationRatePerSecond:maintainableShock.applicationRatePerSecond,
-          estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
-          sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: inflict_exposure_for_x_ms_on_shock + PoB2 generic 20% exposure${potentExposure?' + exposure_effect_+%':''}`,
-          stateDetail:`Der aufrechterhaltbare Schock dieser Fertigkeit erneuert ${value}% Blitz-Exposition für ${exposureDurationMs/1000} Sekunden.`,
-        })
-      }
+      pushExposure(lightningExposure,'lightning','inflict_exposure_for_x_ms_on_shock',exposureDurationMs,maintainableShock.applicationRatePerSecond??0,`Der aufrechterhaltbare Schock dieser Fertigkeit erneuert ${exposureValue}% Blitz-Exposition für ${exposureDurationMs/1000} Sekunden.`)
+    }
+    const fireExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Fire Exposure')
+    if(fireExposure&&primaryShockContext?.fireHitAverage&&primaryShockContext.fireCriticalHitAverage&&activeDamageTypes.includes('fire')){
+      const exposureNumeric=supportsByName.get('fire exposure')
+      const exposureDurationMs=Number((exposureNumeric?.numericStats as Record<string,number>|undefined)?.inflict_exposure_for_x_ms_on_ignite)
+      const flatChance=selectedStat('base_chance_to_ignite_%')
+      const chanceIncrease=selectedStat('active_skill_ignite_chance_+%_final')+selectedStat('support_ignition_chance_to_ignite_+%_final')
+      const chanceOnHit=Math.min(100,Math.max(0,(primaryShockContext.fireHitAverage/primaryShockContext.enemyAilmentThreshold*reference.ailmentConstants.igniteChanceMultiplier+flatChance)*(1+chanceIncrease/100)))
+      const chanceOnCriticalHit=Math.min(100,Math.max(0,(primaryShockContext.fireCriticalHitAverage/primaryShockContext.enemyAilmentThreshold*reference.ailmentConstants.igniteChanceMultiplier+flatChance)*(1+chanceIncrease/100)))
+      const criticalShare=Math.max(0,Math.min(100,primaryShockContext.criticalHitChancePercent))/100
+      const weightedChance=chanceOnHit*(1-criticalShare)+chanceOnCriticalHit*criticalShare
+      const applicationRate=primaryShockContext.actionsPerSecond*primaryShockContext.hitChancePercent/100*weightedChance/100
+      pushExposure(fireExposure,'fire','inflict_exposure_for_x_ms_on_ignite',exposureDurationMs,applicationRate,`${Number(weightedChance.toFixed(2))}% belegte Entzündungschance erneuert ${exposureValue}% Feuer-Exposition innerhalb des ${exposureDurationMs/1000}-Sekunden-Fensters.`)
+    }
+    const coldExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Cold Exposure')
+    if(coldExposure&&primaryShockContext?.coldHitAverage&&activeDamageTypes.includes('cold')){
+      const exposureNumeric=supportsByName.get('cold exposure')
+      const exposureDurationMs=Number((exposureNumeric?.numericStats as Record<string,number>|undefined)?.inflict_exposure_for_x_ms_on_cold_crit)
+      const applicationRate=primaryShockContext.actionsPerSecond*primaryShockContext.hitChancePercent/100*primaryShockContext.criticalHitChancePercent/100
+      pushExposure(coldExposure,'cold','inflict_exposure_for_x_ms_on_cold_crit',exposureDurationMs,applicationRate,`${Number(primaryShockContext.criticalHitChancePercent.toFixed(2))}% belegte Kritchance mit Kältetreffern erneuert ${exposureValue}% Kälte-Exposition innerhalb des ${exposureDurationMs/1000}-Sekunden-Fensters.`)
     }
   }
   const curses=candidates.filter(value=>value.effectGroup==='curse')
@@ -386,7 +415,7 @@ export function applyBuildEnemyEffects(input:{
   }
   const limitations=[...(input.profile.limitations??[])]
   if(effects.some(value=>value.effectGroup==='curse'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; seine strukturierte Wirkzeit ist bekannt, die tatsächliche Wiederholungsfrequenz ohne Rotationsbeleg jedoch nicht.')
-  if(effects.some(value=>value.effectGroup==='exposure'))limitations.push('Blitz-Exposition wird nur durch dieselbe Fertigkeit produktiv angewandt, wenn deren belegte Schockrate die strukturierte Expositionsdauer zuverlässig erneuern kann; gleichartige Expositionen addieren sich nicht.')
+  if(effects.some(value=>value.effectGroup==='exposure'))limitations.push('Exposition wird nur durch dieselbe Fertigkeit produktiv angewandt, wenn deren belegte Schock-, Entzündungs- oder kritische Kältetrefferrate die strukturierte Expositionsdauer zuverlässig erneuern kann; gleichartige Expositionen addieren sich nicht.')
   if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
   if(effects.some(value=>value.kind==='damage-taken-increased'&&value.damageTypes.length===1))limitations.push('Withered wird nur für eine im aktiven Waffenset gewählte Fertigkeit mit strukturierter Stapelwirkung berechnet; unterbrochenes Kanalisieren verringert die tatsächliche Wirkung.')
   if(shockEffects.length)limitations.push(shockStackLimit>1
