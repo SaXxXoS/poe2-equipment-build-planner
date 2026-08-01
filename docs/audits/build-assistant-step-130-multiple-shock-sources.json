@@ -1,0 +1,12 @@
+{
+  "step": 130,
+  "scope": "multiple-shock-source-strongest-selection",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "rule": "ordinary-competing-shocks-use-strongest-maintainable-effect",
+  "productiveInputs": ["skill lightning hit", "critical lightning hit", "hit chance", "critical chance", "actions per second", "skill-specific supports", "allocated tree and ascendancy modifiers", "active-set equipment modifiers"],
+  "selection": {"method": "maximum effective magnitude", "tieBreak": "stable skill id", "orderIndependent": true, "nonMaintainableEligible": false},
+  "modelVersions": {"damageCalculator": "3.44.0", "shock": "1.2.0", "temporalEnemyEffects": "2.0.0"},
+  "blocked": ["ShockCanStack without complete stacking semantics", "shocked ground", "external fixed shock overrides", "display-text similarity"],
+  "verification": {"focusedTestFiles": 2, "focusedTests": 67, "fullTestFiles": 140, "fullTests": 1723, "fullTestWorkers": 1, "typecheck": "passed", "lint": "passed", "productionBuild": "passed", "pagesBuild": "passed"}
+}

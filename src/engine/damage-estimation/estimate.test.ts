@@ -19,6 +19,21 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(first.hitDamage).toMatchObject({minimum:6,maximum:105,average:55.5})
     expect(first.hitDamagePerSecond).toBe(55.5)
   })
+  it('bewertet weitere aktive Blitzfertigkeiten als getrennte konkurrierende Schockquellen',()=>{
+    const result=estimateHitDamage({
+      equipment:[],
+      setups:[
+        {id:'arc-main',skillId:'arc',role:'main',weaponSet:'set-1',supportGemIds:[],level:20},
+        {id:'ball-utility',skillId:'ball',role:'utility',weaponSet:'set-1',supportGemIds:[],level:20},
+      ],
+      skills:[skill('arc','Arc'),skill('ball','Ball Lightning')],
+      enemyProfile:{id:'test-enemy',label:'Testgegner',source:'manual-comparison-profile',level:1},
+    })
+    const shocks=result.enemyProfile?.appliedEffects?.filter(value=>value.effectGroup==='shock')??[]
+    expect(shocks.map(value=>value.sourceId).sort()).toEqual(['arc','ball'])
+    expect(shocks.filter(value=>value.selectionStatus==='selected-strongest')).toHaveLength(1)
+    expect(result.enemyProfile?.damageTakenIncreased?.lightning).toBeGreaterThan(0)
+  })
   it('weist Flameblast bei voller Kanalisierung als getrennten vorbereiteten Treffer aus',()=>{
     const result=estimateHitDamage({
       equipment:[],

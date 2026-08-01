@@ -3832,3 +3832,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 4 Dateien und 84 Tests erfolgreich. Serieller Gesamtlauf mit einem Worker: 139 Dateien und 1.719 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_SHOCK_MODIFIERS_STEP_129.md` und `docs/audits/build-assistant-step-129-shock-modifiers.json`.
 - Nächster Baustein: mehrere belegte Schockquellen und stärkste-Schock-Ersetzung.
+
+## Schritt 130 – mehrere Schockquellen und stärkste Wirkung
+
+- Der Schadensrechner verwendet `3.44.0`, das Schockmodell `1.2.0`.
+- Die normale Berechnung bewertet neben der Hauptfertigkeit weitere aktive Blitz-Trefferfertigkeiten mit eigener Trefferstärke, Kritwirkung, Trefferchance und Aktionsrate.
+- Supports bleiben an ihre jeweilige Fertigkeitskarte gebunden; Baum, Aszendenz und globale Ausrüstung gelten waffensetgenau.
+- Normale Schocks werden entsprechend der gepinnten PoB2-Maximum-Regel nicht addiert. Nur der stärkste zuverlässig aufrechterhaltbare Schock wirkt.
+- Verdrängte Kandidaten bleiben mit `effectiveValue = 0` erklärbar; eine nicht aufrechterhaltbare hohe Momentaufnahme verdrängt keinen dauerhaften Kandidaten.
+- Mehrfach-Schock, geschockter Boden und externe feste Schockwerte bleiben ohne vollständige Regelkette fail-closed.
+- Fokussierte Prüfung: 2 Dateien und 67 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien und 1.723 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_MULTIPLE_SHOCK_SOURCES_STEP_130.md` und `docs/audits/build-assistant-step-130-multiple-shock-sources.json`.
+- Nächster Baustein: vollständig belegbare Mehrfach-Schock- und externe Schockquellen-Regeln.

@@ -90,6 +90,37 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.[0]).toMatchObject({effectiveValue:0,uptimeStatus:'unresolved',state:'building'})
   })
 
+  it('verwendet bei mehreren normalen Schockquellen nur den stärksten aufrechterhaltbaren Schock',()=>{
+    const weak={skillId:'arc',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:20}
+    const strong={skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:400,lightningCriticalHitAverage:800,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2}
+    const common={
+      profile,setups:[setup('arc-setup','arc'),setup('ball-setup','ball')],
+      skills:[skill('arc','Arc'),skill('ball','Ball Lightning')],activeDamageTypes:['lightning' as const],weaponSet:'set-1' as const,
+    }
+    const result=applyBuildEnemyEffects({...common,shockSourceContexts:[weak,strong]})
+    const reversed=applyBuildEnemyEffects({...common,shockSourceContexts:[strong,weak]})
+    const shocks=result.appliedEffects?.filter(value=>value.effectGroup==='shock')??[]
+    const selected=shocks.find(value=>value.selectionStatus==='selected-strongest')
+    const superseded=shocks.find(value=>value.selectionStatus==='superseded-by-stronger')
+    expect(shocks).toHaveLength(2)
+    expect(selected).toMatchObject({sourceId:'ball',effectiveValue:expect.any(Number)})
+    expect(superseded).toMatchObject({sourceId:'arc',effectiveValue:0})
+    expect(result.damageTakenIncreased?.lightning).toBe(selected?.value)
+    expect(reversed.damageTakenIncreased).toEqual(result.damageTakenIncreased)
+  })
+
+  it('lässt eine nicht aufrechterhaltbare hohe Schockquelle keine schwächere dauerhafte Quelle verdrängen',()=>{
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('arc-setup','arc'),setup('ball-setup','ball')],skills:[skill('arc','Arc'),skill('ball','Ball Lightning')],
+      activeDamageTypes:['lightning'],weaponSet:'set-1',shockSourceContexts:[
+        {skillId:'arc',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:20},
+        {skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:1000,lightningCriticalHitAverage:2000,hitChancePercent:1,criticalHitChancePercent:20,actionsPerSecond:0.01},
+      ],
+    })
+    expect(result.appliedEffects?.find(value=>value.selectionStatus==='selected-strongest')?.sourceId).toBe('arc')
+    expect(result.damageTakenIncreased?.lightning).toBe(result.appliedEffects?.find(value=>value.sourceId==='arc')?.value)
+  })
+
   it('wendet den Schockkontext nicht auf einen anderen Skill oder Waffensatz an',()=>{
     const set2={...setup('ball','ball'),weaponSet:'set-2' as const}
     const result=applyBuildEnemyEffects({
