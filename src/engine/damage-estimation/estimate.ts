@@ -26,6 +26,7 @@ import { itemValueScopeOutput, resolveItemValueScopeModel } from './item-value-s
 import { resolveCharacterDefenceModel } from './character-defence-model'
 import { resolveCharacterSurvivabilityModel } from './character-survivability-model'
 import { resolveConditionalHitEffects } from './conditional-hit-effects'
+import { harmonicMean,resolveDualWieldAttackModel } from './dual-wield-effects'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
 
@@ -45,6 +46,18 @@ const types=['physical','fire','cold','lightning','chaos'] as const
 const round=(value:number,digits=2)=>Number(value.toFixed(digits))
 const valueFor=(entry:EquipmentEntry,pattern:RegExp)=>entry.modifierValues.flatMap(mod=>mod.statValues??[]).filter(stat=>pattern.test(stat.statId)).reduce((sum,stat)=>sum+stat.value,0)
 const component=(type:DamageComponent['type'],minimum:number,maximum:number):DamageComponent=>({type,minimum:round(minimum),maximum:round(maximum)})
+const weaponSpeed=(weapon:WeaponBase|undefined,entry:EquipmentEntry)=>{
+  const observed=entry.weaponStatsSource!=='pinned-base'&&entry.weaponStats?.attacksPerSecond
+  const localIncrease=observed?0:valueFor(entry,/local_attack_speed_\+%|attack_speed_\+%_local/)
+  return Number(observed??weapon?.attacksPerSecond??0)*(1+localIncrease/100)
+}
+const averageHandComponents=(left:DamageComponent[],right:DamageComponent[],multiplier:number)=>types.flatMap(type=>{
+  const first=left.find(value=>value.type===type)
+  const second=right.find(value=>value.type===type)
+  const minimum=((first?.minimum??0)+(second?.minimum??0))/2*multiplier
+  const maximum=((first?.maximum??0)+(second?.maximum??0))/2*multiplier
+  return minimum||maximum?[component(type,minimum,maximum)]:[]
+})
 
 function spellComponents(skill:NumericSkill):DamageComponent[] {
   return types.flatMap(type=>{
@@ -113,7 +126,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.55.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.56.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -131,8 +144,10 @@ export function estimateHitDamage(input:{
   let actionsPerSecond=skill.castTime>0?1/skill.castTime:1
   const included=[`Fertigkeitsstufe ${gemLevelQualityModel.appliedSkillLevel}`,`Fertigkeitsqualität ${gemLevelQualityModel.appliedSkillQuality??0}%`,'strukturierte Basiswerte der Fertigkeit']
   const activeSet=setup?.weaponSet==='set-2'?'set-2':'set-1'
+  let dualWieldAttackModel:DamageEstimate['dualWieldAttackModel']
   if(skill.kind==='attack'){
-    const weaponEntry=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`)&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
+    const weaponEntry=input.equipment.find(entry=>entry.slotId===`slot-weapon-${activeSet}-left`&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
+      ??input.equipment.find(entry=>entry.slotId===`slot-weapon-${activeSet}-right`&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
     const weaponName=weaponEntry?.baseDisplayName??weaponEntry?.itemDefinitionId
     const weapon=weaponName?weaponsByName.get(weaponName.toLocaleLowerCase('en')):undefined
     const weaponValueScope=weaponEntry?itemValueScopeModel.entries.find(entry=>entry.itemId===weaponEntry.id):undefined
@@ -147,10 +162,29 @@ export function estimateHitDamage(input:{
     if(weaponValueScope&&!weaponValueScope.productive)return{...base,status:'unavailable',warnings:[`${weaponValueScope.detail} Der Waffenschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
     const hasObservedFinalWeaponStats=weaponEntry.weaponStatsSource!=='pinned-base'&&Boolean(weaponEntry.weaponStats)
-    const localAttackSpeed=hasObservedFinalWeaponStats?0:valueFor(weaponEntry,/local_attack_speed_\+%|attack_speed_\+%_local/)
-    actionsPerSecond=(hasObservedFinalWeaponStats?weaponEntry.weaponStats?.attacksPerSecond:weapon?.attacksPerSecond)!*(1+localAttackSpeed/100)*(1+skill.attackSpeedMultiplier/100)
+    actionsPerSecond=weaponSpeed(weapon,weaponEntry)*(1+skill.attackSpeedMultiplier/100)
     included.push(hasObservedFinalWeaponStats?'eingegebene endgültige Waffenschadenswerte einschließlich lokaler Wirkungen und Qualität':'Waffenbasis mit einmalig angewandten lokalen Affixen','Angriffsmultiplikator',hasObservedFinalWeaponStats?'eingegebene Angriffe pro Sekunde':'Basis-Angriffsgeschwindigkeit')
     if(weaponEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Waffenbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
+    const resolvedDualWield=resolveDualWieldAttackModel({
+      skill:definition,numericStats:skill.numericStats as Record<string,number>,equipment:input.equipment,weaponSet:activeSet,
+      resolveWeapon:entry=>{
+        const name=entry.baseDisplayName??entry.itemDefinitionId
+        return name?weaponsByName.get(name.toLocaleLowerCase('en')):undefined
+      },
+    })
+    dualWieldAttackModel=resolvedDualWield
+    if(resolvedDualWield.status==='applied'){
+      const offEntry=input.equipment.find(entry=>entry.id===resolvedDualWield.offHandItemId)!
+      const offName=offEntry.baseDisplayName??offEntry.itemDefinitionId
+      const offWeapon=offName?weaponsByName.get(offName.toLocaleLowerCase('en')):undefined
+      const offValueScope=itemValueScopeModel.entries.find(entry=>entry.itemId===offEntry.id)
+      if(offValueScope&&!offValueScope.productive)return{...base,dualWieldAttackModel:resolvedDualWield,status:'unavailable',warnings:[`${offValueScope.detail} Der Nebenhandschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
+      const offComponents=weaponComponents(offWeapon,offEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
+      components=averageHandComponents(components,offComponents,resolvedDualWield.damageMultiplier)
+      actionsPerSecond=harmonicMean(weaponSpeed(weapon,weaponEntry),weaponSpeed(offWeapon,offEntry))*(1+skill.attackSpeedMultiplier/100)*resolvedDualWield.hitSequenceMultiplier
+      included.push('PoB2-Dual-Wield: beide kompatiblen Einhandwaffen, 30% weniger Schaden je Hand und ein Treffer je Hand')
+      if(offEntry.weaponStats?.unresolvedElementalDamage?.length)base.warnings.push('Elementare Nebenhandbereiche ohne sicher bestimmte Schadensart sind noch nicht im Teilwert enthalten.')
+    }else if(resolvedDualWield.evidence==='blocked')base.warnings.push(resolvedDualWield.detail)
   }else{
     components=spellComponents(skill)
     included.push('Zauber-Basisschaden','Basis-Zauberzeit')
@@ -592,7 +626,7 @@ export function estimateHitDamage(input:{
           : 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.',
       }
   return{
-    ...base,status:'partial',components,baseComponents,projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
+    ...base,status:'partial',components,baseComponents,...(dualWieldAttackModel?{dualWieldAttackModel}:{}),projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},

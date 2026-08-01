@@ -3969,3 +3969,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Schadensrechner verwendet `3.55.0`; das Modell zielabhängiger Fertigkeitswirkungen verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_LIGHTNING_CONDUIT_SHOCK_SCALING_STEP_141.md` und `docs/audits/build-assistant-step-141-lightning-conduit-shock-scaling.json`.
 - Fokussierte Prüfung: 2 Dateien und 56 Tests erfolgreich. Im Gesamtlauf bestanden 140 Dateien und 1.761 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
+
+## Schritt 142 – beidhändige Angriffe mit beiden Waffen
+
+- Neun Fertigkeiten mit dem gepinnten Stat `active_skill_damage_+%_final_while_dual_wielding = -30` verwenden jetzt Haupt- und Nebenhand statt nur der ersten gefundenen Waffe.
+- Die Rechenkette folgt den gepinnten PoB2-Regeln: getrennte Handwerte, Mittelwert, 30 % weniger Schaden je Hand, harmonische mittlere Waffengeschwindigkeit und zwei Treffer je Sequenz.
+- Die Regel wird ausschließlich bei zwei eindeutig aufgelösten, kompatiblen Einhandwaffen im aktiven Waffenset angewandt. Unaufgelöste, zweihändige oder inkompatible Kombinationen bleiben fail-closed.
+- Die Ergebnisansicht erklärt die beidhändige Berechnung beziehungsweise den blockierten Grund auf Deutsch.
+- Der Schadensrechner verwendet `3.56.0`; das Dual-Wield-Angriffsmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_DUAL_WIELD_ATTACKS_STEP_142.md` und `docs/audits/build-assistant-step-142-dual-wield-attacks.json`.
+- Fokussierte Prüfung: 2 Dateien und 58 Tests erfolgreich. Im Gesamtlauf bestanden 141 Dateien und 1.766 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build, Desktop- und Mobilprüfung bei 390 × 844 sowie die Browserkonsole sind erfolgreich.

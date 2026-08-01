@@ -12,6 +12,17 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('berechnet PoB2-Dual-Wield-Angriffe aus beiden Waffen statt nur aus der ersten Hand',()=>{
+    const earthquake:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
+    const main={...weapon('Akoyan Club'),id:'main',itemClassId:'One Hand Maces'}
+    const off={...weapon('Bandit Mace','slot-weapon-set-1-right'),id:'off',itemClassId:'One Hand Maces'}
+    const single=estimateHitDamage({equipment:[main],setups:[setup(earthquake.id)],skills:[earthquake]})
+    const dual=estimateHitDamage({equipment:[main,off],setups:[setup(earthquake.id)],skills:[earthquake]})
+    expect(dual.dualWieldAttackModel).toMatchObject({status:'applied',finalDamagePercent:-30,damageMultiplier:.7,hitSequenceMultiplier:2})
+    expect(dual.hitDamagePerSecond).toBeGreaterThan(single.hitDamagePerSecond!)
+    expect(dual.included).toContain('PoB2-Dual-Wield: beide kompatiblen Einhandwaffen, 30% weniger Schaden je Hand und ein Treffer je Hand')
+    expect(dual.actionsPerSecond).toBeCloseTo(2.17,2)
+  })
   it('verbindet Lightning Conduit mit der tatsÃ¤chlich belegten Schockwirkung des Ziels',()=>{
     const conduit=skill('conduit','Lightning Conduit')
     const ball=skill('ball','Ball Lightning')

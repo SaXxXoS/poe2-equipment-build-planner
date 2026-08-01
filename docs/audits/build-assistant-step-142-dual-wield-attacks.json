@@ -1,0 +1,65 @@
+{
+  "step": 142,
+  "scope": "pob2-dual-wield-double-hit-attacks",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceStat": "active_skill_damage_+%_final_while_dual_wielding",
+  "sourceFiles": [
+    "src/Data/SkillStatMap.lua",
+    "src/Modules/CalcOffence.lua",
+    "src/Modules/CalcActiveSkill.lua"
+  ],
+  "calculatorVersion": "3.56.0",
+  "dualWieldAttackModelVersion": "1.0.0",
+  "finalDamagePercentPerHand": -30,
+  "hitSequenceMultiplier": 2,
+  "affectedSkills": [
+    "Boneshatter",
+    "Earthquake",
+    "Forge Hammer",
+    "Hammer of the Gods",
+    "Leap Slam",
+    "Perfect Strike",
+    "Rolling Slam",
+    "Stampede",
+    "Sunder"
+  ],
+  "implemented": [
+    "separate-main-and-off-hand-base-damage",
+    "average-both-hand-hit-components",
+    "thirty-percent-less-damage-per-hand",
+    "harmonic-mean-weapon-speed",
+    "two-hits-per-attack-sequence",
+    "active-weapon-set-only",
+    "visible-german-explanation"
+  ],
+  "blocked": [
+    "unresolved-weapon-base",
+    "not-two-confirmed-one-hand-weapons",
+    "skill-incompatible-weapon-hand",
+    "missing-off-hand-final-values",
+    "skills-without-structured-dual-wield-stat"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "focusedTests": {
+    "files": 2,
+    "tests": 58,
+    "status": "passed"
+  },
+  "fullVerification": {
+    "suitePassedFiles": 141,
+    "suitePassedTests": 1766,
+    "suiteLoadTimeoutFiles": 2,
+    "isolatedRetryFiles": 2,
+    "isolatedRetryTests": 197,
+    "isolatedRetryStatus": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "desktopBrowser": "passed",
+    "mobile390x844": "passed",
+    "browserConsole": "no-errors-or-warnings"
+  }
+}

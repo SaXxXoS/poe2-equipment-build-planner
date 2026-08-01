@@ -139,6 +139,18 @@ export interface DamageEstimate {
     effects:Array<{sourceRecordId:string;label:string;kind:'more-hit-damage-per-shock-effect';condition:'enemy-shocked';conditionValue:number;valuePerStep:number;stepSize:number;appliedSteps:number;totalMoreDamagePercent:number;damageMultiplier:number;evidence:'structured-exact';sourceReference:string;detail:string}>
     blockedEffects:Array<{sourceRecordId:string;label:string;kind:'more-hit-damage-per-shock-effect';reason:'enemy-shock-effect-not-confirmed';evidence:'structured-exact';sourceReference:string;detail:string}>
   }
+  dualWieldAttackModel?:{
+    modelVersion:'1.0.0'
+    status:'not-applicable'|'single-weapon'|'applied'|'blocked-unresolved-weapon'|'blocked-not-two-one-hand-weapons'|'blocked-incompatible-weapon'
+    finalDamagePercent:number|null
+    damageMultiplier:number
+    hitSequenceMultiplier:number
+    mainHandItemId?:string
+    offHandItemId?:string
+    evidence:'structured-exact'|'blocked'
+    sourceReference:string
+    detail:string
+  }
   combinedDamagePerSecond?:number
   combinedDamagePerSecondAfterMitigation?:number
   rageDamageComparison?:{
