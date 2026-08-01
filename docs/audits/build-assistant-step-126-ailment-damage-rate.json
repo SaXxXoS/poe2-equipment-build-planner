@@ -1,0 +1,48 @@
+{
+  "step": 126,
+  "scope": "damaging-ailment-damage-rate",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFiles": [
+    "src/Modules/CalcOffence.lua",
+    "generated/poe2-tree/tree.json"
+  ],
+  "formula": {
+    "rateMultiplier": "(1 + sum(faster) / 100) / (1 + sum(slower) / 100)",
+    "damagePerSecond": "damagePerSecondBeforeRate * rateMultiplier",
+    "duration": "durationBeforeRate / rateMultiplier",
+    "totalDamagePerApplication": "damagePerSecondBeforeRate * rateMultiplier * durationAfterRate"
+  },
+  "productiveTreeCoverage": {
+    "totalExactNodes": 9,
+    "genericDamagingAilmentNodes": 3,
+    "igniteNodes": 5,
+    "bleedingNodes": 1,
+    "poisonSpecificNodes": 0,
+    "slowerNodes": 0
+  },
+  "modelVersions": {
+    "damagingAilments": "2.7.0",
+    "damageCalculator": "3.40.0"
+  },
+  "focusedTests": {
+    "files": 4,
+    "tests": 69,
+    "status": "passed"
+  },
+  "validation": {
+    "fullSuite": "passed-serial",
+    "fullSuiteFiles": 139,
+    "fullSuiteTests": 1706,
+    "fullSuiteExplanation": "Die Gesamtsuite wurde mit einem Worker und ohne Dateiparallelität erfolgreich ausgeführt.",
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Bedingte Faster/Slower-Texte werden ohne bestätigten Laufzeitzustand nicht aktiviert.",
+    "Eine vollständige gegnerseitige DamageTakenOverTime-Kette ist in den aktuellen Produktreferenzen noch nicht sicher belegt.",
+    "Nicht exakt zuordenbare Texte bleiben fail-closed."
+  ]
+}

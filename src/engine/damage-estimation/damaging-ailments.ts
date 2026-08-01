@@ -2,8 +2,9 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
 import type { DamageComponent, EnemyMitigationProfile } from './types'
 import type { BleedingPassiveEffect } from './bleeding-passive-effects'
+import type { DamagingAilmentRateEffects } from './ailment-rate-effects'
 
-export const DAMAGING_AILMENT_MODEL_VERSION = '2.6.0'
+export const DAMAGING_AILMENT_MODEL_VERSION = '2.7.0'
 
 type AilmentKind = 'bleeding' | 'poison' | 'ignite'
 type NumericStats = Partial<Record<string, number>>
@@ -29,6 +30,7 @@ export interface ResolvedDamagingAilment {
   damagePerSecondAfterMitigation?: number
   totalDamagePerApplication: number
   effectMultiplier: number
+  rateMultiplier: number
   aggravated?: boolean
   chanceOnHitPercent?: number
   chanceOnCriticalHitPercent?: number
@@ -123,6 +125,7 @@ export function collectDamagingAilments(input: {
   poisonChanceOnCriticalHitPercent?: number
   conditionalAilmentSourceReferences?: string[]
   aggravateBleedingOnCriticalAttack?: boolean
+  rateEffects?: DamagingAilmentRateEffects
 }): DamagingAilmentResult {
   const supportRecords = selectedSupportRecords(input.setup, input.supports)
   const allStats = [input.skill.numericStats, ...supportRecords.map(record => record.numericStats)]
@@ -194,7 +197,10 @@ export function collectDamagingAilments(input: {
       definition.durationFinalStats,
     )
     const bleedingPassiveEffect = definition.kind === 'bleeding' ? input.bleedingPassiveEffect : undefined
-    const durationMs = (bleedingPassiveEffect?.durationMs ?? definition.durationMs) * resolvedDurationMultiplier
+    const fasterPercent = input.rateEffects?.fasterPercent[definition.kind] ?? 0
+    const slowerPercent = input.rateEffects?.slowerPercent[definition.kind] ?? 0
+    const rateMultiplier = Math.max(0.01, (1 + fasterPercent / 100) / Math.max(0.01, 1 + slowerPercent / 100))
+    const durationMs = (bleedingPassiveEffect?.durationMs ?? definition.durationMs) * resolvedDurationMultiplier / rateMultiplier
     const maximumStacks = definition.kind === 'poison'
       ? 1 + Math.max(0, sum(allStats, 'number_of_additional_poison_stacks'))
       : 1
@@ -228,7 +234,7 @@ export function collectDamagingAilments(input: {
       * (bleedingPassiveEffect?.magnitudeMultiplier ?? 1)
       * (bleedingPassiveEffect?.aggravatedMultiplier ?? 1)
     const singleStackDps = sourceDamage * definition.basePercentPerSecond * effectMultiplier
-    const damagePerSecond = singleStackDps * expectedActiveStacks
+    const damagePerSecond = singleStackDps * rateMultiplier * expectedActiveStacks
     const sourceReferences = [
       definition.chanceStat,
       definition.kind === 'bleeding' ? 'BleedingHitDamagePercentPerMinute' : 'PoisonHitDamagePercentPerMinute',
@@ -262,14 +268,15 @@ export function collectDamagingAilments(input: {
       ...(input.enemyProfile
         ? { damagePerSecondAfterMitigation: round(Math.min(damagePerSecond * (1 - resistance / 100), 35_791_394)) }
         : {}),
-      totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
+      totalDamagePerApplication: round(singleStackDps * rateMultiplier * durationMs / 1000),
       effectMultiplier: round(effectMultiplier),
+      rateMultiplier: round(rateMultiplier),
       ...(bleedingPassiveEffect || conditionalCriticalAggravation ? { aggravated: true } : {}),
       chanceOnHitPercent: round(chanceOnHitPercent),
       chanceOnCriticalHitPercent: round(chanceOnCriticalHitPercent),
       ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),
       weightedSourceDamage: round(sourceDamage),
-      sourceReferences,
+      sourceReferences: [...sourceReferences, ...(input.rateEffects?.sourceReferences[definition.kind] ?? [])],
       evidence: 'structured-exact',
       detail: 'PoB2-Grundwert, Auslösechance, relevante ungeminderte Schadensarten, Wirkfrequenz, Dauer, Effekt und Stapelgrenze sind strukturiert verbunden.',
     })
@@ -301,11 +308,14 @@ export function collectDamagingAilments(input: {
         'active_skill_ignite_duration_+%_final',
         'support_swift_affliction_skill_effect_and_damaging_ailment_duration_+%_final',
       ]
+      const igniteRateFaster = input.rateEffects?.fasterPercent.ignite ?? 0
+      const igniteRateSlower = input.rateEffects?.slowerPercent.ignite ?? 0
+      const rateMultiplier = Math.max(0.01, (1 + igniteRateFaster / 100) / Math.max(0.01, 1 + igniteRateSlower / 100))
       const durationMs = reference.ailmentConstants.baseIgniteDurationSeconds * 1000 * durationMultiplier(
         allStats,
         igniteDurationIncreasedStats,
         igniteDurationFinalStats,
-      )
+      ) / rateMultiplier
       const basePercentPerSecond = reference.ailmentConstants.igniteHitDamagePercentPerMinute / 60 / 100
       const stackPotential = input.actionsPerSecond * durationMs / 1000 * chancePercent / 100 * input.hitChancePercent / 100
       const expectedActiveStacks = Math.min(stackPotential, 1)
@@ -337,12 +347,13 @@ export function collectDamagingAilments(input: {
         durationMs,
         maximumStacks: 1,
         expectedActiveStacks: round(expectedActiveStacks),
-        damagePerSecond: round(Math.min(singleStackDps * expectedActiveStacks, 35_791_394)),
+        damagePerSecond: round(Math.min(singleStackDps * rateMultiplier * expectedActiveStacks, 35_791_394)),
         ...(input.enemyProfile
-          ? { damagePerSecondAfterMitigation: round(Math.min(singleStackDps * expectedActiveStacks * (1 - resistance / 100), 35_791_394)) }
+          ? { damagePerSecondAfterMitigation: round(Math.min(singleStackDps * rateMultiplier * expectedActiveStacks * (1 - resistance / 100), 35_791_394)) }
           : {}),
-        totalDamagePerApplication: round(singleStackDps * durationMs / 1000),
+        totalDamagePerApplication: round(singleStackDps * rateMultiplier * durationMs / 1000),
         effectMultiplier: round(effectMultiplier),
+        rateMultiplier: round(rateMultiplier),
         chanceOnHitPercent: round(chanceOnHitPercent),
         chanceOnCriticalHitPercent: round(chanceOnCriticalHitPercent),
         ailmentCriticalChancePercent: round(ailmentCriticalChance * 100),
@@ -355,6 +366,7 @@ export function collectDamagingAilments(input: {
           ...igniteDurationIncreasedStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
           ...igniteDurationFinalStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
           ...igniteEffectStats.filter(stat => allStats.some(stats => Number.isFinite(stats[stat]))),
+          ...(input.rateEffects?.sourceReferences.ignite ?? []),
           ...(criticalChance > 0 ? ['CalcOffence.calcAilmentDamage', 'CalcOffence.ailmentCritChance'] : []),
         ],
         evidence: 'structured-exact',

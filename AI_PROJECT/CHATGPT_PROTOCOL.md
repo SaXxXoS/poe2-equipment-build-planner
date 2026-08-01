@@ -3781,3 +3781,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Dokumentation: `docs/BUILD_ASSISTANT_OUTGOING_AILMENT_SCALING_STEP_125.md`.
 - Audit: `docs/audits/build-assistant-step-125-outgoing-ailment-scaling.json`.
 - Nächster Baustein: belegte gegnerseitige DoT-Schadensaufnahme und Faster/Slower-Ablaufraten.
+
+## Schritt 126 – Ablaufrate schädigender Zustände
+
+- Das Zustandsmodell wurde auf `2.7.0`, der Schadensrechner auf `3.40.0` erweitert.
+- Faster/Slower-Werte aus der aktiven Waffenset- und Aszendenzplanung werden getrennt für Blutung, Gift und Entzünden aufgelöst.
+- Die PoB2-Reihenfolge ist umgesetzt: Ablaufrate erhöht den DPS und verkürzt die Dauer invers; der Gesamtschaden einer einzelnen Anwendung bleibt unverändert.
+- Der gepinnte Baum enthält neun exakt produktive Knoten: drei allgemeine, fünf Entzündungs- und einen Blutungsknoten.
+- Bedingte Texte und nicht vollständig belegte gegnerseitige DoT-Schadensaufnahme bleiben fail-closed.
+- Fokussierte Referenzprüfung: 4 Dateien und 69 Tests erfolgreich. Serielle Gesamtsuite: 139 Dateien und 1.706 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Dokumentation: `docs/BUILD_ASSISTANT_AILMENT_DAMAGE_RATE_STEP_126.md`.
+- Audit: `docs/audits/build-assistant-step-126-ailment-damage-rate.json`.
+- Nächster Baustein: gegnerseitige DoT-Schadensaufnahme nur aus vollständig belegten Debuff-, Fluch- oder Bodeneffektketten.

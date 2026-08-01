@@ -150,6 +150,31 @@ describe('belegte schädigende Zustände', () => {
     expect(result.blockedEffects).toEqual([])
   })
 
+  it('wendet schneller verursachten Schaden auf DPS und Dauer invers an, ohne den Gesamtschaden zu verändern', () => {
+    const result = collectDamagingAilments({
+      skill: record('Molten Blast'),
+      components: [{ type: 'fire', minimum: 100, maximum: 200 }],
+      actionsPerSecond: 1,
+      hitChancePercent: 100,
+      enemyLevel: 1,
+      setup: setup(),
+      supports: [],
+      rateEffects: {
+        fasterPercent: { bleeding: 0, poison: 0, ignite: 50 },
+        slowerPercent: { bleeding: 0, poison: 0, ignite: 0 },
+        sourceReferences: { bleeding: [], poison: [], ignite: ['passive-node:test-ignite-rate'] },
+      },
+    })
+    expect(result.effects[0]).toMatchObject({
+      kind: 'ignite',
+      damagePerSecond: 45,
+      totalDamagePerApplication: 240,
+      rateMultiplier: 1.5,
+    })
+    expect(result.effects[0].durationMs).toBeCloseTo(5333.33, 2)
+    expect(result.effects[0].sourceReferences).toContain('passive-node:test-ignite-rate')
+  })
+
   it('verbindet belegte Ignite-Dauer und -Magnitude aus ausgewählten Supports', () => {
     const supports = [
       support('duration', 'Eternal Flame I'),

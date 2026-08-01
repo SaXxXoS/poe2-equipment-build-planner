@@ -12,6 +12,7 @@ import { collectDamageOverTime } from './damage-over-time'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
+import { resolveDamagingAilmentRateEffects } from './ailment-rate-effects'
 import { resolveAttackHitChance } from './attack-hit-chance'
 import { expectedLuckyHitDamage, resolveLuckyHitEffectModel } from './lucky-hit-effects'
 import { resolveMultipleDamageEffect } from './multiple-damage-effects'
@@ -111,7 +112,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.39.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.40.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -356,6 +357,11 @@ export function estimateHitDamage(input:{
     poisonChanceOnCriticalHitPercent: conditionalAilmentEffects.poisonChanceOnCriticalHitPercent,
     conditionalAilmentSourceReferences: conditionalAilmentEffects.sourceReferences,
     aggravateBleedingOnCriticalAttack: conditionalAilmentEffects.aggravateBleedingOnCriticalAttack,
+    rateEffects: resolveDamagingAilmentRateEffects({
+      passiveTree: input.passiveTree,
+      planning: input.realPassivePlanning,
+      weaponSet: activeSet,
+    }),
   })
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile):undefined
   const mitigatedRollAverage=enemyMitigation?expectedLuckyHitDamage(enemyMitigation.components,luckyHitEffects):undefined
@@ -544,7 +550,7 @@ export function estimateHitDamage(input:{
         chancePercent:value.chancePercent,durationMs:value.durationMs,maximumStacks:value.maximumStacks,expectedActiveStacks:value.expectedActiveStacks,
         damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,totalDamagePerApplication:value.totalDamagePerApplication,effectMultiplier:value.effectMultiplier,
         chanceOnHitPercent:value.chanceOnHitPercent,chanceOnCriticalHitPercent:value.chanceOnCriticalHitPercent,
-        ailmentCriticalChancePercent:value.ailmentCriticalChancePercent,weightedSourceDamage:value.weightedSourceDamage,detail:value.detail,
+        ailmentCriticalChancePercent:value.ailmentCriticalChancePercent,weightedSourceDamage:value.weightedSourceDamage,rateMultiplier:value.rateMultiplier,detail:value.detail,
       })),
       blockedEffects:damagingAilments.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),
       totalSustainedDamagePerSecond:damagingAilments.totalSustainedDamagePerSecond,
