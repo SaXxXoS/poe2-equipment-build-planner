@@ -1,0 +1,71 @@
+{
+  "step": 123,
+  "scope": "debuff-duration-on-self",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "treeRelease": "0.5.2",
+  "technicalAffixProductVersion": "4.5.4.4.4",
+  "implemented": {
+    "debuffExpirationRate": true,
+    "blindDuration": true,
+    "generalAilmentDuration": true,
+    "elementalAilmentDuration": true,
+    "individualAilments": [
+      "ignite",
+      "chill",
+      "freeze",
+      "shock",
+      "scorch",
+      "brittle",
+      "sap",
+      "bleed",
+      "poison"
+    ],
+    "technicalEquipmentStats": [
+      "self_elemental_status_duration_-%",
+      "base_self_chill_duration_-%",
+      "base_self_freeze_duration_-%",
+      "base_self_ignite_duration_-%",
+      "base_self_shock_duration_-%",
+      "self_bleed_duration_+%",
+      "self_poison_duration_+%"
+    ],
+    "conditionalEffectsFailClosed": true
+  },
+  "productiveTreeCoverage": {
+    "exactNodes": 19,
+    "realReferenceNodes": [5335, 9968, 11330, 4810, 4544]
+  },
+  "formula": {
+    "order": "general-plus-elemental-plus-individual-then-expiration-rate",
+    "durationMultiplier": "(100 + increasedMinusReducedDuration) * 100 / (100 + debuffExpirationRate)",
+    "lowerBoundPercent": 0,
+    "secondsInvented": false
+  },
+  "modelVersions": {
+    "characterSurvivability": "1.7.0",
+    "damageCalculator": "3.37.0"
+  },
+  "focusedTests": {
+    "files": 3,
+    "tests": 89,
+    "realProductReferenceTests": 5,
+    "status": "passed"
+  },
+  "validation": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "fullSuite": "passed-partitioned",
+    "fullSuiteFiles": 136,
+    "fullSuiteTests": 1698,
+    "combinedRunnerStatus": "vitest-worker-rpc-timeout-after-passed-tests",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Die Ausgabe ist ein relativer Dauermultiplikator und keine erfundene Dauer in Sekunden.",
+    "Fluchdauer ist nicht Teil dieses Schritts.",
+    "Spezifische Ablaufgeschwindigkeit sowie More/Less-Dauer bleiben ohne lokale technische Evidenz neutral.",
+    "Gegnerische Grunddauer, Wiederanwendung und Uptime benötigen spätere belegte Gegnerprofile."
+  ]
+}

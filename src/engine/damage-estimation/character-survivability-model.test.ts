@@ -61,6 +61,17 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('immune-silence', 'You cannot be Cursed with Silence'),
   node('conditional-maim', 'Immune to Maim while Shapeshifted'),
   node('conditional-deflect-maim', 'Deflected Hits cannot inflict Maim on you'),
+  node('debuff-expiry-a', '[Debuff|Debuffs] on you expire 20% faster'),
+  node('debuff-expiry-b', 'Debuffs on you expire 10% faster'),
+  node('ailment-duration', '10% reduced Duration of [Ailments|Ailments] on You'),
+  node('elemental-duration', '15% reduced Elemental Ailment Duration on you'),
+  node('shock-duration', '25% reduced [Shock|Shock] duration on you'),
+  node('freeze-duration', '25% reduced [Freeze|Freeze] Duration on you'),
+  node('bleed-duration', '40% reduced Duration of [Bleeding] on You'),
+  node('poison-duration', '40% reduced [Poison|Poison] Duration on you'),
+  node('blind-duration', '25% reduced Blind Duration on you'),
+  node('shock-duration-overcap', '120% reduced Shock Duration on you'),
+  node('conditional-shock-duration', '25% reduced Shock Duration on you while on Low Life'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -256,5 +267,38 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toEqual(expect.arrayContaining(['Immune to Maim while Shapeshifted', 'Deflected Hits cannot inflict Maim on you']))
     expect(result.secondaryDebuffProtection?.maim.immune).toBe(false)
+  })
+  it('wendet allgemeine, elementare und einzelne Dauer in PoB2-Reihenfolge an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['debuff-expiry-a', 'ailment-duration', 'elemental-duration', 'shock-duration', 'bleed-duration', 'blind-duration']) })
+    expect(result.debuffDurationOnSelf).toEqual({
+      debuffExpirationRate: 20,
+      debuffDurationMultiplierPercent: 83.333333,
+      blindPercent: 62.5,
+      ailments: { ignite: 62.5, chill: 62.5, freeze: 62.5, shock: 41.666667, scorch: 62.5, brittle: 62.5, sap: 62.5, bleed: 41.666667, poison: 75 },
+    })
+  })
+  it('addiert mehrere Raten fuer schnelleres Ablaufen statt Prozentwerte direkt abzuziehen', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['debuff-expiry-a', 'debuff-expiry-b']) })
+    expect(result.debuffDurationOnSelf?.debuffExpirationRate).toBe(30)
+    expect(result.debuffDurationOnSelf?.debuffDurationMultiplierPercent).toBe(76.923077)
+    expect(result.debuffDurationOnSelf?.ailments.ignite).toBe(76.923077)
+  })
+  it('verrechnet technisch bestaetigte Gegenstandswerte fuer Beeintraechtigungsdauer', () => {
+    const durationEquipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'duration', modifierId: 'duration', value: 0, statValues: [
+      { statId: 'self_elemental_status_duration_-%', value: 15 }, { statId: 'base_self_shock_duration_-%', value: 40 },
+      { statId: 'self_bleed_duration_+%', value: -50 }, { statId: 'self_poison_duration_+%', value: -45 },
+    ] }] }]
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: durationEquipment, weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning([]) })
+    expect(result.debuffDurationOnSelf?.ailments).toEqual({ ignite: 85, chill: 85, freeze: 85, shock: 45, scorch: 85, brittle: 85, sap: 85, bleed: 50, poison: 55 })
+  })
+  it('begrenzt negative Dauern bei null', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['shock-duration-overcap']) })
+    expect(result.debuffDurationOnSelf?.ailments.shock).toBe(0)
+  })
+  it('blockiert bedingte Dauermodifikatoren ohne bestaetigten Zustand', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['conditional-shock-duration']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toContain('25% reduced Shock Duration on you while on Low Life')
+    expect(result.debuffDurationOnSelf?.ailments.shock).toBe(100)
   })
 })

@@ -3742,3 +3742,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Referenzprüfung: 2 Dateien und 79 Tests erfolgreich. Die kontrolliert partitionierte Gesamtsuite umfasst 136 Dateien und 1.689 bestandene Tests. Der monolithische Runner meldet ausschließlich bekannte `onTaskUpdate`-RPC-Zeitüberschreitungen bei parallelen Performance-Suiten; die betroffenen Tests bestanden isoliert. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Dokumentation: `docs/BUILD_ASSISTANT_SECONDARY_DEBUFF_PROTECTION_STEP_122.md`.
 - Audit: `docs/audits/build-assistant-step-122-secondary-debuff-protection.json`.
+
+## Schritt 123 – Dauer von Beeinträchtigungen auf dem Charakter
+
+- Das Charakter-Schutzmodell wurde auf `1.7.0`, der Schadensrechner auf `3.37.0` erweitert.
+- Allgemeine Ablaufgeschwindigkeit, Blindheitsdauer und die Dauer von Entzünden, Kühlen, Einfrieren, Schock, Versengen, Sprödigkeit, Saft, Blutung und Gift werden getrennt ausgewiesen.
+- Allgemeine, elementare und einzelne Dauer werden in der von PoB2 belegten Reihenfolge verrechnet; Ablaufgeschwindigkeit wirkt anschließend über `100 / (100 + Rate)`.
+- Sieben bestätigte technische Gegenstands-Stat-IDs fließen ein. Sichtbare, nicht technisch zugeordnete Zeilen bleiben wirkungslos.
+- Der reale Baum 0.5.2 enthält 19 exakt auswertbare Knoten; fünf repräsentative Knotenfälle werden direkt gegen das Produktartefakt getestet.
+- Bedingte Effekte, Fluchdauer, spezifische Ablaufgeschwindigkeiten und unbelegte More/Less-Multiplikatoren bleiben fail-closed.
+- Die App gibt relative Dauermultiplikatoren aus und erfindet ohne Gegnerprofil keine Sekundenwerte.
+- Fokussierte Referenzprüfung: 3 Dateien und 89 Tests erfolgreich. Kontrollierte Gesamtsuite: 136 Dateien und 1.698 Tests ohne fachlichen Testfehler; die bekannte Worker-RPC-Grenze des großen kombinierten Laufs bleibt dokumentiert. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Dokumentation: `docs/BUILD_ASSISTANT_DEBUFF_DURATION_ON_SELF_STEP_123.md`.
+- Audit: `docs/audits/build-assistant-step-123-debuff-duration-on-self.json`.
