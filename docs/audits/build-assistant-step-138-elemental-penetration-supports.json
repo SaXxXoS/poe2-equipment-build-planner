@@ -1,0 +1,40 @@
+{
+  "step": 138,
+  "scope": "primary-skill-elemental-penetration-supports",
+  "calculatorVersion": "3.52.0",
+  "elementalPenetrationSupportModelVersion": "1.0.0",
+  "implemented": [
+    "fire-penetration-i-structured-value",
+    "cold-penetration-structured-value",
+    "lightning-penetration-structured-value",
+    "primary-skill-only-application",
+    "weapon-set-specific-application",
+    "matching-hit-damage-type-only",
+    "hit-versus-damage-over-time-separation"
+  ],
+  "blocked": [
+    "fire-penetration-ii-without-structured-value",
+    "support-quality-without-per-support-quality-model",
+    "cross-skill-penetration",
+    "penetration-on-damage-over-time"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "focusedTests": {
+    "files": 4,
+    "tests": 117,
+    "status": "passed"
+  },
+  "fullSuite": {
+    "initialRun": "139 files and 1751 tests passed; 2 timing-sensitive passive-tree files exceeded the shared 5-second limit",
+    "isolatedSerialRepeat": "2 files and 197 tests passed",
+    "status": "functionally-passed-with-isolated-timing-repeat"
+  },
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonValidation": "passed"
+  }
+}

@@ -16,6 +16,7 @@ export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
 export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
 export const ARMOUR_BREAK_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
+export const ELEMENTAL_PENETRATION_SUPPORT_MODEL_VERSION='1.0.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -66,7 +67,7 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers(),armourBreakModifiers:ArmourBreakModifierSummary=emptyArmourBreakModifiers()){
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],primaryHitDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',targetLevel:number|undefined,primarySkillId:string|undefined,shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers(),armourBreakModifiers:ArmourBreakModifierSummary=emptyArmourBreakModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
   const supportById=new Map(supports.map(support=>[support.id,support]))
@@ -82,6 +83,24 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
     const selectedSupportNumerics=selectedSupportDefinitions
       .map(value=>supportsByName.get((value.nameEn??'').toLocaleLowerCase('en'))?.numericStats as Record<string,number>|undefined)
       .filter((value):value is Record<string,number>=>Boolean(value))
+    if(setup.skillId===primarySkillId){
+      for(const selectedSupport of selectedSupportDefinitions){
+        const numericSupport=supportsByName.get((selectedSupport.nameEn??'').toLocaleLowerCase('en'))
+        const numericSupportStats=numericSupport?.numericStats as Record<string,number>|undefined
+        for(const type of elemental){
+          const statId=`base_reduce_enemy_${type}_resistance_%`
+          const value=Number(numericSupportStats?.[statId]??0)
+          if(!primaryHitDamageTypes.includes(type)||!Number.isFinite(value)||value<=0)continue
+          candidates.push({
+            source:'support',sourceId:selectedSupport.id,label:`${selectedSupport.displayNameDe}: ${type==='fire'?'Feuer':type==='cold'?'Kälte':'Blitz'}durchdringung`,
+            kind:'penetration',damageTypes:[type],value,evidence:'structured-exact',
+            sourceReference:`${ELEMENTAL_PENETRATION_SUPPORT_MODEL_VERSION}: ${numericSupport?.sourceRecordId??selectedSupport.nameEn}:${statId}`,
+            conditional:false,estimatedUptime:1,uptimeStatus:'permanent',state:'permanent',
+            stateDetail:'Die Durchdringung gilt nur für Treffer der direkt unterstützten Fertigkeit und senkt keinen Widerstand für andere Fertigkeiten oder Schaden über Zeit.',
+          })
+        }
+      }
+    }
     const elementalCurse=numericStats['base_skill_buff_all_elements_resistance_%_to_apply']
     if(Number.isFinite(elementalCurse)&&elementalCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementarwiderstände`,
@@ -414,6 +433,7 @@ export function applyBuildEnemyEffects(input:{
   setups:SkillSetup[]
   skills:SkillGemDefinition[]
   activeDamageTypes:DamageComponent['type'][]
+  primaryHitDamageTypes?:DamageComponent['type'][]
   weaponSet:'set-1'|'set-2'
   primarySkillId?:string
   primaryActionsPerSecond?:number
@@ -432,7 +452,7 @@ export function applyBuildEnemyEffects(input:{
   const armourBreakModifiers=resolveAllocatedArmourBreakModifiers(input.passiveTree,input.realPassivePlanning,input.weaponSet)
   const shockContexts=unique([...(input.shockSourceContexts??[]),...(input.primaryShockContext?[input.primaryShockContext]:[])])
   const effects=[
-    ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.weaponSet,input.profile.level,shockContexts,setup=>mergeShockModifiers(
+    ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.primaryHitDamageTypes??[],input.weaponSet,input.profile.level,input.primarySkillId,shockContexts,setup=>mergeShockModifiers(
       commonShockModifiers,
       resolveSelectedShockModifiers({setup,supports:input.supports,weaponSet:input.weaponSet}),
     ),armourBreakModifiers),

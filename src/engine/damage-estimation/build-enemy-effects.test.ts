@@ -10,6 +10,36 @@ const support=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,displa
 const profile={id:'automatic',label:'Automatisch',source:'automatic-season-reference' as const}
 
 describe('automatische belegte Gegnerwirkungen',()=>{
+  it('wendet Elementardurchdringung nur vom Support des berechneten Hauptskills an',()=>{
+    const primary={...setup('primary','arc'),supportGemIds:['lightning-penetration']}
+    const secondary={...setup('secondary','fireball'),supportGemIds:['fire-penetration']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[primary,secondary],
+      skills:[skill('arc','Arc'),skill('fireball','Fireball')],
+      supports:[support('lightning-penetration','Lightning Penetration'),support('fire-penetration','Fire Penetration I')],
+      activeDamageTypes:['lightning'],primaryHitDamageTypes:['lightning'],weaponSet:'set-1',primarySkillId:'arc',
+    })
+    expect(result.penetration).toEqual({lightning:30})
+    expect(result.appliedEffects).toEqual([expect.objectContaining({
+      source:'support',sourceId:'lightning-penetration',kind:'penetration',damageTypes:['lightning'],
+      value:30,effectiveValue:30,evidence:'structured-exact',state:'permanent',
+    })])
+  })
+
+  it('wendet einen Durchdringungs-Support weder auf die falsche Schadensart noch im falschen Waffenset an',()=>{
+    const fire={...setup('primary','fireball'),weaponSet:'set-2' as const,supportGemIds:['fire-penetration']}
+    const wrongType=applyBuildEnemyEffects({
+      profile,setups:[fire],skills:[skill('fireball','Fireball')],supports:[support('fire-penetration','Fire Penetration I')],
+      activeDamageTypes:['cold'],primaryHitDamageTypes:['cold'],weaponSet:'set-2',primarySkillId:'fireball',
+    })
+    const wrongSet=applyBuildEnemyEffects({
+      profile,setups:[fire],skills:[skill('fireball','Fireball')],supports:[support('fire-penetration','Fire Penetration I')],
+      activeDamageTypes:['fire'],primaryHitDamageTypes:['fire'],weaponSet:'set-1',primarySkillId:'fireball',
+    })
+    expect(wrongType.penetration).toBeUndefined()
+    expect(wrongSet.penetration).toBeUndefined()
+  })
+
   it('übernimmt Elemental Weakness aus dem strukturierten Skillwert',()=>{
     const result=applyBuildEnemyEffects({profile,setups:[setup('curse','weakness')],skills:[skill('weakness','Elemental Weakness')],activeDamageTypes:['lightning'],weaponSet:'set-1'})
     expect(result.resistanceReduction).toEqual({fire:59,cold:59,lightning:59})

@@ -3930,3 +3930,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Gesamtlauf: 139 Dateien und 1.747 Tests erfolgreich; zwei Passivbaumdateien überschritten unter gemeinsamer Last ihr 5-Sekunden-Limit. Der isolierte serielle Wiederholungslauf bestand mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_ARMOUR_BREAK_STEP_137.md` und `docs/audits/build-assistant-step-137-armour-break.json`.
 - Nächster Baustein: nächste vollständig lokal belegbare Gegnerzustands- oder Schadensaufnahmekette.
+
+## Schritt 138 – skillgebundene Elementardurchdringung
+
+- Der Schadensrechner verwendet `3.52.0`; das Elementardurchdringungs-Supportmodell verwendet `1.0.0`.
+- `Fire Penetration I`, `Cold Penetration` und `Lightning Penetration` übernehmen ihren jeweils strukturierten Wert von 30 % aus der gepinnten PoB2-Schadensreferenz.
+- Durchdringung gilt ausschließlich für passende Trefferkomponenten des aktuell berechneten Hauptskills und nur im aktiven Waffenset.
+- Supports anderer Fertigkeitskarten, unpassende Schadensarten und reine DoT-Fertigkeiten erhalten keinen Bonus.
+- Entzünden, Gift, Blutung und eigenständiger Schaden über Zeit ignorieren Trefferpenetration; Widerstandsreduktion, Exposition und Durchdringung bleiben getrennt.
+- `Fire Penetration II` bleibt mangels strukturiertem Zahlenwert wirkungsneutral. Es wird kein Wert aus Name oder Stufe abgeleitet.
+- Fokussierte Prüfung: 4 Dateien und 117 Tests erfolgreich.
+- Gesamtlauf: 139 Dateien und 1.751 Tests erfolgreich; zwei Passivbaumdateien überschritten unter gemeinsamer Last ihr 5-Sekunden-Limit. Der isolierte serielle Wiederholungslauf bestand mit 2 Dateien und 197 Tests.
+- Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_ELEMENTAL_PENETRATION_SUPPORTS_STEP_138.md` und `docs/audits/build-assistant-step-138-elemental-penetration-supports.json`.
+- Nächster Baustein: nächste vollständig lokal belegbare gegnerbezogene Trefferwirkung; unvollständige Zustandsketten bleiben fail-closed.

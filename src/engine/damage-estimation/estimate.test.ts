@@ -669,6 +669,32 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     })
     expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:0})
   })
+  it('wendet den gewählten strukturierten Durchdringungs-Support auf den Treffer des Hauptskills an',()=>{
+    const selected={...setup('arc'),supportGemIds:['lightning-penetration']}
+    const enemyProfile={id:'penetration-support',label:'Durchdringungstest',source:'manual-comparison-profile' as const,resistances:{lightning:40}}
+    const baseline=estimateHitDamage({equipment:[],setups:[setup('arc')],skills:[skill('arc','Arc')],enemyProfile})
+    const result=estimateHitDamage({
+      equipment:[],setups:[selected],skills:[skill('arc','Arc')],
+      supports:[supportDef('lightning-penetration','Lightning Penetration')],
+      enemyProfile,
+    })
+    expect(result.enemyProfile?.penetration).toEqual({lightning:30})
+    expect(result.enemyProfile?.appliedEffects).toContainEqual(expect.objectContaining({
+      source:'support',sourceId:'lightning-penetration',kind:'penetration',value:30,
+    }))
+    expect(result.mitigatedComponents?.[0]).toMatchObject({type:'lightning',effectiveDefence:10})
+    expect(result.expectedDamagePerSecondAfterMitigation).toBeGreaterThan(baseline.expectedDamagePerSecondAfterMitigation!)
+  })
+  it('wendet Trefferpenetration nicht auf eine reine Schaden-über-Zeit-Fertigkeit an',()=>{
+    const selected={...setup('contagion'),supportGemIds:['fire-penetration']}
+    const result=estimateHitDamage({
+      equipment:[],setups:[selected],skills:[skill('contagion','Contagion')],
+      supports:[supportDef('fire-penetration','Fire Penetration I')],
+      enemyProfile:{id:'dot-penetration',label:'DoT-Test',source:'manual-comparison-profile',resistances:{fire:40,chaos:40}},
+    })
+    expect(result.enemyProfile?.penetration).toBeUndefined()
+    expect(result.enemyProfile?.appliedEffects?.some(effect=>effect.kind==='penetration')).not.toBe(true)
+  })
   it('berücksichtigt einen gewählten strukturierten Fluch automatisch im Vergleichsprofil',()=>{
     const curseSetup:SkillSetup={id:'curse',skillId:'curse',role:'utility',weaponSet:'both',supportGemIds:[]}
     const result=estimateHitDamage({
