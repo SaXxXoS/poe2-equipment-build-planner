@@ -560,3 +560,10 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
   nächste numerische Paritätslücke.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_DAMAGE_INTEGRATION_STEP_104.md`.
+# Schritt 105 – Aktionsgeschwindigkeits-Reihenfolge
+
+- `increased/reduced` für Aktionsgeschwindigkeit und kritische Trefferchance wird additiv gruppiert.
+- `more/less` wird als getrennte Multiplikatorgruppe angewendet.
+- Bedingte Werte bleiben ohne Zustandsnachweis blockiert.
+- Fokussierte Rechentests: 60/60 erfolgreich.
+- Vollständige PoB2-Parität bleibt offen.

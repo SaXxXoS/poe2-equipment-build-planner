@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { EquipmentEntry, SkillGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions, quantitativePercentMultiplier } from './quantitative-effects'
 
 const skill: SkillGemDefinition = {
   id: 'spark',
@@ -23,6 +23,8 @@ const tree = {
     { id: 'extra', name: { sourceText: 'Extra Lightning' }, stats: [{ sourceText: '[Gain] 12% of [Physical] Damage as Extra [Lightning] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'spell-more', name: { sourceText: 'Arcane Force' }, stats: [{ sourceText: '12% more Spell Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'conditional-damage', name: { sourceText: 'Conditional Force' }, stats: [{ sourceText: '40% increased Lightning Damage while on Full Life' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'cast-more', name: { sourceText: 'Accelerated Magic' }, stats: [{ sourceText: '20% more Cast Speed' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
+    { id: 'cast-less', name: { sourceText: 'Slowed Magic' }, stats: [{ sourceText: '25% less Cast Speed' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-physical', name: { sourceText: 'Bestial Rage' }, stats: [{ sourceText: 'Every 10 [Rage|Rage] also grants 12% increased [Physical|Physical] Damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-spell-more', name: { sourceText: 'Druidic Champion' }, stats: [{ sourceText: 'Every 2 [Rage|Rage] also grants 1% more Spell damage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
     { id: 'rage-ambiguous', name: { sourceText: 'Unknown Rage' }, stats: [{ sourceText: 'Gain lots of Damage for every Rage' }], nodeType: 'normal', isClassStart: false, classStartIndex: null, isAscendancyStart: false, ascendancyId: null, isJewelSocket: false },
@@ -34,6 +36,32 @@ const planning = {
 } as unknown as RealPassivePlanningIntegrationResult
 
 describe('quantitative Wirkungskette', () => {
+  it('verknÃ¼pft increased/reduced additiv und more/less multiplikativ', () => {
+    expect(quantitativePercentMultiplier([
+      { id: 'inc', source: 'passive', sourceId: 'a', label: 'inc', percent: 30, appliesTo: ['attack'] },
+      { id: 'red', source: 'passive', sourceId: 'b', label: 'red', percent: -10, appliesTo: ['attack'] },
+      { id: 'more', source: 'passive', sourceId: 'c', label: 'more', percent: 20, appliesTo: ['attack'], kind: 'more' },
+      { id: 'less', source: 'passive', sourceId: 'd', label: 'less', percent: -25, appliesTo: ['attack'], kind: 'more' },
+    ])).toBeCloseTo(1.08)
+  })
+
+  it('erhÃ¤lt more und less bei passiver Aktionsgeschwindigkeit als getrennte Faktoren', () => {
+    const result = collectQuantitativeEffects({
+      equipment: [],
+      skill,
+      passiveTree: tree,
+      realPassivePlanning: {
+        pipelineResult: { allocatedNodeIds: ['cast-more', 'cast-less'] },
+      } as unknown as RealPassivePlanningIntegrationResult,
+      weaponSet: 'set-1',
+    })
+    expect(result.speedModifiers).toEqual([
+      expect.objectContaining({ sourceId: 'cast-more', percent: 20, kind: 'more' }),
+      expect.objectContaining({ sourceId: 'cast-less', percent: -25, kind: 'more' }),
+    ])
+    expect(quantitativePercentMultiplier(result.speedModifiers)).toBeCloseTo(0.9)
+  })
+
   it('liest nur numerisch eindeutige belegte Baum- und Aszendenzzeilen', () => {
     const result = collectQuantitativeEffects({ equipment: [], skill, passiveTree: tree, realPassivePlanning: planning, weaponSet: 'set-1' })
     expect(result.damageModifiers).toEqual([expect.objectContaining({ source: 'passive', percent: 20, appliesTo: ['lightning'] })])

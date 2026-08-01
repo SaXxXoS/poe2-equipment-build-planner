@@ -3552,3 +3552,11 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Ressourcenendwerte sowie kontrollierte Zustandsauswertung.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_DAMAGE_INTEGRATION_STEP_104.md`.
+# Fortsetzung – Schritt 105
+
+- Commit-Basis: `1a3b0ef` (strukturierte Passive-Schadenswirkung).
+- Aktionsgeschwindigkeit und kritische Trefferchance unterscheiden nun additive `increased/reduced`-Werte von multiplikativen `more/less`-Werten.
+- Ein belegtes `less` wird nicht mehr fälschlich als positiver Geschwindigkeitswert behandelt.
+- Fokussierte Rechentests: 60/60 erfolgreich; Typecheck erfolgreich.
+- Keine neue Quelle, kein Pin geändert, keine bedingte Wirkung erfunden.
+- Vollständige Path-of-Building-2-Gleichwertigkeit bleibt weiterhin unbestätigt.

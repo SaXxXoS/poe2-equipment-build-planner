@@ -1,0 +1,19 @@
+{
+  "step": 105,
+  "scope": "quantitative-action-speed-and-critical-chance-ordering",
+  "status": "implemented-tested",
+  "operatorGroups": {
+    "additive": ["increased", "reduced"],
+    "multiplicative": ["more", "less"]
+  },
+  "conditionalEffects": "fail-closed-without-state-proof",
+  "focusedTests": {
+    "passed": 60,
+    "failed": 0
+  },
+  "typecheck": "passed",
+  "limitations": [
+    "Cooldown recovery remains a separate calculation domain.",
+    "This step does not establish complete Path of Building 2 parity."
+  ]
+}

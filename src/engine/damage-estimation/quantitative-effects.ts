@@ -52,6 +52,19 @@ export interface QuantitativeEffectSummary {
   warnings: string[]
 }
 
+/** Applies PoE's additive increased/reduced group before separate more/less multipliers. */
+export function quantitativePercentMultiplier(
+  modifiers: readonly QuantitativeDamageModifier[],
+): number {
+  const increasedReduced = modifiers
+    .filter(effect => (effect.kind ?? 'increased') === 'increased')
+    .reduce((sum, effect) => sum + effect.percent, 0)
+  const moreLess = modifiers
+    .filter(effect => effect.kind === 'more')
+    .reduce((product, effect) => product * (1 + effect.percent / 100), 1)
+  return Math.max(0, 1 + increasedReduced / 100) * Math.max(0, moreLess)
+}
+
 export function collectSkillConversions(
   skillId: string,
   numericStats: Record<string, number>,
@@ -159,9 +172,11 @@ function passiveSummary(tree: RealPassiveTree | undefined, planning: RealPassive
           const signed = effect.operator === 'reduced' || effect.operator === 'less' ? -effect.value : effect.value
           if (appliesTo.length) result.damageModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: signed, appliesTo, kind: effect.operator === 'more' || effect.operator === 'less' ? 'more' : 'increased' })
         }
-        if (tagSet.has('attack-speed') && skillTags.has('attack')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['attack'] })
-        if (tagSet.has('cast-speed') && skillTags.has('spell')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['cast'] })
-        if (tagSet.has('critical') && /critical hit chance/i.test(text)) result.criticalChanceModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: effect.operator === 'reduced' ? -effect.value : effect.value, appliesTo: ['critical'] })
+        const signed = effect.operator === 'reduced' || effect.operator === 'less' ? -effect.value : effect.value
+        const kind = effect.operator === 'more' || effect.operator === 'less' ? 'more' as const : 'increased' as const
+        if (tagSet.has('attack-speed') && skillTags.has('attack')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: signed, appliesTo: ['attack'], kind })
+        if (tagSet.has('cast-speed') && skillTags.has('spell')) result.speedModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: signed, appliesTo: ['cast'], kind })
+        if (tagSet.has('critical') && /critical hit chance/i.test(text)) result.criticalChanceModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: signed, appliesTo: ['critical'], kind })
       }
       const criticalMultiplier = text.match(/^\+?(-?\d+(?:\.\d+)?)% to Critical Damage Bonus$/i)
       if (criticalMultiplier) result.criticalMultiplierModifiers.push({ id: `${source}:${nodeId}:${text}`, source, sourceId: nodeId, label: text, percent: Number(criticalMultiplier[1]), appliesTo: ['critical'] })
@@ -368,9 +383,7 @@ export function applyDamageModifiers(
   const result = new Map<DamageComponent['type'], { minimum: number; maximum: number }>(damageTypes.map(type => [type, { minimum: 0, maximum: 0 }]))
   const add = (type: DamageComponent['type'], minimum: number, maximum: number, applicableTypes: string[]) => {
     const applicable = modifiers.filter(effect => effect.appliesTo.some(value => applicableTypes.includes(value)))
-    const increase = applicable.filter(effect => (effect.kind ?? 'increased') === 'increased').reduce((sum, effect) => sum + effect.percent, 0)
-    const more = applicable.filter(effect => effect.kind === 'more').reduce((product, effect) => product * (1 + effect.percent / 100), 1)
-    const multiplier = Math.max(0, 1 + increase / 100) * Math.max(0, more)
+    const multiplier = quantitativePercentMultiplier(applicable)
     const target = result.get(type)!
     target.minimum += minimum * multiplier
     target.maximum += maximum * multiplier

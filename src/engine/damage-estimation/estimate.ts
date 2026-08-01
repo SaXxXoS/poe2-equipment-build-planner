@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EquipmentEntry, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
 import type { RealPassivePlanningIntegrationResult } from '../orchestration/real-passive-integration'
 import type { RealPassiveTree } from '../real-passive-pipeline/types'
-import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions } from './quantitative-effects'
+import { applyConversions, applyDamageModifiers, applyGainAsExtra, applyRageMoreDamageModifiers, collectQuantitativeEffects, collectRageScaledDamageModifiers, collectSkillConversions, quantitativePercentMultiplier } from './quantitative-effects'
 import { applyQuantitativeSupports } from './quantitative-supports'
 import { applyEnemyMitigation } from './enemy-mitigation'
 import { applyBuildEnemyEffects } from './build-enemy-effects'
@@ -169,8 +169,8 @@ export function estimateHitDamage(input:{
   const increasedComponents=components.map(value=>({...value}))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
-  const speedIncrease=quantitative.speedModifiers.reduce((sum,effect)=>sum+effect.percent,0)
-  actionsPerSecond*=1+speedIncrease/100
+  const speedMultiplier=quantitativePercentMultiplier(quantitative.speedModifiers)
+  actionsPerSecond*=speedMultiplier
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   const additionalCooldownUses=additionalCooldownUsesFor({
     skillTypes:skill.skillTypes,
@@ -236,7 +236,7 @@ export function estimateHitDamage(input:{
   const temporalComponents=applyTemporalDamageWindow(temporalGainComponents,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
   const temporalActionsPerSecond=actionsPerSecond*temporal.actionSpeedMultiplier
   if(quantitative.damageModifiers.length)included.push('passende globale Schadenssteigerungen je Schadenskomponente')
-  if(speedIncrease)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
+  if(speedMultiplier!==1)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
   if(quantitative.conversions.length)included.push('bestätigte mehrstufig geordnete Schadensumwandlungen')
   if(quantitative.gainAsExtra.length)included.push('bestätigter zusätzlicher Schaden nach PoB-Modifikatorreihenfolge')
   if(archmageEffect)included.push(`Archmage: ${archmageEffect.gainAsLightningPercent}% des Schadens als zusätzlicher Blitzschaden bei ${archmageEffect.additionalBaseManaCost} zusätzlichen Mana-Grundkosten`)
@@ -257,8 +257,9 @@ export function estimateHitDamage(input:{
   if(luckyHitEffects.length)included.push('belegte Lucky-Trefferschadenswürfe mit bestätigtem Bedingungszustand')
   const activeWeapon=input.equipment.find(entry=>entry.slotId.includes(`weapon-${activeSet}`))
   const baseCriticalChance=skill.kind==='attack'?activeWeapon?.weaponStats?.criticalHitChance:skill.critChance
-  const criticalChanceIncrease=quantitative.criticalChanceModifiers.reduce((sum,effect)=>sum+effect.percent,0)
-  const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*(1+criticalChanceIncrease/100)*supportEffects.criticalChanceMultiplier)
+  const criticalChanceIncrease=quantitative.criticalChanceModifiers.filter(effect=>(effect.kind??'increased')==='increased').reduce((sum,effect)=>sum+effect.percent,0)
+  const criticalChanceMultiplier=quantitativePercentMultiplier(quantitative.criticalChanceModifiers)
+  const effectiveCriticalChance=baseCriticalChance==null?undefined:Math.min(100,baseCriticalChance*criticalChanceMultiplier*supportEffects.criticalChanceMultiplier)
   const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus
   const totalCriticalDamageBonus=100+additionalCriticalDamageBonus
   const criticalExpectationMultiplier=effectiveCriticalChance==null?undefined:1+effectiveCriticalChance/100*totalCriticalDamageBonus/100
