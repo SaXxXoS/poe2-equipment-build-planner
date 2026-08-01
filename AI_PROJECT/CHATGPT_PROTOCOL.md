@@ -3526,3 +3526,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   PoB2-Parität bleibt offen.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_STRUCTURED_EFFECT_MODEL_STEP_102.md`.
+
+## Schritt 103 – deterministische Wirkungsaggregation
+
+- Strukturierte Passivwirkungen können pro belegtem Zielbereich getrennt als
+  flach, additiv erhöht/verringert und multiplikativ mehr/weniger gestapelt
+  werden.
+- Quellen bleiben erhalten; die Ausgabe ist stabil und unabhängig von der
+  Eingabereihenfolge.
+- Bedingte oder ziellose Effekte fließen nicht ein.
+- Noch keine finale DPS- oder Defensivberechnung; PoB2-Parität bleibt offen.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_AGGREGATION_STEP_103.md`.

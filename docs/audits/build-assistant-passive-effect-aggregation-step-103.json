@@ -1,0 +1,18 @@
+{
+  "step": 103,
+  "scope": "passive-structured-effect-aggregation",
+  "supportedOperators": {
+    "flat-add": "additive",
+    "increased": "shared-additive-percent",
+    "reduced": "shared-additive-percent-negative",
+    "more": "multiplicative",
+    "less": "multiplicative-negative"
+  },
+  "conditionBlockedEffectsExcluded": true,
+  "unknownTargetEffectsExcluded": true,
+  "sourceTraceability": true,
+  "inputOrderIndependent": true,
+  "rankingChanged": false,
+  "finalDamageCalculated": false,
+  "pathOfBuildingParity": false
+}

@@ -535,3 +535,14 @@ offen. Details: `BUILD_ASSISTANT_PASSIVE_SPECIAL_SYSTEMS_STEP_95.md`.
   unverändert.
 - Detaildokument:
   `docs/BUILD_ASSISTANT_PASSIVE_STRUCTURED_EFFECT_MODEL_STEP_102.md`.
+
+## Schritt 103 – deterministische Wirkungsaggregation
+
+- Flache Werte, `increased/reduced` und `more/less` werden mathematisch
+  getrennt und quellenverfolgbar pro Zielvektor gestapelt.
+- Bedingte und ziellose Effekte bleiben aus der Aggregation ausgeschlossen.
+- Ausgabe und Multiplikation sind deterministisch und
+  eingabereihenfolgeunabhängig.
+- Noch keine Verbindung zu finalen Skill-, Gegner- oder Defensivformeln.
+- Detaildokument:
+  `docs/BUILD_ASSISTANT_PASSIVE_EFFECT_AGGREGATION_STEP_103.md`.
