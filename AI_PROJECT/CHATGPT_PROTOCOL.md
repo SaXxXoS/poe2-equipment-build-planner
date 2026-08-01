@@ -3869,3 +3869,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien und 27 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien und 1.729 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_FIXED_SHOCK_SOURCES_STEP_132.md` und `docs/audits/build-assistant-step-132-fixed-shock-sources.json`.
 - Nächster Baustein: eine weitere vollständig lokal belegbare Gegnerzustandskette; Bodeneffekt-Aktivierung erst bei reproduzierbar bestätigtem Laufzeitzustand.
+
+## Schritt 133 – belegte Blitz-Exposition
+
+- Der Schadensrechner verwendet `3.47.0`; das neue Expositionsmodell verwendet `1.0.0`.
+- `Lightning Exposure` ist über Supportidentität, 8.000 ms strukturierte Wirkzeit und den generischen PoB2-Grundwert von 20 % verbunden.
+- Die Exposition wird nur von einem zuverlässig aufrechterhaltbaren Schock derselben Fertigkeit aktiviert. Ohne diese Kette bleibt sie schadensneutral.
+- `Potent Exposure` erhöht den belegten Wert deterministisch um 20 % auf 24 %.
+- Gleichartige Expositionen verwenden nur den stärksten Wert. Der stärkste Fluch und die stärkste Exposition sind getrennte Gruppen und werden addiert.
+- Zielrarität reduziert nur die Fluchwirkung und nicht die Exposition. Gegen ein einzigartiges Ziel ergeben 29,5 % wirksame Elementarschwäche plus 20 % Blitz-Exposition insgesamt 49,5 %.
+- Feuer- und Kälte-Exposition bleiben bis zur vollständigen zustandsgebundenen Anwendungskette fail-closed.
+- Fokussierte Prüfung: 1 Datei mit 27 Tests. Serielle Gesamtsuite: 140 Dateien mit 1.733 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_LIGHTNING_EXPOSURE_STEP_133.md` und `docs/audits/build-assistant-step-133-lightning-exposure.json`.
+- Nächster Baustein: Feuer- und Kälte-Exposition erst nach belegter Entzünden- beziehungsweise kritischer Kältetrefferkette.

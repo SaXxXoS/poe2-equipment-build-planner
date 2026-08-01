@@ -14,6 +14,7 @@ const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magi
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.4.0'
+export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.0.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -46,9 +47,10 @@ function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefine
 
 const setupActiveInSet=(setup:SkillSetup,weaponSet:'set-1'|'set-2')=>setup.weaponSet==='both'||setup.weaponSet===weaponSet
 
-function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers()){
+function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:SupportGemDefinition[],activeDamageTypes:DamageComponent['type'][],weaponSet:'set-1'|'set-2',shockContexts:PrimaryShockContext[]=[],shockModifiersForSetup:(setup:SkillSetup)=>ShockModifierSummary=()=>emptyShockModifiers()){
   const candidates:AppliedEnemyMitigationEffect[]=[]
   const skillById=new Map(skills.map(skill=>[skill.id,skill]))
+  const supportById=new Map(supports.map(support=>[support.id,support]))
   for(const setup of setups.filter(value=>Boolean(value.skillId)&&setupActiveInSet(value,weaponSet))){
     const definition=skillById.get(setup.skillId)
     const numeric=definition?.nameEn?skillsByName.get(definition.nameEn.toLocaleLowerCase('en')):undefined
@@ -58,7 +60,7 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
     const elementalCurse=numericStats['base_skill_buff_all_elements_resistance_%_to_apply']
     if(Number.isFinite(elementalCurse)&&elementalCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Elementarwiderstände`,
-      kind:'resistance-reduction',damageTypes:elemental,value:Math.abs(elementalCurse),
+      kind:'resistance-reduction',effectGroup:'curse',damageTypes:elemental,value:Math.abs(elementalCurse),
       evidence:'structured-exact',sourceReference:'base_skill_buff_all_elements_resistance_%_to_apply',conditional:true,
       durationMs:Number(numericStats.base_skill_effect_duration)||undefined,
       activationTimeMs:numeric.castTime>0?numeric.castTime*1000:undefined,
@@ -67,7 +69,7 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
     const chaosCurse=numericStats['base_skill_buff_chaos_damage_resistance_%_to_apply']
     if(Number.isFinite(chaosCurse)&&chaosCurse<0)candidates.push({
       source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Chaoswiderstand`,
-      kind:'resistance-reduction',damageTypes:['chaos'],value:Math.abs(chaosCurse),
+      kind:'resistance-reduction',effectGroup:'curse',damageTypes:['chaos'],value:Math.abs(chaosCurse),
       evidence:'structured-exact',sourceReference:'base_skill_buff_chaos_damage_resistance_%_to_apply',conditional:true,
       durationMs:Number(numericStats.base_skill_effect_duration)||undefined,
       activationTimeMs:numeric.castTime>0?numeric.castTime*1000:undefined,
@@ -102,6 +104,7 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       })
     }
     const primaryShockContext=shockContexts.find(value=>value.skillId===setup.skillId)
+    let maintainableShock:AppliedEnemyMitigationEffect|undefined
     if(primaryShockContext&&primaryShockContext.lightningHitAverage>0&&primaryShockContext.enemyAilmentThreshold>0){
       const shockModifiers=shockModifiersForSetup(setup)
       const chanceMore=(1+Number(numericStats['active_skill_shock_chance_+%_final']??0)/100)*(1+shockModifiers.chanceIncreasedPercent/100)*shockModifiers.chanceMoreMultiplier
@@ -126,7 +129,7 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       const durationSeconds=reference.ailmentConstants.baseShockDurationSeconds*(1+shockModifiers.durationIncreasedPercent/100)
       const durationMs=durationSeconds*1000
       const maintainable=applicationRate*durationSeconds>=1
-      candidates.push({
+      const shockEffect:AppliedEnemyMitigationEffect={
         source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: Schock`,
         kind:'damage-taken-increased',damageTypes:['physical','fire','cold','lightning','chaos'],value:magnitude,
         effectGroup:'shock',
@@ -136,13 +139,38 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
         stateDetail:maintainable
           ?`${Number(weightedChance.toFixed(2))}% erwartete Schockchance und ${magnitude}% erhöhter erlittener Schaden sind bei fortgesetzten Treffern aufrechterhaltbar.`
           :`${Number(weightedChance.toFixed(2))}% erwartete Schockchance reicht bei der belegten Aktionsrate nicht für einen dauerhaft aufrechterhaltbaren Schock.`,
-      })
+      }
+      candidates.push(shockEffect)
+      if(maintainable)maintainableShock=shockEffect
+    }
+    const selectedSupportDefinitions=(setup.supportGemIds??[])
+      .map(id=>supportById.get(id))
+      .filter((value):value is SupportGemDefinition=>Boolean(value))
+    const lightningExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Lightning Exposure')
+    if(lightningExposure&&maintainableShock&&activeDamageTypes.includes('lightning')){
+      const exposureNumeric=supportsByName.get('lightning exposure')
+      const exposureDurationMs=Number((exposureNumeric?.numericStats as Record<string,number>|undefined)?.inflict_exposure_for_x_ms_on_shock)
+      const potentExposure=selectedSupportDefinitions.find(value=>value.nameEn==='Potent Exposure')
+      const potentNumeric=potentExposure?supportsByName.get('potent exposure'):undefined
+      const exposureEffect=Number((potentNumeric?.numericStats as Record<string,number>|undefined)?.['exposure_effect_+%']??0)
+      if(Number.isFinite(exposureDurationMs)&&exposureDurationMs>0){
+        const value=Math.floor(20*(1+exposureEffect/100))
+        candidates.push({
+          source:'support',sourceId:lightningExposure.id,label:`${lightningExposure.displayNameDe}: Blitz-Exposition`,
+          kind:'resistance-reduction',effectGroup:'exposure',damageTypes:['lightning'],value,
+          evidence:'structured-exact',conditional:true,durationMs:exposureDurationMs,
+          applicationRatePerSecond:maintainableShock.applicationRatePerSecond,
+          estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
+          sourceReference:`${EXPOSURE_ENEMY_EFFECT_MODEL_VERSION}: inflict_exposure_for_x_ms_on_shock + PoB2 generic 20% exposure${potentExposure?' + exposure_effect_+%':''}`,
+          stateDetail:`Der aufrechterhaltbare Schock dieser Fertigkeit erneuert ${value}% Blitz-Exposition für ${exposureDurationMs/1000} Sekunden.`,
+        })
+      }
     }
   }
-  const curses=candidates.filter(value=>value.kind==='resistance-reduction')
+  const curses=candidates.filter(value=>value.effectGroup==='curse')
   const relevantCurses=curses.filter(value=>value.damageTypes.some(type=>activeDamageTypes.includes(type)))
   const selectedCurse=[...relevantCurses].sort((left,right)=>right.value-left.value||left.sourceId.localeCompare(right.sourceId))[0]
-  return candidates.filter(value=>value.kind!=='resistance-reduction'||value===selectedCurse)
+  return candidates.filter(value=>value.effectGroup!=='curse'||value===selectedCurse)
 }
 
 export function resolveAllocatedShockModifiers(tree:RealPassiveTree|undefined,planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'):ShockModifierSummary{
@@ -268,7 +296,7 @@ export function applyBuildEnemyEffects(input:{
   )
   const shockContexts=unique([...(input.shockSourceContexts??[]),...(input.primaryShockContext?[input.primaryShockContext]:[])])
   const effects=[
-    ...skillEffects(input.setups,input.skills,input.activeDamageTypes,input.weaponSet,shockContexts,setup=>mergeShockModifiers(
+    ...skillEffects(input.setups,input.skills,input.supports??[],input.activeDamageTypes,input.weaponSet,shockContexts,setup=>mergeShockModifiers(
       commonShockModifiers,
       resolveSelectedShockModifiers({setup,supports:input.supports,weaponSet:input.weaponSet}),
     )),
@@ -276,7 +304,7 @@ export function applyBuildEnemyEffects(input:{
   ]
   const rarity=input.profile.targetRarity
   for(const effect of effects){
-    if(effect.kind==='resistance-reduction'){
+    if(effect.kind==='resistance-reduction'&&effect.effectGroup==='curse'){
       effect.effectiveValue=Number((effect.value*curseEffectMultiplier(rarity)).toFixed(2))
       effect.stateDetail=rarity&&rarity!=='normal'?`Auf ${rarity} Gegner angewandte verringerte Fluchwirkung.`:'Volle Fluchwirkung.'
     }else if(effect.kind==='armour-break'){
@@ -308,12 +336,22 @@ export function applyBuildEnemyEffects(input:{
   }
   const penetration={...(input.profile.penetration??{})}
   const resistanceReduction={...(input.profile.resistanceReduction??{})}
+  const resistanceReductionGroups=new Map<string,Partial<Record<EnemyResistanceType,number>>>()
   const damageTakenIncreased={...(input.profile.damageTakenIncreased??{})}
   for(const effect of effects){
     if((effect.effectiveValue??effect.value)<=0)continue
     if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+(effect.effectiveValue??effect.value)
-    if(effect.kind==='resistance-reduction')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))resistanceReduction[type]=Math.max(resistanceReduction[type]??0,effect.effectiveValue??effect.value)
+    if(effect.kind==='resistance-reduction'){
+      const group=effect.effectGroup??`independent:${effect.source}:${effect.sourceId}`
+      const grouped=resistanceReductionGroups.get(group)??{}
+      for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))grouped[type]=Math.max(grouped[type]??0,effect.effectiveValue??effect.value)
+      resistanceReductionGroups.set(group,grouped)
+    }
     if(effect.kind==='damage-taken-increased')for(const type of effect.damageTypes)damageTakenIncreased[type]=(damageTakenIncreased[type]??0)+(effect.effectiveValue??effect.value)
+  }
+  for(const grouped of resistanceReductionGroups.values())for(const type of elemental.concat('chaos')){
+    const value=grouped[type]
+    if(value)resistanceReduction[type]=(resistanceReduction[type]??0)+value
   }
   const armourBreak=Math.max(input.profile.armourBreak??0,...effects.filter(value=>value.kind==='armour-break').map(value=>value.effectiveValue??value.value))
   const hitsToFullyBreakArmour=input.profile.armour&&armourBreak?Math.ceil(input.profile.armour/armourBreak):undefined
@@ -347,7 +385,8 @@ export function applyBuildEnemyEffects(input:{
     primaryBreakEffect.uptimeStatus='unresolved'
   }
   const limitations=[...(input.profile.limitations??[])]
-  if(effects.some(value=>value.kind==='resistance-reduction'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; seine strukturierte Wirkzeit ist bekannt, die tatsächliche Wiederholungsfrequenz ohne Rotationsbeleg jedoch nicht.')
+  if(effects.some(value=>value.effectGroup==='curse'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; seine strukturierte Wirkzeit ist bekannt, die tatsächliche Wiederholungsfrequenz ohne Rotationsbeleg jedoch nicht.')
+  if(effects.some(value=>value.effectGroup==='exposure'))limitations.push('Blitz-Exposition wird nur durch dieselbe Fertigkeit produktiv angewandt, wenn deren belegte Schockrate die strukturierte Expositionsdauer zuverlässig erneuern kann; gleichartige Expositionen addieren sich nicht.')
   if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
   if(effects.some(value=>value.kind==='damage-taken-increased'&&value.damageTypes.length===1))limitations.push('Withered wird nur für eine im aktiven Waffenset gewählte Fertigkeit mit strukturierter Stapelwirkung berechnet; unterbrochenes Kanalisieren verringert die tatsächliche Wirkung.')
   if(shockEffects.length)limitations.push(shockStackLimit>1

@@ -4,7 +4,7 @@ export type EnemyResistanceType = Exclude<DamageComponent['type'],'physical'>
 export type EnemyTargetRarity='normal'|'magic'|'rare'|'unique'
 export type TemporalEffectUptimeStatus='permanent'|'maintainable'|'windowed'|'ramping'|'unresolved'
 export interface AppliedEnemyMitigationEffect {
-  source:'skill'|'passive'|'ascendancy'
+  source:'skill'|'support'|'passive'|'ascendancy'
   sourceId:string
   label:string
   kind:'resistance-reduction'|'penetration'|'armour-break'|'damage-taken-increased'
@@ -24,7 +24,7 @@ export interface AppliedEnemyMitigationEffect {
   effectiveValue?:number
   state:'permanent'|'assumed-active'|'building'|'fully-active'
   stateDetail?:string
-  effectGroup?:'shock'
+  effectGroup?:'shock'|'curse'|'exposure'
   selectionStatus?:'selected-strongest'|'selected-stacked'|'superseded-by-stronger'
 }
 export interface BlockedEnemyMitigationEffect {

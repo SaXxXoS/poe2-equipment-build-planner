@@ -90,6 +90,68 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     expect(result.appliedEffects?.[0]).toMatchObject({effectiveValue:0,uptimeStatus:'unresolved',state:'building'})
   })
 
+  it('wendet Lightning Exposure nur über einen aufrechterhaltbaren Schock derselben Fertigkeit an',()=>{
+    const exposedSetup={...setup('ball','ball'),supportGemIds:['lightning-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[exposedSetup],skills:[skill('ball','Ball Lightning')],
+      supports:[support('lightning-exposure','Lightning Exposure')],activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,
+        hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2,
+      },
+    })
+    expect(result.resistanceReduction?.lightning).toBe(20)
+    expect(result.appliedEffects).toContainEqual(expect.objectContaining({
+      source:'support',sourceId:'lightning-exposure',effectGroup:'exposure',value:20,effectiveValue:20,
+      durationMs:8000,estimatedUptime:1,uptimeStatus:'maintainable',state:'fully-active',
+    }))
+  })
+
+  it('verstärkt belegte Blitz-Exposition mit Potent Exposure auf 24 Prozent',()=>{
+    const exposedSetup={...setup('ball','ball'),supportGemIds:['lightning-exposure','potent-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[exposedSetup],skills:[skill('ball','Ball Lightning')],
+      supports:[support('lightning-exposure','Lightning Exposure'),support('potent-exposure','Potent Exposure')],
+      activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,
+        hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2,
+      },
+    })
+    expect(result.resistanceReduction?.lightning).toBe(24)
+    expect(result.appliedEffects).toContainEqual(expect.objectContaining({effectGroup:'exposure',value:24}))
+  })
+
+  it('blockiert Lightning Exposure ohne zuverlässig aufrechterhaltbaren Schock',()=>{
+    const exposedSetup={...setup('ball','ball'),supportGemIds:['lightning-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile,setups:[exposedSetup],skills:[skill('ball','Ball Lightning')],
+      supports:[support('lightning-exposure','Lightning Exposure')],activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:10,lightningCriticalHitAverage:20,
+        hitChancePercent:100,criticalHitChancePercent:0,actionsPerSecond:0.1,
+      },
+    })
+    expect(result.resistanceReduction).toBeUndefined()
+    expect(result.appliedEffects?.some(effect=>effect.effectGroup==='exposure')).toBe(false)
+  })
+
+  it('addiert den stärksten Fluch und die stärkste Exposition, ohne Exposition durch Zielrarität abzuschwächen',()=>{
+    const exposedSetup={...setup('ball','ball'),supportGemIds:['lightning-exposure']}
+    const result=applyBuildEnemyEffects({
+      profile:{...profile,targetRarity:'unique'},setups:[exposedSetup,setup('curse','weakness')],
+      skills:[skill('ball','Ball Lightning'),skill('weakness','Elemental Weakness')],
+      supports:[support('lightning-exposure','Lightning Exposure')],activeDamageTypes:['lightning'],weaponSet:'set-1',
+      primaryShockContext:{
+        skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,
+        hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2,
+      },
+    })
+    expect(result.resistanceReduction?.lightning).toBe(49.5)
+    expect(result.appliedEffects?.find(effect=>effect.effectGroup==='curse')?.effectiveValue).toBe(29.5)
+    expect(result.appliedEffects?.find(effect=>effect.effectGroup==='exposure')?.effectiveValue).toBe(20)
+  })
+
   it('verwendet bei mehreren normalen Schockquellen nur den stärksten aufrechterhaltbaren Schock',()=>{
     const weak={skillId:'arc',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:20}
     const strong={skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:400,lightningCriticalHitAverage:800,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2}

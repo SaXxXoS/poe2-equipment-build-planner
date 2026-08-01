@@ -1,0 +1,57 @@
+{
+  "step": 133,
+  "scope": "lightning-exposure-enemy-resistance-chain",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sources": [
+    {
+      "sourceRecordId": "SupportLightningExposurePlayer",
+      "name": "Lightning Exposure",
+      "durationMs": 8000,
+      "baseExposurePercent": 20
+    },
+    {
+      "sourceRecordId": "SupportPotentExposurePlayer",
+      "name": "Potent Exposure",
+      "exposureEffectIncreasedPercent": 20,
+      "resultingExposurePercent": 24
+    }
+  ],
+  "stacking": {
+    "sameElementExposure": "strongest-only",
+    "curseAndExposure": "additive-groups",
+    "targetRarityAffects": "curse-only"
+  },
+  "activation": {
+    "required": [
+      "support selected on the same skill setup",
+      "structured lightning hit context",
+      "maintainable shock application within exposure duration"
+    ],
+    "failClosedWithoutMaintainableShock": true
+  },
+  "modelVersions": {
+    "damageCalculator": "3.47.0",
+    "exposure": "1.0.0",
+    "shock": "1.4.0",
+    "temporalEnemyEffects": "2.0.0"
+  },
+  "blocked": [
+    "fire exposure without complete ignite application chain",
+    "cold exposure without complete critical cold hit chain",
+    "display-text similarity",
+    "support name without selected support identity",
+    "assumed shock uptime"
+  ],
+  "verification": {
+    "focusedTestFiles": 1,
+    "focusedTests": 27,
+    "fullTestFiles": 140,
+    "fullTests": 1733,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonValidation": "passed"
+  }
+}
