@@ -12,7 +12,7 @@ const unique=<T>(values:T[])=>[...new Set(values)]
 const curseEffectMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='magic'?0.85:rarity==='rare'?0.7:rarity==='unique'?0.5:1
 const armourBreakMultiplier=(rarity:EnemyTargetRarity|undefined)=>rarity==='normal'?3:rarity==='magic'?2:1
 export const TEMPORAL_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
-export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.2.0'
+export const SHOCK_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -30,11 +30,12 @@ export interface ShockModifierSummary{
   magnitudeIncreasedPercent:number
   magnitudeMoreMultiplier:number
   durationIncreasedPercent:number
+  maximumStacks:number
   sourceReferences:string[]
 }
 
 const emptyShockModifiers=():ShockModifierSummary=>({
-  chanceIncreasedPercent:0,chanceMoreMultiplier:1,magnitudeIncreasedPercent:0,magnitudeMoreMultiplier:1,durationIncreasedPercent:0,sourceReferences:[],
+  chanceIncreasedPercent:0,chanceMoreMultiplier:1,magnitudeIncreasedPercent:0,magnitudeMoreMultiplier:1,durationIncreasedPercent:0,maximumStacks:1,sourceReferences:[],
 })
 
 function allocatedNodeIds(planning:RealPassivePlanningIntegrationResult|undefined,weaponSet:'set-1'|'set-2'){
@@ -115,8 +116,11 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],activeDama
       const weightedSourceDamage=chanceBeforeHit>0
         ?(nonCriticalShare*hitShockChance*primaryShockContext.lightningHitAverage+criticalShare*criticalShockChance*primaryShockContext.lightningCriticalHitAverage)/chanceBeforeHit
         :0
-      const calculatedMagnitude=reference.ailmentConstants.shockMagnitudeFormulaCoefficient*Math.pow(weightedSourceDamage/primaryShockContext.enemyAilmentThreshold,reference.ailmentConstants.shockMagnitudeFormulaExponent)*magnitudeEffect*magnitudeMore
-      const magnitude=Number(Math.min(reference.ailmentConstants.maximumShockMagnitudePercent,Math.max(reference.ailmentConstants.baseShockMagnitudePercent,calculatedMagnitude)).toFixed(2))
+      const calculatedBaseMagnitude=reference.ailmentConstants.shockMagnitudeFormulaCoefficient*Math.pow(weightedSourceDamage/primaryShockContext.enemyAilmentThreshold,reference.ailmentConstants.shockMagnitudeFormulaExponent)
+      const magnitude=Number(Math.min(
+        reference.ailmentConstants.maximumShockMagnitudePercent,
+        Math.max(reference.ailmentConstants.baseShockMagnitudePercent,calculatedBaseMagnitude)*magnitudeEffect*magnitudeMore,
+      ).toFixed(2))
       const applicationRate=primaryShockContext.actionsPerSecond*weightedChance/100
       const durationSeconds=reference.ailmentConstants.baseShockDurationSeconds*(1+shockModifiers.durationIncreasedPercent/100)
       const durationMs=durationSeconds*1000
@@ -155,10 +159,12 @@ export function resolveAllocatedShockModifiers(tree:RealPassiveTree|undefined,pl
         ??text.match(/^(\d+(?:\.\d+)?)% increased Magnitude of Shock$/i)
       const lessMagnitude=text.match(/^(\d+(?:\.\d+)?)% less Magnitude of Shock you inflict$/i)
       const duration=text.match(/^(\d+(?:\.\d+)?)% increased (?:Shock Duration|Duration of Ignite, Shock and Chill on Enemies)$/i)
+      const twoShocks=/^Targets can be affected by two of your Shocks at the same time$/i.test(text)
       if(chance)result.chanceIncreasedPercent+=Number(chance[1])
       else if(magnitude)result.magnitudeIncreasedPercent+=Number(magnitude[1])
       else if(lessMagnitude)result.magnitudeMoreMultiplier*=1-Number(lessMagnitude[1])/100
       else if(duration)result.durationIncreasedPercent+=Number(duration[1])
+      else if(twoShocks)result.maximumStacks=Math.max(result.maximumStacks,2)
       else continue
       result.sourceReferences.push(`${nodeId}:${sourceText}`)
     }
@@ -210,6 +216,7 @@ const mergeShockModifiers=(...values:ShockModifierSummary[]):ShockModifierSummar
   magnitudeIncreasedPercent:values.reduce((sum,value)=>sum+value.magnitudeIncreasedPercent,0),
   magnitudeMoreMultiplier:Number(values.reduce((product,value)=>product*value.magnitudeMoreMultiplier,1).toFixed(8)),
   durationIncreasedPercent:values.reduce((sum,value)=>sum+value.durationIncreasedPercent,0),
+  maximumStacks:Math.max(...values.map(value=>value.maximumStacks)),
   sourceReferences:unique(values.flatMap(value=>value.sourceReferences)).sort((a,b)=>a.localeCompare(b,'en')),
 })
 
@@ -276,17 +283,25 @@ export function applyBuildEnemyEffects(input:{
     }else if(effect.effectiveValue==null)effect.effectiveValue=effect.value
   }
   const shockEffects=effects.filter(value=>value.effectGroup==='shock')
-  const strongestShock=[...shockEffects]
-    .filter(value=>(value.effectiveValue??0)>0)
-    .sort((left,right)=>(right.effectiveValue??0)-(left.effectiveValue??0)||left.sourceId.localeCompare(right.sourceId,'en'))[0]
-  for(const effect of shockEffects){
-    if(effect===strongestShock){
-      effect.selectionStatus='selected-strongest'
-      effect.stateDetail=`${effect.stateDetail??''} Von allen belegten Schockquellen ist dies der stärkste zuverlässig aufrechterhaltbare Schock.`.trim()
+  const shockStackLimit=commonShockModifiers.maximumStacks
+  let remainingShockSlots=shockStackLimit
+  for(const effect of [...shockEffects].sort((left,right)=>right.value-left.value||left.sourceId.localeCompare(right.sourceId,'en'))){
+    const maintainableApplications=Math.max(0,Math.floor((effect.applicationRatePerSecond??0)*(effect.durationMs??0)/1000+1e-9))
+    const selectedStacks=Math.min(remainingShockSlots,maintainableApplications)
+    effect.maximumStacks=shockStackLimit
+    if(selectedStacks>0){
+      effect.stackCount=selectedStacks
+      effect.effectiveValue=Number((effect.value*selectedStacks).toFixed(2))
+      effect.selectionStatus=shockStackLimit>1?'selected-stacked':'selected-strongest'
+      remainingShockSlots-=selectedStacks
+      effect.stateDetail=`${effect.stateDetail??''} ${shockStackLimit>1
+        ?`${selectedStacks} von ${shockStackLimit} gleichzeitig erlaubten Schocks werden mit dieser belegten Quelle dauerhaft belegt.`
+        :'Von allen belegten Schockquellen ist dies der stärkste zuverlässig aufrechterhaltbare Schock.'}`.trim()
     }else if((effect.effectiveValue??0)>0){
       effect.selectionStatus='superseded-by-stronger'
       effect.effectiveValue=0
-      effect.stateDetail=`${effect.stateDetail??''} Ein stärkerer belegter Schock ersetzt diesen Effekt; normale Schocks werden nicht addiert.`.trim()
+      effect.stackCount=0
+      effect.stateDetail=`${effect.stateDetail??''} ${shockStackLimit>1?'Alle belegten Schockplätze werden von stärkeren Quellen belegt.':'Ein stärkerer belegter Schock ersetzt diesen Effekt; normale Schocks werden nicht addiert.'}`.trim()
     }
   }
   const penetration={...(input.profile.penetration??{})}
@@ -333,7 +348,9 @@ export function applyBuildEnemyEffects(input:{
   if(effects.some(value=>value.kind==='resistance-reduction'))limitations.push('Von gewählten Fertigkeiten stammt höchstens ein relevanter Fluch; seine strukturierte Wirkzeit ist bekannt, die tatsächliche Wiederholungsfrequenz ohne Rotationsbeleg jedoch nicht.')
   if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
   if(effects.some(value=>value.kind==='damage-taken-increased'&&value.damageTypes.length===1))limitations.push('Withered wird nur für eine im aktiven Waffenset gewählte Fertigkeit mit strukturierter Stapelwirkung berechnet; unterbrochenes Kanalisieren verringert die tatsächliche Wirkung.')
-  if(shockEffects.length)limitations.push('Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Normale konkurrierende Schocks addieren sich nicht; nur der stärkste zuverlässig aufrechterhaltbare Effekt wirkt. Mehrfach-Schock bleibt ohne vollständig modellierte Stapelregel gesperrt.')
+  if(shockEffects.length)limitations.push(shockStackLimit>1
+    ?`Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Der zugewiesene Aszendenzknoten erlaubt ${shockStackLimit} gleichzeitige Schocks; die stärksten anhand von Anwendungsrate und Wirkzeit dauerhaft belegbaren Schockplätze wirken.`
+    :'Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Normale konkurrierende Schocks addieren sich nicht; nur der stärkste zuverlässig aufrechterhaltbare Effekt wirkt.')
   if(primaryBreakEffect&&timeToFullyBreakArmourMs&&primaryBreakEffect.durationMs&&timeToFullyBreakArmourMs>primaryBreakEffect.durationMs)limitations.push('Die belegte Trefferfrequenz reicht nicht aus, um die Zielrüstung innerhalb des 12-Sekunden-Fensters vollständig zu brechen.')
   return{
     ...input.profile,

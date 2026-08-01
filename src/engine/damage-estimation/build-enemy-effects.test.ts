@@ -138,12 +138,33 @@ describe('automatische belegte Gegnerwirkungen',()=>{
       {id:'ailments',stats:[{sourceText:'30% increased [BuffMagnitude|Magnitude] of [NonDamagingAilments|Non-Damaging Ailments] you inflict'}]},
       {id:'duration',stats:[{sourceText:'10% increased Duration of [Ignite], [Shock] and [Chill] on Enemies'}]},
       {id:'asc',ascendancyId:'stormweaver',stats:[{sourceText:'25% less [BuffMagnitude|Magnitude] of [Shock] you inflict'}]},
+      {id:'strike-twice',ascendancyId:'stormweaver',stats:[{sourceText:'Targets can be affected by two of your [Shock]s at the same time'}]},
       {id:'conditional',stats:[{sourceText:'40% increased Magnitude of Shock you inflict with Critical Hits'}]},
     ]} as unknown as RealPassiveTree
-    const planning={pipelineResult:{allocatedNodeIds:['chance','magnitude','ailments','duration','conditional']},ascendancyPlanning:{allocatedNodeIds:['asc']}} as unknown as RealPassivePlanningIntegrationResult
+    const planning={pipelineResult:{allocatedNodeIds:['chance','magnitude','ailments','duration','conditional']},ascendancyPlanning:{allocatedNodeIds:['asc','strike-twice']}} as unknown as RealPassivePlanningIntegrationResult
     expect(resolveAllocatedShockModifiers(tree,planning,'set-1')).toMatchObject({
-      chanceIncreasedPercent:20,magnitudeIncreasedPercent:55,magnitudeMoreMultiplier:0.75,durationIncreasedPercent:10,
+      chanceIncreasedPercent:20,magnitudeIncreasedPercent:55,magnitudeMoreMultiplier:0.75,durationIncreasedPercent:10,maximumStacks:2,
     })
+  })
+
+  it('belegt mit Strike Twice höchstens zwei dauerhaft aufrechterhaltbare Schocks und wendet dessen geringere Stärke an',()=>{
+    const tree={metadata:{releaseTag:'test'},connections:[],nodes:[{
+      id:'strike-twice',ascendancyId:'Sorceress1',stats:[
+        {sourceText:'Targets can be affected by two of your [Shock]s at the same time'},
+        {sourceText:'25% less [BuffMagnitude|Magnitude] of [Shock] you inflict'},
+      ],
+    }]} as unknown as RealPassiveTree
+    const planning={ascendancyPlanning:{allocatedNodeIds:['strike-twice']}} as unknown as RealPassivePlanningIntegrationResult
+    const result=applyBuildEnemyEffects({
+      profile,setups:[setup('ball','ball')],skills:[skill('ball','Ball Lightning')],activeDamageTypes:['lightning'],weaponSet:'set-1',
+      passiveTree:tree,realPassivePlanning:planning,
+      primaryShockContext:{skillId:'ball',enemyAilmentThreshold:1000,lightningHitAverage:100,lightningCriticalHitAverage:200,hitChancePercent:100,criticalHitChancePercent:20,actionsPerSecond:2},
+    })
+    expect(result.appliedEffects?.[0]).toMatchObject({
+      sourceId:'ball',value:16.75,effectiveValue:33.5,stackCount:2,maximumStacks:2,selectionStatus:'selected-stacked',
+    })
+    expect(result.damageTakenIncreased?.lightning).toBe(33.5)
+    expect(result.limitations?.join(' ')).toContain('2 gleichzeitige Schocks')
   })
 
   it('wendet belegte Schockmodifikatoren waffensetgenau auf Stärke und Aufrechterhaltung an',()=>{

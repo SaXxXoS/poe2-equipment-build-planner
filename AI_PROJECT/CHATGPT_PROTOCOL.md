@@ -3844,3 +3844,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien und 67 Tests erfolgreich. Serielle Gesamtsuite: 140 Dateien und 1.723 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
 - Details: `docs/BUILD_ASSISTANT_MULTIPLE_SHOCK_SOURCES_STEP_130.md` und `docs/audits/build-assistant-step-130-multiple-shock-sources.json`.
 - Nächster Baustein: vollständig belegbare Mehrfach-Schock- und externe Schockquellen-Regeln.
+
+## Schritt 131 – zugewiesener Mehrfach-Schock
+
+- Der Schadensrechner verwendet `3.45.0`, das Schockmodell `1.3.0`.
+- Der reale Baumknoten `Strike Twice` wird ausschließlich dann aktiv, wenn er im Aszendenzpfad tatsächlich zugewiesen ist.
+- Seine beiden Regeln werden gemeinsam berücksichtigt: maximal zwei gleichzeitige Schocks und 25 % weniger Schockmagnitude.
+- Die dauerhaft belegbare Stapelzahl folgt aus Anwendungsrate und Wirkzeit; die stärkste belegte Quelle füllt die verfügbaren Plätze zuerst.
+- Ohne den Knoten bleibt die normale Maximum-Regel mit genau einem wirksamen Schock unverändert.
+- Die Reihenfolge der Magnitudenberechnung wurde an PoB2 angeglichen: Grundmagnitude zuerst, danach Magnitudenmodifikatoren und abschließend die Maximalgrenze.
+- Geschockter Boden, externe feste Schockwerte und manuell angenommene Stapel bleiben ohne vollständige aktive Quellenkette fail-closed.
+- Fokussierte Prüfung: 2 Dateien und 68 Tests erfolgreich.
+- Serielle Gesamtsuite: 139 Dateien und 1.723 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung erfolgreich.
+- Details: `docs/BUILD_ASSISTANT_SHOCK_STACKING_STEP_131.md` und `docs/audits/build-assistant-step-131-shock-stacking.json`.
+- Nächster Baustein: geschockter Boden und feste Schockquellen mit vollständig belegter Aktivierung, Dauer und Konkurrenzregel.

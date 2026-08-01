@@ -25,7 +25,7 @@ export interface AppliedEnemyMitigationEffect {
   state:'permanent'|'assumed-active'|'building'|'fully-active'
   stateDetail?:string
   effectGroup?:'shock'
-  selectionStatus?:'selected-strongest'|'superseded-by-stronger'
+  selectionStatus?:'selected-strongest'|'selected-stacked'|'superseded-by-stronger'
 }
 export interface EnemyMitigationProfile {
   id:string

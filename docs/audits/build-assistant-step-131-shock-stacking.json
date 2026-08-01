@@ -1,0 +1,42 @@
+{
+  "step": 131,
+  "scope": "allocated-strike-twice-shock-stacking",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "treeVersion": "0.5.2",
+  "sourceNode": {
+    "rawId": "AscendancySorceress1Notable5",
+    "productId": "2857",
+    "name": "Strike Twice",
+    "ascendancyId": "Sorceress1"
+  },
+  "rules": {
+    "maximumConcurrentShocks": 2,
+    "lessShockMagnitudePercent": 25,
+    "stackSelection": "strongest-maintainable-slots-first",
+    "maintainableCapacity": "floor(applicationRatePerSecond * durationSeconds)",
+    "ordinaryShockMaximum": 1
+  },
+  "modelVersions": {
+    "damageCalculator": "3.45.0",
+    "shock": "1.3.0",
+    "temporalEnemyEffects": "2.0.0"
+  },
+  "blocked": [
+    "manual shock stacks without application evidence",
+    "shocked ground without complete active-source chain",
+    "external fixed ShockOverride without active local source",
+    "conditional runtime stacking without confirmed state",
+    "display-text similarity"
+  ],
+  "verification": {
+    "focusedTestFiles": 2,
+    "focusedTests": 68,
+    "fullTestFiles": 139,
+    "fullTests": 1723,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  }
+}
