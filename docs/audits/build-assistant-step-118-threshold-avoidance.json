@@ -1,0 +1,26 @@
+{
+  "step": 118,
+  "scope": "threshold-multiplier-and-avoidance",
+  "survivabilityModelVersion": "1.2.0",
+  "calculatorVersion": "3.32.0",
+  "sourcePinsChanged": false,
+  "rules": {
+    "doubleStunThreshold": "exact-more-100",
+    "stunAvoidance": "additive-capped-at-100",
+    "elementalAilmentAvoidance": "additive-capped-at-100",
+    "unconditionalStunImmunity": "effective-100-percent-avoidance",
+    "energyShieldConditionalImmunity": "requires-explicit-runtime-state"
+  },
+  "failClosed": [
+    "conditional-avoidance-without-runtime-state",
+    "energy-shield-presence-not-inferred-from-maximum",
+    "unknown-visible-item-text",
+    "individual-ailment-avoidance-not-yet-modelled"
+  ],
+  "sourceReferences": [
+    "pinned PoB2 src/Modules/ModParser.lua",
+    "pinned PoB2 src/Modules/CalcDefence.lua",
+    "data-sources/poe2-tree/raw/0.5.2/data.json"
+  ],
+  "nextStep": 119
+}

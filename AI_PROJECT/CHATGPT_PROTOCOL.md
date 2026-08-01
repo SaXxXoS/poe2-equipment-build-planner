@@ -3688,3 +3688,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fehlende Bezugsgrößen und bedingte Zustände bleiben fail-closed.
 - Calculator-Version: `3.31.0`; Produktpins und Produktdateien bleiben unverändert.
 - Hauptdokument: `docs/BUILD_ASSISTANT_DEFENCE_THRESHOLD_CONTRIBUTIONS_STEP_117.md`.
+## Schritt 118 – Schwellenmultiplikator und Vermeidung
+
+- Das Charakter-Survivability-Modell verwendet jetzt Version `1.2.0`, der Schadensrechner Version `3.32.0`.
+- Eine verdoppelte Betäubungsschwelle wird gemäß gepinntem PoB2 als `MORE 100` verrechnet.
+- Unbedingte Betäubungs- und allgemeine Elementarbeeinträchtigungsvermeidung werden addiert und bei 100 Prozent gedeckelt.
+- Betäubungsimmunität ergibt effektiv 100 Prozent Vermeidung.
+- Energieschild-bedingte Immunität benötigt einen explizit bestätigten Laufzeitzustand; maximales Energieschild allein genügt nicht.
+- Andere bedingte Vermeidungszeilen bleiben fail-closed in `blockedLines`.
+- Quellenpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_THRESHOLD_AVOIDANCE_STEP_118.md` und `docs/audits/build-assistant-step-118-threshold-avoidance.json`.

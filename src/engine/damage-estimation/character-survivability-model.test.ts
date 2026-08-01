@@ -23,6 +23,13 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('helmet-lowest', 'Gain [StunThreshold|Stun Threshold] equal to the lowest of [Evasion|Evasion] and [Armour|Armour] on your Helmet'),
   node('boots-lowest', 'Gain [AilmentThreshold|Ailment Threshold] equal to the lowest of [Evasion|Evasion] and [Armour|Armour] on your Boots'),
   node('armour-items', 'Gain additional [StunThreshold|Stun Threshold] equal to 30% of [ItemArmour|Item Armour] on [EquipArmour|Equipped Armour Items]'),
+  node('double-stun', 'Your [StunThreshold|Stun Threshold] is doubled'),
+  node('avoid-stun-a', '60% chance to Avoid being Stunned'),
+  node('avoid-stun-b', '55% chance to Avoid being Stunned'),
+  node('avoid-ailment', '35% chance to Avoid Elemental Ailments'),
+  node('stun-immune', 'Cannot be Stunned'),
+  node('stun-immune-es', 'Cannot be Stunned while you have Energy Shield'),
+  node('conditional-avoid', '25% chance to Avoid being Stunned while Channelling'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -95,5 +102,31 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['evasion-ailment']) })
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toContain('Additional threshold from Evasion Rating')
+  })
+  it('wendet die PoB2-MORE-Regel fuer eine verdoppelte Betaeubungsschwelle an', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['double-stun']) })
+    expect(result.stunThreshold).toEqual(expect.objectContaining({ moreLessMultiplier: 2, total: 652 }))
+  })
+  it('addiert unbedingte Vermeidung und deckelt sie wie PoB2 bei 100 Prozent', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['avoid-stun-a', 'avoid-stun-b', 'avoid-ailment']) })
+    expect(result.avoidance).toEqual({ stunChance: 100, elementalAilmentChance: 35, stunImmune: false, stunImmunitySource: 'none' })
+  })
+  it('setzt unbedingte Betaeubungsimmunitaet auf effektive 100 Prozent Vermeidung', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['stun-immune']) })
+    expect(result.avoidance).toEqual(expect.objectContaining({ stunChance: 100, stunImmune: true, stunImmunitySource: 'unconditional' }))
+  })
+  it('wendet Energieschild-Immunitaet nur mit bestaetigtem Laufzeitzustand an', () => {
+    const blocked = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['stun-immune-es']) })
+    const active = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['stun-immune-es']), hasEnergyShield: true })
+    const inactive = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['stun-immune-es']), hasEnergyShield: false })
+    expect(blocked.blockedLines).toContain('Cannot be Stunned while you have Energy Shield')
+    expect(active.avoidance).toEqual(expect.objectContaining({ stunChance: 100, stunImmune: true, stunImmunitySource: 'energy-shield-condition' }))
+    expect(inactive.avoidance).toEqual(expect.objectContaining({ stunChance: 0, stunImmune: false, stunImmunitySource: 'none' }))
+  })
+  it('blockiert bedingte Vermeidung ohne bestaetigten Laufzeitzustand', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['conditional-avoid']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toContain('25% chance to Avoid being Stunned while Channelling')
+    expect(result.avoidance?.stunChance).toBe(0)
   })
 })
