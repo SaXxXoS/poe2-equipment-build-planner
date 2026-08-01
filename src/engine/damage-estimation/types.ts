@@ -7,7 +7,7 @@ export interface AppliedEnemyMitigationEffect {
   source:'skill'|'support'|'passive'|'ascendancy'
   sourceId:string
   label:string
-  kind:'resistance-reduction'|'penetration'|'armour-break'|'damage-taken-increased'|'critical-damage-bonus-against-target'
+  kind:'resistance-reduction'|'penetration'|'armour-break'|'damage-taken-increased'|'critical-damage-bonus-against-target'|'freeze-buildup-more'|'electrocute-buildup-increased'
   damageTypes:Array<DamageComponent['type']>
   value:number
   evidence:'structured-exact'|'text-pattern-exact'
@@ -58,6 +58,8 @@ export interface EnemyMitigationProfile {
   resistanceReduction?:Partial<Record<EnemyResistanceType,number>>
   damageTakenIncreased?:Partial<Record<DamageComponent['type'],number>>
   additionalCriticalDamageBonusAgainstTarget?:number
+  freezeBuildupMoreAgainstTarget?:number
+  electrocuteBuildupIncreasedAgainstTarget?:number
   appliedEffects?:AppliedEnemyMitigationEffect[]
   blockedEnemyEffects?:BlockedEnemyMitigationEffect[]
   fullyBrokenArmour?:boolean

@@ -3948,3 +3948,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die Markierung wirkt ausschließlich aus einer gewählten Fertigkeitskarte im aktiven Waffenset und ausschließlich auf den kritischen Erwartungsanteil gegen das markierte Ziel. Treffergrundwerte, normale Treffer und nativer Schaden über Zeit bleiben unverändert. Mehrere gleichartige Markierungen verwenden deterministisch nur den stärksten belegten Wert.
 - Die strukturierte Wirkzeit beträgt 8 Sekunden bei 0,5 Sekunden Wirkzeitbeginn durch das Wirken. Ohne Rotationsbeleg wird deshalb nur ein angenommenes aktives Wirkfenster, keine garantierte permanente Uptime, ausgewiesen.
 - Der Schadensrechner verwendet `3.53.0`; das Scharfschützenmal-Kritmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+
+## Schritt 140 – Zustandsaufbau durch Markierungen
+
+- `Freezing Mark` und `Voltaic Mark` werden aus den gepinnten Quellrecords `FreezingMarkPlayer` und `VoltaicMarkPlayer` als zielgebundener Einfrier- beziehungsweise Elektrisieren-Aufbau modelliert.
+- Der strukturierte Grundwert beträgt jeweils 35 Prozent. Normale Qualität erhöht ihn um einen Prozentpunkt pro Qualität; die Auswahl bleibt stufen-, qualitäts- und waffensetgenau.
+- Gleichartige Markierungen addieren sich nicht. Nur der stärkste belegte Wert wird wirksam.
+- Die nach Aktivierung gewährten 30-Prozent-Schaden-als-Kälte/Blitz-Buffs bleiben ohne bestätigtes Einfrieren/Elektrisieren und Rotationsfenster schadensneutral. Zustandsaufbau wird nicht als direkter DPS-Multiplikator behandelt.
+- `Predator's Mark` und `Bloodhound's Mark` bleiben wegen fehlender vollständiger Laufzeitbedingungen fail-closed.
+- Der Schadensrechner verwendet `3.54.0`; das Zustandsaufbau-Markmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_AILMENT_MARK_BUILDUP_STEP_140.md` und `docs/audits/build-assistant-step-140-ailment-mark-buildup.json`.
+- Fokussierte Prüfung: 2 Dateien und 98 Tests erfolgreich. Im Gesamtlauf bestanden 139 Dateien und 1.756 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung sind erfolgreich.

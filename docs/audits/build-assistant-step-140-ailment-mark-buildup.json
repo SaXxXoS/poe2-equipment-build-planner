@@ -1,0 +1,31 @@
+{
+  "step": 140,
+  "scope": "freezing-and-voltaic-mark-ailment-buildup",
+  "calculatorVersion": "3.54.0",
+  "ailmentMarkBuildupModelVersion": "1.0.0",
+  "sourceRecords": ["FreezingMarkPlayer", "VoltaicMarkPlayer"],
+  "implemented": [
+    "gem-level-specific-buildup-value",
+    "normal-quality-scaling-with-truncation",
+    "active-weapon-set-only",
+    "strongest-same-mark-selection",
+    "freeze-buildup-more",
+    "electrocute-buildup-increased",
+    "enemy-profile-provenance"
+  ],
+  "blocked": [
+    "freezing-mark-gain-as-cold-buff-without-confirmed-freeze-window",
+    "voltaic-mark-gain-as-lightning-buff-without-confirmed-electrocute-window",
+    "predators-mark-without-nearby-enemy-count",
+    "bloodhounds-mark-without-blood-loss-stun-explosion-chain",
+    "ailment-buildup-as-direct-dps-multiplier"
+  ],
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false
+  ,"focusedTests": {"files": 2, "tests": 98, "status": "passed"}
+  ,"fullSuite": {
+    "initialRun": "139 files and 1756 tests passed; 2 timing-sensitive passive-tree files exceeded the shared 5-second limit",
+    "isolatedSerialRepeat": "2 files and 197 tests passed",
+    "status": "functionally-passed-with-isolated-timing-repeat"
+  }
+}

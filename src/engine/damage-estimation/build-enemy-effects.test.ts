@@ -36,6 +36,36 @@ describe('automatische belegte Gegnerwirkungen',()=>{
     ])
   })
 
+  it('modelliert Einfrier- und Voltaisches Mal nur als belegten Zustandsaufbau',()=>{
+    const freezing={...setup('freezing','freezing-mark'),level:20,quality:20,weaponSet:'set-1' as const}
+    const voltaic={...setup('voltaic','voltaic-mark'),level:20,quality:10,weaponSet:'set-2' as const}
+    const skills=[skill('freezing-mark','Freezing Mark'),skill('voltaic-mark','Voltaic Mark')]
+    const set1=applyBuildEnemyEffects({profile,setups:[freezing,voltaic],skills,activeDamageTypes:['cold'],weaponSet:'set-1'})
+    const set2=applyBuildEnemyEffects({profile,setups:[freezing,voltaic],skills,activeDamageTypes:['lightning'],weaponSet:'set-2'})
+    expect(set1.freezeBuildupMoreAgainstTarget).toBe(55)
+    expect(set1.electrocuteBuildupIncreasedAgainstTarget).toBeUndefined()
+    expect(set2.electrocuteBuildupIncreasedAgainstTarget).toBe(45)
+    expect(set2.freezeBuildupMoreAgainstTarget).toBeUndefined()
+    expect(set1.appliedEffects).toContainEqual(expect.objectContaining({
+      sourceId:'freezing-mark',kind:'freeze-buildup-more',value:55,durationMs:8000,activationTimeMs:500,
+    }))
+    expect(set2.appliedEffects).toContainEqual(expect.objectContaining({
+      sourceId:'voltaic-mark',kind:'electrocute-buildup-increased',value:45,durationMs:8000,activationTimeMs:500,
+    }))
+    expect(set1.damageTakenIncreased).toBeUndefined()
+  })
+
+  it('addiert gleichartige Mark-Aufbauwerte nicht',()=>{
+    const weak={...setup('weak','freezing-mark'),level:20,quality:0}
+    const strong={...setup('strong','freezing-mark'),level:20,quality:20}
+    const result=applyBuildEnemyEffects({profile,setups:[weak,strong],skills:[skill('freezing-mark','Freezing Mark')],activeDamageTypes:['cold'],weaponSet:'set-1'})
+    expect(result.freezeBuildupMoreAgainstTarget).toBe(55)
+    expect(result.appliedEffects?.filter(effect=>effect.kind==='freeze-buildup-more')).toEqual([
+      expect.objectContaining({value:35,effectiveValue:0,selectionStatus:'superseded-by-stronger'}),
+      expect.objectContaining({value:55,effectiveValue:55,selectionStatus:'selected-strongest'}),
+    ])
+  })
+
   it('wendet Elementardurchdringung nur vom Support des berechneten Hauptskills an',()=>{
     const primary={...setup('primary','arc'),supportGemIds:['lightning-penetration']}
     const secondary={...setup('secondary','fireball'),supportGemIds:['fire-penetration']}

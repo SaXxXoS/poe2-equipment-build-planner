@@ -18,6 +18,7 @@ export const EXPOSURE_ENEMY_EFFECT_MODEL_VERSION='1.3.0'
 export const ARMOUR_BREAK_ENEMY_EFFECT_MODEL_VERSION='2.0.0'
 export const ELEMENTAL_PENETRATION_SUPPORT_MODEL_VERSION='1.0.0'
 export const SNIPERS_MARK_CRITICAL_DAMAGE_MODEL_VERSION='1.0.0'
+export const AILMENT_MARK_BUILDUP_MODEL_VERSION='1.0.0'
 
 export interface PrimaryShockContext{
   skillId:string
@@ -120,6 +121,26 @@ function skillEffects(setups:SkillSetup[],skills:SkillGemDefinition[],supports:S
     if(!definition||!numeric)continue
     const selectedLevel=setup.level==null?undefined:numeric.levels.find(level=>level.level===setup.level)
     const numericStats=(selectedLevel?.numericStats??numeric.numericStats) as Record<string,number>
+    for(const mark of [
+      {statId:'freezing_mark_hit_damage_freeze_multiplier_+%_final',kind:'freeze-buildup-more' as const,label:'Einfrieraufbau',damageTypes:['cold' as const]},
+      {statId:'thaumaturgist_mark_hit_damage_electrocute_multiplier_+%',kind:'electrocute-buildup-increased' as const,label:'Elektrisieren-Aufbau',damageTypes:['lightning' as const]},
+    ]){
+      const baseValue=Number(numericStats[mark.statId]??0)
+      if(!Number.isFinite(baseValue)||baseValue<=0)continue
+      const quality=Number.isInteger(setup.quality)&&setup.quality!>=0&&setup.quality!<=23?setup.quality!:0
+      const perQuality=Number(numeric.qualityStats.find(entry=>entry.statId===mark.statId)?.perQuality??0)
+      const value=baseValue+Math.trunc(perQuality*quality)
+      candidates.push({
+        source:'skill',sourceId:setup.skillId,label:`${definition.displayNameDe}: ${mark.label} gegen markiertes Ziel`,
+        kind:mark.kind,effectGroup:'mark',damageTypes:mark.damageTypes,value,evidence:'structured-exact',
+        sourceReference:`${AILMENT_MARK_BUILDUP_MODEL_VERSION}: ${numeric.sourceRecordId}:${mark.statId}${quality?' + qualityStats':''}`,
+        conditional:true,durationMs:Number(numericStats.base_skill_effect_duration)||undefined,
+        activationTimeMs:numeric.castTime>0?numeric.castTime*1000:undefined,uptimeStatus:'windowed',state:'assumed-active',
+        stateDetail:mark.kind==='freeze-buildup-more'
+          ?'Der Wert erhöht ausschließlich den Einfrieraufbau gegen das markierte Ziel. Der nach dem Einfrieren gewährte Kälteschadensbuff bleibt ohne bestätigten Aktivierungszustand schadensneutral.'
+          :'Der Wert erhöht ausschließlich den Elektrisieren-Aufbau gegen das markierte Ziel. Der nach dem Elektrisieren gewährte Blitzschadensbuff bleibt ohne bestätigten Aktivierungszustand schadensneutral.',
+      })
+    }
     const selectedSupportDefinitions=(setup.supportGemIds??[])
       .map(id=>supportById.get(id))
       .filter((value):value is SupportGemDefinition=>Boolean(value))
@@ -512,6 +533,16 @@ export function applyBuildEnemyEffects(input:{
       effect.stateDetail='Der Betrag wird mit weiteren Treffern innerhalb der Wirkzeit aufgebaut.'
     }else if(effect.effectiveValue==null)effect.effectiveValue=effect.value
   }
+  for(const kind of ['freeze-buildup-more','electrocute-buildup-increased'] as const){
+    const candidates=effects.filter(effect=>effect.kind===kind).sort((left,right)=>(right.effectiveValue??right.value)-(left.effectiveValue??left.value)||left.sourceId.localeCompare(right.sourceId,'en'))
+    candidates.forEach((effect,index)=>{
+      effect.selectionStatus=index===0?'selected-strongest':'superseded-by-stronger'
+      if(index>0){
+        effect.effectiveValue=0
+        effect.stateDetail='Nur der stärkste belegte Aufbauwert desselben Mals wird verwendet; gleichartige Markierungen werden nicht addiert.'
+      }
+    })
+  }
   const shockEffects=effects.filter(value=>value.effectGroup==='shock')
   const shockStackLimit=commonShockModifiers.maximumStacks
   let remainingShockSlots=shockStackLimit
@@ -539,6 +570,8 @@ export function applyBuildEnemyEffects(input:{
   const resistanceReductionGroups=new Map<string,Partial<Record<EnemyResistanceType,number>>>()
   const damageTakenIncreased={...(input.profile.damageTakenIncreased??{})}
   let additionalCriticalDamageBonusAgainstTarget=input.profile.additionalCriticalDamageBonusAgainstTarget??0
+  let freezeBuildupMoreAgainstTarget=input.profile.freezeBuildupMoreAgainstTarget??0
+  let electrocuteBuildupIncreasedAgainstTarget=input.profile.electrocuteBuildupIncreasedAgainstTarget??0
   for(const effect of effects){
     if((effect.effectiveValue??effect.value)<=0)continue
     if(effect.kind==='penetration')for(const type of effect.damageTypes.filter((value):value is EnemyResistanceType=>value!=='physical'))penetration[type]=(penetration[type]??0)+(effect.effectiveValue??effect.value)
@@ -550,6 +583,8 @@ export function applyBuildEnemyEffects(input:{
     }
     if(effect.kind==='damage-taken-increased')for(const type of effect.damageTypes)damageTakenIncreased[type]=(damageTakenIncreased[type]??0)+(effect.effectiveValue??effect.value)
     if(effect.kind==='critical-damage-bonus-against-target')additionalCriticalDamageBonusAgainstTarget=Math.max(additionalCriticalDamageBonusAgainstTarget,effect.effectiveValue??effect.value)
+    if(effect.kind==='freeze-buildup-more')freezeBuildupMoreAgainstTarget=Math.max(freezeBuildupMoreAgainstTarget,effect.effectiveValue??effect.value)
+    if(effect.kind==='electrocute-buildup-increased')electrocuteBuildupIncreasedAgainstTarget=Math.max(electrocuteBuildupIncreasedAgainstTarget,effect.effectiveValue??effect.value)
   }
   for(const grouped of resistanceReductionGroups.values())for(const type of elemental.concat('chaos')){
     const value=grouped[type]
@@ -596,6 +631,7 @@ export function applyBuildEnemyEffects(input:{
   if(effects.some(value=>value.effectGroup==='exposure'))limitations.push('Exposition wird nur durch dieselbe Fertigkeit produktiv angewandt, wenn deren belegte Schock-, Entzündungs- oder kritische Kältetrefferrate die strukturierte Expositionsdauer zuverlässig erneuern kann; gleichartige Expositionen addieren sich nicht.')
   if(effects.some(value=>value.kind==='armour-break')&&!input.profile.armour)limitations.push('Rüstungsbruch besitzt 12 Sekunden Wirkzeit; ohne belegte Zielrüstung sind benötigte Treffer und vollständig gebrochene Rüstung unbekannt.')
   if(effects.some(value=>value.kind==='damage-taken-increased'&&value.damageTypes.length===1))limitations.push('Withered wird nur für eine im aktiven Waffenset gewählte Fertigkeit mit strukturierter Stapelwirkung berechnet; unterbrochenes Kanalisieren verringert die tatsächliche Wirkung.')
+  if(effects.some(value=>value.kind==='freeze-buildup-more'||value.kind==='electrocute-buildup-increased'))limitations.push('Einfrier- und Voltaisches Mal wirken produktiv nur auf den belegten Zustandsaufbau. Ihr nach Aktivierung gewährter Schaden-als-Kälte/Blitz-Buff bleibt ohne bestätigten Einfrier-/Elektrisieren-Zustand und Rotationsfenster gesperrt.')
   if(shockEffects.length)limitations.push(shockStackLimit>1
     ?`Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Der zugewiesene Aszendenzknoten erlaubt ${shockStackLimit} gleichzeitige Schocks; die stärksten anhand von Anwendungsrate und Wirkzeit dauerhaft belegbaren Schockplätze wirken.`
     :'Jede belegte Trefferfertigkeit wird als eigene Schockquelle bewertet. Normale konkurrierende Schocks addieren sich nicht; nur der stärkste zuverlässig aufrechterhaltbare Effekt wirkt.')
@@ -603,6 +639,8 @@ export function applyBuildEnemyEffects(input:{
   if(primaryBreakEffect&&timeToFullyBreakArmourMs&&primaryBreakEffect.durationMs&&timeToFullyBreakArmourMs>primaryBreakEffect.durationMs)limitations.push('Die belegte Trefferfrequenz reicht nicht aus, um die Zielrüstung innerhalb des 12-Sekunden-Fensters vollständig zu brechen.')
   return{
     ...input.profile,
+    freezeBuildupMoreAgainstTarget:freezeBuildupMoreAgainstTarget||undefined,
+    electrocuteBuildupIncreasedAgainstTarget:electrocuteBuildupIncreasedAgainstTarget||undefined,
     ...(Object.keys(penetration).length?{penetration}:{}),
     ...(Object.keys(resistanceReduction).length?{resistanceReduction}:{}),
     ...(Object.keys(damageTakenIncreased).length?{damageTakenIncreased}:{}),
