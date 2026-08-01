@@ -44,6 +44,13 @@ const tree = { metadata: { releaseTag: 'test' }, connections: [], nodes: [
   node('stun-immune', 'Cannot be Stunned'),
   node('stun-immune-es', 'Cannot be Stunned while you have Energy Shield'),
   node('conditional-avoid', '25% chance to Avoid being Stunned while Channelling'),
+  node('curse-effect-a', '15% reduced [BuffEffect|effect] of [Curse|Curses] on you'),
+  node('curse-effect-b', '50% reduced effect of Curses on you'),
+  node('curse-effect-c', '50% reduced effect of Curses on you'),
+  node('curse-effect-increased', '20% increased effect of Curses on you'),
+  node('curse-unaffected', 'Unaffected by Curses'),
+  node('curse-unaffected-conditional', 'Unaffected by Curses while affected by Zealotry'),
+  node('curse-immune-conditional', 'Immunity to Curses while you have at least 25 Rage'),
 ] } as RealPassiveTree
 const planning = (ids: string[]) => ({ pipelineResult: { allocatedNodeIds: ids } }) as unknown as RealPassivePlanningIntegrationResult
 const equipment: EquipmentEntry[] = [{ id: 'body', slotId: 'slot-body-armour', modifierValues: [{ id: 'life-applied', modifierId: 'life', value: 50, statValues: [{ statId: 'maximum_life', value: 50 }] }] }]
@@ -196,5 +203,23 @@ describe('Charakter-Lebens- und Schwellenmodell', () => {
     expect(result.status).toBe('partial-blocked-special-cases')
     expect(result.blockedLines).toContain('Cannot be Poisoned while Bleeding')
     expect(result.avoidance?.poison).toEqual({ chance: 0, immune: false, immunitySource: 'none' })
+  })
+  it('addiert verringerte und erhoehte Fluchwirkung nach der PoB2-INC-Regel', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['curse-effect-a', 'curse-effect-b', 'curse-effect-increased']) })
+    expect(result.curseProtection).toEqual({ avoidChance: 0, immune: false, unaffected: false, effectPercent: 55, reducedEffectPercent: 45 })
+  })
+  it('begrenzt Fluchwirkung wie PoB2 auf mindestens null', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['curse-effect-a', 'curse-effect-b', 'curse-effect-c']) })
+    expect(result.curseProtection).toEqual({ avoidChance: 0, immune: false, unaffected: false, effectPercent: 0, reducedEffectPercent: 100 })
+  })
+  it('setzt unbedingtes Unbeeinflusstsein auf null Fluchwirkung ohne Immunitaet zu behaupten', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['curse-effect-increased', 'curse-unaffected']) })
+    expect(result.curseProtection).toEqual({ avoidChance: 0, immune: false, unaffected: true, effectPercent: 0, reducedEffectPercent: 100 })
+  })
+  it('blockiert bedingtes Unbeeinflusstsein und bedingte Fluchimmunitaet fail-closed', () => {
+    const result = resolveCharacterSurvivabilityModel({ classId: 'class-official-1', characterLevel: 10, equipment: [], weaponSet: 'set-1', passiveTree: tree, realPassivePlanning: planning(['curse-unaffected-conditional', 'curse-immune-conditional']) })
+    expect(result.status).toBe('partial-blocked-special-cases')
+    expect(result.blockedLines).toEqual(expect.arrayContaining(['Unaffected by Curses while affected by Zealotry', 'Immunity to Curses while you have at least 25 Rage']))
+    expect(result.curseProtection).toEqual({ avoidChance: 0, immune: false, unaffected: false, effectPercent: 100, reducedEffectPercent: 0 })
   })
 })

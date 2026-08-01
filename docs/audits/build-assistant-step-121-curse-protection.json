@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 121,
+  "scope": "build-assistant-curse-protection",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "treeSource": "data-sources/poe2-tree/raw/0.5.2/data.json",
+  "treeNodeCount": 5151,
+  "reducedCurseEffectNodeCount": 11,
+  "reducedCurseEffectNodeIds": [
+    "curses26",
+    "curses27",
+    "evasion_and_energy_shield12_",
+    "evasion_and_energy_shield37",
+    "focus2",
+    "focus3",
+    "focus5",
+    "mercenary10",
+    "mercenary6",
+    "mercenary7",
+    "mercenary9"
+  ],
+  "implemented": {
+    "additiveIncreasedReducedEffect": true,
+    "minimumEffectPercent": 0,
+    "unaffectedIsZeroEffect": true,
+    "unaffectedIsNotImmunity": true,
+    "conditionalEffectsFailClosed": true,
+    "curseAvoidanceSeparate": true,
+    "curseImmunitySeparate": true
+  },
+  "modelVersions": {
+    "characterSurvivability": "1.5.0",
+    "damageCalculator": "3.35.0"
+  },
+  "focusedTests": {
+    "files": 2,
+    "tests": 74,
+    "status": "passed"
+  },
+  "fullValidation": {
+    "testFiles": 136,
+    "tests": 1684,
+    "serialStatus": "passed",
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "Der produktive Baum 0.5.2 enthält keine exakt belegte unbedingte Fluchimmunität oder Fluchvermeidung.",
+    "Bedingte Fluchimmunität wird ohne bestätigten Laufzeitzustand nicht aktiviert.",
+    "Konkrete gegnerische Fluchmagnituden sind noch nicht Teil dieses Schritts."
+  ]
+}

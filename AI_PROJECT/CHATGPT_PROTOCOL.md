@@ -3719,3 +3719,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Modellversion: `1.4.0`; Schadensrechner: `3.34.0`.
 - Belege: `docs/BUILD_ASSISTANT_NON_ELEMENTAL_AILMENT_PROTECTION_STEP_120.md` und `docs/audits/build-assistant-step-120-non-elemental-ailment-protection.json`.
 - Nächster Schritt: Fluchvermeidung, Fluchimmunität und die Abgrenzung zu „unaffected“.
+## Schritt 121 – Fluchschutz im Charaktermodell
+
+- Das Charakter-Schutzmodell wurde von `1.4.0` auf `1.5.0` erweitert; der Schadensrechner verwendet `3.35.0`.
+- Gepinnte Referenz: `PathOfBuildingCommunity/PathOfBuilding-PoE2` bei `c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0`.
+- Verringerte und erhöhte Fluchwirkung werden additiv auf den PoB2-Grundwert von 100 Prozent angewandt und bei null begrenzt.
+- `Unaffected by Curses` wird als null Wirkung, ausdrücklich nicht als Immunität, modelliert.
+- Fluchvermeidung, Immunität und Wirkung bleiben getrennte technische Zustände.
+- Der Baumstand 0.5.2 enthält 11 exakt erkennbare Knoten mit verringerter Fluchwirkung; bedingte Immunitäten bleiben ohne Laufzeitevidenz blockiert.
+- Fokussierte Referenzprüfung: 2 Dateien und 74 Tests erfolgreich. Serielle Gesamtsuite: 136 Dateien und 1.684 Tests erfolgreich. Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Dokumentation: `docs/BUILD_ASSISTANT_CURSE_PROTECTION_STEP_121.md`.
+- Audit: `docs/audits/build-assistant-step-121-curse-protection.json`.
