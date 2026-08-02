@@ -4,6 +4,7 @@ import type { SupportQuantitativeEffect } from '../domain'
 export interface Pob2SupportReference {
   sourceRecordId: string
   name: string
+  gemFamily: string[]
   requireSkillTypes: string[]
   excludeSkillTypes: string[]
   numericStats: Record<string, number>

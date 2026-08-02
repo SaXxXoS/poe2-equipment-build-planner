@@ -4041,6 +4041,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 3 Dateien und 73 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 148 Dateien und 1.793 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung und `git diff --check` sind erfolgreich.
 - Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
 
+## Schritt 151 – finale Cooldown-Geschwindigkeit
+
+- `Second Wind I–III` verwenden nun den gepinnten Stat `base_cooldown_speed_+%_final` getrennt von erhöhter Cooldown-Recovery und getrennt von gespeicherten Nutzungen.
+- Die nachhaltige Nutzungsrate wird aus Basis-Cooldown, additiver Recovery und finaler Cooldown-Geschwindigkeit in dieser Reihenfolge berechnet; der bestehende 33-ms-Server-Takt bleibt erhalten.
+- Die drei Supports erfordern strukturiert zugleich `Cooldown` und `AffectedByCooldownRate` und schließen `Triggered`, `Instant` und `Meta` aus. Im aktuell gepinnten Skillbestand erfüllt kein produktiver Datensatz diese vollständige Schnittmenge. Die Rechenregel ist deshalb getestet und vorbereitet, erzeugt aktuell aber bewusst keinen erfundenen Produktbonus.
+- Der Schadensrechner verwendet `3.65.0`, das Trigger-/Wiederholungsmodell `1.11.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_COOLDOWN_SPEED_STEP_151.md` und `docs/audits/build-assistant-step-151-cooldown-speed.json`.
+- Fokussierte Prüfung: 2 Dateien und 86 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 149 Dateien und 1.807 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
+- Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.
+
 ## Schritt 150 – Schnelle Angriffe und schnelles Zaubern
 
 - `Rapid Attacks I–III` und `Rapid Casting I–II` verwenden ihre strukturierten Geschwindigkeitswerte aus dem gepinnten PoB2-Commit. Schnelle Angriffe III berücksichtigt zusätzlich 50 % weniger finalen Schaden.

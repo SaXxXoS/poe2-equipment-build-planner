@@ -3,7 +3,7 @@ import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../..
 import { pob2SupportReferenceFor } from '../../gems/pob2-support-reference'
 import type { DamageEstimate } from './types'
 
-export const TRIGGER_REPEAT_MODEL_VERSION = '1.10.0'
+export const TRIGGER_REPEAT_MODEL_VERSION = '1.11.0'
 export const POB2_SERVER_TICK_SECONDS = 0.033
 const stableNumber = (value: number): number => Math.round(value * 1_000_000) / 1_000_000
 
@@ -138,6 +138,7 @@ export interface SupportedSkillCooldown {
   baseCooldownSeconds: number
   overrideCooldownSeconds?: number
   cooldownRecoveryPercent: number
+  finalCooldownSpeedPercent: number
   effectiveCooldownSeconds: number
   baseStoredUses: number
   additionalStoredUses: number
@@ -156,11 +157,16 @@ export function supportedSkillCooldownFor(
   const baseCooldownSeconds = Number(target.cooldown)
   let overrideCooldownSeconds: number | undefined
   let cooldownRecoveryPercent = 0
+  let finalCooldownSpeedPercent = 0
   const sourceReferences: string[] = []
+  const appliedSupportFamilies = new Set<string>()
   for (const supportId of setup.supportGemIds) {
     const definition = supports.find(value => value.id === supportId)
     const record = pob2SupportReferenceFor(definition?.nameEn)
     if (!record || !supportCompatible(target, record)) continue
+    const family = record.gemFamily[0]
+    if (family && appliedSupportFamilies.has(family)) continue
+    if (family) appliedSupportFamilies.add(family)
     const overrideMs = Number(record.numericStats.support_hourglass_display_cooldown_time_ms)
     if (Number.isFinite(overrideMs) && overrideMs > 0) {
       overrideCooldownSeconds = overrideMs / 1000
@@ -171,11 +177,16 @@ export function supportedSkillCooldownFor(
       cooldownRecoveryPercent += recovery
       sourceReferences.push(`damage-reference:${record.sourceFile}#${record.sourceRecordId}:support_cooldown_reduction_cooldown_recovery_+%`)
     }
+    const finalSpeed = Number(record.numericStats['base_cooldown_speed_+%_final'])
+    if (Number.isFinite(finalSpeed) && finalSpeed !== 0) {
+      finalCooldownSpeedPercent += finalSpeed
+      sourceReferences.push(`damage-reference:${record.sourceFile}#${record.sourceRecordId}:base_cooldown_speed_+%_final`)
+    }
   }
   const selectedBase = overrideCooldownSeconds ?? baseCooldownSeconds
   if (!Number.isFinite(selectedBase) || selectedBase <= 0) return undefined
   cooldownRecoveryPercent += Math.max(0, externalModifiers.recoveryPercent ?? 0)
-  const rawEffective = effectiveCooldownSeconds(selectedBase, cooldownRecoveryPercent)
+  const rawEffective = effectiveCooldownSeconds(selectedBase, cooldownRecoveryPercent, finalCooldownSpeedPercent)
   const baseStoredUses = Number.isFinite(Number(target.storedUses)) ? Math.max(1, Number(target.storedUses)) : 1
   const additionalStoredUses = Math.max(0, Math.trunc(externalModifiers.count))
   const storedUses = baseStoredUses + additionalStoredUses
@@ -186,6 +197,7 @@ export function supportedSkillCooldownFor(
     baseCooldownSeconds: Number.isFinite(baseCooldownSeconds) && baseCooldownSeconds > 0 ? baseCooldownSeconds : selectedBase,
     ...(overrideCooldownSeconds == null ? {} : { overrideCooldownSeconds }),
     cooldownRecoveryPercent,
+    finalCooldownSpeedPercent,
     effectiveCooldownSeconds: stableNumber(effective),
     baseStoredUses,
     additionalStoredUses,
@@ -220,7 +232,10 @@ const cooldownRecoveryFor = (
 export const effectiveCooldownSeconds = (
   baseCooldownSeconds: number,
   cooldownRecoveryPercent: number,
-): number => baseCooldownSeconds / Math.max(1, 1 + cooldownRecoveryPercent / 100)
+  finalCooldownSpeedPercent = 0,
+): number => baseCooldownSeconds
+  / Math.max(1, 1 + cooldownRecoveryPercent / 100)
+  / Math.max(0.01, 1 + finalCooldownSpeedPercent / 100)
 
 const energyPerEvent = (record: NumericSkill): number | undefined => {
   const entry = Object.entries(record.numericStats).find(([stat]) =>

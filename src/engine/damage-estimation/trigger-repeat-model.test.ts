@@ -59,6 +59,49 @@ describe('Trigger- und Wiederholungsmodell', () => {
     expect(result?.sourceReferences).toContain('equipment:crossbow:grenade_skill_cooldown_count_+')
   })
 
+  it('wendet die belegte finale Cooldown-Geschwindigkeit von Second Wind an, ohne Nutzungen zu erfinden', () => {
+    const sourceGrenade = damageReference.skills.find(value => value.name === 'Cluster Grenade')
+    expect(sourceGrenade).toBeDefined()
+    const grenade = {
+      ...sourceGrenade!,
+      skillTypes: [...sourceGrenade!.skillTypes, 'AffectedByCooldownRate'],
+    }
+    const secondWind = support('second-wind-1', 'Second Wind I')
+    const result = supportedSkillCooldownFor(
+      grenade,
+      { ...setup('cluster-grenade', 'main'), supportGemIds: [secondWind.id] },
+      [secondWind],
+    )
+    expect(result).toMatchObject({
+      baseCooldownSeconds: 10,
+      cooldownRecoveryPercent: 0,
+      finalCooldownSpeedPercent: -50,
+      effectiveCooldownSeconds: 20.031,
+      storedUses: 1,
+      sustainedUseRatePerSecond: 0.049923,
+    })
+    expect(result?.sourceReferences).toContain(
+      'damage-reference:src/Data/Skills/sup_dex.lua#SupportSecondWindPlayer:base_cooldown_speed_+%_final',
+    )
+  })
+
+  it('kombiniert erhöhte Recovery und finale Cooldown-Geschwindigkeit in getrennten Multiplikatoren', () => {
+    expect(effectiveCooldownSeconds(10, 25, -50)).toBe(16)
+  })
+
+  it('wendet mehrere Stufen derselben Second-Wind-Familie nicht doppelt an', () => {
+    const sourceGrenade = damageReference.skills.find(value => value.name === 'Cluster Grenade')!
+    const grenade = { ...sourceGrenade, skillTypes: [...sourceGrenade.skillTypes, 'AffectedByCooldownRate'] }
+    const first = support('second-wind-1', 'Second Wind I')
+    const second = support('second-wind-2', 'Second Wind II')
+    const result = supportedSkillCooldownFor(
+      grenade,
+      { ...setup('cluster-grenade', 'main'), supportGemIds: [first.id, second.id] },
+      [first, second],
+    )
+    expect(result?.finalCooldownSpeedPercent).toBe(-50)
+  })
+
   it('blockiert eine eingebaute Triggerfertigkeit ohne belegte Auslöserkette', () => {
     const primary = skill('blood-explosion', 'Blood Explosion')
     const result = resolveTriggerRepeatModel({ primarySkill: primary, setups: [setup(primary.id, 'main')], skills: [primary] })

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 151,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_dex.lua",
+  "calculatorVersion": "3.65.0",
+  "triggerRepeatModelVersion": "1.11.0",
+  "structuredSecondWindSupports": 3,
+  "structuredFinalCooldownSpeedValues": {
+    "Second Wind I": -50,
+    "Second Wind II": -40,
+    "Second Wind III": -40
+  },
+  "productivePinnedSkillMatches": 0,
+  "duplicateFamilyGuard": true,
+  "separateDimensions": [
+    "cooldown-recovery-percent",
+    "final-cooldown-speed-percent",
+    "stored-uses"
+  ],
+  "status": "implemented-fail-closed-no-current-compatible-product-skill",
+  "limitations": [
+    "No pinned product skill currently satisfies Cooldown plus AffectedByCooldownRate while also passing all exclusions.",
+    "No additional stored use is inferred from the Second Wind display name.",
+    "Second Wind III life recovery remains outside damage throughput and is not modeled here."
+  ]
+}
