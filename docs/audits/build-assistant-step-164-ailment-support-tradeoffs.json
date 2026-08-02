@@ -26,7 +26,11 @@
     "typecheck": "passed",
     "lint": "passed",
     "productionBuild": "passed",
-    "pagesBuild": "passed"
+    "pagesBuild": "passed",
+    "githubPagesDeployment": "passed",
+    "desktopBrowser": "passed",
+    "mobile390x844": "passed-no-horizontal-overflow",
+    "browserConsole": "no-errors-or-warnings"
   },
   "limitations": [
     "No complete Path of Building 2 equivalence is claimed.",

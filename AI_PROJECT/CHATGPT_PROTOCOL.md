@@ -10,6 +10,7 @@
 - Hauptdokument: `docs/BUILD_ASSISTANT_AILMENT_SUPPORT_TRADEOFFS_STEP_164.md`.
 - Audit: `docs/audits/build-assistant-step-164-ailment-support-tradeoffs.json`.
 - Vollständig seriell: 159 Dateien und 1.869 Tests erfolgreich; Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- GitHub Pages, produktive Desktopansicht und Mobilansicht 390 × 844 erfolgreich; keine neuen Browserkonsolenfehler oder horizontaler Mobilüberlauf.
 - Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
 
 ## Attunement-Unterstützungen – Schritt 163 (2026-08-02)

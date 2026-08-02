@@ -25,5 +25,6 @@ Die Änderung erfindet keine Trefferchance, Zustandschance, Wirkzeit oder Gegner
 - vollständig seriell: 159 Dateien, 1.869 Tests erfolgreich,
 - Typecheck und Lint erfolgreich,
 - Produktions- und Pages-Build erfolgreich,
+- GitHub-Pages-Deployment und produktive Desktop-/Mobilprüfung erfolgreich; keine neuen Browserkonsolenfehler oder horizontaler Mobilüberlauf,
 - Schadensrechner-Version `3.78.0`,
 - Produktpins, Quellenfreigaben und Offline-Grenzen unverändert.
