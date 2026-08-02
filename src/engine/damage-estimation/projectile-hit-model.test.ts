@@ -93,4 +93,13 @@ describe('projectile hit model', () => {
       sourceReference: 'support:projectile-acceleration-ii:base_chance_to_pierce_%',
     }))
   })
+
+  it('records fork as a follow-up projectile effect without inventing contacts or boss hits', () => {
+    const result = resolveProjectileHitModel(
+      { name: 'Spark', skillTypes: ['Spell', 'Projectile'], numericStats: { base_number_of_projectiles: 9 } },
+      { forkEnabled: true, forkSourceReference: 'support:SupportForkPlayer:support_fork_forked_projectile_damage_+%_final', forkedProjectileDamageMultiplier: 0.7 },
+    )
+    expect(result).toMatchObject({ forkEnabled: true, forkedProjectileDamageMultiplier: 0.7, mappingPotentialTargetContacts: 9, singleTargetHitMultiplier: 1 })
+    expect(result.mechanics).toContainEqual(expect.objectContaining({ kind: 'fork-enabled', value: 1, damageUse: 'coverage-only' }))
+  })
 })

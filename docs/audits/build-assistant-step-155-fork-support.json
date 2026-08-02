@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 155,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_dex.lua",
+  "calculatorVersion": "3.69.0",
+  "forkSupportModelVersion": "1.0.0",
+  "projectileHitModelVersion": "1.4.0",
+  "structuredSupport": {
+    "name": "Fork",
+    "sourceRecordId": "SupportForkPlayer",
+    "requiredSkillType": "Projectile",
+    "excludedSkillType": "ProjectileNoCollision",
+    "finalDamageAfterForkPercent": -30,
+    "forkedProjectileDamageMultiplier": 0.7
+  },
+  "singleTargetHitMultiplier": 1,
+  "mappingContactCountChanged": false,
+  "duplicateFamilyGuard": true,
+  "status": "implemented-coverage-only",
+  "blockedRelatedMechanics": [
+    { "name": "Freezefork", "reason": "Requires a verified frozen-enemy condition chain before productive use." }
+  ],
+  "limitations": [
+    "The pinned reduced reference does not expose a closed numeric count of forked child projectiles or target contacts.",
+    "Forked-projectile damage does not modify the first hit.",
+    "Fork does not create an assumed boss hit or DPS multiplier."
+  ]
+}

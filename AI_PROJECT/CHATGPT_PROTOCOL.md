@@ -4121,5 +4121,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die finale Fertigkeitsgeschwindigkeit wird vor einer belegten nachhaltigen Cooldown-Grenze angewandt. Die generische Teilabbildung wurde entfernt, damit keine Doppelberechnung entsteht.
 - Der Schadensrechner verwendet `3.63.0`, das Mehrfachprojektilmodell `1.0.0` und das Projektiltreffermodell `1.2.0`. Produktpins und Offline-Grenzen bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_MULTISHOT_SUPPORT_STEP_149.md` und `docs/audits/build-assistant-step-149-multishot-support.json`.
+
+## Gabelungs-Unterstützung – Schritt 155 (2026-08-02)
+
+- `Fork` wird aus dem gepinnten PoB2-Datensatz als strukturierte Projektil-Folgewirkung verarbeitet.
+- Der Faktor `0.7` gilt ausschließlich für bereits gegabelte Folgeprojektile; erster Treffer und Boss-Treffermultiplikator bleiben `1`.
+- Ohne geschlossene Folgeprojektil- und Kontaktzahl wird keine zusätzliche Mapping-Kontaktzahl und kein DPS-Bonus erfunden.
+- `ProjectileNoCollision` und doppelte Einträge derselben Gemmenfamilie werden fail-closed blockiert.
+- `Freezefork` bleibt getrennt und unproduktiv, bis die Bedingung eines gefrorenen Gegners geschlossen modelliert ist.
+- Schadensrechner `3.69.0`, Gabelungsmodell `1.0.0`, Projektiltreffermodell `1.4.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_FORK_SUPPORT_STEP_155.md`.
+- Audit: `docs/audits/build-assistant-step-155-fork-support.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
 - Fokussierte Prüfung: 4 Dateien und 75 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 149 Dateien und 1.801 Tests.
 - Typecheck, Lint, Produktions- und Pages-Build, 226 JSON-Dateien und `git diff --check` sind erfolgreich geprüft. Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.

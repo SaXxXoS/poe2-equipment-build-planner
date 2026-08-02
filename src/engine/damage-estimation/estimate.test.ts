@@ -12,6 +12,17 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Fork als belegte Folgeprojektilwirkung ohne den ersten Treffer zu multiplizieren',()=>{
+    const fork=supportDef('fork','Fork')
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[fork]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[fork.id]}],skills:[spark],supports:[fork]})
+    expect(result.forkSupportModel).toMatchObject({status:'applied-coverage-only',forkEnabled:true,forkedProjectileDamageMultiplier:.7,singleTargetHitMultiplier:1})
+    expect(result.projectileHitModel).toMatchObject({forkEnabled:true,forkedProjectileDamageMultiplier:.7,singleTargetHitMultiplier:1})
+    expect(result.projectileHitModel?.mappingPotentialTargetContacts).toBe(baseline.projectileHitModel?.mappingPotentialTargetContacts)
+    expect(result.hitDamage?.average).toBe(baseline.hitDamage?.average)
+    expect(result.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('integriert Pierce I als Mapping-Wirkung ohne den ersten Einzelzieltreffer zu verändern',()=>{
     const pierce=supportDef('pierce-i','Pierce I')
     const spark=skill('spark','Spark')
