@@ -102,4 +102,13 @@ describe('projectile hit model', () => {
     expect(result).toMatchObject({ forkEnabled: true, forkedProjectileDamageMultiplier: 0.7, mappingPotentialTargetContacts: 9, singleTargetHitMultiplier: 1 })
     expect(result.mechanics).toContainEqual(expect.objectContaining({ kind: 'fork-enabled', value: 1, damageUse: 'coverage-only' }))
   })
+
+  it('records terrain ricochet chance without assuming a terrain contact', () => {
+    const result = resolveProjectileHitModel(
+      { name: 'Spark', skillTypes: ['Spell', 'Projectile'], numericStats: { base_number_of_projectiles: 9 } },
+      { terrainChainChancePercent: 40, terrainChainSourceReference: 'support:SupportRicochetPlayer:projectile_chance_to_chain_1_extra_time_from_terrain_%' },
+    )
+    expect(result).toMatchObject({ terrainChainChancePercent: 40, mappingPotentialTargetContacts: 9, singleTargetHitMultiplier: 1 })
+    expect(result.mechanics).toContainEqual(expect.objectContaining({ kind: 'terrain-chain-chance', value: 40, damageUse: 'coverage-only' }))
+  })
 })

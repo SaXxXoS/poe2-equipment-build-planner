@@ -18,6 +18,7 @@ import { applyMultishotDamageMultiplier, resolveMultishotSupports } from './mult
 import { resolveCrossbowAmmunitionSupports } from './crossbow-ammunition-supports'
 import { resolvePierceSupports } from './pierce-supports'
 import { resolveForkSupports } from './fork-supports'
+import { resolveRicochetSupports } from './ricochet-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -135,7 +136,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.69.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.70.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -149,6 +150,7 @@ export function estimateHitDamage(input:{
   const crossbowAmmunitionSupportModel=resolveCrossbowAmmunitionSupports({skill,setup,supports:input.supports??[]})
   const pierceSupportModel=resolvePierceSupports({skill,setup,supports:input.supports??[]})
   const forkSupportModel=resolveForkSupports({skill,setup,supports:input.supports??[]})
+  const ricochetSupportModel=resolveRicochetSupports({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
@@ -156,13 +158,14 @@ export function estimateHitDamage(input:{
   const areaDamageInput=nativeDotDamageMultiplier!==1
     ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
     ...(multishotSupportModel.status==='applied'?{additionalProjectiles:multishotSupportModel.additionalProjectiles,projectileSourceReference:multishotSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_additional_projectiles'))}:{}),
     ...(pierceSupportModel.status==='applied'?{pierceChancePercent:pierceSupportModel.chanceToPiercePercent,pierceSourceReference:pierceSupportModel.sourceReferences.find(value=>value.endsWith(':base_chance_to_pierce_%')),postPierceDamageMultiplier:pierceSupportModel.postPierceDamageMultiplier}:{}),
     ...(forkSupportModel.status==='applied-coverage-only'?{forkEnabled:true,forkSourceReference:forkSupportModel.sourceReferences[0],forkedProjectileDamageMultiplier:forkSupportModel.forkedProjectileDamageMultiplier}:{}),
+    ...(ricochetSupportModel.status==='applied-coverage-only'?{terrainChainChancePercent:ricochetSupportModel.terrainChainChancePercent,terrainChainSourceReference:ricochetSupportModel.sourceReferences[0]}:{}),
   })
   let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills,supports:input.supports})
   const minionCompanionModel=resolveMinionCompanionModel({primarySkill:definition,setups:input.setups,skills:input.skills})
@@ -282,6 +285,8 @@ export function estimateHitDamage(input:{
     ...pierceSupportModel.blockedSupportIds,
     ...forkSupportModel.appliedSupports.map(value=>value.supportId),
     ...forkSupportModel.blockedSupportIds,
+    ...ricochetSupportModel.appliedSupports.map(value=>value.supportId),
+    ...ricochetSupportModel.blockedSupportIds,
   ])
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
@@ -368,6 +373,7 @@ export function estimateHitDamage(input:{
   if(crossbowAmmunitionSupportModel.status==='applied-burst-only')included.push(`Armbrustmunition: ${crossbowAmmunitionSupportModel.loadedBolts} belegte geladene Bolzen, ${crossbowAmmunitionSupportModel.ammunitionConservationChancePercent}% Nichtverbrauchschance, ${crossbowAmmunitionSupportModel.expectedShotsPerLoad} erwartete Schüsse pro Ladung und ${crossbowAmmunitionSupportModel.reloadSpeedMultiplier*100}% relative finale Nachladegeschwindigkeit; mangels absoluter Nachladezeit kein erfundener Dauer-DPS-Multiplikator`)
   if(pierceSupportModel.status==='applied')included.push(`${pierceSupportModel.chanceToPiercePercent}% strukturierte Durchbohrungswahrscheinlichkeit; der Faktor ${pierceSupportModel.postPierceDamageMultiplier} gilt nur nach erfolgreichem Durchbohren und wird nicht als Boss-DPS verwendet`)
   if(forkSupportModel.status==='applied-coverage-only')included.push(`Gabelung ist strukturiert belegt; Folgeprojektile verwenden den Faktor ${forkSupportModel.forkedProjectileDamageMultiplier}, ohne erfundene Kontaktzahl oder Boss-DPS-Erhöhung`)
+  if(ricochetSupportModel.status==='applied-coverage-only')included.push(`${ricochetSupportModel.terrainChainChancePercent}% strukturierte Chance auf einen zusätzlichen Terrain-Chain; ohne Terrainkontakt keine erfundene Treffer- oder DPS-Erhöhung`)
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)

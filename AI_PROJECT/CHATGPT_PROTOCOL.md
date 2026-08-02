@@ -4135,3 +4135,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
 - Fokussierte Prüfung: 4 Dateien und 75 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 149 Dateien und 1.801 Tests.
 - Typecheck, Lint, Produktions- und Pages-Build, 226 JSON-Dateien und `git diff --check` sind erfolgreich geprüft. Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.
+
+## Abprall-Unterstützung – Schritt 156 (2026-08-02)
+
+- `Ricochet I/II` werden aus dem gepinnten PoB2-Datensatz als Chance auf genau eine zusätzliche Geländeverkettung verarbeitet: 40 beziehungsweise 50 Prozent.
+- Die Wirkung erfordert `Projectile`; `CannotChain`, `CannotTerrainChain` und doppelte Einträge derselben Gemmenfamilie werden fail-closed blockiert.
+- Die gepinnte Referenz belegt keine Häufigkeit von Geländekontakten und keinen anschließenden Zielkontakt. Deshalb bleiben Mapping-Kontaktzahl, erster Treffer, Boss-Treffermultiplikator und DPS unverändert.
+- Zielverkettung, Gabelung und Geländeverkettung bleiben getrennte Mechaniken. Geschossrückkehr bleibt mangels geschlossener lokal gepinnter Zahlenkette weiterhin nicht produktiv modelliert.
+- Schadensrechner `3.70.0`, Abprallmodell `1.0.0`, Projektiltreffermodell `1.5.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_RICOCHET_SUPPORT_STEP_156.md`.
+- Audit: `docs/audits/build-assistant-step-156-ricochet-support.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
+- Fokussierte Prüfung: 3 Dateien und 82 Tests erfolgreich. Die reguläre serielle Suite bestand mit 151 Dateien und 1.637 Tests; die zwei unter gemeinsamer Last zeitkritischen Passivbaumdateien bestanden isoliert mit weiteren 196 Tests. Insgesamt sind damit 153 Dateien und 1.833 Tests fachlich erfolgreich.
+- Typecheck, Lint, Produktions- und Pages-Build, 233 JSON-Dateien, `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich. Der lokale Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.

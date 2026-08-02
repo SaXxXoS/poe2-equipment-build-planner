@@ -1,6 +1,6 @@
 import type { DamageEstimate } from './types'
 
-export const PROJECTILE_HIT_MODEL_VERSION = '1.4.0'
+export const PROJECTILE_HIT_MODEL_VERSION = '1.5.0'
 
 type NumericSkill = {
   name: string
@@ -14,6 +14,7 @@ export type ProjectileMechanicKind =
   | 'pierce-count'
   | 'pierce-chance'
   | 'fork-enabled'
+  | 'terrain-chain-chance'
   | 'maximum-hit-cap'
 
 export interface ResolvedProjectileMechanic {
@@ -35,6 +36,7 @@ export interface ProjectileHitModel {
   postPierceDamageMultiplier: number
   forkEnabled: boolean
   forkedProjectileDamageMultiplier: number
+  terrainChainChancePercent: number
   mechanics: ResolvedProjectileMechanic[]
   bossScenario: { hitMultiplier: 1; status: 'single-hit-only'; detail: string }
   mappingScenario: { potentialTargetContacts: number; status: 'coverage-estimate'; detail: string }
@@ -44,7 +46,7 @@ export interface ProjectileHitModel {
 const positiveInteger = (value: unknown): number | undefined =>
   Number.isInteger(value) && Number(value) > 0 ? Number(value) : undefined
 
-export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: { additionalChains?: number; chainSourceReference?: string; additionalProjectiles?: number; projectileSourceReference?: string; pierceChancePercent?: number; pierceSourceReference?: string; postPierceDamageMultiplier?: number; forkEnabled?: boolean; forkSourceReference?: string; forkedProjectileDamageMultiplier?: number } = {}): ProjectileHitModel {
+export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: { additionalChains?: number; chainSourceReference?: string; additionalProjectiles?: number; projectileSourceReference?: string; pierceChancePercent?: number; pierceSourceReference?: string; postPierceDamageMultiplier?: number; forkEnabled?: boolean; forkSourceReference?: string; forkedProjectileDamageMultiplier?: number; terrainChainChancePercent?: number; terrainChainSourceReference?: string } = {}): ProjectileHitModel {
   const stats = skill.numericStats ?? {}
   const skillTypes = new Set(skill.skillTypes ?? [])
   const isProjectileSkill =
@@ -62,6 +64,7 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
   const postPierceDamageMultiplier = Number(supportBonuses.postPierceDamageMultiplier ?? 1)
   const forkEnabled = Boolean(supportBonuses.forkEnabled)
   const forkedProjectileDamageMultiplier = Number(supportBonuses.forkedProjectileDamageMultiplier ?? 1)
+  const terrainChainChancePercent = Math.max(0, Math.min(100, Number(supportBonuses.terrainChainChancePercent ?? 0)))
   const projectilesPerAction = isProjectileSkill ? (projectileCount ?? 1) + supportProjectileCount : 1
   const mechanics: ResolvedProjectileMechanic[] = []
 
@@ -121,6 +124,14 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
     damageUse: 'coverage-only',
     detail: 'Gabelung ist strukturiert belegt. Ohne feste Folgeprojektil- und Zielkontaktzahl wird daraus kein zusätzlicher Treffer oder Boss-DPS-Multiplikator abgeleitet.',
   })
+  if (terrainChainChancePercent > 0) mechanics.push({
+    kind: 'terrain-chain-chance',
+    value: terrainChainChancePercent,
+    sourceReference: supportBonuses.terrainChainSourceReference ?? 'support:projectile_chance_to_chain_1_extra_time_from_terrain_%',
+    evidence: 'structured-exact',
+    damageUse: 'coverage-only',
+    detail: `${terrainChainChancePercent}% Chance auf einen zusätzlichen Terrain-Chain sind strukturiert belegt. Ohne belegten Terrainkontakt entsteht daraus kein garantierter Zielkontakt oder Boss-DPS-Multiplikator.`,
+  })
   if (maximumHitCap) mechanics.push({
     kind: 'maximum-hit-cap',
     value: maximumHitCap,
@@ -144,6 +155,7 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
     postPierceDamageMultiplier,
     forkEnabled,
     forkedProjectileDamageMultiplier,
+    terrainChainChancePercent,
     mechanics,
     bossScenario: {
       hitMultiplier: 1,
@@ -159,6 +171,7 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
       'Mehrere Projektile werden nicht pauschal als Mehrfachtreffer desselben Ziels gerechnet.',
       'Chain und Pierce erhöhen nur die mögliche Zielabdeckung.',
       'Gabelung wird als belegte Folgeprojektilwirkung geführt, aber ohne strukturierte Kontaktzahl nicht als Treffer- oder Boss-DPS-Multiplikator verwendet.',
+      'Terrain-Abprallen wird ohne Terrainkontaktfrequenz nicht als garantierter Chain oder Treffer verwendet.',
       'Rückkehr bleibt ohne strukturierte Zahl und eindeutige Wiederkontaktregel unberücksichtigt.',
       'Eine Trefferobergrenze ist keine garantierte Trefferzahl.',
     ],
@@ -177,6 +190,7 @@ export const projectileHitOutput = (
   postPierceDamageMultiplier: model.postPierceDamageMultiplier,
   forkEnabled: model.forkEnabled,
   forkedProjectileDamageMultiplier: model.forkedProjectileDamageMultiplier,
+  terrainChainChancePercent: model.terrainChainChancePercent,
   mechanics: model.mechanics.map(value => ({ ...value })),
   bossScenario: { ...model.bossScenario },
   mappingScenario: { ...model.mappingScenario },

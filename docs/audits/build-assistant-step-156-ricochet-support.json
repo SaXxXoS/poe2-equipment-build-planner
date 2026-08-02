@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 156,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_dex.lua",
+  "calculatorVersion": "3.70.0",
+  "ricochetSupportModelVersion": "1.0.0",
+  "projectileHitModelVersion": "1.5.0",
+  "structuredSupports": [
+    {
+      "name": "Ricochet I",
+      "sourceRecordId": "SupportRicochetPlayer",
+      "requiredSkillType": "Projectile",
+      "excludedSkillTypes": ["CannotChain", "CannotTerrainChain"],
+      "terrainChainChancePercent": 40,
+      "additionalTerrainChainsOnSuccess": 1
+    },
+    {
+      "name": "Ricochet II",
+      "sourceRecordId": "SupportRicochetPlayerTwo",
+      "requiredSkillType": "Projectile",
+      "excludedSkillTypes": ["CannotChain", "CannotTerrainChain"],
+      "terrainChainChancePercent": 50,
+      "additionalTerrainChainsOnSuccess": 1
+    }
+  ],
+  "singleTargetHitMultiplier": 1,
+  "mappingContactCountChanged": false,
+  "duplicateFamilyGuard": true,
+  "status": "implemented-coverage-only",
+  "blockedRelatedMechanics": [
+    {
+      "name": "Projectile return",
+      "reason": "No closed pinned local numeric chain for return path, recontact, and an additional hit is available."
+    }
+  ],
+  "limitations": [
+    "The pinned reference provides a terrain-chain chance but no terrain-contact frequency.",
+    "A successful terrain chain is not assumed to hit an additional target.",
+    "Ricochet does not create an assumed boss hit or DPS multiplier."
+  ]
+}

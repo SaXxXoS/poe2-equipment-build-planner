@@ -12,6 +12,16 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Ricochet I als bedingte Terrain-Abdeckung ohne Schadensmultiplikator',()=>{
+    const ricochet=supportDef('ricochet-i','Ricochet I')
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[ricochet]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[ricochet.id]}],skills:[spark],supports:[ricochet]})
+    expect(result.ricochetSupportModel).toMatchObject({status:'applied-coverage-only',terrainChainChancePercent:40,additionalTerrainChainsOnSuccess:1,singleTargetHitMultiplier:1})
+    expect(result.projectileHitModel).toMatchObject({terrainChainChancePercent:40,mappingPotentialTargetContacts:baseline.projectileHitModel?.mappingPotentialTargetContacts,singleTargetHitMultiplier:1})
+    expect(result.hitDamage?.average).toBe(baseline.hitDamage?.average)
+    expect(result.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('integriert Fork als belegte Folgeprojektilwirkung ohne den ersten Treffer zu multiplizieren',()=>{
     const fork=supportDef('fork','Fork')
     const spark=skill('spark','Spark')
