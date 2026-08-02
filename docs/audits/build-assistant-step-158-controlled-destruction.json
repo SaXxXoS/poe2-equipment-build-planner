@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 158,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_int.lua",
+  "sourceRecordId": "SupportControlledDestructionPlayer",
+  "supportName": "Controlled Destruction",
+  "supportFamily": "ControlledDestruction",
+  "calculatorVersion": "3.72.0",
+  "modelVersion": "1.0.0",
+  "requiredSkillTypes": ["Damage", "Spell"],
+  "hitDamagePercent": 25,
+  "hitDamageMultiplier": 1.25,
+  "preventsCriticalHits": true,
+  "appliesToNativeDamageOverTime": false,
+  "duplicateFamilyGuard": true,
+  "status": "implemented-structured-exact",
+  "limitations": [
+    "Only hit damage of compatible damaging spells is multiplied.",
+    "Critical hit chance is forced to zero for the supported skill.",
+    "This closes one structured support mechanic but does not prove complete Path of Building equivalence."
+  ]
+}

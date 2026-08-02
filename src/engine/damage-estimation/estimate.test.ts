@@ -12,6 +12,16 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Kontrollierte Zerstörung mit mehr Trefferschaden und null kritischer Trefferchance',()=>{
+    const controlled=supportDef('controlled-destruction','Controlled Destruction')
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[controlled]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[controlled.id]}],skills:[spark],supports:[controlled]})
+    expect(result.controlledDestructionSupportModel).toMatchObject({status:'applied',hitDamageMultiplier:1.25,preventsCriticalHits:true})
+    expect(result.hitDamage!.average/baseline.hitDamage!.average).toBeCloseTo(1.25,3)
+    expect(result.criticalChance?.effective).toBe(0)
+    expect(result.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('integriert Rigwalds Wildheit mit unterschiedlichen Set-1- und Set-2-Faktoren',()=>{
     const rigwald=supportDef('rigwald',"Rigwald's Ferocity")
     const spearThrow:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}

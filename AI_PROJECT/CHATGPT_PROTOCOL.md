@@ -4162,3 +4162,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 2 Dateien und 73 Tests erfolgreich. Die reguläre serielle Suite bestand mit 153 Dateien und 1.836 Tests; die separat ausgeführte reale Passivbaum-Performanceprüfung bestand mit einem weiteren Test. Insgesamt sind 154 Dateien und 1.837 Tests erfolgreich.
 - Typecheck, Lint, Produktions- und Pages-Build, JSON-Validierung, `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich.
 - Die technische Browserprüfung des gebauten Stands war auf Desktop und bei 390 × 844 erfolgreich. Es bestand keine horizontale Überbreite; die Browserkonsole enthielt keine neuen Fehler oder Warnungen.
+
+## Kontrollierte Zerstörung – Schritt 158 (2026-08-02)
+
+- `Controlled Destruction` wird aus dem gepinnten Quellrecord `SupportControlledDestructionPlayer` vollständig als Treffereffekt verarbeitet.
+- Schädigende Zauber erhalten 25 % mehr Trefferschaden. Gleichzeitig wird ihre effektive kritische Trefferchance auf null gesetzt, weil der strukturierte Stat `global_cannot_crit` dies ausdrücklich verlangt.
+- Angriffe, nicht passende Fertigkeiten und doppelte Supportfamilien werden fail-closed blockiert. Nativer Schaden über Zeit wird nicht mit dem Trefferfaktor multipliziert.
+- Schadensrechner `3.72.0`, Supportmodell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_CONTROLLED_DESTRUCTION_STEP_158.md`.
+- Audit: `docs/audits/build-assistant-step-158-controlled-destruction.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert. Vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- Fokussiert bestanden 73 Tests. Der Gesamtlauf bestand fachlich mit 1.839 Tests; zwei unter paralleler Last zeitüberschrittene Passivbaumtests bestanden seriell mit 197 Tests. Die separate reale Passivbaum-Performanceprüfung bestand ebenfalls.
