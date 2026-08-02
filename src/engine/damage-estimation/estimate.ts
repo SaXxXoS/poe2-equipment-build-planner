@@ -15,6 +15,7 @@ import { applyAreaDamageMultiplier, resolveAreaDamageSupports } from './area-dam
 import { applySpellCascadeDamageMultiplier, resolveSpellCascadeSupports } from './spell-cascade-supports'
 import { applyChainHitDamageMultiplier, resolveChainSupports } from './chain-supports'
 import { applyMultishotDamageMultiplier, resolveMultishotSupports } from './multishot-supports'
+import { resolveCrossbowAmmunitionSupports } from './crossbow-ammunition-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -132,7 +133,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.65.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.66.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -143,6 +144,7 @@ export function estimateHitDamage(input:{
   const spellCascadeSupportModel=resolveSpellCascadeSupports({skill,setup,supports:input.supports??[]})
   const chainSupportModel=resolveChainSupports({skill,setup,supports:input.supports??[]})
   const multishotSupportModel=resolveMultishotSupports({skill,setup,supports:input.supports??[]})
+  const crossbowAmmunitionSupportModel=resolveCrossbowAmmunitionSupports({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
@@ -150,7 +152,7 @@ export function estimateHitDamage(input:{
   const areaDamageInput=nativeDotDamageMultiplier!==1
     ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -267,6 +269,8 @@ export function estimateHitDamage(input:{
     ...chainSupportModel.blockedSupportIds,
     ...multishotSupportModel.appliedSupports.map(value=>value.supportId),
     ...multishotSupportModel.blockedSupportIds,
+    ...crossbowAmmunitionSupportModel.appliedSupports.map(value=>value.supportId),
+    ...crossbowAmmunitionSupportModel.blockedSupportIds,
   ])
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
@@ -350,6 +354,7 @@ export function estimateHitDamage(input:{
   if(spellCascadeSupportModel.status==='applied')included.push('Zauberkaskade: strukturierter finaler Schadens- und Flächenfaktor; zusätzliche Flächen ohne erfundenen Einzelziel-Überlappungsbonus')
   if(chainSupportModel.status==='applied')included.push('Verkettung: strukturierter finaler Trefferschadensfaktor und zusätzliche Zielkontakte ohne erfundenen Einzelziel-Mehrfachtreffer')
   if(multishotSupportModel.status==='applied')included.push('Mehrfachprojektil: strukturierte Zusatzprojektile sowie finaler Schadens- und Fertigkeitsgeschwindigkeitsfaktor ohne erfundenen Einzelziel-Mehrfachtreffer')
+  if(crossbowAmmunitionSupportModel.status==='applied-burst-only')included.push(`Doppellauf: ${crossbowAmmunitionSupportModel.loadedBolts} belegte geladene Bolzen und ${crossbowAmmunitionSupportModel.reloadSpeedMultiplier*100}% relative finale Nachladegeschwindigkeit; mangels absoluter Nachladezeit kein erfundener Dauer-DPS-Multiplikator`)
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)

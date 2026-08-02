@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 152,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_str.lua",
+  "calculatorVersion": "3.66.0",
+  "crossbowAmmunitionSupportModelVersion": "1.0.0",
+  "structuredSupports": {
+    "Double Barrel I": { "additionalBolts": 1, "finalReloadSpeedPercent": -30 },
+    "Double Barrel II": { "additionalBolts": 1, "finalReloadSpeedPercent": -20 },
+    "Double Barrel III": { "additionalBolts": 1, "finalReloadSpeedPercent": -20 }
+  },
+  "compatibilitySemantics": "CrossbowAmmoSkill OR CrossbowSkill",
+  "duplicateFamilyGuard": true,
+  "sustainedDamageMultiplier": 1,
+  "status": "implemented-burst-capacity-only",
+  "limitations": [
+    "The pinned damage reference does not provide an absolute reload duration for the complete supported chain.",
+    "Loaded bolt capacity and relative final reload speed therefore do not alter sustained DPS.",
+    "No projectile count or attack speed is inferred from crossbow ammunition capacity."
+  ]
+}

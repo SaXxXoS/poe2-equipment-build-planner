@@ -1,5 +1,21 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Armbrustmunition und Doppellauf – Schritt 152 (2026-08-02)
+
+- `Doppellauf I–III` verarbeitet jetzt die gepinnte zusätzliche
+  Armbrustladung und die finale Nachladegeschwindigkeit als getrenntes
+  Burst-/Magazinmodell.
+- Die PoB2-Kompatibilitätsliste ohne `AND` wird korrekt als
+  `CrossbowAmmoSkill` oder `CrossbowSkill` behandelt.
+- Mehrere Stufen derselben `DoubleBarrel`-Familie werden fail-closed
+  blockiert.
+- Ohne absolute strukturierte Nachladezeit bleibt der nachhaltige
+  Schadensmultiplikator unverändert; die App erfindet keinen Dauer-DPS-Bonus.
+- Schadensrechner `3.66.0`, Armbrustmunitionsmodell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_CROSSBOW_AMMUNITION_STEP_152.md`.
+- Audit: `docs/audits/build-assistant-step-152-crossbow-ammunition.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
+
 ## Ressourcenbilanz je Fertigkeit und Waffenset – Schritt 32 (2026-07-28)
 
 - Die Ergebnisansicht zeigt die belegte Ressourcenbilanz jetzt getrennt je

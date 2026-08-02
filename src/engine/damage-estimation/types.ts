@@ -253,6 +253,21 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  crossbowAmmunitionSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied-burst-only'|'blocked-incompatible-skill'|'blocked-duplicate-family'|'blocked-missing-base-bolts'
+    baseBolts:number|null
+    additionalBolts:number
+    loadedBolts:number|null
+    finalReloadSpeedPercent:number
+    reloadSpeedMultiplier:number
+    sustainedDamageMultiplier:1
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;additionalBolts:number;finalReloadSpeedPercent:number;sourceReferences:string[]}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    limitations:string[]
+    detail:string
+  }
   damagingAilments?:{modelVersion:string;effects:AppliedDamagingAilmentEffect[];blockedEffects:BlockedDamagingAilmentEffect[];totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:boolean;triggeredDamagePerSecond?:number;triggeredDamagePerSecondAfterMitigation?:number;sources:TriggerRepeatSource[];limitations:string[]}

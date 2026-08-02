@@ -12,6 +12,12 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('transportiert Doppellauf als belegte Armbrust-Burstwirkung ohne erfundenen Dauer-DPS-Bonus',()=>{
+    const doubleBarrel=supportDef('double-barrel-i','Double Barrel I')
+    const loadExplosive=skill('load-explosive','Load Explosive Shot')
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(loadExplosive.id),supportGemIds:[doubleBarrel.id]}],skills:[loadExplosive],supports:[doubleBarrel]})
+    expect(result.crossbowAmmunitionSupportModel).toMatchObject({status:'applied-burst-only',baseBolts:1,additionalBolts:1,loadedBolts:2,reloadSpeedMultiplier:.7,sustainedDamageMultiplier:1})
+  })
   it('integriert Multishot I mit Schaden, Skill-Speed und zwei Coverage-Projektilen',()=>{
     const multishot=supportDef('multishot-i','Multishot I')
     const grenade:SkillGemDefinition={...skill('explosive-grenade','Explosive Grenade'),tags:['attack','projectile'],requiredWeaponTypes:['crossbow']}
