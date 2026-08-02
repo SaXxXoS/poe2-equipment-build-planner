@@ -12,6 +12,16 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Pierce I als Mapping-Wirkung ohne den ersten Einzelzieltreffer zu verändern',()=>{
+    const pierce=supportDef('pierce-i','Pierce I')
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[pierce]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[pierce.id]}],skills:[spark],supports:[pierce]})
+    expect(result.pierceSupportModel).toMatchObject({status:'applied',chanceToPiercePercent:100,postPierceDamageMultiplier:.8,singleTargetHitMultiplier:1})
+    expect(result.projectileHitModel).toMatchObject({supportPierceChancePercent:100,postPierceDamageMultiplier:.8,singleTargetHitMultiplier:1})
+    expect(result.hitDamage?.average).toBe(baseline.hitDamage?.average)
+    expect(result.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('transportiert Doppellauf als belegte Armbrust-Burstwirkung ohne erfundenen Dauer-DPS-Bonus',()=>{
     const doubleBarrel=supportDef('double-barrel-i','Double Barrel I')
     const loadExplosive=skill('load-explosive','Load Explosive Shot')

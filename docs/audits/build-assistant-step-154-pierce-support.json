@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 154,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_dex.lua",
+  "calculatorVersion": "3.68.0",
+  "pierceSupportModelVersion": "1.0.0",
+  "projectileHitModelVersion": "1.3.0",
+  "structuredSupports": {
+    "Pierce I": {
+      "chanceToPiercePercent": 100,
+      "finalDamageAfterPiercingPercent": -20
+    },
+    "Pierce II": {
+      "chanceToPiercePercent": 100,
+      "finalDamageAfterPiercingPercent": 0
+    },
+    "Projectile Acceleration II": {
+      "chanceToPiercePercent": 40,
+      "finalDamageAfterPiercingPercent": 0
+    }
+  },
+  "compatibility": {
+    "requiredSkillType": "Projectile",
+    "excludedSkillType": "ProjectileNoCollision",
+    "duplicateFamilyGuard": true
+  },
+  "singleTargetHitMultiplier": 1,
+  "status": "implemented-coverage-only",
+  "limitations": [
+    "Pierce chance does not prove a fixed number of additional target contacts without enemy count and density.",
+    "Post-pierce damage applies only to a subsequent target after a successful pierce.",
+    "Projectile speed is not interpreted as a hit-count or damage multiplier."
+  ]
+}

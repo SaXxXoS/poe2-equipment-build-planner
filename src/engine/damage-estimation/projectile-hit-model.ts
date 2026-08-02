@@ -1,6 +1,6 @@
 import type { DamageEstimate } from './types'
 
-export const PROJECTILE_HIT_MODEL_VERSION = '1.2.0'
+export const PROJECTILE_HIT_MODEL_VERSION = '1.3.0'
 
 type NumericSkill = {
   name: string
@@ -12,6 +12,7 @@ export type ProjectileMechanicKind =
   | 'projectiles-per-action'
   | 'chain-count'
   | 'pierce-count'
+  | 'pierce-chance'
   | 'maximum-hit-cap'
 
 export interface ResolvedProjectileMechanic {
@@ -29,6 +30,8 @@ export interface ProjectileHitModel {
   projectilesPerAction: number
   singleTargetHitMultiplier: 1
   mappingPotentialTargetContacts: number
+  supportPierceChancePercent: number
+  postPierceDamageMultiplier: number
   mechanics: ResolvedProjectileMechanic[]
   bossScenario: { hitMultiplier: 1; status: 'single-hit-only'; detail: string }
   mappingScenario: { potentialTargetContacts: number; status: 'coverage-estimate'; detail: string }
@@ -38,7 +41,7 @@ export interface ProjectileHitModel {
 const positiveInteger = (value: unknown): number | undefined =>
   Number.isInteger(value) && Number(value) > 0 ? Number(value) : undefined
 
-export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: { additionalChains?: number; chainSourceReference?: string; additionalProjectiles?: number; projectileSourceReference?: string } = {}): ProjectileHitModel {
+export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: { additionalChains?: number; chainSourceReference?: string; additionalProjectiles?: number; projectileSourceReference?: string; pierceChancePercent?: number; pierceSourceReference?: string; postPierceDamageMultiplier?: number } = {}): ProjectileHitModel {
   const stats = skill.numericStats ?? {}
   const skillTypes = new Set(skill.skillTypes ?? [])
   const isProjectileSkill =
@@ -52,6 +55,8 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
   const chainCount = baseChainCount + supportChainCount
   const pierceCount = positiveInteger(stats.projectile_base_number_of_targets_to_pierce)
   const maximumHitCap = positiveInteger(stats.tornado_shot_number_of_hits_allowed)
+  const supportPierceChancePercent = Math.max(0, Math.min(100, Number(supportBonuses.pierceChancePercent ?? 0)))
+  const postPierceDamageMultiplier = Number(supportBonuses.postPierceDamageMultiplier ?? 1)
   const projectilesPerAction = isProjectileSkill ? (projectileCount ?? 1) + supportProjectileCount : 1
   const mechanics: ResolvedProjectileMechanic[] = []
 
@@ -95,6 +100,14 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
     damageUse: 'coverage-only',
     detail: `${pierceCount} Durchbohrungen erweitern die mögliche Zielabdeckung, aber nicht automatisch den Schaden gegen dasselbe Ziel.`,
   })
+  if (supportPierceChancePercent > 0) mechanics.push({
+    kind: 'pierce-chance',
+    value: supportPierceChancePercent,
+    sourceReference: supportBonuses.pierceSourceReference ?? 'support:base_chance_to_pierce_%',
+    evidence: 'structured-exact',
+    damageUse: 'coverage-only',
+    detail: `${supportPierceChancePercent}% Durchbohrungswahrscheinlichkeit sind strukturiert belegt. Ohne Zielanzahl und Gegnerdichte wird daraus keine feste Zahl zusätzlicher Kontakte abgeleitet.`,
+  })
   if (maximumHitCap) mechanics.push({
     kind: 'maximum-hit-cap',
     value: maximumHitCap,
@@ -114,6 +127,8 @@ export function resolveProjectileHitModel(skill: NumericSkill, supportBonuses: {
     projectilesPerAction,
     singleTargetHitMultiplier: 1,
     mappingPotentialTargetContacts,
+    supportPierceChancePercent,
+    postPierceDamageMultiplier,
     mechanics,
     bossScenario: {
       hitMultiplier: 1,
@@ -142,6 +157,8 @@ export const projectileHitOutput = (
   projectilesPerAction: model.projectilesPerAction,
   singleTargetHitMultiplier: model.singleTargetHitMultiplier,
   mappingPotentialTargetContacts: model.mappingPotentialTargetContacts,
+  supportPierceChancePercent: model.supportPierceChancePercent,
+  postPierceDamageMultiplier: model.postPierceDamageMultiplier,
   mechanics: model.mechanics.map(value => ({ ...value })),
   bossScenario: { ...model.bossScenario },
   mappingScenario: { ...model.mappingScenario },

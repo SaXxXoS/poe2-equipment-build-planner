@@ -70,4 +70,27 @@ describe('projectile hit model', () => {
     expect(result.singleTargetHitMultiplier).toBe(1)
     expect(result.mechanics).toContainEqual(expect.objectContaining({kind:'projectiles-per-action',value:2,sourceReference:'support:multishot:number_of_additional_projectiles'}))
   })
+
+  it('keeps support pierce chance distinct from guaranteed pierce count', () => {
+    const result = resolveProjectileHitModel(
+      {
+        name: 'Spark',
+        skillTypes: ['Spell', 'Projectile', 'ProjectileNumber'],
+        numericStats: { base_number_of_projectiles: 9 },
+      },
+      {
+        pierceChancePercent: 40,
+        pierceSourceReference: 'support:projectile-acceleration-ii:base_chance_to_pierce_%',
+        postPierceDamageMultiplier: 1,
+      },
+    )
+    expect(result.supportPierceChancePercent).toBe(40)
+    expect(result.mappingPotentialTargetContacts).toBe(9)
+    expect(result.singleTargetHitMultiplier).toBe(1)
+    expect(result.mechanics).toContainEqual(expect.objectContaining({
+      kind: 'pierce-chance',
+      value: 40,
+      sourceReference: 'support:projectile-acceleration-ii:base_chance_to_pierce_%',
+    }))
+  })
 })

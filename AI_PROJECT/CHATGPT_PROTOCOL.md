@@ -1,5 +1,25 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Durchbohrungs-Unterstützungen – Schritt 154 (2026-08-02)
+
+- `Pierce I`, `Pierce II` und die belegte Durchbohrungschance von
+  `Projectile Acceleration II` werden aus dem gepinnten PoB2-Datensatz
+  verarbeitet.
+- Prozentuale Chance und garantierte Durchbohrungsanzahl sind getrennte
+  Mechanikarten.
+- Der Schadensnachteil von `Pierce I` gilt ausschließlich nach erfolgreichem
+  Durchbohren gegen ein nachfolgendes Ziel; erster Treffer und Boss-Treffer
+  bleiben unverändert.
+- Ohne Zielanzahl und Gegnerdichte wird weder eine feste Kontaktzahl noch ein
+  Mapping- oder Boss-DPS-Multiplikator erfunden.
+- `ProjectileNoCollision` und doppelte Stufen derselben Familie werden
+  fail-closed blockiert.
+- Schadensrechner `3.68.0`, Durchbohrungsmodell `1.0.0`,
+  Projektiltreffermodell `1.3.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_PIERCE_SUPPORT_STEP_154.md`.
+- Audit: `docs/audits/build-assistant-step-154-pierce-support.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
+
 ## Munitionsersparnis – Schritt 153 (2026-08-02)
 
 - `Munitionsersparnis I–III` verarbeitet jetzt die gepinnte Chance, beim
