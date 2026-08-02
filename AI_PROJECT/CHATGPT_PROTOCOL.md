@@ -1,5 +1,19 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Intense-Agony-Unterstützung – Schritt 167 (2026-08-02)
+
+- `Intense Agony` verarbeitet jetzt 50 % mehr nativen Schaden über Zeit gegen ein ausdrücklich bestätigtes Ziel auf vollem Leben und stets 25 % weniger Wirkungsdauer.
+- Bei unbekanntem oder bestätigt anderem Lebenszustand bleibt der bedingte Schadensbonus fail-closed inaktiv; die unbedingte Dauerkürzung gilt weiterhin.
+- Die Kompatibilität verlangt gemeinsam die gepinnten Fertigkeitstypen `Spell` und `DamageOverTime`; Trefferschaden und nicht vollständig belegte Zustände werden nicht verändert.
+- Inkompatible Fertigkeiten und doppelte Supportfamilien werden blockiert.
+- Schadensrechner `3.81.0`, Intense-Agony-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_INTENSE_AGONY_SUPPORT_STEP_167.md`.
+- Audit: `docs/audits/build-assistant-step-167-intense-agony-support.json`.
+- Fokussiert: 2 Dateien und 84 Tests erfolgreich.
+- Gesamtlauf: 1.878 Tests bestanden; drei unter paralleler Vollbaumlast zeitüberschrittene Dateien bestanden seriell mit 198 Tests vollständig.
+- Typecheck, Lint, Produktions-Build, Pages-Build, JSON-Validierung und `git diff --check` erfolgreich.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
 ## Hinterhalt-Unterstützung – Schritt 166 (2026-08-02)
 
 - `Ambush` (`Hinterhalt`) verarbeitet jetzt die gepinnte Wirkung von 100 % mehr kritischer Trefferchance gegen ein ausdrücklich bestätigtes Ziel auf vollem Leben.

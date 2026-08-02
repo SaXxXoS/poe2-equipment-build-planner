@@ -158,6 +158,16 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  intenseAgonySupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied-full-life'|'applied-duration-only-enemy-not-full-life'|'applied-duration-only-unknown-enemy-life-state'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    damageOverTimeMultiplier:number
+    durationMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyFullLifeMoreDamageOverTimePercent:number;finalSkillEffectDurationPercent:number;damageSourceReference:string;durationSourceReference:string}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   dualWieldAttackModel?:{
     modelVersion:'1.1.0'
     status:'not-applicable'|'single-weapon'|'applied'|'blocked-unresolved-weapon'|'blocked-not-two-one-hand-weapons'|'blocked-incompatible-weapon'

@@ -1,0 +1,29 @@
+{
+  "step": 167,
+  "title": "Intense Agony full-life damage-over-time and duration effects",
+  "calculatorVersion": "3.81.0",
+  "modelVersion": "1.0.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceRecords": ["SupportIntenseAgonyPlayer"],
+  "sourceStats": {
+    "support_chaotic_assassination_damage_over_time_+%_final_against_full_life_enemies": 50,
+    "support_chaotic_assassination_skill_effect_duration_+%_final": -25
+  },
+  "conditions": {
+    "enemyFullLife": "productive-structured-exact",
+    "enemyConfirmedNotFullLife": "duration-only",
+    "enemyLifeStateUnknown": "conditional-damage-fail-closed-duration-exact",
+    "requiredSkillTypes": ["Spell", "DamageOverTime"]
+  },
+  "focusedTests": {"files": 2, "tests": 84, "status": "passed"},
+  "fullRegression": {
+    "initialPassed": 1878,
+    "parallelTimeouts": 3,
+    "serialRerunTests": 198,
+    "serialRerunStatus": "passed"
+  },
+  "jsonFilesValidated": 243,
+  "pinsChanged": false,
+  "offlineBoundaryChanged": false,
+  "fullPathOfBuildingParity": "not-proven"
+}

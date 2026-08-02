@@ -264,6 +264,19 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(result.skillEffectDurationSupportModel).toMatchObject({status:'applied',durationMultiplier:.7})
     expect(result.damageOverTime?.effects[0]).toMatchObject({damagePerSecond:59.58,durationMs:4480,totalDamagePerApplication:266.93})
   })
+  it('integriert Intense Agony gegen volles Leben in nativen DoT und kürzt die Dauer unabhängig vom Zielzustand',()=>{
+    const agony=supportDef('intense-agony','Intense Agony')
+    const flameWall=skill('wall','Flame Wall')
+    const selected={...setup(flameWall.id),supportGemIds:[agony.id]}
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(flameWall.id)],skills:[flameWall],supports:[agony],enemyProfile:{id:'full-base',label:'Volles Leben',source:'manual-comparison-profile',lifeState:'full-life'}})
+    const full=estimateHitDamage({equipment:[],setups:[selected],skills:[flameWall],supports:[agony],enemyProfile:{id:'full',label:'Volles Leben',source:'manual-comparison-profile',lifeState:'full-life'}})
+    const unknown=estimateHitDamage({equipment:[],setups:[selected],skills:[flameWall],supports:[agony],enemyProfile:{id:'unknown',label:'Unbekannt',source:'manual-comparison-profile',lifeState:'unknown'}})
+    expect(full.intenseAgonySupportModel).toMatchObject({status:'applied-full-life',damageOverTimeMultiplier:1.5,durationMultiplier:.75})
+    expect(full.damageOverTime?.effects[0].damagePerSecond).toBeCloseTo(baseline.damageOverTime!.effects[0].damagePerSecond*1.5,1)
+    expect(full.damageOverTime?.effects[0].durationMs).toBeCloseTo(baseline.damageOverTime!.effects[0].durationMs*.75,6)
+    expect(full.damageOverTime?.effects[0].totalDamagePerApplication).toBeCloseTo(baseline.damageOverTime!.effects[0].totalDamagePerApplication*1.125,1)
+    expect(unknown.intenseAgonySupportModel).toMatchObject({status:'applied-duration-only-unknown-enemy-life-state',damageOverTimeMultiplier:1,durationMultiplier:.75})
+  })
   it('berechnet PoB2-Dual-Wield-Angriffe aus beiden Waffen statt nur aus der ersten Hand',()=>{
     const earthquake:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
     const main={...weapon('Akoyan Club'),id:'main',itemClassId:'One Hand Maces'}
