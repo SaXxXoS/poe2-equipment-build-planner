@@ -1,5 +1,17 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Attunement-Unterstützungen – Schritt 163 (2026-08-02)
+
+- `Fire Attunement`, `Cold Attunement`, `Lightning Attunement` und `Chaos Attunement` verarbeiten jetzt jeweils den gepinnten Gewinn von 25 % des Ausgangsschadens als zusätzliche Zielschadensart.
+- Die jeweiligen −50 % finalen Strafen werden ausschließlich auf die gepinnten anderen Schadensarten angewandt.
+- Verschiedene Attunement-Familien kombinieren sich multiplikativ; doppelte Ränge derselben Familie und inkompatible Fertigkeiten werden fail-closed blockiert.
+- Temporäre Schadensfenster und Rage-Vergleiche verwenden dieselbe exakte Rechenreihenfolge.
+- Nativer Schaden über Zeit erhält die belegte Finalstrafe, aber keinen erfundenen Gain-as-Extra-Anteil.
+- Schadensrechner `3.77.0`, Attunement-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_ATTUNEMENT_SUPPORTS_STEP_163.md`.
+- Audit: `docs/audits/build-assistant-step-163-attunement-supports.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
 ## Durchbohrungs-Unterstützungen – Schritt 154 (2026-08-02)
 
 - `Pierce I`, `Pierce II` und die belegte Durchbohrungschance von

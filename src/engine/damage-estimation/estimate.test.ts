@@ -12,6 +12,19 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Lightning Attunement als zusätzlichen Schaden mit exakter Finalstrafe ohne generische Doppelerfassung',()=>{
+    const attunement={...supportDef('lightning-attunement','Lightning Attunement'),quantitativeEffects:pob2QuantitativeEffectsFor('Lightning Attunement')}
+    const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup(attack.id)],skills:[attack],supports:[attunement]})
+    const result=estimateHitDamage({equipment:[observed],setups:[{...setup(attack.id),supportGemIds:[attunement.id]}],skills:[attack],supports:[attunement]})
+    const baselineMinimum=baseline.components.reduce((sum,value)=>sum+value.minimum,0)
+    expect(result.attunementSupportModel).toMatchObject({status:'applied',targetType:'lightning',gainAsExtraPercent:25,penaltyPercent:-50})
+    expect(result.components.find(value=>value.type==='physical')?.minimum).toBeCloseTo(baseline.components.find(value=>value.type==='physical')!.minimum,6)
+    expect(result.components.find(value=>value.type==='fire')?.minimum).toBeCloseTo(baseline.components.find(value=>value.type==='fire')!.minimum*.5,6)
+    expect(result.components.find(value=>value.type==='lightning')?.minimum).toBeCloseTo(baselineMinimum*.25,6)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===attunement.id)).toHaveLength(0)
+  })
   it('integriert Brutality III physisch, nicht elementar und ohne generische Doppelerfassung',()=>{
     const brutality={...supportDef('brutality-three','Brutality III'),quantitativeEffects:pob2QuantitativeEffectsFor('Brutality III')}
     const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}

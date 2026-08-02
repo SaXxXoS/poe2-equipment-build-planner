@@ -25,6 +25,7 @@ import { applyConsideredCastingDamageMultiplier, resolveConsideredCastingSupport
 import { applyHourglassDamageMultiplier, resolveHourglassSupport } from './hourglass-support'
 import { applyHeavySwingPhysicalDamageMultiplier, resolveHeavySwingSupport } from './heavy-swing-support'
 import { applyBrutalityPhysicalDamageMultiplier, resolveBrutalitySupport } from './brutality-support'
+import { applyAttunementPenalty, attunementNativeDotTypeMultipliers, resolveAttunementSupport } from './attunement-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -142,7 +143,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.76.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.77.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -164,15 +165,19 @@ export function estimateHitDamage(input:{
   const hourglassSupportModel=resolveHourglassSupport({skill,setup,supports:input.supports??[]})
   const heavySwingSupportModel=resolveHeavySwingSupport({skill,setup,supports:input.supports??[]})
   const brutalitySupportModel=resolveBrutalitySupport({skill,setup,supports:input.supports??[]})
+  const attunementSupportModel=resolveAttunementSupport({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
   const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)*(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.damageMultiplier:1)*(hourglassSupportModel.status==='applied'?hourglassSupportModel.damageMultiplier:1)
   const physicalDotMultiplier=(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.physicalDamageMultiplier:1)*(brutalitySupportModel.status==='applied'?brutalitySupportModel.physicalDamageMultiplier:1)
-  const areaDamageInput=nativeDotDamageMultiplier!==1||physicalDotMultiplier!==1
-    ? {multiplier:nativeDotDamageMultiplier,typeMultipliers:physicalDotMultiplier!==1?{physical:physicalDotMultiplier}:undefined,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[]),...(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.sourceReferences:[]),...(brutalitySupportModel.status==='applied'?brutalitySupportModel.sourceReferences:[])]}
+  const nativeDotTypeMultipliers=attunementNativeDotTypeMultipliers(attunementSupportModel)??{}
+  if(physicalDotMultiplier!==1)nativeDotTypeMultipliers.physical=(nativeDotTypeMultipliers.physical??1)*physicalDotMultiplier
+  const hasNativeDotTypeMultiplier=Object.values(nativeDotTypeMultipliers).some(value=>value!==1)
+  const areaDamageInput=nativeDotDamageMultiplier!==1||hasNativeDotTypeMultiplier
+    ? {multiplier:nativeDotDamageMultiplier,typeMultipliers:hasNativeDotTypeMultiplier?nativeDotTypeMultipliers:undefined,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[]),...(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.sourceReferences:[]),...(brutalitySupportModel.status==='applied'?brutalitySupportModel.sourceReferences:[]),...(attunementSupportModel.status==='applied'?attunementSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel,attunementSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -269,6 +274,14 @@ export function estimateHitDamage(input:{
       percent:archmageEffect.gainAsLightningPercent,
     })
   }
+  for(const support of attunementSupportModel.appliedSupports)quantitative.gainAsExtra.push({
+    id:`support:${support.supportId}:attunement-gain-as-${support.targetType}`,
+    source:'support',
+    sourceId:support.supportId,
+    from:'all',
+    to:support.targetType,
+    percent:support.gainAsExtraPercent,
+  })
   const manaTempestEffect=temporal.appliedEffects.find(value=>value.kind==='gain-as-lightning'&&value.percent!=null)
   quantitative.conversions.unshift(...collectSkillConversions(skill.sourceRecordId,skill.numericStats as Record<string, number>))
   const convertedComponents=applyConversions(baseComponents,quantitative.conversions)
@@ -285,6 +298,7 @@ export function estimateHitDamage(input:{
   components=applyHourglassDamageMultiplier(components,hourglassSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyHeavySwingPhysicalDamageMultiplier(components,heavySwingSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyBrutalityPhysicalDamageMultiplier(components,brutalitySupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applyAttunementPenalty(components,attunementSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
     ...maximumPhysicalDamageSupportModel.blockedSupportIds,
@@ -317,6 +331,8 @@ export function estimateHitDamage(input:{
     ...heavySwingSupportModel.blockedSupportIds,
     ...brutalitySupportModel.appliedSupports.map(value=>value.supportId),
     ...brutalitySupportModel.blockedSupportIds,
+    ...attunementSupportModel.appliedSupports.map(value=>value.supportId),
+    ...attunementSupportModel.blockedSupportIds,
   ])
   const supportEffects=applyQuantitativeSupports({components,setup,supports:(input.supports??[]).filter(value=>!externallyResolvedSupportIds.has(value.id))})
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
@@ -331,14 +347,16 @@ export function estimateHitDamage(input:{
     ...heavySwingSupportModel.blockedSupportIds,
     ...brutalitySupportModel.appliedSupports.map(value=>value.supportId),
     ...brutalitySupportModel.blockedSupportIds,
+    ...attunementSupportModel.appliedSupports.map(value=>value.supportId),
+    ...attunementSupportModel.blockedSupportIds,
   ])
-  const applyExactSpecializedDamageSupports=(values:DamageComponent[])=>applyBrutalityPhysicalDamageMultiplier(applyHeavySwingPhysicalDamageMultiplier(applyHourglassDamageMultiplier(
+  const applyExactSpecializedDamageSupports=(values:DamageComponent[])=>applyAttunementPenalty(applyBrutalityPhysicalDamageMultiplier(applyHeavySwingPhysicalDamageMultiplier(applyHourglassDamageMultiplier(
     applyConsideredCastingDamageMultiplier(
       applyControlledDestructionHitMultiplier(values,controlledDestructionSupportModel),
       consideredCastingSupportModel,
     ),
     hourglassSupportModel,
-  ),heavySwingSupportModel),brutalitySupportModel)
+  ),heavySwingSupportModel),brutalitySupportModel),attunementSupportModel)
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedMultiplier=quantitativePercentMultiplier([...quantitative.speedModifiers,...supportEffects.increasedSpeedModifiers])
   actionsPerSecond*=speedMultiplier
@@ -416,6 +434,7 @@ export function estimateHitDamage(input:{
   if(speedMultiplier!==1)included.push(skill.kind==='attack'?'Angriffsgeschwindigkeit aus Ausrüstung und belegten Baumknoten':'Zaubergeschwindigkeit aus Ausrüstung und belegten Baumknoten')
   if(quantitative.conversions.length)included.push('bestätigte mehrstufig geordnete Schadensumwandlungen')
   if(quantitative.gainAsExtra.length)included.push('bestätigter zusätzlicher Schaden nach PoB-Modifikatorreihenfolge')
+  if(attunementSupportModel.status==='applied')included.push('Attunement: exakt gepinnter Gewinn als zusätzlicher Schaden und finale Strafen auf die jeweils anderen Schadensarten')
   if(archmageEffect)included.push(`Archmage: ${archmageEffect.gainAsLightningPercent}% des Schadens als zusätzlicher Blitzschaden bei ${archmageEffect.additionalBaseManaCost} zusätzlichen Mana-Grundkosten`)
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')

@@ -1,0 +1,45 @@
+{
+  "step": 163,
+  "scope": "exact-attunement-support-model",
+  "status": "implemented-and-regression-tested",
+  "calculatorVersion": "3.77.0",
+  "modelVersion": "1.0.0",
+  "sourceRecords": [
+    {"sourceRecordId":"SupportAddedFireDamagePlayer","name":"Fire Attunement","gainAsExtraType":"fire","gainAsExtraPercent":25,"penalizedTypes":["cold","lightning"],"finalDamagePercent":-50},
+    {"sourceRecordId":"SupportAddedColdDamagePlayer","name":"Cold Attunement","gainAsExtraType":"cold","gainAsExtraPercent":25,"penalizedTypes":["fire","lightning"],"finalDamagePercent":-50},
+    {"sourceRecordId":"SupportAddedLightningDamagePlayer","name":"Lightning Attunement","gainAsExtraType":"lightning","gainAsExtraPercent":25,"penalizedTypes":["cold","fire"],"finalDamagePercent":-50},
+    {"sourceRecordId":"SupportAddedChaosDamagePlayer","name":"Chaos Attunement","gainAsExtraType":"chaos","gainAsExtraPercent":25,"penalizedTypes":["physical","fire","cold","lightning"],"finalDamagePercent":-50}
+  ],
+  "behavior": {
+    "gainBasis": "unpenalized-base-damage",
+    "gainOrdering": "existing-pob-modifier-order",
+    "penaltyOrdering": "damage-type-specific-final-multiplier",
+    "distinctFamilies": "multiplicatively-combined",
+    "nativeDamageOverTime": "penalty-only-no-gain-as-extra",
+    "incompatibleSkillPolicy": "fail-closed",
+    "duplicateFamilyPolicy": "fail-closed",
+    "genericDoubleApplicationRemoved": true
+  },
+  "verification": {
+    "focusedTestFiles": 2,
+    "focusedTests": 86,
+    "parallelPassedTestFiles": 157,
+    "parallelPassedTests": 1865,
+    "parallelTimeoutTestFiles": 2,
+    "serialRepeatedTestFiles": 2,
+    "serialRepeatedTests": 197,
+    "fullSerialTestFiles": 159,
+    "fullSerialTests": 1867,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "trackedJsonFilesValidated": 240,
+    "gitDiffCheck": "passed"
+  },
+  "limitations": [
+    "No complete Path of Building 2 equivalence is claimed.",
+    "Only structured pinned effects are productive.",
+    "Gain as extra is not applied to native damage over time."
+  ]
+}

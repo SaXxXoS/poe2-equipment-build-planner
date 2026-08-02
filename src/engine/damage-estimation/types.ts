@@ -366,6 +366,19 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  attunementSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    targetType?:DamageComponent['type']
+    gainAsExtraPercent:number
+    penalizedTypes:DamageComponent['type'][]
+    penaltyPercent:number
+    penaltyMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;targetType:DamageComponent['type'];gainAsExtraPercent:number;penalizedTypes:DamageComponent['type'][];penaltyPercent:number;sourceReferences:string[]}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   hourglassSupportModel?:{
     modelVersion:string
     status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
@@ -398,7 +411,7 @@ export interface DamageEstimate {
   maximumChargedHitDamage?:number
   maximumChargedHitDamageAfterMitigation?:number
     confirmedConversions?:Array<{from:DamageComponent['type'];to:DamageComponent['type'];percent:number;source:'skill'|'equipment'|'passive'|'ascendancy';sourceId:string}>
-  confirmedGainAsExtra?:Array<{from:DamageComponent['type']|'all'|'elemental';to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy'|'skill';sourceId:string}>
+  confirmedGainAsExtra?:Array<{from:DamageComponent['type']|'all'|'elemental';to:DamageComponent['type'];percent:number;source:'equipment'|'passive'|'ascendancy'|'skill'|'support';sourceId:string}>
   criticalChance?:{base:number;increasedPercent:number;effective:number}
   criticalDamageBonus?:number
   criticalExpectationMultiplier?:number

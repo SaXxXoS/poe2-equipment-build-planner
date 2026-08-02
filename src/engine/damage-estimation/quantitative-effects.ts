@@ -26,7 +26,7 @@ export interface QuantitativeConversion {
 }
 export interface QuantitativeGainAsExtra {
   id: string
-  source: QuantitativeEffectSource | 'skill'
+  source: QuantitativeEffectSource | 'skill' | 'support'
   sourceId: string
   from: DamageComponent['type'] | 'all' | 'elemental'
   to: DamageComponent['type']
