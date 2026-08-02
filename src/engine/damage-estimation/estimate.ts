@@ -44,6 +44,7 @@ import { resolveCharacterDefenceModel } from './character-defence-model'
 import { resolveCharacterSurvivabilityModel } from './character-survivability-model'
 import { resolveConditionalHitEffects } from './conditional-hit-effects'
 import { resolveExecuteSupport } from './execute-support'
+import { resolveAmbushSupport } from './ambush-support'
 import { harmonicMean,resolveDualWieldAttackModel } from './dual-wield-effects'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
@@ -144,7 +145,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.79.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.80.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -168,6 +169,7 @@ export function estimateHitDamage(input:{
   const brutalitySupportModel=resolveBrutalitySupport({skill,setup,supports:input.supports??[]})
   const attunementSupportModel=resolveAttunementSupport({skill,setup,supports:input.supports??[]})
   const executeSupportModel=resolveExecuteSupport({skill,setup,supports:input.supports??[],enemyProfile:input.enemyProfile})
+  const ambushSupportModel=resolveAmbushSupport({skill,setup,supports:input.supports??[],enemyProfile:input.enemyProfile})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
@@ -179,7 +181,7 @@ export function estimateHitDamage(input:{
   const areaDamageInput=nativeDotDamageMultiplier!==1||hasNativeDotTypeMultiplier
     ? {multiplier:nativeDotDamageMultiplier,typeMultipliers:hasNativeDotTypeMultiplier?nativeDotTypeMultipliers:undefined,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[]),...(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.sourceReferences:[]),...(brutalitySupportModel.status==='applied'?brutalitySupportModel.sourceReferences:[]),...(attunementSupportModel.status==='applied'?attunementSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel,attunementSupportModel,executeSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel,attunementSupportModel,executeSupportModel,ambushSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -337,6 +339,8 @@ export function estimateHitDamage(input:{
     ...attunementSupportModel.blockedSupportIds,
     ...executeSupportModel.appliedSupports.map(value=>value.supportId),
     ...executeSupportModel.blockedSupportIds,
+    ...ambushSupportModel.appliedSupports.map(value=>value.supportId),
+    ...ambushSupportModel.blockedSupportIds,
   ])
   const supportEffects=applyQuantitativeSupports({components,setup,supports:(input.supports??[]).filter(value=>!externallyResolvedSupportIds.has(value.id))})
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
@@ -468,8 +472,9 @@ export function estimateHitDamage(input:{
   const baseCriticalChance=skill.kind==='attack'?activeWeapon?.weaponStats?.criticalHitChance:skill.critChance
   const criticalChanceIncrease=quantitative.criticalChanceModifiers.filter(effect=>(effect.kind??'increased')==='increased').reduce((sum,effect)=>sum+effect.percent,0)
   const criticalChanceMultiplier=quantitativePercentMultiplier(quantitative.criticalChanceModifiers)
-  const effectiveCriticalChance=baseCriticalChance==null?undefined:controlledDestructionSupportModel.preventsCriticalHits?0:Math.min(100,baseCriticalChance*criticalChanceMultiplier*supportEffects.criticalChanceMultiplier)
+  const effectiveCriticalChance=baseCriticalChance==null?undefined:controlledDestructionSupportModel.preventsCriticalHits?0:Math.min(100,baseCriticalChance*criticalChanceMultiplier*supportEffects.criticalChanceMultiplier*ambushSupportModel.criticalChanceMultiplier)
   if(controlledDestructionSupportModel.status==='applied')included.push('Kontrollierte Zerstörung: 25% mehr Trefferschaden; kritische Treffer sind deaktiviert')
+  if(ambushSupportModel.status==='applied')included.push('Hinterhalt: 100% mehr kritische Trefferchance gegen das bestätigte Ziel auf vollem Leben')
   const targetCriticalDamageBonus=resolveSelectedTargetCriticalDamageBonus({setups:input.setups,skills:input.skills,weaponSet:activeSet})
   const additionalCriticalDamageBonus=quantitative.criticalMultiplierModifiers.reduce((sum,effect)=>sum+effect.percent,0)+supportEffects.criticalDamageBonus+targetCriticalDamageBonus
   const totalCriticalDamageBonus=100+additionalCriticalDamageBonus

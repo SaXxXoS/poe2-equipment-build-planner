@@ -68,7 +68,7 @@ export interface EnemyMitigationProfile {
   hitsToFullyBreakArmour?:number
   timeToFullyBreakArmourMs?:number
   temporalModelVersion?:string
-  lifeState?:'low-life'|'not-low-life'|'unknown'
+  lifeState?:'full-life'|'low-life'|'not-low-life'|'unknown'
   heavyStunned?:boolean
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
@@ -146,6 +146,15 @@ export interface DamageEstimate {
     appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyLowLifeMoreDamagePercent:number;sourceReference:string}>
     blockedSupportIds:string[]
     blockedPlayerLowLifeEffect:boolean
+    sourceReferences:string[]
+    detail:string
+  }
+  ambushSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'inactive-enemy-not-full-life'|'blocked-unknown-enemy-life-state'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    criticalChanceMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyFullLifeMoreCriticalChancePercent:number;sourceReference:string}>
+    blockedSupportIds:string[]
     sourceReferences:string[]
     detail:string
   }

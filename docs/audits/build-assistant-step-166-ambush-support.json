@@ -1,0 +1,26 @@
+{
+  "step": 166,
+  "title": "Ambush support full-life critical chance condition",
+  "calculatorVersion": "3.80.0",
+  "modelVersion": "1.0.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceRecords": ["SupportAmbushPlayer"],
+  "sourceStats": {
+    "support_ambush_critical_strike_chance_vs_enemies_on_full_life_+%_final": 100
+  },
+  "conditions": {
+    "enemyFullLife": "productive-structured-exact",
+    "enemyConfirmedNotFullLife": "confirmed-inactive",
+    "enemyLifeStateUnknown": "fail-closed"
+  },
+  "focusedTests": {"files": 3, "tests": 87, "status": "passed"},
+  "fullRegression": {
+    "initialPassed": 1875,
+    "parallelTimeouts": 3,
+    "serialRerunTests": 198,
+    "serialRerunStatus": "passed"
+  },
+  "pinsChanged": false,
+  "offlineBoundaryChanged": false,
+  "fullPathOfBuildingParity": "not-proven"
+}

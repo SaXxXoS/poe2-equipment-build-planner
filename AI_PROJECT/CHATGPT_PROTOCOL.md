@@ -1,5 +1,28 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Hinterhalt-Unterstützung – Schritt 166 (2026-08-02)
+
+- `Ambush` (`Hinterhalt`) verarbeitet jetzt die gepinnte Wirkung von 100 % mehr kritischer Trefferchance gegen ein ausdrücklich bestätigtes Ziel auf vollem Leben.
+- `full-life` ist ein eigener Gegnerzustand; bestätigte andere Lebenszustände deaktivieren die Wirkung, unbekannte Zustände werden fail-closed blockiert.
+- Der Bonus wirkt ausschließlich auf die kritische Trefferchance und respektiert sowohl die 100-%-Obergrenze als auch Effekte, die kritische Treffer verbieten.
+- Inkompatible Fertigkeiten und doppelte Supportfamilien werden blockiert.
+- Schadensrechner `3.80.0`, Hinterhalt-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_AMBUSH_SUPPORT_STEP_166.md`.
+- Audit: `docs/audits/build-assistant-step-166-ambush-support.json`.
+- Fokussiert: 3 Dateien und 87 Tests erfolgreich.
+- Gesamtlauf: 1.875 Tests bestanden; drei unter paralleler Vollbaumlast zeitüberschrittene Dateien bestanden seriell mit 198 Tests vollständig.
+- Typecheck, Lint, Produktions-Build und Pages-Build erfolgreich.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
+## Execute-Unterstützungen – Schritt 165 (2026-08-02)
+
+- `Execute I`, `Execute II` und `Execute III` wenden ihre gepinnten finalen Trefferschadenswerte ausschließlich gegen bestätigt auf niedrigem Leben befindliche Ziele an.
+- Unbekannte Gegnerzustände, inkompatible Fertigkeiten und doppelte Supportfamilien werden fail-closed blockiert.
+- Der zusätzliche Spieler-Low-Life-Bonus von Execute III bleibt ohne belegten Spielerzustand blockiert.
+- Schadensrechner `3.79.0`, Execute-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_EXECUTE_SUPPORT_STEP_165.md`.
+- Audit: `docs/audits/build-assistant-step-165-execute-support.json`.
+
 ## Zustands-Support-Trade-offs – Schritt 164 (2026-08-02)
 
 - `Deadly Poison I/II`, `Deep Cuts I/II` und `Searing Flame I/II` verarbeiten jetzt neben ihrer bereits angebundenen Gift-, Blutungs- beziehungsweise Entzündungswirkung auch den gepinnten finalen Trefferschaden-Nachteil.

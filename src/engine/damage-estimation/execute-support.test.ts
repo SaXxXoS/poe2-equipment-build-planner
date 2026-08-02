@@ -22,6 +22,7 @@ describe('exact Execute support model',()=>{
   it('does not assume the enemy condition when its life state is unknown',()=>{
     const selected=support('II')
     expect(resolveExecuteSupport({skill:attack(),setup:setup([selected.id]),supports:[selected],enemyProfile:{id:'enemy',label:'enemy',source:'manual-comparison-profile',lifeState:'unknown'}})).toMatchObject({status:'blocked-unknown-enemy-life-state',damageMultiplier:1,blockedSupportIds:[selected.id]})
+    expect(resolveExecuteSupport({skill:attack(),setup:setup([selected.id]),supports:[selected],enemyProfile:{id:'enemy',label:'enemy',source:'manual-comparison-profile',lifeState:'full-life'}})).toMatchObject({status:'inactive-enemy-not-low-life',damageMultiplier:1})
   })
 
   it('keeps the separate Execute III player-low-life effect blocked',()=>{

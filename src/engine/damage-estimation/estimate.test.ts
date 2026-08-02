@@ -12,6 +12,19 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Hinterhalt nur gegen ein bestätigt auf vollem Leben befindliches Ziel in die Krit-Erwartung',()=>{
+    const ambush=supportDef('ambush','Ambush')
+    const attack:SkillGemDefinition={...skill('galvanic','Load Galvanic Shards'),tags:['attack'],requiredWeaponTypes:['crossbow']}
+    const crossbow={...weapon('Crossbow'),itemClassId:'Crossbows',weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:10,attacksPerSecond:1}}
+    const selectedSetup={...setup(attack.id),supportGemIds:[ambush.id]}
+    const full=estimateHitDamage({equipment:[crossbow],setups:[selectedSetup],skills:[attack],supports:[ambush],enemyProfile:{id:'full',label:'Volles Leben',source:'manual-comparison-profile',lifeState:'full-life'}})
+    const unknown=estimateHitDamage({equipment:[crossbow],setups:[selectedSetup],skills:[attack],supports:[ambush],enemyProfile:{id:'unknown',label:'Unbekannt',source:'manual-comparison-profile',lifeState:'unknown'}})
+    expect(full.ambushSupportModel).toMatchObject({status:'applied',criticalChanceMultiplier:2})
+    expect(full.criticalChance?.effective).toBe(20)
+    expect(unknown.ambushSupportModel).toMatchObject({status:'blocked-unknown-enemy-life-state',criticalChanceMultiplier:1})
+    expect(unknown.criticalChance?.effective).toBe(10)
+    expect(full.expectedCriticalHitDamagePerSecond!).toBeGreaterThan(unknown.expectedCriticalHitDamagePerSecond!)
+  })
   it('wendet Execute gegen bestätigte Ziele auf niedrigem Leben exakt und sonst fail-closed an',()=>{
     const execute=supportDef('execute-two','Execute II')
     const attack:SkillGemDefinition={...skill('galvanic','Load Galvanic Shards'),tags:['attack'],requiredWeaponTypes:['crossbow']}
