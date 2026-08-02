@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 145,
+  "scope": "maximum-physical-damage-support",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceProduct": "generated/pob2/damage-reference.json",
+  "sourceRecordId": "SupportHeftPlayer",
+  "sourceStatId": "support_heft_maximum_physical_damage_+%_final",
+  "sourceValue": 30,
+  "calculatorVersion": "3.59.0",
+  "modelVersion": "1.0.0",
+  "rules": {
+    "requiredSkillType": "Attack",
+    "requiredDamageComponent": "physical",
+    "minimumPhysicalDamageMultiplier": 1,
+    "maximumPhysicalDamageMultiplier": 1.3,
+    "applicationOrder": "before-conversion-and-gain-as-extra",
+    "familyDuplicates": "blocked-fail-closed"
+  },
+  "focusedVerification": { "files": 2, "tests": 60, "status": "passed" },
+  "fullVerification": { "files": 145, "tests": 1782, "mode": "serial", "status": "passed" },
+  "buildVerification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 222,
+    "gitDiffCheck": "passed"
+  },
+  "browserVerification": {
+    "desktop": {
+      "viewport": "1280x720",
+      "horizontalOverflow": false,
+      "consoleWarningsOrErrors": 0,
+      "status": "passed"
+    },
+    "mobile": {
+      "viewport": "390x844",
+      "horizontalOverflow": false,
+      "consoleWarningsOrErrors": 0,
+      "status": "passed"
+    }
+  },
+  "limitations": [
+    "No value is inferred for unstructured later support tiers.",
+    "No bonus is applied to spells or attacks without a physical base component.",
+    "This step does not establish full Path of Building parity."
+  ]
+}

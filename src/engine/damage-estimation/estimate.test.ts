@@ -12,6 +12,18 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('wendet Muskelkraft vor Umwandlungen nur auf das physische Schadensmaximum an',()=>{
+    const heft=supportDef('heft','Heft')
+    const earthquake:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
+    const selected={...setup(earthquake.id),supportGemIds:[heft.id]}
+    const inputWeapon={...weapon('Akoyan Club'),itemClassId:'One Hand Maces'}
+    const baseline=estimateHitDamage({equipment:[inputWeapon],setups:[setup(earthquake.id)],skills:[earthquake],supports:[heft]})
+    const result=estimateHitDamage({equipment:[inputWeapon],setups:[selected],skills:[earthquake],supports:[heft]})
+    expect(result.maximumPhysicalDamageSupportModel).toMatchObject({status:'applied',appliedSupports:[{finalMaximumPhysicalDamagePercent:30}]})
+    expect(result.baseComponents?.[0].minimum).toBe(baseline.baseComponents?.[0].minimum)
+    expect(result.baseComponents?.[0].maximum).toBeCloseTo(baseline.baseComponents![0].maximum*1.3,6)
+    expect(result.hitDamage?.average).toBeGreaterThan(baseline.hitDamage!.average)
+  })
   it('integriert verkürzte Dauer in den nativen DoT ohne falschen DPS-Bonus',()=>{
     const compressed=supportDef('compressed-duration','Compressed Duration I')
     const selected={...setup('wall'),supportGemIds:[compressed.id]}

@@ -198,6 +198,15 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  maximumPhysicalDamageSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-missing-physical-damage'|'blocked-duplicate-family'
+    components:DamageComponent[]
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;finalMaximumPhysicalDamagePercent:number;multiplier:number;sourceReference:string}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   damagingAilments?:{modelVersion:string;effects:AppliedDamagingAilmentEffect[];blockedEffects:BlockedDamagingAilmentEffect[];totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:boolean;triggeredDamagePerSecond?:number;triggeredDamagePerSecondAfterMitigation?:number;sources:TriggerRepeatSource[];limitations:string[]}

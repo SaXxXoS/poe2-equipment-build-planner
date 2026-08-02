@@ -3997,3 +3997,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Details: `docs/BUILD_ASSISTANT_SKILL_EFFECT_DURATION_SUPPORTS_STEP_144.md` und `docs/audits/build-assistant-step-144-skill-effect-duration-supports.json`.
 - Fokussierte Prüfung: 3 Dateien und 68 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 144 Dateien und 1.778 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 221 JSON-Dateien sind erfolgreich geprüft.
 - Der lokale Pages-Build lädt im Desktop-Browser ohne Konsolenfehler oder Warnungen. Bei 390 × 844 besteht kein horizontaler Seitenüberlauf.
+
+## Schritt 145 – Muskelkraft und maximaler physischer Schaden
+
+- `Heft` (`Muskelkraft`) verwendet den strukturierten PoB2-Stat `support_heft_maximum_physical_damage_+%_final = 30` aus `SupportHeftPlayer`.
+- Der Faktor verändert ausschließlich das physische Schadensmaximum; Minimum und nichtphysische Komponenten bleiben unverändert.
+- Die Wirkung erfolgt vor Umwandlungen und zusätzlichem Schaden, damit abgeleitete Komponenten die korrekte physische Ausgangsspanne erben.
+- Zauber, fehlender physischer Ausgangsschaden und doppelte Supportfamilien werden fail-closed blockiert.
+- Der Schadensrechner verwendet `3.59.0`; das Muskelkraft-Modell verwendet `1.0.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_MAXIMUM_PHYSICAL_DAMAGE_SUPPORT_STEP_145.md` und `docs/audits/build-assistant-step-145-maximum-physical-damage-support.json`.
+- Fokussierte Prüfung: 2 Dateien und 60 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 145 Dateien und 1.782 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
+- Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Seitenüberlauf und keine neuen Browserkonsolenwarnungen oder -fehler.

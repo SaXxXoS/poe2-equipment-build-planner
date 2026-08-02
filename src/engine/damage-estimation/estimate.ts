@@ -10,6 +10,7 @@ import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './te
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
 import { resolveSkillEffectDurationSupports } from './skill-effect-duration-supports'
+import { applyMaximumPhysicalDamageSupports } from './maximum-physical-damage-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -127,7 +128,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.58.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.59.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -212,7 +213,8 @@ export function estimateHitDamage(input:{
       warnings:['Die primäre Trefferschadenskomponente ist nicht eindeutig strukturiert verfügbar; ein vollständig belegter eigenständiger DoT bleibt separat auswertbar.'],
     }
   }
-  const baseComponents=components.map(value=>({...value}))
+  const maximumPhysicalDamageSupportModel=applyMaximumPhysicalDamageSupports({components,skill,setup,supports:input.supports??[]})
+  const baseComponents=maximumPhysicalDamageSupportModel.components.map(value=>({...value}))
   const quantitative=collectQuantitativeEffects({equipment:input.equipment,skill:definition,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeSet,characterClassId:input.characterClassId})
   const temporal=collectTemporalOffensiveEffects({setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis,resourceSpiritModel})
   const archmageEffect=resourceSpiritModel.skillCostChains
@@ -235,6 +237,8 @@ export function estimateHitDamage(input:{
   components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers,quantitative.gainAsExtra).map(value=>component(value.type,value.minimum,value.maximum))
   const increasedComponents=components.map(value=>({...value}))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
+  const externallyResolvedSupportIds=new Set(maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId))
+  const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedMultiplier=quantitativePercentMultiplier(quantitative.speedModifiers)
   actionsPerSecond*=speedMultiplier
@@ -310,6 +314,7 @@ export function estimateHitDamage(input:{
   if(archmageEffect)included.push(`Archmage: ${archmageEffect.gainAsLightningPercent}% des Schadens als zusätzlicher Blitzschaden bei ${archmageEffect.additionalBaseManaCost} zusätzlichen Mana-Grundkosten`)
   if(quantitative.damageModifiers.some(value=>value.source!=='equipment'))included.push('numerisch eindeutige Passive- und Aszendenzwerte')
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
+  if(maximumPhysicalDamageSupportModel.status==='applied')included.push('Muskelkraft: strukturierter finaler Bonus ausschließlich auf den maximalen physischen Ausgangsschaden')
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)
@@ -633,7 +638,7 @@ export function estimateHitDamage(input:{
           : 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.',
       }
   return{
-    ...resolvedBase,status:'partial',components,baseComponents,...(dualWieldAttackModel?{dualWieldAttackModel}:{}),projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
+    ...resolvedBase,status:'partial',components,baseComponents,maximumPhysicalDamageSupportModel,...(dualWieldAttackModel?{dualWieldAttackModel}:{}),projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},
@@ -705,6 +710,6 @@ export function estimateHitDamage(input:{
     hitDamagePerSecond:round(rollExpectedAverage*actionsPerSecond*multipleDamageMultiplier),
     included,
     excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),...(luckyHitEffectModel.blockedEffects.length?['bedingte Lucky-Trefferschadenswürfe ohne bestätigten Gegnerzustand']:[]),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damagingAilments.effects.length?['nicht vollständig belegte Entzünden-, Gift- und Blutungs-Sonderfälle sowie gegnerische DoT-Abwehr']:['Entzünden, Gift und Blutung ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
-    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(supportEffects.unresolvedSupportIds.length?[`${supportEffects.unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
+    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(unresolvedSupportIds.length?[`${unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }
