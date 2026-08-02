@@ -1,0 +1,38 @@
+{
+  "step": 162,
+  "scope": "exact-brutality-support-model",
+  "status": "implemented-and-regression-tested",
+  "calculatorVersion": "3.76.0",
+  "modelVersion": "1.0.0",
+  "sourceRecords": [
+    {"sourceRecordId":"SupportBrutalityPlayer","name":"Brutality I","physicalDamagePercent":25,"physicalDamageReductionIgnoreChancePercent":0},
+    {"sourceRecordId":"SupportBrutalityPlayerTwo","name":"Brutality II","physicalDamagePercent":30,"physicalDamageReductionIgnoreChancePercent":0},
+    {"sourceRecordId":"SupportBrutalityPlayerThree","name":"Brutality III","physicalDamagePercent":30,"physicalDamageReductionIgnoreChancePercent":20}
+  ],
+  "behavior": {
+    "damageScope": "physical-only",
+    "ignoreReductionScope": "hits-only",
+    "ignoreReductionCalculation": "deterministic-expected-value",
+    "nonPhysicalDamageMultiplier": 1,
+    "incompatibleSkillPolicy": "fail-closed",
+    "duplicateFamilyPolicy": "fail-closed",
+    "genericDoubleApplicationRemoved": true
+  },
+  "verification": {
+    "focusedTestFiles": 3,
+    "focusedTests": 84,
+    "fullTestFiles": 158,
+    "fullTests": 1858,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "trackedJsonFilesValidated": 238,
+    "gitDiffCheck": "passed"
+  },
+  "limitations": [
+    "No complete Path of Building 2 equivalence is claimed.",
+    "Only structured pinned effects are productive.",
+    "The reduction-ignore chance is not applied to damage over time."
+  ]
+}

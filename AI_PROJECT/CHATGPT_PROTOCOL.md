@@ -4202,3 +4202,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Prüfstand: 83 fokussierte Tests sowie 1.851 Tests in 157 Dateien im stabilen seriellen Gesamtlauf erfolgreich; Typecheck, Lint, Produktions-/Pages-Build, 237 getrackte JSON-Dateien und `git diff --check` erfolgreich.
 - Ein erster ressourcenparalleler Gesamtlauf traf bei zwei bestehenden Vollbaumtests das 5-Sekunden-Zeitlimit. Der Ein-Worker-Wiederholungslauf mit 30-Sekunden-Limit bestand vollständig.
 - Die PoB2-, RePoE-, Affix-, Unique- und Baum-Pins wurden nicht verändert. Eine vollständige PoB2-Gleichwertigkeit bleibt unbewiesen; die aktive Hauptaufgabe wird mit der nächsten strukturiert belegbaren Rechenlücke fortgesetzt.
+
+# Fortsetzung – Schritt 162: Brutality I–III exakt modelliert
+
+- Der Rechnerstand wurde von `3.75.0` auf `3.76.0` erweitert.
+- Brutality I/II/III verwenden ihre gepinnten physischen Mehr-Schadenswerte von 25/30/30 Prozent. Nur Stufe III berücksichtigt zusätzlich die strukturierte 20-%-Chance, bei Treffern gegnerische physische Schadensreduktion zu ignorieren.
+- Der Ignorier-Effekt wird als deterministischer Erwartungswert gegen das gewählte Gegnerprofil gerechnet. Er gilt nicht für nichtphysische Komponenten und nicht für Schaden über Zeit.
+- Treffer, alternative Trefferpfade und belegter nativer physischer DoT erhalten den jeweils zulässigen Faktor genau einmal. Die frühere generische Brutality-Teilabbildung wurde entfernt.
+- Inkompatible Fertigkeiten und mehrere Ränge derselben Supportfamilie werden fail-closed blockiert. Produktpins und Offline-Grenzen bleiben unverändert.
+- Die fokussierte Prüfung bestand mit 84 Tests; der vollständige stabile Ein-Worker-Lauf bestand mit 158 Dateien und 1.858 Tests. Typecheck, Lint, Produktions-/Pages-Build, 238 getrackte JSON-Dateien und `git diff --check` sind erfolgreich.

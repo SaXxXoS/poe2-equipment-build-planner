@@ -12,6 +12,17 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Brutality III physisch, nicht elementar und ohne generische Doppelerfassung',()=>{
+    const brutality={...supportDef('brutality-three','Brutality III'),quantitativeEffects:pob2QuantitativeEffectsFor('Brutality III')}
+    const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup(attack.id)],skills:[attack],supports:[brutality]})
+    const result=estimateHitDamage({equipment:[observed],setups:[{...setup(attack.id),supportGemIds:[brutality.id]}],skills:[attack],supports:[brutality]})
+    expect(result.brutalitySupportModel).toMatchObject({status:'applied',physicalDamageMultiplier:1.3,physicalDamageReductionIgnoreChancePercent:20})
+    expect(result.components.find(value=>value.type==='physical')!.minimum/baseline.components.find(value=>value.type==='physical')!.minimum).toBeCloseTo(1.3,3)
+    expect(result.components.find(value=>value.type==='fire')!.minimum).toBe(baseline.components.find(value=>value.type==='fire')!.minimum)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===brutality.id)).toHaveLength(0)
+  })
   it('integriert Heavy Swing als physischen Nahkampfschaden mit langsamerer Angriffsgeschwindigkeit ohne Doppelerfassung',()=>{
     const heavy={...supportDef('heavy-swing','Heavy Swing'),quantitativeEffects:pob2QuantitativeEffectsFor('Heavy Swing')}
     const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}

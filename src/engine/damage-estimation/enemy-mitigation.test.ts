@@ -18,3 +18,18 @@ describe('vollständig gebrochene Rüstung',()=>{
     ])
   })
 })
+
+describe('erwartete ignorierte physische Schadensreduktion',()=>{
+  it('mischt bei 20 Prozent Chance den normalen und den ignorierenden Trefferzweig',()=>{
+    const result=applyEnemyMitigation([{type:'physical',minimum:100,maximum:100}],{
+      id:'test',label:'Test',source:'manual-comparison-profile',armour:1000,damageTakenIncreased:{physical:25},
+    },{physicalDamageReductionIgnoreChancePercent:20})
+    expect(result.components[0]).toMatchObject({minimum:75,maximum:75,mitigationPercent:40})
+  })
+  it('wendet die Trefferchance nicht auf nichtphysischen Schaden an',()=>{
+    const result=applyEnemyMitigation([{type:'fire',minimum:100,maximum:100}],{
+      id:'test',label:'Test',source:'manual-comparison-profile',resistances:{fire:50},
+    },{physicalDamageReductionIgnoreChancePercent:100})
+    expect(result.components[0]).toMatchObject({minimum:50,maximum:50,mitigationPercent:50})
+  })
+})

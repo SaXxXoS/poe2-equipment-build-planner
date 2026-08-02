@@ -23,7 +23,6 @@ type DamageType = NonNullable<SupportQuantitativeEffect['damageTypes']>[number]
 const elemental: DamageType[] = ['fire', 'cold', 'lightning']
 
 const exactDamageStats: Record<string, DamageType[] | undefined> = {
-  'support_brutality_physical_damage_+%_final': ['physical'],
   'support_gem_elemental_damage_+%_final': elemental,
   'support_attack_skills_elemental_damage_+%_final': elemental,
   'support_slow_cast_spell_damage_+%_final': undefined,

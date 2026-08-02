@@ -11,9 +11,10 @@ const physicalAfterArmour=(damage:number,armour:number)=>{
 }
 
 export interface EnemyMitigationResult { components:MitigatedDamageComponent[]; average:number; warnings:string[] }
+export interface EnemyMitigationOptions { physicalDamageReductionIgnoreChancePercent?:number }
 
 /** Applies only explicitly supplied comparison values; there are no hidden boss defaults. */
-export function applyEnemyMitigation(components:DamageComponent[],profile:EnemyMitigationProfile):EnemyMitigationResult {
+export function applyEnemyMitigation(components:DamageComponent[],profile:EnemyMitigationProfile,options:EnemyMitigationOptions={}):EnemyMitigationResult {
   const warnings:string[]=[]
   const mitigated=components.map(component=>{
     const fullBreakTakenMultiplier=profile.fullyBrokenArmour
@@ -23,8 +24,11 @@ export function applyEnemyMitigation(components:DamageComponent[],profile:EnemyM
       const armour=profile.fullyBrokenArmour?0:Math.max(0,finiteNonNegative(profile.armour)-finiteNonNegative(profile.armourBreak))
       const averageRaw=(component.minimum+component.maximum)/2
       const mitigation=armour>0&&averageRaw>0?Math.min(0.9,armour/(armour+10*averageRaw)):0
+      const ignoreChance=Math.max(0,Math.min(100,finiteNonNegative(options.physicalDamageReductionIgnoreChancePercent)))/100
+      const expectedMitigation=mitigation*(1-ignoreChance)
       const takenMultiplier=enemyDamageTakenMultiplier(component.type,profile)
-      return{...component,minimum:round(physicalAfterArmour(component.minimum,armour)*fullBreakTakenMultiplier*takenMultiplier),maximum:round(physicalAfterArmour(component.maximum,armour)*fullBreakTakenMultiplier*takenMultiplier),effectiveDefence:round(armour),mitigationPercent:round(mitigation*100)}
+      const expectedAfterArmour=(damage:number)=>physicalAfterArmour(damage,armour)*(1-ignoreChance)+damage*ignoreChance
+      return{...component,minimum:round(expectedAfterArmour(component.minimum)*fullBreakTakenMultiplier*takenMultiplier),maximum:round(expectedAfterArmour(component.maximum)*fullBreakTakenMultiplier*takenMultiplier),effectiveDefence:round(armour),mitigationPercent:round(expectedMitigation*100)}
     }
     const resistance=profile.resistances?.[component.type]??0
     const reduction=finiteNonNegative(profile.resistanceReduction?.[component.type])

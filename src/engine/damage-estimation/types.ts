@@ -355,6 +355,17 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  brutalitySupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    physicalDamagePercent:number
+    physicalDamageMultiplier:number
+    physicalDamageReductionIgnoreChancePercent:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;physicalDamagePercent:number;physicalDamageReductionIgnoreChancePercent:number;sourceReferences:string[]}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   hourglassSupportModel?:{
     modelVersion:string
     status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
