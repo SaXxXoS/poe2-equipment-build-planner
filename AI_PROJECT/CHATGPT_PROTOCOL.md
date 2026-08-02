@@ -4040,3 +4040,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Details: `docs/BUILD_ASSISTANT_SPELL_CASCADE_SUPPORT_STEP_147.md` und `docs/audits/build-assistant-step-147-spell-cascade-support.json`.
 - Fokussierte Prüfung: 3 Dateien und 73 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 148 Dateien und 1.793 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung und `git diff --check` sind erfolgreich.
 - Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
+
+## Schritt 149 – Mehrfachprojektil I/II
+
+- `Multishot I/II` verwenden jetzt die strukturierten PoB2-Werte: jeweils zwei zusätzliche Projektile, 35/25 % weniger finaler Schaden und 20 % weniger finale Fertigkeitsgeschwindigkeit.
+- Die Wirkung erfordert `Projectile` und `ProjectileNumber`; `ProjectilesNumberModifiersNotApplied`, inkompatible Fertigkeiten und doppelte Supportfamilien werden fail-closed blockiert.
+- Zusatzprojektile erhöhen ohne gesonderten Mehrfachtrefferbeleg nur die Mapping-Abdeckung. Der Einzelzielmultiplikator bleibt `1,00`.
+- Die finale Fertigkeitsgeschwindigkeit wird vor einer belegten nachhaltigen Cooldown-Grenze angewandt. Die generische Teilabbildung wurde entfernt, damit keine Doppelberechnung entsteht.
+- Der Schadensrechner verwendet `3.63.0`, das Mehrfachprojektilmodell `1.0.0` und das Projektiltreffermodell `1.2.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_MULTISHOT_SUPPORT_STEP_149.md` und `docs/audits/build-assistant-step-149-multishot-support.json`.
+- Fokussierte Prüfung: 4 Dateien und 75 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 149 Dateien und 1.801 Tests.
+- Typecheck, Lint, Produktions- und Pages-Build, 226 JSON-Dateien und `git diff --check` sind erfolgreich geprüft. Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.

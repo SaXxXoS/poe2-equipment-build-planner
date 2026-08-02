@@ -241,6 +241,18 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  multishotSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    damageMultiplier:number
+    skillSpeedMultiplier:number
+    additionalProjectiles:number
+    singleTargetHitMultiplier:1
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;finalDamagePercent:number;finalSkillSpeedPercent:number;additionalProjectiles:number;sourceReferences:string[]}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   damagingAilments?:{modelVersion:string;effects:AppliedDamagingAilmentEffect[];blockedEffects:BlockedDamagingAilmentEffect[];totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:boolean;triggeredDamagePerSecond?:number;triggeredDamagePerSecondAfterMitigation?:number;sources:TriggerRepeatSource[];limitations:string[]}

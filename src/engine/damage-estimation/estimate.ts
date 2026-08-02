@@ -14,6 +14,7 @@ import { applyMaximumPhysicalDamageSupports } from './maximum-physical-damage-su
 import { applyAreaDamageMultiplier, resolveAreaDamageSupports } from './area-damage-supports'
 import { applySpellCascadeDamageMultiplier, resolveSpellCascadeSupports } from './spell-cascade-supports'
 import { applyChainHitDamageMultiplier, resolveChainSupports } from './chain-supports'
+import { applyMultishotDamageMultiplier, resolveMultishotSupports } from './multishot-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -131,7 +132,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.62.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.63.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -141,6 +142,7 @@ export function estimateHitDamage(input:{
   const areaDamageSupportModel=resolveAreaDamageSupports({skill,setup,supports:input.supports??[]})
   const spellCascadeSupportModel=resolveSpellCascadeSupports({skill,setup,supports:input.supports??[]})
   const chainSupportModel=resolveChainSupports({skill,setup,supports:input.supports??[]})
+  const multishotSupportModel=resolveMultishotSupports({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
@@ -148,9 +150,12 @@ export function estimateHitDamage(input:{
   const areaDamageInput=nativeDotDamageMultiplier!==1
     ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
-  const projectileHitModel=resolveProjectileHitModel(skill, chainSupportModel.status==='applied' ? {additionalChains:chainSupportModel.additionalChains,sourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))} : undefined)
+  const projectileHitModel=resolveProjectileHitModel(skill, {
+    ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
+    ...(multishotSupportModel.status==='applied'?{additionalProjectiles:multishotSupportModel.additionalProjectiles,projectileSourceReference:multishotSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_additional_projectiles'))}:{}),
+  })
   let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills,supports:input.supports})
   const minionCompanionModel=resolveMinionCompanionModel({primarySkill:definition,setups:input.setups,skills:input.skills})
   const damageOverTimeOutput=()=>({modelVersion:damageOverTime.modelVersion,effects:damageOverTime.effects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,damageType:value.damageType,kind:value.kind,status:value.status,damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,durationMs:value.durationMs,totalDamagePerApplication:value.totalDamagePerApplication,totalDamagePerApplicationAfterMitigation:value.totalDamagePerApplicationAfterMitigation,stackCount:value.stackCount,detail:value.detail})),blockedEffects:damageOverTime.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),totalSingleApplicationDamagePerSecond:damageOverTime.totalSingleApplicationDamagePerSecond,totalSingleApplicationDamagePerSecondAfterMitigation:damageOverTime.totalSingleApplicationDamagePerSecondAfterMitigation,limitations:damageOverTime.limitations})
@@ -249,6 +254,7 @@ export function estimateHitDamage(input:{
   components=applyAreaDamageMultiplier(components,areaDamageSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applySpellCascadeDamageMultiplier(components,spellCascadeSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyChainHitDamageMultiplier(components,chainSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applyMultishotDamageMultiplier(components,multishotSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
@@ -259,11 +265,14 @@ export function estimateHitDamage(input:{
     ...spellCascadeSupportModel.blockedSupportIds,
     ...chainSupportModel.appliedSupports.map(value=>value.supportId),
     ...chainSupportModel.blockedSupportIds,
+    ...multishotSupportModel.appliedSupports.map(value=>value.supportId),
+    ...multishotSupportModel.blockedSupportIds,
   ])
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedMultiplier=quantitativePercentMultiplier(quantitative.speedModifiers)
   actionsPerSecond*=speedMultiplier
+  actionsPerSecond*=multishotSupportModel.skillSpeedMultiplier
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   const additionalCooldownUses=additionalCooldownUsesFor({
     skillTypes:skill.skillTypes,
@@ -340,6 +349,7 @@ export function estimateHitDamage(input:{
   if(areaDamageSupportModel.status==='applied')included.push('Konzentrierte Wirkung: strukturierter finaler Flächenschadensbonus mit verringerter Wirkungsfläche')
   if(spellCascadeSupportModel.status==='applied')included.push('Zauberkaskade: strukturierter finaler Schadens- und Flächenfaktor; zusätzliche Flächen ohne erfundenen Einzelziel-Überlappungsbonus')
   if(chainSupportModel.status==='applied')included.push('Verkettung: strukturierter finaler Trefferschadensfaktor und zusätzliche Zielkontakte ohne erfundenen Einzelziel-Mehrfachtreffer')
+  if(multishotSupportModel.status==='applied')included.push('Mehrfachprojektil: strukturierte Zusatzprojektile sowie finaler Schadens- und Fertigkeitsgeschwindigkeitsfaktor ohne erfundenen Einzelziel-Mehrfachtreffer')
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)

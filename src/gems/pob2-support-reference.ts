@@ -28,7 +28,6 @@ const exactDamageStats: Record<string, DamageType[] | undefined> = {
   'support_attack_skills_elemental_damage_+%_final': elemental,
   'support_slow_cast_spell_damage_+%_final': undefined,
   'support_controlled_destruction_spell_damage_+%_final': undefined,
-  'support_multiple_damage_+%_final': undefined,
   'support_fork_forked_projectile_damage_+%_final': undefined,
   'support_spell_rapid_fire_repeat_use_damage_+%_final': undefined,
   'support_hourglass_damage_+%_final': undefined,

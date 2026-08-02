@@ -12,6 +12,18 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Multishot I mit Schaden, Skill-Speed und zwei Coverage-Projektilen',()=>{
+    const multishot=supportDef('multishot-i','Multishot I')
+    const grenade:SkillGemDefinition={...skill('explosive-grenade','Explosive Grenade'),tags:['attack','projectile'],requiredWeaponTypes:['crossbow']}
+    const crossbow={...weapon('Crossbow'),itemClassId:'Crossbows',weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:5,attacksPerSecond:1}}
+    const baseline=estimateHitDamage({equipment:[crossbow],setups:[setup(grenade.id)],skills:[grenade],supports:[multishot]})
+    const result=estimateHitDamage({equipment:[crossbow],setups:[{...setup(grenade.id),supportGemIds:[multishot.id]}],skills:[grenade],supports:[multishot]})
+    expect(result.multishotSupportModel).toMatchObject({status:'applied',damageMultiplier:.65,skillSpeedMultiplier:.8,additionalProjectiles:2,singleTargetHitMultiplier:1})
+    expect(result.hitDamage?.average).toBeCloseTo(baseline.hitDamage!.average*.65,6)
+    expect(result.actionsPerSecond).toBeCloseTo(baseline.actionsPerSecond!,6)
+    expect(result.projectileHitModel?.projectilesPerAction).toBe(baseline.projectileHitModel!.projectilesPerAction+2)
+    expect(result.projectileHitModel?.singleTargetHitMultiplier).toBe(1)
+  })
   it('integriert Verkettung als Treffernachteil und zusätzliche Mapping-Abdeckung',()=>{
     const chain=supportDef('chain-i','Chain I')
     const arc=skill('arc','Arc')

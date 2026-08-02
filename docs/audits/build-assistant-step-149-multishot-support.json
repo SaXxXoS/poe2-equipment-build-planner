@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 149,
+  "title": "Structured Multishot I/II support model",
+  "source": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "productReference": "generated/pob2/damage-reference.json",
+    "sourceFile": "src/Data/Skills/sup_dex.lua",
+    "records": ["SupportMultishotPlayer", "SupportMultishotPlayerTwo"]
+  },
+  "versions": {
+    "calculator": "3.63.0",
+    "multishotSupportModel": "1.0.0",
+    "projectileHitModel": "1.2.0"
+  },
+  "effects": {
+    "Multishot I": {"additionalProjectiles": 2, "finalDamagePercent": -35, "finalSkillSpeedPercent": -20},
+    "Multishot II": {"additionalProjectiles": 2, "finalDamagePercent": -25, "finalSkillSpeedPercent": -20}
+  },
+  "compatibility": {
+    "requiredSkillTypes": ["Projectile", "ProjectileNumber"],
+    "excludedSkillTypes": ["ProjectilesNumberModifiersNotApplied"],
+    "duplicateFamilyPolicy": "blocked-fail-closed"
+  },
+  "singleTargetPolicy": {
+    "additionalProjectiles": "coverage-only-without-multi-hit-proof",
+    "singleTargetHitMultiplier": 1
+  },
+  "tests": {
+    "focusedFiles": 4,
+    "focusedTests": 75,
+    "fullFiles": 149,
+    "fullTests": 1801,
+    "status": "passed"
+  },
+  "quality": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "validatedJsonFiles": 226,
+    "desktopBrowser": {"viewport": "1280x720", "horizontalOverflow": false, "consoleIssues": 0},
+    "mobileBrowser": {"viewport": "390x844", "horizontalOverflow": false, "consoleIssues": 0}
+  },
+  "limitations": [
+    "No projectile overlap or shotgun multiplier is inferred.",
+    "Skill speed is still bounded by an independently evidenced sustainable cooldown rate.",
+    "No technical identity is derived from translated display text."
+  ]
+}

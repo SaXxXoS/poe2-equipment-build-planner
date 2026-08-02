@@ -62,4 +62,12 @@ describe('projectile hit model', () => {
     expect(result.mappingPotentialTargetContacts).toBe(1)
     expect(result.mechanics).toEqual([])
   })
+
+  it('adds support projectiles only to coverage', () => {
+    const result=resolveProjectileHitModel({name:'Spark',skillTypes:['Spell','Projectile','ProjectileNumber'],numericStats:{base_number_of_projectiles:9}},{additionalProjectiles:2,projectileSourceReference:'support:multishot:number_of_additional_projectiles'})
+    expect(result.projectilesPerAction).toBe(11)
+    expect(result.mappingPotentialTargetContacts).toBe(11)
+    expect(result.singleTargetHitMultiplier).toBe(1)
+    expect(result.mechanics).toContainEqual(expect.objectContaining({kind:'projectiles-per-action',value:2,sourceReference:'support:multishot:number_of_additional_projectiles'}))
+  })
 })
