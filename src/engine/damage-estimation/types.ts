@@ -70,6 +70,7 @@ export interface EnemyMitigationProfile {
   temporalModelVersion?:string
   lifeState?:'full-life'|'low-life'|'not-low-life'|'unknown'
   heavyStunned?:boolean
+  ailmentStates?:Partial<Record<'bleeding'|'poisoned'|'ignited'|'frozen'|'shocked',boolean>>
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
 export interface DamageCalculationStage { id:'base'|'conversion'|'gain-as-extra'|'increased-damage'|'support-more-damage'|'lucky-hit-expectation'|'multiple-damage-expectation'|'prepared-next-hit'|'maximum-channelled-hit'|'maximum-charged-hit'|'temporal-active-window'|'speed'|'critical-expectation'|'enemy-mitigation';label:string;components:DamageComponent[];value?:number }
@@ -164,6 +165,15 @@ export interface DamageEstimate {
     damageOverTimeMultiplier:number
     durationMultiplier:number
     appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyFullLifeMoreDamageOverTimePercent:number;finalSkillEffectDurationPercent:number;damageSourceReference:string;durationSourceReference:string}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
+  bloodlustSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'inactive-enemy-not-bleeding'|'blocked-unknown-enemy-bleeding-state'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    physicalDamageMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyBleedingMoreMeleePhysicalDamagePercent:number;sourceReference:string}>
     blockedSupportIds:string[]
     sourceReferences:string[]
     detail:string

@@ -1,5 +1,19 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Bloodlust-Unterstützung – Schritt 168 (2026-08-02)
+
+- `Bloodlust` verarbeitet jetzt 30 % mehr physischen Nahkampfschaden gegen ein ausdrücklich als blutend bestätigtes Ziel.
+- Der Bonus wirkt ausschließlich auf physische Schadenskomponenten; nichtphysische Komponenten bleiben unverändert.
+- Bestätigt nicht blutende Ziele deaktivieren den Effekt. Ein unbekannter Blutungszustand wird fail-closed blockiert und erzeugt keinen Bonus.
+- Die Kompatibilität verlangt den gepinnten Fertigkeitstyp `Melee`; inkompatible Fertigkeiten und doppelte Supportfamilien werden blockiert.
+- Schadensrechner `3.82.0`, Bloodlust-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_BLOODLUST_SUPPORT_STEP_168.md`.
+- Audit: `docs/audits/build-assistant-step-168-bloodlust-support.json`.
+- Fokussiert: 2 Dateien und 85 Tests erfolgreich.
+- Gesamtlauf: 1.881 Tests bestanden; drei unter paralleler Vollbaumlast zeitüberschrittene Dateien bestanden seriell mit 198 Tests vollständig.
+- Typecheck, Lint, Produktions-Build, Pages-Build, JSON-Validierung und `git diff --check` erfolgreich.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
 ## Intense-Agony-Unterstützung – Schritt 167 (2026-08-02)
 
 - `Intense Agony` verarbeitet jetzt 50 % mehr nativen Schaden über Zeit gegen ein ausdrücklich bestätigtes Ziel auf vollem Leben und stets 25 % weniger Wirkungsdauer.

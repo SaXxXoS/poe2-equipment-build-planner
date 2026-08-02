@@ -1,0 +1,35 @@
+{
+  "step": 168,
+  "title": "Bloodlust physical melee damage against bleeding enemies",
+  "calculatorVersion": "3.82.0",
+  "modelVersion": "1.0.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceRecords": ["SupportBloodlustPlayer"],
+  "sourceStats": {
+    "support_bloodlust_melee_physical_damage_+%_final_vs_bleeding_enemies": 30
+  },
+  "conditions": {
+    "enemyBleeding": "productive-structured-exact",
+    "enemyConfirmedNotBleeding": "inactive",
+    "enemyBleedingStateUnknown": "conditional-damage-fail-closed",
+    "requiredSkillTypes": ["Melee"]
+  },
+  "damageScope": {
+    "physical": "multiplied-by-1.3-when-applied",
+    "fire": "unchanged",
+    "cold": "unchanged",
+    "lightning": "unchanged",
+    "chaos": "unchanged"
+  },
+  "focusedTests": {"files": 2, "tests": 85, "status": "passed"},
+  "fullRegression": {
+    "initialPassed": 1881,
+    "parallelTimeouts": 3,
+    "serialRerunTests": 198,
+    "serialRerunStatus": "passed"
+  },
+  "jsonFilesValidated": 244,
+  "pinsChanged": false,
+  "offlineBoundaryChanged": false,
+  "fullPathOfBuildingParity": "not-proven"
+}

@@ -36,6 +36,19 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(low.expectedDamageAfterMitigation!/unknown.expectedDamageAfterMitigation!).toBeCloseTo(1.5,6)
     expect(unknown.executeSupportModel).toMatchObject({status:'blocked-unknown-enemy-life-state',damageMultiplier:1})
   })
+  it('wendet Bloodlust nur auf physischen Nahkampfschaden gegen ein bestätigt blutendes Ziel an',()=>{
+    const bloodlust=supportDef('bloodlust','Bloodlust')
+    const melee:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
+    const observed={...weapon('Akoyan Club'),itemClassId:'One Hand Maces',weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
+    const selected={...setup(melee.id),supportGemIds:[bloodlust.id]}
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup(melee.id)],skills:[melee],supports:[bloodlust],enemyProfile:{id:'bleeding-base',label:'Blutend',source:'manual-comparison-profile',ailmentStates:{bleeding:true}}})
+    const result=estimateHitDamage({equipment:[observed],setups:[selected],skills:[melee],supports:[bloodlust],enemyProfile:{id:'bleeding',label:'Blutend',source:'manual-comparison-profile',ailmentStates:{bleeding:true}}})
+    const unknown=estimateHitDamage({equipment:[observed],setups:[selected],skills:[melee],supports:[bloodlust],enemyProfile:{id:'unknown',label:'Unbekannt',source:'manual-comparison-profile'}})
+    expect(result.bloodlustSupportModel).toMatchObject({status:'applied',physicalDamageMultiplier:1.3})
+    expect(result.components.find(value=>value.type==='physical')?.minimum).toBeCloseTo(baseline.components.find(value=>value.type==='physical')!.minimum*1.3,6)
+    expect(result.components.find(value=>value.type==='fire')).toEqual(baseline.components.find(value=>value.type==='fire'))
+    expect(unknown.bloodlustSupportModel).toMatchObject({status:'blocked-unknown-enemy-bleeding-state',physicalDamageMultiplier:1})
+  })
   it('zieht bei staerkeren Schadenszustands-Supports die gepinnte Trefferschadensstrafe ab',()=>{
     const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
     const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
