@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
 import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.0.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.1.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -61,9 +61,15 @@ const resistanceAfterReduction = (type: DamageType, profile: EnemyMitigationProf
   ))
 }
 
-export function collectDamageOverTime(skill: NumericSkill, enemyProfile?: EnemyMitigationProfile): DamageOverTimeResult {
+export function collectDamageOverTime(
+  skill: NumericSkill,
+  enemyProfile?: EnemyMitigationProfile,
+  duration?: { multiplier: number; sourceReferences: string[] },
+): DamageOverTimeResult {
   const stats = skill.numericStats as Record<string, number>
-  const durationMs = stats.base_skill_effect_duration
+  const baseDurationMs = stats.base_skill_effect_duration
+  const durationMultiplier = duration?.multiplier ?? 1
+  const durationMs = Number.isFinite(baseDurationMs) ? baseDurationMs * durationMultiplier : baseDurationMs
   const effects: ResolvedDamageOverTimeEffect[] = []
   const blockedEffects: UnresolvedDamageOverTimeEffect[] = []
 
@@ -100,7 +106,7 @@ export function collectDamageOverTime(skill: NumericSkill, enemyProfile?: EnemyM
       } : {}),
       stackCount: 1,
       evidence: 'structured-exact',
-      sourceReferences: [definition.stat, 'base_skill_effect_duration'],
+      sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? [])],
       detail: 'Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.',
     })
   }

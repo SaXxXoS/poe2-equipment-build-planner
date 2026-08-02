@@ -12,6 +12,13 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert verkürzte Dauer in den nativen DoT ohne falschen DPS-Bonus',()=>{
+    const compressed=supportDef('compressed-duration','Compressed Duration I')
+    const selected={...setup('wall'),supportGemIds:[compressed.id]}
+    const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('wall','Flame Wall')],supports:[compressed]})
+    expect(result.skillEffectDurationSupportModel).toMatchObject({status:'applied',durationMultiplier:.7})
+    expect(result.damageOverTime?.effects[0]).toMatchObject({damagePerSecond:59.58,durationMs:4480,totalDamagePerApplication:266.93})
+  })
   it('berechnet PoB2-Dual-Wield-Angriffe aus beiden Waffen statt nur aus der ersten Hand',()=>{
     const earthquake:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
     const main={...weapon('Akoyan Club'),id:'main',itemClassId:'One Hand Maces'}

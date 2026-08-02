@@ -3987,3 +3987,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Schadensrechner verwendet `3.57.0`; das Dual-Wield-Angriffsmodell verwendet `1.1.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_DUAL_WIELD_SPEED_STEP_143.md` und `docs/audits/build-assistant-step-143-dual-wield-speed.json`.
 - Fokussierte Prüfung: 2 Dateien und 63 Tests erfolgreich. Der saubere serielle Gesamtlauf bestand mit 144 Dateien und 1.774 Tests. Im parallelen Lauf bestanden ebenfalls alle Assertions; drei Vitest-Worker meldeten lediglich RPC-Reporting-Timeouts, die seriell nicht reproduzierbar waren. Typecheck, Lint, Produktions- und Pages-Build sowie die Desktopprüfung bei 1280 × 720 sind erfolgreich. Die responsive 390-×-844-Darstellung ist durch die bestehende Testsuite abgedeckt; die verwendete Browserinstanz bot in diesem Lauf keine Viewport-Umschaltung, weshalb keine zusätzliche interaktive 390-×-844-Browserprüfung behauptet wird.
+
+## Schritt 144 – strukturierte Wirkungsdauer-Supports
+
+- `Compressed Duration I/II` und `Prolonged Duration I/II` verwenden jetzt die am gepinnten PoB2-Commit belegten finalen Wirkungsdauerwerte.
+- Der Wirkungsdauerfaktor wird nur auf Fertigkeiten mit dem strukturierten Typ `Duration` angewandt. Mehrere Stufen derselben Supportfamilie werden fail-closed blockiert.
+- Die native DPS bleibt unverändert; nur Wirkungsdauer und damit der Gesamtschaden einer einzelnen nativen DoT-Anwendung werden neu berechnet. Uptime, Überlappung und zusätzliche Stapel werden nicht erfunden.
+- Der Schadensrechner verwendet `3.58.0`, das Wirkungsdauer-Supportmodell `1.0.0` und das DoT-Modell `3.1.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_SKILL_EFFECT_DURATION_SUPPORTS_STEP_144.md` und `docs/audits/build-assistant-step-144-skill-effect-duration-supports.json`.
+- Fokussierte Prüfung: 3 Dateien und 68 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 144 Dateien und 1.778 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 221 JSON-Dateien sind erfolgreich geprüft.
+- Der lokale Pages-Build lädt im Desktop-Browser ohne Konsolenfehler oder Warnungen. Bei 390 × 844 besteht kein horizontaler Seitenüberlauf.

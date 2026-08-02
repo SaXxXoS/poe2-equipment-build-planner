@@ -9,6 +9,7 @@ import { applyBuildEnemyEffects, resolveSelectedTargetCriticalDamageBonus } from
 import { applyTemporalDamageWindow, collectTemporalOffensiveEffects } from './temporal-offensive-effects'
 import { resolveNextSkillEffects } from './next-skill-effects'
 import { collectDamageOverTime } from './damage-over-time'
+import { resolveSkillEffectDurationSupports } from './skill-effect-duration-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -126,20 +127,25 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.57.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.58.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
   if(!selectedLevel)return{...base,status:'unavailable',warnings:['Die ausgewählte Gemmenstufe besitzt keine vollständige strukturierte Stufenzeile.']}
   const skill={...skillReference,...selectedLevel,numericStats:applySkillQualityStats(selectedLevel.numericStats,gemLevelQualityModel),gemLevel:selectedLevel.level} as unknown as NumericSkill
-  let damageOverTime=collectDamageOverTime(skill,input.enemyProfile)
+  const skillEffectDurationSupportModel=resolveSkillEffectDurationSupports({skill,setup,supports:input.supports??[]})
+  const durationInput=skillEffectDurationSupportModel.status==='applied'
+    ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
+    : undefined
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel}
+  let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput)
   const projectileHitModel=resolveProjectileHitModel(skill)
   let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills,supports:input.supports})
   const minionCompanionModel=resolveMinionCompanionModel({primarySkill:definition,setups:input.setups,skills:input.skills})
   const damageOverTimeOutput=()=>({modelVersion:damageOverTime.modelVersion,effects:damageOverTime.effects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,damageType:value.damageType,kind:value.kind,status:value.status,damagePerSecond:value.damagePerSecond,damagePerSecondAfterMitigation:value.damagePerSecondAfterMitigation,durationMs:value.durationMs,totalDamagePerApplication:value.totalDamagePerApplication,totalDamagePerApplicationAfterMitigation:value.totalDamagePerApplicationAfterMitigation,stackCount:value.stackCount,detail:value.detail})),blockedEffects:damageOverTime.blockedEffects.map(value=>({sourceRecordId:value.sourceRecordId,sourceLabel:value.sourceLabel,kind:value.kind,status:value.status,detail:value.detail})),totalSingleApplicationDamagePerSecond:damageOverTime.totalSingleApplicationDamagePerSecond,totalSingleApplicationDamagePerSecondAfterMitigation:damageOverTime.totalSingleApplicationDamagePerSecondAfterMitigation,limitations:damageOverTime.limitations})
-  if(minionCompanionModel.primarySkillMinion)return{...base,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeit erzeugt oder steuert Minions beziehungsweise Begleiter. Ohne belegte Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime wird weder Spieler- noch Minion-DPS erfunden.']}
-  if(triggerRepeatModel.primarySkillTriggered)return{...base,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeit wird ausgelöst. Ohne belegte Quelle, Bedingung, Ziel und Auslöseintervall wird keine normale Wirkfrequenz oder DPS erfunden.']}
-  if(skill.kind==='other')return{...base,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
+  if(minionCompanionModel.primarySkillMinion)return{...resolvedBase,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeit erzeugt oder steuert Minions beziehungsweise Begleiter. Ohne belegte Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime wird weder Spieler- noch Minion-DPS erfunden.']}
+  if(triggerRepeatModel.primarySkillTriggered)return{...resolvedBase,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeit wird ausgelöst. Ohne belegte Quelle, Bedingung, Ziel und Auslöseintervall wird keine normale Wirkfrequenz oder DPS erfunden.']}
+  if(skill.kind==='other')return{...resolvedBase,status:'unavailable',triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),warnings:['Diese Fertigkeitsart besitzt noch kein belastbares Trefferschadenmodell.']}
   let components:DamageComponent[]
   let actionsPerSecond=skill.castTime>0?1/skill.castTime:1
   const included=[`Fertigkeitsstufe ${gemLevelQualityModel.appliedSkillLevel}`,`Fertigkeitsqualität ${gemLevelQualityModel.appliedSkillQuality??0}%`,'strukturierte Basiswerte der Fertigkeit']
@@ -158,8 +164,8 @@ export function estimateHitDamage(input:{
       weaponEntry.weaponStats.lightningDamage,
       weaponEntry.weaponStats.chaosDamage,
     ].some(Boolean))
-    if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...base,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
-    if(weaponValueScope&&!weaponValueScope.productive)return{...base,status:'unavailable',warnings:[`${weaponValueScope.detail} Der Waffenschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
+    if(!weaponEntry||!weapon&&!hasObservedWeaponBasis)return{...resolvedBase,status:'unavailable',warnings:['Der gewählte Waffenbasistyp konnte keiner numerischen Waffenbasis am Pin zugeordnet werden und besitzt keine vollständigen eingegebenen Waffenwerte.']}
+    if(weaponValueScope&&!weaponValueScope.productive)return{...resolvedBase,status:'unavailable',warnings:[`${weaponValueScope.detail} Der Waffenschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
     components=weaponComponents(weapon,weaponEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
     const hasObservedFinalWeaponStats=weaponEntry.weaponStatsSource!=='pinned-base'&&Boolean(weaponEntry.weaponStats)
     actionsPerSecond=weaponSpeed(weapon,weaponEntry)*(1+skill.attackSpeedMultiplier/100)
@@ -178,7 +184,7 @@ export function estimateHitDamage(input:{
       const offName=offEntry.baseDisplayName??offEntry.itemDefinitionId
       const offWeapon=offName?weaponsByName.get(offName.toLocaleLowerCase('en')):undefined
       const offValueScope=itemValueScopeModel.entries.find(entry=>entry.itemId===offEntry.id)
-      if(offValueScope&&!offValueScope.productive)return{...base,dualWieldAttackModel:resolvedDualWield,status:'unavailable',warnings:[`${offValueScope.detail} Der Nebenhandschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
+      if(offValueScope&&!offValueScope.productive)return{...resolvedBase,dualWieldAttackModel:resolvedDualWield,status:'unavailable',warnings:[`${offValueScope.detail} Der Nebenhandschaden wird deshalb nicht unvollständig oder doppelt berechnet.`]}
       const offComponents=weaponComponents(offWeapon,offEntry).map(value=>component(value.type,value.minimum*(skill.baseMultiplier??1),value.maximum*(skill.baseMultiplier??1)))
       components=averageHandComponents(components,offComponents,resolvedDualWield.damageMultiplier)
       actionsPerSecond=harmonicMean(weaponSpeed(weapon,weaponEntry),weaponSpeed(offWeapon,offEntry))*(1+skill.attackSpeedMultiplier/100)*resolvedDualWield.attackSpeedMultiplier*resolvedDualWield.hitSequenceMultiplier
@@ -198,9 +204,9 @@ export function estimateHitDamage(input:{
       supports:input.supports,equipment:input.equipment,
       passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,
     }):undefined
-    damageOverTime=collectDamageOverTime(skill,dotEnemyProfile)
+    damageOverTime=collectDamageOverTime(skill,dotEnemyProfile,durationInput)
     return{
-      ...base,status:'unavailable',
+      ...resolvedBase,status:'unavailable',
       ...(dotEnemyProfile?{enemyProfile:dotEnemyProfile}:{}),
       ...(damageOverTime.effects.length||damageOverTime.blockedEffects.length?{damageOverTime:damageOverTimeOutput()}:{}),
       warnings:['Die primäre Trefferschadenskomponente ist nicht eindeutig strukturiert verfügbar; ein vollständig belegter eigenständiger DoT bleibt separat auswertbar.'],
@@ -273,6 +279,7 @@ export function estimateHitDamage(input:{
       resolvedSuccessfulHitFrequencyPerSecondBySetup:{[setup.id]:actionsPerSecond*hitChancePercent/100},
     })
     base.resourceSpiritModel=resourceSpiritOutput(resourceSpiritModel)
+    resolvedBase.resourceSpiritModel=base.resourceSpiritModel
   }
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalGainComponents=manaTempestEffect?.percent
@@ -442,7 +449,7 @@ export function estimateHitDamage(input:{
     enemyProfile:resolvedEnemyProfile,
   })
   if(conditionalHitEffects.effects.length)included.push('strukturierter fertigkeitseigener Trefferschadensbonus aus der belegten Schockwirkung auf dem Ziel')
-  damageOverTime=collectDamageOverTime(skill,resolvedEnemyProfile)
+  damageOverTime=collectDamageOverTime(skill,resolvedEnemyProfile,durationInput)
   const conditionalAilmentEffects=resolveConditionalAilmentEffects(input.equipment)
   const damagingAilments=collectDamagingAilments({
     skill,
@@ -626,7 +633,7 @@ export function estimateHitDamage(input:{
           : 'Ohne belegte Wutgewinnkette wird kein positiver Wutstand und kein Schadensbonus angenommen.',
       }
   return{
-    ...base,status:'partial',components,baseComponents,...(dualWieldAttackModel?{dualWieldAttackModel}:{}),projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
+    ...resolvedBase,status:'partial',components,baseComponents,...(dualWieldAttackModel?{dualWieldAttackModel}:{}),projectileHitModel:projectileHitOutput(projectileHitModel),triggerRepeatModel:triggerRepeatOutput(triggerRepeatModel),minionCompanionModel:minionCompanionOutput(minionCompanionModel),
     ...(attackHitChance?{attackHitChance}:{}),
     stages:[
       {id:'base',label:'Strukturierter Grundschaden',components:baseComponents},

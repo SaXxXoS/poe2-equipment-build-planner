@@ -11,7 +11,7 @@ const byName = (name: string) => {
 describe('getrennter Schaden über Zeit', () => {
   it('berechnet Flammenwand nur als belegtes Einzelanwendungsfenster', () => {
     const result = collectDamageOverTime(byName('Flame Wall'))
-    expect(result.modelVersion).toBe('3.0.0')
+    expect(result.modelVersion).toBe('3.1.0')
     expect(result.effects).toEqual([expect.objectContaining({
       damageType: 'fire',
       damagePerSecond: 59.58,
@@ -21,6 +21,19 @@ describe('getrennter Schaden über Zeit', () => {
       status: 'single-application-window',
     })])
     expect(result.totalSingleApplicationDamagePerSecond).toBe(59.58)
+  })
+
+  it('ändert mit finaler Supportdauer nur Dauer und Gesamtschaden, nicht den DPS-Grundwert', () => {
+    const result = collectDamageOverTime(byName('Flame Wall'), undefined, {
+      multiplier: 0.7,
+      sourceReferences: ['support:test:compressed-duration'],
+    })
+    expect(result.effects[0]).toMatchObject({
+      damagePerSecond: 59.58,
+      durationMs: 4480,
+      totalDamagePerApplication: 266.93,
+    })
+    expect(result.effects[0].sourceReferences).toContain('support:test:compressed-duration')
   })
 
   it.each([

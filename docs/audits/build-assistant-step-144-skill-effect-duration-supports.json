@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 144,
+  "scope": "skill-effect-duration-supports",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceProduct": "generated/pob2/damage-reference.json",
+  "calculatorVersion": "3.58.0",
+  "durationSupportModelVersion": "1.0.0",
+  "damageOverTimeModelVersion": "3.1.0",
+  "supportedFamilies": {
+    "CompressedDuration": [
+      { "name": "Compressed Duration I", "finalDurationPercent": -30, "multiplier": 0.7 },
+      { "name": "Compressed Duration II", "finalDurationPercent": -35, "multiplier": 0.65 }
+    ],
+    "ProlongedDuration": [
+      { "name": "Prolonged Duration I", "finalDurationPercent": 30, "multiplier": 1.3 },
+      { "name": "Prolonged Duration II", "finalDurationPercent": 35, "multiplier": 1.35 }
+    ]
+  },
+  "rules": {
+    "requiredSkillType": "Duration",
+    "familyDuplicates": "blocked-fail-closed",
+    "combination": "multiplicative",
+    "damagePerSecondChanged": false,
+    "singleApplicationTotalChanged": true
+  },
+  "focusedVerification": { "files": 3, "tests": 68, "status": "passed" },
+  "fullVerification": { "files": 144, "tests": 1778, "mode": "serial", "status": "passed" },
+  "buildVerification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 221,
+    "gitDiffCheck": "passed"
+  },
+  "browserVerification": {
+    "desktopLoad": "passed",
+    "mobileViewport": "390x844",
+    "horizontalOverflow": false,
+    "consoleErrorsOrWarnings": 0
+  },
+  "limitations": [
+    "No sustained uptime is inferred.",
+    "No overlap or additional stacks are inferred.",
+    "General buff, debuff and ground-effect durations are not automatically modified in this step.",
+    "This step does not establish full Path of Building parity."
+  ]
+}
