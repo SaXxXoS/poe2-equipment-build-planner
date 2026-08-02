@@ -30,4 +30,18 @@ describe('pinned PoB2 support reference', () => {
   it('does not resolve an ambiguous name', () => {
     expect(pob2SupportReferenceFor("Oisin's Oath")).toBeUndefined()
   })
+
+  it('maps increased attack and cast speed without turning it into a More multiplier', () => {
+    expect(pob2QuantitativeEffectsFor('Rapid Attacks I')).toEqual([
+      expect.objectContaining({ kind: 'increased-action-speed', percent: 15, evidence: 'structured-exact' }),
+    ])
+    expect(pob2QuantitativeEffectsFor('Rapid Casting II')).toEqual([
+      expect.objectContaining({ kind: 'increased-action-speed', percent: 20, evidence: 'structured-exact' }),
+    ])
+    expect(pob2QuantitativeEffectsFor('Rapid Attacks III')).toEqual(expect.arrayContaining([
+      expect.objectContaining({ kind: 'increased-action-speed', percent: 35 }),
+      expect.objectContaining({ kind: 'more-damage', percent: -50 }),
+    ]))
+    expect(pob2QuantitativeEffectsFor('Rapid Casting III')).toBeUndefined()
+  })
 })

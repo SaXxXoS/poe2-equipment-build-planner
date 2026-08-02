@@ -31,7 +31,10 @@ const exactDamageStats: Record<string, DamageType[] | undefined> = {
   'support_fork_forked_projectile_damage_+%_final': undefined,
   'support_spell_rapid_fire_repeat_use_damage_+%_final': undefined,
   'support_hourglass_damage_+%_final': undefined,
+  'support_faster_attacks_damage_+%_final': undefined,
 }
+
+const exactIncreasedActionSpeedStats = new Set(['attack_speed_+%', 'base_cast_speed_+%'])
 
 export function pob2SupportReferenceFor(nameEn: string | undefined) {
   if (!nameEn) return undefined
@@ -42,8 +45,13 @@ export function pob2SupportReferenceFor(nameEn: string | undefined) {
 export function pob2QuantitativeEffectsFor(nameEn: string | undefined): SupportQuantitativeEffect[] | undefined {
   const record = pob2SupportReferenceFor(nameEn)
   if (!record) return undefined
-  const effects = Object.entries(record.numericStats).flatMap(([stat, percent]) => {
-    if (!(stat in exactDamageStats) || percent === 0) return []
+  const effects: SupportQuantitativeEffect[] = Object.entries(record.numericStats).flatMap<SupportQuantitativeEffect>(([stat, percent]) => {
+    if (percent === 0) return []
+    if (exactIncreasedActionSpeedStats.has(stat)) return [{
+      kind: 'increased-action-speed' as const, percent, evidence: 'structured-exact' as const,
+      sourceReference: `${damageReference.sourceRepository}@${damageReference.sourceCommit}/${record.sourceFile}#${record.sourceRecordId}:${stat}`,
+    }]
+    if (!(stat in exactDamageStats)) return []
     return [{
       kind: 'more-damage' as const,
       percent,

@@ -1,9 +1,11 @@
 import type { DamageComponent, AppliedQuantitativeEffect } from './types'
 import type { SkillSetup, SupportGemDefinition } from '../../domain'
+import type { QuantitativeDamageModifier } from './quantitative-effects'
 
 export interface QuantitativeSupportSummary {
   components: DamageComponent[]
   actionSpeedMultiplier: number
+  increasedSpeedModifiers: QuantitativeDamageModifier[]
   criticalChanceMultiplier: number
   criticalDamageBonus: number
   appliedEffects: AppliedQuantitativeEffect[]
@@ -24,6 +26,7 @@ export function applyQuantitativeSupports(input: {
   let criticalChanceMultiplier = 1
   let criticalDamageBonus = 0
   const appliedEffects: AppliedQuantitativeEffect[] = []
+  const increasedSpeedModifiers: QuantitativeDamageModifier[] = []
   const unresolvedSupportIds: string[] = []
 
   for (const support of definitions) {
@@ -40,6 +43,11 @@ export function applyQuantitativeSupports(input: {
             : component,
         )
       } else if (effect.kind === 'action-speed') actionSpeedMultiplier *= factor
+      else if (effect.kind === 'increased-action-speed') increasedSpeedModifiers.push({
+        id: `support:${support.id}:${effect.sourceReference}`,
+        source: 'support', sourceId: support.id, label: support.displayNameDe,
+        percent: effect.percent, appliesTo: ['action-speed'],
+      })
       else if (effect.kind === 'more-critical-chance') criticalChanceMultiplier *= factor
       else criticalDamageBonus += effect.percent
       appliedEffects.push({
@@ -54,6 +62,7 @@ export function applyQuantitativeSupports(input: {
   return {
     components,
     actionSpeedMultiplier: round(actionSpeedMultiplier),
+    increasedSpeedModifiers,
     criticalChanceMultiplier: round(criticalChanceMultiplier),
     criticalDamageBonus: round(criticalDamageBonus),
     appliedEffects,

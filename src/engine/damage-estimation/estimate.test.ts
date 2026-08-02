@@ -761,6 +761,21 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(withSupport.hitDamagePerSecond).toBeCloseTo(without.hitDamagePerSecond!*1.25,1)
     expect(withSupport.appliedSupportEffects).toEqual([expect.objectContaining({sourceId:'support-exact',value:25})])
   })
+  it('stapelt Rapid Casting additiv mit anderer erhöhter Zaubergeschwindigkeit',()=>{
+    const rapid:SupportGemDefinition={
+      ...supportDef('rapid-casting-ii','Rapid Casting II'),
+      quantitativeEffects:pob2QuantitativeEffectsFor('Rapid Casting II'),
+    }
+    const castSpeedItem:EquipmentEntry={id:'cast-speed',slotId:'slot-helmet',itemClassId:'Helmets',rarity:'rare',modifierValues:[{
+      id:'cast-speed-value',modifierId:'cast-speed',value:20,statValues:[{statId:'cast_speed_+%',value:20}],
+    }]}
+    const baseline=estimateHitDamage({equipment:[castSpeedItem],setups:[setup('arc')],skills:[skill('arc','Arc')],supports:[rapid]})
+    const selected={...setup('arc'),supportGemIds:[rapid.id]}
+    const result=estimateHitDamage({equipment:[castSpeedItem],setups:[selected],skills:[skill('arc','Arc')],supports:[rapid]})
+    expect(baseline.actionsPerSecond).toBe(1.09)
+    expect(result.actionsPerSecond).toBe(1.27)
+    expect(result.appliedSupportEffects).toEqual([expect.objectContaining({sourceId:'rapid-casting-ii',value:20})])
+  })
   it('warnt bei Supports ohne strukturierten Effekt und verändert den Wert nicht',()=>{
     const support:SupportGemDefinition={id:'support-unresolved',displayNameDe:'Unbelegt',tags:[],dataVersion:'test',source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[]}
     const selected={...setup('arc'),supportGemIds:[support.id]}

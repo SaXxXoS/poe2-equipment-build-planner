@@ -4041,6 +4041,15 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 3 Dateien und 73 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 148 Dateien und 1.793 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung und `git diff --check` sind erfolgreich.
 - Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
 
+## Schritt 150 – Schnelle Angriffe und schnelles Zaubern
+
+- `Rapid Attacks I–III` und `Rapid Casting I–II` verwenden ihre strukturierten Geschwindigkeitswerte aus dem gepinnten PoB2-Commit. Schnelle Angriffe III berücksichtigt zusätzlich 50 % weniger finalen Schaden.
+- Erhöhte Angriffs- und Zaubergeschwindigkeit wird zusammen mit Ausrüstung, Passivbaum und Aszendenz additiv gestapelt; sie wird nicht als eigener Mehr-Multiplikator gerechnet.
+- `Rapid Casting III` bleibt fail-closed, weil der Wert eine belegte Historie verschiedener Zauber innerhalb von acht Sekunden benötigt.
+- Der Schadensrechner verwendet `3.64.0`. Details: `docs/BUILD_ASSISTANT_RAPID_SPEED_SUPPORT_STEP_150.md` und `docs/audits/build-assistant-step-150-rapid-speed-support.json`.
+- Fokussierte Prüfung: 3 Dateien und 72 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 149 Dateien und 1.804 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
+- 227 JSON-Dateien, `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich. Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.
+
 ## Schritt 149 – Mehrfachprojektil I/II
 
 - `Multishot I/II` verwenden jetzt die strukturierten PoB2-Werte: jeweils zwei zusätzliche Projektile, 35/25 % weniger finaler Schaden und 20 % weniger finale Fertigkeitsgeschwindigkeit.

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 150,
+  "status": "implemented-with-fail-closed-conditional-gap",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "calculatorVersion": "3.64.0",
+  "supportRecords": {
+    "productive": ["SupportRapidAttacksPlayer", "SupportRapidAttacksPlayerTwo", "SupportRapidAttacksPlayerThree", "SupportRapidCastingPlayer", "SupportRapidCastingPlayerTwo"],
+    "blockedConditional": ["SupportRapidCastingPlayerThree"]
+  },
+  "productiveEffects": {
+    "rapidAttacksIncreasedSpeedPercent": [15, 25, 35],
+    "rapidAttacksThreeFinalDamagePercent": -50,
+    "rapidCastingIncreasedSpeedPercent": [15, 20]
+  },
+  "mappedQuantitativeSupportRecords": 19,
+  "stackingRule": "increased speed additive; more/less effects multiplicative",
+  "forbiddenInference": [
+    "No fixed Rapid Casting III value without an eight-second unique-spell history",
+    "No conversion of increased speed into a separate more multiplier",
+    "No name- or translation-based numeric inference"
+  ]
+}

@@ -91,7 +91,7 @@ export interface SupportGemDefinition extends GameDataMetadata {
 }
 
 export interface SupportQuantitativeEffect {
-  kind: 'more-damage' | 'action-speed' | 'more-critical-chance' | 'critical-damage-bonus'
+  kind: 'more-damage' | 'action-speed' | 'increased-action-speed' | 'more-critical-chance' | 'critical-damage-bonus'
   percent: number
   damageTypes?: Extract<MechanicTag, 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'>[]
   evidence: 'structured-exact'

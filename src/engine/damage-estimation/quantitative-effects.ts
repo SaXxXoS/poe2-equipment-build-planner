@@ -9,7 +9,7 @@ import { resolveCharacterAttributes, type CharacterAttributeValues } from '../ch
 export type QuantitativeEffectSource = 'equipment' | 'passive' | 'ascendancy'
 export interface QuantitativeDamageModifier {
   id: string
-  source: QuantitativeEffectSource
+  source: QuantitativeEffectSource | 'support'
   sourceId: string
   label: string
   percent: number

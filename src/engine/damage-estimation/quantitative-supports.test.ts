@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { SupportGemDefinition } from '../../domain'
 import { applyQuantitativeSupports } from './quantitative-supports'
 
-const support = (id: string, kind: 'more-damage'|'action-speed'|'more-critical-chance'|'critical-damage-bonus', percent: number): SupportGemDefinition => ({
+const support = (id: string, kind: 'more-damage'|'action-speed'|'increased-action-speed'|'more-critical-chance'|'critical-damage-bonus', percent: number): SupportGemDefinition => ({
   id, displayNameDe: id, tags: [], dataVersion: 'test', source: 'local-placeholder', status: 'verified',
   requiredTags: [], excludedTags: [], ownTags: [],
   quantitativeEffects: [{ kind, percent, evidence: 'structured-exact', sourceReference: `fixture:${id}` }],
@@ -38,5 +38,17 @@ describe('quantitative Supportwirkungen', () => {
     })
     expect(result.components).toEqual([{ type: 'physical', minimum: 10, maximum: 20 }])
     expect(result.unresolvedSupportIds).toEqual(['unknown'])
+  })
+
+  it('liefert erhöhte Aktionsgeschwindigkeit für den gemeinsamen additiven Stapel', () => {
+    const result = applyQuantitativeSupports({
+      components: [{ type: 'physical', minimum: 10, maximum: 10 }],
+      setup: { id: 'setup', skillId: 'skill', role: 'main', weaponSet: 'set-1', supportGemIds: ['rapid'] },
+      supports: [support('rapid', 'increased-action-speed', 20)],
+    })
+    expect(result.actionSpeedMultiplier).toBe(1)
+    expect(result.increasedSpeedModifiers).toEqual([
+      expect.objectContaining({ source: 'support', sourceId: 'rapid', percent: 20 }),
+    ])
   })
 })
