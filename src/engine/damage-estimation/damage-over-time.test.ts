@@ -11,7 +11,7 @@ const byName = (name: string) => {
 describe('getrennter Schaden über Zeit', () => {
   it('berechnet Flammenwand nur als belegtes Einzelanwendungsfenster', () => {
     const result = collectDamageOverTime(byName('Flame Wall'))
-    expect(result.modelVersion).toBe('3.2.0')
+    expect(result.modelVersion).toBe('3.3.0')
     expect(result.effects).toEqual([expect.objectContaining({
       damageType: 'fire',
       damagePerSecond: 59.58,

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 147,
+  "scope": "spell-cascade-support",
+  "source": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "productReference": "generated/pob2/damage-reference.json",
+    "sourceFile": "src/Data/Skills/sup_int.lua",
+    "sourceRecord": "SupportSpellCascadePlayer"
+  },
+  "versions": {
+    "damageCalculator": "3.61.0",
+    "spellCascadeModel": "1.0.0",
+    "damageOverTimeModel": "3.3.0"
+  },
+  "structuredValues": {
+    "cascadesPerSide": 1,
+    "totalAreas": 3,
+    "finalAreaOfEffectPercent": -20,
+    "finalDamagePercent": -30,
+    "damageMultiplier": 0.7,
+    "areaOfEffectMultiplier": 0.8,
+    "singleTargetOverlapMultiplier": 1
+  },
+  "rules": {
+    "requiredSkillType": "Cascadable",
+    "appliesToHitDamage": true,
+    "appliesToNativeDamageOverTime": true,
+    "duplicateFamilyBlocked": true,
+    "incompatibleSkillsBlocked": true,
+    "inventedOverlapDamage": false,
+    "genericDoubleApplicationPrevented": true
+  },
+  "verification": {
+    "focusedTestFiles": 3,
+    "focusedTests": 73,
+    "fullSerialTestFiles": 148,
+    "fullSerialTests": 1793,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidatedBeforeThisReport": 215,
+    "gitDiffCheck": "passed",
+    "desktopBrowser": "passed",
+    "mobileViewport": "390x844",
+    "horizontalOverflow": false,
+    "browserWarnings": 0,
+    "browserErrors": 0
+  },
+  "limitations": [
+    "No enemy-specific area coverage is inferred.",
+    "No cascade positioning or overlap damage is inferred.",
+    "Unstructured support tiers remain neutral.",
+    "This does not establish complete Path-of-Building parity."
+  ]
+}

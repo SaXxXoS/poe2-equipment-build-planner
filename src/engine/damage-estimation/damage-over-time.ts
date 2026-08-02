@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
 import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.2.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.3.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -109,7 +109,7 @@ export function collectDamageOverTime(
       stackCount: 1,
       evidence: 'structured-exact',
       sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? []), ...(damage?.sourceReferences ?? [])],
-      detail: `Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung${damageMultiplier === 1 ? '' : ` mit finalem Flächenschadensfaktor ${damageMultiplier}`}. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.`,
+      detail: `Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung${damageMultiplier === 1 ? '' : ` mit gemeinsam belegtem finalem Support-Schadensfaktor ${damageMultiplier}`}. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.`,
     })
   }
 

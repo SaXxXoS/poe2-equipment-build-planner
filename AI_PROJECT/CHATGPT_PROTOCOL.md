@@ -4018,3 +4018,14 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Details: `docs/BUILD_ASSISTANT_CONCENTRATED_AREA_SUPPORT_STEP_146.md` und `docs/audits/build-assistant-step-146-concentrated-area-support.json`.
 - Fokussierte Prüfung: 4 Dateien und 74 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 147 Dateien und 1.788 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
 - Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
+
+## Schritt 147 – Zauberkaskade
+
+- `Spell Cascade` (`Zauberkaskade`) verwendet die drei strukturierten Werte aus `SupportSpellCascadePlayer`: eine Kaskade pro Seite, 30 % weniger finaler Schaden und 20 % weniger finale Wirkungsfläche.
+- Nur Fertigkeiten mit strukturiertem Typ `Cascadable` erhalten die Wirkung. Treffer und eigenständiger nativer DoT werden mit `0,70` multipliziert; die Wirkungsfläche wird getrennt mit `0,80` ausgewiesen.
+- Drei Wirkungsbereiche werden dokumentiert, aber ohne belegte Positionierung oder Überlappung nicht als dreifacher Einzelzielschaden behandelt. Der Einzelziel-Überlappungsfaktor bleibt `1,00`.
+- Nicht kaskadierbare Fertigkeiten und doppelte Supportfamilien werden fail-closed blockiert. Die generische Supportabbildung wurde entfernt, damit der Schadensfaktor nicht doppelt angewandt wird.
+- Der Schadensrechner verwendet `3.61.0`, das Zauberkaskadenmodell `1.0.0` und das DoT-Modell `3.3.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_SPELL_CASCADE_SUPPORT_STEP_147.md` und `docs/audits/build-assistant-step-147-spell-cascade-support.json`.
+- Fokussierte Prüfung: 3 Dateien und 73 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 148 Dateien und 1.793 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie JSON-Validierung und `git diff --check` sind erfolgreich.
+- Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.

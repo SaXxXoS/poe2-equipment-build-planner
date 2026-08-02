@@ -12,6 +12,7 @@ import { collectDamageOverTime } from './damage-over-time'
 import { resolveSkillEffectDurationSupports } from './skill-effect-duration-supports'
 import { applyMaximumPhysicalDamageSupports } from './maximum-physical-damage-supports'
 import { applyAreaDamageMultiplier, resolveAreaDamageSupports } from './area-damage-supports'
+import { applySpellCascadeDamageMultiplier, resolveSpellCascadeSupports } from './spell-cascade-supports'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -129,7 +130,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.60.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.61.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -137,13 +138,15 @@ export function estimateHitDamage(input:{
   const skill={...skillReference,...selectedLevel,numericStats:applySkillQualityStats(selectedLevel.numericStats,gemLevelQualityModel),gemLevel:selectedLevel.level} as unknown as NumericSkill
   const skillEffectDurationSupportModel=resolveSkillEffectDurationSupports({skill,setup,supports:input.supports??[]})
   const areaDamageSupportModel=resolveAreaDamageSupports({skill,setup,supports:input.supports??[]})
+  const spellCascadeSupportModel=resolveSpellCascadeSupports({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
-  const areaDamageInput=areaDamageSupportModel.status==='applied'
-    ? {multiplier:areaDamageSupportModel.damageMultiplier,sourceReferences:areaDamageSupportModel.sourceReferences}
+  const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)
+  const areaDamageInput=nativeDotDamageMultiplier!==1
+    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill)
   let triggerRepeatModel=resolveTriggerRepeatModel({primarySkill:definition,setups:input.setups,skills:input.skills,supports:input.supports})
@@ -242,12 +245,15 @@ export function estimateHitDamage(input:{
   components=applyDamageModifiers(baseComponents,quantitative.conversions,quantitative.damageModifiers,quantitative.gainAsExtra).map(value=>component(value.type,value.minimum,value.maximum))
   const increasedComponents=components.map(value=>({...value}))
   components=applyAreaDamageMultiplier(components,areaDamageSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applySpellCascadeDamageMultiplier(components,spellCascadeSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
     ...maximumPhysicalDamageSupportModel.blockedSupportIds,
     ...areaDamageSupportModel.appliedSupports.map(value=>value.supportId),
     ...areaDamageSupportModel.blockedSupportIds,
+    ...spellCascadeSupportModel.appliedSupports.map(value=>value.supportId),
+    ...spellCascadeSupportModel.blockedSupportIds,
   ])
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
@@ -327,6 +333,7 @@ export function estimateHitDamage(input:{
   if(supportEffects.appliedEffects.length)included.push('strukturierte numerische Supporteffekte')
   if(maximumPhysicalDamageSupportModel.status==='applied')included.push('Muskelkraft: strukturierter finaler Bonus ausschließlich auf den maximalen physischen Ausgangsschaden')
   if(areaDamageSupportModel.status==='applied')included.push('Konzentrierte Wirkung: strukturierter finaler Flächenschadensbonus mit verringerter Wirkungsfläche')
+  if(spellCascadeSupportModel.status==='applied')included.push('Zauberkaskade: strukturierter finaler Schadens- und Flächenfaktor; zusätzliche Flächen ohne erfundenen Einzelziel-Überlappungsbonus')
   if(nextSkill.appliedEffects.length)included.push('belegter einmalig vorbereiteter Folgeangriff')
   const minimum=components.reduce((sum,value)=>sum+value.minimum,0)
   const maximum=components.reduce((sum,value)=>sum+value.maximum,0)

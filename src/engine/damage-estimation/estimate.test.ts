@@ -12,6 +12,22 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Zauberkaskade mit drei Flächen, aber ohne erfundenen Überlappungsmultiplikator',()=>{
+    const cascade=supportDef('spell-cascade','Spell Cascade')
+    const boneBlast=skill('bone-blast','Bone Blast')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(boneBlast.id)],skills:[boneBlast],supports:[cascade]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(boneBlast.id),supportGemIds:[cascade.id]}],skills:[boneBlast],supports:[cascade]})
+    expect(result.spellCascadeSupportModel).toMatchObject({status:'applied',damageMultiplier:.7,areaOfEffectMultiplier:.8,totalCascadeAreas:3,singleTargetOverlapMultiplier:1})
+    expect(result.hitDamage?.average).toBeCloseTo(baseline.hitDamage!.average*.7,6)
+  })
+  it('wendet Zauberkaskades Schadensnachteil auf nativen DoT an',()=>{
+    const cascade=supportDef('spell-cascade','Spell Cascade')
+    const flameWall=skill('wall','Flame Wall')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(flameWall.id)],skills:[flameWall],supports:[cascade]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(flameWall.id),supportGemIds:[cascade.id]}],skills:[flameWall],supports:[cascade]})
+    expect(result.spellCascadeSupportModel?.status).toBe('applied')
+    expect(result.damageOverTime?.effects[0].damagePerSecond).toBeCloseTo(baseline.damageOverTime!.effects[0].damagePerSecond*.7,1)
+  })
   it('wendet Konzentrierte Wirkung auf Area-Treffer und die getrennte Wirkungsfläche an',()=>{
     const concentrated=supportDef('concentrated-area','Concentrated Area')
     const flameblast=skill('flameblast','Flameblast')
