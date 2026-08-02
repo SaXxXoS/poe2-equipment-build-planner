@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
 import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.3.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.4.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'

@@ -378,10 +378,33 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     const selected={...setup('spark'),supportGemIds:[hourglass.id]}
     const baseline=estimateHitDamage({equipment:[],setups:[setup('spark')],skills:[skill('spark','Spark')],supports:[hourglass]})
     const result=estimateHitDamage({equipment:[],setups:[selected],skills:[skill('spark','Spark')],supports:[hourglass]})
+    expect(result.hourglassSupportModel).toMatchObject({status:'applied',damageMultiplier:1.3,cooldownOverrideSeconds:10})
     expect(result.actionsPerSecond).toBe(0.1)
     expect(result.hitDamage!.average).toBeCloseTo(baseline.hitDamage!.average*1.3,2)
     expect(result.hitDamagePerSecond).toBeLessThan(result.hitDamage!.average)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===hourglass.id)).toHaveLength(0)
     expect(result.included).toContain('supportbedingter Cooldown-Override mit nachhaltiger Nutzungsrate')
+  })
+  it('wendet Hourglass auch auf belegten nativen Schaden über Zeit an',()=>{
+    const hourglass:SupportGemDefinition={
+      id:'hourglass-dot',displayNameDe:'Sanduhr',nameEn:'Hourglass',tags:[],dataVersion:'test',
+      source:'local-placeholder',status:'verified',requiredTags:[],excludedTags:[],ownTags:[],
+    }
+    const flameWall=skill('flame-wall','Flame Wall')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(flameWall.id)],skills:[flameWall],supports:[hourglass]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(flameWall.id),supportGemIds:[hourglass.id]}],skills:[flameWall],supports:[hourglass]})
+    expect(result.hourglassSupportModel).toMatchObject({status:'applied',damageMultiplier:1.3})
+    const resultDamageOverTime=result.damageOverTime
+    const baselineDamageOverTime=baseline.damageOverTime
+    expect(resultDamageOverTime).toBeDefined()
+    expect(baselineDamageOverTime).toBeDefined()
+    if(!resultDamageOverTime||!baselineDamageOverTime)throw new Error('Native DoT fixture is missing')
+    const resultDamagePerSecond=resultDamageOverTime.totalSingleApplicationDamagePerSecond
+    const baselineDamagePerSecond=baselineDamageOverTime.totalSingleApplicationDamagePerSecond
+    expect(resultDamagePerSecond).toBeDefined()
+    expect(baselineDamagePerSecond).toBeDefined()
+    if(resultDamagePerSecond===undefined||baselineDamagePerSecond===undefined)throw new Error('Native DoT fixture has no damage per second')
+    expect(resultDamagePerSecond/baselineDamagePerSecond).toBeCloseTo(1.3,3)
   })
   it('wendet einen exakt belegten Lucky-Trefferschadensknoten im Erwartungswert an',()=>{
     const passiveTree={nodes:[{

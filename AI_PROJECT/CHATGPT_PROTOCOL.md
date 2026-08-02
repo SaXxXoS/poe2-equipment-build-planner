@@ -4183,3 +4183,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Schadensrechner `3.73.0`, Considered-Casting-Modell `1.0.0`. Pins und Offline-Grenzen bleiben unverändert; vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
 - Details: `docs/BUILD_ASSISTANT_CONSIDERED_CASTING_STEP_159.md` und `docs/audits/build-assistant-step-159-considered-casting.json`.
 - Fokussiert bestanden 74 Rechentests. Im gemeinsamen Gesamtlauf bestanden 1.840 Tests; drei lastempfindliche Vollbaumtests bestanden isoliert mit 198 Tests. Damit sind alle 1.843 fachlichen Tests erfolgreich. Typecheck, Lint, Produktions-/Pages-Build, 2.549 JSON-Dateien und `git diff --check` bestanden.
+
+## Sanduhr-Unterstützung – Schritt 160 (2026-08-02)
+
+- `Hourglass` verwendet aus `SupportHourglassPlayer` untrennbar 30 % mehr Schaden und einen Cooldown von zehn Sekunden.
+- Treffer und belegter nativer Schaden über Zeit erhalten exakt Faktor `1,30`; die nachhaltige Aktionsrate verwendet denselben strukturierten Cooldown.
+- Fertigkeiten mit bestehendem Cooldown, `SupportedByHourglass`, Proxy-Nutzung, Auslösung oder persistenter Wirkung sowie doppelte Supportfamilien werden fail-closed blockiert.
+- Die allgemeine Supportauswertung erhält die spezialisierte Sanduhr-ID nicht mehr. Treffer-, Mana-Tempest-, Wutvergleichs- und native DoT-Pfade wenden den Faktor dadurch genau einmal an.
+- Schadensrechner `3.74.0`, Sanduhrmodell `1.0.0`, natives DoT-Modell `3.4.0`. Produktpins und Offline-Grenzen bleiben unverändert; vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- Details: `docs/BUILD_ASSISTANT_HOURGLASS_SUPPORT_STEP_160.md` und `docs/audits/build-assistant-step-160-hourglass-support.json`.
+- Fokussiert bestanden 82 Tests; der vollständige serielle Lauf bestand mit 156 Dateien und 1.847 Tests. Typecheck, Lint, Produktions-/Pages-Build, 236 versionierte JSON-Dateien und `git diff --check` sind erfolgreich.

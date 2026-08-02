@@ -22,6 +22,7 @@ import { resolveRicochetSupports } from './ricochet-supports'
 import { applyRigwaldDamageMultiplier, resolveRigwaldFerocitySupport } from './rigwald-ferocity-support'
 import { applyControlledDestructionHitMultiplier, resolveControlledDestructionSupport } from './controlled-destruction-support'
 import { applyConsideredCastingDamageMultiplier, resolveConsideredCastingSupport } from './considered-casting-support'
+import { applyHourglassDamageMultiplier, resolveHourglassSupport } from './hourglass-support'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -139,7 +140,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.73.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.74.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -158,14 +159,15 @@ export function estimateHitDamage(input:{
   const rigwaldFerocitySupportModel=resolveRigwaldFerocitySupport({skill,setup,supports:input.supports??[],weaponSet:activeSet})
   const controlledDestructionSupportModel=resolveControlledDestructionSupport({skill,setup,supports:input.supports??[]})
   const consideredCastingSupportModel=resolveConsideredCastingSupport({skill,setup,supports:input.supports??[]})
+  const hourglassSupportModel=resolveHourglassSupport({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
-  const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)*(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.damageMultiplier:1)
+  const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)*(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.damageMultiplier:1)*(hourglassSupportModel.status==='applied'?hourglassSupportModel.damageMultiplier:1)
   const areaDamageInput=nativeDotDamageMultiplier!==1
-    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[])]}
+    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -275,6 +277,7 @@ export function estimateHitDamage(input:{
   components=applyRigwaldDamageMultiplier(components,rigwaldFerocitySupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyControlledDestructionHitMultiplier(components,controlledDestructionSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyConsideredCastingDamageMultiplier(components,consideredCastingSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applyHourglassDamageMultiplier(components,hourglassSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
     ...maximumPhysicalDamageSupportModel.blockedSupportIds,
@@ -301,18 +304,25 @@ export function estimateHitDamage(input:{
     ...controlledDestructionSupportModel.blockedSupportIds,
     ...consideredCastingSupportModel.appliedSupports.map(value=>value.supportId),
     ...consideredCastingSupportModel.blockedSupportIds,
+    ...hourglassSupportModel.appliedSupports.map(value=>value.supportId),
+    ...hourglassSupportModel.blockedSupportIds,
   ])
   const supportEffects=applyQuantitativeSupports({components,setup,supports:(input.supports??[]).filter(value=>!externallyResolvedSupportIds.has(value.id))})
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
-  const exactSpellDamageSupportIds=new Set([
+  const exactSpecializedDamageSupportIds=new Set([
     ...controlledDestructionSupportModel.appliedSupports.map(value=>value.supportId),
     ...controlledDestructionSupportModel.blockedSupportIds,
     ...consideredCastingSupportModel.appliedSupports.map(value=>value.supportId),
     ...consideredCastingSupportModel.blockedSupportIds,
+    ...hourglassSupportModel.appliedSupports.map(value=>value.supportId),
+    ...hourglassSupportModel.blockedSupportIds,
   ])
-  const applyExactSpellDamageSupports=(values:DamageComponent[])=>applyConsideredCastingDamageMultiplier(
-    applyControlledDestructionHitMultiplier(values,controlledDestructionSupportModel),
-    consideredCastingSupportModel,
+  const applyExactSpecializedDamageSupports=(values:DamageComponent[])=>applyHourglassDamageMultiplier(
+    applyConsideredCastingDamageMultiplier(
+      applyControlledDestructionHitMultiplier(values,controlledDestructionSupportModel),
+      consideredCastingSupportModel,
+    ),
+    hourglassSupportModel,
   )
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedMultiplier=quantitativePercentMultiplier([...quantitative.speedModifiers,...supportEffects.increasedSpeedModifiers])
@@ -366,7 +376,7 @@ export function estimateHitDamage(input:{
   }
   const nextSkill=resolveNextSkillEffects({components,setups:input.setups,skills:input.skills,mainSkill:definition,rotationAnalysis:input.rotationAnalysis})
   const temporalGainComponents=manaTempestEffect?.percent
-    ? applyExactSpellDamageSupports(applyQuantitativeSupports({
+    ? applyExactSpecializedDamageSupports(applyQuantitativeSupports({
         components:applyAreaDamageMultiplier(applyDamageModifiers(
           baseComponents,
           quantitative.conversions,
@@ -381,7 +391,7 @@ export function estimateHitDamage(input:{
           }],
         ),areaDamageSupportModel),
         setup,
-        supports:(input.supports??[]).filter(value=>!exactSpellDamageSupportIds.has(value.id)),
+        supports:(input.supports??[]).filter(value=>!exactSpecializedDamageSupportIds.has(value.id)),
       }).components)
     : components
   const temporalComponents=applyTemporalDamageWindow(temporalGainComponents,temporal.damageMultiplier).map(value=>component(value.type,value.minimum,value.maximum))
@@ -668,10 +678,10 @@ export function estimateHitDamage(input:{
     [...quantitative.damageModifiers,...rageIncreasedModifiers],
     quantitative.gainAsExtra,
   )
-  const rageStateAfterSupports=applyExactSpellDamageSupports(applyQuantitativeSupports({
+  const rageStateAfterSupports=applyExactSpecializedDamageSupports(applyQuantitativeSupports({
     components:rageStateBeforeSupports,
     setup,
-    supports:(input.supports??[]).filter(value=>!exactSpellDamageSupportIds.has(value.id)),
+    supports:(input.supports??[]).filter(value=>!exactSpecializedDamageSupportIds.has(value.id)),
   }).components)
   const rageStateComponents=applyRageMoreDamageModifiers(rageStateAfterSupports,rageScaledModifiers)
   const rageStateRollAverage=expectedLuckyHitDamage(rageStateComponents,luckyHitEffects)
