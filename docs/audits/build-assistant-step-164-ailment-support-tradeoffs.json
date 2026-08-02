@@ -1,0 +1,36 @@
+{
+  "step": 164,
+  "scope": "damaging-ailment-support-hit-tradeoffs",
+  "status": "implemented-and-regression-tested",
+  "calculatorVersion": "3.78.0",
+  "sourceRecords": [
+    {"sourceRecordId":"SupportDeadlyPoisonPlayer","name":"Deadly Poison I","hitFinalPercent":-25,"ailment":"poison","ailmentEffectPercent":75},
+    {"sourceRecordId":"SupportDeadlyPoisonPlayerTwo","name":"Deadly Poison II","hitFinalPercent":-30,"ailment":"poison","ailmentEffectPercent":100},
+    {"sourceRecordId":"SupportDeepCutsPlayer","name":"Deep Cuts I","hitFinalPercent":-25,"ailment":"bleed","ailmentEffectPercent":75},
+    {"sourceRecordId":"SupportDeepCutsPlayerTwo","name":"Deep Cuts II","hitFinalPercent":-30,"ailment":"bleed","ailmentEffectPercent":100},
+    {"sourceRecordId":"SupportDeadlyIgnitesPlayer","name":"Searing Flame I","hitFinalPercent":-25,"ailment":"ignite","ailmentEffectPercent":75},
+    {"sourceRecordId":"SupportDeadlyIgnitesPlayerTwo","name":"Searing Flame II","hitFinalPercent":-30,"ailment":"ignite","ailmentEffectPercent":100}
+  ],
+  "behavior": {
+    "hitPenalty": "final-hit-damage-multiplier",
+    "ailmentMagnitude": "existing-damaging-ailments-model",
+    "doubleCountingBlocked": true,
+    "incompatibleSkillPolicy": "fail-closed",
+    "unknownSourcePolicy": "unresolved-no-positive-effect"
+  },
+  "verification": {
+    "focusedTestFiles": 3,
+    "focusedTests": 100,
+    "fullSerialTestFiles": 159,
+    "fullSerialTests": 1869,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed"
+  },
+  "limitations": [
+    "No complete Path of Building 2 equivalence is claimed.",
+    "No ailment chance, duration, uptime, or enemy configuration is inferred.",
+    "Only structured pinned support effects are productive."
+  ]
+}

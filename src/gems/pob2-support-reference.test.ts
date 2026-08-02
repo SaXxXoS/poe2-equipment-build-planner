@@ -39,4 +39,16 @@ describe('pinned PoB2 support reference', () => {
     ]))
     expect(pob2QuantitativeEffectsFor('Rapid Casting III')).toBeUndefined()
   })
+
+  it('retains the exact hit-damage trade-off of stronger damaging-ailment supports', () => {
+    expect(pob2QuantitativeEffectsFor('Deadly Poison I')).toEqual([
+      expect.objectContaining({ kind: 'more-damage', percent: -25, evidence: 'structured-exact' }),
+    ])
+    expect(pob2QuantitativeEffectsFor('Deep Cuts II')).toEqual([
+      expect.objectContaining({ kind: 'more-damage', percent: -30, evidence: 'structured-exact' }),
+    ])
+    expect(pob2QuantitativeEffectsFor('Searing Flame I')).toEqual([
+      expect.objectContaining({ kind: 'more-damage', percent: -25, evidence: 'structured-exact' }),
+    ])
+  })
 })

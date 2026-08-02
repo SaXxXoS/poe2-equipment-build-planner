@@ -1,5 +1,17 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Zustands-Support-Trade-offs – Schritt 164 (2026-08-02)
+
+- `Deadly Poison I/II`, `Deep Cuts I/II` und `Searing Flame I/II` verarbeiten jetzt neben ihrer bereits angebundenen Gift-, Blutungs- beziehungsweise Entzündungswirkung auch den gepinnten finalen Trefferschaden-Nachteil.
+- Stufe I verursacht 25 % weniger finalen Trefferschaden bei 75 % höherer Zustandswirkung; Stufe II verursacht 30 % weniger finalen Trefferschaden bei 100 % höherer Zustandswirkung.
+- Trefferanteil und Zustandsanteil bleiben getrennt; die Zustandsverstärkung wird nicht doppelt angewandt.
+- Inkompatible Skills, unbekannte Records und nicht belegte Zustandschance oder Wirkzeit bleiben fail-closed.
+- Schadensrechner `3.78.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_AILMENT_SUPPORT_TRADEOFFS_STEP_164.md`.
+- Audit: `docs/audits/build-assistant-step-164-ailment-support-tradeoffs.json`.
+- Vollständig seriell: 159 Dateien und 1.869 Tests erfolgreich; Typecheck, Lint, Produktions- und Pages-Build erfolgreich.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
 ## Attunement-Unterstützungen – Schritt 163 (2026-08-02)
 
 - `Fire Attunement`, `Cold Attunement`, `Lightning Attunement` und `Chaos Attunement` verarbeiten jetzt jeweils den gepinnten Gewinn von 25 % des Ausgangsschadens als zusätzliche Zielschadensart.

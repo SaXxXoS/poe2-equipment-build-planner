@@ -12,6 +12,23 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('zieht bei staerkeren Schadenszustands-Supports die gepinnte Trefferschadensstrafe ab',()=>{
+    const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
+    for(const [id,name,multiplier] of [
+      ['deadly-poison','Deadly Poison I',.75],
+      ['deep-cuts','Deep Cuts II',.7],
+      ['searing-flame','Searing Flame I',.75],
+    ] as const){
+      const selected={...supportDef(id,name),quantitativeEffects:pob2QuantitativeEffectsFor(name)}
+      const baseline=estimateHitDamage({equipment:[observed],setups:[setup(attack.id)],skills:[attack],supports:[selected]})
+      const result=estimateHitDamage({equipment:[observed],setups:[{...setup(attack.id),supportGemIds:[selected.id]}],skills:[attack],supports:[selected]})
+      expect(result.hitDamage!.average/baseline.hitDamage!.average).toBeCloseTo(multiplier,6)
+      const applied=result.appliedSupportEffects?.find(value=>value.sourceId===selected.id)
+      expect(applied?.value).toBeCloseTo((multiplier-1)*100,8)
+    }
+  })
+
   it('integriert Lightning Attunement als zusätzlichen Schaden mit exakter Finalstrafe ohne generische Doppelerfassung',()=>{
     const attunement={...supportDef('lightning-attunement','Lightning Attunement'),quantitativeEffects:pob2QuantitativeEffectsFor('Lightning Attunement')}
     const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}

@@ -30,6 +30,13 @@ const exactDamageStats: Record<string, DamageType[] | undefined> = {
   'support_fork_forked_projectile_damage_+%_final': undefined,
   'support_spell_rapid_fire_repeat_use_damage_+%_final': undefined,
   'support_faster_attacks_damage_+%_final': undefined,
+  // These three ailment supports trade stronger ailments for less hit damage.
+  // The ailment magnitude is resolved by damaging-ailments.ts; retaining the
+  // paired final hit penalty here prevents the combined result from being
+  // overstated.
+  'support_deadly_poison_hit_damage_+%_final': undefined,
+  'support_deep_cuts_hit_damage_+%_final': undefined,
+  'support_stronger_ignites_hit_damage_+%_final': undefined,
 }
 
 const exactIncreasedActionSpeedStats = new Set(['attack_speed_+%', 'base_cast_speed_+%'])
