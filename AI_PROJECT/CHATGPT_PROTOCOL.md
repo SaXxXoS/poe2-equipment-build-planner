@@ -4193,3 +4193,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Schadensrechner `3.74.0`, Sanduhrmodell `1.0.0`, natives DoT-Modell `3.4.0`. Produktpins und Offline-Grenzen bleiben unverändert; vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
 - Details: `docs/BUILD_ASSISTANT_HOURGLASS_SUPPORT_STEP_160.md` und `docs/audits/build-assistant-step-160-hourglass-support.json`.
 - Fokussiert bestanden 82 Tests; der vollständige serielle Lauf bestand mit 156 Dateien und 1.847 Tests. Typecheck, Lint, Produktions-/Pages-Build, 236 versionierte JSON-Dateien und `git diff --check` sind erfolgreich.
+# Fortsetzung – Schritt 161: Heavy Swing exakt modelliert
+
+- Der Rechnerstand wurde von `3.74.0` auf `3.75.0` erweitert.
+- `Heavy Swing` verwendet nun die gepinnte PoB2-Definition `SupportMeleePhysicalDamagePlayer` vollständig: 35 % mehr physischer Schaden und 10 % weniger Angriffsgeschwindigkeit.
+- Die Wirkung ist auf `Melee` begrenzt, verändert keine nichtphysischen Komponenten und wird bei inkompatiblen Fertigkeiten oder doppelter Supportfamilie fail-closed blockiert.
+- Der frühere generische physische Einzeleffekt wurde entfernt; Treffer, alternative Rechenpfade und belegter nativer physischer DoT erhalten den Faktor genau einmal.
+- Prüfstand: 83 fokussierte Tests sowie 1.851 Tests in 157 Dateien im stabilen seriellen Gesamtlauf erfolgreich; Typecheck, Lint, Produktions-/Pages-Build, 237 getrackte JSON-Dateien und `git diff --check` erfolgreich.
+- Ein erster ressourcenparalleler Gesamtlauf traf bei zwei bestehenden Vollbaumtests das 5-Sekunden-Zeitlimit. Der Ein-Worker-Wiederholungslauf mit 30-Sekunden-Limit bestand vollständig.
+- Die PoB2-, RePoE-, Affix-, Unique- und Baum-Pins wurden nicht verändert. Eine vollständige PoB2-Gleichwertigkeit bleibt unbewiesen; die aktive Hauptaufgabe wird mit der nächsten strukturiert belegbaren Rechenlücke fortgesetzt.

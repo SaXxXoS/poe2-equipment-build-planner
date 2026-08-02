@@ -12,6 +12,18 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Heavy Swing als physischen Nahkampfschaden mit langsamerer Angriffsgeschwindigkeit ohne Doppelerfassung',()=>{
+    const heavy={...supportDef('heavy-swing','Heavy Swing'),quantitativeEffects:pob2QuantitativeEffectsFor('Heavy Swing')}
+    const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup(attack.id)],skills:[attack],supports:[heavy]})
+    const result=estimateHitDamage({equipment:[observed],setups:[{...setup(attack.id),supportGemIds:[heavy.id]}],skills:[attack],supports:[heavy]})
+    expect(result.heavySwingSupportModel).toMatchObject({status:'applied',physicalDamageMultiplier:1.35,attackSpeedMultiplier:.9})
+    expect(result.components.find(value=>value.type==='physical')!.minimum/baseline.components.find(value=>value.type==='physical')!.minimum).toBeCloseTo(1.35,3)
+    expect(result.components.find(value=>value.type==='fire')!.minimum).toBe(baseline.components.find(value=>value.type==='fire')!.minimum)
+    expect(result.actionsPerSecond!/baseline.actionsPerSecond!).toBeCloseTo(.9,3)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===heavy.id)).toHaveLength(0)
+  })
   it('wendet exakt modellierte Kontrollierte Zerstörung nicht zusätzlich generisch an',()=>{
     const controlled={...supportDef('controlled-destruction','Controlled Destruction'),quantitativeEffects:pob2QuantitativeEffectsFor('Controlled Destruction')}
     const spark=skill('spark','Spark')

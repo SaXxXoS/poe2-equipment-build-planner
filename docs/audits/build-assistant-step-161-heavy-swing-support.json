@@ -1,0 +1,39 @@
+{
+  "step": 161,
+  "scope": "exact-heavy-swing-support-model",
+  "status": "implemented-and-regression-tested",
+  "calculatorVersion": "3.75.0",
+  "modelVersion": "1.0.0",
+  "sourceRecordId": "SupportMeleePhysicalDamagePlayer",
+  "sourceFields": {
+    "support_melee_physical_damage_+%_final": 35,
+    "support_melee_physical_damage_attack_speed_+%_final": -10,
+    "requiredSkillType": "Melee",
+    "gemFamily": "HeavySwing"
+  },
+  "behavior": {
+    "physicalDamageMultiplier": 1.35,
+    "attackSpeedMultiplier": 0.9,
+    "nonPhysicalDamageMultiplier": 1,
+    "incompatibleSkillPolicy": "fail-closed",
+    "duplicateFamilyPolicy": "fail-closed",
+    "genericDoubleApplicationRemoved": true
+  },
+  "verification": {
+    "focusedTestFiles": 3,
+    "focusedTests": 83,
+    "fullTestFiles": 157,
+    "fullTests": 1851,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "trackedJsonFilesValidated": 237,
+    "gitDiffCheck": "passed"
+  },
+  "limitations": [
+    "No complete Path of Building 2 equivalence is claimed.",
+    "Only structured pinned effects are productive.",
+    "No technical GGG identity is inferred."
+  ]
+}

@@ -65,7 +65,7 @@ export function collectDamageOverTime(
   skill: NumericSkill,
   enemyProfile?: EnemyMitigationProfile,
   duration?: { multiplier: number; sourceReferences: string[] },
-  damage?: { multiplier: number; sourceReferences: string[] },
+  damage?: { multiplier: number; sourceReferences: string[]; typeMultipliers?: Partial<Record<DamageType, number>> },
 ): DamageOverTimeResult {
   const stats = skill.numericStats as Record<string, number>
   const baseDurationMs = stats.base_skill_effect_duration
@@ -89,7 +89,7 @@ export function collectDamageOverTime(
       })
       continue
     }
-    const damageMultiplier = damage?.multiplier ?? 1
+    const damageMultiplier = (damage?.multiplier ?? 1) * (damage?.typeMultipliers?.[definition.type] ?? 1)
     const damagePerSecond = perMinute / 60 * damageMultiplier
     const resistance = resistanceAfterReduction(definition.type, enemyProfile)
     const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100) * enemyDamageTakenMultiplier(definition.type, enemyProfile)

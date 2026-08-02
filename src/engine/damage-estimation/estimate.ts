@@ -23,6 +23,7 @@ import { applyRigwaldDamageMultiplier, resolveRigwaldFerocitySupport } from './r
 import { applyControlledDestructionHitMultiplier, resolveControlledDestructionSupport } from './controlled-destruction-support'
 import { applyConsideredCastingDamageMultiplier, resolveConsideredCastingSupport } from './considered-casting-support'
 import { applyHourglassDamageMultiplier, resolveHourglassSupport } from './hourglass-support'
+import { applyHeavySwingPhysicalDamageMultiplier, resolveHeavySwingSupport } from './heavy-swing-support'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -140,7 +141,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.74.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.75.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -160,14 +161,15 @@ export function estimateHitDamage(input:{
   const controlledDestructionSupportModel=resolveControlledDestructionSupport({skill,setup,supports:input.supports??[]})
   const consideredCastingSupportModel=resolveConsideredCastingSupport({skill,setup,supports:input.supports??[]})
   const hourglassSupportModel=resolveHourglassSupport({skill,setup,supports:input.supports??[]})
+  const heavySwingSupportModel=resolveHeavySwingSupport({skill,setup,supports:input.supports??[]})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
   const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)*(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.damageMultiplier:1)*(hourglassSupportModel.status==='applied'?hourglassSupportModel.damageMultiplier:1)
-  const areaDamageInput=nativeDotDamageMultiplier!==1
-    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[])]}
+  const areaDamageInput=nativeDotDamageMultiplier!==1||heavySwingSupportModel.status==='applied'
+    ? {multiplier:nativeDotDamageMultiplier,typeMultipliers:heavySwingSupportModel.status==='applied'?{physical:heavySwingSupportModel.physicalDamageMultiplier}:undefined,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[]),...(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -278,6 +280,7 @@ export function estimateHitDamage(input:{
   components=applyControlledDestructionHitMultiplier(components,controlledDestructionSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyConsideredCastingDamageMultiplier(components,consideredCastingSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyHourglassDamageMultiplier(components,hourglassSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applyHeavySwingPhysicalDamageMultiplier(components,heavySwingSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
     ...maximumPhysicalDamageSupportModel.blockedSupportIds,
@@ -306,6 +309,8 @@ export function estimateHitDamage(input:{
     ...consideredCastingSupportModel.blockedSupportIds,
     ...hourglassSupportModel.appliedSupports.map(value=>value.supportId),
     ...hourglassSupportModel.blockedSupportIds,
+    ...heavySwingSupportModel.appliedSupports.map(value=>value.supportId),
+    ...heavySwingSupportModel.blockedSupportIds,
   ])
   const supportEffects=applyQuantitativeSupports({components,setup,supports:(input.supports??[]).filter(value=>!externallyResolvedSupportIds.has(value.id))})
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
@@ -316,14 +321,16 @@ export function estimateHitDamage(input:{
     ...consideredCastingSupportModel.blockedSupportIds,
     ...hourglassSupportModel.appliedSupports.map(value=>value.supportId),
     ...hourglassSupportModel.blockedSupportIds,
+    ...heavySwingSupportModel.appliedSupports.map(value=>value.supportId),
+    ...heavySwingSupportModel.blockedSupportIds,
   ])
-  const applyExactSpecializedDamageSupports=(values:DamageComponent[])=>applyHourglassDamageMultiplier(
+  const applyExactSpecializedDamageSupports=(values:DamageComponent[])=>applyHeavySwingPhysicalDamageMultiplier(applyHourglassDamageMultiplier(
     applyConsideredCastingDamageMultiplier(
       applyControlledDestructionHitMultiplier(values,controlledDestructionSupportModel),
       consideredCastingSupportModel,
     ),
     hourglassSupportModel,
-  )
+  ),heavySwingSupportModel)
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
   const speedMultiplier=quantitativePercentMultiplier([...quantitative.speedModifiers,...supportEffects.increasedSpeedModifiers])
   actionsPerSecond*=speedMultiplier
@@ -331,6 +338,7 @@ export function estimateHitDamage(input:{
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
   actionsPerSecond*=rigwaldFerocitySupportModel.attackSpeedMultiplier
   actionsPerSecond*=consideredCastingSupportModel.castSpeedMultiplier
+  actionsPerSecond*=heavySwingSupportModel.attackSpeedMultiplier
   if(rigwaldFerocitySupportModel.status==='applied')included.push(`${activeSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Rigwalds Wildheit mit ${rigwaldFerocitySupportModel.finalDamagePercent}% finalem Schaden und ${rigwaldFerocitySupportModel.attackSpeedPercent}% Angriffsgeschwindigkeit`)
   const additionalCooldownUses=additionalCooldownUsesFor({
     skillTypes:skill.skillTypes,
