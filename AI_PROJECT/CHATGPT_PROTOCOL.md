@@ -4148,3 +4148,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
 - Fokussierte Prüfung: 3 Dateien und 82 Tests erfolgreich. Die reguläre serielle Suite bestand mit 151 Dateien und 1.637 Tests; die zwei unter gemeinsamer Last zeitkritischen Passivbaumdateien bestanden isoliert mit weiteren 196 Tests. Insgesamt sind damit 153 Dateien und 1.833 Tests fachlich erfolgreich.
 - Typecheck, Lint, Produktions- und Pages-Build, 233 JSON-Dateien, `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich. Der lokale Build wurde bei 1280 × 720 und 390 × 844 ohne horizontalen Überlauf oder Browserkonsolenprobleme geprüft.
+
+## Rigwalds Wildheit – Schritt 157 (2026-08-02)
+
+- `Rigwald's Ferocity` wird aus dem gepinnten Quellrecord `SupportRigwaldsFerocityPlayer` als ausdrücklich waffensetspezifische Supportwirkung verarbeitet.
+- Waffenset 1 erhält 30 % Angriffsgeschwindigkeit und 15 % weniger finalen Schaden; Waffenset 2 erhält 10 % weniger Angriffsgeschwindigkeit und 30 % mehr finalen Schaden.
+- Die Faktoren werden ausschließlich auf den aktiven Set-Kontext der unterstützten Angriffsfertigkeit angewandt. Treffer, nativer Angriffs-DoT und Aktionsrate verwenden dieselbe belegte Setentscheidung.
+- Zauber, `NoAttackOrCastTime`, `Instant` und doppelte Supportfamilien werden fail-closed blockiert. Eine automatische Setwechsel-Uptime wird nicht erfunden.
+- Schadensrechner `3.71.0`, Rigwald-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_RIGWALD_FEROCITY_STEP_157.md`.
+- Audit: `docs/audits/build-assistant-step-157-rigwald-ferocity.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert. Vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- Fokussierte Prüfung: 2 Dateien und 73 Tests erfolgreich. Die reguläre serielle Suite bestand mit 153 Dateien und 1.836 Tests; die separat ausgeführte reale Passivbaum-Performanceprüfung bestand mit einem weiteren Test. Insgesamt sind 154 Dateien und 1.837 Tests erfolgreich.
+- Typecheck, Lint, Produktions- und Pages-Build, JSON-Validierung, `git diff --check` und Git-Sicherheitsprüfung sind erfolgreich.
+- Die technische Browserprüfung des gebauten Stands war auf Desktop und bei 390 × 844 erfolgreich. Es bestand keine horizontale Überbreite; die Browserkonsole enthielt keine neuen Fehler oder Warnungen.

@@ -19,6 +19,7 @@ import { resolveCrossbowAmmunitionSupports } from './crossbow-ammunition-support
 import { resolvePierceSupports } from './pierce-supports'
 import { resolveForkSupports } from './fork-supports'
 import { resolveRicochetSupports } from './ricochet-supports'
+import { applyRigwaldDamageMultiplier, resolveRigwaldFerocitySupport } from './rigwald-ferocity-support'
 import { collectDamagingAilments } from './damaging-ailments'
 import { resolveConditionalAilmentEffects } from './conditional-ailment-effects'
 import { resolveBleedingPassiveEffect } from './bleeding-passive-effects'
@@ -136,7 +137,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.70.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.71.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -151,14 +152,16 @@ export function estimateHitDamage(input:{
   const pierceSupportModel=resolvePierceSupports({skill,setup,supports:input.supports??[]})
   const forkSupportModel=resolveForkSupports({skill,setup,supports:input.supports??[]})
   const ricochetSupportModel=resolveRicochetSupports({skill,setup,supports:input.supports??[]})
+  const activeSet=setup?.weaponSet==='set-2'?'set-2':'set-1'
+  const rigwaldFerocitySupportModel=resolveRigwaldFerocitySupport({skill,setup,supports:input.supports??[],weaponSet:activeSet})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
-  const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)
+  const nativeDotDamageMultiplier=(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.damageMultiplier:1)*(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.damageMultiplier:1)*(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.damageMultiplier:1)
   const areaDamageInput=nativeDotDamageMultiplier!==1
-    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[])]}
+    ? {multiplier:nativeDotDamageMultiplier,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -176,7 +179,6 @@ export function estimateHitDamage(input:{
   let components:DamageComponent[]
   let actionsPerSecond=skill.castTime>0?1/skill.castTime:1
   const included=[`Fertigkeitsstufe ${gemLevelQualityModel.appliedSkillLevel}`,`Fertigkeitsqualität ${gemLevelQualityModel.appliedSkillQuality??0}%`,'strukturierte Basiswerte der Fertigkeit']
-  const activeSet=setup?.weaponSet==='set-2'?'set-2':'set-1'
   let dualWieldAttackModel:DamageEstimate['dualWieldAttackModel']
   if(skill.kind==='attack'){
     const weaponEntry=input.equipment.find(entry=>entry.slotId===`slot-weapon-${activeSet}-left`&&Boolean(entry.baseDisplayName||entry.itemDefinitionId))
@@ -266,6 +268,7 @@ export function estimateHitDamage(input:{
   components=applySpellCascadeDamageMultiplier(components,spellCascadeSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyChainHitDamageMultiplier(components,chainSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   components=applyMultishotDamageMultiplier(components,multishotSupportModel).map(value=>component(value.type,value.minimum,value.maximum))
+  components=applyRigwaldDamageMultiplier(components,rigwaldFerocitySupportModel).map(value=>component(value.type,value.minimum,value.maximum))
   const supportEffects=applyQuantitativeSupports({components,setup,supports:input.supports??[]})
   const externallyResolvedSupportIds=new Set([
     ...maximumPhysicalDamageSupportModel.appliedSupports.map(value=>value.supportId),
@@ -287,6 +290,8 @@ export function estimateHitDamage(input:{
     ...forkSupportModel.blockedSupportIds,
     ...ricochetSupportModel.appliedSupports.map(value=>value.supportId),
     ...ricochetSupportModel.blockedSupportIds,
+    ...rigwaldFerocitySupportModel.appliedSupports.map(value=>value.supportId),
+    ...rigwaldFerocitySupportModel.blockedSupportIds,
   ])
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
   components=supportEffects.components.map(value=>component(value.type,value.minimum,value.maximum))
@@ -294,6 +299,8 @@ export function estimateHitDamage(input:{
   actionsPerSecond*=speedMultiplier
   actionsPerSecond*=multishotSupportModel.skillSpeedMultiplier
   actionsPerSecond*=supportEffects.actionSpeedMultiplier
+  actionsPerSecond*=rigwaldFerocitySupportModel.attackSpeedMultiplier
+  if(rigwaldFerocitySupportModel.status==='applied')included.push(`${activeSet==='set-1'?'Waffenset 1':'Waffenset 2'}: Rigwalds Wildheit mit ${rigwaldFerocitySupportModel.finalDamagePercent}% finalem Schaden und ${rigwaldFerocitySupportModel.attackSpeedPercent}% Angriffsgeschwindigkeit`)
   const additionalCooldownUses=additionalCooldownUsesFor({
     skillTypes:skill.skillTypes,
     equipment:input.equipment,

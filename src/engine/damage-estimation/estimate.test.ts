@@ -12,6 +12,25 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Rigwalds Wildheit mit unterschiedlichen Set-1- und Set-2-Faktoren',()=>{
+    const rigwald=supportDef('rigwald',"Rigwald's Ferocity")
+    const spearThrow:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const set1Weapon={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:5,attacksPerSecond:1}}
+    const set2Weapon={...set1Weapon,id:'weapon-2',slotId:'slot-weapon-set-2-left'}
+    const set1Setup={...setup(spearThrow.id,'set-1'),supportGemIds:[rigwald.id]}
+    const set2Setup={...setup(spearThrow.id,'set-2'),supportGemIds:[rigwald.id]}
+    const baseline1=estimateHitDamage({equipment:[set1Weapon],setups:[setup(spearThrow.id,'set-1')],skills:[spearThrow],supports:[rigwald]})
+    const baseline2=estimateHitDamage({equipment:[set2Weapon],setups:[setup(spearThrow.id,'set-2')],skills:[spearThrow],supports:[rigwald]})
+    const result1=estimateHitDamage({equipment:[set1Weapon],setups:[set1Setup],skills:[spearThrow],supports:[rigwald]})
+    const result2=estimateHitDamage({equipment:[set2Weapon],setups:[set2Setup],skills:[spearThrow],supports:[rigwald]})
+    expect(result1.rigwaldFerocitySupportModel).toMatchObject({status:'applied',weaponSet:'set-1',damageMultiplier:.85,attackSpeedMultiplier:1.3})
+    expect(result2.rigwaldFerocitySupportModel).toMatchObject({status:'applied',weaponSet:'set-2',damageMultiplier:1.3,attackSpeedMultiplier:.9})
+    expect(result1.hitDamage?.average).toBeCloseTo(baseline1.hitDamage!.average*.85,6)
+    expect(result1.actionsPerSecond).toBeCloseTo(baseline1.actionsPerSecond!*1.3,6)
+    expect(result2.hitDamage?.average).toBeCloseTo(baseline2.hitDamage!.average*1.3,6)
+    expect(result2.actionsPerSecond).toBeCloseTo(baseline2.actionsPerSecond!*.9,6)
+    expect(result1.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('integriert Ricochet I als bedingte Terrain-Abdeckung ohne Schadensmultiplikator',()=>{
     const ricochet=supportDef('ricochet-i','Ricochet I')
     const spark=skill('spark','Spark')
