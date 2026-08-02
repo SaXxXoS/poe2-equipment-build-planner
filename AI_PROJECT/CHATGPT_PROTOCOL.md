@@ -1,5 +1,22 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Munitionsersparnis – Schritt 153 (2026-08-02)
+
+- `Munitionsersparnis I–III` verarbeitet jetzt die gepinnte Chance, beim
+  Armbrustangriff keine Munition zu verbrauchen.
+- Aus Ladungsgröße und Nichtverbrauchschance wird deterministisch die
+  erwartete Schusszahl pro Ladung berechnet.
+- Stufe III berücksichtigt zusätzlich 20 % weniger finale
+  Nachladegeschwindigkeit.
+- `Doppellauf` und `Munitionsersparnis` werden als getrennte Supportfamilien
+  kombiniert; doppelte Stufen derselben Familie werden fail-closed blockiert.
+- Ohne absolute strukturierte Nachladezeit bleibt der nachhaltige
+  Schadensmultiplikator `1`; kein Dauer-DPS wird erfunden.
+- Schadensrechner `3.67.0`, Armbrustmunitionsmodell `2.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_AMMUNITION_CONSERVATION_STEP_153.md`.
+- Audit: `docs/audits/build-assistant-step-153-ammunition-conservation.json`.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert.
+
 ## Armbrustmunition und Doppellauf – Schritt 152 (2026-08-02)
 
 - `Doppellauf I–III` verarbeitet jetzt die gepinnte zusätzliche

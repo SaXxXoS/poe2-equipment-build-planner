@@ -259,10 +259,13 @@ export interface DamageEstimate {
     baseBolts:number|null
     additionalBolts:number
     loadedBolts:number|null
+    ammunitionConservationChancePercent:number
+    expectedShotsPerLoad:number|null
     finalReloadSpeedPercent:number
     reloadSpeedMultiplier:number
     sustainedDamageMultiplier:1
     appliedSupports:Array<{supportId:string;supportName:string;family:string;additionalBolts:number;finalReloadSpeedPercent:number;sourceReferences:string[]}>
+    appliedAmmunitionConservationSupports:Array<{supportId:string;supportName:string;family:string;chanceToNotConsumeAmmoPercent:number;finalReloadSpeedPercent:number;sourceReferences:string[]}>
     blockedSupportIds:string[]
     sourceReferences:string[]
     limitations:string[]

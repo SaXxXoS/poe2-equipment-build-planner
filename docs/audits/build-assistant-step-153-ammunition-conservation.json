@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 153,
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceFile": "src/Data/Skills/sup_dex.lua",
+  "calculatorVersion": "3.67.0",
+  "crossbowAmmunitionSupportModelVersion": "2.0.0",
+  "structuredSupports": {
+    "Ammo Conservation I": {
+      "chanceToNotConsumeAmmoPercent": 20,
+      "finalReloadSpeedPercent": 0
+    },
+    "Ammo Conservation II": {
+      "chanceToNotConsumeAmmoPercent": 25,
+      "finalReloadSpeedPercent": 0
+    },
+    "Ammo Conservation III": {
+      "chanceToNotConsumeAmmoPercent": 30,
+      "finalReloadSpeedPercent": -20
+    }
+  },
+  "compatibilitySemantics": "CrossbowAmmoSkill OR CrossbowSkill",
+  "expectedShotsFormula": "loadedBolts / (1 - chanceToNotConsumeAmmoPercent / 100)",
+  "doubleBarrelCombination": "supported-separate-families",
+  "duplicateFamilyGuard": true,
+  "sustainedDamageMultiplier": 1,
+  "status": "implemented-expected-shots-per-load",
+  "limitations": [
+    "The pinned damage reference does not provide an absolute reload duration for the complete supported chain.",
+    "Expected shots per load and relative final reload speed therefore do not alter sustained DPS.",
+    "Kill-conditioned bolt loading is not inferred from ammunition conservation."
+  ]
+}
+

@@ -1,7 +1,7 @@
 import reference from '../../../generated/pob2/damage-reference.json'
 import type { SkillSetup, SupportGemDefinition } from '../../domain/skills'
 
-export const CROSSBOW_AMMUNITION_SUPPORT_MODEL_VERSION = '1.0.0'
+export const CROSSBOW_AMMUNITION_SUPPORT_MODEL_VERSION = '2.0.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 
@@ -11,10 +11,13 @@ export interface CrossbowAmmunitionSupportModel {
   baseBolts:number|null
   additionalBolts:number
   loadedBolts:number|null
+  ammunitionConservationChancePercent:number
+  expectedShotsPerLoad:number|null
   finalReloadSpeedPercent:number
   reloadSpeedMultiplier:number
   sustainedDamageMultiplier:1
   appliedSupports:Array<{supportId:string;supportName:string;family:string;additionalBolts:number;finalReloadSpeedPercent:number;sourceReferences:string[]}>
+  appliedAmmunitionConservationSupports:Array<{supportId:string;supportName:string;family:string;chanceToNotConsumeAmmoPercent:number;finalReloadSpeedPercent:number;sourceReferences:string[]}>
   blockedSupportIds:string[]
   sourceReferences:string[]
   limitations:string[]
@@ -24,12 +27,14 @@ export interface CrossbowAmmunitionSupportModel {
 const recordsByName=new Map(reference.supports.map(value=>[value.name.toLocaleLowerCase('en'),value]))
 const boltStat='support_double_barrel_number_of_crossbow_bolts_+'
 const reloadPenaltyStat='support_double_barrel_crossbow_reload_speed_-%_final'
+const conservationStat='crossbow_attack_%_chance_to_not_consume_ammo'
+const conservationReloadStat='support_ammo_conservation_crossbow_reload_speed_+%_final'
 const baseBoltStat='base_number_of_crossbow_bolts'
 const round=(value:number)=>Number(value.toFixed(8))
 
 const empty=(status:CrossbowAmmunitionSupportModel['status'],detail:string,blockedSupportIds:string[]=[],sourceReferences:string[]=[]):CrossbowAmmunitionSupportModel=>({
   modelVersion:CROSSBOW_AMMUNITION_SUPPORT_MODEL_VERSION,status,baseBolts:null,additionalBolts:0,loadedBolts:null,
-  finalReloadSpeedPercent:0,reloadSpeedMultiplier:1,sustainedDamageMultiplier:1,appliedSupports:[],blockedSupportIds,sourceReferences,
+  ammunitionConservationChancePercent:0,expectedShotsPerLoad:null,finalReloadSpeedPercent:0,reloadSpeedMultiplier:1,sustainedDamageMultiplier:1,appliedSupports:[],appliedAmmunitionConservationSupports:[],blockedSupportIds,sourceReferences,
   limitations:['Ohne strukturierte absolute Nachladezeit wird aus Magazinkapazität und Nachladegeschwindigkeit keine nachhaltige DPS abgeleitet.'],detail,
 })
 
@@ -40,12 +45,19 @@ export function resolveCrossbowAmmunitionSupports(input:{skill:NumericSkill;setu
     const stats=numeric?.numericStats as Record<string,number>|undefined
     const additionalBolts=Number(stats?.[boltStat])
     const reloadPenalty=Number(stats?.[reloadPenaltyStat])
-    return numeric&&Number.isInteger(additionalBolts)&&additionalBolts>0&&Number.isFinite(reloadPenalty)&&reloadPenalty>=0
-      ? [{definition,numeric,additionalBolts,reloadPenalty}]
+    const conservationChance=Number(stats?.[conservationStat])
+    const conservationReload=Number(stats?.[conservationReloadStat]??0)
+    const isDoubleBarrel=Number.isInteger(additionalBolts)&&additionalBolts>0&&Number.isFinite(reloadPenalty)&&reloadPenalty>=0
+    const isConservation=Number.isFinite(conservationChance)&&conservationChance>0&&conservationChance<100&&Number.isFinite(conservationReload)&&conservationReload<=0
+    return numeric&&(isDoubleBarrel||isConservation)
+      ? [{definition,numeric,additionalBolts:isDoubleBarrel?additionalBolts:0,reloadPenalty:isDoubleBarrel?reloadPenalty:0,conservationChance:isConservation?conservationChance:0,conservationReload:isConservation?conservationReload:0}]
       : []
   })
-  if(!candidates.length)return empty('not-applicable','Keine ausgewählte Unterstützung besitzt die vollständige strukturierte Doppellauf-Wirkung.')
-  const sourceReferences=candidates.flatMap(value=>[boltStat,reloadPenaltyStat].map(stat=>`support:${value.numeric.sourceRecordId}:${stat}`))
+  if(!candidates.length)return empty('not-applicable','Keine ausgewählte Unterstützung besitzt eine vollständig strukturierte Armbrustmunitions-Wirkung.')
+  const sourceReferences=candidates.flatMap(value=>[
+    ...(value.additionalBolts?[boltStat,reloadPenaltyStat]:[]),
+    ...(value.conservationChance?[conservationStat,...(value.conservationReload?[conservationReloadStat]:[])]:[]),
+  ].map(stat=>`support:${value.numeric.sourceRecordId}:${stat}`))
   const skillTypes=new Set(input.skill.skillTypes)
   const requireSkillTypes=[...candidates[0].numeric.requireSkillTypes] as string[]
   const required=requireSkillTypes.filter(value=>value!=='AND')
@@ -59,18 +71,27 @@ export function resolveCrossbowAmmunitionSupports(input:{skill:NumericSkill;setu
   if(duplicateFamilies.size)return empty('blocked-duplicate-family','Mehrere Stufen derselben Doppellauf-Familie sind ausgewählt. Die Wirkung wird fail-closed blockiert.',candidates.filter(value=>duplicateFamilies.has(value.numeric.gemFamily[0]??value.definition.id)).map(value=>value.definition.id),sourceReferences)
   const baseBolts=Number((input.skill.numericStats as Record<string,number>)[baseBoltStat])
   if(!Number.isInteger(baseBolts)||baseBolts<1)return empty('blocked-missing-base-bolts','Die Armbrustfertigkeit besitzt keine strukturierte positive Grundzahl geladener Bolzen.',candidates.map(value=>value.definition.id),[...sourceReferences,`skill:${input.skill.sourceRecordId}:${baseBoltStat}`])
-  const appliedSupports=candidates.map(({definition,numeric,additionalBolts,reloadPenalty})=>({
+  const appliedSupports=candidates.filter(value=>value.additionalBolts>0).map(({definition,numeric,additionalBolts,reloadPenalty})=>({
     supportId:definition.id,supportName:definition.displayNameDe??definition.nameEn??numeric.name,family:numeric.gemFamily[0]??definition.id,
     additionalBolts,finalReloadSpeedPercent:-reloadPenalty,
     sourceReferences:[boltStat,reloadPenaltyStat].map(stat=>`support:${numeric.sourceRecordId}:${stat}`),
   }))
+  const appliedAmmunitionConservationSupports=candidates.filter(value=>value.conservationChance>0).map(({definition,numeric,conservationChance,conservationReload})=>({
+    supportId:definition.id,supportName:definition.displayNameDe??definition.nameEn??numeric.name,family:numeric.gemFamily[0]??definition.id,
+    chanceToNotConsumeAmmoPercent:conservationChance,finalReloadSpeedPercent:conservationReload,
+    sourceReferences:[conservationStat,...(conservationReload?[conservationReloadStat]:[])].map(stat=>`support:${numeric.sourceRecordId}:${stat}`),
+  }))
   const additionalBolts=appliedSupports.reduce((sum,value)=>sum+value.additionalBolts,0)
-  const finalReloadSpeedPercent=appliedSupports.reduce((sum,value)=>sum+value.finalReloadSpeedPercent,0)
+  const ammunitionConservationChancePercent=appliedAmmunitionConservationSupports.reduce((sum,value)=>sum+value.chanceToNotConsumeAmmoPercent,0)
+  const finalReloadSpeedPercent=[...appliedSupports,...appliedAmmunitionConservationSupports].reduce((sum,value)=>sum+value.finalReloadSpeedPercent,0)
+  const loadedBolts=baseBolts+additionalBolts
+  const expectedShotsPerLoad=round(loadedBolts/(1-ammunitionConservationChancePercent/100))
   return {
-    modelVersion:CROSSBOW_AMMUNITION_SUPPORT_MODEL_VERSION,status:'applied-burst-only',baseBolts,additionalBolts,loadedBolts:baseBolts+additionalBolts,
+    modelVersion:CROSSBOW_AMMUNITION_SUPPORT_MODEL_VERSION,status:'applied-burst-only',baseBolts,additionalBolts,loadedBolts,
+    ammunitionConservationChancePercent,expectedShotsPerLoad,
     finalReloadSpeedPercent,reloadSpeedMultiplier:round(Math.max(0,1+finalReloadSpeedPercent/100)),sustainedDamageMultiplier:1,
-    appliedSupports,blockedSupportIds:[],sourceReferences:[...sourceReferences,`skill:${input.skill.sourceRecordId}:${baseBoltStat}`],
+    appliedSupports,appliedAmmunitionConservationSupports,blockedSupportIds:[],sourceReferences:[...sourceReferences,`skill:${input.skill.sourceRecordId}:${baseBoltStat}`],
     limitations:['Der Pin liefert für diese Kette keine absolute Nachladezeit. Daher werden Magazin-/Burstkapazität und relativer Nachladefaktor ausgewiesen, aber nicht als nachhaltiger Schadensmultiplikator verwendet.'],
-    detail:`Die belegte Ladung steigt von ${baseBolts} auf ${baseBolts+additionalBolts} Bolzen; die finale Nachladegeschwindigkeit beträgt relativ ${round(Math.max(0,1+finalReloadSpeedPercent/100)*100)}%.`,
+    detail:`Die belegte Ladung enthält ${loadedBolts} Bolzen und ermöglicht mit ${ammunitionConservationChancePercent}% Munitionsersparnis im Erwartungswert ${expectedShotsPerLoad} Schüsse; die finale Nachladegeschwindigkeit beträgt relativ ${round(Math.max(0,1+finalReloadSpeedPercent/100)*100)}%.`,
   }
 }

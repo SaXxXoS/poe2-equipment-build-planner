@@ -18,6 +18,13 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     const result=estimateHitDamage({equipment:[],setups:[{...setup(loadExplosive.id),supportGemIds:[doubleBarrel.id]}],skills:[loadExplosive],supports:[doubleBarrel]})
     expect(result.crossbowAmmunitionSupportModel).toMatchObject({status:'applied-burst-only',baseBolts:1,additionalBolts:1,loadedBolts:2,reloadSpeedMultiplier:.7,sustainedDamageMultiplier:1})
   })
+  it('transportiert Munitionsersparnis als erwartete Schüsse pro Ladung ohne erfundenen Dauer-DPS-Bonus',()=>{
+    const conservation=supportDef('ammo-conservation-ii','Ammo Conservation II')
+    const loadExplosive=skill('load-explosive','Load Explosive Shot')
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(loadExplosive.id),supportGemIds:[conservation.id]}],skills:[loadExplosive],supports:[conservation]})
+    expect(result.crossbowAmmunitionSupportModel).toMatchObject({status:'applied-burst-only',baseBolts:1,loadedBolts:1,ammunitionConservationChancePercent:25,expectedShotsPerLoad:1.33333333,reloadSpeedMultiplier:1,sustainedDamageMultiplier:1})
+    expect(result.warnings.join(' ')).not.toContain('keinen strukturierten numerischen Effekt')
+  })
   it('integriert Multishot I mit Schaden, Skill-Speed und zwei Coverage-Projektilen',()=>{
     const multishot=supportDef('multishot-i','Multishot I')
     const grenade:SkillGemDefinition={...skill('explosive-grenade','Explosive Grenade'),tags:['attack','projectile'],requiredWeaponTypes:['crossbow']}
