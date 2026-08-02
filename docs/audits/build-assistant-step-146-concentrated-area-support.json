@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 146,
+  "scope": "concentrated-area-support",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceProduct": "generated/pob2/damage-reference.json",
+  "sourceRecordId": "SupportConcentratedAreaPlayer",
+  "sourceStatIds": {
+    "finalAreaDamagePercent": "support_area_concentrate_area_damage_+%_final",
+    "finalAreaOfEffectPercent": "support_concentrated_effect_skill_area_of_effect_+%_final"
+  },
+  "sourceValues": { "finalAreaDamagePercent": 30, "finalAreaOfEffectPercent": -50 },
+  "calculatorVersion": "3.60.0",
+  "modelVersion": "1.0.0",
+  "damageOverTimeModelVersion": "3.2.0",
+  "rules": {
+    "requiredSkillType": "Area",
+    "hitDamageMultiplier": 1.3,
+    "nativeAreaDamageOverTimeMultiplier": 1.3,
+    "areaOfEffectMultiplier": 0.5,
+    "targetCoverageIsDamage": false,
+    "familyDuplicates": "blocked-fail-closed"
+  },
+  "focusedVerification": { "files": 4, "tests": 74, "status": "passed" },
+  "fullVerification": { "files": 147, "tests": 1788, "mode": "serial", "status": "passed" },
+  "buildVerification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonValidation": { "files": 223, "status": "passed" },
+    "gitDiffCheck": "passed"
+  },
+  "browserVerification": {
+    "desktop": { "viewport": "1280x720", "horizontalOverflow": false, "consoleWarningsOrErrors": 0, "status": "passed" },
+    "mobile": { "viewport": "390x844", "horizontalOverflow": false, "consoleWarningsOrErrors": 0, "status": "passed" }
+  },
+  "limitations": [
+    "Area coverage, enemy count and overlap are not converted into DPS.",
+    "Unstructured support tiers remain effect-neutral.",
+    "This step does not establish full Path of Building parity."
+  ]
+}

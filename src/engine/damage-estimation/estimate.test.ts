@@ -12,6 +12,22 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('wendet Konzentrierte Wirkung auf Area-Treffer und die getrennte Wirkungsfläche an',()=>{
+    const concentrated=supportDef('concentrated-area','Concentrated Area')
+    const flameblast=skill('flameblast','Flameblast')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(flameblast.id)],skills:[flameblast],supports:[concentrated]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(flameblast.id),supportGemIds:[concentrated.id]}],skills:[flameblast],supports:[concentrated]})
+    expect(result.areaDamageSupportModel).toMatchObject({status:'applied',damageMultiplier:1.3,areaOfEffectMultiplier:.5})
+    expect(result.hitDamage?.average).toBeCloseTo(baseline.hitDamage!.average*1.3,6)
+  })
+  it('wendet Konzentrierte Wirkung auch auf nativen Area-Schaden über Zeit an',()=>{
+    const concentrated=supportDef('concentrated-area','Concentrated Area')
+    const flameWall=skill('wall','Flame Wall')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(flameWall.id)],skills:[flameWall],supports:[concentrated]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(flameWall.id),supportGemIds:[concentrated.id]}],skills:[flameWall],supports:[concentrated]})
+    expect(result.areaDamageSupportModel?.status).toBe('applied')
+    expect(result.damageOverTime?.effects[0].damagePerSecond).toBeCloseTo(baseline.damageOverTime!.effects[0].damagePerSecond*1.3,1)
+  })
   it('wendet Muskelkraft vor Umwandlungen nur auf das physische Schadensmaximum an',()=>{
     const heft=supportDef('heft','Heft')
     const earthquake:SkillGemDefinition={...skill('earthquake','Earthquake'),tags:['attack','melee'],requiredWeaponTypes:['mace']}

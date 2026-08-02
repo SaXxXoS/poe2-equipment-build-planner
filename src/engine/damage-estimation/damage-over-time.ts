@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
 import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.1.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.2.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -65,6 +65,7 @@ export function collectDamageOverTime(
   skill: NumericSkill,
   enemyProfile?: EnemyMitigationProfile,
   duration?: { multiplier: number; sourceReferences: string[] },
+  damage?: { multiplier: number; sourceReferences: string[] },
 ): DamageOverTimeResult {
   const stats = skill.numericStats as Record<string, number>
   const baseDurationMs = stats.base_skill_effect_duration
@@ -88,7 +89,8 @@ export function collectDamageOverTime(
       })
       continue
     }
-    const damagePerSecond = perMinute / 60
+    const damageMultiplier = damage?.multiplier ?? 1
+    const damagePerSecond = perMinute / 60 * damageMultiplier
     const resistance = resistanceAfterReduction(definition.type, enemyProfile)
     const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100) * enemyDamageTakenMultiplier(definition.type, enemyProfile)
     effects.push({
@@ -106,8 +108,8 @@ export function collectDamageOverTime(
       } : {}),
       stackCount: 1,
       evidence: 'structured-exact',
-      sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? [])],
-      detail: 'Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.',
+      sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? []), ...(damage?.sourceReferences ?? [])],
+      detail: `Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung${damageMultiplier === 1 ? '' : ` mit finalem Flächenschadensfaktor ${damageMultiplier}`}. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.`,
     })
   }
 

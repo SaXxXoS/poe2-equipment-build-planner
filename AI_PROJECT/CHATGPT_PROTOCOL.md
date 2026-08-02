@@ -4008,3 +4008,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Details: `docs/BUILD_ASSISTANT_MAXIMUM_PHYSICAL_DAMAGE_SUPPORT_STEP_145.md` und `docs/audits/build-assistant-step-145-maximum-physical-damage-support.json`.
 - Fokussierte Prüfung: 2 Dateien und 60 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 145 Dateien und 1.782 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
 - Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Seitenüberlauf und keine neuen Browserkonsolenwarnungen oder -fehler.
+
+## Schritt 146 – Konzentrierte Wirkung und Flächenschaden
+
+- `Concentrated Area` (`Konzentrierte Wirkung`) verwendet die beiden strukturierten Werte aus `SupportConcentratedAreaPlayer`: 30 % mehr Flächenschaden und 50 % weniger finale Wirkungsfläche.
+- Nur Fertigkeiten mit strukturiert belegtem `Area`-Typ erhalten die Wirkung. Treffer und nativer eigenständiger Area-DoT werden mit `1,30` multipliziert; die Wirkungsfläche wird getrennt als Faktor `0,50` ausgewiesen.
+- Zielabdeckung, Gegnerzahl und Überlappung werden nicht in erfundenen Einzelzielschaden umgewandelt. Inkompatible Fertigkeiten, doppelte Supportfamilien und unvollständige Werte bleiben fail-closed.
+- Der Schadensrechner verwendet `3.60.0`, das Flächensupportmodell `1.0.0` und das DoT-Modell `3.2.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_CONCENTRATED_AREA_SUPPORT_STEP_146.md` und `docs/audits/build-assistant-step-146-concentrated-area-support.json`.
+- Fokussierte Prüfung: 4 Dateien und 74 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 147 Dateien und 1.788 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
+- Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
