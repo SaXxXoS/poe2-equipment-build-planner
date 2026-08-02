@@ -12,6 +12,17 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('wendet Execute gegen bestätigte Ziele auf niedrigem Leben exakt und sonst fail-closed an',()=>{
+    const execute=supportDef('execute-two','Execute II')
+    const attack:SkillGemDefinition={...skill('galvanic','Load Galvanic Shards'),tags:['attack'],requiredWeaponTypes:['crossbow']}
+    const crossbow={...weapon('Crossbow'),itemClassId:'Crossbows',weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:5,attacksPerSecond:1}}
+    const selectedSetup={...setup(attack.id),supportGemIds:[execute.id]}
+    const low=estimateHitDamage({equipment:[crossbow],setups:[selectedSetup],skills:[attack],supports:[execute],enemyProfile:{id:'low',label:'Niedriges Leben',source:'manual-comparison-profile',lifeState:'low-life'}})
+    const unknown=estimateHitDamage({equipment:[crossbow],setups:[selectedSetup],skills:[attack],supports:[execute],enemyProfile:{id:'unknown',label:'Unbekannt',source:'manual-comparison-profile',lifeState:'unknown'}})
+    expect(low.executeSupportModel).toMatchObject({status:'applied',damageMultiplier:1.5})
+    expect(low.expectedDamageAfterMitigation!/unknown.expectedDamageAfterMitigation!).toBeCloseTo(1.5,6)
+    expect(unknown.executeSupportModel).toMatchObject({status:'blocked-unknown-enemy-life-state',damageMultiplier:1})
+  })
   it('zieht bei staerkeren Schadenszustands-Supports die gepinnte Trefferschadensstrafe ab',()=>{
     const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
     const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},fireDamage:{minimum:20,maximum:20},criticalHitChance:5,attacksPerSecond:1}}

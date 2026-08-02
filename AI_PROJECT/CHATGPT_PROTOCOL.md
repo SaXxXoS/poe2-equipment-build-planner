@@ -4236,3 +4236,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Treffer, alternative Trefferpfade und belegter nativer physischer DoT erhalten den jeweils zulässigen Faktor genau einmal. Die frühere generische Brutality-Teilabbildung wurde entfernt.
 - Inkompatible Fertigkeiten und mehrere Ränge derselben Supportfamilie werden fail-closed blockiert. Produktpins und Offline-Grenzen bleiben unverändert.
 - Die fokussierte Prüfung bestand mit 84 Tests; der vollständige stabile Ein-Worker-Lauf bestand mit 158 Dateien und 1.858 Tests. Typecheck, Lint, Produktions-/Pages-Build, 238 getrackte JSON-Dateien und `git diff --check` sind erfolgreich.
+## Execute-Unterstützungen – Schritt 165 (2026-08-02)
+
+- `Execute I/II/III` rechnen gegen ausdrücklich bestätigte Ziele auf niedrigem Leben 40/50/30 % mehr Trefferschaden.
+- Bei unbekanntem Gegnerzustand, inkompatibler Fertigkeit oder doppelter Supportfamilie bleibt die Wirkung fail-closed inaktiv.
+- Der zusätzliche Execute-III-Bonus bei niedrigem Spielerleben bleibt ohne belegtes Spielerzustandsmodell blockiert und wird nicht erfunden.
+- Schadensrechner `3.79.0`, Execute-Modell `1.0.0`; Produktpins und Offline-Grenzen unverändert.
+- Fokussiert bestanden 84 Tests. Im Gesamtlauf bestanden 1.871 Tests; drei lastbedingt zeitüberschrittene Vollbaumtests bestanden seriell mit 198 Tests. Typecheck, Lint und beide Builds bestanden.
+- Details: `docs/BUILD_ASSISTANT_EXECUTE_SUPPORT_STEP_165.md` und `docs/audits/build-assistant-step-165-execute-support.json`.
+- Vollständige Path-of-Building-Gleichwertigkeit bleibt unbewiesen; die nächste strukturierte Rechenlücke folgt.

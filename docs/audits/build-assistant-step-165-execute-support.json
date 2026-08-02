@@ -1,0 +1,38 @@
+{
+  "step": 165,
+  "title": "Execute support low-life enemy condition",
+  "calculatorVersion": "3.79.0",
+  "modelVersion": "1.0.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceRecords": [
+    "SupportExecutePlayer",
+    "SupportExecutePlayerTwo",
+    "SupportExecutePlayerThree"
+  ],
+  "appliedEnemyLowLifeMoreDamagePercent": {
+    "Execute I": 40,
+    "Execute II": 50,
+    "Execute III": 30
+  },
+  "conditions": {
+    "enemyLowLife": "productive-structured-exact",
+    "enemyNotLowLife": "confirmed-inactive",
+    "enemyLifeStateUnknown": "fail-closed",
+    "playerLowLifeExecuteIII": "blocked-missing-player-life-state"
+  },
+  "focusedTests": {
+    "files": 2,
+    "tests": 84,
+    "status": "passed"
+  },
+  "fullRegression": {
+    "initialPassed": 1871,
+    "parallelTimeouts": 3,
+    "serialRerunTests": 198,
+    "serialRerunStatus": "passed"
+  },
+  "pinsChanged": false,
+  "offlineBoundaryChanged": false,
+  "fullPathOfBuildingParity": "not-proven"
+}
+

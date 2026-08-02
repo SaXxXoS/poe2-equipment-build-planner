@@ -43,6 +43,7 @@ import { itemValueScopeOutput, resolveItemValueScopeModel } from './item-value-s
 import { resolveCharacterDefenceModel } from './character-defence-model'
 import { resolveCharacterSurvivabilityModel } from './character-survivability-model'
 import { resolveConditionalHitEffects } from './conditional-hit-effects'
+import { resolveExecuteSupport } from './execute-support'
 import { harmonicMean,resolveDualWieldAttackModel } from './dual-wield-effects'
 import type { RotationAnalysis } from '../common/types'
 import type { DamageComponent, DamageEstimate, EnemyMitigationProfile } from './types'
@@ -143,7 +144,7 @@ export function estimateHitDamage(input:{
   const totalArmour=characterDefenceModel.contributions.find(value=>value.type==='armour')?.calculatedContribution
   const totalEvasion=characterDefenceModel.contributions.find(value=>value.type==='evasion')?.calculatedContribution
   const characterSurvivabilityModel=resolveCharacterSurvivabilityModel({classId:input.characterClassId,characterLevel:input.characterLevel,equipment:input.equipment,passiveTree:input.passiveTree,realPassivePlanning:input.realPassivePlanning,weaponSet:activeDefenceSet,maximumEnergyShield,maximumMana:effectiveManaPool??undefined,totalArmour,totalEvasion})
-  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.78.0'}
+  const base:DamageEstimate={status:'unavailable',skillId,skillName:definition?.displayNameDe??definition?.nameEn,gemLevel:gemLevelQualityModel.appliedSkillLevel,weaponSet:setup?.weaponSet??'both',components:[],resourceSpiritModel:resourceSpiritOutput(resourceSpiritModel),gemLevelQualityModel:gemLevelQualityOutput(gemLevelQualityModel),itemValueScopeModel:itemValueScopeOutput(itemValueScopeModel),characterDefenceModel,characterSurvivabilityModel,included:[],excluded:[],warnings:[],sourceCommit:reference.sourceCommit,calculatorVersion:'3.79.0'}
   if(!skillReference)return{...base,status:'unavailable',warnings:['Für diese Fertigkeit ist keine eindeutige numerische PoB2-Referenz vorhanden.']}
   if(!gemLevelQualityModel.productive)return{...base,status:'unavailable',warnings:[`Die angeforderte Gemmenstufe ${setup?.level??'Unbekannt'} besitzt keine exakte numerische Referenz. Vorhandene Stufen: ${gemLevelQualityModel.availableSkillLevels.join(', ')||'keine'}. Eine Skalierung wird nicht erfunden.`]}
   const selectedLevel=skillReference.levels.find(value=>value.level===gemLevelQualityModel.appliedSkillLevel)
@@ -166,6 +167,7 @@ export function estimateHitDamage(input:{
   const heavySwingSupportModel=resolveHeavySwingSupport({skill,setup,supports:input.supports??[]})
   const brutalitySupportModel=resolveBrutalitySupport({skill,setup,supports:input.supports??[]})
   const attunementSupportModel=resolveAttunementSupport({skill,setup,supports:input.supports??[]})
+  const executeSupportModel=resolveExecuteSupport({skill,setup,supports:input.supports??[],enemyProfile:input.enemyProfile})
   const durationInput=skillEffectDurationSupportModel.status==='applied'
     ? {multiplier:skillEffectDurationSupportModel.durationMultiplier,sourceReferences:skillEffectDurationSupportModel.sourceReferences}
     : undefined
@@ -177,7 +179,7 @@ export function estimateHitDamage(input:{
   const areaDamageInput=nativeDotDamageMultiplier!==1||hasNativeDotTypeMultiplier
     ? {multiplier:nativeDotDamageMultiplier,typeMultipliers:hasNativeDotTypeMultiplier?nativeDotTypeMultipliers:undefined,sourceReferences:[...(areaDamageSupportModel.status==='applied'?areaDamageSupportModel.sourceReferences:[]),...(spellCascadeSupportModel.status==='applied'?spellCascadeSupportModel.sourceReferences:[]),...(rigwaldFerocitySupportModel.status==='applied'?rigwaldFerocitySupportModel.sourceReferences:[]),...(hourglassSupportModel.status==='applied'?hourglassSupportModel.sourceReferences:[]),...(heavySwingSupportModel.status==='applied'?heavySwingSupportModel.sourceReferences:[]),...(brutalitySupportModel.status==='applied'?brutalitySupportModel.sourceReferences:[]),...(attunementSupportModel.status==='applied'?attunementSupportModel.sourceReferences:[])]}
     : undefined
-  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel,attunementSupportModel}
+  const resolvedBase:DamageEstimate={...base,skillEffectDurationSupportModel,areaDamageSupportModel,spellCascadeSupportModel,chainSupportModel,multishotSupportModel,crossbowAmmunitionSupportModel,pierceSupportModel,forkSupportModel,ricochetSupportModel,rigwaldFerocitySupportModel,controlledDestructionSupportModel,consideredCastingSupportModel,hourglassSupportModel,heavySwingSupportModel,brutalitySupportModel,attunementSupportModel,executeSupportModel}
   let damageOverTime=collectDamageOverTime(skill,input.enemyProfile,durationInput,areaDamageInput)
   const projectileHitModel=resolveProjectileHitModel(skill, {
     ...(chainSupportModel.status==='applied'?{additionalChains:chainSupportModel.additionalChains,chainSourceReference:chainSupportModel.sourceReferences.find(value=>value.endsWith(':number_of_chains'))}:{}),
@@ -333,6 +335,8 @@ export function estimateHitDamage(input:{
     ...brutalitySupportModel.blockedSupportIds,
     ...attunementSupportModel.appliedSupports.map(value=>value.supportId),
     ...attunementSupportModel.blockedSupportIds,
+    ...executeSupportModel.appliedSupports.map(value=>value.supportId),
+    ...executeSupportModel.blockedSupportIds,
   ])
   const supportEffects=applyQuantitativeSupports({components,setup,supports:(input.supports??[]).filter(value=>!externallyResolvedSupportIds.has(value.id))})
   const unresolvedSupportIds=supportEffects.unresolvedSupportIds.filter(value=>!externallyResolvedSupportIds.has(value))
@@ -618,21 +622,22 @@ export function estimateHitDamage(input:{
   const enemyMitigationOptions={physicalDamageReductionIgnoreChancePercent:brutalitySupportModel.physicalDamageReductionIgnoreChancePercent}
   const enemyMitigation=resolvedEnemyProfile?applyEnemyMitigation(components,resolvedEnemyProfile,enemyMitigationOptions):undefined
   const mitigatedRollAverage=enemyMitigation?expectedLuckyHitDamage(enemyMitigation.components,luckyHitEffects):undefined
-  const expectedDamageAfterMitigation=mitigatedRollAverage==null?undefined:mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalHitEffects.damageMultiplier
+  const conditionalEnemyDamageMultiplier=conditionalHitEffects.damageMultiplier*executeSupportModel.damageMultiplier
+  const expectedDamageAfterMitigation=mitigatedRollAverage==null?undefined:mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalEnemyDamageMultiplier
   const maximumChannelledHitDamageAfterMitigation=primaryChannelledStage&&mitigatedRollAverage!=null
-    ? mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalHitEffects.damageMultiplier*primaryChannelledStage.fullStageDamageMultiplier
+    ? mitigatedRollAverage*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalEnemyDamageMultiplier*primaryChannelledStage.fullStageDamageMultiplier
     : undefined
   const chargedEnemyMitigation=primaryChargedSkill&&resolvedEnemyProfile?applyEnemyMitigation(chargedScenarioComponents,resolvedEnemyProfile,enemyMitigationOptions):undefined
   const maximumChargedHitDamageAfterMitigation=chargedEnemyMitigation
-    ? expectedLuckyHitDamage(chargedEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalHitEffects.damageMultiplier*(primaryChargedSkill?.fullStageDamageMultiplier??1)
+    ? expectedLuckyHitDamage(chargedEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*multipleDamageMultiplier*conditionalEnemyDamageMultiplier*(primaryChargedSkill?.fullStageDamageMultiplier??1)
     : undefined
   const expectedDamagePerSecondAfterMitigation=expectedDamageAfterMitigation==null?undefined:expectedDamageAfterMitigation*actionsPerSecond
   const accuracyAdjustedDamagePerSecondAfterMitigation=enemyMitigation?.average==null||accuracyMultiplier==null
     ? undefined
-    : mitigatedRollAverage!*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)*multipleDamageMultiplier*conditionalHitEffects.damageMultiplier
+    : mitigatedRollAverage!*actionsPerSecond*accuracyMultiplier*(accuracyAdjustedCriticalMultiplier??1)*multipleDamageMultiplier*conditionalEnemyDamageMultiplier
   const temporalEnemyMitigation=resolvedEnemyProfile&&temporal.appliedEffects.length?applyEnemyMitigation(temporalComponents,resolvedEnemyProfile,enemyMitigationOptions):undefined
   const activeWindowDamagePerSecondAfterMitigation=temporalEnemyMitigation
-    ? expectedLuckyHitDamage(temporalEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*temporalActionsPerSecond*multipleDamageMultiplier*conditionalHitEffects.damageMultiplier
+    ? expectedLuckyHitDamage(temporalEnemyMitigation.components,luckyHitEffects)*(criticalExpectationMultiplier??1)*temporalActionsPerSecond*multipleDamageMultiplier*conditionalEnemyDamageMultiplier
     : undefined
   const nextSkillEnemyMitigation=resolvedEnemyProfile&&nextSkill.appliedEffects.length?applyEnemyMitigation(nextSkill.components,resolvedEnemyProfile,enemyMitigationOptions):undefined
   const preparedNextHitDamageAfterMitigation=nextSkillEnemyMitigation
@@ -844,6 +849,6 @@ export function estimateHitDamage(input:{
     hitDamagePerSecond:round(rollExpectedAverage*actionsPerSecond*multipleDamageMultiplier),
     included,
     excluded:[...(input.enemyProfile?[]:['Gegnerwiderstände und Rüstung']),...(luckyHitEffectModel.blockedEffects.length?['bedingte Lucky-Trefferschadenswürfe ohne bestätigten Gegnerzustand']:[]),'Exposition ohne eindeutigen strukturierten Betrag','Trigger und Wiederholungen ohne vollständige Quelle-Bedingung-Ziel-Intervall-Kette','Minions und Begleiter ohne Kreaturenbasis, aktive Anzahl, eigene Wirkfrequenz und Uptime','Supporteffekte ohne strukturierte Effektwerte','bedingte Passive- und Aszendenzeffekte',...(damagingAilments.effects.length?['nicht vollständig belegte Entzünden-, Gift- und Blutungs-Sonderfälle sowie gegnerische DoT-Abwehr']:['Entzünden, Gift und Blutung ohne vollständige Basis-, Dauer-, Auslöse- und Stapelkette']),'nicht belegte Projektilüberlappung, Fork- und Rückkehrtreffer'],
-    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(unresolvedSupportIds.length?[`${unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
+    warnings:['Vergleichbarer Teilwert, keine vollständige PoB-Gesamt-DPS. Nur identische Messgrenzen direkt vergleichen.',...(executeSupportModel.blockedPlayerLowLifeEffect?['Execute III besitzt zusätzlich einen Bonus bei niedrigem Spielerleben. Dieser bleibt ohne belegten Spieler-Lebenszustand inaktiv.']:[]),...(attackHitChance&&attackHitChance.status!=='exact'?['Die Angriffstrefferchance ist ohne belegtes Charakterlevel und bekannte Klasse blockiert; der rohe Aktionswert ist nicht trefferbereinigt.']:[]),...(input.enemyProfile?[]:['Es wurde kein Vergleichsgegner angegeben; der angezeigte Teilwert liegt vor Gegnerabwehr.']),...(unresolvedSupportIds.length?[`${unresolvedSupportIds.length} gewählte Supports besitzen noch keinen strukturierten numerischen Effekt und verändern den Schadenswert nicht.`]:[]),...spiritWarnings,...quantitative.warnings,...(enemyMitigation?.warnings??[])],
   }
 }
