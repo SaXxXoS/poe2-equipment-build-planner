@@ -1,0 +1,48 @@
+{
+  "step": 143,
+  "scope": "pob2-dual-wield-final-attack-speed",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "sourceStat": "active_skill_attack_speed_+%_final_while_dual_wielding",
+  "sourceMapping": ["Speed", "MORE", "Attack", "DualWielding"],
+  "calculatorVersion": "3.57.0",
+  "dualWieldAttackModelVersion": "1.1.0",
+  "affectedSkills": [
+    {"name": "Armour Breaker", "finalAttackSpeedPercent": 40},
+    {"name": "Earthshatter", "finalAttackSpeedPercent": -30},
+    {"name": "Molten Blast", "finalAttackSpeedPercent": -15},
+    {"name": "Volcanic Fissure", "finalAttackSpeedPercent": -30}
+  ],
+  "implemented": [
+    "separate-main-and-off-hand-damage",
+    "average-alternating-hand-components",
+    "harmonic-mean-weapon-speed",
+    "multiplicative-final-attack-speed",
+    "no-invented-double-hit",
+    "visible-german-explanation"
+  ],
+  "blocked": [
+    "single-weapon",
+    "unresolved-weapon-base",
+    "not-two-confirmed-one-hand-weapons",
+    "skill-incompatible-weapon-hand",
+    "skills-without-structured-stat"
+  ],
+  "verification": {
+    "focusedTests": {"files": 2, "tests": 63, "status": "passed"},
+    "fullTestSuite": {"files": 144, "tests": 1774, "status": "passed-serial"},
+    "parallelRunNote": "All 1774 assertions passed; three Vitest worker RPC reporting timeouts occurred only in the parallel runner and did not reproduce serially.",
+    "lint": "passed",
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "desktopBrowser": {
+      "viewport": "1280x720",
+      "horizontalOverflow": false,
+      "appRendered": true
+    },
+    "mobile390x844": "covered-by-existing-responsive-test-suite; the in-app browser session did not expose viewport resizing in this run"
+  },
+  "productPinsChanged": false,
+  "runtimeNetworkAdded": false
+}

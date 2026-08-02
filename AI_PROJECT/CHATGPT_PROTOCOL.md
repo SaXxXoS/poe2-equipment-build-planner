@@ -3978,4 +3978,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die Ergebnisansicht erklärt die beidhändige Berechnung beziehungsweise den blockierten Grund auf Deutsch.
 - Der Schadensrechner verwendet `3.56.0`; das Dual-Wield-Angriffsmodell verwendet `1.0.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
 - Details: `docs/BUILD_ASSISTANT_DUAL_WIELD_ATTACKS_STEP_142.md` und `docs/audits/build-assistant-step-142-dual-wield-attacks.json`.
+
+## Schritt 143 – finale Dual-Wield-Angriffsgeschwindigkeit
+
+- Der gepinnte PoB2-Stat `active_skill_attack_speed_+%_final_while_dual_wielding` wird jetzt als multiplikativer finaler Geschwindigkeitsfaktor unter der bestätigten Bedingung `DualWielding` ausgewertet.
+- `Armour Breaker` (`+40 %`), `Earthshatter` (`-30 %`), `Molten Blast` (`-15 %`) und `Volcanic Fissure` (`-30 %`) verwenden bei zwei kompatiblen Einhandwaffen beide Handwerte, die harmonische mittlere Waffengeschwindigkeit und den jeweiligen exakten Faktor.
+- Diese vier Fälle wechseln die Hände ab und erhalten keinen erfundenen Doppel-Treffer. Einzelwaffen, unaufgelöste Basen, Zweihandwaffen und inkompatible Hände bleiben fail-closed.
+- Der Schadensrechner verwendet `3.57.0`; das Dual-Wield-Angriffsmodell verwendet `1.1.0`. Produktpins und Runtime-Netzwerkstatus bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_DUAL_WIELD_SPEED_STEP_143.md` und `docs/audits/build-assistant-step-143-dual-wield-speed.json`.
 - Fokussierte Prüfung: 2 Dateien und 58 Tests erfolgreich. Im Gesamtlauf bestanden 141 Dateien und 1.766 Tests; zwei zeitkritische Passivbaumdateien überschritten nur unter gemeinsamer Last das 5-Sekunden-Limit und bestanden im isolierten seriellen Wiederholungslauf mit 2 Dateien und 197 Tests. Typecheck, Lint, Produktions- und Pages-Build, Desktop- und Mobilprüfung bei 390 × 844 sowie die Browserkonsole sind erfolgreich.

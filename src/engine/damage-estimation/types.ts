@@ -140,10 +140,12 @@ export interface DamageEstimate {
     blockedEffects:Array<{sourceRecordId:string;label:string;kind:'more-hit-damage-per-shock-effect';reason:'enemy-shock-effect-not-confirmed';evidence:'structured-exact';sourceReference:string;detail:string}>
   }
   dualWieldAttackModel?:{
-    modelVersion:'1.0.0'
+    modelVersion:'1.1.0'
     status:'not-applicable'|'single-weapon'|'applied'|'blocked-unresolved-weapon'|'blocked-not-two-one-hand-weapons'|'blocked-incompatible-weapon'
     finalDamagePercent:number|null
+    finalAttackSpeedPercent:number|null
     damageMultiplier:number
+    attackSpeedMultiplier:number
     hitSequenceMultiplier:number
     mainHandItemId?:string
     offHandItemId?:string

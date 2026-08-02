@@ -26,4 +26,9 @@ describe('strukturierte Dual-Wield-Wirkung',()=>{
   it('verwendet für zwei abwechselnde Waffen die harmonische Wirkfrequenz',()=>{
     expect(harmonicMean(1,2)).toBeCloseTo(4/3)
   })
+  it.each([
+    ['Armour Breaker',40,1.4],['Earthshatter',-30,.7],['Molten Blast',-15,.85],['Volcanic Fissure',-30,.7],
+  ])('wendet die finale Dual-Wield-Angriffsgeschwindigkeit für %s multiplikativ an',(_name,value,multiplier)=>{
+    expect(resolveDualWieldAttackModel({skill,numericStats:{'active_skill_attack_speed_+%_final_while_dual_wielding':value},equipment:[entry('left','Club'),entry('right','Hammer')],weaponSet:'set-1',resolveWeapon:resolve})).toMatchObject({modelVersion:'1.1.0',status:'applied',finalDamagePercent:null,finalAttackSpeedPercent:value,damageMultiplier:1,attackSpeedMultiplier:multiplier,hitSequenceMultiplier:1})
+  })
 })

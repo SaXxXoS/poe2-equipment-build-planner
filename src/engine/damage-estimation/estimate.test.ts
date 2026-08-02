@@ -23,6 +23,15 @@ describe('begrenzte Trefferschadenberechnung',()=>{
     expect(dual.included).toContain('PoB2-Dual-Wield: beide kompatiblen Einhandwaffen, 30% weniger Schaden je Hand und ein Treffer je Hand')
     expect(dual.actionsPerSecond).toBeCloseTo(2.17,2)
   })
+  it('wendet finale PoB2-Dual-Wield-Angriffsgeschwindigkeit auf beide abwechselnden Waffen an',()=>{
+    const breaker:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack','melee'],requiredWeaponTypes:['mace']}
+    const main={...weapon('Akoyan Club'),id:'main',itemClassId:'One Hand Maces'}
+    const off={...weapon('Bandit Mace','slot-weapon-set-1-right'),id:'off',itemClassId:'One Hand Maces'}
+    const dual=estimateHitDamage({equipment:[main,off],setups:[setup(breaker.id)],skills:[breaker]})
+    expect(dual.dualWieldAttackModel).toMatchObject({status:'applied',finalDamagePercent:null,finalAttackSpeedPercent:40,damageMultiplier:1,attackSpeedMultiplier:1.4,hitSequenceMultiplier:1})
+    expect(dual.included).toContain('PoB2-Dual-Wield: beide kompatiblen Einhandwaffen abwechselnd, 40% finale Angriffsgeschwindigkeit')
+    expect(dual.actionsPerSecond).toBeGreaterThan(0)
+  })
   it('verbindet Lightning Conduit mit der tatsÃ¤chlich belegten Schockwirkung des Ziels',()=>{
     const conduit=skill('conduit','Lightning Conduit')
     const ball=skill('ball','Ball Lightning')
