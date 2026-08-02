@@ -1,0 +1,16 @@
+{
+  "step": 159,
+  "scope": "considered-casting-and-specialized-support-deduplication",
+  "calculatorVersion": "3.73.0",
+  "modelVersion": "1.0.0",
+  "sourceRecordId": "SupportConsideredCastingPlayer",
+  "structuredStats": {"support_slow_cast_spell_damage_+%_final": 35, "support_slow_cast_cast_speed_+%_final": -15},
+  "damageMultiplier": 1.35,
+  "castSpeedMultiplier": 0.85,
+  "combinedPreTickDpsMultiplier": 1.1475,
+  "blockedSkillTypes": ["UsedByProxy", "Triggered", "Persistent", "FixedCastTime", "HasReservation", "ReservationBecomesCost"],
+  "deduplication": {"specializedSupportsExcludedFromGenericMainPath": true, "controlledDestructionRegressionMultiplier": 1.25, "alternativeSpellDamagePathsCovered": ["mana-tempest-window", "rage-comparison"]},
+  "pinsChanged": false,
+  "runtimeNetwork": false,
+  "pob2Parity": "not-proven"
+}

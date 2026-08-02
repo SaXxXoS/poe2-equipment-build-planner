@@ -12,6 +12,35 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('wendet exakt modellierte Kontrollierte Zerstörung nicht zusätzlich generisch an',()=>{
+    const controlled={...supportDef('controlled-destruction','Controlled Destruction'),quantitativeEffects:pob2QuantitativeEffectsFor('Controlled Destruction')}
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[controlled]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[controlled.id]}],skills:[spark],supports:[controlled]})
+    expect(result.hitDamage!.average/baseline.hitDamage!.average).toBeCloseTo(1.25,3)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===controlled.id)).toHaveLength(0)
+  })
+  it('integriert Bedachtes Zaubern mit mehr Schaden und weniger Wirkgeschwindigkeit exakt',()=>{
+    const considered={...supportDef('considered-casting','Considered Casting'),quantitativeEffects:pob2QuantitativeEffectsFor('Considered Casting')}
+    const spark=skill('spark','Spark')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(spark.id)],skills:[spark],supports:[considered]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(spark.id),supportGemIds:[considered.id]}],skills:[spark],supports:[considered]})
+    expect(result.consideredCastingSupportModel).toMatchObject({status:'applied',damageMultiplier:1.35,castSpeedMultiplier:.85})
+    expect(result.hitDamage!.average/baseline.hitDamage!.average).toBeCloseTo(1.35,3)
+    expect(result.actionsPerSecond!/baseline.actionsPerSecond!).toBeCloseTo(.85,2)
+    expect(result.hitDamagePerSecond!/baseline.hitDamagePerSecond!).toBeCloseTo(1.1475,3)
+    expect(result.appliedSupportEffects?.filter(value=>value.sourceId===considered.id)).toHaveLength(0)
+  })
+  it('blockiert Bedachtes Zaubern für Angriffe fail-closed',()=>{
+    const considered={...supportDef('considered-casting','Considered Casting'),quantitativeEffects:pob2QuantitativeEffectsFor('Considered Casting')}
+    const attack:SkillGemDefinition={...skill('armour-breaker','Armour Breaker'),tags:['attack'],requiredWeaponTypes:['spear']}
+    const observed={...weapon('Gezackter Speer'),weaponStatsSource:'observed-final' as const,weaponStats:{physicalDamage:{minimum:100,maximum:100},criticalHitChance:5,attacksPerSecond:1}}
+    const baseline=estimateHitDamage({equipment:[observed],setups:[setup(attack.id)],skills:[attack],supports:[considered]})
+    const result=estimateHitDamage({equipment:[observed],setups:[{...setup(attack.id),supportGemIds:[considered.id]}],skills:[attack],supports:[considered]})
+    expect(result.consideredCastingSupportModel).toMatchObject({status:'blocked-incompatible-skill',damageMultiplier:1,castSpeedMultiplier:1})
+    expect(result.hitDamage?.average).toBe(baseline.hitDamage?.average)
+    expect(result.actionsPerSecond).toBe(baseline.actionsPerSecond)
+  })
   it('integriert Kontrollierte Zerstörung mit mehr Trefferschaden und null kritischer Trefferchance',()=>{
     const controlled=supportDef('controlled-destruction','Controlled Destruction')
     const spark=skill('spark','Spark')

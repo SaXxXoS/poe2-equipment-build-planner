@@ -331,6 +331,18 @@ export interface DamageEstimate {
     sourceReferences:string[]
     detail:string
   }
+  consideredCastingSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    damagePercent:number
+    damageMultiplier:number
+    castSpeedPercent:number
+    castSpeedMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;damagePercent:number;castSpeedPercent:number;sourceReferences:string[]}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
   damagingAilments?:{modelVersion:string;effects:AppliedDamagingAilmentEffect[];blockedEffects:BlockedDamagingAilmentEffect[];totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;supportPierceChancePercent:number;postPierceDamageMultiplier:number;forkEnabled:boolean;forkedProjectileDamageMultiplier:number;terrainChainChancePercent:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:boolean;triggeredDamagePerSecond?:number;triggeredDamagePerSecondAfterMitigation?:number;sources:TriggerRepeatSource[];limitations:string[]}

@@ -4173,3 +4173,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Audit: `docs/audits/build-assistant-step-158-controlled-destruction.json`.
 - Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert. Vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
 - Fokussiert bestanden 73 Tests. Der Gesamtlauf bestand fachlich mit 1.839 Tests; zwei unter paralleler Last zeitüberschrittene Passivbaumtests bestanden seriell mit 197 Tests. Die separate reale Passivbaum-Performanceprüfung bestand ebenfalls.
+
+## Bedachtes Zaubern und Support-Doppelzählung – Schritt 159 (2026-08-02)
+
+- `Considered Casting` verwendet 35 % mehr Zauberschaden und 15 % weniger Wirkgeschwindigkeit ausschließlich für kompatible selbst gewirkte Trefferzauber.
+- Proxy-, Trigger-, persistente, reservierende und fest getaktete Fertigkeiten sowie doppelte Supportfamilien werden fail-closed blockiert.
+- Bereits spezialisierte Supports werden vor der allgemeinen numerischen Supportauswertung entfernt. Der Regressionstest belegt für `Controlled Destruction` exakt 1,25 statt einer falschen Doppelanwendung von 1,5625.
+- Kontrollierte Zerstörung und Bedachtes Zaubern werden auch in Mana-Tempest-Fenstern und Wutvergleichspfaden genau einmal angewandt.
+- Schadensrechner `3.73.0`, Considered-Casting-Modell `1.0.0`. Pins und Offline-Grenzen bleiben unverändert; vollständige Path-of-Building-Gleichwertigkeit ist weiterhin nicht belegt.
+- Details: `docs/BUILD_ASSISTANT_CONSIDERED_CASTING_STEP_159.md` und `docs/audits/build-assistant-step-159-considered-casting.json`.
+- Fokussiert bestanden 74 Rechentests. Im gemeinsamen Gesamtlauf bestanden 1.840 Tests; drei lastempfindliche Vollbaumtests bestanden isoliert mit 198 Tests. Damit sind alle 1.843 fachlichen Tests erfolgreich. Typecheck, Lint, Produktions-/Pages-Build, 2.549 JSON-Dateien und `git diff --check` bestanden.
