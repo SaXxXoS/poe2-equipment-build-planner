@@ -1,6 +1,6 @@
 import type { DamageEstimate } from './types'
 
-export const PROJECTILE_HIT_MODEL_VERSION = '1.0.0'
+export const PROJECTILE_HIT_MODEL_VERSION = '1.1.0'
 
 type NumericSkill = {
   name: string
@@ -38,7 +38,7 @@ export interface ProjectileHitModel {
 const positiveInteger = (value: unknown): number | undefined =>
   Number.isInteger(value) && Number(value) > 0 ? Number(value) : undefined
 
-export function resolveProjectileHitModel(skill: NumericSkill): ProjectileHitModel {
+export function resolveProjectileHitModel(skill: NumericSkill, supportChains: { additionalChains: number; sourceReference?: string } = { additionalChains: 0 }): ProjectileHitModel {
   const stats = skill.numericStats ?? {}
   const skillTypes = new Set(skill.skillTypes ?? [])
   const isProjectileSkill =
@@ -46,7 +46,9 @@ export function resolveProjectileHitModel(skill: NumericSkill): ProjectileHitMod
     skillTypes.has('ProjectileNumber') ||
     skillTypes.has('ProjectilesFromUser')
   const projectileCount = positiveInteger(stats.base_number_of_projectiles)
-  const chainCount = positiveInteger(stats.number_of_chains)
+  const baseChainCount = positiveInteger(stats.number_of_chains) ?? 0
+  const supportChainCount = positiveInteger(supportChains.additionalChains) ?? 0
+  const chainCount = baseChainCount + supportChainCount
   const pierceCount = positiveInteger(stats.projectile_base_number_of_targets_to_pierce)
   const maximumHitCap = positiveInteger(stats.tornado_shot_number_of_hits_allowed)
   const projectilesPerAction = isProjectileSkill ? projectileCount ?? 1 : 1
@@ -60,13 +62,21 @@ export function resolveProjectileHitModel(skill: NumericSkill): ProjectileHitMod
     damageUse: 'coverage-only',
     detail: `${projectileCount} Projektile pro Aktion sind strukturiert belegt. Eine Mehrfachtrefferregel für dasselbe Ziel ist damit nicht belegt.`,
   })
-  if (chainCount) mechanics.push({
+  if (baseChainCount) mechanics.push({
     kind: 'chain-count',
-    value: chainCount,
+    value: baseChainCount,
     sourceReference: 'numericStats.number_of_chains',
     evidence: 'structured-exact',
     damageUse: 'coverage-only',
-    detail: `${chainCount} Verkettungen erweitern die mögliche Zielabdeckung, aber nicht automatisch den Schaden gegen dasselbe Ziel.`,
+    detail: `${baseChainCount} intrinsische Verkettungen erweitern die mögliche Zielabdeckung, aber nicht automatisch den Schaden gegen dasselbe Ziel.`,
+  })
+  if (supportChainCount) mechanics.push({
+    kind: 'chain-count',
+    value: supportChainCount,
+    sourceReference: supportChains.sourceReference ?? 'support:number_of_chains',
+    evidence: 'structured-exact',
+    damageUse: 'coverage-only',
+    detail: `${supportChainCount} zusätzliche Verkettungen aus Unterstützungen erweitern die mögliche Zielabdeckung, aber nicht automatisch den Schaden gegen dasselbe Ziel.`,
   })
   if (pierceCount) mechanics.push({
     kind: 'pierce-count',

@@ -4019,6 +4019,17 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Fokussierte Prüfung: 4 Dateien und 74 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 147 Dateien und 1.788 Tests. Typecheck, Lint, Produktions- und Pages-Build sind erfolgreich.
 - Der lokale Produktions-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
 
+## Schritt 148 – Verkettung
+
+- `Chain I–III` (`Verkettung I–III`) verwenden die strukturierten PoB2-Werte für zusätzliche Verkettungen und finalen Trefferschaden: I = eine Kette/30 % weniger, II = zwei Ketten/50 % weniger, III = zwei Ketten/40 % weniger.
+- Die Wirkung gilt nur für Fertigkeiten mit den strukturierten Typen `Projectile` und `Chains`. `CannotChain`, `ProjectileNoCollision`, inkompatible Fertigkeiten und doppelte Supportfamilien werden fail-closed blockiert.
+- Zusätzliche Verkettungen erhöhen ausschließlich die mögliche Mapping-Abdeckung. Ohne gesonderten Beleg bleibt der Einzelziel-Treffermultiplikator `1,00`; eigenständiger Schaden über Zeit bleibt unverändert.
+- Natürliche und durch Supports gewährte Verkettungen werden getrennt belegt. Die generische Supportabbildung wurde entfernt, damit der finale Schadensfaktor nicht doppelt angewandt wird.
+- Der Schadensrechner verwendet `3.62.0`, das Verkettungs-Supportmodell `1.0.0` und das Projektiltreffermodell `1.1.0`. Produktpins und Offline-Grenzen bleiben unverändert.
+- Details: `docs/BUILD_ASSISTANT_CHAIN_SUPPORT_STEP_148.md` und `docs/audits/build-assistant-step-148-chain-support.json`.
+- Fokussierte Prüfung: 3 Dateien und 70 Tests erfolgreich. Der vollständige serielle Gesamtlauf bestand mit 148 Dateien und 1.796 Tests. Typecheck, Lint, Produktions- und Pages-Build sowie 225 JSON-Dateien und `git diff --check` sind erfolgreich geprüft.
+- Der lokale Pages-Build wurde bei 1280 × 720 und 390 × 844 geprüft: kein horizontaler Überlauf und keine Browserkonsolenwarnungen oder -fehler.
+
 ## Schritt 147 – Zauberkaskade
 
 - `Spell Cascade` (`Zauberkaskade`) verwendet die drei strukturierten Werte aus `SupportSpellCascadePlayer`: eine Kaskade pro Seite, 30 % weniger finaler Schaden und 20 % weniger finale Wirkungsfläche.

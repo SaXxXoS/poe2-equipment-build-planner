@@ -12,6 +12,16 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('integriert Verkettung als Treffernachteil und zusätzliche Mapping-Abdeckung',()=>{
+    const chain=supportDef('chain-i','Chain I')
+    const arc=skill('arc','Arc')
+    const baseline=estimateHitDamage({equipment:[],setups:[setup(arc.id)],skills:[arc],supports:[chain]})
+    const result=estimateHitDamage({equipment:[],setups:[{...setup(arc.id),supportGemIds:[chain.id]}],skills:[arc],supports:[chain]})
+    expect(result.chainSupportModel).toMatchObject({status:'applied',hitDamageMultiplier:.7,additionalChains:1,singleTargetHitMultiplier:1})
+    expect(result.hitDamage?.average).toBeCloseTo(baseline.hitDamage!.average*.7,6)
+    expect(result.projectileHitModel?.mappingPotentialTargetContacts).toBe(baseline.projectileHitModel!.mappingPotentialTargetContacts+1)
+    expect(result.projectileHitModel?.singleTargetHitMultiplier).toBe(1)
+  })
   it('integriert Zauberkaskade mit drei Flächen, aber ohne erfundenen Überlappungsmultiplikator',()=>{
     const cascade=supportDef('spell-cascade','Spell Cascade')
     const boneBlast=skill('bone-blast','Bone Blast')

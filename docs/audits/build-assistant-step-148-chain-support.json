@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 148,
+  "scope": "chain-support",
+  "source": {
+    "repository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+    "commit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+    "productReference": "generated/pob2/damage-reference.json",
+    "sourceFile": "src/Data/Skills/sup_dex.lua",
+    "sourceRecords": ["SupportChainPlayer", "SupportChain2Player", "SupportChain3Player"]
+  },
+  "versions": {
+    "damageCalculator": "3.62.0",
+    "chainSupportModel": "1.0.0",
+    "projectileHitModel": "1.1.0"
+  },
+  "structuredValues": [
+    {"name": "Chain I", "additionalChains": 1, "finalHitDamagePercent": -30, "hitDamageMultiplier": 0.7},
+    {"name": "Chain II", "additionalChains": 2, "finalHitDamagePercent": -50, "hitDamageMultiplier": 0.5},
+    {"name": "Chain III", "additionalChains": 2, "finalHitDamagePercent": -40, "hitDamageMultiplier": 0.6}
+  ],
+  "rules": {
+    "requiredSkillTypes": ["Projectile", "Chains"],
+    "blockedSkillTypes": ["CannotChain", "ProjectileNoCollision"],
+    "appliesToHitDamage": true,
+    "appliesToNativeDamageOverTime": false,
+    "additionalChainsAreCoverageOnly": true,
+    "singleTargetHitMultiplier": 1,
+    "duplicateFamilyBlocked": true,
+    "genericDoubleApplicationPrevented": true
+  },
+  "verification": {
+    "focusedTestFiles": 3,
+    "focusedTests": 70,
+    "fullSerialTestFiles": 148,
+    "fullSerialTests": 1796,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 225,
+    "gitDiffCheck": "passed",
+    "desktopBrowser": "passed",
+    "mobileViewport": "390x844",
+    "horizontalOverflow": false,
+    "browserWarnings": 0,
+    "browserErrors": 0
+  },
+  "limitations": [
+    "No concrete enemy positions or chain range are inferred.",
+    "No return to the same enemy or repeated boss hit is inferred.",
+    "Unstructured support tiers remain neutral.",
+    "This does not establish complete Path-of-Building parity."
+  ]
+}
