@@ -203,7 +203,13 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Schadensziel</dt><dd>{variantOptimization.selected.numericCoverageStatus === 'comparable' ? `${variantOptimization.selected.damageObjectiveScore}/100 relativ vergleichbar` : 'Nur strukturell belegbar'}</dd></div>
           <div><dt>Vergleichsabdeckung</dt><dd>{variantOptimization.numericallyComparableCombinationCount}/{variantOptimization.evaluatedCombinationCount}</dd></div>
           <div><dt>Set-2-Setup</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
+          <div><dt>Setup-Waffe</dt><dd>{variantOptimization.selected.setupWeaponType ? variantOptimization.selected.setupWeaponType === variantOptimization.selected.weaponType ? `${variantOptimization.selected.weaponLabel} (gleiches Waffenkonzept)` : variantOptimization.selected.setupWeaponType : 'Keine zweite Waffe erforderlich'}</dd></div>
         </dl>
+        <h4>Geprüfte Hauptskill-Unterstützungen</h4>
+        {variantOptimization.selected.compatibleSupportIds.length
+          ? <ol>{variantOptimization.selected.compatibleSupportIds.map(id => <li key={id}>{definitionName(id)}</li>)}</ol>
+          : <p>Für dieses Paket konnte keine belegte Unterstützung eingesetzt werden.</p>}
+        {variantOptimization.selected.setupSkillId && <p><b>Zusammenhang der Waffensets:</b> {variantOptimization.selected.setupReason ?? 'Der Setup-Skill ist als belegte Ergänzung des Hauptskills eingeplant.'}</p>}
         <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>
         {variantOptimization.selected.packageComponents && <>
           <h4>Gemeinsame Build-Paketprüfung</h4>

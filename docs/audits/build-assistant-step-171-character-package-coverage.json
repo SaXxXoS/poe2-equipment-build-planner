@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "step": 171,
+  "status": "implemented-and-tested",
+  "scope": "character-dependent-build-package-selection",
+  "regression": {
+    "before": "all-23-selectable-class-ascendancy-combinations-selected-living-bomb-wand",
+    "after": "character-and-ascendancy-aligned-packages-vary",
+    "selectableCombinationCount": 23
+  },
+  "selectionOrderWithoutEquipment": [
+    "hard-skill-and-weapon-compatibility",
+    "maximum-evidenced-class-and-ascendancy-affinity",
+    "supports-and-setup-skill",
+    "resources-and-modeled-damage",
+    "analyzed-package-quality"
+  ],
+  "visiblePackageFields": [
+    "main-skill",
+    "main-weapon",
+    "main-supports",
+    "setup-skill",
+    "setup-weapon",
+    "weapon-set-relationship"
+  ],
+  "pinsChanged": false,
+  "runtimeNetwork": false,
+  "limitations": [
+    "No claim of global Path of Building equivalence",
+    "Results are limited to locally pinned and modeled evidence"
+  ]
+}

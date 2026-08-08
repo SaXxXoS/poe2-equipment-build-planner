@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SupportGemDefinition } from '../../domain'
-import { initialEquipment } from '../../data'
+import { initialEquipment, treeClassRegistry } from '../../data'
 import { createEmptySkillSetups } from './initial-state'
 import { buildAssistantCandidates, runBuildAssistantV1 } from '../build-assistant-v1'
 import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
@@ -77,6 +77,50 @@ const damageCandidate = (
 })
 
 describe('vollständige Build-Variantenoptimierung', () => {
+  it('liefert für jede produktive Klasse und Aszendenz ein regelkonformes Startpaket', () => {
+    const selections = treeClassRegistry
+      .filter(entry => entry.selectableInCurrentUi)
+      .flatMap(entry => entry.ascendancies
+        .filter(ascendancy => ascendancy.selectableInCurrentUi)
+        .map(ascendancy => ({ classId: entry.classId, ascendancyId: ascendancy.ascendancyId })))
+      .map(character => {
+        const setups = createEmptySkillSetups()
+        const analysis = runBuildAssistantV1({
+          character: {
+            classId: character.classId,
+            ascendancyId: character.ascendancyId,
+            level: 90,
+            additionalPassivePoints: 24,
+            goalProfile: 'balanced',
+            desiredMainSkillId: '',
+          },
+          equipment: initialEquipment,
+          setups,
+        })
+        const scores = [
+          ...analysis.skillAnalysis.topMainCandidates,
+          ...analysis.skillAnalysis.eligibleCandidates.filter(value => value.possibleRoles.includes('main')),
+          ...analysis.skillAnalysis.allCandidates.filter(value => value.possibleRoles.includes('main')),
+        ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
+        const optimization = optimizeBuildVariants({
+          ...character,
+          equipment: initialEquipment,
+          setups,
+          skills: buildAssistantCandidates.skills,
+          supports: buildAssistantCandidates.supports,
+          skillScores: scores,
+          characterLevel: 90,
+          characterAttributes: analysis.characterAttributes,
+        })
+        expect(optimization.selected, `${character.classId}/${character.ascendancyId}`).not.toBeNull()
+        expect(optimization.selected?.compatibleSupportIds.length, character.ascendancyId).toBeGreaterThan(0)
+        expect(optimization.selected?.ruleGraphStatus, character.ascendancyId).not.toBe('blocked')
+        return `${optimization.selected?.skillId}:${optimization.selected?.weaponType}`
+      })
+
+    expect(new Set(selections).size, selections.join(', ')).toBeGreaterThanOrEqual(4)
+  }, 30_000)
+
   it('prüft ein leeres Zwei-Set-Paket mit geplanten Waffen aus gepinnten Basen', () => {
     const planned = plannedEquipmentForVariant(initialEquipment, {
       weaponType: 'wand',

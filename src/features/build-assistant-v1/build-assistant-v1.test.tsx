@@ -5,6 +5,7 @@ import type { CharacterConfiguration, EquipmentEntry } from '../../domain'
 import { BuildAssistantResultSection } from '../../components/BuildAssistantResultSection'
 import { buildAssistantCandidates, createBuildAssistantRequest, deriveWeaponContext, runBuildAssistantV1, validateBuildAssistantInput } from '.'
 import { fillRecommendedSupportSlots } from '../skills/automatic-supports'
+import type { BuildVariantOptimization } from '../skills/build-variant-optimizer'
 
 const character = (goalProfile: CharacterConfiguration['goalProfile'] = 'balanced', desiredMainSkillId = 'skill-lightning-arrow'): CharacterConfiguration => ({
   classId: 'class-official-6',
@@ -184,5 +185,33 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     values.setups = [{ id: 'fire-main', skillId: fire, role: 'main', weaponSet: 'set-1', supportGemIds: [] }]
     const html = renderToStaticMarkup(<BuildAssistantResultSection analysis={runBuildAssistantV1(values)} equipment={values.equipment}/>)
     expect(html).toContain('<dt>Hauptschaden</dt><dd>Feuerschaden</dd>')
+  })
+
+  it('zeigt das geprüfte Paket mit Setup-Waffe, Supports und Set-Zusammenhang sichtbar an', () => {
+    const spark = buildAssistantCandidates.skills.find(item => item.nameEn === 'Spark')!
+    const orb = buildAssistantCandidates.skills.find(item => item.nameEn === 'Orb of Storms')!
+    const support = buildAssistantCandidates.supports.find(item => item.displayNameDe)!
+    const variantOptimization = {
+      evaluatedSkillCount: 2,
+      evaluatedCombinationCount: 2,
+      blockedCombinationCount: 0,
+      equipmentFirst: false,
+      numericallyComparableCombinationCount: 1,
+      optimizationStatus: 'mixed-evidence',
+      status: 'selected',
+      alternatives: [],
+      selected: {
+        skillId: spark.id, skillName: spark.displayNameDe, weaponType: 'wand', weaponLabel: 'Zauberstab', mainWeaponSet: 'set-1',
+        setupSkillId: orb.id, setupSkillName: orb.displayNameDe, setupWeaponType: 'wand', setupReason: 'Gewittersphäre bereitet Funken in Waffenset 2 vor.',
+        compatibleSupportIds: [support.id], affinityScore: 1, passiveAffinityScore: 1, analyzerScore: 1, modeledDps: null,
+        damageObjectiveScore: 0, numericCoverageStatus: 'partial', totalScore: 1, reasons: ['Gemeinsam geprüft.'],
+      },
+    } satisfies BuildVariantOptimization
+    const html = renderToStaticMarkup(<BuildAssistantResultSection analysis={runBuildAssistantV1(input())} equipment={equipment()} variantOptimization={variantOptimization}/>)
+    expect(html).toContain('Setup-Waffe')
+    expect(html).toContain('Geprüfte Hauptskill-Unterstützungen')
+    expect(html).toContain(support.displayNameDe)
+    expect(html).toContain('Zusammenhang der Waffensets')
+    expect(html).toContain('Gewittersphäre bereitet Funken')
   })
 })

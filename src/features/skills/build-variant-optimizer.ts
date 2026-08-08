@@ -363,7 +363,7 @@ export function optimizeBuildVariants(input: {
   const scores = new Map(input.skillScores.map(value => [value.skillId, value]))
   const hasValidMainScore = input.skillScores.some(value =>
     value.valid && value.possibleRoles.includes('main'))
-  const eligibleSkills = input.skills.filter(skill => {
+  let eligibleSkills = input.skills.filter(skill => {
     const score = scores.get(skill.id)
     if (skill.enabled === false) return false
     // Bei einem vollständig leeren Build kann der Skill-Analyzer noch keinen
@@ -375,6 +375,23 @@ export function optimizeBuildVariants(input: {
     if (skill.possibleRoles?.length && !skill.possibleRoles.includes('main')) return false
     return characterAllowsSkill(skill, input.classId, input.ascendancyId)
   })
+  const evaluatedSkillCount = eligibleSkills.length
+  if (!equipmentFirst) {
+    const scoredAffinity = eligibleSkills.map(skill => ({
+      skill,
+      affinity: scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId),
+    }))
+    const maximumAffinity = Math.max(0, ...scoredAffinity.map(value => value.affinity.score))
+    const ascendancyAligned = scoredAffinity
+      .filter(value => value.affinity.ascendancyMatches.length > 0 && value.affinity.score === maximumAffinity)
+      .map(value => value.skill)
+    // Ohne reale Ausrüstung ist die gewählte Aszendenz die stärkste belegte
+    // Ausgangsinformation. Ein zahlenstarker, aber fachlich fremder Skill darf
+    // deshalb nicht bei jeder Klasse denselben Bootstrap-Vorschlag erzwingen.
+    // Falls der lokale Baum keinerlei passende Semantik liefert, bleibt der
+    // vollständige kompatible Bestand als ehrlicher Fallback erhalten.
+    if (ascendancyAligned.length) eligibleSkills = ascendancyAligned
+  }
   const characterSkills = input.skills.filter(skill =>
     skill.enabled !== false && characterAllowsSkill(skill, input.classId, input.ascendancyId),
   )
@@ -601,7 +618,7 @@ export function optimizeBuildVariants(input: {
     candidate => candidate.numericCoverageStatus === 'comparable',
   ).length
   return {
-    evaluatedSkillCount: eligibleSkills.length,
+    evaluatedSkillCount,
     evaluatedCombinationCount: variants.length,
     blockedCombinationCount,
     equipmentFirst,

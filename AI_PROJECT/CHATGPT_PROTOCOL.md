@@ -4318,3 +4318,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Details: `docs/BUILD_ASSISTANT_INTEGRATED_PACKAGE_WEAPONS_STEP_170.md` und `docs/audits/build-assistant-step-170-integrated-package-weapons.json`.
 - Vollständige globale Path-of-Building-Gleichwertigkeit bleibt unbewiesen; als Nächstes folgt die breite Klassen-/Aszendenzcoverage und sichtbare Paketkonsistenz.
 - Vollständige Path-of-Building-Gleichwertigkeit bleibt unbewiesen; die nächste strukturierte Rechenlücke folgt.
+
+## Charakterabhängige Gesamtpakete – Schritt 171 (2026-08-08)
+
+- Ein produktweiter Test hat den gemeldeten Kernfehler bestätigt: Alle 23 auswählbaren Klassen-/Aszendenzkombinationen erhielten zuvor dasselbe Paket `Living Bomb + Wand`.
+- Ohne Ausrüstung wird nun zuerst die stärkste belegte Klassen-/Aszendenzbaum-Affinität bestimmt. Schaden und Paketwertung entscheiden erst innerhalb dieser fachlich passenden Kandidatengruppe.
+- Reale eingegebene Waffen bleiben unverändert vorrangig; die Aszendenz wird nicht als erfundene harte Waffenbeschränkung behandelt.
+- Das sichtbare Ergebnis nennt jetzt Hauptskill-Supports, Setup-Waffe und den Zusammenhang beider Waffensets.
+- Der Regressionstest verlangt für alle 23 Kombinationen ein nicht blockiertes Paket mit Supports und eine tatsächlich unterschiedliche Auswahl zwischen Charakterprofilen.
+- Details: `docs/BUILD_ASSISTANT_CHARACTER_PACKAGE_COVERAGE_STEP_171.md` und `docs/audits/build-assistant-step-171-character-package-coverage.json`.
+- Produktpins und Offline-Grenzen bleiben unverändert. Vollständige Path-of-Building-Gleichwertigkeit bleibt unbewiesen.
