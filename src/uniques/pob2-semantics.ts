@@ -40,6 +40,16 @@ const enablerPattern = /\b(?:Skills Cost \w+ instead of Mana or Life|Can have \d
 const ambiguousPattern = /\b(?:increased Damage|more Damage|Gain \w+ Damage)\b/i
 const damageTakenContext = /\bDamage (?:from Hits )?(?:is )?taken\b|\bDamage taken as\b/i
 
+const uniqueWeaponTypeByCategory: Partial<Record<string, SyntheticWeaponType>> = {
+  bow: 'bow',
+  crossbow: 'crossbow',
+  mace: 'mace',
+  spear: 'spear',
+  staff: 'staff',
+  sceptre: 'sceptre',
+  wand: 'wand',
+}
+
 function linesSharedByEveryVariant(record: Pob2SemanticRecord): Pob2SemanticLine[] {
   if (!record.variants.length) return record.visibleModifiers
   const common = record.variants.map(variant => new Set(variant.modifierSet)).reduce((left, right) => new Set([...left].filter(id => right.has(id))))
@@ -69,7 +79,8 @@ export function classifyPob2Unique(record: Pob2SemanticRecord): Pob2UniqueSemant
     if (matched || negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine) || enablerPattern.test(line.normalizedPlannerLine)) evidenceLineIds.add(line.sourceLineId)
   }
   const productive = tags.size > 0 || tradeOffs.size > 0 || buildEnabler
-  const requiredWeaponTypes: SyntheticWeaponType[] = ['bow', 'crossbow'].includes(record.itemCategory) ? ['ranged-weapon'] : ['mace', 'spear'].includes(record.itemCategory) ? ['melee-weapon'] : []
+  const exactWeaponType = uniqueWeaponTypeByCategory[record.itemCategory]
+  const requiredWeaponTypes: SyntheticWeaponType[] = exactWeaponType ? [exactWeaponType] : []
   return {
     tags: [...tags].sort(),
     evidence: productive ? 'text-pattern-exact' : requiredWeaponTypes.length ? 'structured-derived' : ambiguous ? 'text-pattern-ambiguous' : record.slot && record.itemCategory ? 'structured-exact' : 'unresolved',

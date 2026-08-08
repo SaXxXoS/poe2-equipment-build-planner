@@ -4346,3 +4346,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Waffenvorschläge bleiben an Level und tatsächliche Charakterattribute gebunden. Fehlt eine belegte konkrete Basis, wird dies ausdrücklich angezeigt statt Eigenschaften zu erfinden.
 - Die Passivplanung wurde erneut gegen ihre Tests geprüft: gemeinsame Punkte und bis zu 24 umschaltbare Waffensetbelegungen teilen dasselbe normale Budget; Set-Pfade dürfen weder Juwelfassungen noch Keystones enthalten. Rot/Grün wird nur bei wirklich unterschiedlicher Set-Skalierung erzeugt.
 - PoB2-, RePoE-, Baum-, Affix- und Lokalisierungspins bleiben unverändert. Die Änderung erweitert Darstellung und sichere Variantenübernahme, nicht die zugrunde liegende globale Optimierungsformel.
+
+## Kohärente Waffenset-Pipeline – Schritt 173 (2026-08-08)
+
+- Ursache der fehlenden roten/grünen Pfade war ein widersprüchlicher Pipeline-Guard: Die Orchestrierung plante mit `weapon-set`, der Eingabe-Guard blockierte diesen Scope jedoch. `weapon-set` ist jetzt zulässig; Setfehler werden im Gesamtstatus nicht mehr verdeckt.
+- Gemeinsame normale Knoten bleiben Pfadanker, werden aber nicht mehr als neue set-spezifische Ziele gezählt. Set 1 und Set 2 verwenden ihre jeweiligen Skillprofile und können dadurch belegbar unterschiedliche Ziele erhalten.
+- Der gepinnte Baum mit 5.150 Knoten wurde mit 24/24 Setpunkten je Set geprüft. Juwelfassungen, Keystones und Aszendenzknoten werden als Waffensetziele blockiert. Die getrennte Aszendenzplanung wurde für Stormweaver und Spirit Walker mit 8/8 Punkten geprüft.
+- Hauptskill, Setup-Skill, zugehörige Waffen, automatische Skillkarten und sichtbare Paketbegründung verwenden eine gemeinsame explizite Setzuordnung. Teilweise vorhandene Nutzerausrüstung verhindert nicht mehr die sichere Empfehlung einer fehlenden Paketwaffe.
+- Waffen-Uniques verwenden für Bogen, Armbrust, Streitkolben, Speer, Stab, Zepter und Zauberstab konkrete strukturierte Waffenarten statt der zu breiten Gruppen Nahkampf/Fernkampf.
+- Eine gebündelte deterministische Pfadsuche und ein ausschließlich zwischen beiden Setläufen geteilter Pfadcache halten die Vollbaumplanung praktisch ausführbar. Details: `docs/BUILD_ASSISTANT_WEAPON_SET_PIPELINE_STEP_173.md` und `docs/audits/build-assistant-step-173-weapon-set-pipeline.json`.
+- Das gewählte Gesamtpaket wird nach der realen Passive-Planung erneut mit dem tatsächlichen gemeinsamen, set-spezifischen und Aszendenzplan bewertet. Der frühere sichtbare Passive-Teilwert `0` bei vorhandenen realen Pfaden ist damit beseitigt.
+- Die abschließende Browserprüfung erzeugte für Zauberin/Sturmweberin ein zusammenhängendes Funken-Paket ohne Fehler oder Timeout, mit Set 1 und Set 2 jeweils 24/24, Aszendenz 8/8 und Passive-Teilwert 100. Bei 390 × 844 blieben neun Skillkarten ohne horizontalen Überlauf sichtbar; die Browserkonsole blieb leer.
+- Der fokussierte Abschlusslauf bestand mit 55 Tests. Typecheck, Lint sowie Produktions- und Pages-Build bestanden ebenfalls.
+- Produktpins, Offline-Grenzen und Quellen-/Anzeigeschichttrennung bleiben unverändert. Globale mathematische Optimalität und vollständige Path-of-Building-Gleichwertigkeit sind weiterhin nicht belegt.

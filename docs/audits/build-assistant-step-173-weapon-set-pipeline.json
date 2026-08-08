@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 173,
+  "status": "implemented-and-tested",
+  "scope": "weapon-set-passive-and-package-integration",
+  "rootCause": "real-passive-pipeline-rejected-weapon-set-scope",
+  "treeNodeCount": 5150,
+  "normalPointBudgetVerified": 121,
+  "weaponSetPointBudgetVerifiedPerSet": 24,
+  "ascendancyPointBudgetVerified": 8,
+  "weaponSetRules": {
+    "sharedPointsRemainActiveInBothSets": true,
+    "setPointsShareNormalBudget": true,
+    "setOneAndSetTwoEvaluatedSeparately": true,
+    "sharedNodesExcludedAsNewSetTargets": true,
+    "jewelSocketsBlockedAsSetTargets": true,
+    "keystonesBlockedAsSetTargets": true,
+    "ascendancyNodesBlockedAsSetTargets": true
+  },
+  "packageRules": {
+    "explicitSetupWeaponSet": true,
+    "mainSkillWeaponAndPassivesShareSetIdentity": true,
+    "setupSkillWeaponAndPassivesShareSetIdentity": true,
+    "userEquipmentRemainsPrimary": true,
+    "missingPinnedPackageWeaponsMayBeSuggested": true,
+    "finalPackageReevaluatedWithRealPassivePlan": true
+  },
+  "uniqueWeaponCategories": [
+    "bow",
+    "crossbow",
+    "mace",
+    "spear",
+    "staff",
+    "sceptre",
+    "wand"
+  ],
+  "deterministic": true,
+  "finalBrowserVerification": {
+    "status": "passed",
+    "buildError": false,
+    "analysisTimeout": false,
+    "weaponSetOnePoints": 24,
+    "weaponSetTwoPoints": 24,
+    "ascendancyPoints": 8,
+    "passivePackageComponent": 100,
+    "mobileViewport": "390x844",
+    "horizontalOverflow": false,
+    "skillCardCount": 9,
+    "consoleErrors": 0
+  },
+  "runtimeNetwork": false,
+  "productPinsChanged": false,
+  "limitations": [
+    "global-optimality-not-proven",
+    "full-path-of-building-equivalence-not-proven",
+    "missing-source-requirements-remain-unknown"
+  ]
+}

@@ -1,5 +1,6 @@
 import type { AnalyzerContext,BuildProfile,Confidence } from '../common/types'
 import type { PassiveGraph } from '../passive-pathfinding/types'
+import { createPassivePlanningPathCache } from '../passive-planning/planner'
 import type { PassivePlanningMode } from '../passive-planning/types'
 import type { PassiveTargetNodeType } from '../passive-targeting/types'
 import type { PreparedPassiveTargetingContext } from '../passive-targeting/types'
@@ -102,9 +103,10 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
     'set-1':applyPassiveProfileFeedback(withAscendancy(baseSetProfiles['set-1']),configuration.passiveTree!,fullResult.allocatedNodeIds,'shared-passive').profile,
     'set-2':applyPassiveProfileFeedback(withAscendancy(baseSetProfiles['set-2']),configuration.passiveTree!,fullResult.allocatedNodeIds,'shared-passive').profile
   }
-  let set1Feedback:PassiveProfileFeedback|undefined,set2Feedback:PassiveProfileFeedback|undefined
+  let set1Feedback:PassiveProfileFeedback|undefined,set2Feedback:PassiveProfileFeedback|undefined,set1Specific:RealPassivePipelineResult|undefined,set2Specific:RealPassivePipelineResult|undefined
   if(specializationPointLimit&&pipelineResult){
     const sharedNodeIds=[...fullResult.allocatedNodeIds]
+    const weaponSetPathCache=createPassivePlanningPathCache()
     const combine=(setResult:RealPassivePipelineResult):RealPassivePipelineResult=>({
       ...setResult,
       pointBudget:configuration.pointBudget!,
@@ -114,8 +116,8 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
       usedPointBudget:fullResult.usedPointBudget+setResult.usedPointBudget,
       remainingPointBudget:Math.max(0,configuration.pointBudget!-fullResult.usedPointBudget-setResult.usedPointBudget)
     })
-    const set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-1']),alreadyAllocatedNodeIds:sharedNodeIds})
-    const set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-2']),alreadyAllocatedNodeIds:sharedNodeIds})
+    set1Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-1`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-1']),pathCache:weaponSetPathCache,alreadyAllocatedNodeIds:sharedNodeIds})
+    set2Specific=runner({...baseInput,requestId:`${baseInput.requestId}-set-2`,planningScope:'weapon-set',pointBudget:specializationPointLimit,buildProfile:prioritizeResources(effectiveWeaponSetProfiles['set-2']),pathCache:weaponSetPathCache,alreadyAllocatedNodeIds:sharedNodeIds})
     const set1Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-1'],configuration.passiveTree!,set1Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     const set2Applied=applyPassiveProfileFeedback(effectiveWeaponSetProfiles['set-2'],configuration.passiveTree!,set2Specific.allocatedNodeIds.filter(id=>!sharedNodeIds.includes(id)),'shared-passive')
     effectiveWeaponSetProfiles={'set-1':set1Applied.profile,'set-2':set2Applied.profile};set1Feedback=set1Applied.feedback;set2Feedback=set2Applied.feedback
@@ -123,5 +125,6 @@ export function runRealPassivePlanningIntegration(configuration:RealPassivePlann
     const set2Full=combine(set2Specific)
     weaponSetPlanning={specializationPointLimit,sharedPointBudget:input.pointBudget,shared:pipelineResult,set1:projectRealPassivePipelineResult(set1Full,detailMode).result,set2:projectRealPassivePipelineResult(set2Full,detailMode).result}
   }
-  return{enabled:true,status:statusOf(fullResult),detailMode,pipelineResult,weaponSetPlanning,ascendancyPlanning,profileFeedback:{effectiveBuildProfile:sharedFeedbackResult.profile,effectiveWeaponSetProfiles,...(ascendancyFeedback?{ascendancy:ascendancyFeedback}:{}),shared:sharedFeedback,...(set1Feedback?{set1:set1Feedback}:{}),...(set2Feedback?{set2:set2Feedback}:{})},issues:[...fullResult.violations,...(ascendancyPlanning?.violations??[])],projection:projection.diagnostics,performance:{integrationDurationMs,pipelineDurationMs,inputValidationMs:stage('validate-input'),graphPreparationMs:stage('prepare-graph'),targetingMs:stage('evaluate-targets'),planningMs:stage('create-passive-plan'),outputValidationMs:stage('validate-output'),projectionMs:projection.diagnostics.projectionDurationMs,serializationMs:projection.diagnostics.serializationDurationMs,resultSizeBytes:projection.diagnostics.projectedSizeBytes,graphReused:fullResult.graphDiagnostics.graphReused,graphBuildCount:fullResult.graphDiagnostics.graphBuildCount,targetingContextReused:fullResult.targetingDiagnostics.preparedContextReused,targetingContextBuildCount:fullResult.targetingDiagnostics.preparedContextBuildCount,evaluatedTargetCount:fullResult.targetingDiagnostics.evaluatedNodeCount,pathSearchCount:fullResult.planningDiagnostics.pathSearchCount}}
+  const setFatal=[set1Specific,set2Specific].filter((value):value is RealPassivePipelineResult=>Boolean(value)).map(statusOf).find(value=>['invalid-input','blocked','failed'].includes(value))
+  return{enabled:true,status:setFatal??statusOf(fullResult),detailMode,pipelineResult,weaponSetPlanning,ascendancyPlanning,profileFeedback:{effectiveBuildProfile:sharedFeedbackResult.profile,effectiveWeaponSetProfiles,...(ascendancyFeedback?{ascendancy:ascendancyFeedback}:{}),shared:sharedFeedback,...(set1Feedback?{set1:set1Feedback}:{}),...(set2Feedback?{set2:set2Feedback}:{})},issues:[...fullResult.violations,...(ascendancyPlanning?.violations??[]),...(set1Specific?.violations??[]),...(set2Specific?.violations??[])],projection:projection.diagnostics,performance:{integrationDurationMs,pipelineDurationMs,inputValidationMs:stage('validate-input'),graphPreparationMs:stage('prepare-graph'),targetingMs:stage('evaluate-targets'),planningMs:stage('create-passive-plan'),outputValidationMs:stage('validate-output'),projectionMs:projection.diagnostics.projectionDurationMs,serializationMs:projection.diagnostics.serializationDurationMs,resultSizeBytes:projection.diagnostics.projectedSizeBytes,graphReused:fullResult.graphDiagnostics.graphReused,graphBuildCount:fullResult.graphDiagnostics.graphBuildCount,targetingContextReused:fullResult.targetingDiagnostics.preparedContextReused,targetingContextBuildCount:fullResult.targetingDiagnostics.preparedContextBuildCount,evaluatedTargetCount:fullResult.targetingDiagnostics.evaluatedNodeCount,pathSearchCount:fullResult.planningDiagnostics.pathSearchCount}}
 }

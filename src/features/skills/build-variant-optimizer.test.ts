@@ -209,11 +209,52 @@ describe('vollständige Build-Variantenoptimierung', () => {
       skillId: 'spark',
       mainWeaponSet: 'set-1',
       setupSkillId: 'orb',
+      setupWeaponSet: 'set-2',
     })
     expect(['wand','staff','sceptre']).toContain(result.selected?.weaponType)
     expect(['wand','staff','sceptre']).toContain(result.selected?.setupWeaponType)
     expect(result.selected?.compatibleSupportIds).toEqual(['spell-support'])
     expect(result.evaluatedSkillCount).toBe(2)
+  })
+
+  it('nimmt die Setup-Waffe aus dem gegenüberliegenden Set statt fest aus Set 2', () => {
+    const equipped = initialEquipment.map(entry => {
+      if (entry.slotId === 'slot-weapon-set-1-left') return { ...entry, itemClassId: 'Staves' }
+      if (entry.slotId === 'slot-weapon-set-2-left') return { ...entry, itemClassId: 'Wands' }
+      if (entry.slotId === 'slot-weapon-set-2-right') return { ...entry, itemClassId: 'Sceptres' }
+      return entry
+    })
+    const spark = skill('spark', ['spell', 'projectile', 'lightning'], {
+      nameEn: 'Spark',
+      requiredWeaponTypes: ['wand'],
+    })
+    const orb = skill('orb', ['spell', 'area', 'lightning'], {
+      nameEn: 'Orb of Storms',
+      possibleRoles: ['utility'],
+      rotationRoles: ['setup'],
+      persistsAfterWeaponSwap: true,
+      affectsTarget: true,
+      requiredWeaponTypes: ['staff', 'sceptre'],
+    })
+
+    const result = optimizeBuildVariants({
+      classId: 'class-official-7',
+      ascendancyId: 'ascendancy-official-Sorceress1',
+      equipment: equipped,
+      setups: createEmptySkillSetups(),
+      skills: [spark, orb],
+      supports: [],
+      skillScores: [score('spark'), score('orb')],
+    })
+
+    expect(result.selected).toMatchObject({
+      skillId: 'spark',
+      mainWeaponSet: 'set-2',
+      setupSkillId: 'orb',
+      setupWeaponSet: 'set-1',
+      setupWeaponType: 'staff',
+    })
+    expect(result.selected?.reasons.some(reason => reason.startsWith('Waffenset 1:'))).toBe(true)
   })
 
   it('wählt für einen physisch orientierten Krieger eine belegte Nahkampfvariante', () => {

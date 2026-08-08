@@ -1,4 +1,4 @@
-import { findPassivePath } from '../passive-pathfinding/pathfinder'
+import { findPassivePaths } from '../passive-pathfinding/pathfinder'
 import type { PassivePathResult } from '../passive-pathfinding/types'
 import { baseValueComponents, buildPassivePlanningCandidates } from './candidate-builder'
 import { PASSIVE_PLANNER_VERSION, PASSIVE_PLANNING_CONFIG, PASSIVE_PLANNING_STRATEGY } from './config'
@@ -23,20 +23,30 @@ function cacheKey(input:PassivePlanningInput,anchor:string,target:string,state:S
 }
 function fromPath(value:PassivePathResult):PassivePlanCachedPath{return{reachable:value.reachable,withinBudget:value.withinBudget,pathNodeIds:[...value.orderedNodeIds],connectionIds:[...value.orderedConnectionIds],addedNodeIds:[...value.newlyAllocatedNodeIds],reusedNodeIds:[...value.reusedNodeIds],pointCost:value.totalPointCost,pathLength:value.pathLength}}
 
-function incrementalPath(input:PassivePlanningInput,target:string,state:State,cache:PassivePlanningPathCache):PassivePlanCachedPath|undefined {
- if(state.merged.has(target))return{reachable:true,withinBudget:true,pathNodeIds:[target],connectionIds:[],addedNodeIds:[],reusedNodeIds:[target],pointCost:0,pathLength:0}
- const anchor=input.startNodeId,key=cacheKey(input,anchor,target,state);let path=cache.entries.get(key)
- if(path){state.cacheHits++;return path.reachable?path:undefined}
- if(state.pathSearches>=PASSIVE_PLANNING_CONFIG.limits.maximumPathSearches){state.safety=true;return undefined}
+function incrementalPaths(input:PassivePlanningInput,targets:readonly string[],state:State,cache:PassivePlanningPathCache):Map<string,PassivePlanCachedPath> {
+ const results=new Map<string,PassivePlanCachedPath>(),anchor=input.startNodeId,missing:string[]=[]
+ for(const target of targets){
+  if(state.merged.has(target)){results.set(target,{reachable:true,withinBudget:true,pathNodeIds:[target],connectionIds:[],addedNodeIds:[],reusedNodeIds:[target],pointCost:0,pathLength:0});continue}
+  const cached=cache.entries.get(cacheKey(input,anchor,target,state))
+  if(cached){state.cacheHits++;if(cached.reachable)results.set(target,cached)}else missing.push(target)
+ }
+ if(!missing.length)return results
+ if(state.pathSearches>=PASSIVE_PLANNING_CONFIG.limits.maximumPathSearches){state.safety=true;return results}
  const allowedNodeTypes=input.planningScope==='ascendancy'
   ? ['ascendancy-start','ascendancy'] as const
   : input.planningScope==='weapon-set'
     ? ['normal','notable','class-start'] as const
     : ['normal','notable','keystone','class-start','jewel-socket'] as const
- const result=findPassivePath(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:${target}`,startNodeId:anchor,targetNodeIds:[target],allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:[...allowedNodeTypes],ascendancyId:input.planningScope==='ascendancy'?input.ascendancyId:undefined,searchMode:'lowest-cost-path'})
- state.pathSearches++;path=fromPath(result);cache.entries.set(key,path)
- return path.reachable?path:undefined
+ const found=findPassivePaths(input.passiveGraph,{requestId:`${input.requestId}:${anchor}:batch`,startNodeId:anchor,targetNodeIds:missing,allocatedNodeIds:uniqueSorted(state.allocated),blockedNodeIds:uniqueSorted(input.blockedNodeIds??[]),allowedNodeTypes:[...allowedNodeTypes],ascendancyId:input.planningScope==='ascendancy'?input.ascendancyId:undefined,searchMode:'lowest-cost-path'})
+ state.pathSearches++
+ for(const target of missing){
+  const result=found.get(target),path=result?fromPath(result):{reachable:false,withinBudget:false,pathNodeIds:[],connectionIds:[],addedNodeIds:[],reusedNodeIds:[],pointCost:0,pathLength:0}
+  cache.entries.set(cacheKey(input,anchor,target,state),path)
+  if(path.reachable)results.set(target,path)
+ }
+ return results
 }
+function incrementalPath(input:PassivePlanningInput,target:string,state:State,cache:PassivePlanningPathCache):PassivePlanCachedPath|undefined{return incrementalPaths(input,[target],state,cache).get(target)}
 
 function redundancy(candidate:PassivePlanCandidate,selected:PassivePlanCandidate[]):{penalty:number;codes:string[]} {
  const codes:string[]=[]
@@ -78,19 +88,23 @@ export function planPassiveTargets(input:PassivePlanningInput):PassivePlanResult
  for(const id of requiredIds){const candidate=candidateById.get(id)!,path=incrementalPath(input,id,state,cache);if(!path||!path.reachable)return{...empty(input,'required-target-unreachable',[`required-target-unreachable:${id}`]),pathSearchCount:state.pathSearches,pathCacheHitCount:state.cacheHits,candidateCount:candidates.length};if(state.used+path.pointCost>input.pointBudget)return{...empty(input,'required-target-over-budget',[`required-target-over-budget:${id}`]),pathSearchCount:state.pathSearches,pathCacheHitCount:state.cacheHits,candidateCount:candidates.length};add(evaluate(input,candidate,path,selectedCandidates),1)}
  let iterations=0
  while(state.selected.size<limit&&state.used<input.pointBudget&&iterations<PASSIVE_PLANNING_CONFIG.limits.maximumIterations&&!state.safety){iterations++;const evaluations:Evaluation[]=[]
-  for(const candidate of candidates){if(state.selected.has(candidate.recommendation.nodeId)||candidate.required)continue;const path=incrementalPath(input,candidate.recommendation.nodeId,state,cache);if(!path||!path.reachable||state.used+path.pointCost>input.pointBudget)continue;const value=evaluate(input,candidate,path,selectedCandidates);if(value.effectiveValue>0&&value.score>0)evaluations.push(value)}
+  const available=candidates.filter(candidate=>!state.selected.has(candidate.recommendation.nodeId)&&!candidate.required),paths=incrementalPaths(input,available.map(candidate=>candidate.recommendation.nodeId),state,cache)
+  for(const candidate of available){const path=paths.get(candidate.recommendation.nodeId);if(!path||!path.reachable||state.used+path.pointCost>input.pointBudget)continue;const value=evaluate(input,candidate,path,selectedCandidates);if(value.effectiveValue>0&&value.score>0)evaluations.push(value)}
   const chosen=evaluations.sort(compareEvaluation)[0];if(!chosen)break;add(chosen,evaluations.length)
  }
  let completionIterations=0
  while(state.selected.size<limit&&state.used<input.pointBudget&&completionIterations<PASSIVE_PLANNING_CONFIG.limits.maximumIterations&&!state.safety){
   completionIterations++
   let chosen:Evaluation|undefined
-  for(const candidate of candidates){
-   if(state.selected.has(candidate.recommendation.nodeId)||candidate.required)continue
+  const available=candidates.filter(candidate=>!state.selected.has(candidate.recommendation.nodeId)&&!candidate.required).filter(candidate=>{
    const base=baseValueComponents(input,candidate.recommendation)
    const hasBlockingConflict=input.planningScope!=='ascendancy'&&(candidate.recommendation.conflictingTags.length>0||candidate.recommendation.conflictingProfileFields.length>0||candidate.recommendation.conflictingNodeIds.length>0)
-   if(base.effectiveValue<=0||hasBlockingConflict)continue
-   const path=incrementalPath(input,candidate.recommendation.nodeId,state,cache)
+   return base.effectiveValue>0&&!hasBlockingConflict
+  }),paths=incrementalPaths(input,available.map(candidate=>candidate.recommendation.nodeId),state,cache)
+  for(const candidate of available){
+   const base=baseValueComponents(input,candidate.recommendation)
+   if(base.effectiveValue<=0)continue
+   const path=paths.get(candidate.recommendation.nodeId)
    if(!path||path.pointCost<=0||state.used+path.pointCost>input.pointBudget)continue
    const evaluated=evaluate(input,candidate,path,[])
    if(evaluated.effectiveValue>0){chosen=evaluated;break}

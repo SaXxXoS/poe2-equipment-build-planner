@@ -143,7 +143,8 @@ export default function App() {
                 ...setup,
                 skillId: candidate.setupSkillId,
                 role: 'utility' as const,
-                weaponSet: candidate.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const,
+                weaponSet: candidate.setupWeaponSet
+                  ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
                 supportGemIds: [],
                 origin: 'recommended' as const,
                 synergyReason: candidate.setupReason,
@@ -151,27 +152,28 @@ export default function App() {
             }
             return setup
           })
-          const hasEquipment = equipment.some(entry =>
-            Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId || entry.modifierValues.length))
-          const packageEquipment = hasEquipment ? equipment : plannedEquipmentForVariant(
+          const packageEquipment = plannedEquipmentForVariant(
             equipment,
             candidate,
             characterForAnalysis.level || undefined,
             characterAttributes,
           )
+          const usesPlannedEquipment = packageEquipment.some(entry =>
+            entry.id.startsWith('optimizer-reference-'))
           const packageAnalysis = runBuildAssistantV1({
             character: { ...characterForAnalysis, desiredMainSkillId: candidate.skillId },
             equipment: packageEquipment,
             setups: packageSetups,
           })
           return evaluateAnalyzedBuildPackage(candidate, packageAnalysis, {
-            allowPlannedEquipmentRequirements: !hasEquipment,
+            allowPlannedEquipmentRequirements: usesPlannedEquipment,
           })
         }
         let result = runBuildAssistantV1(input)
         completedAnalyzerResult=result
         let effectiveSetups = preparedSetups
         let effectiveCharacter = character
+        let effectiveOptimization: BuildVariantOptimization | null = null
         const hasSelectedSkill = preparedSetups.some(value => value.skillId)
         if (!hasSelectedSkill) {
           const mainCandidates = [
@@ -191,6 +193,7 @@ export default function App() {
             characterAttributes: result.characterAttributes,
             evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),
           })
+          effectiveOptimization = optimization
           setVariantOptimization(optimization)
           const recommendation = mainCandidates.find(value => value.skillId === optimization.selected?.skillId) ?? selectAutomaticMainSkill({
             candidates: mainCandidates,
@@ -237,7 +240,9 @@ export default function App() {
                 ...value,
                 skillId: candidate.skillId,
                 role: candidate.role,
-                weaponSet: candidate.weaponSet,
+                weaponSet: candidate.skillId === optimization.selected?.setupSkillId
+                  ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
+                  : candidate.weaponSet,
                 origin: 'recommended' as const,
                 supportGemIds: [],
                 synergyReason: candidate.reason,
@@ -257,7 +262,7 @@ export default function App() {
           if (mainSetup && mainDefinition) {
             const scores = [...result.skillAnalysis.eligibleCandidates, ...result.skillAnalysis.allCandidates]
               .filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
-            setVariantOptimization(optimizeBuildVariants({
+            const optimization = optimizeBuildVariants({
               classId: character.classId,
               ascendancyId: character.ascendancyId,
               equipment,
@@ -270,12 +275,18 @@ export default function App() {
               characterLevel: character.level || undefined,
               characterAttributes: result.characterAttributes,
               evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),
-            }))
+            })
+            effectiveOptimization = optimization
+            setVariantOptimization(optimization)
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {
               ascendancyId: character.ascendancyId,
             })
               .filter(value => !existingIds.has(value.skillId))
+            if (optimization.selected?.setupSkillId) {
+              const selectedSetupIndex = queue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
+              if (selectedSetupIndex > 0) queue.unshift(...queue.splice(selectedSetupIndex, 1))
+            }
             const populated = preparedSetups.map(value => {
               if (value.skillId) return value
               const candidate = queue.shift()
@@ -283,7 +294,9 @@ export default function App() {
                 ...value,
                 skillId: candidate.skillId,
                 role: candidate.role,
-                weaponSet: candidate.weaponSet,
+                weaponSet: candidate.skillId === optimization.selected?.setupSkillId
+                  ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
+                  : candidate.weaponSet,
                 origin: 'recommended' as const,
                 supportGemIds: [],
                 synergyReason: candidate.reason,
@@ -385,6 +398,44 @@ export default function App() {
             passiveAwareResult.realPassivePlanning!,
           )
           completedAnalyzerResult=result
+        }
+        if (effectiveOptimization?.selected) {
+          const selected = effectiveOptimization.selected
+          const packageEquipment = plannedEquipmentForVariant(
+            equipment,
+            selected,
+            effectiveCharacter.level || undefined,
+            result.characterAttributes,
+          )
+          const finalPackageAnalysis = runBuildAssistantV1(
+            {
+              character: { ...effectiveCharacter, desiredMainSkillId: selected.skillId },
+              equipment: packageEquipment,
+              setups: effectiveSetups,
+            },
+            result.realPassivePlanning,
+          )
+          const finalEvaluation = evaluateAnalyzedBuildPackage(selected, finalPackageAnalysis, {
+            allowPlannedEquipmentRequirements: packageEquipment.some(entry =>
+              entry.id.startsWith('optimizer-reference-')),
+          })
+          const priorEvidence = new Set(selected.packageEvidence ?? [])
+          effectiveOptimization = {
+            ...effectiveOptimization,
+            selected: {
+              ...selected,
+              packageScore: finalEvaluation.totalScore,
+              packageStatus: finalEvaluation.status,
+              packageComponents: finalEvaluation.components,
+              packageEvidence: finalEvaluation.evidence,
+              packageBlockers: finalEvaluation.blockers,
+              reasons: [
+                ...selected.reasons.filter(reason => !priorEvidence.has(reason)),
+                ...finalEvaluation.evidence,
+              ],
+            },
+          }
+          setVariantOptimization(effectiveOptimization)
         }
         setAnalysis(result)
         setCalculationState('completed')

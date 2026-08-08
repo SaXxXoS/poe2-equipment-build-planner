@@ -70,6 +70,7 @@ export interface BuildVariantCandidate {
   setupSkillName?: string
   setupSkillTags?: MechanicTag[]
   setupWeaponType?: SyntheticWeaponType
+  setupWeaponSet?: 'set-1' | 'set-2'
   setupReason?: string
   compatibleSupportIds: string[]
   affinityScore: number
@@ -229,7 +230,7 @@ const hasWeaponInSet = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2') =>
 export function plannedEquipmentForVariant(
   equipment: EquipmentEntry[],
   candidate: Pick<BuildVariantCandidate,
-    'weaponType' | 'mainWeaponSet' | 'setupSkillId' | 'setupWeaponType'>,
+    'weaponType' | 'mainWeaponSet' | 'setupSkillId' | 'setupWeaponType' | 'setupWeaponSet'>,
   characterLevel?: number,
   characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>,
 ): EquipmentEntry[] {
@@ -244,7 +245,10 @@ export function plannedEquipmentForVariant(
   }
   add(candidate.weaponType, candidate.mainWeaponSet)
   if (candidate.setupSkillId) {
-    add(candidate.setupWeaponType, candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1')
+    add(
+      candidate.setupWeaponType,
+      candidate.setupWeaponSet ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1'),
+    )
   }
   return planned
 }
@@ -293,10 +297,12 @@ function setupWeapon(
   skill: SkillGemDefinition | undefined,
   mainWeapon: SyntheticWeaponType,
   equipped: ReturnType<typeof equipmentWeaponSets>,
+  setupSet: 'set-1' | 'set-2',
 ) {
   if (!skill) return undefined
-  const equippedSetTwo = [...equipped['set-2']].find(type => weaponTypeMatches(skill.requiredWeaponTypes, type))
-  if (equippedSetTwo) return equippedSetTwo
+  const equippedSetupWeapon = [...equipped[setupSet]].find(type =>
+    weaponTypeMatches(skill.requiredWeaponTypes, type))
+  if (equippedSetupWeapon) return equippedSetupWeapon
   if (weaponTypeMatches(skill.requiredWeaponTypes, mainWeapon)) return mainWeapon
   return candidateWeapons(skill, { 'set-1': new Set(), 'set-2': new Set() })[0]
 }
@@ -452,16 +458,17 @@ export function optimizeBuildVariants(input: {
           characterLevel: input.characterLevel,
         },
       ).supportGemIds
+      const mainWeaponSet = preferredSet(weapon, equipped)
+      const setupWeaponSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
       const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1, {
         ascendancyId: input.ascendancyId,
       })[0]
       const setupDefinition = characterSkills.find(value => value.id === setup?.skillId)
-      const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped)
+      const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped, setupWeaponSet)
       const usableSetup = setup && setupDefinition && setupWeaponType
         && evaluateSkillWeaponCompatibility(setupDefinition, setupWeaponType).status === 'productive'
         ? setup
         : undefined
-      const mainWeaponSet = preferredSet(weapon, equipped)
       const estimateEquipment = equipmentForEstimate(
         input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
         input.characterAttributes?.[mainWeaponSet].total,
@@ -496,7 +503,11 @@ export function optimizeBuildVariants(input: {
           : 'resource-chain-unknown' as const
       const passiveAffinityScore = affinity.score
       const metaReference = scoreMetaReference(skill, weapon, input.ascendancyId)
-      const weaponEvidenceScore = skill.requiredWeaponTypes?.length ? 80 : skill.tags.includes('spell') && weapon === 'wand' ? 25 : 0
+      const weaponEvidenceScore = skill.requiredWeaponTypes?.length
+        ? 80
+        : skill.tags.includes('spell') && ['wand', 'staff', 'sceptre'].includes(weapon)
+          ? 25
+          : 0
       const setupScore = usableSetup ? 35 : 0
       const ruleGraph = buildEffectGraph({
         mainSkill: skill,
@@ -540,7 +551,9 @@ export function optimizeBuildVariants(input: {
         `${weaponLabels[weapon]} ist mit der Fertigkeit technisch kompatibel.`,
         ...(affinity.classMatches.length ? [`Klassenbezug: ${affinity.classMatches.join(', ')}.`] : []),
         ...(affinity.ascendancyMatches.length ? [`Aszendenzbezug: ${affinity.ascendancyMatches.join(', ')}.`] : []),
-        ...(usableSetup ? [`Waffenset 2: ${usableSetup.reason}`] : []),
+        ...(usableSetup
+          ? [`Waffenset ${setupWeaponSet === 'set-1' ? '1' : '2'}: ${usableSetup.reason}`]
+          : []),
         ...(metaReference.observedSkillShare !== undefined
           ? [`Aktuelle Meta-Referenz: ${skill.nameEn ?? skill.displayNameDe} erscheint bei ${metaReference.observedSkillShare} % von ${metaReference.sampleSize} erfassten Charakteren dieser Aszendenz.`]
           : []),
@@ -566,6 +579,7 @@ export function optimizeBuildVariants(input: {
           : undefined,
         setupSkillTags: usableSetup && setupDefinition ? [...setupDefinition.tags] : undefined,
         setupWeaponType: usableSetup ? setupWeaponType : undefined,
+        setupWeaponSet: usableSetup ? setupWeaponSet : undefined,
         setupReason: usableSetup?.reason,
         compatibleSupportIds: supportIds,
         affinityScore: affinity.score,

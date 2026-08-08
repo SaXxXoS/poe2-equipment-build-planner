@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import officialTree from '../../../generated/poe2-tree/tree.json'
 import { clonePassivePathSource, SYNTHETIC_PASSIVE_PATH_SOURCE } from './fixtures'
 import { buildPassiveGraph, PassiveGraphError } from './graph'
-import { connectPassiveTargets, findPassivePath } from './pathfinder'
+import { connectPassiveTargets, findPassivePath, findPassivePaths } from './pathfinder'
 import type { PassivePathRequest, PassivePathSource } from './types'
 
 const graph = buildPassiveGraph(SYNTHETIC_PASSIVE_PATH_SOURCE)
@@ -38,6 +38,11 @@ describe('deterministische passive Pfadsuche', () => {
     expect(findPassivePath(weighted, { startNodeId: 'S', targetNodeIds: ['Z'], searchMode: 'lowest-cost-path' }).orderedNodeIds).toEqual(['S', 'L1', 'L2', 'Z'])
   })
   it('liefert für gleiche Eingaben exakt gleiche Ausgaben', () => expect(findPassivePath(graph, request(['T']))).toEqual(findPassivePath(graph, request(['T']))))
+  it('liefert in einer gemeinsamen Suche dieselben Einzelpfade', () => {
+    const targets = ['D', 'T']
+    const results = findPassivePaths(graph, request(targets))
+    for (const target of targets) expect(results.get(target)).toEqual(findPassivePath(graph, request([target])))
+  })
   it('erzeugt ohne vorgegebene ID eine stabile Request-ID', () => expect(findPassivePath(graph, request(['T'])).requestId).toMatch(/^passive-path-[0-9a-f]{8}$/))
   it('verbindet mehrere Ziele über gemeinsame Teilstücke', () => { const result = connectPassiveTargets(graph, request(['D', 'T'], { searchMode: 'connect-targets' })); expect(result.status).toBe('success'); expect(result.mergedNodeIds).toEqual(['A', 'B', 'D', 'T']); expect(result.totalPointCost).toBe(3); expect(result.optimalityClaim).toBe('shortest-per-step') })
   it('berechnet Mehrzielknoten und Verbindungen nicht doppelt', () => { const result = connectPassiveTargets(graph, request(['D', 'T'], { searchMode: 'connect-targets' })); expect(new Set(result.mergedNodeIds).size).toBe(result.mergedNodeIds.length); expect(new Set(result.mergedConnectionIds).size).toBe(result.mergedConnectionIds.length) })

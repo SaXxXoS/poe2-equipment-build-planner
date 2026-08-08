@@ -31,6 +31,37 @@ const hasCandidateEvidence = (
     [...tags].some(tag => field === tag || field.endsWith(`.${tag}`)),
   )
 
+const realPassiveCoverageScore = (
+  candidate: BuildVariantCandidate,
+  analysis: BuildAnalysis,
+): number | null => {
+  const planning = analysis.realPassivePlanning
+  if (!planning?.enabled) return null
+  const plan = planning.weaponSetPlanning?.[candidate.mainWeaponSet]
+    ?? planning.pipelineResult
+  if (!plan || plan.pointBudget <= 0) return 0
+  const budgetCoverage = Math.min(1, plan.usedPointBudget / plan.pointBudget)
+  const feedback = planning.profileFeedback
+  const setFeedback = candidate.mainWeaponSet === 'set-1'
+    ? feedback?.set1
+    : feedback?.set2
+  const fieldDeltas = [
+    ...(feedback?.shared?.fieldDeltas ?? []),
+    ...(feedback?.ascendancy?.fieldDeltas ?? []),
+    ...(setFeedback?.fieldDeltas ?? []),
+  ]
+  const tags = new Set(candidate.skillTags ?? [])
+  const relevantFields = fieldDeltas.filter(delta => hasCandidateEvidence(
+    tags,
+    [],
+    [delta.field],
+  ))
+  // Der reale Plan ist bereits aus demselben Buildprofil erzeugt. Seine
+  // Budgetabdeckung bildet deshalb die belastbare Grundkomponente; explizit
+  // passende Profilrückwirkungen erhöhen sie, ohne einen DPS-Wert zu erfinden.
+  return clamp(budgetCoverage * 70 + Math.min(30, relevantFields.length * 6))
+}
+
 export function evaluateAnalyzedBuildPackage(
   candidate: BuildVariantCandidate,
   analysis: BuildAnalysis,
@@ -94,7 +125,8 @@ export function evaluateAnalyzedBuildPackage(
     equipment: scoreValue(analysis.equipmentAnalysis.score),
     skill: scoreValue(selectedSkill),
     supports: clamp(average(validSupports.map(item => item.totalScore))),
-    passives: clamp(average(passiveCandidates.map(item => item.damageScore))),
+    passives: realPassiveCoverageScore(candidate, analysis)
+      ?? clamp(average(passiveCandidates.map(item => item.damageScore))),
     jewels: clamp(average(jewelCandidates.map(item => item.damageScore))),
     uniques: clamp(average(uniqueCandidates.map(item => item.damageScore))),
     resources: candidate.resourceStatus === 'confirmed-usable'

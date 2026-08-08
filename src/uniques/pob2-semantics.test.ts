@@ -33,4 +33,21 @@ describe('PoB2-Unique-Semantik', () => {
     const result = classifyPob2Unique(record('+150 to Strength Requirement'))
     expect(result.tradeOffs).toEqual(['source-line:line-1'])
   })
+
+  it.each([
+    ['bow', 'bow'],
+    ['crossbow', 'crossbow'],
+    ['mace', 'mace'],
+    ['spear', 'spear'],
+    ['staff', 'staff'],
+    ['sceptre', 'sceptre'],
+    ['wand', 'wand'],
+  ] as const)('bindet das Waffen-Unique %s an die konkrete strukturierte Waffenart', (itemCategory, weaponType) => {
+    const result = classifyPob2Unique({ ...record('Adds {value1} to {value2} Lightning Damage'), slot: 'weapon', itemCategory })
+    expect(result.requiredWeaponTypes).toEqual([weaponType])
+  })
+
+  it('erfindet für Nicht-Waffen keine Waffenanforderung', () => {
+    expect(classifyPob2Unique(record('+{value1} to maximum Life')).requiredWeaponTypes).toEqual([])
+  })
 })

@@ -106,4 +106,32 @@ describe('gemeinsame Build-Paketbewertung', () => {
     expect(result.status).not.toBe('blocked')
     expect(result.blockers).not.toContain('engine.skill.constraint.skill-attribute-deficit')
   })
+  it('verwendet nach der Baumplanung die reale Passivabdeckung statt des Vorabkandidatenwerts', () => {
+    const value = analysis()
+    value.passiveAnalysis.topDamageCandidates = []
+    value.realPassivePlanning = {
+      enabled: true,
+      pipelineResult: {
+        pointBudget: 80,
+        usedPointBudget: 80,
+      },
+      weaponSetPlanning: {
+        set1: {
+          pointBudget: 104,
+          usedPointBudget: 104,
+        },
+      },
+      profileFeedback: {
+        shared: {
+          fieldDeltas: [{ field: 'mechanics.spell', delta: 20, sourceNodeIds: ['node-a'] }],
+        },
+        set1: {
+          fieldDeltas: [{ field: 'speed.castSpeedAffinity', delta: 20, sourceNodeIds: ['node-b'] }],
+        },
+      },
+    } as unknown as BuildAnalysis['realPassivePlanning']
+    const result = evaluateAnalyzedBuildPackage(candidate, value)
+    expect(result.components.passives).toBe(76)
+    expect(result.evidence.join(' ')).not.toContain('Passive liefern')
+  })
 })

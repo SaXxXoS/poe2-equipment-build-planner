@@ -3,12 +3,13 @@ import { canonicalNodePair } from './graph'
 import type { PassiveGraph, PassiveMultiTargetPathResult, PassivePathRequest, PassivePathResult, PassivePathStatus, PassivePathViolation } from './types'
 import { traversalViolation, validatePassivePathRequest } from './validator'
 
-interface SearchState { nodeId: string; nodeIds: string[]; cost: number; newlyAllocated: number; pathLength: number }
+interface SearchState { nodeId: string; parent?: SearchState; cachedNodeIds?: string[]; cost: number; newlyAllocated: number; pathLength: number }
 const lexicalPath = (a: string[], b: string[]) => a.join('\u0000').localeCompare(b.join('\u0000'), 'en')
+const stateNodeIds = (state: SearchState): string[] => state.cachedNodeIds ??= state.parent ? [...stateNodeIds(state.parent), state.nodeId] : [state.nodeId]
 const tieBreakerFor = (mode: PassivePathRequest['searchMode']) => mode === 'shortest-path' ? 'path-length, newly-allocated, total-cost, lexicographic-node-id-sequence' : PASSIVE_PATH_TIE_BREAKER
 const compareState = (a: SearchState, b: SearchState, mode: PassivePathRequest['searchMode']) => mode === 'shortest-path'
-  ? a.pathLength - b.pathLength || a.newlyAllocated - b.newlyAllocated || a.cost - b.cost || lexicalPath(a.nodeIds, b.nodeIds)
-  : a.cost - b.cost || a.newlyAllocated - b.newlyAllocated || a.pathLength - b.pathLength || lexicalPath(a.nodeIds, b.nodeIds)
+  ? a.pathLength - b.pathLength || a.newlyAllocated - b.newlyAllocated || a.cost - b.cost || lexicalPath(stateNodeIds(a), stateNodeIds(b))
+  : a.cost - b.cost || a.newlyAllocated - b.newlyAllocated || a.pathLength - b.pathLength || lexicalPath(stateNodeIds(a), stateNodeIds(b))
 
 class MinHeap {
   private values: SearchState[] = []
@@ -34,36 +35,39 @@ function endpointViolations(graph: PassiveGraph, request: PassivePathRequest): P
   return [request.startNodeId, ...request.targetNodeIds].flatMap(id => traversalViolation(graph, request, id) ?? [])
 }
 
-function findPath(graph: PassiveGraph, request: PassivePathRequest, startNodeId: string, targetNodeId: string, allocated: Set<string>): SearchState | undefined {
-  const start: SearchState = { nodeId: startNodeId, nodeIds: [startNodeId], cost: 0, newlyAllocated: 0, pathLength: 0 }
+function findPaths(graph: PassiveGraph, request: PassivePathRequest, startNodeId: string, targetNodeIds: readonly string[], allocated: Set<string>): Map<string, SearchState> {
+  const start: SearchState = { nodeId: startNodeId, cachedNodeIds: [startNodeId], cost: 0, newlyAllocated: 0, pathLength: 0 }
   const heap = new MinHeap((a, b) => compareState(a, b, request.searchMode))
   const best = new Map<string, SearchState>([[startNodeId, start]])
+  const remaining = new Set(targetNodeIds)
+  const results = new Map<string, SearchState>()
   heap.push(start)
-  while (heap.size) {
+  while (heap.size && remaining.size) {
     const current = heap.pop()!
     if (best.get(current.nodeId) !== current) continue
-    if (current.nodeId === targetNodeId) return current
+    if (remaining.delete(current.nodeId)) results.set(current.nodeId, current)
+    if (!remaining.size) break
     const node = graph.nodes.get(current.nodeId)!
     for (const neighbourId of node.neighbourNodeIds) {
       if (traversalViolation(graph, request, neighbourId)) continue
-      if (current.nodeIds.includes(neighbourId)) continue
       const neighbour = graph.nodes.get(neighbourId)!
       const isNew = !allocated.has(neighbourId) && neighbour.traversalCost > 0
-      const candidate: SearchState = { nodeId: neighbourId, nodeIds: [...current.nodeIds, neighbourId], cost: current.cost + (allocated.has(neighbourId) ? 0 : neighbour.traversalCost), newlyAllocated: current.newlyAllocated + Number(isNew), pathLength: current.pathLength + 1 }
+      const candidate: SearchState = { nodeId: neighbourId, parent: current, cost: current.cost + (allocated.has(neighbourId) ? 0 : neighbour.traversalCost), newlyAllocated: current.newlyAllocated + Number(isNew), pathLength: current.pathLength + 1 }
       const previous = best.get(neighbourId)
       if (!previous || compareState(candidate, previous, request.searchMode) < 0) { best.set(neighbourId, candidate); heap.push(candidate) }
     }
   }
-  return undefined
+  return results
 }
 
 function resultFromState(graph: PassiveGraph, request: PassivePathRequest, state: SearchState, allocated: Set<string>): PassivePathResult {
-  const orderedConnectionIds = state.nodeIds.slice(1).map((id, index) => graph.connectionIdByNodePair.get(canonicalNodePair(state.nodeIds[index], id))!).filter(Boolean)
-  const newlyAllocatedNodeIds = state.nodeIds.filter(id => !allocated.has(id) && graph.nodes.get(id)!.traversalCost > 0)
-  const reusedNodeIds = state.nodeIds.filter(id => allocated.has(id) || graph.nodes.get(id)!.traversalCost === 0)
+  const nodeIds = stateNodeIds(state)
+  const orderedConnectionIds = nodeIds.slice(1).map((id, index) => graph.connectionIdByNodePair.get(canonicalNodePair(nodeIds[index], id))!).filter(Boolean)
+  const newlyAllocatedNodeIds = nodeIds.filter(id => !allocated.has(id) && graph.nodes.get(id)!.traversalCost > 0)
+  const reusedNodeIds = nodeIds.filter(id => allocated.has(id) || graph.nodes.get(id)!.traversalCost === 0)
   const withinBudget = request.maxPointBudget === undefined || state.cost <= request.maxPointBudget
   const violations = withinBudget ? [] : [{ code: 'point-budget-exceeded', message: `Pfadkosten ${state.cost} überschreiten das Punktbudget ${request.maxPointBudget}.`, nodeIds: [...newlyAllocatedNodeIds], blocking: true as const }]
-  return { requestId: stableRequestId(request), startNodeId: state.nodeIds[0], targetNodeIds: [...request.targetNodeIds], orderedNodeIds: state.nodeIds, orderedConnectionIds, newlyAllocatedNodeIds, reusedNodeIds, traversedNodeCount: state.nodeIds.length, newlyAllocatedNodeCount: newlyAllocatedNodeIds.length, reusedNodeCount: reusedNodeIds.length, totalPointCost: state.cost, pathLength: state.pathLength, reachable: true, withinBudget, searchMode: request.searchMode, algorithm: PASSIVE_PATH_ALGORITHM, tieBreaker: tieBreakerFor(request.searchMode), warnings: [], violations, status: withinBudget ? 'success' : 'over-budget', pathfinderVersion: PASSIVE_PATHFINDER_VERSION }
+  return { requestId: stableRequestId(request), startNodeId: nodeIds[0], targetNodeIds: [...request.targetNodeIds], orderedNodeIds: nodeIds, orderedConnectionIds, newlyAllocatedNodeIds, reusedNodeIds, traversedNodeCount: nodeIds.length, newlyAllocatedNodeCount: newlyAllocatedNodeIds.length, reusedNodeCount: reusedNodeIds.length, totalPointCost: state.cost, pathLength: state.pathLength, reachable: true, withinBudget, searchMode: request.searchMode, algorithm: PASSIVE_PATH_ALGORITHM, tieBreaker: tieBreakerFor(request.searchMode), warnings: [], violations, status: withinBudget ? 'success' : 'over-budget', pathfinderVersion: PASSIVE_PATHFINDER_VERSION }
 }
 
 export function findPassivePath(graph: PassiveGraph, request: PassivePathRequest): PassivePathResult {
@@ -72,9 +76,26 @@ export function findPassivePath(graph: PassiveGraph, request: PassivePathRequest
   if (request.targetNodeIds.length !== 1) violations.push({ code: 'single-target-required', message: 'Die Einzelzielsuche erwartet genau ein Ziel.', nodeIds: [...request.targetNodeIds], blocking: true })
   if (violations.length) return emptyResult(request, violations, 'blocked')
   const allocated = new Set([request.startNodeId, ...(request.allocatedNodeIds ?? [])])
-  const state = findPath(graph, request, request.startNodeId, request.targetNodeIds[0], allocated)
+  const state = findPaths(graph, request, request.startNodeId, request.targetNodeIds, allocated).get(request.targetNodeIds[0])
   if (!state) return emptyResult(request, [{ code: 'unreachable-target', message: `Ziel ${request.targetNodeIds[0]} ist unter den angegebenen Grenzen nicht erreichbar.`, nodeIds: [request.targetNodeIds[0]], blocking: true }], 'unreachable')
   return resultFromState(graph, request, state, allocated)
+}
+
+/**
+ * Berechnet mehrere Einzelzielpfade mit genau einer Dijkstra-Suche. Die
+ * Kosten- und Tie-Break-Regeln entsprechen findPassivePath; lediglich die
+ * gemeinsame Traversierung wird wiederverwendet. Nicht erreichbare Ziele
+ * fehlen in der Ergebnismenge.
+ */
+export function findPassivePaths(graph: PassiveGraph, request: PassivePathRequest): ReadonlyMap<string, PassivePathResult> {
+  const violations = [...validatePassivePathRequest(graph, request), ...endpointViolations(graph, request)]
+  if (request.searchMode === 'connect-targets' || request.targetNodeIds.length < 1 || violations.length) return new Map()
+  const allocated = new Set([request.startNodeId, ...(request.allocatedNodeIds ?? [])])
+  const states = findPaths(graph, request, request.startNodeId, request.targetNodeIds, allocated)
+  return new Map([...states].map(([targetNodeId, state]) => {
+    const targetRequest = { ...request, targetNodeIds: [targetNodeId] }
+    return [targetNodeId, resultFromState(graph, targetRequest, state, allocated)]
+  }))
 }
 
 export function connectPassiveTargets(graph: PassiveGraph, request: PassivePathRequest): PassiveMultiTargetPathResult {
@@ -92,7 +113,7 @@ export function connectPassiveTargets(graph: PassiveGraph, request: PassivePathR
     for (const targetId of [...remaining].sort()) {
       for (const anchor of [...merged].sort()) {
         const stepRequest: PassivePathRequest = { ...normalized, startNodeId: anchor, targetNodeIds: [targetId], allocatedNodeIds: [...new Set([...allocated, ...merged])], searchMode: 'lowest-cost-path', maxPointBudget: undefined }
-        const state = findPath(graph, stepRequest, anchor, targetId, new Set(stepRequest.allocatedNodeIds))
+        const state = findPaths(graph, stepRequest, anchor, [targetId], new Set(stepRequest.allocatedNodeIds)).get(targetId)
         if (state) candidates.push({ targetId, result: resultFromState(graph, stepRequest, state, new Set(stepRequest.allocatedNodeIds)) })
       }
     }

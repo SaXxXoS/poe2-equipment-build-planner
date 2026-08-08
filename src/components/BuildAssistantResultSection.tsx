@@ -6,7 +6,7 @@ import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import type { PassivePlanPresentation } from '../features/real-passive-analysis'
 import { technicalAffixById } from '../affixes/registry'
 import { affixDisplayName } from '../features/equipment-editor/affix-display'
-import type { BuildVariantOptimization } from '../features/skills/build-variant-optimizer'
+import { weaponLabelFor, type BuildVariantOptimization } from '../features/skills/build-variant-optimizer'
 import type { PostPassiveResourceRebalanceResult } from '../features/skills/post-passive-resource-rebalance'
 import { ResourceBalancePanel } from './ResourceBalancePanel'
 
@@ -202,8 +202,8 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Haupt-Waffenset</dt><dd>{variantOptimization.selected.mainWeaponSet === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dd></div>
           <div><dt>Schadensziel</dt><dd>{variantOptimization.selected.numericCoverageStatus === 'comparable' ? `${variantOptimization.selected.damageObjectiveScore}/100 relativ vergleichbar` : 'Nur strukturell belegbar'}</dd></div>
           <div><dt>Vergleichsabdeckung</dt><dd>{variantOptimization.numericallyComparableCombinationCount}/{variantOptimization.evaluatedCombinationCount}</dd></div>
-          <div><dt>Set-2-Setup</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
-          <div><dt>Setup-Waffe</dt><dd>{variantOptimization.selected.setupWeaponType ? variantOptimization.selected.setupWeaponType === variantOptimization.selected.weaponType ? `${variantOptimization.selected.weaponLabel} (gleiches Waffenkonzept)` : variantOptimization.selected.setupWeaponType : 'Keine zweite Waffe erforderlich'}</dd></div>
+          <div><dt>{variantOptimization.selected.setupWeaponSet === 'set-1' ? 'Set-1-Setup' : 'Set-2-Setup'}</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
+          <div><dt>Setup-Waffe</dt><dd>{variantOptimization.selected.setupWeaponType ? variantOptimization.selected.setupWeaponType === variantOptimization.selected.weaponType ? `${variantOptimization.selected.weaponLabel} (gleiches Waffenkonzept)` : weaponLabelFor(variantOptimization.selected.setupWeaponType) : 'Keine zweite Waffe erforderlich'}</dd></div>
         </dl>
         <h4>Geprüfte Hauptskill-Unterstützungen</h4>
         {variantOptimization.selected.compatibleSupportIds.length

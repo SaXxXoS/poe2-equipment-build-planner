@@ -57,7 +57,7 @@ describe('Build Assistant V1.1 semantic expansion', () => {
     })
     expect(semantics.tags).toContain('projectile')
     expect(semantics.tags).not.toContain('fire')
-    expect(semantics.requiredWeaponTypes).toEqual(['ranged-weapon'])
+    expect(semantics.requiredWeaponTypes).toEqual(['bow'])
   })
 
   it('adds productive semantics without inventing GGG IDs', () => {

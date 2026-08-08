@@ -36,8 +36,16 @@ function isCandidate(input:PassivePlanningInput,value:PassiveTargetRecommendatio
 }
 
 export function buildPassivePlanningCandidates(input:PassivePlanningInput):PassivePlanCandidate[] {
-  const required=new Set(input.requiredTargetNodeIds??[]), seen=new Set<string>()
-  const values=input.targetingResult.allCandidates.filter(value=>{if(seen.has(value.nodeId))return false;seen.add(value.nodeId);return isCandidate(input,value,required)}).map(recommendation=>({recommendation,required:required.has(recommendation.nodeId),dominantCategory:dominantCategory(recommendation),tagSignature:[...recommendation.matchedTags].sort().join('|'),...baseValueComponents(input,recommendation)}))
+  const required=new Set(input.requiredTargetNodeIds??[]), alreadyAllocated=new Set(input.alreadyAllocatedNodeIds??[]), seen=new Set<string>()
+  const values=input.targetingResult.allCandidates.filter(value=>{
+    if(seen.has(value.nodeId))return false
+    seen.add(value.nodeId)
+    // Bereits gemeinsam belegte Knoten sind erlaubte Pfadanker, aber keine
+    // neuen Ziele eines Waffenset-Plans. Sonst verbraucht der Plan seine
+    // Zielplätze mit Nullkosten-Treffern und Set 1/2 bleiben fälschlich gleich.
+    if(alreadyAllocated.has(value.nodeId)&&!required.has(value.nodeId))return false
+    return isCandidate(input,value,required)
+  }).map(recommendation=>({recommendation,required:required.has(recommendation.nodeId),dominantCategory:dominantCategory(recommendation),tagSignature:[...recommendation.matchedTags].sort().join('|'),...baseValueComponents(input,recommendation)}))
   const modeValue=(value:PassivePlanCandidate)=>input.planningMode==='damage-first'?value.recommendation.damageScore*2+value.effectiveValue:input.planningMode==='value-first'?value.effectiveValue:input.planningMode==='efficiency-first'?value.modeValue+value.profileValue:value.effectiveValue+value.modeValue
   return values.sort((a,b)=>Number(b.required)-Number(a.required)||modeValue(b)-modeValue(a)||b.targetValue-a.targetValue||confidence(b.recommendation.confidence)-confidence(a.recommendation.confidence)||compareId(a.recommendation.nodeId,b.recommendation.nodeId)).slice(0,Math.min(input.candidatePoolLimit,PASSIVE_PLANNING_CONFIG.limits.maximumCandidates))
 }

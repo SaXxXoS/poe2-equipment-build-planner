@@ -45,6 +45,32 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     expect(suggestions[0].title).not.toBe(suggestions[1].title)
   })
 
+  it('ergänzt bei vorhandener Hauptwaffe weiterhin eine fehlende Setup-Waffe im anderen Set',()=>{
+    const equipped=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'
+      ? {...item,itemClassId:'Wands'}
+      : item)
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment:equipped,
+      optimization:{
+        evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
+        equipmentFirst:true,status:'selected',alternatives:[],
+        selected:{
+          skillId:'spark',skillName:'Funken',weaponType:'wand',weaponLabel:'Zauberstab',
+          mainWeaponSet:'set-1',setupSkillId:'orb',setupSkillName:'Gewittersphäre',
+          setupWeaponType:'sceptre',setupWeaponSet:'set-2',compatibleSupportIds:[],
+          affinityScore:1,passiveAffinityScore:1,analyzerScore:1,modeledDps:null,
+          damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
+        },
+      },
+      uniqueRecommendations:[],uniqueNames:new Map(),characterLevel:100,characterAttributes,
+    })
+    expect(suggestions).toHaveLength(1)
+    expect(suggestions[0]).toMatchObject({
+      slotId:'slot-weapon-set-2-left',itemClassId:'Sceptres',source:'weapon-optimizer',
+    })
+  })
+
   it('überschreibt keine vorhandene Waffe und zeigt nur positive gültige Uniques',()=>{
     const equipped=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'?{...item,itemClassId:'Wands'}:item)
     const unique={valid:true,totalScore:10,itemSlot:'helmet',uniqueId:'unique-helmet',buildEnabler:false,damageScore:10,matchedSkillTags:['lightning'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation

@@ -194,7 +194,7 @@ export function createEquipmentSlotSuggestions(input:{
   const selected=input.optimization?.selected
   const mainSet=selected?.mainWeaponSet??'set-1'
 
-  if(selected&&!input.optimization?.equipmentFirst){
+  if(selected){
     const slotId=firstEmptySlot([weaponSlot(mainSet)],input.equipment)
     const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel,input.characterAttributes?.[mainSet].total,selected.skillTags)
     if(slotId)suggestions.push({
@@ -205,7 +205,7 @@ export function createEquipmentSlotSuggestions(input:{
       ...concrete,
     })
     if(selected.setupSkillId&&selected.setupWeaponType){
-      const setupSet=mainSet==='set-1'?'set-2':'set-1'
+      const setupSet=selected.setupWeaponSet??(mainSet==='set-1'?'set-2':'set-1')
       const setupSlot=firstEmptySlot([weaponSlot(setupSet)],input.equipment)
       const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel,input.characterAttributes?.[setupSet].total,selected.setupSkillTags)
       if(setupSlot)suggestions.push({
@@ -233,11 +233,21 @@ export function createEquipmentSlotSuggestions(input:{
       || recommendation.replacementVerdict==='downgrade'
       || seenUniqueIds.has(recommendation.uniqueId))continue
     seenUniqueIds.add(recommendation.uniqueId)
+    const replaceableOptimizerSlots=new Set(suggestions
+      .filter(value=>value.source==='weapon-optimizer')
+      .map(value=>value.slotId))
     const slotId=firstEmptySlot(
-      uniqueTargetSlots(recommendation.itemSlot,mainSet).filter(value=>!occupied.has(value)),
+      uniqueTargetSlots(recommendation.itemSlot,mainSet)
+        .filter(value=>!occupied.has(value)||replaceableOptimizerSlots.has(value)),
       input.equipment,
     )
     if(!slotId)continue
+    const optimizerIndex=suggestions.findIndex(value=>
+      value.slotId===slotId&&value.source==='weapon-optimizer')
+    if(optimizerIndex>=0){
+      suggestions.splice(optimizerIndex,1)
+      occupied.delete(slotId)
+    }
     suggestions.push({
       slotId,
       title:input.uniqueNames.get(recommendation.uniqueId)??recommendation.uniqueId,
