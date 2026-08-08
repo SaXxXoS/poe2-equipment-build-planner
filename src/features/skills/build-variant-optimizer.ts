@@ -16,6 +16,7 @@ import { scoreMetaReference } from './meta-reference'
 import {
   evaluateSkillWeaponCompatibility,
   evaluateSupportInteraction,
+  syntheticWeaponTypeFromTechnicalName,
   weaponTypeMatches,
 } from './poe2-interaction-rules'
 import { buildEffectGraph } from './build-effect-graph'
@@ -26,11 +27,6 @@ import {
   type WeaponBaseValue,
 } from '../equipment-editor/weapon-base-values'
 import { baseRequirementsMet } from '../equipment-editor/base-requirements'
-
-const concreteWeapons: SyntheticWeaponType[] = [
-  'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
-  'quarterstaff', 'sceptre', 'spear', 'staff', 'sword', 'wand',
-]
 
 const weaponLabels: Record<SyntheticWeaponType, string> = {
   unarmed: 'Unbewaffnet',
@@ -138,10 +134,7 @@ function equipmentWeaponSets(equipment: EquipmentEntry[]) {
         : null
     if (!set || !entry.itemClassId) continue
     const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
-    const technical = itemClass?.weaponType.toLowerCase()
-    const type = technical?.includes('staves') ? 'staff'
-      : technical?.includes('sceptre') ? 'sceptre'
-        : concreteWeapons.find(value => technical?.includes(value))
+    const type = syntheticWeaponTypeFromTechnicalName(itemClass?.weaponType)
     if (type) result[set].add(type)
   }
   return result
@@ -265,10 +258,7 @@ function equipmentForEstimate(
   const hasCompatibleWeapon = equipment.some(entry => {
     if (!entry.slotId.includes(`weapon-${set}`) || !entry.itemClassId) return false
     const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
-    const technical = itemClass?.weaponType.toLowerCase()
-    const equippedType = technical?.includes('staves') ? 'staff'
-      : technical?.includes('sceptre') ? 'sceptre'
-        : concreteWeapons.find(type => technical?.includes(type))
+    const equippedType = syntheticWeaponTypeFromTechnicalName(itemClass?.weaponType)
     return equippedType === weapon
   })
   if (hasCompatibleWeapon) return equipment
@@ -398,16 +388,23 @@ export function optimizeBuildVariants(input: {
       skill,
       affinity: scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId),
     }))
+    const metaAligned = scoredAffinity
+      .filter(({ skill }) => candidateWeapons(skill, equipped).some(weapon =>
+        scoreMetaReference(skill, weapon, input.ascendancyId).observedSkillShare !== undefined,
+      ))
+      .map(value => value.skill)
     const maximumAffinity = Math.max(0, ...scoredAffinity.map(value => value.affinity.score))
     const ascendancyAligned = scoredAffinity
       .filter(value => value.affinity.ascendancyMatches.length > 0 && value.affinity.score === maximumAffinity)
       .map(value => value.skill)
-    // Ohne reale Ausrüstung ist die gewählte Aszendenz die stärkste belegte
-    // Ausgangsinformation. Ein zahlenstarker, aber fachlich fremder Skill darf
-    // deshalb nicht bei jeder Klasse denselben Bootstrap-Vorschlag erzwingen.
-    // Falls der lokale Baum keinerlei passende Semantik liefert, bleibt der
-    // vollständige kompatible Bestand als ehrlicher Fallback erhalten.
-    if (ascendancyAligned.length) eligibleSkills = ascendancyAligned
+    // Ohne reale Ausrüstung ist eine saisonale Beobachtung der gewählten
+    // Aszendenz belastbarer als das bloße Maximum grober Tags. Sie darf
+    // weiterhin weder Rollen- noch Waffenregeln umgehen: metaAligned enthält
+    // nur produktive Hauptskillkandidaten mit mindestens einer technisch
+    // kompatiblen Waffe. Die Baum-/Tag-Affinität bleibt der deterministische
+    // Fallback, wenn kein solcher Kandidat lokal vorhanden ist.
+    if (metaAligned.length) eligibleSkills = metaAligned
+    else if (ascendancyAligned.length) eligibleSkills = ascendancyAligned
   }
   const characterSkills = input.skills.filter(skill =>
     skill.enabled !== false && characterAllowsSkill(skill, input.classId, input.ascendancyId),

@@ -30,6 +30,13 @@ const realSkillId = (nameEn: string) => {
 }
 
 describe('Build-Assistent V1 End-to-End-Integration', () => {
+  it('erkennt Quarterstaves als Viertelstab und nicht als normalen Stab', () => {
+    const quarterstaff = initialEquipment.map(entry => entry.slotId === 'slot-weapon-set-1-left'
+      ? { ...entry, itemClassId: 'Quarterstaves' }
+      : entry)
+    expect(deriveWeaponContext(quarterstaff).availableWeaponTypes).toEqual(['quarterstaff'])
+  })
+
   it('fÃ¼hrt alle vorhandenen Analyzer in stabiler Reihenfolge aus', () => {
     const result = runBuildAssistantV1(input())
     expect(result.moduleTrace).toEqual(['equipment', 'skills', 'supports', 'passives', 'jewels', 'uniques', 'rotations', 'explanations'])

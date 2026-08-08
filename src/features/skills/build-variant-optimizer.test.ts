@@ -2,7 +2,11 @@ import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SupportGemDefinition } from '../../domain'
 import { initialEquipment, treeClassRegistry } from '../../data'
 import { createEmptySkillSetups } from './initial-state'
-import { buildAssistantCandidates, runBuildAssistantV1 } from '../build-assistant-v1'
+import {
+  buildAssistantCandidates,
+  deriveWeaponContext,
+  runBuildAssistantV1,
+} from '../build-assistant-v1'
 import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
 import {
   normalizeDamageObjective,
@@ -115,6 +119,16 @@ describe('vollständige Build-Variantenoptimierung', () => {
         expect(optimization.selected, `${character.classId}/${character.ascendancyId}`).not.toBeNull()
         expect(optimization.selected?.compatibleSupportIds.length, character.ascendancyId).toBeGreaterThan(0)
         expect(optimization.selected?.ruleGraphStatus, character.ascendancyId).not.toBe('blocked')
+        const planned = plannedEquipmentForVariant(
+          initialEquipment,
+          optimization.selected!,
+          90,
+          analysis.characterAttributes,
+        )
+        expect(
+          deriveWeaponContext(planned).availableWeaponTypes,
+          `${character.ascendancyId}/${optimization.selected?.weaponType}`,
+        ).toContain(optimization.selected?.weaponType)
         return `${optimization.selected?.skillId}:${optimization.selected?.weaponType}`
       })
 
@@ -362,6 +376,39 @@ describe('vollständige Build-Variantenoptimierung', () => {
     expect(result.selected?.skillName).toBe('Funken')
     expect(result.selected?.packageComponents?.skill).toBeGreaterThan(0)
     expect(result.selected?.compatibleSupportIds.length).toBeGreaterThan(0)
+  }, 15_000)
+
+  it('schneidet saisonal beobachtete Kandidaten nicht vor der Meta-Wertung durch die Tag-Heuristik ab', () => {
+    const character = {
+      classId: 'class-official-1',
+      ascendancyId: 'ascendancy-official-Witch1',
+      level: 90,
+      goalProfile: 'balanced' as const,
+    }
+    const setups = createEmptySkillSetups()
+    const analysis = runBuildAssistantV1({ character, equipment: initialEquipment, setups })
+    const result = optimizeBuildVariants({
+      classId: character.classId,
+      ascendancyId: character.ascendancyId,
+      equipment: initialEquipment,
+      setups,
+      skills: buildAssistantCandidates.skills,
+      supports: buildAssistantCandidates.supports,
+      skillScores: [
+        ...analysis.skillAnalysis.topMainCandidates,
+        ...analysis.skillAnalysis.eligibleCandidates,
+        ...analysis.skillAnalysis.allCandidates,
+      ].filter((value, index, all) =>
+        all.findIndex(candidate => candidate.skillId === value.skillId) === index),
+      characterLevel: character.level,
+      characterAttributes: analysis.characterAttributes,
+    })
+
+    const selectedName = buildAssistantCandidates.skills.find(
+      value => value.id === result.selected?.skillId,
+    )?.nameEn
+    expect(['Comet', 'Spark', 'Living Bomb']).toContain(selectedName)
+    expect(result.selected?.metaReferenceScore).toBeGreaterThan(0)
   }, 15_000)
 
   it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {

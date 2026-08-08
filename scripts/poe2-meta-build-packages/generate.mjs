@@ -1,17 +1,27 @@
-/* global process, console, URL, URLSearchParams, fetch, setTimeout */
+/* global process, console, URL, URLSearchParams, fetch, setTimeout, AbortSignal */
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import {
+  selectMetaRefreshProfileIds,
+  shouldPromoteMetaProduct,
+} from './policy.mjs'
 
 const ROOT = process.cwd()
 const INPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-reference-profiles.json')
 const AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation.json')
+const CANDIDATE_AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation-candidate.json')
 const PRODUCT_OUTPUT = path.join(ROOT, 'generated/meta/poe2-build-packages.json')
 const INDEX_URL = 'https://poe.ninja/poe2/api/data/index-state'
 const LEAGUE_URL = 'runesofaldur'
 const MIN_PRODUCTIVE_PROFILES = 2
 const CONCURRENCY = 2
 const REQUEST_DELAY_MS = 450
+const FETCH_TIMEOUT_MS = 12_000
+const parsedMaximumNewFetches = Number(process.env.POE2_META_MAX_NEW_FETCHES ?? 24)
+const MAX_NEW_FETCHES = Number.isInteger(parsedMaximumNewFetches) && parsedMaximumNewFetches >= 0
+  ? parsedMaximumNewFetches
+  : 24
 
 const ascendancyIds = {
   Infernalist: 'ascendancy-official-Witch1',
@@ -127,6 +137,7 @@ async function fetchJson(url, retries = 4) {
         accept: 'application/json',
         'user-agent': 'PoE2-Buildplaner/1.0 local-meta-audit',
       },
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     })
     if (response.ok) return response.json()
     if (response.status !== 429 || attempt === retries) {
@@ -134,7 +145,7 @@ async function fetchJson(url, retries = 4) {
     }
     const retryAfter = Number(response.headers.get('retry-after'))
     await wait(Number.isFinite(retryAfter) && retryAfter > 0
-      ? retryAfter * 1000
+      ? Math.min(15_000, retryAfter * 1000)
       : Math.min(15_000, 1_500 * 2 ** attempt))
   }
   throw new Error('HTTP retry exhausted')
@@ -168,22 +179,71 @@ const requestedProfiles = reference.ascendancies.flatMap(entry =>
   })),
 )
 
-let reusableObservations = new Map()
-try {
-  const previous = JSON.parse(await readFile(AUDIT_OUTPUT, 'utf8'))
-  if (previous.source?.version === snapshot.version) {
-    reusableObservations = new Map(previous.observations
-      .filter(value => value.validationStatus !== 'fetch-failed')
-      .map(value => [value.profileId, value]))
+let previousObservations = new Map()
+for (const previousAuditPath of [CANDIDATE_AUDIT_OUTPUT, AUDIT_OUTPUT]) {
+  try {
+    const previous = JSON.parse(await readFile(previousAuditPath, 'utf8'))
+    if (previous.source?.version === snapshot.version) {
+      previousObservations = new Map(previous.observations
+        .map(value => [value.profileId, value]))
+      break
+    }
+  } catch {
+    // Der erste Lauf eines Snapshots besitzt noch keinen passenden Bericht.
   }
+}
+
+let previousProduct = null
+try {
+  previousProduct = JSON.parse(await readFile(PRODUCT_OUTPUT, 'utf8'))
 } catch {
-  // Der erste Lauf besitzt noch keinen wiederverwendbaren reduzierten Bericht.
+  // Vor dem ersten produktiven Snapshot existiert noch keine Vergleichsbasis.
+}
+
+const profileIdFor = requested => hash(requested.url).slice(0, 20)
+const pendingProfiles = requestedProfiles.filter(requested => {
+  const previous = previousObservations.get(profileIdFor(requested))
+  return !previous || previous.validationStatus === 'fetch-failed'
+})
+
+// Ein kompletter Snapshot besitzt mehrere hundert Profile. Die öffentliche
+// Quelle begrenzt Abrufe; ein Alles-oder-nichts-Lauf verlor deshalb bei einem
+// Timeout den gesamten Fortschritt. Die feste Rang-Runde nimmt pro Aszendenz
+// zunächst Rang 1, dann Rang 2 usw. und lässt sich in kleinen, deterministischen
+// Batches wiederholen. Bereits validierte Beobachtungen bleiben unverändert.
+const fetchProfileIds = selectMetaRefreshProfileIds({
+  pendingProfiles,
+  previousObservations,
+  ascendancyOrder: reference.ascendancies.map(value => value.ascendancy),
+  maximumNewFetches: MAX_NEW_FETCHES,
+  profileIdFor,
+})
+
+function pendingObservation(requested, profileId) {
+  return {
+    profileId,
+    rank: requested.rank,
+    expectedAscendancy: requested.expectedAscendancy,
+    observedAscendancy: null,
+    ascendancyId: ascendancyIds[requested.expectedAscendancy] ?? null,
+    level: null,
+    mainSkill: null,
+    mainSkillModeledDps: null,
+    supports: [],
+    linkedActiveSkills: [],
+    weapons: [],
+    passiveCounts: { normal: null, ascendancy: null, weaponSet1: null, weaponSet2: null },
+    validationStatus: 'fetch-failed',
+    blockReasons: ['not-attempted-in-current-batch'],
+    attemptCount: 0,
+  }
 }
 
 const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async requested => {
-  const profileId = hash(requested.url).slice(0, 20)
-  const reusable = reusableObservations.get(profileId)
-  if (reusable) return reusable
+  const profileId = profileIdFor(requested)
+  const previous = previousObservations.get(profileId)
+  if (previous && previous.validationStatus !== 'fetch-failed') return previous
+  if (!fetchProfileIds.has(profileId)) return previous ?? pendingObservation(requested, profileId)
   try {
     await wait(REQUEST_DELAY_MS)
     const { account, name } = parseProfileUrl(requested.url)
@@ -230,6 +290,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
         ...(!mainGroup?.name ? ['missing-main-skill'] : []),
         ...(!weapons.length ? ['missing-supported-weapon-class'] : []),
       ],
+      attemptCount: (previous?.attemptCount ?? 0) + 1,
     }
   } catch (error) {
     return {
@@ -247,6 +308,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       passiveCounts: { normal: null, ascendancy: null, weaponSet1: null, weaponSet2: null },
       validationStatus: 'fetch-failed',
       blockReasons: [String(error?.message ?? error)],
+      attemptCount: (previous?.attemptCount ?? 0) + 1,
     }
   }
 })
@@ -348,6 +410,16 @@ const audit = {
     minimumProductiveProfiles: MIN_PRODUCTIVE_PROFILES,
     productiveUse: 'bounded-secondary-evidence-after-hard-compatibility',
   },
+  refreshBatch: {
+    maximumNewFetches: MAX_NEW_FETCHES,
+    selectedProfiles: fetchProfileIds.size,
+    reusableProfiles: observations.filter(value => {
+      const previous = previousObservations.get(value.profileId)
+      return previous && previous.validationStatus !== 'fetch-failed'
+    }).length,
+    remainingProfiles: observations.filter(value => value.validationStatus === 'fetch-failed').length,
+    order: 'ascendancy-round-robin-then-profile-rank',
+  },
   requestedProfiles: requestedProfiles.length,
   validatedProfiles: validated.length,
   blockedProfiles: observations.length - validated.length,
@@ -372,14 +444,32 @@ const product = {
   packages: packages.filter(value => value.productive),
 }
 
-await mkdir(path.dirname(AUDIT_OUTPUT), { recursive: true })
+const productPromoted = shouldPromoteMetaProduct(previousProduct, product)
+audit.productPromotion = {
+  promoted: productPromoted,
+  candidateVersion: snapshot.version,
+  candidateValidatedProfiles: product.profileCount,
+  candidatePackageCount: product.packageCount,
+  activeVersionBeforeRun: previousProduct?.source?.version ?? null,
+  activeValidatedProfilesBeforeRun: previousProduct?.profileCount ?? null,
+  activePackageCountBeforeRun: previousProduct?.packageCount ?? null,
+  rule: 'same snapshot or at least previous validated-profile and productive-package coverage',
+}
+const selectedAuditOutput = productPromoted ? AUDIT_OUTPUT : CANDIDATE_AUDIT_OUTPUT
+audit.productPromotion.auditOutput = path.relative(ROOT, selectedAuditOutput).replaceAll('\\', '/')
+
+await mkdir(path.dirname(selectedAuditOutput), { recursive: true })
 await mkdir(path.dirname(PRODUCT_OUTPUT), { recursive: true })
-await writeFile(AUDIT_OUTPUT, `${JSON.stringify(audit, null, 2)}\n`)
-await writeFile(PRODUCT_OUTPUT, `${JSON.stringify(product, null, 2)}\n`)
+await writeFile(selectedAuditOutput, `${JSON.stringify(audit, null, 2)}\n`)
+if (productPromoted) {
+  await writeFile(PRODUCT_OUTPUT, `${JSON.stringify(product, null, 2)}\n`)
+}
 console.log(JSON.stringify({
   version: snapshot.version,
   requestedProfiles: requestedProfiles.length,
   validatedProfiles: audit.validatedProfiles,
   blockedProfiles: audit.blockedProfiles,
   productivePackageCount: product.packageCount,
+  refreshBatch: audit.refreshBatch,
+  productPromotion: audit.productPromotion,
 }, null, 2))

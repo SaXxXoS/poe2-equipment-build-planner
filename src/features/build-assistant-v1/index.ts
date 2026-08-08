@@ -8,6 +8,7 @@ import { technicalItemClasses } from '../../affixes/registry'
 import { repoeSkillCatalog, repoeSupportCatalog } from '../../gems/repoe-catalog'
 import type { SyntheticWeaponType } from '../../domain'
 import { migrateEquipmentEntry } from '../equipment-editor/model'
+import { syntheticWeaponTypeFromTechnicalName } from '../skills/poe2-interaction-rules'
 import officialPassiveTree from '../../../generated/poe2-tree/tree.json'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
@@ -116,15 +117,6 @@ export interface BuildAssistantInput {
 const isOccupied = (entry: EquipmentEntry) =>
   Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId || entry.modifierValues.length)
 
-const syntheticWeaponType = (technicalName: string): SyntheticWeaponType | undefined => {
-  const value = technicalName.toLowerCase()
-  if (value.includes('staves')) return 'staff'
-  if (value.includes('sceptre')) return 'sceptre'
-  for(const type of ['crossbow','quarterstaff','bow','wand','claw','dagger','flail','mace','spear','sword','axe'] as const)if(value.includes(type))return type
-  if (value.includes('focus')) return 'focus'
-  return undefined
-}
-
 export function deriveWeaponContext(equipment: EquipmentEntry[]) {
   const occupied = equipment.filter(isOccupied)
   const availableWeaponSets = (['set-1', 'set-2'] as const).filter(set =>
@@ -135,7 +127,7 @@ export function deriveWeaponContext(equipment: EquipmentEntry[]) {
     if (!entry.slotId.includes('weapon-set')) continue
     const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
     const technicalType = itemClass && itemClass.weaponType !== 'not-applicable'
-      ? syntheticWeaponType(itemClass.weaponType)
+      ? syntheticWeaponTypeFromTechnicalName(itemClass.weaponType)
       : undefined
     if (technicalType) types.add(technicalType)
     if (entry.uniqueItemId) {

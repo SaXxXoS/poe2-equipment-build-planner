@@ -26,6 +26,7 @@
     "generate:poe2-gem-catalog": "node scripts/poe2-gem-catalog/generate.mjs",
     "generate:poe2-gem-german-display": "node scripts/poe2-gem-german-display/generate.mjs",
     "generate:poe2-meta-build-packages": "node scripts/poe2-meta-build-packages/generate.mjs",
+    "validate:poe2-meta-optimizer": "vite-node scripts/poe2-meta-build-packages/validate-optimizer.ts",
     "generate:poe2-weapon-base-values": "node scripts/poe2-weapon-base-values/generate.mjs",
     "generate:pob2-damage-reference": "node scripts/pob2-damage-reference/generate.mjs",
     "import:pob2-uniques": "node scripts/pob2-unique-import/index.mjs",

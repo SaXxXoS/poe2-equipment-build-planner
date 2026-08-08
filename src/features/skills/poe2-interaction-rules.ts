@@ -30,6 +30,26 @@ const rangedWeapons = new Set<SyntheticWeaponType>(['bow', 'crossbow', 'wand'])
 const hasAny = (skill: SkillGemDefinition, tags: Set<string>) =>
   skill.tags.some(tag => tags.has(tag))
 
+/**
+ * Maps the pinned technical item-class name to the shared analyzer weapon
+ * vocabulary. Order matters: "Quarterstaves" also contains "staves" and
+ * must therefore be resolved before the generic staff case.
+ */
+export function syntheticWeaponTypeFromTechnicalName(
+  technicalName: string | undefined,
+): SyntheticWeaponType | undefined {
+  if (!technicalName) return undefined
+  const value = technicalName.toLowerCase()
+  if (value.includes('quarterstaff') || value.includes('quarterstaves')) return 'quarterstaff'
+  if (value.includes('staves') || value === 'staff') return 'staff'
+  if (value.includes('sceptre')) return 'sceptre'
+  for (const type of ['crossbow', 'bow', 'wand', 'claw', 'dagger', 'flail', 'mace', 'spear', 'sword', 'axe'] as const) {
+    if (value.includes(type)) return type
+  }
+  if (value.includes('focus')) return 'focus'
+  return undefined
+}
+
 export function weaponTypeMatches(
   required: SyntheticWeaponType[] | undefined,
   weapon: SyntheticWeaponType,

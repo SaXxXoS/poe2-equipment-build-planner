@@ -145,3 +145,30 @@ Punkte noch nicht als Produktregeln freigegeben:
 
 Der nächste Lauf darf die Coverage erweitern, aber weiterhin keine
 Kompatibilität, Rotation oder DPS-Wahrheit aus Popularität ableiten.
+
+## Fortsetzung – Schritt 174 (8. August 2026)
+
+Die produktive Meta-Referenz bleibt auf dem vollständig reduzierten Stand
+`1924-20260728-10654` gepinnt. Der Quellenindex meldet inzwischen den Kandidaten
+`1959-20260808-19780`. Dieser neue Snapshot wurde noch nicht produktiv
+promoviert, weil der begonnene rate-limitierte Batch keine ausreichende
+korrelierte Abdeckung besitzt. Er wird getrennt in
+`docs/audits/poe2-current-meta-build-profile-validation-candidate.json`
+fortgeschrieben; der aktive Audit des Produktpins bleibt unverändert.
+
+Der Generator ist nun tatsächlich resumierbar: kleine Batches werden
+deterministisch über alle Aszendenzen verteilt, frühere Erfolge bleiben
+erhalten, Abrufe besitzen eine feste Zeitgrenze und noch nicht versuchte
+Profile werden vor wiederholten Fehlern priorisiert. Ein neuer Snapshot ersetzt
+den aktiven Produktpin erst bei mindestens gleicher validierter Profil- und
+Paketabdeckung.
+
+Die neue vollständige lokale Optimierermatrix belegt 23 von 23 ausgewählte und
+vom gemeinsamen Paketvalidator akzeptierte Startpakete. Bei allen 23 erreicht
+die geplante Waffenart nach der technischen Normalisierung denselben Analyzer.
+19 Auswahlen schneiden einen der drei beobachteten Referenzskills, 22 eine der
+zwei beobachteten Waffenarten. Diese Schnittmengen bleiben sekundäre
+Plausibilitätsbelege und sind ausdrücklich keine DPS- oder Optimalitätsgarantie.
+
+Details stehen in `docs/BUILD_ASSISTANT_META_MATRIX_STEP_174.md` und
+`docs/audits/build-assistant-current-meta-matrix.json`.

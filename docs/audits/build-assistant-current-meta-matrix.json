@@ -1,0 +1,1182 @@
+{
+  "schemaVersion": "1.0.0",
+  "purpose": "Deterministische Vollmatrix aller produktiv auswählbaren Klassen und Aszendenzen ohne vorgegebene Ausrüstung",
+  "source": {
+    "source": "poe.ninja",
+    "league": "Runes of Aldur",
+    "patchFamily": "0.5.x",
+    "snapshotDate": "2026-07-28",
+    "exactVersion": "1924-20260728-10654",
+    "population": 124306
+  },
+  "inputProfile": {
+    "level": 90,
+    "additionalPassivePoints": 24,
+    "goalProfile": "balanced",
+    "equipment": "empty",
+    "skillSetups": "empty"
+  },
+  "baseline": {
+    "commit": "4408d607606756a65cb0b6a08df7b96907b4a5e1",
+    "totals": {
+      "profiles": 23,
+      "selected": 20,
+      "coherent": 19,
+      "plannedWeaponContextMatches": null,
+      "observedSkillIntersections": 2,
+      "observedWeaponIntersections": 15,
+      "distinctSkills": 11,
+      "distinctWeapons": 7
+    }
+  },
+  "totals": {
+    "profiles": 23,
+    "selected": 23,
+    "coherent": 23,
+    "plannedWeaponContextMatches": 23,
+    "observedSkillIntersections": 19,
+    "observedWeaponIntersections": 22,
+    "distinctSkills": 15,
+    "distinctWeapons": 8
+  },
+  "rows": [
+    {
+      "classId": "class-official-1",
+      "className": "Witch",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "ascendancyName": "Infernalist",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemLivingBombPlayer",
+      "selectedSkill": "Lebende Bombe",
+      "selectedSkillEn": "Living Bomb",
+      "weapon": "wand",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "wand",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 42,
+      "metaScore": 12,
+      "plannedWeaponTypes": [
+        "wand"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Comet",
+            "share": 77
+          },
+          {
+            "name": "Spark",
+            "share": 62
+          },
+          {
+            "name": "Living Bomb",
+            "share": 32
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Wand",
+            "share": 22
+          },
+          {
+            "name": "Staff",
+            "share": 5
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-1",
+      "className": "Witch",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "ascendancyName": "Blood Mage",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
+      "selectedSkill": "Komet",
+      "selectedSkillEn": "Comet",
+      "weapon": "wand",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "wand",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 40,
+      "metaScore": 35,
+      "plannedWeaponTypes": [
+        "wand"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Spark",
+            "share": 58
+          },
+          {
+            "name": "Comet",
+            "share": 55
+          },
+          {
+            "name": "Sigil of Power",
+            "share": 44
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Wand",
+            "share": 25
+          },
+          {
+            "name": "Staff",
+            "share": 21
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-1",
+      "className": "Witch",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "ascendancyName": "Lich",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemEssenceDrain",
+      "selectedSkill": "Entkräften",
+      "selectedSkillEn": "Essence Drain",
+      "weapon": "wand",
+      "setupSkill": "Verzweiflung",
+      "setupWeapon": "wand",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 44,
+      "metaScore": 13,
+      "plannedWeaponTypes": [
+        "wand"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Despair",
+            "share": 42
+          },
+          {
+            "name": "Contagion",
+            "share": 32
+          },
+          {
+            "name": "Essence Drain",
+            "share": 32
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Wand",
+            "share": 32
+          },
+          {
+            "name": "Sceptre",
+            "share": 27
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-1",
+      "className": "Witch",
+      "ascendancyId": "ascendancy-official-Witch3b",
+      "ascendancyName": "Abyssal Lich",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemThrashingVines",
+      "selectedSkill": "Peitschende Ranken",
+      "selectedSkillEn": "Thrashing Vines",
+      "weapon": "staff",
+      "setupSkill": "Verwundbarkeit",
+      "setupWeapon": "staff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 15,
+      "plannedWeaponTypes": [
+        "staff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Entangle",
+            "share": 46
+          },
+          {
+            "name": "Thunderstorm",
+            "share": 38
+          },
+          {
+            "name": "Thrashing Vines",
+            "share": 38
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Staff",
+            "share": 36
+          },
+          {
+            "name": "Spear",
+            "share": 30
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-2",
+      "className": "Ranger",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "ascendancyName": "Deadeye",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemTornadoShot",
+      "selectedSkill": "Tornadoschuss",
+      "selectedSkillEn": "Tornado Shot",
+      "weapon": "bow",
+      "setupSkill": "Verwundbarkeit",
+      "setupWeapon": "bow",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 35,
+      "plannedWeaponTypes": [
+        "bow"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Herald of Ice",
+            "share": 89
+          },
+          {
+            "name": "Ice Shot",
+            "share": 87
+          },
+          {
+            "name": "Tornado Shot",
+            "share": 86
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Bow",
+            "share": 89
+          },
+          {
+            "name": "Spear",
+            "share": 6
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-2",
+      "className": "Ranger",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "ascendancyName": "Pathfinder",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemTornadoShot",
+      "selectedSkill": "Tornadoschuss",
+      "selectedSkillEn": "Tornado Shot",
+      "weapon": "bow",
+      "setupSkill": "Verwundbarkeit",
+      "setupWeapon": "bow",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 32,
+      "plannedWeaponTypes": [
+        "bow"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Ice Shot",
+            "share": 80
+          },
+          {
+            "name": "Tornado Shot",
+            "share": 78
+          },
+          {
+            "name": "Herald of Ice",
+            "share": 78
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Bow",
+            "share": 82
+          },
+          {
+            "name": "Talisman",
+            "share": 4
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-6",
+      "className": "Warrior",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "ascendancyName": "Titan",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemEarthshatter",
+      "selectedSkill": "Erdspalter",
+      "selectedSkillEn": "Earthshatter",
+      "weapon": "mace",
+      "setupSkill": null,
+      "setupWeapon": null,
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 41,
+      "metaScore": 8,
+      "plannedWeaponTypes": [
+        "mace"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Infernal Cry",
+            "share": 32
+          },
+          {
+            "name": "Mace Strike",
+            "share": 28
+          },
+          {
+            "name": "Earthshatter",
+            "share": 23
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Quarterstaff",
+            "share": 16
+          },
+          {
+            "name": "Mace",
+            "share": 14
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-6",
+      "className": "Warrior",
+      "ascendancyId": "ascendancy-official-Warrior2",
+      "ascendancyName": "Warbringer",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemClusterGrenade",
+      "selectedSkill": "Cluster-Granate",
+      "selectedSkillEn": "Cluster Grenade",
+      "weapon": "crossbow",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "crossbow",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 45,
+      "metaScore": 18,
+      "plannedWeaponTypes": [
+        "crossbow"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Ancestral Spirits",
+            "share": 56
+          },
+          {
+            "name": "Cluster Grenade",
+            "share": 49
+          },
+          {
+            "name": "Voltaic Grenade",
+            "share": 47
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Crossbow",
+            "share": 24
+          },
+          {
+            "name": "Mace",
+            "share": 17
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-6",
+      "className": "Warrior",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "ascendancyName": "Smith of Kitava",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemShieldWall",
+      "selectedSkill": "Schildmauer",
+      "selectedSkillEn": "Shield Wall",
+      "weapon": "mace",
+      "setupSkill": "Verwundbarkeit",
+      "setupWeapon": "mace",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 48,
+      "metaScore": 19,
+      "plannedWeaponTypes": [
+        "mace"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Infernal Cry",
+            "share": 66
+          },
+          {
+            "name": "Shield Wall",
+            "share": 55
+          },
+          {
+            "name": "Fortifying Cry",
+            "share": 48
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Mace",
+            "share": 23
+          },
+          {
+            "name": "Shield",
+            "share": 23
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-7",
+      "className": "Sorceress",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "ascendancyName": "Stormweaver",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemSpark",
+      "selectedSkill": "Funken",
+      "selectedSkillEn": "Spark",
+      "weapon": "sceptre",
+      "setupSkill": "Gewittersphäre",
+      "setupWeapon": "sceptre",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 43,
+      "metaScore": 35,
+      "plannedWeaponTypes": [
+        "sceptre"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Spark",
+            "share": 94
+          },
+          {
+            "name": "Frost Bomb",
+            "share": 89
+          },
+          {
+            "name": "Comet",
+            "share": 87
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Sceptre",
+            "share": 61
+          },
+          {
+            "name": "Staff",
+            "share": 15
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-7",
+      "className": "Sorceress",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "ascendancyName": "Chronomancer",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
+      "selectedSkill": "Komet",
+      "selectedSkillEn": "Comet",
+      "weapon": "staff",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "staff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 40,
+      "metaScore": 28,
+      "plannedWeaponTypes": [
+        "staff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Comet",
+            "share": 72
+          },
+          {
+            "name": "Frost Bomb",
+            "share": 71
+          },
+          {
+            "name": "Frost Wall",
+            "share": 69
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Staff",
+            "share": 62
+          },
+          {
+            "name": "Wand",
+            "share": 13
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-7",
+      "className": "Sorceress",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "ascendancyName": "Disciple of Varashta",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemDetonateDead",
+      "selectedSkill": "Leichenexplosion",
+      "selectedSkillEn": "Detonate Dead",
+      "weapon": "sceptre",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "sceptre",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 48,
+      "metaScore": 6,
+      "plannedWeaponTypes": [
+        "sceptre"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Kelari, the Tainted Sands",
+            "share": 78
+          },
+          {
+            "name": "Kelari's Brutality",
+            "share": 78
+          },
+          {
+            "name": "Kelari's Deception",
+            "share": 76
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Sceptre",
+            "share": 73
+          },
+          {
+            "name": "Staff",
+            "share": 22
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": false,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-8",
+      "className": "Huntress",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "ascendancyName": "Amazon",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemWhirlingSlash",
+      "selectedSkill": "Wirbelnder Schlag",
+      "selectedSkillEn": "Whirling Slash",
+      "weapon": "spear",
+      "setupSkill": null,
+      "setupWeapon": null,
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 39,
+      "metaScore": 13,
+      "plannedWeaponTypes": [
+        "spear"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Herald of Thunder",
+            "share": 43
+          },
+          {
+            "name": "Herald of Ice",
+            "share": 41
+          },
+          {
+            "name": "Whirling Slash",
+            "share": 32
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Spear",
+            "share": 34
+          },
+          {
+            "name": "Bow",
+            "share": 29
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-8",
+      "className": "Huntress",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "ascendancyName": "Spirit Walker",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemTwister",
+      "selectedSkill": "Wirbelwind",
+      "selectedSkillEn": "Twister",
+      "weapon": "spear",
+      "setupSkill": null,
+      "setupWeapon": null,
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 41,
+      "metaScore": 29,
+      "plannedWeaponTypes": [
+        "spear"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Wild Protector",
+            "share": 96
+          },
+          {
+            "name": "Vivid Stampede",
+            "share": 75
+          },
+          {
+            "name": "Twister",
+            "share": 73
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Spear",
+            "share": 66
+          },
+          {
+            "name": "Sceptre",
+            "share": 10
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-8",
+      "className": "Huntress",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "ascendancyName": "Ritualist",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemSpark",
+      "selectedSkill": "Funken",
+      "selectedSkillEn": "Spark",
+      "weapon": "staff",
+      "setupSkill": "Gewittersphäre",
+      "setupWeapon": "staff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 44,
+      "metaScore": 7,
+      "plannedWeaponTypes": [
+        "staff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Barrage",
+            "share": 26
+          },
+          {
+            "name": "Herald of Ice",
+            "share": 24
+          },
+          {
+            "name": "Spark",
+            "share": 21
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Bow",
+            "share": 16
+          },
+          {
+            "name": "Sceptre",
+            "share": 8
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": false
+    },
+    {
+      "classId": "class-official-9",
+      "className": "Mercenary",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "ascendancyName": "Tactician",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemGalvanicShards",
+      "selectedSkill": "Galvanische Splitter",
+      "selectedSkillEn": "Galvanic Shards",
+      "weapon": "crossbow",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "crossbow",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 47,
+      "metaScore": 29,
+      "plannedWeaponTypes": [
+        "crossbow"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Galvanic Shards",
+            "share": 70
+          },
+          {
+            "name": "Stormblast Bolts",
+            "share": 67
+          },
+          {
+            "name": "Crossbow Shot",
+            "share": 66
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Crossbow",
+            "share": 81
+          },
+          {
+            "name": "Mace",
+            "share": 10
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-9",
+      "className": "Mercenary",
+      "ascendancyId": "ascendancy-official-Mercenary2",
+      "ascendancyName": "Witchhunter",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemExplosiveGrenade",
+      "selectedSkill": "Sprengstoffgranate",
+      "selectedSkillEn": "Explosive Grenade",
+      "weapon": "crossbow",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "crossbow",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 45,
+      "metaScore": 27,
+      "plannedWeaponTypes": [
+        "crossbow"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Explosive Grenade",
+            "share": 63
+          },
+          {
+            "name": "Cluster Grenade",
+            "share": 45
+          },
+          {
+            "name": "Explosive Shot",
+            "share": 45
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Crossbow",
+            "share": 91
+          },
+          {
+            "name": "Spear",
+            "share": 2
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-9",
+      "className": "Mercenary",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "ascendancyName": "Gemling Legionnaire",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemWhirlingSlash",
+      "selectedSkill": "Wirbelnder Schlag",
+      "selectedSkillEn": "Whirling Slash",
+      "weapon": "spear",
+      "setupSkill": null,
+      "setupWeapon": null,
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 39,
+      "metaScore": 9,
+      "plannedWeaponTypes": [
+        "spear"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Herald of Thunder",
+            "share": 26
+          },
+          {
+            "name": "Herald of Ice",
+            "share": 24
+          },
+          {
+            "name": "Whirling Slash",
+            "share": 24
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Spear",
+            "share": 20
+          },
+          {
+            "name": "Crossbow",
+            "share": 12
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-10",
+      "className": "Monk",
+      "ascendancyId": "ascendancy-official-Monk1",
+      "ascendancyName": "Martial Artist",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemStormWave",
+      "selectedSkill": "Sturmwelle",
+      "selectedSkillEn": "Storm Wave",
+      "weapon": "quarterstaff",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "quarterstaff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 5,
+      "plannedWeaponTypes": [
+        "quarterstaff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Hollow Focus",
+            "share": 78
+          },
+          {
+            "name": "Rend",
+            "share": 51
+          },
+          {
+            "name": "Hollow Form",
+            "share": 49
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Quarterstaff",
+            "share": 62
+          },
+          {
+            "name": "Spear",
+            "share": 7
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": false,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-10",
+      "className": "Monk",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "ascendancyName": "Invoker",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemStormWave",
+      "selectedSkill": "Sturmwelle",
+      "selectedSkillEn": "Storm Wave",
+      "weapon": "quarterstaff",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "quarterstaff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 4,
+      "plannedWeaponTypes": [
+        "quarterstaff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Charged Staff",
+            "share": 53
+          },
+          {
+            "name": "Herald of Thunder",
+            "share": 49
+          },
+          {
+            "name": "Herald of Ice",
+            "share": 42
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Quarterstaff",
+            "share": 55
+          },
+          {
+            "name": "Wand",
+            "share": 5
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": false,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-10",
+      "className": "Monk",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "ascendancyName": "Acolyte of Chayula",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemStormWave",
+      "selectedSkill": "Sturmwelle",
+      "selectedSkillEn": "Storm Wave",
+      "weapon": "quarterstaff",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "quarterstaff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 46,
+      "metaScore": 1,
+      "plannedWeaponTypes": [
+        "quarterstaff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Archon of Chayula",
+            "share": 60
+          },
+          {
+            "name": "Despair",
+            "share": 47
+          },
+          {
+            "name": "Molten Shower",
+            "share": 33
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Mace",
+            "share": 31
+          },
+          {
+            "name": "Quarterstaff",
+            "share": 10
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": false,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-11",
+      "className": "Druid",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "ascendancyName": "Oracle",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
+      "selectedSkill": "Komet",
+      "selectedSkillEn": "Comet",
+      "weapon": "sceptre",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "sceptre",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 40,
+      "metaScore": 9,
+      "plannedWeaponTypes": [
+        "sceptre"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Entangle",
+            "share": 35
+          },
+          {
+            "name": "Spark",
+            "share": 30
+          },
+          {
+            "name": "Comet",
+            "share": 23
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Wand",
+            "share": 24
+          },
+          {
+            "name": "Sceptre",
+            "share": 24
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    },
+    {
+      "classId": "class-official-11",
+      "className": "Druid",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "ascendancyName": "Shaman",
+      "status": "selected",
+      "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
+      "selectedSkill": "Komet",
+      "selectedSkillEn": "Comet",
+      "weapon": "staff",
+      "setupSkill": "Elementarempfindlichkeit",
+      "setupWeapon": "staff",
+      "supportCount": 5,
+      "packageStatus": "coherent",
+      "packageScore": 40,
+      "metaScore": 17,
+      "plannedWeaponTypes": [
+        "staff"
+      ],
+      "plannedWeaponContextMatches": true,
+      "observedReference": {
+        "skills": [
+          {
+            "name": "Spark",
+            "share": 60
+          },
+          {
+            "name": "Comet",
+            "share": 51
+          },
+          {
+            "name": "Walking Calamity",
+            "share": 21
+          }
+        ],
+        "weapons": [
+          {
+            "name": "Talisman",
+            "share": 17
+          },
+          {
+            "name": "Staff",
+            "share": 3
+          }
+        ]
+      },
+      "selectionIntersectsObservedSkill": true,
+      "selectionIntersectsObservedWeapon": true
+    }
+  ],
+  "interpretation": {
+    "coherent": "Der gemeinsame Paketvalidator akzeptiert Skill, Waffe, Supports und Anforderungen als zusammenhängendes lokales Paket.",
+    "observedIntersection": "Sekundärer Plausibilitätsbeleg gegen marginale poe.ninja-Häufigkeiten; kein Beweis für globale Optimalität und keine DPS-Garantie.",
+    "plannedWeaponContextMatches": "Die technisch geplante Waffenklasse erreicht nach Normalisierung wieder denselben Analyzer-Waffentyp."
+  },
+  "limitations": [
+    "Die poe.ninja-Statistik Main Skills kann Utility-, Herald- und Setup-Fertigkeiten enthalten.",
+    "Skill- und Waffenhäufigkeiten sind marginale Statistiken und nicht zwingend innerhalb desselben Charakters korreliert.",
+    "Fehlende produktive Skillmodelle bleiben eine Coverage-Lücke; sie werden nicht durch erfundene Regeln ersetzt.",
+    "Die Matrix belegt lokale Kohärenz und Referenznähe, nicht den weltweit höchsten erreichbaren Schaden."
+  ]
+}

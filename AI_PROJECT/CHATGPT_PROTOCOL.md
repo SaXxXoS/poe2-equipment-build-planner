@@ -4360,3 +4360,20 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der fokussierte Abschlusslauf bestand mit 55 Tests. Typecheck, Lint sowie Produktions- und Pages-Build bestanden ebenfalls.
 - Der Code-Abschlusscommit `d2c38b6` wurde nach `main` gepusht. GitHub-Actions-Lauf `31275422555` schloss Build und Deploy erfolgreich ab; die öffentliche Pages-Version lädt das erwartete Produktionsartefakt `index-aOZ8k2WG.js`.
 - Produktpins, Offline-Grenzen und Quellen-/Anzeigeschichttrennung bleiben unverändert. Globale mathematische Optimalität und vollständige Path-of-Building-Gleichwertigkeit sind weiterhin nicht belegt.
+
+## Meta-Matrix und sichere Snapshot-Promotion – Schritt 174 (2026-08-08)
+
+- Die vollständige lokale Matrix prüft alle 23 produktiven Aszendenzen mit leerer Ausrüstung als gemeinsames Skill-/Waffen-/Support-/Analyzerpaket.
+- Vorher waren 20 Pakete auswählbar und 19 kohärent; nach der Korrektur sind 23/23 auswählbar, kohärent und technisch bis zur geplanten Waffenklasse transportiert.
+- Ursache der drei blockierten Monk-Pakete war die Normalisierung von `Quarterstaves` als allgemeiner `staff`. Die zentrale Normalisierung löst Viertelstäbe nun vor dem allgemeinen Stabfall auf.
+- Saisonale Referenzkandidaten werden nicht mehr vor ihrer Meta-Wertung durch das Maximum grober Klassen-Tags abgeschnitten. Die Top-3-Skill-Schnittmenge stieg im festen Auditprofil von 2/23 auf 19/23; die Top-2-Waffen-Schnittmenge liegt bei 22/23.
+- Der Generator arbeitet in kleinen deterministischen Aszendenz-Rang-Batches, priorisiert noch nicht versuchte Profile, begrenzt Netzwerkwartezeiten und bewahrt validierte Teilergebnisse.
+- Der aktuelle Quellenindex meldet `1959-20260808-19780`. Dieser Kandidat besitzt noch keine ausreichende korrelierte Abdeckung und wird in einer getrennten Kandidatenauditdatei fortgeschrieben. Der aktive Produktpin `1924-20260728-10654` mit seinem Audit aus 53 validierten Profilen und 10 Paketen blieb deshalb bytegleich erhalten.
+- Die Promotionsregel blockiert leere oder schwächer abgedeckte neue Snapshots. Ein neuer Snapshot muss mindestens die bisherige validierte Profil- und produktive Paketabdeckung erreichen.
+- Audit: `docs/audits/build-assistant-current-meta-matrix.json`. Hauptdokument: `docs/BUILD_ASSISTANT_META_MATRIX_STEP_174.md`.
+- Die Matrix belegt lokale Kohärenz und deutlich bessere Referenznähe, aber keine global höchste DPS und keine vollständige Path-of-Building-Gleichwertigkeit.
+- Abschlussprüfung: 1.914/1.914 fachliche Tests bestanden; Lint, Typecheck,
+  Produktions- und Pages-Build, 251 JSON-Dateien sowie `git diff --check`
+  bestanden. Die lokale Desktop- und 390×844-Browserprüfung erzeugte für
+  Hexe/Infernalistin ohne Ausrüstung ein vollständiges Ergebnis ohne
+  Berechnungsfehler, horizontalen Überlauf oder Browserkonsolenmeldungen.
