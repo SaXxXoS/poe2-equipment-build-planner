@@ -4,7 +4,7 @@ import { allTechnicalAffixes } from '../../affixes/registry'
 import { classifyTechnicalAffix } from '../../affixes/analyzer-semantics'
 import { classifyPob2Unique } from '../../uniques/pob2-semantics'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
-import { buildAssistantCandidates, runBuildAssistantV1 } from '.'
+import { buildAssistantCandidates, deriveWeaponContext, runBuildAssistantV1 } from '.'
 import type { CharacterConfiguration } from '../../domain'
 import { initialEquipment, skillSetups } from '../../data'
 
@@ -65,6 +65,16 @@ describe('Build Assistant V1.1 semantic expansion', () => {
     expect(pob2UniqueAnalyzerCandidates.some(item => item.tags.length > 0)).toBe(true)
     expect(pob2UniqueAnalyzerCandidates.every(item => !('gggModId' in item) && !('gggStatId' in item))).toBe(true)
     expect(pob2UniqueAnalyzerCandidates.flatMap(item => item.variantSemantics ?? [])).toHaveLength(product.variantCount)
+  })
+
+  it('recognizes pinned caster utility weapon classes in equipped weapon sets', () => {
+    const equipment = initialEquipment.map(entry => {
+      if (entry.slotId === 'slot-weapon-set-1-left') return { ...entry, itemClassId: 'Staves' }
+      if (entry.slotId === 'slot-weapon-set-2-left') return { ...entry, itemClassId: 'Sceptres' }
+      return entry
+    })
+
+    expect(deriveWeaponContext(equipment).availableWeaponTypes).toEqual(['sceptre', 'staff'])
   })
 
   it('remains deterministic', () => {

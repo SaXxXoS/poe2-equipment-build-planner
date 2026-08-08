@@ -121,6 +121,31 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     expect(suggestions[0].reasons).toContainEqual(expect.stringContaining('Anforderungen:'))
   })
 
+  it.each([
+    ['staff','Staves'],
+    ['sceptre','Sceptres'],
+  ] as const)('zeigt für %s eine konkrete tragbare Basis mit belegter Eigenschaft', (weaponType,itemClassId)=>{
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment,
+      optimization:{
+        evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,
+        numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
+        equipmentFirst:false,status:'selected',alternatives:[],
+        selected:{
+          skillId:'spell',skillName:'Zauber',weaponType,weaponLabel:weaponType,
+          mainWeaponSet:'set-1',skillTags:['spell','lightning'],compatibleSupportIds:[],
+          affinityScore:1,passiveAffinityScore:1,analyzerScore:1,modeledDps:null,
+          damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
+        },
+      },
+      uniqueRecommendations:[],uniqueNames:new Map(),characterLevel:100,characterAttributes,
+    })
+    expect(suggestions[0]).toMatchObject({itemClassId,requirementStatus:'met'})
+    expect(suggestions[0].itemDefinitionId).toBeTruthy()
+    expect(suggestions[0].properties).toContainEqual(expect.stringContaining('Implizit:'))
+    expect(suggestions[0].reasons).toContainEqual(expect.stringContaining('Anforderungen:'))
+  })
+
   it('begrenzt die konkrete Basis auf die tatsächlich tragbaren Anforderungen',()=>{
     const suggestions=createEquipmentSlotSuggestions({
       equipment,

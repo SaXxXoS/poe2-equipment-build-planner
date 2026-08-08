@@ -137,6 +137,22 @@ describe('vollständige Build-Variantenoptimierung', () => {
     })
     expect(initialEquipment.every(item => !item.itemClassId)).toBe(true)
   })
+  it('plant auch lokal belegte Stab- und Zepterbasen statt jeden Zauber auf Zauberstab zu zwingen', () => {
+    const planned = plannedEquipmentForVariant(initialEquipment, {
+      weaponType: 'staff',
+      mainWeaponSet: 'set-1',
+      setupSkillId: 'persistent-setup',
+      setupWeaponType: 'sceptre',
+    }, 90)
+
+    expect(planned.find(item => item.slotId === 'slot-weapon-set-1-left')).toMatchObject({
+      itemClassId: 'Staves',
+    })
+    expect(planned.find(item => item.slotId === 'slot-weapon-set-2-left')).toMatchObject({
+      itemClassId: 'Sceptres',
+    })
+  })
+
   it('schlägt bei inkompatibler Ausrüstung eine kompatible Ersatzwaffe vor', () => {
     const equipped = initialEquipment.map(entry =>
       entry.slotId === 'slot-weapon-set-1-left'
@@ -191,11 +207,11 @@ describe('vollständige Build-Variantenoptimierung', () => {
 
     expect(result.selected).toMatchObject({
       skillId: 'spark',
-      weaponType: 'wand',
       mainWeaponSet: 'set-1',
       setupSkillId: 'orb',
-      setupWeaponType: 'wand',
     })
+    expect(['wand','staff','sceptre']).toContain(result.selected?.weaponType)
+    expect(['wand','staff','sceptre']).toContain(result.selected?.setupWeaponType)
     expect(result.selected?.compatibleSupportIds).toEqual(['spell-support'])
     expect(result.evaluatedSkillCount).toBe(2)
   })

@@ -153,6 +153,8 @@ const weaponName: Partial<Record<SyntheticWeaponType, string>> = {
   mace: 'Mace',
   quarterstaff: 'Quarterstaff',
   spear: 'Spear',
+  staff: 'Staff',
+  sceptre: 'Sceptre',
   wand: 'Wand',
 }
 

@@ -1,5 +1,14 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Vollständigere lokale Caster-Waffenoptimierung – Schritt 170 (2026-08-08)
+
+- Der gemeinsame Skill-/Waffenoptimierer bewertet freie Zauber nicht mehr ausschließlich mit Zauberstäben, sondern auch mit den lokal gepinnten Stab- und Zepterbasen.
+- 17 Stab- und 21 Zepterbasen stehen mit Basisname, Anforderungen und belegter impliziter Eigenschaft für deterministische Haupt- und Setup-Waffenempfehlungen zur Verfügung.
+- Bereits eingetragene `Staves` und `Sceptres` werden jetzt zuverlässig in den Analyzer-Waffenkontext übertragen; die englische Pluralform `Staves` führte zuvor zu einem unerkannten Waffentyp.
+- Die aktuelle Meta-Referenz kann `Staff` und `Sceptre` nun als Waffensignal bewerten. Harte Skill-/Waffenregeln und tragbare Attribut-/Levelanforderungen bleiben vorrangig.
+- Talismane aus Referenzstatistiken bleiben ohne gleichwertige lokale technische Waffenkette unberücksichtigt; es wird keine Waffeneigenschaft erfunden.
+- Die End-to-End-Architektur, Produktpins, Offline-Grenzen und fail-closed Evidenzregeln bleiben unverändert.
+
 ## Blindside-Unterstützung – Schritt 169 (2026-08-08)
 
 - `Blindside` verarbeitet jetzt gegen ein ausdrücklich als geblendet bestätigtes Ziel 15 % mehr kritische Trefferchance und 15 % mehr kritischen Schadensbonus.

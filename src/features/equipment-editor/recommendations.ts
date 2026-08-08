@@ -69,8 +69,9 @@ function rangeText(label:string,range:{minimum:number;maximum:number}|undefined)
 }
 
 function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel:number|undefined, attributes:CharacterAttributeValues|undefined, skillTags:string[]=[]){
-  if(weaponType==='wand'){
-    const candidates=utilityBaseValuesFor('Wands')
+  const utilityClass=weaponType==='wand'?'Wands':weaponType==='staff'?'Staves':weaponType==='sceptre'?'Sceptres':null
+  if(utilityClass){
+    const candidates=utilityBaseValuesFor(utilityClass)
       .filter(base=>baseRequirementsMet(base,characterLevel,attributes))
     const score=(implicit:string|null)=>{
       if(!implicit)return 0
@@ -81,10 +82,10 @@ function concreteWeaponSuggestion(weaponType:SyntheticWeaponType, characterLevel
       if(skillTags.includes('physical')&&/(Bone|Exsanguinate)/i.test(implicit))result+=2
       return result
     }
-    const selected=candidates
+    const ranked=candidates
       .map(base=>({base,score:score(base.implicit)}))
-      .filter(value=>value.score>0)
       .sort((left,right)=>right.score-left.score||(right.base.requiredLevel??0)-(left.base.requiredLevel??0)||left.base.id.localeCompare(right.base.id))[0]?.base
+    const selected=ranked
     if(!selected)return null
     return {
       title:utilityBaseDisplayName(selected),

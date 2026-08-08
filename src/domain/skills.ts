@@ -6,7 +6,7 @@ export type SkillOrigin = 'manual' | 'recommended' | 'ascendancy' | 'equipment'
 export type RotationDurationCategory = 'short' | 'medium' | 'long' | 'persistent'
 export type MetaSocketRule = 'spell' | 'attack' | 'projectile-attack' | 'debuff' | 'warcry' | 'any-skill'
 
-export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'bow' | 'crossbow' | 'wand' | 'claw' | 'dagger' | 'flail' | 'mace' | 'quarterstaff' | 'spear' | 'sword' | 'axe' | 'any'
+export type SyntheticWeaponType = 'unarmed' | 'melee-weapon' | 'ranged-weapon' | 'focus' | 'bow' | 'crossbow' | 'wand' | 'staff' | 'sceptre' | 'claw' | 'dagger' | 'flail' | 'mace' | 'quarterstaff' | 'spear' | 'sword' | 'axe' | 'any'
 export interface SkillAttributeRequirements { strength?: number; dexterity?: number; intelligence?: number }
 export interface SkillGemDefinition extends GameDataMetadata {
   /** Vollständige normalisierte Quell-Tags; nur für fail-closed Regelprüfung. */

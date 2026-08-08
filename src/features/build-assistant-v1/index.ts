@@ -118,6 +118,8 @@ const isOccupied = (entry: EquipmentEntry) =>
 
 const syntheticWeaponType = (technicalName: string): SyntheticWeaponType | undefined => {
   const value = technicalName.toLowerCase()
+  if (value.includes('staves')) return 'staff'
+  if (value.includes('sceptre')) return 'sceptre'
   for(const type of ['crossbow','quarterstaff','bow','wand','claw','dagger','flail','mace','spear','sword','axe'] as const)if(value.includes(type))return type
   if (value.includes('focus')) return 'focus'
   return undefined

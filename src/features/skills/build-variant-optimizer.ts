@@ -29,7 +29,7 @@ import { baseRequirementsMet } from '../equipment-editor/base-requirements'
 
 const concreteWeapons: SyntheticWeaponType[] = [
   'axe', 'bow', 'claw', 'crossbow', 'dagger', 'flail', 'mace',
-  'quarterstaff', 'spear', 'sword', 'wand',
+  'quarterstaff', 'sceptre', 'spear', 'staff', 'sword', 'wand',
 ]
 
 const weaponLabels: Record<SyntheticWeaponType, string> = {
@@ -40,6 +40,8 @@ const weaponLabels: Record<SyntheticWeaponType, string> = {
   bow: 'Bogen',
   crossbow: 'Armbrust',
   wand: 'Zauberstab',
+  staff: 'Stab',
+  sceptre: 'Zepter',
   claw: 'Klaue',
   dagger: 'Dolch',
   flail: 'Flegel',
@@ -136,7 +138,9 @@ function equipmentWeaponSets(equipment: EquipmentEntry[]) {
     if (!set || !entry.itemClassId) continue
     const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
     const technical = itemClass?.weaponType.toLowerCase()
-    const type = concreteWeapons.find(value => technical?.includes(value))
+    const type = technical?.includes('staves') ? 'staff'
+      : technical?.includes('sceptre') ? 'sceptre'
+        : concreteWeapons.find(value => technical?.includes(value))
     if (type) result[set].add(type)
   }
   return result
@@ -155,7 +159,7 @@ function candidateWeapons(skill: SkillGemDefinition, equipped: ReturnType<typeof
             : [type],
     ).filter((value, index, all) => all.indexOf(value) === index)
   }
-  if (skill.tags.includes('spell')) return ['wand'] satisfies SyntheticWeaponType[]
+  if (skill.tags.includes('spell')) return ['wand', 'staff', 'sceptre'] satisfies SyntheticWeaponType[]
   return []
 }
 
@@ -181,8 +185,12 @@ function referenceWeapon(
   attributes: CharacterAttributeValues | undefined,
   set: 'set-1' | 'set-2',
 ): EquipmentEntry | null {
-  if (weapon === 'wand') {
-    const base = utilityBaseValuesFor('Wands')
+  const utilityClass = weapon === 'wand' ? 'Wands'
+    : weapon === 'staff' ? 'Staves'
+      : weapon === 'sceptre' ? 'Sceptres'
+        : null
+  if (utilityClass) {
+    const base = utilityBaseValuesFor(utilityClass)
       .filter(value => baseRequirementsMet(value, characterLevel, attributes))
       .sort((left, right) =>
         (right.requiredLevel ?? 0) - (left.requiredLevel ?? 0)
@@ -254,7 +262,10 @@ function equipmentForEstimate(
     if (!entry.slotId.includes(`weapon-${set}`) || !entry.itemClassId) return false
     const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
     const technical = itemClass?.weaponType.toLowerCase()
-    return concreteWeapons.some(type => technical?.includes(type) && type === weapon)
+    const equippedType = technical?.includes('staves') ? 'staff'
+      : technical?.includes('sceptre') ? 'sceptre'
+        : concreteWeapons.find(type => technical?.includes(type))
+    return equippedType === weapon
   })
   if (hasCompatibleWeapon) return equipment
   const reference = referenceWeapon(weapon, characterLevel, attributes, set)
