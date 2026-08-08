@@ -49,6 +49,7 @@ Nach Abschluss der realen Passive-Planung wird das zuvor ausgewählte Build-Pake
 - abschließende Browserprüfung: zusammenhängendes Stormweaver-/Funken-Paket ohne Fehler oder Timeout, Passive-Teilwert 100, Set 1 und Set 2 jeweils 24/24 sowie Aszendenz 8/8
 - mobile Browserprüfung bei 390 × 844: neun Skillkarten, kein horizontaler Seitenüberlauf und keine neuen Konsolenfehler
 - fokussierter Abschlusslauf: 55 Tests erfolgreich; Typecheck, Lint, Produktions- und Pages-Build erfolgreich
+- Code-Abschlusscommit `d2c38b6`; GitHub-Actions-Lauf `31275422555` mit Build und Deploy erfolgreich; die ausgelieferte Pages-Version lädt das erwartete Produktionsartefakt `index-aOZ8k2WG.js`
 
 ## Grenzen
 
