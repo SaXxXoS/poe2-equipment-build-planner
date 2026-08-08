@@ -70,6 +70,7 @@ export interface EnemyMitigationProfile {
   temporalModelVersion?:string
   lifeState?:'full-life'|'low-life'|'not-low-life'|'unknown'
   heavyStunned?:boolean
+  blinded?:boolean
   ailmentStates?:Partial<Record<'bleeding'|'poisoned'|'ignited'|'frozen'|'shocked',boolean>>
 }
 export interface MitigatedDamageComponent extends DamageComponent { effectiveDefence:number; mitigationPercent:number }
@@ -174,6 +175,16 @@ export interface DamageEstimate {
     status:'not-applicable'|'applied'|'inactive-enemy-not-bleeding'|'blocked-unknown-enemy-bleeding-state'|'blocked-incompatible-skill'|'blocked-duplicate-family'
     physicalDamageMultiplier:number
     appliedSupports:Array<{supportId:string;supportName:string;family:string;enemyBleedingMoreMeleePhysicalDamagePercent:number;sourceReference:string}>
+    blockedSupportIds:string[]
+    sourceReferences:string[]
+    detail:string
+  }
+  blindsideSupportModel?:{
+    modelVersion:string
+    status:'not-applicable'|'applied'|'inactive-enemy-not-blinded'|'blocked-unknown-enemy-blind-state'|'blocked-incompatible-skill'|'blocked-duplicate-family'
+    criticalChanceMultiplier:number
+    criticalDamageBonusMultiplier:number
+    appliedSupports:Array<{supportId:string;supportName:string;family:string;moreCriticalChancePercent:number;moreCriticalDamageBonusPercent:number;sourceReferences:string[]}>
     blockedSupportIds:string[]
     sourceReferences:string[]
     detail:string

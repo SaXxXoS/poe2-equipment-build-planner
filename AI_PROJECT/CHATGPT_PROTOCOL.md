@@ -1,5 +1,18 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Blindside-Unterstützung – Schritt 169 (2026-08-08)
+
+- `Blindside` verarbeitet jetzt gegen ein ausdrücklich als geblendet bestätigtes Ziel 15 % mehr kritische Trefferchance und 15 % mehr kritischen Schadensbonus.
+- Bestätigt nicht geblendete Ziele deaktivieren den Effekt. Ein unbekannter Blindzustand wird fail-closed blockiert und erzeugt keinen Bonus.
+- Die Kompatibilität verlangt einen gepinnten Armbrustangriff; inkompatible Fertigkeiten und doppelte Supportfamilien werden blockiert.
+- Schadensrechner `3.83.0`, Blindside-Modell `1.0.0`.
+- Hauptdokument: `docs/BUILD_ASSISTANT_BLINDSIDE_SUPPORT_STEP_169.md`.
+- Audit: `docs/audits/build-assistant-step-169-blindside-support.json`.
+- Fokussiert: 2 Dateien und 85 Tests erfolgreich.
+- Gesamtlauf: 1.882 Tests bestanden; drei unter paralleler Vollbaumlast zeitüberschrittene Dateien bestanden seriell mit 198 Tests vollständig.
+- Typecheck und `git diff --check` erfolgreich.
+- Produktpins, Quellenfreigaben und Offline-Grenzen bleiben unverändert; vollständige PoB2-Gleichwertigkeit bleibt offen.
+
 ## Bloodlust-Unterstützung – Schritt 168 (2026-08-02)
 
 - `Bloodlust` verarbeitet jetzt 30 % mehr physischen Nahkampfschaden gegen ein ausdrücklich als blutend bestätigtes Ziel.

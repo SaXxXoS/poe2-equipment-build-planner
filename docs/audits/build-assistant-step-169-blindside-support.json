@@ -1,0 +1,28 @@
+{
+  "step": 169,
+  "title": "Blindside critical effects against blinded enemies",
+  "calculatorVersion": "3.83.0",
+  "modelVersion": "1.0.0",
+  "source": "generated/pob2/damage-reference.json",
+  "sourceRecords": ["SupportBlindsidePlayer"],
+  "sourceStats": {
+    "support_unseen_critical_strike_chance_+%_final_vs_blinded_enemies": 15,
+    "support_unseen_critical_damage_multiplier_+%_final_vs_blinded_enemies": 15
+  },
+  "conditions": {
+    "enemyBlinded": "productive-structured-exact",
+    "enemyConfirmedNotBlinded": "inactive",
+    "enemyBlindStateUnknown": "conditional-effect-fail-closed",
+    "requiredSkillTypes": ["Attack", "CrossbowSkill-or-CrossbowAmmoSkill"]
+  },
+  "focusedTests": {"files": 2, "tests": 85, "status": "passed"},
+  "fullRegression": {
+    "initialPassed": 1882,
+    "parallelTimeouts": 3,
+    "serialRerunTests": 198,
+    "serialRerunStatus": "passed"
+  },
+  "pinsChanged": false,
+  "offlineBoundaryChanged": false,
+  "fullPathOfBuildingParity": "not-proven"
+}
