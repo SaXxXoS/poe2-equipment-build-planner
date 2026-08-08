@@ -14,7 +14,7 @@ import { planSynergisticSkills } from './features/skills/synergy-planner'
 import { fillRecommendedSupportSlots } from './features/skills/automatic-supports'
 import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
-import { optimizeBuildVariants, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
+import { optimizeBuildVariants, plannedEquipmentForVariant, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
 import { evaluateAnalyzedBuildPackage } from './features/skills/build-package-evaluation'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
@@ -125,6 +125,7 @@ export default function App() {
           candidate: NonNullable<BuildVariantOptimization['selected']>,
           characterForAnalysis: CharacterConfiguration,
           baseSetups: typeof setups,
+          characterAttributes: BuildAnalysis['characterAttributes'],
         ) => {
           let setupAssigned = false
           const packageSetups = baseSetups.map((setup, index) => {
@@ -150,13 +151,19 @@ export default function App() {
             }
             return setup
           })
-          const packageAnalysis = runBuildAssistantV1({
-            character: { ...characterForAnalysis, desiredMainSkillId: candidate.skillId },
-            equipment,
-            setups: packageSetups,
-          })
           const hasEquipment = equipment.some(entry =>
             Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId || entry.modifierValues.length))
+          const packageEquipment = hasEquipment ? equipment : plannedEquipmentForVariant(
+            equipment,
+            candidate,
+            characterForAnalysis.level || undefined,
+            characterAttributes,
+          )
+          const packageAnalysis = runBuildAssistantV1({
+            character: { ...characterForAnalysis, desiredMainSkillId: candidate.skillId },
+            equipment: packageEquipment,
+            setups: packageSetups,
+          })
           return evaluateAnalyzedBuildPackage(candidate, packageAnalysis, {
             allowPlannedEquipmentRequirements: !hasEquipment,
           })
@@ -182,7 +189,7 @@ export default function App() {
             skillScores: mainCandidates,
             characterLevel: character.level || undefined,
             characterAttributes: result.characterAttributes,
-            evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
+            evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),
           })
           setVariantOptimization(optimization)
           const recommendation = mainCandidates.find(value => value.skillId === optimization.selected?.skillId) ?? selectAutomaticMainSkill({
@@ -262,7 +269,7 @@ export default function App() {
                 : { ...value, valid: false }),
               characterLevel: character.level || undefined,
               characterAttributes: result.characterAttributes,
-              evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups),
+              evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),
             }))
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {

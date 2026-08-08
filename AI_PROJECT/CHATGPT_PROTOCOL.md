@@ -4308,4 +4308,13 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Schadensrechner `3.79.0`, Execute-Modell `1.0.0`; Produktpins und Offline-Grenzen unverändert.
 - Fokussiert bestanden 84 Tests. Im Gesamtlauf bestanden 1.871 Tests; drei lastbedingt zeitüberschrittene Vollbaumtests bestanden seriell mit 198 Tests. Typecheck, Lint und beide Builds bestanden.
 - Details: `docs/BUILD_ASSISTANT_EXECUTE_SUPPORT_STEP_165.md` und `docs/audits/build-assistant-step-165-execute-support.json`.
+
+## Integrierte Paketwaffen – Schritt 170 (2026-08-08)
+
+- Die gemeinsame Paketprüfung eines leeren Builds verwendet dieselben lokal gepinnten Waffenbasen wie Schadensoptimierung und sichtbarer Waffenvorschlag.
+- Hauptwaffe und bei belegtem Setup-Skill die zweite Set-Waffe werden nur für die Bewertung eingesetzt; echte Nutzerausrüstung bleibt unverändert und vorrangig.
+- Level- und Attributanforderungen werden geprüft. Eine Basis ohne Affixe erhält keinen erfundenen positiven Equipment-Score.
+- Der Stormweaver/Funken-Referenzfall belegt Hauptskill, Supports und beide Waffensets in einem gemeinsamen Analyzerpaket.
+- Details: `docs/BUILD_ASSISTANT_INTEGRATED_PACKAGE_WEAPONS_STEP_170.md` und `docs/audits/build-assistant-step-170-integrated-package-weapons.json`.
+- Vollständige globale Path-of-Building-Gleichwertigkeit bleibt unbewiesen; als Nächstes folgt die breite Klassen-/Aszendenzcoverage und sichtbare Paketkonsistenz.
 - Vollständige Path-of-Building-Gleichwertigkeit bleibt unbewiesen; die nächste strukturierte Rechenlücke folgt.

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "step": 170,
+  "status": "implemented-and-tested",
+  "problem": "package-analysis-used-empty-weapon-context-for-planned-builds",
+  "resolution": {
+    "plannedMainWeapon": true,
+    "plannedSetupWeapon": true,
+    "pinnedLocalBasesOnly": true,
+    "requirementsChecked": true,
+    "userEquipmentPreserved": true,
+    "evaluationOnly": true
+  },
+  "referenceCase": {
+    "ascendancy": "ascendancy-official-Sorceress1",
+    "mainSkill": "Spark",
+    "mainWeaponSet": "set-1",
+    "setupSkill": "Orb of Storms",
+    "setupWeaponSet": "set-2"
+  },
+  "limitations": [
+    "A planned base without affixes does not receive an invented equipment score.",
+    "Complete global Path of Building equivalence remains unproven."
+  ]
+}

@@ -7,6 +7,7 @@ import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
 import {
   normalizeDamageObjective,
   optimizeBuildVariants,
+  plannedEquipmentForVariant,
   type BuildVariantCandidate,
   type VariantSkillScore,
 } from './build-variant-optimizer'
@@ -76,6 +77,22 @@ const damageCandidate = (
 })
 
 describe('vollständige Build-Variantenoptimierung', () => {
+  it('prüft ein leeres Zwei-Set-Paket mit geplanten Waffen aus gepinnten Basen', () => {
+    const planned = plannedEquipmentForVariant(initialEquipment, {
+      weaponType: 'wand',
+      mainWeaponSet: 'set-1',
+      setupSkillId: 'orb-of-storms',
+      setupWeaponType: 'wand',
+    }, 90)
+
+    expect(planned.find(item => item.slotId === 'slot-weapon-set-1-left')).toMatchObject({
+      itemClassId: 'Wands',
+    })
+    expect(planned.find(item => item.slotId === 'slot-weapon-set-2-left')).toMatchObject({
+      itemClassId: 'Wands',
+    })
+    expect(initialEquipment.every(item => !item.itemClassId)).toBe(true)
+  })
   it('schlägt bei inkompatibler Ausrüstung eine kompatible Ersatzwaffe vor', () => {
     const equipped = initialEquipment.map(entry =>
       entry.slotId === 'slot-weapon-set-1-left'
@@ -228,14 +245,22 @@ describe('vollständige Build-Variantenoptimierung', () => {
               supportGemIds: candidate.compatibleSupportIds,
             }
           : setup)
+        const packageEquipment = plannedEquipmentForVariant(
+          initialEquipment,
+          candidate,
+          character.level,
+          analysis.characterAttributes,
+        )
         return evaluateAnalyzedBuildPackage(candidate, runBuildAssistantV1({
           character: { ...character, desiredMainSkillId: candidate.skillId },
-          equipment: initialEquipment,
+          equipment: packageEquipment,
           setups: packageSetups,
         }), { allowPlannedEquipmentRequirements: true })
       },
     })
     expect(result.selected?.skillName).toBe('Funken')
+    expect(result.selected?.packageComponents?.skill).toBeGreaterThan(0)
+    expect(result.selected?.compatibleSupportIds.length).toBeGreaterThan(0)
   }, 15_000)
 
   it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {

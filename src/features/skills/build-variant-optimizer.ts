@@ -20,6 +20,7 @@ import {
 } from './poe2-interaction-rules'
 import { buildEffectGraph } from './build-effect-graph'
 import {
+  utilityBaseValuesFor,
   weaponBaseValuesFor,
   weaponStatsFromBase,
   type WeaponBaseValue,
@@ -180,6 +181,21 @@ function referenceWeapon(
   attributes: CharacterAttributeValues | undefined,
   set: 'set-1' | 'set-2',
 ): EquipmentEntry | null {
+  if (weapon === 'wand') {
+    const base = utilityBaseValuesFor('Wands')
+      .filter(value => baseRequirementsMet(value, characterLevel, attributes))
+      .sort((left, right) =>
+        (right.requiredLevel ?? 0) - (left.requiredLevel ?? 0)
+        || left.id.localeCompare(right.id))[0]
+    return base ? {
+      id: `optimizer-reference-${set}-${base.id}`,
+      slotId: `slot-weapon-${set}-left`,
+      itemClassId: base.itemClassId,
+      itemDefinitionId: base.id,
+      baseDisplayName: base.nameEn,
+      modifierValues: [],
+    } : null
+  }
   const base = (weaponBaseClasses[weapon] ?? [])
     .flatMap(itemClassId => weaponBaseValuesFor(itemClassId))
     .filter(value => baseRequirementsMet(value, characterLevel, attributes))
@@ -195,6 +211,34 @@ function referenceWeapon(
     weaponStatsSource: 'pinned-base',
     modifierValues: [],
   }
+}
+
+const hasWeaponInSet = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2') =>
+  equipment.some(entry => entry.slotId.includes(`weapon-${set}`)
+    && Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId))
+
+/** Evaluation-only weapon context built from pinned local base data. */
+export function plannedEquipmentForVariant(
+  equipment: EquipmentEntry[],
+  candidate: Pick<BuildVariantCandidate,
+    'weaponType' | 'mainWeaponSet' | 'setupSkillId' | 'setupWeaponType'>,
+  characterLevel?: number,
+  characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>,
+): EquipmentEntry[] {
+  const planned = [...equipment]
+  const add = (weapon: SyntheticWeaponType | undefined, set: 'set-1' | 'set-2') => {
+    if (!weapon || hasWeaponInSet(planned, set)) return
+    const reference = referenceWeapon(weapon, characterLevel, characterAttributes?.[set].total, set)
+    if (!reference) return
+    const emptySlotIndex = planned.findIndex(entry => entry.slotId === reference.slotId)
+    if (emptySlotIndex >= 0) planned[emptySlotIndex] = reference
+    else planned.push(reference)
+  }
+  add(candidate.weaponType, candidate.mainWeaponSet)
+  if (candidate.setupSkillId) {
+    add(candidate.setupWeaponType, candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1')
+  }
+  return planned
 }
 
 function equipmentForEstimate(
