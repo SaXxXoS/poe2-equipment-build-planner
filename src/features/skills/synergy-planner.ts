@@ -2,6 +2,12 @@ import type { SkillGemDefinition, SkillRole, SkillWeaponSet } from '../../domain
 import { evaluateSkillInteraction, type SkillInteractionEvidence } from './poe2-interaction-rules'
 import { correlatedMetaSkillRelations } from './meta-reference'
 
+type CorrelatedSkillRelations = Map<string, {
+  profileCount: number
+  share: number
+  packageIds: string[]
+}>
+
 export interface SkillSynergyScore {
   skillId: string
   totalScore: number
@@ -24,7 +30,10 @@ export function planSynergisticSkills(
   definitions: SkillGemDefinition[],
   recommendationScores: SkillSynergyScore[],
   limit: number,
-  context?: { ascendancyId?: string },
+  context?: {
+    ascendancyId?: string
+    correlatedSkillRelations?: CorrelatedSkillRelations
+  },
 ): PlannedSynergySkill[] {
   const scores = new Map(recommendationScores.map(value => [value.skillId, value]))
   const explicitCandidates = definitions.flatMap((candidate): PlannedSynergySkill[] => {
@@ -41,9 +50,10 @@ export function planSynergisticSkills(
       ruleId: interaction.ruleId,
     }]
   })
-  const correlated = context?.ascendancyId
-    ? correlatedMetaSkillRelations(main, context.ascendancyId)
-    : new Map()
+  const correlated = context?.correlatedSkillRelations
+    ?? (context?.ascendancyId
+      ? correlatedMetaSkillRelations(main, context.ascendancyId)
+      : new Map())
   const metaCandidates = definitions.flatMap((candidate): PlannedSynergySkill[] => {
     const evidence = correlated.get(candidate.nameEn)
     if (!evidence || candidate.id === main.id) return []

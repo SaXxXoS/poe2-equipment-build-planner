@@ -1,6 +1,6 @@
 /* global process, console, URL, URLSearchParams, fetch, setTimeout, AbortSignal */
 import { createHash } from 'node:crypto'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import {
   selectMetaRefreshProfileIds,
@@ -180,7 +180,10 @@ const requestedProfiles = reference.ascendancies.flatMap(entry =>
 )
 
 let previousObservations = new Map()
-for (const previousAuditPath of [CANDIDATE_AUDIT_OUTPUT, AUDIT_OUTPUT]) {
+// Sobald ein Snapshot promoviert ist, ist sein aktiver Audit maßgeblich. Ein
+// eventuell noch vorhandener Kandidatenbericht desselben Snapshots darf den
+// vollständigeren aktiven Stand nicht wieder überlagern.
+for (const previousAuditPath of [AUDIT_OUTPUT, CANDIDATE_AUDIT_OUTPUT]) {
   try {
     const previous = JSON.parse(await readFile(previousAuditPath, 'utf8'))
     if (previous.source?.version === snapshot.version) {
@@ -463,6 +466,7 @@ await mkdir(path.dirname(PRODUCT_OUTPUT), { recursive: true })
 await writeFile(selectedAuditOutput, `${JSON.stringify(audit, null, 2)}\n`)
 if (productPromoted) {
   await writeFile(PRODUCT_OUTPUT, `${JSON.stringify(product, null, 2)}\n`)
+  await rm(CANDIDATE_AUDIT_OUTPUT, { force: true })
 }
 console.log(JSON.stringify({
   version: snapshot.version,

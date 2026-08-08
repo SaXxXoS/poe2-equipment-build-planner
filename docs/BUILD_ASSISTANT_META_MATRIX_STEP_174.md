@@ -56,7 +56,7 @@ Zielprofil Allround für jede produktive Aszendenz.
 | geplante Waffenklasse erreicht den Analyzer | Unbekannt | 23 |
 | Schnittmenge mit beobachtetem Top-3-Skill | 2 | 19 |
 | Schnittmenge mit beobachteter Top-2-Waffe | 15 | 22 |
-| verschiedene ausgewählte Hauptskills | 11 | 15 |
+| verschiedene ausgewählte Hauptskills | 11 | 16 |
 | verschiedene ausgewählte Waffenarten | 7 | 8 |
 
 Die Referenzschnittmenge ist ein sekundärer Plausibilitätsbeleg. Die
@@ -67,20 +67,19 @@ diese Matrix keine harte Spielregel oder DPS-Garantie erzeugen.
 
 ## Snapshotstatus
 
-Der aktive reduzierte Produktpin bleibt
-`1924-20260728-10654` mit 53 validierten Profilen und 10 produktiven Paketen.
-Der am 8. August 2026 vom Quellenindex gemeldete Kandidat
-`1959-20260808-19780` besitzt im begonnenen, rate-limitierten Audit noch keine
-ausreichende validierte Abdeckung und wurde deshalb nicht produktiv promoviert.
-In den ersten fair verteilten Batches wurden 18 verschiedene Profile versucht;
-8 davon sind als korrelierte Profile validiert. Noch keine Aszendenz besitzt
-die für ein produktives Paket erforderliche doppelte Profilabdeckung.
-Sein Fortschritt liegt getrennt in
-`docs/audits/poe2-current-meta-build-profile-validation-candidate.json`; der
-aktive Audit des Produktpins bleibt davon unverändert.
-Der bytegleiche Erhalt des aktiven Produktartefakts wurde beim Null-Batch über
-den SHA-256-Wert `5D04566E6B3C01886A4FA43AF8B0F85CD40E1E61F2E0EAD5E86820CED81932A8`
-vor und nach dem Lauf bestätigt.
+Der aktuelle Quellenindex `1959-20260808-19780` ist nach mehreren kleinen,
+fortsetzbaren Batches sicher produktiv promoviert worden. Der Audit klassifiziert
+alle 460 fest gepinnten Profilreferenzen: 53 Profile sind als korrelierte
+Beobachtungen validiert, 407 blockiert. Daraus entstehen 15 produktive Pakete
+und 22 weitere reine Auditpakete. Damit erreicht der neue Stand mindestens die
+53 validierten Profile und übertrifft die 10 produktiven Pakete des vorherigen
+Pins `1924-20260728-10654`.
+
+Die reduzierte Produktdatei besitzt den SHA-256-Wert
+`F8FD4EC1E4052BFBA8EB0A5B48C792A456304024F8BC4AD0966B0AAAAD3BDAAD`.
+Nach erfolgreicher Promotion wird ein veralteter Kandidatenaudit entfernt.
+Ein anschließender Null-Batch verwendet den aktiven Stand wieder und erzeugt
+keine zweite widersprüchliche Kandidatendatei.
 
 ## Grenzen
 
@@ -88,8 +87,8 @@ vor und nach dem Lauf bestätigt.
 - Nicht im Produktkatalog vorhandene Skills werden nicht erfunden.
 - Ein populärer Referenzeintrag darf harte lokale Kompatibilität nicht
   überstimmen.
-- Die vollständige korrelierte Profilabdeckung des neuen Snapshots ist offen
-  und kann mit weiteren kleinen Generatorbatches erweitert werden.
+- Nicht jede Aszendenz besitzt zwei gleichartige, korrelierte Profile. Solche
+  Einzelbeobachtungen bleiben Audit-only und erzeugen kein produktives Paket.
 
 ## Schlussfolgerung
 
@@ -103,11 +102,11 @@ kein bewiesener globaler Meta- oder Path-of-Building-Ersatz.
 - Die fokussierten Matrix-, Optimierer-, Paket-, Synergie- und
   Promotionsprüfungen bestanden vollständig. Die ergänzte Batch-Fairness ist
   mit 5/5 Generator-Policy-Tests abgesichert.
-- Die vollständige fachliche Testsuite bestand stabil aufgeteilt mit 1.914 von
-  1.914 Tests. Die Aufteilung vermeidet ausschließlich einen internen
+- Die vollständige fachliche Testsuite bestand stabil aufgeteilt mit 1.915 von
+  1.915 Tests. Die Aufteilung vermeidet ausschließlich einen internen
   Vitest-RPC-Timeout des monolithischen Prozesses; kein fachlicher Test wurde
   ausgelassen.
-- Lint, Typecheck, Produktions-Build, Pages-Build, 251 JSON-Dateien und
+- Lint, Typecheck, Produktions-Build, Pages-Build, 250 JSON-Dateien und
   `git diff --check` bestanden.
 - Die lokale Desktop-Browserprüfung erzeugte für Hexe/Infernalistin ohne
   Ausrüstung ein Ergebnis mit Hauptskill, Waffenset-2-Hilfsskill,

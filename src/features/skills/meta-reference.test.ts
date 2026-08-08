@@ -24,7 +24,7 @@ describe('seasonal meta reference', () => {
     expect(metaReferenceSnapshot).toMatchObject({
       league: 'Runes of Aldur',
       patchFamily: '0.5.x',
-      exactVersion: '1924-20260728-10654',
+      exactVersion: '1959-20260808-19780',
       population: 124306,
     })
   })

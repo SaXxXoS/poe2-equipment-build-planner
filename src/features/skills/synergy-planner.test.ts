@@ -65,13 +65,18 @@ describe('zusammenhängende Skillplanung', () => {
     expect(planSynergisticSkills(main, [main, ...candidates], [], 8)).toEqual(planSynergisticSkills(main, [main, ...candidates], [], 8))
   })
 
-  it('nutzt ein mehrfach beobachtetes lokales Meta-Paket nur für dieselbe Aszendenz', () => {
+  it('nutzt eine mehrfach beobachtete Korrelation nur bei ausdrücklich belegter Paketbeziehung', () => {
     const main = skill('skyfall', 'Skyfall', ['spell', 'cold'])
     const trigger = skill('cast-on-critical', 'Cast on Critical', ['spell'], {
       sourceTags: ['meta', 'trigger'],
     })
     expect(planSynergisticSkills(main, [main, trigger], [], 8, {
       ascendancyId: 'ascendancy-official-Witch1',
+      correlatedSkillRelations: new Map([['Cast on Critical', {
+        profileCount: 2,
+        share: 100,
+        packageIds: ['fixture-package'],
+      }]]),
     })[0]).toMatchObject({
       skillId: 'cast-on-critical',
       evidence: 'multi-profile-correlated-exact',

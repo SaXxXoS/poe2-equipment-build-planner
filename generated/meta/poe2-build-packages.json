@@ -4,7 +4,7 @@
     "provider": "poe.ninja",
     "league": "Runes of Aldur",
     "leagueUrl": "runesofaldur",
-    "version": "1924-20260728-10654",
+    "version": "1959-20260808-19780",
     "snapshotName": "runes-of-aldur",
     "passiveTree": "PassiveTree-0.5",
     "snapshotDate": "2026-07-28",
@@ -21,324 +21,70 @@
     "productiveUse": "bounded-secondary-evidence-after-hard-compatibility"
   },
   "profileCount": 53,
-  "packageCount": 10,
+  "packageCount": 15,
   "packages": [
     {
-      "packageId": "553fd8a0da0e34f56d1e",
-      "ascendancyId": "ascendancy-official-Witch1",
-      "ascendancy": "Infernalist",
-      "mainSkill": "Skyfall",
+      "packageId": "c1d28d78a72aae3a040f",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "ascendancy": "Oracle",
+      "mainSkill": "Comet",
       "weapon": "wand",
-      "profileCount": 11,
+      "profileCount": 2,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
       "supports": [
         {
           "name": "Concentrated Area",
-          "count": 11,
+          "count": 2,
           "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 1,
+          "share": 50
         },
         {
           "name": "Elemental Focus",
-          "count": 10,
-          "share": 91
-        },
-        {
-          "name": "Cold Mastery",
-          "count": 9,
-          "share": 82
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 9,
-          "share": 82
-        },
-        {
-          "name": "Considered Casting",
-          "count": 6,
-          "share": 55
-        },
-        {
-          "name": "Execute III",
-          "count": 3,
-          "share": 27
-        },
-        {
-          "name": "Zenith II",
-          "count": 2,
-          "share": 18
-        },
-        {
-          "name": "Embitter",
           "count": 1,
-          "share": 9
-        },
-        {
-          "name": "Minion Pact II",
-          "count": 1,
-          "share": 9
-        },
-        {
-          "name": "Rapid Casting II",
-          "count": 1,
-          "share": 9
-        }
-      ],
-      "linkedActiveSkills": [
-        {
-          "name": "Cast on Critical",
-          "count": 1,
-          "share": 9
-        }
-      ],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 27460905,
-        "maximum": 569153460
-      },
-      "passiveSummary": {
-        "normalMedian": 120,
-        "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 1,
-        "profilesWithWeaponSet2": 1
-      },
-      "profileEvidenceIds": [
-        "22b653f46c169cb376fa",
-        "66521b433906cab9aefe",
-        "a3e38bc8ff8084441c02",
-        "a6acc1286b3c9077711f",
-        "a95d69d4e70bebe66c8d",
-        "b53d162c88e314b90a81",
-        "bb2efc6df2f749a4c66d",
-        "bb9bfdc2c04347412b14",
-        "c8f059986f9c5a2f25f4",
-        "dca6b1583bb989401971",
-        "f283f771c478c33cd232"
-      ]
-    },
-    {
-      "packageId": "4b2362cf42c615a87e9c",
-      "ascendancyId": "ascendancy-official-Witch1",
-      "ascendancy": "Infernalist",
-      "mainSkill": "Comet",
-      "weapon": "wand",
-      "profileCount": 3,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Execute III",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Efficiency II",
-          "count": 2,
-          "share": 67
-        },
-        {
-          "name": "Cold Mastery",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Concentrated Area",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Considered Casting",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Spell Cascade",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Zenith II",
-          "count": 1,
-          "share": 33
-        }
-      ],
-      "linkedActiveSkills": [
-        {
-          "name": "Cast on Critical",
-          "count": 2,
-          "share": 67
-        }
-      ],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 58752770,
-        "maximum": 80747206
-      },
-      "passiveSummary": {
-        "normalMedian": 121,
-        "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 0,
-        "profilesWithWeaponSet2": 0
-      },
-      "profileEvidenceIds": [
-        "0aa92290cbc077dd5b9c",
-        "5b626d1ee431b5eec115",
-        "c2fab8ee537efa873e8c"
-      ]
-    },
-    {
-      "packageId": "f3e59f314db5bcc2022c",
-      "ascendancyId": "ascendancy-official-Witch2",
-      "ascendancy": "Blood Mage",
-      "mainSkill": "Plasma Blast",
-      "weapon": "crossbow",
-      "profileCount": 11,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Bleed III",
-          "count": 11,
-          "share": 100
-        },
-        {
-          "name": "Concoct II",
-          "count": 11,
-          "share": 100
-        },
-        {
-          "name": "Deep Cuts II",
-          "count": 11,
-          "share": 100
-        },
-        {
-          "name": "Elemental Armament II",
-          "count": 11,
-          "share": 100
-        },
-        {
-          "name": "Pinpoint Critical",
-          "count": 11,
-          "share": 100
+          "share": 50
         }
       ],
       "linkedActiveSkills": [],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 351610,
-        "maximum": 935757
+        "median": 105750275,
+        "maximum": 118419373
       },
       "passiveSummary": {
-        "normalMedian": 120,
-        "ascendancyMedian": 9,
+        "normalMedian": 124,
+        "ascendancyMedian": 8,
         "profilesWithWeaponSet1": 0,
         "profilesWithWeaponSet2": 0
       },
       "profileEvidenceIds": [
-        "2935adf5a14266ee2b84",
-        "45bacdcee11c7dfbc3a0",
-        "48162f321fe3c4510a2e",
-        "674b64018b55520ff9b2",
-        "6e6e2b8c4126440ae341",
-        "6fe43b12f9109776f8ea",
-        "8c71a2b958ad77c31d8a",
-        "8f0b315373d405676641",
-        "94c3492f43d108eb8be6",
-        "c28cda273c184836eaf7",
-        "ef9da36f6d687fcc73a6"
+        "d576dbe5d39b706f0ef4",
+        "df2db273579a3d1ebae2"
       ]
     },
     {
-      "packageId": "62abf2703dc27e628c79",
-      "ascendancyId": "ascendancy-official-Witch2",
-      "ascendancy": "Blood Mage",
-      "mainSkill": "Comet",
-      "weapon": "wand",
-      "profileCount": 5,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Dialla's Desire",
-          "count": 4,
-          "share": 80
-        },
-        {
-          "name": "Efficiency II",
-          "count": 4,
-          "share": 80
-        },
-        {
-          "name": "Execute III",
-          "count": 4,
-          "share": 80
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 4,
-          "share": 80
-        },
-        {
-          "name": "Bleed III",
-          "count": 1,
-          "share": 20
-        },
-        {
-          "name": "Concentrated Area",
-          "count": 1,
-          "share": 20
-        },
-        {
-          "name": "Concoct II",
-          "count": 1,
-          "share": 20
-        },
-        {
-          "name": "Considered Casting",
-          "count": 1,
-          "share": 20
-        },
-        {
-          "name": "Deep Cuts II",
-          "count": 1,
-          "share": 20
-        }
-      ],
-      "linkedActiveSkills": [
-        {
-          "name": "Cast on Critical",
-          "count": 4,
-          "share": 80
-        }
-      ],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 18488336,
-        "maximum": 25477709
-      },
-      "passiveSummary": {
-        "normalMedian": 120,
-        "ascendancyMedian": 9,
-        "profilesWithWeaponSet1": 5,
-        "profilesWithWeaponSet2": 5
-      },
-      "profileEvidenceIds": [
-        "16701eb14915ed29dd9d",
-        "9d64057c2fc3d3317fac",
-        "bd34606557365e693137",
-        "eb4b6f73dcd25a4c7981",
-        "f1ebd67b92f3eac680fd"
-      ]
-    },
-    {
-      "packageId": "cb7ea6d0c469d1d92153",
-      "ascendancyId": "ascendancy-official-Witch2",
-      "ascendancy": "Blood Mage",
+      "packageId": "a5a79a562beb8233b127",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "ascendancy": "Shaman",
       "mainSkill": "Skyfall",
       "weapon": "wand",
       "profileCount": 3,
@@ -346,269 +92,37 @@
       "productive": true,
       "supports": [
         {
-          "name": "Cold Mastery",
-          "count": 3,
-          "share": 100
-        },
-        {
           "name": "Concentrated Area",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Considered Casting",
           "count": 3,
           "share": 100
         },
         {
           "name": "Elemental Focus",
-          "count": 2,
-          "share": 67
-        },
-        {
-          "name": "Zenith II",
-          "count": 2,
-          "share": 67
-        },
-        {
-          "name": "Execute III",
-          "count": 1,
-          "share": 33
-        }
-      ],
-      "linkedActiveSkills": [],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 8848109,
-        "maximum": 8889529
-      },
-      "passiveSummary": {
-        "normalMedian": 121,
-        "ascendancyMedian": 9,
-        "profilesWithWeaponSet1": 0,
-        "profilesWithWeaponSet2": 0
-      },
-      "profileEvidenceIds": [
-        "64351021455795764025",
-        "812fa1fb8e9f037d5c9a",
-        "fdab08d9ce36e732c31a"
-      ]
-    },
-    {
-      "packageId": "d0205d23bd8efb45aa2d",
-      "ascendancyId": "ascendancy-official-Witch2",
-      "ascendancy": "Blood Mage",
-      "mainSkill": "Plasma Blast",
-      "weapon": "spear",
-      "profileCount": 2,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Bleed III",
-          "count": 2,
-          "share": 100
-        },
-        {
-          "name": "Concoct II",
-          "count": 2,
-          "share": 100
-        },
-        {
-          "name": "Deep Cuts II",
-          "count": 2,
-          "share": 100
-        },
-        {
-          "name": "Elemental Armament II",
-          "count": 2,
-          "share": 100
-        },
-        {
-          "name": "Pinpoint Critical",
-          "count": 2,
-          "share": 100
-        }
-      ],
-      "linkedActiveSkills": [],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 305197,
-        "maximum": 524021
-      },
-      "passiveSummary": {
-        "normalMedian": 119,
-        "ascendancyMedian": 9,
-        "profilesWithWeaponSet1": 0,
-        "profilesWithWeaponSet2": 0
-      },
-      "profileEvidenceIds": [
-        "2935adf5a14266ee2b84",
-        "6e6e2b8c4126440ae341"
-      ]
-    },
-    {
-      "packageId": "d15087f5a59c002022ac",
-      "ascendancyId": "ascendancy-official-Witch3",
-      "ascendancy": "Lich",
-      "mainSkill": "Ice Shot",
-      "weapon": "bow",
-      "profileCount": 4,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Elemental Armament II",
-          "count": 4,
-          "share": 100
-        },
-        {
-          "name": "Execute III",
-          "count": 4,
+          "count": 3,
           "share": 100
         },
         {
           "name": "Rakiata's Flow",
-          "count": 4,
-          "share": 100
-        },
-        {
-          "name": "Fork",
-          "count": 3,
-          "share": 75
-        },
-        {
-          "name": "Garukhan's Resolve",
-          "count": 3,
-          "share": 75
-        },
-        {
-          "name": "Nova Projectiles I",
-          "count": 1,
-          "share": 25
-        },
-        {
-          "name": "Tul's Stillness",
-          "count": 1,
-          "share": 25
-        }
-      ],
-      "linkedActiveSkills": [],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 4457338,
-        "maximum": 6316916
-      },
-      "passiveSummary": {
-        "normalMedian": 121,
-        "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 0,
-        "profilesWithWeaponSet2": 0
-      },
-      "profileEvidenceIds": [
-        "2a9dd462aae2d053f481",
-        "3eafc4cbca5f37986f5d",
-        "4628ea9e62c7b6772358",
-        "cc491ede92a420dd63f7"
-      ]
-    },
-    {
-      "packageId": "64aea602647eebb9fc8e",
-      "ascendancyId": "ascendancy-official-Witch3",
-      "ascendancy": "Lich",
-      "mainSkill": "Comet",
-      "weapon": "wand",
-      "profileCount": 3,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Concentrated Area",
           "count": 3,
           "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 67
         },
         {
           "name": "Efficiency II",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Execute III",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 3,
-          "share": 100
-        }
-      ],
-      "linkedActiveSkills": [
-        {
-          "name": "Cast on Critical",
-          "count": 3,
-          "share": 100
-        }
-      ],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 10513117,
-        "maximum": 36637532
-      },
-      "passiveSummary": {
-        "normalMedian": 122,
-        "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 3,
-        "profilesWithWeaponSet2": 2
-      },
-      "profileEvidenceIds": [
-        "09d0ac830da95748f668",
-        "96d36129e572f282a7fa",
-        "e34641032651c07b4d38"
-      ]
-    },
-    {
-      "packageId": "6fcc78eb7bfd41963d0a",
-      "ascendancyId": "ascendancy-official-Witch3",
-      "ascendancy": "Lich",
-      "mainSkill": "Lightning Spear",
-      "weapon": "spear",
-      "profileCount": 3,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
-      "supports": [
-        {
-          "name": "Elemental Armament II",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Execute III",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Fork",
-          "count": 2,
-          "share": 67
-        },
-        {
-          "name": "Garukhan's Resolve",
-          "count": 2,
-          "share": 67
-        },
-        {
-          "name": "Embitter",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Projectile Acceleration III",
+          "name": "Execute II",
           "count": 1,
           "share": 33
         }
@@ -616,8 +130,8 @@
       "linkedActiveSkills": [],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 5138643,
-        "maximum": 8975749
+        "median": 63696564,
+        "maximum": 126071374
       },
       "passiveSummary": {
         "normalMedian": 121,
@@ -626,28 +140,28 @@
         "profilesWithWeaponSet2": 0
       },
       "profileEvidenceIds": [
-        "257e2a2e6f9bcdda775a",
-        "81418fc29bbfcc600b9a",
-        "a583ab3e030a7aa8ebb3"
+        "b11d8fc9199fcadd9625",
+        "d713d91ba90a1976d9d2",
+        "e257bf493f7ad781f4f1"
       ]
     },
     {
-      "packageId": "b680d42cc1e71f100c59",
-      "ascendancyId": "ascendancy-official-Witch3",
-      "ascendancy": "Lich",
-      "mainSkill": "Flicker Strike",
-      "weapon": "quarterstaff",
+      "packageId": "7c1fc00deb887f477e8d",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "ascendancy": "Spirit Walker",
+      "mainSkill": "Twister",
+      "weapon": "spear",
       "profileCount": 2,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
       "supports": [
         {
-          "name": "Clash",
+          "name": "Execute III",
           "count": 2,
           "share": 100
         },
         {
-          "name": "Execute III",
+          "name": "Garukhan's Resolve",
           "count": 2,
           "share": 100
         },
@@ -662,12 +176,12 @@
           "share": 100
         },
         {
-          "name": "Hit and Run",
+          "name": "Elemental Armament II",
           "count": 1,
           "share": 50
         },
         {
-          "name": "Perpetual Charge",
+          "name": "Projectile Acceleration III",
           "count": 1,
           "share": 50
         }
@@ -675,18 +189,767 @@
       "linkedActiveSkills": [],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 31528701,
-        "maximum": 36271857
+        "median": 30930053,
+        "maximum": 31173458
       },
       "passiveSummary": {
         "normalMedian": 122,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "00cb2b8c52fd6606779a",
+        "4a4927c2cc6166da559e"
+      ]
+    },
+    {
+      "packageId": "0d18e895004389a4132a",
+      "ascendancyId": "ascendancy-official-Monk1",
+      "ascendancy": "Martial Artist",
+      "mainSkill": "Flicker Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Execute III",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Minion Pact II",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Hit and Run",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Rageforged II",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 388615842,
+        "maximum": 533538258
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "2ed5f5ffa561da35d993",
+        "5aeb26f9abf3b16ee7dc",
+        "8525565790aece52d138",
+        "a0aca0c7050d9318c018"
+      ]
+    },
+    {
+      "packageId": "42800e66077301923326",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "ascendancy": "Invoker",
+      "mainSkill": "Flicker Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Ambrosia II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Blindside",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Close Combat II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Culmination II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Heft",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Hit and Run",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Minion Pact II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 20566325,
+        "maximum": 79968834
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
         "ascendancyMedian": 8,
         "profilesWithWeaponSet1": 0,
         "profilesWithWeaponSet2": 0
       },
       "profileEvidenceIds": [
-        "7e578042c82e44af5e15",
-        "d7e794341eab99e8d317"
+        "b729f106ce91e9dd7bad",
+        "c0cb136d61983044dc4a",
+        "ffb73f4a7cd49f3ae0e4"
+      ]
+    },
+    {
+      "packageId": "77a7735458b98ebd538d",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "ascendancy": "Deadeye",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 31194220,
+        "maximum": 73505666
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "1c28b1a07d97213dc121",
+        "3e7ce88ce1cfa693e81e",
+        "885780150aa0e3711b59"
+      ]
+    },
+    {
+      "packageId": "a7385a6a3ed80e7d27c3",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "ascendancy": "Deadeye",
+      "mainSkill": "Ice Shot",
+      "weapon": "wand",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 31194220,
+        "maximum": 73505666
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "1c28b1a07d97213dc121",
+        "3e7ce88ce1cfa693e81e",
+        "885780150aa0e3711b59"
+      ]
+    },
+    {
+      "packageId": "dbc37101ee0fb61e464e",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "ascendancy": "Pathfinder",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Fork",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 46035273,
+        "maximum": 94881365
+      },
+      "passiveSummary": {
+        "normalMedian": 129,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "49f5d35a7e02bcb50e35",
+        "b5043fe24f263cfd8b9d",
+        "db71bd25050c481770ef"
+      ]
+    },
+    {
+      "packageId": "44398baf0f2394200137",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "ascendancy": "Pathfinder",
+      "mainSkill": "Ice Shot",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Fork",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 33514584,
+        "maximum": 94881365
+      },
+      "passiveSummary": {
+        "normalMedian": 128,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "49f5d35a7e02bcb50e35",
+        "b5043fe24f263cfd8b9d"
+      ]
+    },
+    {
+      "packageId": "e71a44f9a9796c42b17f",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "ascendancy": "Stormweaver",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Cold Mastery",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 37584655,
+        "maximum": 41428507
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "0264ea2bcbf7e472bc55",
+        "effc216eecb61e91ff39"
+      ]
+    },
+    {
+      "packageId": "17409b6a5589077313ca",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "ascendancy": "Chronomancer",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Efficiency II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Magnified Area II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 11368118,
+        "maximum": 13565248
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "4d7db512115c15094844",
+        "a1df0110c692a545ffbd"
+      ]
+    },
+    {
+      "packageId": "2f6341ad1ef3ddda9d85",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "ascendancy": "Titan",
+      "mainSkill": "His Scattering Calamity",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Sione's Temper",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Compressed Duration II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Considered Casting",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 20594851,
+        "maximum": 30983699
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "5d6c8c1dc9e987ed1393",
+        "b7dc64beafb816832065"
+      ]
+    },
+    {
+      "packageId": "553fd8a0da0e34f56d1e",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "ascendancy": "Infernalist",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Cold Mastery",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 66032053,
+        "maximum": 231002211
+      },
+      "passiveSummary": {
+        "normalMedian": 119,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "a3e38bc8ff8084441c02",
+        "bb2efc6df2f749a4c66d",
+        "f283f771c478c33cd232"
+      ]
+    },
+    {
+      "packageId": "f3e59f314db5bcc2022c",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "ascendancy": "Blood Mage",
+      "mainSkill": "Plasma Blast",
+      "weapon": "crossbow",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Bleed III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Concoct II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Deep Cuts II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Pinpoint Critical",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 724098,
+        "maximum": 935757
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "48162f321fe3c4510a2e",
+        "c28cda273c184836eaf7"
+      ]
+    },
+    {
+      "packageId": "64aea602647eebb9fc8e",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "ascendancy": "Lich",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Efficiency II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Cast on Critical",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 11505031,
+        "maximum": 36637532
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "96d36129e572f282a7fa",
+        "e34641032651c07b4d38"
       ]
     }
   ]

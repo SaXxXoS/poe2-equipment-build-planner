@@ -6,7 +6,7 @@
     "league": "Runes of Aldur",
     "patchFamily": "0.5.x",
     "snapshotDate": "2026-07-28",
-    "exactVersion": "1924-20260728-10654",
+    "exactVersion": "1959-20260808-19780",
     "population": 124306
   },
   "inputProfile": {
@@ -36,7 +36,7 @@
     "plannedWeaponContextMatches": 23,
     "observedSkillIntersections": 19,
     "observedWeaponIntersections": 22,
-    "distinctSkills": 15,
+    "distinctSkills": 16,
     "distinctWeapons": 8
   },
   "rows": [
@@ -104,7 +104,7 @@
       "supportCount": 5,
       "packageStatus": "coherent",
       "packageScore": 40,
-      "metaScore": 35,
+      "metaScore": 20,
       "plannedWeaponTypes": [
         "wand"
       ],
@@ -242,16 +242,16 @@
       "ascendancyId": "ascendancy-official-Ranger1",
       "ascendancyName": "Deadeye",
       "status": "selected",
-      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemTornadoShot",
-      "selectedSkill": "Tornadoschuss",
-      "selectedSkillEn": "Tornado Shot",
+      "selectedSkillId": "repoe:Metadata/Items/Gem/SkillGemIceShot",
+      "selectedSkill": "Eisgeschoss",
+      "selectedSkillEn": "Ice Shot",
       "weapon": "bow",
-      "setupSkill": "Verwundbarkeit",
+      "setupSkill": "Elementarempfindlichkeit",
       "setupWeapon": "bow",
       "supportCount": 5,
       "packageStatus": "coherent",
-      "packageScore": 46,
-      "metaScore": 35,
+      "packageScore": 44,
+      "metaScore": 44,
       "plannedWeaponTypes": [
         "bow"
       ],
@@ -692,7 +692,7 @@
       "supportCount": 5,
       "packageStatus": "coherent",
       "packageScore": 41,
-      "metaScore": 29,
+      "metaScore": 35,
       "plannedWeaponTypes": [
         "spear"
       ],
@@ -1078,15 +1078,15 @@
       "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
       "selectedSkill": "Komet",
       "selectedSkillEn": "Comet",
-      "weapon": "sceptre",
+      "weapon": "wand",
       "setupSkill": "Elementarempfindlichkeit",
-      "setupWeapon": "sceptre",
+      "setupWeapon": "wand",
       "supportCount": 5,
       "packageStatus": "coherent",
       "packageScore": 40,
-      "metaScore": 9,
+      "metaScore": 15,
       "plannedWeaponTypes": [
-        "sceptre"
+        "wand"
       ],
       "plannedWeaponContextMatches": true,
       "observedReference": {

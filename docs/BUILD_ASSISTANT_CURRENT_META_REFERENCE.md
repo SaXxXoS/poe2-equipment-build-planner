@@ -148,20 +148,21 @@ Kompatibilität, Rotation oder DPS-Wahrheit aus Popularität ableiten.
 
 ## Fortsetzung – Schritt 174 (8. August 2026)
 
-Die produktive Meta-Referenz bleibt auf dem vollständig reduzierten Stand
-`1924-20260728-10654` gepinnt. Der Quellenindex meldet inzwischen den Kandidaten
-`1959-20260808-19780`. Dieser neue Snapshot wurde noch nicht produktiv
-promoviert, weil der begonnene rate-limitierte Batch keine ausreichende
-korrelierte Abdeckung besitzt. Er wird getrennt in
-`docs/audits/poe2-current-meta-build-profile-validation-candidate.json`
-fortgeschrieben; der aktive Audit des Produktpins bleibt unverändert.
+Die produktive Meta-Referenz verwendet nun den Quellenindex
+`1959-20260808-19780`. Er wurde erst nach vollständiger Klassifikation der 460
+gepinnten Profilreferenzen promoviert: 53 Profile sind valide korrelierte
+Beobachtungen, 407 bleiben blockiert. Aus den validierten Profilen entstehen 15
+produktive Pakete; der vorherige Pin `1924-20260728-10654` besaß bei gleicher
+Profilzahl nur 10 Pakete.
 
 Der Generator ist nun tatsächlich resumierbar: kleine Batches werden
 deterministisch über alle Aszendenzen verteilt, frühere Erfolge bleiben
 erhalten, Abrufe besitzen eine feste Zeitgrenze und noch nicht versuchte
 Profile werden vor wiederholten Fehlern priorisiert. Ein neuer Snapshot ersetzt
 den aktiven Produktpin erst bei mindestens gleicher validierter Profil- und
-Paketabdeckung.
+Paketabdeckung. Nach einer erfolgreichen Promotion entfernt der Generator
+einen veralteten Kandidatenaudit und verwendet bei Folgeläufen den aktiven
+Stand als einzige Fortschrittsquelle.
 
 Die neue vollständige lokale Optimierermatrix belegt 23 von 23 ausgewählte und
 vom gemeinsamen Paketvalidator akzeptierte Startpakete. Bei allen 23 erreicht
