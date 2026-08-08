@@ -32,9 +32,10 @@ Waffennormalisierung fachlich mögliche Pakete vorzeitig ausschließen.
   wird vor dem allgemeinen `Staves`-Fall als `quarterstaff` aufgelöst und in
   Optimierer, geplante Ausrüstung und Analyzer identisch verwendet.
 - Der Meta-Generator arbeitet in deterministischen, begrenzten
-  Aszendenz-Rang-Runden. Bereits validierte Beobachtungen werden wiederverwendet;
-  fehlgeschlagene Profile erhalten eine Versuchszahl, damit nachfolgende Batches
-  zunächst noch nicht versuchte Profile prüfen.
+  Batches. Zuerst werden Profile mit den wenigsten Versuchen, dann Rang und
+  Aszendenzreihenfolge berücksichtigt. Bereits validierte Beobachtungen werden
+  wiederverwendet; dadurch verhungern bei kleinen Batches auch spätere
+  Aszendenzen nicht.
 - Netzwerkabrufe besitzen eine feste Zeitgrenze. Ein neuer Snapshot wird nur
   produktiv promoviert, wenn er mindestens die Zahl validierter Profile und
   produktiver Pakete des aktiven Pins erreicht. Ein leerer oder schwächer
@@ -71,6 +72,9 @@ Der aktive reduzierte Produktpin bleibt
 Der am 8. August 2026 vom Quellenindex gemeldete Kandidat
 `1959-20260808-19780` besitzt im begonnenen, rate-limitierten Audit noch keine
 ausreichende validierte Abdeckung und wurde deshalb nicht produktiv promoviert.
+In den ersten fair verteilten Batches wurden 18 verschiedene Profile versucht;
+8 davon sind als korrelierte Profile validiert. Noch keine Aszendenz besitzt
+die für ein produktives Paket erforderliche doppelte Profilabdeckung.
 Sein Fortschritt liegt getrennt in
 `docs/audits/poe2-current-meta-build-profile-validation-candidate.json`; der
 aktive Audit des Produktpins bleibt davon unverändert.
@@ -97,7 +101,8 @@ kein bewiesener globaler Meta- oder Path-of-Building-Ersatz.
 ## Abschlussprüfung
 
 - Die fokussierten Matrix-, Optimierer-, Paket-, Synergie- und
-  Promotionsprüfungen bestanden vollständig.
+  Promotionsprüfungen bestanden vollständig. Die ergänzte Batch-Fairness ist
+  mit 5/5 Generator-Policy-Tests abgesichert.
 - Die vollständige fachliche Testsuite bestand stabil aufgeteilt mit 1.914 von
   1.914 Tests. Die Aufteilung vermeidet ausschließlich einen internen
   Vitest-RPC-Timeout des monolithischen Prozesses; kein fachlicher Test wurde

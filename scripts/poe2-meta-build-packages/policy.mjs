@@ -5,25 +5,17 @@ export function selectMetaRefreshProfileIds({
   maximumNewFetches,
   profileIdFor,
 }) {
-  const pendingByAscendancy = ascendancyOrder.map(ascendancy =>
-    pendingProfiles
-      .filter(value => value.expectedAscendancy === ascendancy)
-      .sort((left, right) => {
-        const leftAttempts = previousObservations.get(profileIdFor(left))?.attemptCount ?? 0
-        const rightAttempts = previousObservations.get(profileIdFor(right))?.attemptCount ?? 0
-        return leftAttempts - rightAttempts
-          || left.rank - right.rank
-          || left.url.localeCompare(right.url)
-      }),
-  )
-  const roundRobinPending = []
-  const maximumPendingRanks = Math.max(0, ...pendingByAscendancy.map(values => values.length))
-  for (let index = 0; index < maximumPendingRanks; index += 1) {
-    for (const values of pendingByAscendancy) {
-      if (values[index]) roundRobinPending.push(values[index])
-    }
-  }
-  return new Set(roundRobinPending
+  const ascendancyRank = new Map(ascendancyOrder.map((value, index) => [value, index]))
+  const fairPending = [...pendingProfiles].sort((left, right) => {
+    const leftAttempts = previousObservations.get(profileIdFor(left))?.attemptCount ?? 0
+    const rightAttempts = previousObservations.get(profileIdFor(right))?.attemptCount ?? 0
+    return leftAttempts - rightAttempts
+      || left.rank - right.rank
+      || (ascendancyRank.get(left.expectedAscendancy) ?? Number.MAX_SAFE_INTEGER)
+        - (ascendancyRank.get(right.expectedAscendancy) ?? Number.MAX_SAFE_INTEGER)
+      || left.url.localeCompare(right.url)
+  })
+  return new Set(fairPending
     .slice(0, maximumNewFetches)
     .map(profileIdFor))
 }

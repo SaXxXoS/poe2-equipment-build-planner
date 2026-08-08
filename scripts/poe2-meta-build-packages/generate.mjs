@@ -418,7 +418,7 @@ const audit = {
       return previous && previous.validationStatus !== 'fetch-failed'
     }).length,
     remainingProfiles: observations.filter(value => value.validationStatus === 'fetch-failed').length,
-    order: 'ascendancy-round-robin-then-profile-rank',
+    order: 'fewest-attempts-then-profile-rank-then-ascendancy',
   },
   requestedProfiles: requestedProfiles.length,
   validatedProfiles: validated.length,

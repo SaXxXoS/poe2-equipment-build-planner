@@ -25,6 +25,28 @@ describe('poe2 Meta-Build-Paket-Generatorpolitik', () => {
     })]).toEqual(['a-2', 'b-2'])
   })
 
+  it('lässt bei einem kleineren Batch spätere Aszendenzen nicht verhungern', () => {
+    const profiles = [
+      { expectedAscendancy: 'A', rank: 1, url: 'a-1' },
+      { expectedAscendancy: 'A', rank: 2, url: 'a-2' },
+      { expectedAscendancy: 'B', rank: 1, url: 'b-1' },
+      { expectedAscendancy: 'B', rank: 2, url: 'b-2' },
+      { expectedAscendancy: 'C', rank: 1, url: 'c-1' },
+      { expectedAscendancy: 'C', rank: 2, url: 'c-2' },
+    ]
+    const previous = new Map([
+      ['a-1', { attemptCount: 1 }],
+      ['b-1', { attemptCount: 1 }],
+    ])
+    expect([...selectMetaRefreshProfileIds({
+      pendingProfiles: profiles,
+      previousObservations: previous,
+      ascendancyOrder: ['A', 'B', 'C'],
+      maximumNewFetches: 2,
+      profileIdFor: value => value.url,
+    })]).toEqual(['c-1', 'a-2'])
+  })
+
   it('ersetzt einen validierten alten Produktpin nicht durch einen leeren neuen Snapshot', () => {
     const previous = { source: { version: 'old' }, profileCount: 53, packageCount: 10 }
     const candidate = { source: { version: 'new' }, profileCount: 0, packageCount: 0 }

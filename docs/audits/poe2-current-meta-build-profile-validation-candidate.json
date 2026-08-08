@@ -21,41 +21,49 @@
     "productiveUse": "bounded-secondary-evidence-after-hard-compatibility"
   },
   "refreshBatch": {
-    "maximumNewFetches": 0,
-    "selectedProfiles": 0,
-    "reusableProfiles": 0,
-    "remainingProfiles": 460,
-    "order": "ascendancy-round-robin-then-profile-rank"
+    "maximumNewFetches": 2,
+    "selectedProfiles": 2,
+    "reusableProfiles": 8,
+    "remainingProfiles": 452,
+    "order": "fewest-attempts-then-profile-rank-then-ascendancy"
   },
   "requestedProfiles": 460,
-  "validatedProfiles": 0,
-  "blockedProfiles": 460,
+  "validatedProfiles": 8,
+  "blockedProfiles": 452,
   "productivePackageCount": 0,
-  "auditOnlyPackageCount": 0,
+  "auditOnlyPackageCount": 11,
   "observations": [
     {
       "profileId": "bb9bfdc2c04347412b14",
       "rank": 1,
       "expectedAscendancy": "Infernalist",
-      "observedAscendancy": null,
+      "observedAscendancy": "Infernalist",
       "ascendancyId": "ascendancy-official-Witch1",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 100,
+      "mainSkill": "Lightning Warp",
+      "mainSkillModeledDps": 1053330570,
+      "supports": [
+        "Concentrated Area",
+        "Considered Casting",
+        "Elemental Focus",
+        "Execute III",
+        "Minion Pact II"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Lightning Warp"
+      ],
+      "weapons": [
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 125,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "a3e38bc8ff8084441c02",
@@ -533,9 +541,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "48162f321fe3c4510a2e",
@@ -997,25 +1005,33 @@
       "profileId": "e34641032651c07b4d38",
       "rank": 1,
       "expectedAscendancy": "Lich",
-      "observedAscendancy": null,
+      "observedAscendancy": "Lich",
       "ascendancyId": "ascendancy-official-Witch3",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 99,
+      "mainSkill": "Comet",
+      "mainSkillModeledDps": 36637532,
+      "supports": [
+        "Concentrated Area",
+        "Efficiency II",
+        "Execute III",
+        "Rakiata's Flow"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Cast on Critical",
+        "Comet"
+      ],
+      "weapons": [
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 124,
+        "ascendancy": 8,
+        "weaponSet1": 14,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "7e578042c82e44af5e15",
@@ -1493,9 +1509,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 404"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "9ee8beea2cf4a3ff3e2e",
@@ -1957,25 +1973,34 @@
       "profileId": "1c28b1a07d97213dc121",
       "rank": 1,
       "expectedAscendancy": "Deadeye",
-      "observedAscendancy": null,
+      "observedAscendancy": "Deadeye",
       "ascendancyId": "ascendancy-official-Ranger1",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 98,
+      "mainSkill": "Ice Shot",
+      "mainSkillModeledDps": 31194220,
+      "supports": [
+        "Elemental Armament II",
+        "Execute III",
+        "Garukhan's Resolve",
+        "Projectile Acceleration III",
+        "Rakiata's Flow"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Ice Shot"
+      ],
+      "weapons": [
+        "bow",
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 123,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "885780150aa0e3711b59",
@@ -2437,25 +2462,34 @@
       "profileId": "b5043fe24f263cfd8b9d",
       "rank": 1,
       "expectedAscendancy": "Pathfinder",
-      "observedAscendancy": null,
+      "observedAscendancy": "Pathfinder",
       "ascendancyId": "ascendancy-official-Ranger3",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 98,
+      "mainSkill": "Ice Shot",
+      "mainSkillModeledDps": 94881365,
+      "supports": [
+        "Elemental Armament II",
+        "Execute III",
+        "Garukhan's Resolve",
+        "Projectile Acceleration III",
+        "Rakiata's Flow"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Ice Shot"
+      ],
+      "weapons": [
+        "bow",
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 128,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "70eb655351a90b892eca",
@@ -2917,25 +2951,33 @@
       "profileId": "5d6c8c1dc9e987ed1393",
       "rank": 1,
       "expectedAscendancy": "Titan",
-      "observedAscendancy": null,
+      "observedAscendancy": "Titan",
       "ascendancyId": "ascendancy-official-Warrior1",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 99,
+      "mainSkill": "His Scattering Calamity",
+      "mainSkillModeledDps": 30983699,
+      "supports": [
+        "Compressed Duration II",
+        "Execute III",
+        "Rakiata's Flow",
+        "Sione's Temper",
+        "Zenith II"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "His Scattering Calamity"
+      ],
+      "weapons": [
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 123,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "f566b9d0c89153e763a0",
@@ -3413,9 +3455,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 404"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "eac3c880b3e161177d6d",
@@ -3893,9 +3935,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "4b8cdfd8e3cbdbeffc34",
@@ -4373,9 +4415,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "0264ea2bcbf7e472bc55",
@@ -4853,9 +4895,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "14f74256840267b3c44e",
@@ -5333,9 +5375,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "9ac85066bcdee73b2269",
@@ -5797,25 +5839,33 @@
       "profileId": "1e873dbf9848b1d5d3db",
       "rank": 1,
       "expectedAscendancy": "Amazon",
-      "observedAscendancy": null,
+      "observedAscendancy": "Amazon",
       "ascendancyId": "ascendancy-official-Huntress1",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 98,
+      "mainSkill": "Ice Shot",
+      "mainSkillModeledDps": 47527495,
+      "supports": [
+        "Elemental Armament II",
+        "Execute III",
+        "Garukhan's Resolve",
+        "Rakiata's Flow",
+        "Rigwald's Ferocity"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Ice Shot"
+      ],
+      "weapons": [
+        "bow"
+      ],
+      "passiveCounts": {
+        "normal": 122,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "c1832da218d4c0135c60",
@@ -6293,9 +6343,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "00cb2b8c52fd6606779a",
@@ -6757,25 +6807,34 @@
       "profileId": "d25997a2f728e2281207",
       "rank": 1,
       "expectedAscendancy": "Ritualist",
-      "observedAscendancy": null,
+      "observedAscendancy": "Ritualist",
       "ascendancyId": "ascendancy-official-Huntress3",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 99,
+      "mainSkill": "Ice Shot",
+      "mainSkillModeledDps": 310518727,
+      "supports": [
+        "Elemental Armament II",
+        "Execute III",
+        "Garukhan's Resolve",
+        "Rageforged II",
+        "Rakiata's Flow"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Ice Shot"
+      ],
+      "weapons": [
+        "bow",
+        "wand"
+      ],
+      "passiveCounts": {
+        "normal": 124,
+        "ascendancy": 8,
+        "weaponSet1": 0,
+        "weaponSet2": 0
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "8d8c67ab81db1066e0ad",
@@ -7237,25 +7296,33 @@
       "profileId": "1dc56ace492e06f29bf7",
       "rank": 1,
       "expectedAscendancy": "Tactician",
-      "observedAscendancy": null,
+      "observedAscendancy": "Tactician",
       "ascendancyId": "ascendancy-official-Mercenary1",
-      "level": null,
-      "mainSkill": null,
-      "mainSkillModeledDps": null,
-      "supports": [],
-      "linkedActiveSkills": [],
-      "weapons": [],
-      "passiveCounts": {
-        "normal": null,
-        "ascendancy": null,
-        "weaponSet1": null,
-        "weaponSet2": null
-      },
-      "validationStatus": "fetch-failed",
-      "blockReasons": [
-        "not-attempted-in-current-batch"
+      "level": 98,
+      "mainSkill": "Explosive Grenade",
+      "mainSkillModeledDps": 12265897,
+      "supports": [
+        "Concentrated Area",
+        "Defy II",
+        "Elemental Armament II",
+        "Rageforged II",
+        "Rakiata's Flow"
       ],
-      "attemptCount": 0
+      "linkedActiveSkills": [
+        "Explosive Grenade"
+      ],
+      "weapons": [
+        "crossbow"
+      ],
+      "passiveCounts": {
+        "normal": 122,
+        "ascendancy": 8,
+        "weaponSet1": 11,
+        "weaponSet2": 11
+      },
+      "validationStatus": "validated-correlated-profile",
+      "blockReasons": [],
+      "attemptCount": 1
     },
     {
       "profileId": "2da5fb064c729311610c",
@@ -7733,9 +7800,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "7007d1b17f8e0162b971",
@@ -8213,9 +8280,9 @@
       },
       "validationStatus": "fetch-failed",
       "blockReasons": [
-        "not-attempted-in-current-batch"
+        "HTTP 429"
       ],
-      "attemptCount": 0
+      "attemptCount": 1
     },
     {
       "profileId": "6cb9ab32c51de1fe1905",
@@ -11084,7 +11151,7 @@
   "productPromotion": {
     "promoted": false,
     "candidateVersion": "1959-20260808-19780",
-    "candidateValidatedProfiles": 0,
+    "candidateValidatedProfiles": 8,
     "candidatePackageCount": 0,
     "activeVersionBeforeRun": "1924-20260728-10654",
     "activeValidatedProfilesBeforeRun": 53,

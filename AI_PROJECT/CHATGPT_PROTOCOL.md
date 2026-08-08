@@ -4367,8 +4367,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Vorher waren 20 Pakete auswählbar und 19 kohärent; nach der Korrektur sind 23/23 auswählbar, kohärent und technisch bis zur geplanten Waffenklasse transportiert.
 - Ursache der drei blockierten Monk-Pakete war die Normalisierung von `Quarterstaves` als allgemeiner `staff`. Die zentrale Normalisierung löst Viertelstäbe nun vor dem allgemeinen Stabfall auf.
 - Saisonale Referenzkandidaten werden nicht mehr vor ihrer Meta-Wertung durch das Maximum grober Klassen-Tags abgeschnitten. Die Top-3-Skill-Schnittmenge stieg im festen Auditprofil von 2/23 auf 19/23; die Top-2-Waffen-Schnittmenge liegt bei 22/23.
-- Der Generator arbeitet in kleinen deterministischen Aszendenz-Rang-Batches, priorisiert noch nicht versuchte Profile, begrenzt Netzwerkwartezeiten und bewahrt validierte Teilergebnisse.
+- Der Generator arbeitet in kleinen deterministischen Batches, priorisiert die wenigsten bisherigen Versuche vor Rang und Aszendenzreihenfolge, begrenzt Netzwerkwartezeiten und bewahrt validierte Teilergebnisse. Dadurch werden bei Batches unter 23 Profilen spätere Aszendenzen nicht dauerhaft übergangen.
 - Der aktuelle Quellenindex meldet `1959-20260808-19780`. Dieser Kandidat besitzt noch keine ausreichende korrelierte Abdeckung und wird in einer getrennten Kandidatenauditdatei fortgeschrieben. Der aktive Produktpin `1924-20260728-10654` mit seinem Audit aus 53 validierten Profilen und 10 Paketen blieb deshalb bytegleich erhalten.
+- Erster fortsetzbarer Kandidatenstand: 18 verschiedene Profile versucht, 8
+  als korrelierte Profile validiert, noch 0 produktive Aszendenzpakete. Der
+  aktive Produktpin bleibt deshalb unverändert; 5/5 Policy-Tests belegen die
+  faire Fortsetzung kleiner Batches.
 - Die Promotionsregel blockiert leere oder schwächer abgedeckte neue Snapshots. Ein neuer Snapshot muss mindestens die bisherige validierte Profil- und produktive Paketabdeckung erreichen.
 - Audit: `docs/audits/build-assistant-current-meta-matrix.json`. Hauptdokument: `docs/BUILD_ASSISTANT_META_MATRIX_STEP_174.md`.
 - Die Matrix belegt lokale Kohärenz und deutlich bessere Referenznähe, aber keine global höchste DPS und keine vollständige Path-of-Building-Gleichwertigkeit.
