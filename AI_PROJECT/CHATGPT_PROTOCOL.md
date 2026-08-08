@@ -4328,3 +4328,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der Regressionstest verlangt für alle 23 Kombinationen ein nicht blockiertes Paket mit Supports und eine tatsächlich unterschiedliche Auswahl zwischen Charakterprofilen.
 - Details: `docs/BUILD_ASSISTANT_CHARACTER_PACKAGE_COVERAGE_STEP_171.md` und `docs/audits/build-assistant-step-171-character-package-coverage.json`.
 - Produktpins und Offline-Grenzen bleiben unverändert. Vollständige Path-of-Building-Gleichwertigkeit bleibt unbewiesen.
+
+## Sichtbare Gegenstandsdetails und Variantenbindung – Schritt 172 (2026-08-08)
+
+- Ausrüstungsvorschläge zeigen bei gepinnten Waffenbasen jetzt den lokalisierten Basistyp, die belegten Level-/Stärke-/Geschick-/Intelligenzanforderungen sowie physische und elementare Grundschadensbereiche, kritische Trefferchance, Angriffe pro Sekunde, Implicit und Sockelgrenze, soweit diese Daten lokal belegt sind.
+- Ein vorgeschlagenes Unique öffnet standardmäßig seine als aktuell markierte Variante; bei genau einer Variante wird diese deterministisch übernommen. Legacy-Varianten bleiben getrennt.
+- Der Unique-Dialog zeigt die sichtbaren Eigenschaften je Variante. Technische `source-line:`-Referenzen werden nicht mehr als vermeintliche Nachteile ausgegeben.
+- Waffenvorschläge bleiben an Level und tatsächliche Charakterattribute gebunden. Fehlt eine belegte konkrete Basis, wird dies ausdrücklich angezeigt statt Eigenschaften zu erfinden.
+- Die Passivplanung wurde erneut gegen ihre Tests geprüft: gemeinsame Punkte und bis zu 24 umschaltbare Waffensetbelegungen teilen dasselbe normale Budget; Set-Pfade dürfen weder Juwelfassungen noch Keystones enthalten. Rot/Grün wird nur bei wirklich unterschiedlicher Set-Skalierung erzeugt.
+- PoB2-, RePoE-, Baum-, Affix- und Lokalisierungspins bleiben unverändert. Die Änderung erweitert Darstellung und sichere Variantenübernahme, nicht die zugrunde liegende globale Optimierungsformel.

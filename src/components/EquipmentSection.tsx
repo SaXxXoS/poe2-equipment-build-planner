@@ -39,6 +39,21 @@ function visibleTradeOffs(item: (typeof localizedPob2UniquesDe)[number] | undefi
     .map(value => item ? uniqueLineText(item, value) : value)
     .filter((value): value is string => Boolean(value) && !value?.startsWith('source-line:'))
 }
+
+function preferredUniqueVariantId(item: (typeof localizedPob2UniquesDe)[number] | undefined) {
+  return item?.variants.find(variant => variant.currentOrLegacy === 'current')?.id
+    ?? (item?.variants.length === 1 ? item.variants[0].id : undefined)
+}
+
+function requirementText(requirements: EquipmentSlotSuggestion['requirements']) {
+  if (!requirements) return []
+  return [
+    requirements.requiredLevel !== null ? `Level ${requirements.requiredLevel}` : undefined,
+    requirements.strength !== null ? `${requirements.strength} Stärke` : undefined,
+    requirements.dexterity !== null ? `${requirements.dexterity} Geschick` : undefined,
+    requirements.intelligence !== null ? `${requirements.intelligence} Intelligenz` : undefined,
+  ].filter((value): value is string => Boolean(value))
+}
 export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entries: EquipmentEntry[]; setEntries: (values: EquipmentEntry[]) => void; suggestions?:EquipmentSlotSuggestion[] }) {
   const [active, setActive] = useState<EquipmentEntry | null>(null)
   const [activeSuggestion, setActiveSuggestion] = useState<EquipmentSlotSuggestion | null>(null)
@@ -66,12 +81,13 @@ export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entr
     ...rawSuggestedEntry,
     rarity:'unique' as const,
     uniqueItemId:activeSuggestion.uniqueItemId,
-    uniqueVariantId:undefined,
+    uniqueVariantId:preferredUniqueVariantId(localizedPob2UniquesDe.find(value=>value.id===activeSuggestion.uniqueItemId)),
     modifierValues:[],
   }:rawSuggestedEntry
   const suggestedUnique=activeSuggestion?.uniqueItemId?localizedPob2UniquesDe.find(value=>value.id===activeSuggestion.uniqueItemId):undefined
   const unversionedUniqueLines=suggestedUnique&&!suggestedUnique.variants.length?localizedPob2LinesForVariant(suggestedUnique):undefined
   const suggestedTradeOffs=visibleTradeOffs(suggestedUnique,activeSuggestion?.tradeOffs)
+  const suggestedRequirements=requirementText(activeSuggestion?.requirements)
   return <section id="equipment"><h2>2. Ausrüstung</h2><p className="muted">Tippe einen Platz an, um deinen Gegenstand einzutragen.</p>
     <div className="equipment-paperdoll-stage">
     <div className="weapon-set-toggle" role="group" aria-label="Waffenset auswählen">
@@ -89,7 +105,7 @@ export function EquipmentSection({ entries, setEntries, suggestions=[] }: { entr
       <div>{jewels.map(entry => <EquipmentSlot key={entry.id} entry={entry} compact onClick={() => setActive(entry)}/>)}</div>
     </div>
     </div>
-    {activeSuggestion&&suggestedEntry&&<div className="modal-backdrop" onMouseDown={event=>event.target===event.currentTarget&&setActiveSuggestion(null)}><div className="modal suggestion-details" role="dialog" aria-modal="true" aria-label="Details zum Ausrüstungsvorschlag"><header className="dialog-header"><button className="text-button" onClick={()=>setActiveSuggestion(null)}>← Zurück</button><h2>{activeSuggestion.title}</h2><button className="icon" aria-label="Dialog schließen" onClick={()=>setActiveSuggestion(null)}>×</button></header><div className="dialog-scroll"><p className="recommendation-type">{activeSuggestion.source==='unique-analyzer'?'Einzigartiger Gegenstand':'Empfohlene Waffenart'}</p><p>{activeSuggestion.detail}</p>{suggestedUnique&&<><dl className="suggestion-facts"><div><dt>Basistyp</dt><dd>{suggestedUnique.baseDisplayName}</dd></div><div><dt>Benötigtes Level</dt><dd>{suggestedUnique.requiredLevel??'Unbekannt'}</dd></div><div><dt>Varianten</dt><dd>{suggestedUnique.variants.length||'Keine getrennten Varianten'}</dd></div></dl><h3>Eigenschaften</h3>{suggestedUnique.variants.map((variant,index)=>{const lines=localizedPob2LinesForVariant(suggestedUnique,variant.id);const isCurrent=variant.currentOrLegacy==='current';const hasCurrent=suggestedUnique.variants.some(value=>value.currentOrLegacy==='current');return <details key={variant.id} open={isCurrent||(!hasCurrent&&index===0)}><summary>{variant.text}{variant.currentOrLegacy==='legacy'?' · Legacy':isCurrent?' · Aktuell':''}</summary><ul>{[...lines.implicits,...lines.modifiers].map(line=><li key={line.id}>{line.text}</li>)}</ul></details>})}{unversionedUniqueLines&&<ul>{[...unversionedUniqueLines.implicits,...unversionedUniqueLines.modifiers].map(line=><li key={line.id}>{line.text}</li>)}</ul>}</>}{activeSuggestion.reasons?.length?<><h3>Warum vorgeschlagen</h3><ul>{activeSuggestion.reasons.map(value=><li key={value}>{value}</li>)}</ul></>:null}{suggestedTradeOffs.length?<><h3>Nachteile und Abwägungen</h3><ul>{suggestedTradeOffs.map(value=><li key={value}>{value}</li>)}</ul></>:null}{activeSuggestion.source==='weapon-optimizer'&&<p className="muted">Dies ist eine Waffenart-Empfehlung, kein erfundener fertiger Gegenstand. Konkrete Affixe und Werte werden erst aus deiner Eingabe oder aus belegten Gegenstandsdaten übernommen.</p>}</div><div className="dialog-actions"><button className="secondary" onClick={()=>setActiveSuggestion(null)}>Schließen</button><button onClick={()=>{setActiveSuggestion(null);setActive(suggestedEntry)}}>Gegenstand eintragen</button></div></div></div>}
+    {activeSuggestion&&suggestedEntry&&<div className="modal-backdrop" onMouseDown={event=>event.target===event.currentTarget&&setActiveSuggestion(null)}><div className="modal suggestion-details" role="dialog" aria-modal="true" aria-label="Details zum Ausrüstungsvorschlag"><header className="dialog-header"><button className="text-button" onClick={()=>setActiveSuggestion(null)}>← Zurück</button><h2>{activeSuggestion.title}</h2><button className="icon" aria-label="Dialog schließen" onClick={()=>setActiveSuggestion(null)}>×</button></header><div className="dialog-scroll"><p className="recommendation-type">{activeSuggestion.source==='unique-analyzer'?'Einzigartiger Gegenstand':'Empfohlene Waffenart'}</p><p>{activeSuggestion.detail}</p>{activeSuggestion.source==='weapon-optimizer'&&<><dl className="suggestion-facts"><div><dt>Basistyp</dt><dd>{activeSuggestion.baseDisplayName??activeSuggestion.title}</dd></div><div><dt>Anforderungen</dt><dd>{suggestedRequirements.length?suggestedRequirements.join(' · '):'Nicht belegt'}</dd></div></dl><h3>Belegte Grundwerte und Eigenschaften</h3>{activeSuggestion.properties?.length?<ul>{activeSuggestion.properties.map(value=><li key={value}>{value}</li>)}</ul>:<p className="warning">Für diese Waffenart ist noch keine konkrete kompatible Basis mit belegten Grundwerten aufgelöst.</p>}</>}{suggestedUnique&&<><dl className="suggestion-facts"><div><dt>Basistyp</dt><dd>{suggestedUnique.baseDisplayName}</dd></div><div><dt>Benötigtes Level</dt><dd>{suggestedUnique.requiredLevel??'Unbekannt'}</dd></div><div><dt>Varianten</dt><dd>{suggestedUnique.variants.length||'Keine getrennten Varianten'}</dd></div></dl><h3>Eigenschaften</h3>{suggestedUnique.variants.map((variant,index)=>{const lines=localizedPob2LinesForVariant(suggestedUnique,variant.id);const isCurrent=variant.currentOrLegacy==='current';const hasCurrent=suggestedUnique.variants.some(value=>value.currentOrLegacy==='current');return <details key={variant.id} open={isCurrent||(!hasCurrent&&index===0)}><summary>{variant.text}{variant.currentOrLegacy==='legacy'?' · Legacy':isCurrent?' · Aktuell':''}</summary>{lines.implicits.length||lines.modifiers.length?<ul>{[...lines.implicits,...lines.modifiers].map(line=><li key={line.id}>{line.text}</li>)}</ul>:<p className="muted">Für diese Variante sind keine sichtbaren Eigenschaften aufgelöst.</p>}</details>})}{unversionedUniqueLines&&(unversionedUniqueLines.implicits.length||unversionedUniqueLines.modifiers.length)?<ul>{[...unversionedUniqueLines.implicits,...unversionedUniqueLines.modifiers].map(line=><li key={line.id}>{line.text}</li>)}</ul>:null}</>}{activeSuggestion.reasons?.length?<><h3>Warum vorgeschlagen</h3><ul>{activeSuggestion.reasons.map(value=><li key={value}>{value}</li>)}</ul></>:null}{suggestedTradeOffs.length?<><h3>Nachteile und Abwägungen</h3><ul>{suggestedTradeOffs.map(value=><li key={value}>{value}</li>)}</ul></>:null}{activeSuggestion.source==='weapon-optimizer'&&<p className="muted">Die Empfehlung verwendet eine lokal gepinnte, anforderungsgeprüfte Waffenbasis. Weitere Affixe werden nicht erfunden und können im Editor ergänzt werden.</p>}</div><div className="dialog-actions"><button className="secondary" onClick={()=>setActiveSuggestion(null)}>Schließen</button><button onClick={()=>{setActiveSuggestion(null);setActive(suggestedEntry)}}>Gegenstand eintragen</button></div></div></div>}
     {active && <AffixDialog entry={active} slotName={slotName(active.slotId)} onSave={save} onClose={() => setActive(null)}/>}
   </section>
 }
