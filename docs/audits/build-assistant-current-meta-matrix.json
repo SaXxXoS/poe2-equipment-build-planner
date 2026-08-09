@@ -6,6 +6,8 @@
     "league": "Runes of Aldur",
     "patchFamily": "0.5.x",
     "snapshotDate": "2026-07-28",
+    "overviewExactVersion": "1924-20260728-10654",
+    "correlatedPackageSnapshotDate": "2026-07-28",
     "exactVersion": "1959-20260808-19780",
     "population": 124306
   },
@@ -1078,15 +1080,15 @@
       "selectedSkillId": "repoe:Metadata/Items/Gems/SkillGemComet",
       "selectedSkill": "Komet",
       "selectedSkillEn": "Comet",
-      "weapon": "wand",
+      "weapon": "sceptre",
       "setupSkill": "Elementarempfindlichkeit",
-      "setupWeapon": "wand",
+      "setupWeapon": "sceptre",
       "supportCount": 5,
       "packageStatus": "coherent",
       "packageScore": 40,
-      "metaScore": 15,
+      "metaScore": 9,
       "plannedWeaponTypes": [
-        "wand"
+        "sceptre"
       ],
       "plannedWeaponContextMatches": true,
       "observedReference": {

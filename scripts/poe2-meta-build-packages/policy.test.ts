@@ -47,6 +47,42 @@ describe('poe2 Meta-Build-Paket-Generatorpolitik', () => {
     })]).toEqual(['c-1', 'a-2'])
   })
 
+  it('wiederholt eine vorübergehende Ratenbegrenzung vor neuen und dauerhaft fehlenden Profilen', () => {
+    const profiles = [
+      { expectedAscendancy: 'A', rank: 1, url: 'rate-limited' },
+      { expectedAscendancy: 'B', rank: 1, url: 'new' },
+      { expectedAscendancy: 'C', rank: 1, url: 'missing' },
+    ]
+    const previous = new Map([
+      ['rate-limited', { attemptCount: 1, blockReasons: ['HTTP 429'] }],
+      ['missing', { attemptCount: 1, blockReasons: ['HTTP 404'] }],
+    ])
+    expect([...selectMetaRefreshProfileIds({
+      pendingProfiles: profiles,
+      previousObservations: previous,
+      ascendancyOrder: ['A', 'B', 'C'],
+      maximumNewFetches: 3,
+      profileIdFor: value => value.url,
+    })]).toEqual(['rate-limited', 'new', 'missing'])
+  })
+
+  it('laesst einen dreimal begrenzten Charakter neue Profile nicht dauerhaft blockieren', () => {
+    const profiles = [
+      { expectedAscendancy: 'A', rank: 1, url: 'exhausted' },
+      { expectedAscendancy: 'B', rank: 1, url: 'new' },
+    ]
+    const previous = new Map([
+      ['exhausted', { attemptCount: 3, blockReasons: ['HTTP 429'] }],
+    ])
+    expect([...selectMetaRefreshProfileIds({
+      pendingProfiles: profiles,
+      previousObservations: previous,
+      ascendancyOrder: ['A', 'B'],
+      maximumNewFetches: 2,
+      profileIdFor: value => value.url,
+    })]).toEqual(['new', 'exhausted'])
+  })
+
   it('ersetzt einen validierten alten Produktpin nicht durch einen leeren neuen Snapshot', () => {
     const previous = { source: { version: 'old' }, profileCount: 53, packageCount: 10 }
     const candidate = { source: { version: 'new' }, profileCount: 0, packageCount: 0 }

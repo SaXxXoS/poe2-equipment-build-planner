@@ -11,7 +11,10 @@ Spielregel, keine technische Gemmenkompatibilität und keine Berechnung.
 - Quelle: `poe.ninja`
 - Liga: `Runes of Aldur`
 - Patchfamilie: `0.5.x`
-- Stichtag: `2026-07-28`
+- Stichtag der aggregierten Übersichtsanteile: `2026-07-28`
+- aktiver korrelierter Paketindex: `1959-20260808-19780` vom `2026-08-08`;
+  der darin gespeicherte Profilreferenz-Stichtag bleibt getrennt `2026-07-28`
+- aktueller, noch nicht promovierter Profilkandidat: `0424-20260809-55677` vom `2026-08-09`
 - Gesamtpopulation: `124306` Charaktere
 - erfasste produktive Aszendenzen: `23`
 - konkrete DPS-sortierte Profilreferenzen: `460` (`20` je Aszendenz)
@@ -52,11 +55,17 @@ Paketabdeckung derzeit **partiell** und nicht für jede Aszendenz verfügbar.
 Nicht validierte Profile werden ausdrücklich nicht geschätzt oder durch
 andere Profile ersetzt.
 
-Aus den `53` validierten Profilen entstanden `10` mehrfach beobachtete
-Pakete. Ein Paket wird nur ab zwei Profilen als produktive sekundäre Evidenz
-verwendet. Einzelbeobachtungen bleiben Audit-only. Maßgeblich sind:
+Aus den `53` validierten Profilen entstanden zunächst `15` mehrfach
+beobachtete Rohpakete. Die profilweite Waffenliste beweist jedoch nicht,
+welche Waffe die höchste Schadensfertigkeit tatsächlich verwendet. Nach der
+zusätzlichen lokalen Gem-Waffenprüfung bleiben deshalb `6` produktive Pakete;
+`9` unbewiesene oder inkompatible Paare sind Audit-only blockiert. Ein Paket
+wird nur ab zwei Profilen und mit exakt passender gepinnter
+Gem-Waffenanforderung als produktive sekundäre Evidenz verwendet. Maßgeblich
+sind:
 
 - `docs/audits/poe2-current-meta-build-profile-validation.json`
+- `docs/audits/poe2-meta-skill-weapon-package-coverage.json`
 - `generated/meta/poe2-build-packages.json`
 
 Der Generator ist inkrementell und gedrosselt. Folgeläufe desselben
@@ -79,8 +88,10 @@ Kandidat bereits alle folgenden Prüfungen bestanden hat:
 Ein häufiger Skill erhält höchstens einen begrenzten Zusatzwert. Eine häufige
 Waffenkategorie liefert nur einen kleineren Zusatzwert. Ein zusätzlicher,
 ebenfalls begrenzter Paketwert entsteht nur, wenn Fertigkeit und Waffe in
-mindestens zwei Profilen derselben Aszendenz gemeinsam vorkommen. Unbekannte
-Waffenkonfigurationen und Einzelprofile erzeugen keinen Paketbonus.
+mindestens zwei Profilen derselben Aszendenz vorkommen **und** der gepinnte
+lokale Gemdatensatz genau diese Waffenart fordert. Unbeschränkte Skills,
+unbekannte Waffenkonfigurationen, profilweite Zweitwaffen und Einzelprofile
+erzeugen keinen Paketbonus.
 
 ## Wichtige Einschränkung
 
@@ -92,9 +103,9 @@ Kandidaten können davon profitieren.
 
 Die aggregierte Häufigkeit eines Skills und einer Waffe beweist außerdem
 nicht, dass beide im selben Charakter zusammen verwendet wurden. Deshalb
-bleibt der Aggregatanteil schwach. Der neue Paketanteil besitzt diese
-Korrelation, bleibt aber ebenfalls nur sekundäre Evidenz und darf keine harte
-Kompatibilitätsregel erzeugen.
+bleibt der Aggregatanteil schwach. Der Paketanteil besitzt eine
+Profilkorrelation, aber keine strukturierte Waffensetzuordnung. Er bleibt
+sekundäre Evidenz und darf keine harte Kompatibilitätsregel erzeugen.
 
 ## Referenzschwerpunkte
 
@@ -151,9 +162,10 @@ Kompatibilität, Rotation oder DPS-Wahrheit aus Popularität ableiten.
 Die produktive Meta-Referenz verwendet nun den Quellenindex
 `1959-20260808-19780`. Er wurde erst nach vollständiger Klassifikation der 460
 gepinnten Profilreferenzen promoviert: 53 Profile sind valide korrelierte
-Beobachtungen, 407 bleiben blockiert. Aus den validierten Profilen entstehen 15
-produktive Pakete; der vorherige Pin `1924-20260728-10654` besaß bei gleicher
-Profilzahl nur 10 Pakete.
+Beobachtungen, 407 bleiben blockiert. Vor der zusätzlichen lokalen
+Skill-/Waffenprüfung entstanden 15 Rohpakete. Der aktuelle gehärtete
+Produktstand enthält davon 6 exakt kompatible Pakete; der vorherige Pin
+`1924-20260728-10654` besaß vor dieser Härtung 10 Rohpakete.
 
 Der Generator ist nun tatsächlich resumierbar: kleine Batches werden
 deterministisch über alle Aszendenzen verteilt, frühere Erfolge bleiben
@@ -173,3 +185,40 @@ Plausibilitätsbelege und sind ausdrücklich keine DPS- oder Optimalitätsgarant
 
 Details stehen in `docs/BUILD_ASSISTANT_META_MATRIX_STEP_174.md` und
 `docs/audits/build-assistant-current-meta-matrix.json`.
+
+## Fortsetzung – Skill-/Waffen-Härtung (9. August 2026)
+
+Der aktuelle poe.ninja-Profilkandidat `0424-20260809-55677` enthält wieder 20
+DPS-sortierte Referenzen je produktiver Aszendenz. Wegen der öffentlichen
+Abrufbegrenzung sind erst 11 Profile reduziert validiert; 449 bleiben
+blockiert. Mit der gehärteten Zuordnung entsteht daraus noch kein produktives
+Paket. Der schwächere Kandidat ersetzt den aktiven Stand deshalb nicht.
+
+Die Prüfung hat zugleich einen Fehler im früheren Paketmodell belegt: Alle
+Waffen eines Charakters wurden mit dessen höchster Schadensfertigkeit
+kombiniert. Dadurch entstanden beispielsweise die widersprüchlichen Pakete
+`Ice Shot + Bogen` und `Ice Shot + Zauberstab` aus denselben Profilen. Das
+Modell akzeptiert nun nur noch Skill-/Waffen-Paare, deren exakte Waffenart im
+gepinnten lokalen Gemdatensatz bestätigt ist. Die aktive Produktdatei wurde
+dadurch deterministisch von 15 auf 6 Pakete reduziert. Sämtliche 9 entfernten
+Paare und ihre Gründe stehen in
+`docs/audits/poe2-meta-skill-weapon-package-coverage.json`.
+
+Die lokale Optimierermatrix bleibt nach der Bereinigung bei 23/23 kohärenten
+Paketen. Das belegt interne Konsistenz, nicht weltweite Meta-Optimalität. Eine
+echte Skill-zu-Waffenset-Korrelation darf erst produktiv werden, wenn die
+Quelle dafür eine strukturierte Zuordnung liefert; die bloße profilweite
+Waffenliste genügt ausdrücklich nicht.
+
+## Verifikation der Härtung
+
+- 36 fokussierte Runtime-/Integrations- und 20 neue Import-/Gate-Tests
+  bestanden.
+- Der Gesamtlauf bestätigte 1.929 Tests; zwei ausschließlich am festen
+  Fünf-Sekunden-Limit abgebrochene Vollbaumdateien bestanden anschließend
+  seriell mit 197/197 Tests.
+- Typecheck, Lint, Produktions- und Pages-Build, 252 JSON-Dateien sowie
+  `git diff --check` bestanden.
+- Desktop und 390×844 laden die lokale Produktionsausgabe ohne horizontalen
+  Überlauf oder neue Browserkonsolenmeldungen. Die neun Skillkarten sind bei
+  390×844 einspaltig.

@@ -1,11 +1,14 @@
 import type { SkillGemDefinition, SyntheticWeaponType } from '../../domain'
 import correlatedPackages from '../../../generated/meta/poe2-build-packages.json'
+import { weaponTypeMatches } from './poe2-interaction-rules'
 
 export const metaReferenceSnapshot = {
   source: 'poe.ninja',
   league: 'Runes of Aldur',
   patchFamily: '0.5.x',
   snapshotDate: '2026-07-28',
+  overviewExactVersion: '1924-20260728-10654',
+  correlatedPackageSnapshotDate: correlatedPackages.source.snapshotDate,
   exactVersion: correlatedPackages.source.version,
   population: 124306,
 } as const
@@ -14,6 +17,24 @@ type ObservedChoice = {
   name: string
   share: number
 }
+
+type CorrelatedPackageChoice = ObservedChoice & {
+  count: number
+}
+
+type CorrelatedPackage = {
+  packageId: string
+  ascendancyId: string
+  mainSkill: string
+  weapon: string
+  profileCount: number
+  evidenceClass: string
+  productive: boolean
+  supports: CorrelatedPackageChoice[]
+  linkedActiveSkills: CorrelatedPackageChoice[]
+}
+
+const metaPackages = correlatedPackages.packages as unknown as CorrelatedPackage[]
 
 type AscendancyMetaReference = {
   characterCount: number
@@ -158,6 +179,26 @@ const weaponName: Partial<Record<SyntheticWeaponType, string>> = {
   wand: 'Wand',
 }
 
+const exactWeaponTypes = new Set<SyntheticWeaponType>([
+  'bow', 'crossbow', 'wand', 'focus', 'claw', 'dagger', 'flail', 'mace',
+  'quarterstaff', 'spear', 'sword', 'axe',
+])
+
+/**
+ * The imported profile lists weapons for the whole character, not the weapon
+ * set used by one gem group. A package may therefore affect ranking only when
+ * the local pinned skill data itself contains a matching exact weapon rule.
+ */
+export function hasExactLocalMetaWeaponLink(
+  skill: SkillGemDefinition,
+  weapon: string,
+) {
+  const required = skill.requiredWeaponTypes?.filter(type => exactWeaponTypes.has(type)) ?? []
+  return required.length > 0
+    && exactWeaponTypes.has(weapon as SyntheticWeaponType)
+    && weaponTypeMatches(required, weapon as SyntheticWeaponType)
+}
+
 export function scoreMetaReference(
   skill: SkillGemDefinition,
   weapon: SyntheticWeaponType,
@@ -166,10 +207,11 @@ export function scoreMetaReference(
   const reference = ascendancyMetaReferences[ascendancyId]
   const observedSkill = reference?.mainSkills.find(item => item.name === skill.nameEn)
   const observedWeapon = reference?.weapons.find(item => item.name === weaponName[weapon])
-  const correlatedPackage = correlatedPackages.packages.find(item =>
+  const correlatedPackage = metaPackages.find(item =>
     item.ascendancyId === ascendancyId
     && item.mainSkill === skill.nameEn
-    && item.weapon === weapon,
+    && item.weapon === weapon
+    && hasExactLocalMetaWeaponLink(skill, item.weapon),
   )
   /*
    * Die getrennten Übersichtsanteile bleiben nur ein schwaches Signal.
@@ -204,10 +246,11 @@ export function correlatedMetaSkillRelations(
   mainSkill: SkillGemDefinition,
   ascendancyId: string,
 ) {
-  const packages = correlatedPackages.packages.filter(item =>
+  const packages = metaPackages.filter(item =>
     item.productive
     && item.ascendancyId === ascendancyId
     && item.mainSkill === mainSkill.nameEn
+    && hasExactLocalMetaWeaponLink(mainSkill, item.weapon)
     && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
   )
   const relations = new Map<string, { profileCount: number; share: number; packageIds: string[] }>()
@@ -226,11 +269,12 @@ export function correlatedMetaSupportNames(
   mainSkill: SkillGemDefinition,
   ascendancyId: string,
 ) {
-  return correlatedPackages.packages
+  return metaPackages
     .filter(item =>
       item.productive
       && item.ascendancyId === ascendancyId
       && item.mainSkill === mainSkill.nameEn
+      && hasExactLocalMetaWeaponLink(mainSkill, item.weapon)
       && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
     )
     .flatMap(item => item.supports.map(support => ({

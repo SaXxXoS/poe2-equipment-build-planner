@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceVersion": "1959-20260808-19780",
+  "inputPackageCount": 15,
+  "productivePackageCount": 6,
+  "blockedPackageCount": 9,
+  "blockedPackages": [
+    {
+      "packageId": "17409b6a5589077313ca",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "2f6341ad1ef3ddda9d85",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "mainSkill": "His Scattering Calamity",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "44398baf0f2394200137",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "mainSkill": "Ice Shot",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "553fd8a0da0e34f56d1e",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 3,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "64aea602647eebb9fc8e",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "unresolved-no-exact-weapon-requirement",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "a5a79a562beb8233b127",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 3,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "a7385a6a3ed80e7d27c3",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "mainSkill": "Ice Shot",
+      "weapon": "wand",
+      "profileCount": 3,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "c1d28d78a72aae3a040f",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "unresolved-no-exact-weapon-requirement",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "e71a44f9a9796c42b17f",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    }
+  ],
+  "decision": "only-exact-local-skill-weapon-links-are-productive",
+  "limitation": "The source profile exposes character-wide weapons, not a proven weapon-set link for each gem group."
+}

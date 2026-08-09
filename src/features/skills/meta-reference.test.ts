@@ -4,8 +4,12 @@ import { ascendancyMetaReferences, metaReferenceSnapshot, scoreMetaReference } f
 import profileReferences from '../../../docs/audits/poe2-current-meta-reference-profiles.json'
 import profileValidation from '../../../docs/audits/poe2-current-meta-build-profile-validation.json'
 import correlatedPackages from '../../../generated/meta/poe2-build-packages.json'
+import packageCoverage from '../../../docs/audits/poe2-meta-skill-weapon-package-coverage.json'
 
-const skill = (nameEn: string): SkillGemDefinition => ({
+const skill = (
+  nameEn: string,
+  requiredWeaponTypes: SkillGemDefinition['requiredWeaponTypes'] = [],
+): SkillGemDefinition => ({
   id: `skill:${nameEn}`,
   displayNameDe: nameEn,
   nameEn,
@@ -13,7 +17,7 @@ const skill = (nameEn: string): SkillGemDefinition => ({
   source: 'local-placeholder',
   status: 'placeholder',
   tags: ['spell'],
-  requiredWeaponTypes: [],
+  requiredWeaponTypes,
   possibleRoles: ['main'],
   enabled: true,
 })
@@ -25,6 +29,9 @@ describe('seasonal meta reference', () => {
       league: 'Runes of Aldur',
       patchFamily: '0.5.x',
       exactVersion: '1959-20260808-19780',
+      snapshotDate: '2026-07-28',
+      overviewExactVersion: '1924-20260728-10654',
+      correlatedPackageSnapshotDate: correlatedPackages.source.snapshotDate,
       population: 124306,
     })
   })
@@ -58,14 +65,33 @@ describe('seasonal meta reference', () => {
       item.productive
       && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
     )).toBe(true)
-    const first = correlatedPackages.packages[0]
+    const first = correlatedPackages.packages.find(item => item.mainSkill === 'Ice Shot' && item.weapon === 'bow')!
     const result = scoreMetaReference(
-      skill(first.mainSkill),
+      skill(first.mainSkill, ['bow']),
       first.weapon as Parameters<typeof scoreMetaReference>[1],
       first.ascendancyId,
     )
     expect(result.correlatedProfileCount).toBe(first.profileCount)
     expect(result.correlatedPackageScore).toBeGreaterThan(0)
+  })
+
+  it('does not treat a profile-wide secondary weapon as a main-skill correlation', () => {
+    expect(correlatedPackages.packages.some(item =>
+      item.mainSkill === 'Ice Shot' && item.weapon === 'wand',
+    )).toBe(false)
+    expect(packageCoverage.blockedPackages.some(item =>
+      item.mainSkill === 'Ice Shot'
+      && item.weapon === 'wand'
+      && item.status === 'blocked-incompatible-weapon',
+    )).toBe(true)
+    expect(scoreMetaReference(
+      skill('Ice Shot', ['bow']),
+      'wand',
+      'ascendancy-official-Ranger1',
+    )).toMatchObject({
+      correlatedPackageScore: 0,
+      correlatedProfileCount: 0,
+    })
   })
 
   it('keeps correlated profile evidence anonymized and reduced', () => {

@@ -1,4 +1,4 @@
-/* global process, console, URL, URLSearchParams, fetch, setTimeout, AbortSignal */
+/* global process, console, URL, setTimeout */
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -6,18 +6,24 @@ import {
   selectMetaRefreshProfileIds,
   shouldPromoteMetaProduct,
 } from './policy.mjs'
+import { extractMainGroup, extractWeapons } from './profile-extraction.mjs'
+import { fetchCurrentCharacterModel, fetchJson } from './poe-ninja-profile.mjs'
+import { classifySkillWeaponPair } from './skill-weapon-compatibility.mjs'
 
 const ROOT = process.cwd()
 const INPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-reference-profiles.json')
 const AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation.json')
 const CANDIDATE_AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation-candidate.json')
 const PRODUCT_OUTPUT = path.join(ROOT, 'generated/meta/poe2-build-packages.json')
+const GEM_CATALOG_INPUT = path.join(ROOT, 'generated/poe2-gems/catalog.json')
+const LOCAL_CACHE_DIRECTORY = path.join(ROOT, '.local-audits/poe2-meta-build-packages')
 const INDEX_URL = 'https://poe.ninja/poe2/api/data/index-state'
 const LEAGUE_URL = 'runesofaldur'
 const MIN_PRODUCTIVE_PROFILES = 2
-const CONCURRENCY = 2
-const REQUEST_DELAY_MS = 450
-const FETCH_TIMEOUT_MS = 12_000
+const CONCURRENCY = 1
+const REQUEST_DELAY_MS = 3_000
+const FETCH_TIMEOUT_MS = 8_000
+const PROFILE_FETCH_RETRIES = 0
 const parsedMaximumNewFetches = Number(process.env.POE2_META_MAX_NEW_FETCHES ?? 24)
 const MAX_NEW_FETCHES = Number.isInteger(parsedMaximumNewFetches) && parsedMaximumNewFetches >= 0
   ? parsedMaximumNewFetches
@@ -49,26 +55,8 @@ const ascendancyIds = {
   Shaman: 'ascendancy-official-Druid2',
 }
 
-const weaponPatterns = [
-  ['crossbow', /\bcrossbow\b/i],
-  ['quarterstaff', /\bquarterstaff\b/i],
-  ['wand', /\bwand\b/i],
-  ['bow', /\bbow\b/i],
-  ['claw', /\bclaw\b/i],
-  ['dagger', /\bdagger\b/i],
-  ['flail', /\bflail\b/i],
-  ['mace', /\bmace\b/i],
-  ['spear', /\bspear\b/i],
-  ['sword', /\bsword\b/i],
-  ['axe', /\baxe\b/i],
-]
-
 function hash(value) {
   return createHash('sha256').update(value).digest('hex')
-}
-
-function sortedUnique(values) {
-  return [...new Set(values.filter(Boolean))].sort((left, right) => left.localeCompare(right))
 }
 
 function percentile(values, fraction) {
@@ -86,70 +74,7 @@ function parseProfileUrl(profileUrl) {
   }
 }
 
-function extractWeapons(items = []) {
-  const result = []
-  for (const item of items) {
-    const searchable = [
-      item?.itemData?.typeLine,
-      item?.itemData?.baseType,
-      ...(item?.itemData?.properties ?? []).map(property => property?.name),
-    ].filter(Boolean).join(' ')
-    const match = weaponPatterns.find(([, pattern]) => pattern.test(searchable))
-    if (match) result.push(match[0])
-  }
-  return sortedUnique(result)
-}
-
-function extractMainGroup(skills = []) {
-  const candidates = skills.map((group, index) => {
-    const damaging = [...(group?.dps ?? [])]
-      .filter(entry => Number.isFinite(entry?.dps))
-      .sort((left, right) => right.dps - left.dps || String(left.name).localeCompare(String(right.name)))
-    const mainName = damaging[0]?.name
-      ?? group?.allGems?.find(gem => gem?.itemData?.support === false)?.name
-    const mainGem = group?.allGems?.find(gem => gem?.name === mainName && gem?.itemData?.support === false)
-      ?? group?.allGems?.find(gem => gem?.itemData?.support === false)
-    return {
-      index,
-      name: mainGem?.name,
-      dps: damaging[0]?.dps ?? 0,
-      supports: sortedUnique((group?.allGems ?? [])
-        .filter(gem => gem?.itemData?.support === true)
-        .map(gem => gem.name)),
-      activeSkills: sortedUnique((group?.allGems ?? [])
-        .filter(gem => gem?.itemData?.support === false)
-        .map(gem => gem.name)),
-    }
-  }).filter(candidate => candidate.name)
-  return candidates.sort((left, right) =>
-    right.dps - left.dps
-    || right.supports.length - left.supports.length
-    || left.index - right.index,
-  )[0] ?? null
-}
-
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds))
-
-async function fetchJson(url, retries = 4) {
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    const response = await fetch(url, {
-      headers: {
-        accept: 'application/json',
-        'user-agent': 'PoE2-Buildplaner/1.0 local-meta-audit',
-      },
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    })
-    if (response.ok) return response.json()
-    if (response.status !== 429 || attempt === retries) {
-      throw new Error(`HTTP ${response.status}`)
-    }
-    const retryAfter = Number(response.headers.get('retry-after'))
-    await wait(Number.isFinite(retryAfter) && retryAfter > 0
-      ? Math.min(15_000, retryAfter * 1000)
-      : Math.min(15_000, 1_500 * 2 ** attempt))
-  }
-  throw new Error('HTTP retry exhausted')
-}
 
 async function mapConcurrent(values, concurrency, mapper) {
   const results = new Array(values.length)
@@ -165,7 +90,8 @@ async function mapConcurrent(values, concurrency, mapper) {
 }
 
 const reference = JSON.parse(await readFile(INPUT, 'utf8'))
-const indexState = await fetchJson(INDEX_URL)
+const gemCatalog = JSON.parse(await readFile(GEM_CATALOG_INPUT, 'utf8'))
+const indexState = await fetchJson(INDEX_URL, { timeoutMs: FETCH_TIMEOUT_MS })
 const snapshot = indexState.snapshotVersions.find(value => value.url === LEAGUE_URL)
 if (!snapshot?.version || !snapshot?.snapshotName) {
   throw new Error(`Kein exakter Snapshot für ${LEAGUE_URL}`)
@@ -194,6 +120,39 @@ for (const previousAuditPath of [AUDIT_OUTPUT, CANDIDATE_AUDIT_OUTPUT]) {
   } catch {
     // Der erste Lauf eines Snapshots besitzt noch keinen passenden Bericht.
   }
+}
+
+const localCacheOutput = path.join(LOCAL_CACHE_DIRECTORY, `${snapshot.version}-observations.json`)
+let localObservationCache = new Map()
+try {
+  const localCache = JSON.parse(await readFile(localCacheOutput, 'utf8'))
+  if (localCache.sourceVersion === snapshot.version) {
+    localObservationCache = new Map(localCache.observations.map(value => [value.profileId, value]))
+    for (const [profileId, observation] of localObservationCache) {
+      const previous = previousObservations.get(profileId)
+      if (!previous || previous.validationStatus === 'fetch-failed') {
+        previousObservations.set(profileId, observation)
+      }
+    }
+  }
+} catch {
+  // Der lokale, gitignorierte Fortschrittscache entsteht erst beim ersten Treffer.
+}
+
+let localCacheWrite = Promise.resolve()
+async function rememberObservation(observation) {
+  if (observation.validationStatus === 'fetch-failed') return
+  localObservationCache.set(observation.profileId, observation)
+  localCacheWrite = localCacheWrite.then(async () => {
+    await mkdir(LOCAL_CACHE_DIRECTORY, { recursive: true })
+    const cached = [...localObservationCache.values()]
+      .sort((left, right) => left.profileId.localeCompare(right.profileId))
+    await writeFile(localCacheOutput, `${JSON.stringify({
+      sourceVersion: snapshot.version,
+      observations: cached,
+    }, null, 2)}\n`)
+  })
+  await localCacheWrite
 }
 
 let previousProduct = null
@@ -250,15 +209,13 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
   try {
     await wait(REQUEST_DELAY_MS)
     const { account, name } = parseProfileUrl(requested.url)
-    const query = new URLSearchParams({
+    const profile = await fetchCurrentCharacterModel({
       account,
-      name,
-      overview: snapshot.snapshotName,
-      timeMachine: '',
+      character: name,
+      leagueUrl: LEAGUE_URL,
+      timeoutMs: FETCH_TIMEOUT_MS,
+      retries: PROFILE_FETCH_RETRIES,
     })
-    const profile = await fetchJson(
-      `https://poe.ninja/poe2/api/builds/${snapshot.version}/character?${query}`,
-    )
     const ascendancyId = ascendancyIds[requested.expectedAscendancy]
     const mainGroup = extractMainGroup(profile.skills)
     const weapons = extractWeapons(profile.items)
@@ -268,7 +225,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       && mainGroup?.name
       && weapons.length,
     )
-    return {
+    const observation = {
       profileId,
       rank: requested.rank,
       expectedAscendancy: requested.expectedAscendancy,
@@ -295,6 +252,8 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       ],
       attemptCount: (previous?.attemptCount ?? 0) + 1,
     }
+    await rememberObservation(observation)
+    return observation
   } catch (error) {
     return {
       profileId,
@@ -354,6 +313,11 @@ for (const observation of observations.filter(value =>
 
 const packages = [...packageMap.values()].map(value => {
   const profileCount = value.profileIds.length
+  const localCompatibility = classifySkillWeaponPair(
+    value.mainSkill,
+    value.weapon,
+    gemCatalog.skills,
+  )
   const counted = map => [...map.entries()]
     .map(([name, count]) => ({ name, count, share: Math.round(count / profileCount * 100) }))
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
@@ -364,10 +328,16 @@ const packages = [...packageMap.values()].map(value => {
     mainSkill: value.mainSkill,
     weapon: value.weapon,
     profileCount,
-    evidenceClass: profileCount >= MIN_PRODUCTIVE_PROFILES
-      ? 'multi-profile-correlated-exact'
-      : 'single-profile-audit-only',
-    productive: profileCount >= MIN_PRODUCTIVE_PROFILES,
+    evidenceClass: profileCount < MIN_PRODUCTIVE_PROFILES
+      ? 'single-profile-audit-only'
+      : localCompatibility.status === 'structured-exact-compatible'
+        ? 'multi-profile-correlated-exact'
+        : localCompatibility.status === 'blocked-incompatible-weapon'
+          ? 'multi-profile-incompatible-audit-only'
+          : 'multi-profile-unresolved-audit-only',
+    productive: profileCount >= MIN_PRODUCTIVE_PROFILES && localCompatibility.productive,
+    localCompatibilityStatus: localCompatibility.status,
+    localRequiredWeaponTypes: localCompatibility.requiredWeaponTypes,
     supports: counted(value.supports),
     linkedActiveSkills: counted(value.linkedActiveSkills),
     modeledDpsSummary: {
@@ -428,11 +398,15 @@ const audit = {
   blockedProfiles: observations.length - validated.length,
   productivePackageCount: packages.filter(value => value.productive).length,
   auditOnlyPackageCount: packages.filter(value => !value.productive).length,
+  packageClassifications: Object.fromEntries([...new Set(packages.map(value => value.localCompatibilityStatus))]
+    .sort()
+    .map(status => [status, packages.filter(value => value.localCompatibilityStatus === status).length])),
   observations,
   limitations: [
     'Die Stichprobe besteht aus nach poe.ninja-Modell-DPS sortierten öffentlichen Profilen und ist keine Zufallsstichprobe.',
     'PoB-/poe.ninja-DPS ist ein Modellwert und wird nicht als garantierter Spielschaden übernommen.',
     'Waffen werden aus sichtbaren, strukturierten Itemeigenschaften abgeleitet; nicht unterstützte Klassen bleiben blockiert.',
+    'Die profilweite Waffenliste belegt nicht, welche Waffe der Hauptskill verwendet. Produktiv werden deshalb nur Paare mit lokal exakt bestätigter Gem-Waffenanforderung.',
     'Support- und Skillbezüge stammen nur aus derselben Gemmengruppe desselben Profils.',
     'Passive Einzelknoten werden in diesem Schritt nicht als Spielregel importiert.',
   ],

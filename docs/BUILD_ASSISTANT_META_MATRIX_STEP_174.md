@@ -70,13 +70,16 @@ diese Matrix keine harte Spielregel oder DPS-Garantie erzeugen.
 Der aktuelle Quellenindex `1959-20260808-19780` ist nach mehreren kleinen,
 fortsetzbaren Batches sicher produktiv promoviert worden. Der Audit klassifiziert
 alle 460 fest gepinnten Profilreferenzen: 53 Profile sind als korrelierte
-Beobachtungen validiert, 407 blockiert. Daraus entstehen 15 produktive Pakete
-und 22 weitere reine Auditpakete. Damit erreicht der neue Stand mindestens die
+Beobachtungen validiert, 407 blockiert. Daraus entstanden vor der
+nachgelagerten Skill-/Waffen-Härtung 15 Rohpakete und 22 weitere reine
+Auditpakete. Der aktuelle Produktstand filtert davon nur 6 Pakete mit exakt
+lokal belegter Gem-Waffenanforderung produktiv; 9 zuvor produktive profilweite
+Zuordnungen sind im separaten Coveragebericht blockiert. Damit erreicht der neue Stand mindestens die
 53 validierten Profile und übertrifft die 10 produktiven Pakete des vorherigen
 Pins `1924-20260728-10654`.
 
-Die reduzierte Produktdatei besitzt den SHA-256-Wert
-`F8FD4EC1E4052BFBA8EB0A5B48C792A456304024F8BC4AD0966B0AAAAD3BDAAD`.
+Die nachgelagert gehärtete Produktdatei besitzt den SHA-256-Wert
+`F8F66B99241C4A4E81EFB8B319B936E0604C2B64843276DCF47F2833B79A8937`.
 Nach erfolgreicher Promotion wird ein veralteter Kandidatenaudit entfernt.
 Ein anschließender Null-Batch verwendet den aktiven Stand wieder und erzeugt
 keine zweite widersprüchliche Kandidatendatei.

@@ -4385,3 +4385,42 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   bestanden. Die lokale Desktop- und 390×844-Browserprüfung erzeugte für
   Hexe/Infernalistin ohne Ausrüstung ein vollständiges Ergebnis ohne
   Berechnungsfehler, horizontalen Überlauf oder Browserkonsolenmeldungen.
+
+## Gehärtete Meta-Skill-/Waffenpakete – Fortsetzung Schritt 174 (2026-08-09)
+
+- Der aktuelle Referenzindex `0424-20260809-55677` enthält erneut 460 feste
+  DPS-sortierte Profilreferenzen, 20 je produktiver Aszendenz. Die öffentliche
+  Modell-API begrenzt den Abruf derzeit: 11 Profile sind reduziert validiert,
+  449 blockiert. Der Kandidat erzeugt nach der gehärteten Regel noch kein
+  produktives Paket und ersetzt den aktiven Pin nicht.
+- Ein fachlicher Fehler des bisherigen Paketimports ist behoben: Die
+  profilweite Waffenliste wurde zuvor vollständig mit dem höchsten
+  Schadensskill kombiniert. Dadurch konnten Haupt- und Zweitwaffe als zwei
+  vermeintliche Hauptskillwaffen erscheinen, etwa `Ice Shot + Bogen` und
+  `Ice Shot + Zauberstab`.
+- Produktive Paketwirkung verlangt nun zusätzlich eine exakt passende
+  Waffenanforderung aus dem gepinnten lokalen Gemdatensatz. Unbeschränkte,
+  unbekannte und widersprüchliche Paare bleiben Audit-only und erzeugen weder
+  Paketbonus noch Skill-/Supportkorrelation.
+- Der aktive reduzierte Produktbestand wurde deterministisch von 15
+  Rohpaketen auf 6 lokal bestätigte Pakete bereinigt. 9 blockierte Paare sind
+  vollständig in
+  `docs/audits/poe2-meta-skill-weapon-package-coverage.json` dokumentiert.
+  SHA-256 der gehärteten Produktdatei:
+  `F8F66B99241C4A4E81EFB8B319B936E0604C2B64843276DCF47F2833B79A8937`.
+- Aggregierte Übersichtsanteile (`1924-20260728-10654`) und korrelierter
+  Produktpin (`1959-20260808-19780`) werden im Laufzeitmodell getrennt
+  ausgewiesen; ein neuer Kandidat darf diese Herkunft nicht irreführend als
+  einen einzigen Snapshot darstellen.
+- Die vollständige lokale Optimierermatrix bleibt nach der Bereinigung bei
+  23/23 ausgewählten, kohärenten und bis zur geplanten Waffenklasse
+  transportierten Paketen. Sie belegt interne Konsistenz, nicht globale
+  Meta-Optimalität oder Path-of-Building-Gleichwertigkeit.
+- Abschlussprüfung der Härtung: 36 fokussierte Integrations- und 20 neue
+  Import-/Gate-Tests bestanden. Der Gesamtlauf bestätigte 1.929 Tests direkt;
+  die einzigen zwei am festen Fünf-Sekunden-Limit abgebrochenen Vollbaumdateien
+  bestanden im seriellen Wiederholungslauf mit 197/197 Tests. Typecheck, Lint,
+  Produktions-/Pages-Build, 252 JSON-Dateien und `git diff --check` bestanden.
+- Die lokale Browserprüfung bestand auf Desktop und bei 390×844 ohne
+  horizontalen Überlauf oder neue Konsolenmeldungen; alle neun Skillkarten
+  blieben mobil einspaltig. Die öffentliche Pages-Prüfung folgt nach dem Push.
