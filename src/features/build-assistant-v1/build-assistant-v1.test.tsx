@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { initialEquipment, skillSetups } from '../../data'
 import type { CharacterConfiguration, EquipmentEntry } from '../../domain'
 import { BuildAssistantResultSection } from '../../components/BuildAssistantResultSection'
+import { productiveUniqueRecommendations } from '../uniques/productive-recommendations'
 import { buildAssistantCandidates, createBuildAssistantRequest, deriveWeaponContext, runBuildAssistantV1, validateBuildAssistantInput } from '.'
 import { fillRecommendedSupportSlots } from '../skills/automatic-supports'
 import type { BuildVariantOptimization } from '../skills/build-variant-optimizer'
@@ -150,6 +151,19 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(buildAssistantCandidates.uniques).toHaveLength(435)
     expect(buildAssistantCandidates.uniques.every(item => item.id.startsWith('pob2:'))).toBe(true)
     expect(buildAssistantCandidates.uniques.some(item => item.id.startsWith('fixture:'))).toBe(false)
+  })
+
+  it('zeigt keine Unique-Empfehlung nur wegen eines allgemeinen Skilltags', () => {
+    const result = runBuildAssistantV1(input('balanced', realSkillId('Spark')))
+    expect(productiveUniqueRecommendations(result).every(item =>
+      item.buildEnabler
+      || item.supportsCurrentBuild
+      || item.damageScore > 0
+      || item.defenceScore > 0
+      || item.resourceScore > 0
+      || item.ascendancySynergyScore > 0
+      || item.equipmentSynergyScore > 0,
+    )).toBe(true)
   })
 
   it('verwendet im Produkt nur den gepinnten aktuellen Gemmenbestand mit lokaler deutscher Anzeige', () => {

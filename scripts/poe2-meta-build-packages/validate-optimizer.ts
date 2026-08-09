@@ -12,6 +12,11 @@ import {
 } from '../../src/features/skills/build-variant-optimizer'
 import { createEmptySkillSetups } from '../../src/features/skills/initial-state'
 import {
+  fillRecommendedSupportSlots,
+  rankedSupportsForSkill,
+} from '../../src/features/skills/automatic-supports'
+import { supportCapacityFor } from '../../src/features/skills/meta-skills'
+import {
   ascendancyMetaReferences,
   metaReferenceSnapshot,
 } from '../../src/features/skills/meta-reference'
@@ -84,6 +89,65 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
         )
       : initialEquipment
     const plannedWeaponTypes = deriveWeaponContext(plannedEquipment).availableWeaponTypes
+    let setupAssigned = false
+    const packageSetups = result.selected
+      ? setups.map((setup, index) => {
+          if (index === 0) return {
+            ...setup,
+            skillId: result.selected!.skillId,
+            role: 'main' as const,
+            weaponSet: result.selected!.mainWeaponSet,
+            origin: 'recommended' as const,
+            supportGemIds: [],
+          }
+          if (!setupAssigned && result.selected!.setupSkillId) {
+            setupAssigned = true
+            return {
+              ...setup,
+              skillId: result.selected!.setupSkillId,
+              role: 'utility' as const,
+              weaponSet: result.selected!.setupWeaponSet
+                ?? (result.selected!.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
+              origin: 'recommended' as const,
+              supportGemIds: [],
+              synergyReason: result.selected!.setupReason,
+            }
+          }
+          return setup
+        })
+      : setups
+    const visibleSetups = packageSetups.reduce<typeof packageSetups>((filled, setup) => {
+      if (!setup.skillId) return [...filled, setup]
+      const currentSetups = [...filled, ...packageSetups.slice(filled.length)]
+      const supportAnalysis = runBuildAssistantV1({
+        character: { ...character, desiredMainSkillId: setup.skillId },
+        equipment: plannedEquipment,
+        setups: currentSetups,
+      }).supportAnalysis
+      const preferred = setup.skillId === result.selected?.skillId
+        ? result.selected.compatibleSupportIds.map(supportId => ({ skillId: setup.skillId, supportId }))
+        : []
+      return [...filled, fillRecommendedSupportSlots(
+        setup,
+        rankedSupportsForSkill(
+          setup.skillId,
+          preferred,
+          supportAnalysis.topCandidates,
+          supportAnalysis.eligibleCandidates,
+        ),
+        buildAssistantCandidates.supports,
+        supportCapacityFor(setup),
+        {
+          equipment: plannedEquipment,
+          setups: currentSetups,
+          skills: buildAssistantCandidates.skills,
+          characterLevel: character.level,
+        },
+      )]
+    }, [])
+    const populatedSetups = visibleSetups.filter(setup => setup.skillId)
+    const mainSetup = populatedSetups.find(setup => setup.role === 'main')
+    const secondarySetups = populatedSetups.filter(setup => setup.role !== 'main')
 
     rows.push({
       classId: entry.classId,
@@ -98,6 +162,13 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       setupSkill: result.selected?.setupSkillName ?? null,
       setupWeapon: result.selected?.setupWeaponType ?? null,
       supportCount: result.selected?.compatibleSupportIds.length ?? 0,
+      visibleSkillCount: populatedSetups.length,
+      visibleSupportCount: populatedSetups.reduce((sum, setup) => sum + setup.supportGemIds.length, 0),
+      mainSupportCount: mainSetup?.supportGemIds.length ?? 0,
+      setupSupportCount: secondarySetups.reduce((sum, setup) => sum + setup.supportGemIds.length, 0),
+      set1SkillCount: populatedSetups.filter(setup => setup.weaponSet === 'set-1').length,
+      set2SkillCount: populatedSetups.filter(setup => setup.weaponSet === 'set-2').length,
+      bothSkillCount: populatedSetups.filter(setup => setup.weaponSet === 'both').length,
       packageStatus: result.selected?.packageStatus ?? null,
       packageScore: result.selected?.packageScore ?? null,
       metaScore: result.selected?.metaReferenceScore ?? null,
@@ -128,6 +199,10 @@ const totals = {
   observedWeaponIntersections: rows.filter(row => row.selectionIntersectsObservedWeapon).length,
   distinctSkills: new Set(rows.map(row => row.selectedSkillEn).filter(Boolean)).size,
   distinctWeapons: new Set(rows.map(row => row.weapon).filter(Boolean)).size,
+  profilesWithFilledMainSupports: rows.filter(row => row.mainSupportCount > 0).length,
+  profilesWithSetupSkill: rows.filter(row => row.setupSkill).length,
+  profilesWithSet1Skill: rows.filter(row => row.set1SkillCount > 0).length,
+  profilesWithSet2Skill: rows.filter(row => row.set2SkillCount > 0).length,
 }
 
 const report = {
@@ -167,6 +242,13 @@ const report = {
     'Fehlende produktive Skillmodelle bleiben eine Coverage-Lücke; sie werden nicht durch erfundene Regeln ersetzt.',
     'Die Matrix belegt lokale Kohärenz und Referenznähe, nicht den weltweit höchsten erreichbaren Schaden.',
   ],
+}
+
+if (totals.selected !== totals.profiles
+  || totals.coherent !== totals.profiles
+  || totals.plannedWeaponContextMatches !== totals.profiles
+  || totals.profilesWithFilledMainSupports !== totals.profiles) {
+  throw new Error(`Produktive Paketmatrix unvollständig: ${JSON.stringify(totals)}`)
 }
 
 await writeFile(OUTPUT, `${JSON.stringify(report, null, 2)}\n`)

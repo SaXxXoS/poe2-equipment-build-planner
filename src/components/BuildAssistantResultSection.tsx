@@ -8,6 +8,7 @@ import { technicalAffixById } from '../affixes/registry'
 import { affixDisplayName } from '../features/equipment-editor/affix-display'
 import { weaponLabelFor, type BuildVariantOptimization } from '../features/skills/build-variant-optimizer'
 import type { PostPassiveResourceRebalanceResult } from '../features/skills/post-passive-resource-rebalance'
+import { productiveUniqueRecommendations } from '../features/uniques/productive-recommendations'
 import { ResourceBalancePanel } from './ResourceBalancePanel'
 
 const confidenceText: Record<Confidence, string> = { high: 'Hohe Sicherheit', medium: 'Mittlere Sicherheit', low: 'Niedrige Sicherheit' }
@@ -85,13 +86,6 @@ const topConfidence = (analysis: BuildAnalysis): Confidence => {
   const values = [analysis.equipmentAnalysis.score.confidence, analysis.skillAnalysis.topMainCandidates[0]?.confidence, analysis.supportAnalysis.topCandidates[0]?.confidence].filter(Boolean)
   return values.includes('low') ? 'low' : values.includes('medium') ? 'medium' : 'high'
 }
-const uniqueRecommendations = (analysis: BuildAnalysis) => {
-  const source = analysis.uniqueAnalysis.eligibleCandidates.filter(item =>
-    item.matchedProfileFields.length > 0 || item.matchedSkillTags.length > 0 || item.equipmentSynergyScore > 0 || item.buildEnabler,
-  )
-  const seen = new Set<string>()
-  return source.filter(item => !seen.has(item.itemSlot) && seen.add(item.itemSlot)).slice(0, 5)
-}
 function Rotation({ plan }: { plan: RotationPlan }) {
   if (!plan.steps.length || plan.missingRoles.includes('main-damage')) return <p>Noch nicht vollständig verfügbar: Es fehlt eine belastbare Hauptschadensfolge.</p>
   const timingLabel = (step: RotationPlan['steps'][number]) => {
@@ -138,7 +132,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
   const desiredSkill = analysis.skillRecommendations.find(item => item.skillId === desiredSkillId)
   const emptySlots = equipment.filter(item => !item.uniqueItemId && !item.itemClassId && item.modifierValues.length === 0)
   const equippedUniques = equipment.flatMap(item => item.uniqueItemId ? [{ entry: item, unique: uniqueById.get(item.uniqueItemId) }] : [])
-  const uniques = uniqueRecommendations(analysis)
+  const uniques = productiveUniqueRecommendations(analysis)
   const confidence = topConfidence(analysis)
   const strongestField = <T extends string>(values: Record<T, number>) =>
     (Object.entries(values) as [T, number][]).filter(([, value]) => value > 0).sort(([a, av], [b, bv]) => bv - av || a.localeCompare(b))[0]?.[0]

@@ -11,7 +11,7 @@ import { createEmptySkillSetups } from './features/skills/initial-state'
 import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
-import { fillRecommendedSupportSlots } from './features/skills/automatic-supports'
+import { fillRecommendedSupportSlots, rankedSupportsForSkill } from './features/skills/automatic-supports'
 import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
 import { optimizeBuildVariants, plannedEquipmentForVariant, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
@@ -94,7 +94,11 @@ export default function App() {
     setCalculationState('running')
     let completedAnalyzerResult:BuildAnalysis|null=null
     try {
-        const addRecommendedSupports = (setupsToFill:typeof setups, characterForAnalysis:CharacterConfiguration) =>
+        const addRecommendedSupports = (
+          setupsToFill:typeof setups,
+          characterForAnalysis:CharacterConfiguration,
+          preferredSupportsBySkill = new Map<string, string[]>(),
+        ) =>
           setupsToFill.reduce<typeof setups>((filled, value) => {
             const currentSetups = [...filled, ...setupsToFill.slice(filled.length)]
             if (!value.skillId) return [...filled, value]
@@ -105,11 +109,17 @@ export default function App() {
               equipment,
               setups: preparedCurrentSetups,
             })
+            const preferred = (preferredSupportsBySkill.get(value.skillId) ?? [])
+              .map(supportId => ({ skillId: value.skillId, supportId }))
+            const ranked = rankedSupportsForSkill(
+              value.skillId,
+              preferred,
+              skillResult.supportAnalysis.topCandidates,
+              skillResult.supportAnalysis.eligibleCandidates,
+            )
             return [...filled, fillRecommendedSupportSlots(
               preparedValue,
-              skillResult.supportAnalysis.topCandidates.length
-                ? skillResult.supportAnalysis.topCandidates
-                : skillResult.supportAnalysis.eligibleCandidates,
+              ranked,
               buildAssistantCandidates.supports,
               supportCapacityFor(preparedValue),
               {
@@ -248,7 +258,10 @@ export default function App() {
                 synergyReason: candidate.reason,
               }
             }))
-            const nextSetups = addRecommendedSupports(populatedSetups, effectiveCharacter)
+            const preferredSupports = new Map<string, string[]>(optimization.selected
+              ? [[optimization.selected.skillId, optimization.selected.compatibleSupportIds]]
+              : [])
+            const nextSetups = addRecommendedSupports(populatedSetups, effectiveCharacter, preferredSupports)
             effectiveSetups = nextSetups
             setSetups(nextSetups)
             setCharacter(effectiveCharacter)
@@ -302,7 +315,10 @@ export default function App() {
                 synergyReason: candidate.reason,
               } : value
             })
-            const populatedWithSupports = addRecommendedSupports(populated, effectiveCharacter)
+            const preferredSupports = new Map<string, string[]>(optimization.selected
+              ? [[optimization.selected.skillId, optimization.selected.compatibleSupportIds]]
+              : [])
+            const populatedWithSupports = addRecommendedSupports(populated, effectiveCharacter, preferredSupports)
             if (populatedWithSupports.some((value, index) => value !== preparedSetups[index])) {
               effectiveSetups = populatedWithSupports
               setSetups(effectiveSetups)
@@ -470,9 +486,11 @@ export default function App() {
     const preparedSetup = prepareMetaSetup(setup, setups)
     const preparedSetups = setups.map(value => value.id === setupId ? preparedSetup : value)
     const result = runBuildAssistantV1({ character: { ...character, desiredMainSkillId: setup.skillId }, equipment, setups: preparedSetups })
-    const rankedSupports = result.supportAnalysis.topCandidates.length
-      ? result.supportAnalysis.topCandidates
-      : result.supportAnalysis.eligibleCandidates
+    const rankedSupports = rankedSupportsForSkill(
+      preparedSetup.skillId,
+      result.supportAnalysis.topCandidates,
+      result.supportAnalysis.eligibleCandidates,
+    )
     const filled = fillRecommendedSupportSlots(
       preparedSetup,
       rankedSupports,

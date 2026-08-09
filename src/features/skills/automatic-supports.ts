@@ -13,6 +13,22 @@ export interface RankedSupportForSkill {
   supportId: string
 }
 
+/**
+ * Verbindet mehrere Ranglisten, ohne Empfehlungen einer anderen Fertigkeit
+ * oder doppelte Support-IDs in die sichtbare Skillkarte durchzulassen.
+ */
+export function rankedSupportsForSkill(
+  skillId: string,
+  ...sources: RankedSupportForSkill[][]
+): RankedSupportForSkill[] {
+  const seen = new Set<string>()
+  return sources.flat().filter(candidate => {
+    if (candidate.skillId !== skillId || seen.has(candidate.supportId)) return false
+    seen.add(candidate.supportId)
+    return true
+  })
+}
+
 export interface ResourceAwareSupportContext {
   equipment: EquipmentEntry[]
   setups: SkillSetup[]
@@ -89,7 +105,7 @@ export function fillRecommendedSupportSlots(
     return definition ? supportExclusiveKeys(definition) : [id]
   }))
 
-  const candidates = ranked.filter(candidate => candidate.skillId === setup.skillId)
+  const candidates = rankedSupportsForSkill(setup.skillId, ranked)
   while (selected.length < limit) {
     const available = candidates.flatMap((candidate, rankIndex) => {
       if (selected.includes(candidate.supportId)) return []

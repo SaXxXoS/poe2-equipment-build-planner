@@ -26,6 +26,31 @@ describe('reale Passive-Orchestratorintegration',()=>{
   it('weist einen vorbereiteten Graphen anderer Version vor dem Lauf zurück',()=>expect(run(configuration({passiveGraph:REAL_PASSIVE_FIXTURE_GRAPH,passiveGraphSourceVersion:'other'})).realPassivePlanning).toMatchObject({status:'invalid-input',pipelineResult:null,issues:[{code:'prepared-graph-source-version-mismatch'}]}))
   it('hält synthetische Analyse und realen Plan strikt getrennt',()=>{const result=run(configuration());expect(result.passiveAnalysis).toBeDefined();expect(result.realPassivePlanning?.pipelineResult?.selectedTargetIds).toBeDefined();expect(result.passiveRecommendations).not.toBe(result.realPassivePlanning?.pipelineResult?.selectedTargetIds)})
   it('teilt normale Punkte in einen gemeinsamen Stamm und zwei Waffen-Set-Pläne',()=>{const result=run(configuration({pointBudget:4,weaponSetPointBudget:2})).realPassivePlanning!,plans=result.weaponSetPlanning!;expect(plans.specializationPointLimit).toBe(2);expect(plans.sharedPointBudget).toBe(2);expect(plans.set1.pointBudget).toBe(4);expect(plans.set2.pointBudget).toBe(4);expect(plans.set1.usedPointBudget).toBeLessThanOrEqual(4);expect(plans.set2.usedPointBudget).toBeLessThanOrEqual(4);expect(plans.shared.allocatedNodeIds.every(id=>plans.set1.allocatedNodeIds.includes(id)&&plans.set2.allocatedNodeIds.includes(id))).toBe(true)})
+  it('bildet 107 normale Punkte als 83 gemeinsame plus je 24 umschaltbare Set-Punkte ab und hält acht Aszendenzpunkte getrennt',()=>{
+    const profile=run().buildProfile,seen:{scope:string|undefined;budget:number}[]=[]
+    const result=runRealPassivePlanningIntegration(configuration({
+      pointBudget:107,
+      weaponSetPointBudget:24,
+      ascendancyPointBudget:8,
+      characterContext:{classId:'1',ascendancyId:'foreign',characterLevel:100},
+    }),profile,context(),value=>{
+      seen.push({scope:value.planningScope,budget:value.pointBudget})
+      return runRealPassivePipeline(value)
+    })!
+    expect(seen).toEqual(expect.arrayContaining([
+      {scope:'ascendancy',budget:8},
+      {scope:undefined,budget:83},
+      {scope:'weapon-set',budget:24},
+    ]))
+    expect(seen.filter(value=>value.scope==='weapon-set')).toHaveLength(2)
+    expect(result.weaponSetPlanning).toMatchObject({
+      specializationPointLimit:24,
+      sharedPointBudget:83,
+      set1:{pointBudget:107},
+      set2:{pointBudget:107},
+    })
+    expect(result.ascendancyPlanning?.pointBudget).toBe(8)
+  })
   it('erfindet ohne unterschiedliche Waffenprofile keine künstlich verschiedenen Set-Ziele',()=>{const profile=run().buildProfile,result=runRealPassivePlanningIntegration(configuration({pointBudget:4,weaponSetPointBudget:2}),profile,context())!,plans=result.weaponSetPlanning!;expect(plans).toBeDefined();expect(plans.set1.usedPointBudget).toBeLessThanOrEqual(4);expect(plans.set2.usedPointBudget).toBeLessThanOrEqual(4);expect(plans.set1.selectedTargetIds).toEqual(plans.set2.selectedTargetIds)})
   it('teilt nur den geometrischen Pfadcache zwischen den getrennt bewerteten Set-Plänen',()=>{const profile=run().buildProfile,seen:unknown[]=[];runRealPassivePlanningIntegration(configuration({pointBudget:4,weaponSetPointBudget:2}),profile,context(),value=>{if(value.planningScope==='weapon-set')seen.push(value.pathCache);return runRealPassivePipeline(value)});expect(seen).toHaveLength(2);expect(seen[0]).toBeDefined();expect(seen[0]).toBe(seen[1])})
   it('plant bei unterschiedlichen Skilltreibern tatsächlich unterschiedliche Waffenset-Ziele',()=>{

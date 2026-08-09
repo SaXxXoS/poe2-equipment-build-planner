@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
-import { fillRecommendedSupportSlots } from './automatic-supports'
+import { fillRecommendedSupportSlots, rankedSupportsForSkill } from './automatic-supports'
 
 const setup: SkillSetup = {
   id: 'setup-main',
@@ -25,6 +25,20 @@ const support = (id:string, family?:string):SupportGemDefinition => ({
 })
 
 describe('automatische Supportbefüllung',()=>{
+  it('verbindet Paket-, Top- und Fallbacklisten nur für die konkrete Fertigkeit',()=>{
+    expect(rankedSupportsForSkill('skill-main',
+      [{skillId:'skill-main',supportId:'package-first'}],
+      [
+        {skillId:'other-skill',supportId:'foreign'},
+        {skillId:'skill-main',supportId:'package-first'},
+        {skillId:'skill-main',supportId:'fallback'},
+      ],
+    )).toEqual([
+      {skillId:'skill-main',supportId:'package-first'},
+      {skillId:'skill-main',supportId:'fallback'},
+    ])
+  })
+
   it('behält Nutzerwahl und füllt freie Plätze aus derselben Skillrangliste',()=>{
     const definitions=[support('manual-support'),support('rank-1'),support('rank-2')]
     const result=fillRecommendedSupportSlots(setup,[

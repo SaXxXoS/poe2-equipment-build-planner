@@ -4426,3 +4426,16 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   blieben mobil einspaltig. GitHub-Actions-Lauf `31300870197` schloss Build
   und Deploy erfolgreich ab; die öffentliche Pages-Seite liefert mit HTTP 200
   das lokal geprüfte Produktionsskript `index-DQWtU2C2.js` aus.
+
+## Sichtbare Paketkohärenz und harte Produktguards – Abschluss 2026-08-09
+
+- Die vollständige Matrix aller 23 produktiven Klassen-/Aszendenzkombinationen prüft jetzt zusätzlich die tatsächlich sichtbaren Skillkarten, Supportplätze und Waffensetzuordnungen.
+- 23/23 Profile erzeugen ein kohärentes Hauptskill-/Waffenpaket und fünf konkret skillkompatible Hauptsupports. 19/23 Profile besitzen außerdem eine belegte Set-2-Ergänzungsfertigkeit mit fünf eigenen Supports.
+- Für Titan/Erdspalter, Amazone/Wirbelnder Schlag, Geistwandlerin/Wirbelwind und Gemmenlegionär/Wirbelnder Schlag fehlt weiterhin eine ausreichend belegte aktive Ergänzungsbeziehung. Diese vier Set-2-Slots bleiben absichtlich leer; es wird keine beliebige Fertigkeit erfunden.
+- Automatische und manuell ausgelöste Supportvorschläge verwenden denselben exakten Skillfilter und entfernen doppelte Support-IDs.
+- Sichtbare Unique-Empfehlungen benötigen nun einen positiven Schaden-, Verteidigungs-, Ressourcen-, Aszendenz- oder Ausrüstungsbeitrag beziehungsweise einen belegten Enabler-/Buildbezug. Reine Slotkompatibilität reicht nicht mehr.
+- Ein harter Integrationsfall belegt erneut: 107 normale Punkte mit 24 Waffenset-Punkten ergeben 83 gemeinsame plus je aktivem Set höchstens 24 umschaltbare Belegungen; acht Aszendenzpunkte bleiben separat.
+- Abschlussstand vor Deployment: Lint ohne Warnung, Typecheck, 54/54 fokussierte Tests und fachlich 1.935/1.935 Gesamttests erfolgreich. Drei Hochlast-Timeouts des gemeinsamen Vollbaumlaufs bestanden direkt im seriellen Wiederholungslauf.
+- Die lokale Produktionsprüfung bestand auf Desktop und bei 390 × 844. Automatische Skill-/Supportbefüllung war sichtbar, die Skillkarten blieben einspaltig, horizontaler Überlauf trat nicht auf und die Browserkonsole blieb leer.
+- Details: `docs/BUILD_ASSISTANT_COHERENCE_HARDENING_2026_08_09.md` und `docs/audits/build-assistant-current-meta-matrix.json`.
+- Produktpins, Datenquellen und die bestehende Enginearchitektur bleiben unverändert. Globale höchste DPS, vollständige Path-of-Building-Gleichwertigkeit und Meta-Überlegenheit bleiben ausdrücklich unbewiesen.
