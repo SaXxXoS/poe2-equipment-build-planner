@@ -4484,3 +4484,7 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Produktpins und Runtime-Offlinegrenze bleiben unverändert. Globale
   DPS-Optimalität, vollständige Path-of-Building-Parität und Meta-Überlegenheit
   bleiben nicht belegt und werden nicht behauptet.
+- Abschlusscommit `98d2bcff0cf1eb00176aff999cc427fc642f10bf` wurde nach
+  `main` gepusht. GitHub-Pages-Lauf `31309593847` schloss Build und Deployment
+  erfolgreich ab; die öffentliche Seite und der geprüfte Asset-Fingerprint
+  `index-fakaOts0.js` antworteten jeweils mit HTTP 200.

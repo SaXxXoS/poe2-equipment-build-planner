@@ -91,8 +91,11 @@ Hauptskill, eine belegte Set-2-Vorbereitung, 8/8 Aszendenzpunkte sowie
 unterschiedliche Set-1-/Set-2-Pfade. Unique-Details zeigten ihre sichtbaren
 Varianteneigenschaften und keine internen `source-line:`-Referenzen. Es trat
 kein horizontaler Überlauf auf; die Browserkonsole blieb ohne Fehler und
-Warnungen. Die Veröffentlichung wird anhand des nachfolgenden GitHub-Pages-
-Laufs im Projektprotokoll festgehalten.
+Warnungen. Der GitHub-Pages-Lauf `31309593847` für Commit
+`98d2bcff0cf1eb00176aff999cc427fc642f10bf` schloss Build und Deployment
+erfolgreich ab. Die öffentliche Seite antwortete mit HTTP 200 und lieferte
+den lokal geprüften JavaScript-Fingerprint `index-fakaOts0.js` ebenfalls mit
+HTTP 200 aus.
 
 Der Build meldet weiterhin große JavaScript-, Worker- und Baumdaten-Chunks.
 Das ist kein fachlicher Fehler, bleibt aber ein belegtes Performance-Risiko
