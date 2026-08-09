@@ -119,3 +119,12 @@ Ja: Der Assistent erzeugt jetzt einen aktuellen, regelkonformen und
 zusammenhängenden meta-orientierten Build. Nein: Eine garantierte globale
 Meta-Spitzenposition oder vollständige Path-of-Building-Parität ist mit den
 zulässigen und reproduzierbaren Quellen weiterhin nicht nachgewiesen.
+
+## Abschließende Laufzeitkonsistenz
+
+Nach der Ressourcenprüfung und der Ergänzung belegter
+Aszendenzfertigkeiten wird die Passive-, Waffenset- und Aszendenzplanung mit
+der endgültigen Skill-/Supportbelegung erneut ausgeführt. Dadurch gehören der
+sichtbare Baum, die 24 Waffensetbelegungen je aktivem Set und die bis zu acht
+Aszendenzpunkte exakt zum ausgegebenen Gemmenpaket; ein Ergebnis der vorherigen
+Gemmenbelegung wird nicht mehr als aktueller Plan angezeigt.

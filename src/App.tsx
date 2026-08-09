@@ -389,6 +389,8 @@ export default function App() {
           ascendancyPointBudget: effectiveCharacter.ascendancyPassivePoints ?? 0,
           planningMode: 'damage-first',
         }
+        const initiallyAnalyzedSetups = effectiveSetups
+        let finalPassiveInput = passiveInput
         if (passiveController.getState().status === 'uninitialized') await passiveController.initialize()
         await passiveController.analyze(passiveInput)
         let passiveAwareResult = passiveController.getState().result
@@ -436,6 +438,7 @@ export default function App() {
               if (candidateImproves) {
                 passiveAwareResult = resourceAwareCandidate
                 passivePlanAdjustedForResources = true
+                finalPassiveInput = { ...passiveInput, resourcePriority: 'undercoverage' }
               }
             }
           }
@@ -464,6 +467,20 @@ export default function App() {
           if (postPassiveRebalance.adjustedSetupIds.length) {
             effectiveSetups = postPassiveRebalance.setups
             setSetups(effectiveSetups)
+          }
+          // Die Ressourcenprüfung darf Supports verändern und die
+          // Aszendenzplanung darf belegte Fertigkeiten ergänzen. In beiden
+          // Fällen gehört der zuerst berechnete Baum noch zur vorherigen
+          // Gemmenbelegung. Ein abschließender Lauf stellt sicher, dass der
+          // sichtbare Passive-, Waffenset- und Aszendenzplan exakt zur finalen
+          // Skill-/Supportbelegung gehört und nicht als veraltet endet.
+          if (effectiveSetups !== initiallyAnalyzedSetups) {
+            finalPassiveInput = { ...finalPassiveInput, setups: effectiveSetups }
+            await passiveController.analyze(finalPassiveInput)
+            const finalizedPassiveResult = passiveController.getState().result
+            if (finalizedPassiveResult?.realPassivePlanning) {
+              passiveAwareResult = finalizedPassiveResult
+            }
           }
           result = runBuildAssistantV1(
             { character: effectiveCharacter, equipment, setups: effectiveSetups },

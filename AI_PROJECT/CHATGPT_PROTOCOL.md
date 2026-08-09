@@ -4516,3 +4516,12 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   `main` gepusht. GitHub-Pages-Lauf `31309593847` schloss Build und Deployment
   erfolgreich ab; die öffentliche Seite und der geprüfte Asset-Fingerprint
   `index-fakaOts0.js` antworteten jeweils mit HTTP 200.
+
+## Finale Passive-Konsistenz nach Gemmenanpassung – 2026-08-09
+
+- Ressourcenprüfung und belegte Aszendenzknoten dürfen die endgültige
+  Skill-/Supportbelegung verändern. Der Passive-Controller wird danach mit
+  genau dieser finalen Belegung erneut ausgeführt.
+- Der sichtbare Passive-, Waffenset- und Aszendenzplan gehört dadurch zum
+  tatsächlich ausgegebenen Buildpaket und wird nicht mehr als veralteter Plan
+  der vorherigen Gemmenbelegung dargestellt.
