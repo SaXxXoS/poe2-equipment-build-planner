@@ -1,5 +1,11 @@
 # Aktuelle Meta-Referenz des Build-Assistenten
 
+> **Aktiver Stand 9. August 2026:** Der nachstehend historisch dokumentierte
+> frühere Stand wurde durch Snapshot `1044-20260809-12563` ersetzt. Der neue
+> Stand umfasst 237 validierte von 460 angeforderten Profilen, 38 produktive
+> Pakete und eine 23/23 kohärente Optimierermatrix. Maßgeblich ist
+> `docs/BUILD_ASSISTANT_META_ORIENTED_COMPLETION_2026_08_09.md`.
+
 ## Ziel
 
 Der Build-Assistent verwendet ab diesem Stand einen versionierten

@@ -122,6 +122,20 @@ export function evaluateSkillInteraction(
     return { status: 'blocked', evidence: 'blocked', score: 0, reason: 'Die Fertigkeit kann nicht als eigene Ergänzung verwendet werden.', ruleId: 'skill.same-or-disabled' }
   }
 
+  if (candidate.nameEn === 'Infernal Cry') {
+    return main.tags.includes('attack')
+      ? {
+          status: 'productive', evidence: 'explicit-rule', role: 'utility', weaponSet: 'set-2', score: 1_075,
+          reason: 'Infernalischer Schrei stärkt abhängig von der Gegnerstärke folgende Angriffe und ergänzt dadurch den belegten Angriffs-Hauptskill.',
+          ruleId: 'interaction.infernal-cry.next-attack',
+        }
+      : {
+          status: 'blocked', evidence: 'blocked', score: 0,
+          reason: 'Infernalischer Schrei stärkt hier folgende Angriffe; für einen Hauptskill ohne Angriffsmerkmal entsteht keine belegte Beziehung.',
+          ruleId: 'interaction.infernal-cry.non-attack',
+        }
+  }
+
   if (candidate.nameEn === 'Orb of Storms') {
     return main.tags.includes('spell') && main.tags.includes('lightning')
       ? { status: 'productive', evidence: 'explicit-rule', role: 'utility', weaponSet: 'set-2', score: 1_100, reason: 'Die anhaltende Kugel reagiert auf gewirkte Blitzzauber und ergänzt dadurch den Blitz-Hauptskill.', ruleId: 'interaction.orb-of-storms.lightning-spell' }

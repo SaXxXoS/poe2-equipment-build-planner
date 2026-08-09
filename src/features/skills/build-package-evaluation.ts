@@ -156,7 +156,10 @@ export function evaluateAnalyzedBuildPackage(
   ].filter((value): value is string => Boolean(value))
   const status = blockers.length
     ? 'blocked'
-    : missingSections.length >= 3 || candidate.resourceStatus === 'resource-chain-unknown'
+    : missingSections.length >= 3 || (
+        candidate.resourceStatus === 'resource-chain-unknown'
+        && !candidate.metaReferenceProfileCount
+      )
       ? 'limited'
       : 'coherent'
   const evidence = [
@@ -165,6 +168,9 @@ export function evaluateAnalyzedBuildPackage(
     ...(missingSections.length
       ? [`Eingeschränkte Beleglage: ${missingSections.join(', ')} liefern für dieses Paket noch keinen positiven Fachbeleg.`]
       : ['Alle sechs Analyzer liefern mindestens einen positiven Beitrag zum Gesamtpaket.']),
+    ...(candidate.resourceStatus === 'resource-chain-unknown' && candidate.metaReferenceProfileCount
+      ? [`Die lokale Ressourcenkette ist unvollständig modelliert; das vollständige Paket ist jedoch in ${candidate.metaReferenceProfileCount} gepinnten aktuellen Profilen gemeinsam belegt.`]
+      : []),
   ]
   return {
     status,

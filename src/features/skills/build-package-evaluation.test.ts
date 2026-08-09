@@ -82,6 +82,16 @@ describe('gemeinsame Build-Paketbewertung', () => {
     expect(result.status).toBe('blocked')
     expect(result.blockers).toContain('Die Hauptfertigkeit wurde vom Skill Analyzer blockiert.')
   })
+  it('kennzeichnet ein aktuell korreliert beobachtetes Paket trotz lokaler Ressourcenlücke als kohärent', () => {
+    const result = evaluateAnalyzedBuildPackage({
+      ...candidate,
+      resourceStatus: 'resource-chain-unknown',
+      metaReferenceProfileCount: 9,
+    }, analysis())
+    expect(result.status).toBe('coherent')
+    expect(result.components.resources).toBe(25)
+    expect(result.evidence.join(' ')).toContain('9 gepinnten aktuellen Profilen')
+  })
   it('rechnet fachfremde Passive- und Unique-Wirkungen nicht dem Paket zu', () => {
     const value = analysis()
     value.passiveAnalysis.topDamageCandidates[0].matchedProfileFields = ['damage.fire']

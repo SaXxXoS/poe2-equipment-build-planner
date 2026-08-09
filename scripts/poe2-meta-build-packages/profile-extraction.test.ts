@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { extractMainGroup, extractWeapons } from './profile-extraction.mjs'
+import {
+  extractMainGroup,
+  extractProfileSkillLoadout,
+  extractWeapons,
+} from './profile-extraction.mjs'
 
 describe('poe.ninja Profilreduktion', () => {
   it('erkennt alle von der Build-App produktiv unterstuetzten Hauptwaffenklassen', () => {
@@ -40,5 +44,57 @@ describe('poe.ninja Profilreduktion', () => {
       supports: ['Cold Mastery'],
       activeSkills: ['Comet', 'Frost Wall'],
     })
+  })
+
+  it('erhaelt die vollstaendige reduzierte Skillgruppenstruktur eines Profils', () => {
+    const loadout = extractProfileSkillLoadout([
+      {
+        dps: [{ name: 'Spark', dps: 500 }],
+        allGems: [
+          { name: 'Spark', itemData: { support: false } },
+          { name: 'Arcane Tempo', itemData: { support: true } },
+        ],
+      },
+      {
+        dps: [{ name: 'Orb of Storms', dps: 120 }],
+        allGems: [
+          { name: 'Orb of Storms', itemData: { support: false } },
+          { name: 'Overabundance', itemData: { support: true } },
+        ],
+      },
+      {
+        allGems: [
+          { name: 'Cast on Critical', itemData: { support: false } },
+          { name: 'Comet', itemData: { support: false } },
+          { name: 'Energy Retention', itemData: { support: true } },
+        ],
+      },
+    ])
+
+    expect(loadout.main?.name).toBe('Spark')
+    expect(loadout.groups).toEqual([
+      expect.objectContaining({
+        groupIndex: 0,
+        primarySkill: 'Spark',
+        activeSkills: ['Spark'],
+        supports: ['Arcane Tempo'],
+        relationship: 'main-group',
+        weaponSet: 'unknown',
+      }),
+      expect.objectContaining({
+        groupIndex: 1,
+        primarySkill: 'Orb of Storms',
+        activeSkills: ['Orb of Storms'],
+        supports: ['Overabundance'],
+        relationship: 'same-profile-group',
+      }),
+      expect.objectContaining({
+        groupIndex: 2,
+        primarySkill: 'Cast on Critical',
+        activeSkills: ['Cast on Critical', 'Comet'],
+        supports: ['Energy Retention'],
+        relationship: 'same-profile-group',
+      }),
+    ])
   })
 })

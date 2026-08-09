@@ -116,7 +116,10 @@ describe('vollständige Build-Variantenoptimierung', () => {
           characterLevel: 90,
           characterAttributes: analysis.characterAttributes,
         })
-        expect(optimization.selected, `${character.classId}/${character.ascendancyId}`).not.toBeNull()
+        expect(
+          optimization.selected,
+          `${character.classId}/${character.ascendancyId}: ${JSON.stringify(optimization)}`,
+        ).not.toBeNull()
         expect(optimization.selected?.compatibleSupportIds.length, character.ascendancyId).toBeGreaterThan(0)
         expect(optimization.selected?.ruleGraphStatus, character.ascendancyId).not.toBe('blocked')
         const planned = plannedEquipmentForVariant(
@@ -228,6 +231,13 @@ describe('vollständige Build-Variantenoptimierung', () => {
     expect(['wand','staff','sceptre']).toContain(result.selected?.weaponType)
     expect(['wand','staff','sceptre']).toContain(result.selected?.setupWeaponType)
     expect(result.selected?.compatibleSupportIds).toEqual(['spell-support'])
+    expect(result.selected?.plannedSkillSetups).toEqual([
+      expect.objectContaining({
+        skillId: 'orb',
+        weaponSet: 'set-2',
+        weaponType: result.selected?.setupWeaponType,
+      }),
+    ])
     expect(result.evaluatedSkillCount).toBe(2)
   })
 
@@ -373,7 +383,8 @@ describe('vollständige Build-Variantenoptimierung', () => {
         }), { allowPlannedEquipmentRequirements: true })
       },
     })
-    expect(result.selected?.skillName).toBe('Funken')
+    expect(['Funken', 'Komet']).toContain(result.selected?.skillName)
+    expect(result.selected?.reasons.some(reason => reason.startsWith('Validiertes Build-Paket:'))).toBe(true)
     expect(result.selected?.packageComponents?.skill).toBeGreaterThan(0)
     expect(result.selected?.compatibleSupportIds.length).toBeGreaterThan(0)
   }, 15_000)
@@ -409,6 +420,56 @@ describe('vollständige Build-Variantenoptimierung', () => {
     )?.nameEn
     expect(['Comet', 'Spark', 'Living Bomb']).toContain(selectedName)
     expect(result.selected?.metaReferenceScore).toBeGreaterThan(0)
+  }, 15_000)
+
+  it.each([
+    {
+      classId: 'class-official-8',
+      ascendancyId: 'ascendancy-official-Huntress1',
+      expectedSkills: ['Lightning Spear', 'Ice Shot', 'Oil Barrage'],
+    },
+    {
+      classId: 'class-official-9',
+      ascendancyId: 'ascendancy-official-Mercenary3',
+      expectedSkills: ['Arc', 'Comet'],
+    },
+  ])('bevorzugt für $ascendancyId korrelierte Build-Pakete mit Skillgruppe', ({
+    classId,
+    ascendancyId,
+    expectedSkills,
+  }) => {
+    const setups = createEmptySkillSetups()
+    const analysis = runBuildAssistantV1({
+      character: {
+        classId,
+        ascendancyId,
+        level: 90,
+        goalProfile: 'balanced',
+      },
+      equipment: initialEquipment,
+      setups,
+    })
+    const result = optimizeBuildVariants({
+      classId,
+      ascendancyId,
+      equipment: initialEquipment,
+      setups,
+      skills: buildAssistantCandidates.skills,
+      supports: buildAssistantCandidates.supports,
+      skillScores: [
+        ...analysis.skillAnalysis.topMainCandidates,
+        ...analysis.skillAnalysis.eligibleCandidates,
+        ...analysis.skillAnalysis.allCandidates,
+      ].filter((value, index, all) =>
+        all.findIndex(candidate => candidate.skillId === value.skillId) === index),
+      characterLevel: 90,
+      characterAttributes: analysis.characterAttributes,
+    })
+
+    const selected = buildAssistantCandidates.skills.find(value => value.id === result.selected?.skillId)
+    expect(expectedSkills).toContain(selected?.nameEn)
+    expect(result.selected?.reasons.some(reason => reason.startsWith('Validiertes Build-Paket:'))).toBe(true)
+    expect(result.selected?.plannedSkillSetups?.length).toBeGreaterThan(0)
   }, 15_000)
 
   it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {

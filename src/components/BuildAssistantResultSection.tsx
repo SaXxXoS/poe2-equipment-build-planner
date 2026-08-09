@@ -219,6 +219,15 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
         {variantOptimization.selected.compatibleSupportIds.length
           ? <ol>{variantOptimization.selected.compatibleSupportIds.map(id => <li key={id}>{definitionName(id)}</li>)}</ol>
           : <p>Für dieses Paket konnte keine belegte Unterstützung eingesetzt werden.</p>}
+        {variantOptimization.selected.plannedSkillSetups?.length ? <>
+          <h4>Zusammenhängende Skillgruppe</h4>
+          <ol>{variantOptimization.selected.plannedSkillSetups.map(planned => <li key={planned.skillId}>
+            <b>{planned.skillName}</b>
+            {' · '}{planned.weaponSet === 'set-1' ? 'Waffenset 1' : planned.weaponSet === 'set-2' ? 'Waffenset 2' : 'beide Waffensets'}
+            {' · '}{weaponLabelFor(planned.weaponType)}
+            <br/><span className="muted">{planned.reason}</span>
+          </li>)}</ol>
+        </> : null}
         {variantOptimization.selected.setupSkillId && <p><b>Zusammenhang der Waffensets:</b> {variantOptimization.selected.setupReason ?? 'Der Setup-Skill ist als belegte Ergänzung des Hauptskills eingeplant.'}</p>}
         <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>
         {variantOptimization.selected.packageComponents && <>

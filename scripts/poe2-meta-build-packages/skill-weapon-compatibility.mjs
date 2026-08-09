@@ -5,6 +5,9 @@ const exactWeaponTypes = new Set([
   'dagger',
   'flail',
   'focus',
+  'wand',
+  'staff',
+  'sceptre',
   'mace',
   'quarterstaff',
   'spear',
@@ -40,8 +43,8 @@ export function classifySkillWeaponPair(skillName, weapon, skills) {
   const requiredWeaponTypes = exactRequiredWeaponTypes(skill)
   if (!requiredWeaponTypes.length) {
     return {
-      status: 'unresolved-no-exact-weapon-requirement',
-      productive: false,
+      status: 'structured-unrestricted-compatible',
+      productive: true,
       requiredWeaponTypes,
     }
   }

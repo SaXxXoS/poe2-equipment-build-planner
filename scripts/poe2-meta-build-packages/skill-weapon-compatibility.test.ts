@@ -18,10 +18,10 @@ describe('meta profile skill/weapon compatibility', () => {
     })
   })
 
-  it('keeps unrestricted spells audit-only because a profile-wide weapon is no set link', () => {
+  it('accepts a repeated profile weapon for a skill without a weapon restriction without inventing a requirement', () => {
     expect(classifySkillWeaponPair('Spark', 'wand', catalog.skills)).toMatchObject({
-      status: 'unresolved-no-exact-weapon-requirement',
-      productive: false,
+      status: 'structured-unrestricted-compatible',
+      productive: true,
       requiredWeaponTypes: [],
     })
   })

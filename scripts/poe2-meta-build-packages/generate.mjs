@@ -6,8 +6,9 @@ import {
   selectMetaRefreshProfileIds,
   shouldPromoteMetaProduct,
 } from './policy.mjs'
-import { extractMainGroup, extractWeapons } from './profile-extraction.mjs'
-import { fetchCurrentCharacterModel, fetchJson } from './poe-ninja-profile.mjs'
+import { extractProfileSkillLoadout, extractWeapons, sortedUnique } from './profile-extraction.mjs'
+import { fetchCurrentCharacterModel } from './poe-ninja-profile.mjs'
+import { pinnedReferenceSnapshot } from './reference-snapshot.mjs'
 import { classifySkillWeaponPair } from './skill-weapon-compatibility.mjs'
 
 const ROOT = process.cwd()
@@ -15,15 +16,18 @@ const INPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-reference-profiles.
 const AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation.json')
 const CANDIDATE_AUDIT_OUTPUT = path.join(ROOT, 'docs/audits/poe2-current-meta-build-profile-validation-candidate.json')
 const PRODUCT_OUTPUT = path.join(ROOT, 'generated/meta/poe2-build-packages.json')
+const PACKAGE_COVERAGE_OUTPUT = path.join(ROOT, 'docs/audits/poe2-meta-skill-weapon-package-coverage.json')
 const GEM_CATALOG_INPUT = path.join(ROOT, 'generated/poe2-gems/catalog.json')
 const LOCAL_CACHE_DIRECTORY = path.join(ROOT, '.local-audits/poe2-meta-build-packages')
-const INDEX_URL = 'https://poe.ninja/poe2/api/data/index-state'
 const LEAGUE_URL = 'runesofaldur'
 const MIN_PRODUCTIVE_PROFILES = 2
+const MIN_PRODUCTIVE_RELATION_PROFILES = 2
+const MIN_PRODUCTIVE_RELATION_SHARE = 40
 const CONCURRENCY = 1
 const REQUEST_DELAY_MS = 3_000
 const FETCH_TIMEOUT_MS = 8_000
 const PROFILE_FETCH_RETRIES = 0
+const OBSERVATION_SCHEMA_VERSION = 2
 const parsedMaximumNewFetches = Number(process.env.POE2_META_MAX_NEW_FETCHES ?? 24)
 const MAX_NEW_FETCHES = Number.isInteger(parsedMaximumNewFetches) && parsedMaximumNewFetches >= 0
   ? parsedMaximumNewFetches
@@ -91,11 +95,7 @@ async function mapConcurrent(values, concurrency, mapper) {
 
 const reference = JSON.parse(await readFile(INPUT, 'utf8'))
 const gemCatalog = JSON.parse(await readFile(GEM_CATALOG_INPUT, 'utf8'))
-const indexState = await fetchJson(INDEX_URL, { timeoutMs: FETCH_TIMEOUT_MS })
-const snapshot = indexState.snapshotVersions.find(value => value.url === LEAGUE_URL)
-if (!snapshot?.version || !snapshot?.snapshotName) {
-  throw new Error(`Kein exakter Snapshot für ${LEAGUE_URL}`)
-}
+const snapshot = pinnedReferenceSnapshot(reference, LEAGUE_URL)
 
 const requestedProfiles = reference.ascendancies.flatMap(entry =>
   entry.profiles.map(profile => ({
@@ -165,7 +165,9 @@ try {
 const profileIdFor = requested => hash(requested.url).slice(0, 20)
 const pendingProfiles = requestedProfiles.filter(requested => {
   const previous = previousObservations.get(profileIdFor(requested))
-  return !previous || previous.validationStatus === 'fetch-failed'
+  return !previous
+    || previous.validationStatus === 'fetch-failed'
+    || previous.observationSchemaVersion !== OBSERVATION_SCHEMA_VERSION
 })
 
 // Ein kompletter Snapshot besitzt mehrere hundert Profile. Die öffentliche
@@ -184,6 +186,7 @@ const fetchProfileIds = selectMetaRefreshProfileIds({
 function pendingObservation(requested, profileId) {
   return {
     profileId,
+    observationSchemaVersion: OBSERVATION_SCHEMA_VERSION,
     rank: requested.rank,
     expectedAscendancy: requested.expectedAscendancy,
     observedAscendancy: null,
@@ -193,6 +196,7 @@ function pendingObservation(requested, profileId) {
     mainSkillModeledDps: null,
     supports: [],
     linkedActiveSkills: [],
+    skillGroups: [],
     weapons: [],
     passiveCounts: { normal: null, ascendancy: null, weaponSet1: null, weaponSet2: null },
     validationStatus: 'fetch-failed',
@@ -204,8 +208,15 @@ function pendingObservation(requested, profileId) {
 const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async requested => {
   const profileId = profileIdFor(requested)
   const previous = previousObservations.get(profileId)
-  if (previous && previous.validationStatus !== 'fetch-failed') return previous
-  if (!fetchProfileIds.has(profileId)) return previous ?? pendingObservation(requested, profileId)
+  if (previous
+    && previous.validationStatus !== 'fetch-failed'
+    && previous.observationSchemaVersion === OBSERVATION_SCHEMA_VERSION
+  ) return previous
+  if (!fetchProfileIds.has(profileId)) {
+    return previous?.observationSchemaVersion === OBSERVATION_SCHEMA_VERSION
+      ? previous
+      : pendingObservation(requested, profileId)
+  }
   try {
     await wait(REQUEST_DELAY_MS)
     const { account, name } = parseProfileUrl(requested.url)
@@ -217,7 +228,8 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       retries: PROFILE_FETCH_RETRIES,
     })
     const ascendancyId = ascendancyIds[requested.expectedAscendancy]
-    const mainGroup = extractMainGroup(profile.skills)
+    const skillLoadout = extractProfileSkillLoadout(profile.skills)
+    const mainGroup = skillLoadout.main
     const weapons = extractWeapons(profile.items)
     const valid = Boolean(
       ascendancyId
@@ -227,6 +239,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
     )
     const observation = {
       profileId,
+      observationSchemaVersion: OBSERVATION_SCHEMA_VERSION,
       rank: requested.rank,
       expectedAscendancy: requested.expectedAscendancy,
       observedAscendancy: profile.class ?? null,
@@ -235,7 +248,10 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       mainSkill: mainGroup?.name ?? null,
       mainSkillModeledDps: mainGroup?.dps ?? null,
       supports: mainGroup?.supports ?? [],
-      linkedActiveSkills: mainGroup?.activeSkills ?? [],
+      linkedActiveSkills: sortedUnique(skillLoadout.groups
+        .flatMap(group => group.activeSkills)
+        .filter(name => name !== mainGroup?.name)),
+      skillGroups: skillLoadout.groups,
       weapons,
       passiveCounts: {
         normal: profile.passiveCounts?.passives ?? null,
@@ -257,6 +273,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
   } catch (error) {
     return {
       profileId,
+      observationSchemaVersion: OBSERVATION_SCHEMA_VERSION,
       rank: requested.rank,
       expectedAscendancy: requested.expectedAscendancy,
       observedAscendancy: null,
@@ -266,6 +283,7 @@ const observations = await mapConcurrent(requestedProfiles, CONCURRENCY, async r
       mainSkillModeledDps: null,
       supports: [],
       linkedActiveSkills: [],
+      skillGroups: [],
       weapons: [],
       passiveCounts: { normal: null, ascendancy: null, weaponSet1: null, weaponSet2: null },
       validationStatus: 'fetch-failed',
@@ -289,6 +307,7 @@ for (const observation of observations.filter(value =>
       profileIds: [],
       supports: new Map(),
       linkedActiveSkills: new Map(),
+      linkedSkillGroups: new Map(),
       modeledDps: [],
       passiveNormal: [],
       passiveAscendancy: [],
@@ -307,6 +326,24 @@ for (const observation of observations.filter(value =>
     for (const skill of observation.linkedActiveSkills.filter(value => value !== observation.mainSkill)) {
       current.linkedActiveSkills.set(skill, (current.linkedActiveSkills.get(skill) ?? 0) + 1)
     }
+    const profileSkillGroups = new Map()
+    for (const group of observation.skillGroups.filter(group => group.relationship !== 'main-group')) {
+      const signature = JSON.stringify({
+        primarySkill: group.primarySkill,
+        activeSkills: group.activeSkills,
+        supports: group.supports,
+      })
+      profileSkillGroups.set(signature, group)
+    }
+    for (const [signature, group] of profileSkillGroups) {
+      const previousGroup = current.linkedSkillGroups.get(signature)
+      current.linkedSkillGroups.set(signature, {
+        primarySkill: group.primarySkill,
+        activeSkills: group.activeSkills,
+        supports: group.supports,
+        count: (previousGroup?.count ?? 0) + 1,
+      })
+    }
     packageMap.set(key, current)
   }
 }
@@ -321,6 +358,27 @@ const packages = [...packageMap.values()].map(value => {
   const counted = map => [...map.entries()]
     .map(([name, count]) => ({ name, count, share: Math.round(count / profileCount * 100) }))
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
+  const productiveLinkedActiveSkills = counted(value.linkedActiveSkills)
+    .filter(choice =>
+      choice.count >= MIN_PRODUCTIVE_RELATION_PROFILES
+      && choice.share >= MIN_PRODUCTIVE_RELATION_SHARE,
+    )
+  const productiveLinkedSkillGroups = [...value.linkedSkillGroups.values()]
+    .map(group => ({
+      ...group,
+      share: Math.round(group.count / profileCount * 100),
+      evidenceClass: 'multi-profile-same-build-loadout',
+      weaponSet: 'unknown',
+    }))
+    .filter(group =>
+      group.count >= MIN_PRODUCTIVE_RELATION_PROFILES
+      && group.share >= MIN_PRODUCTIVE_RELATION_SHARE,
+    )
+    .sort((left, right) =>
+      right.count - left.count
+      || left.primarySkill.localeCompare(right.primarySkill)
+      || left.activeSkills.join('\u0000').localeCompare(right.activeSkills.join('\u0000')),
+    )
   return {
     packageId: hash(`${value.ascendancyId}|${value.mainSkill}|${value.weapon}`).slice(0, 20),
     ascendancyId: value.ascendancyId,
@@ -332,6 +390,8 @@ const packages = [...packageMap.values()].map(value => {
       ? 'single-profile-audit-only'
       : localCompatibility.status === 'structured-exact-compatible'
         ? 'multi-profile-correlated-exact'
+        : localCompatibility.status === 'structured-unrestricted-compatible'
+          ? 'multi-profile-correlated-unrestricted-compatible'
         : localCompatibility.status === 'blocked-incompatible-weapon'
           ? 'multi-profile-incompatible-audit-only'
           : 'multi-profile-unresolved-audit-only',
@@ -339,7 +399,8 @@ const packages = [...packageMap.values()].map(value => {
     localCompatibilityStatus: localCompatibility.status,
     localRequiredWeaponTypes: localCompatibility.requiredWeaponTypes,
     supports: counted(value.supports),
-    linkedActiveSkills: counted(value.linkedActiveSkills),
+    linkedActiveSkills: productiveLinkedActiveSkills,
+    linkedSkillGroups: productiveLinkedSkillGroups,
     modeledDpsSummary: {
       caveat: 'poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden',
       median: percentile(value.modeledDps.filter(Number.isFinite), 0.5),
@@ -362,7 +423,7 @@ const packages = [...packageMap.values()].map(value => {
 
 const validated = observations.filter(value => value.validationStatus === 'validated-correlated-profile')
 const audit = {
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.1.0',
   source: {
     provider: 'poe.ninja',
     league: snapshot.name,
@@ -381,6 +442,8 @@ const audit = {
     pathOfBuildingExportsStored: false,
     directDpsRanking: false,
     minimumProductiveProfiles: MIN_PRODUCTIVE_PROFILES,
+    minimumProductiveRelationProfiles: MIN_PRODUCTIVE_RELATION_PROFILES,
+    minimumProductiveRelationShare: MIN_PRODUCTIVE_RELATION_SHARE,
     productiveUse: 'bounded-secondary-evidence-after-hard-compatibility',
   },
   refreshBatch: {
@@ -406,19 +469,43 @@ const audit = {
     'Die Stichprobe besteht aus nach poe.ninja-Modell-DPS sortierten öffentlichen Profilen und ist keine Zufallsstichprobe.',
     'PoB-/poe.ninja-DPS ist ein Modellwert und wird nicht als garantierter Spielschaden übernommen.',
     'Waffen werden aus sichtbaren, strukturierten Itemeigenschaften abgeleitet; nicht unterstützte Klassen bleiben blockiert.',
-    'Die profilweite Waffenliste belegt nicht, welche Waffe der Hauptskill verwendet. Produktiv werden deshalb nur Paare mit lokal exakt bestätigter Gem-Waffenanforderung.',
-    'Support- und Skillbezüge stammen nur aus derselben Gemmengruppe desselben Profils.',
+    'Die profilweite Waffenliste belegt nicht, welches Set der Hauptskill verwendet. Bei Skills ohne Waffenpflicht belegt sie nur eine wiederholte, regelkonforme Korrelation; eine technische Waffenpflicht wird daraus nicht abgeleitet.',
+    'Hauptskill-Supports stammen aus derselben Gemmengruppe; weitere Skillgruppen stammen aus demselben vollständig reduzierten Profil-Loadout.',
+    'Die Quelle liefert für Skillgruppen kein belastbares Waffenset-Feld. Das Produkt behauptet deshalb keine direkte Set-Zuordnung.',
     'Passive Einzelknoten werden in diesem Schritt nicht als Spielregel importiert.',
   ],
 }
 
 const product = {
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.1.0',
   source: audit.source,
   policy: audit.policy,
   profileCount: validated.length,
   packageCount: packages.filter(value => value.productive).length,
   packages: packages.filter(value => value.productive),
+}
+
+const blockedPackages = packages
+  .filter(value => !value.productive)
+  .map(value => ({
+    packageId: value.packageId,
+    ascendancyId: value.ascendancyId,
+    mainSkill: value.mainSkill,
+    weapon: value.weapon,
+    profileCount: value.profileCount,
+    status: value.localCompatibilityStatus,
+    localRequiredWeaponTypes: value.localRequiredWeaponTypes,
+  }))
+  .sort((left, right) => left.packageId.localeCompare(right.packageId))
+const packageCoverage = {
+  schemaVersion: '1.0.0',
+  sourceVersion: product.source.version,
+  inputPackageCount: packages.length,
+  productivePackageCount: product.packages.length,
+  blockedPackageCount: blockedPackages.length,
+  blockedPackages,
+  decision: 'only-locally-structured-compatible-skill-weapon-pairs-are-productive',
+  limitation: 'The source profile exposes character-wide weapons, not a proven weapon-set link for each gem group.',
 }
 
 const productPromoted = shouldPromoteMetaProduct(previousProduct, product)
@@ -440,6 +527,7 @@ await mkdir(path.dirname(PRODUCT_OUTPUT), { recursive: true })
 await writeFile(selectedAuditOutput, `${JSON.stringify(audit, null, 2)}\n`)
 if (productPromoted) {
   await writeFile(PRODUCT_OUTPUT, `${JSON.stringify(product, null, 2)}\n`)
+  await writeFile(PACKAGE_COVERAGE_OUTPUT, `${JSON.stringify(packageCoverage, null, 2)}\n`)
   await rm(CANDIDATE_AUDIT_OUTPUT, { force: true })
 }
 console.log(JSON.stringify({

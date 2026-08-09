@@ -43,7 +43,7 @@ export function sanitizeMetaProduct(product, skills, previousReport = null) {
     productivePackageCount: packages.length,
     blockedPackageCount: blockedPackages.length,
     blockedPackages,
-    decision: 'only-exact-local-skill-weapon-links-are-productive',
+    decision: 'only-locally-structured-compatible-skill-weapon-pairs-are-productive',
     limitation: 'The source profile exposes character-wide weapons, not a proven weapon-set link for each gem group.',
   }
   return {
@@ -51,7 +51,7 @@ export function sanitizeMetaProduct(product, skills, previousReport = null) {
       ...product,
       policy: {
         ...product.policy,
-        localSkillWeaponGate: 'exact-pinned-gem-weapon-requirement',
+        localSkillWeaponGate: 'structured-pinned-gem-weapon-compatibility',
         profileWideWeaponListIsSetProof: false,
       },
       packageCount: packages.length,

@@ -1,14 +1,14 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "source": {
     "provider": "poe.ninja",
     "league": "Runes of Aldur",
     "leagueUrl": "runesofaldur",
-    "version": "1959-20260808-19780",
+    "version": "1044-20260809-12563",
     "snapshotName": "runes-of-aldur",
     "passiveTree": "PassiveTree-0.5",
-    "snapshotDate": "2026-07-28",
-    "profileListHash": "194658552cd318bb414d0db7043aedb015aa3718c499944e481688d3687997fd"
+    "snapshotDate": "2026-08-09",
+    "profileListHash": "1abf673a2cdcce4ece624207297fa1391e4b05378c52df87227c405736ec7c6c"
   },
   "policy": {
     "runtimeNetwork": false,
@@ -18,25 +18,1936 @@
     "pathOfBuildingExportsStored": false,
     "directDpsRanking": false,
     "minimumProductiveProfiles": 2,
-    "productiveUse": "bounded-secondary-evidence-after-hard-compatibility",
-    "localSkillWeaponGate": "exact-pinned-gem-weapon-requirement",
-    "profileWideWeaponListIsSetProof": false
+    "minimumProductiveRelationProfiles": 2,
+    "minimumProductiveRelationShare": 40,
+    "productiveUse": "bounded-secondary-evidence-after-hard-compatibility"
   },
-  "profileCount": 53,
-  "packageCount": 6,
+  "profileCount": 237,
+  "packageCount": 38,
   "packages": [
+    {
+      "packageId": "c1d28d78a72aae3a040f",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "ascendancy": "Oracle",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 8,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Rakiata's Flow",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 7,
+          "share": 88
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 6,
+          "share": 75
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 5,
+          "share": 63
+        },
+        {
+          "name": "Considered Casting",
+          "count": 4,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 4,
+          "share": 50
+        },
+        {
+          "name": "Efficiency II",
+          "count": 3,
+          "share": 38
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 8,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 7,
+          "share": 88
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 7,
+          "share": 88
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 4,
+          "share": 50
+        },
+        {
+          "name": "Blink",
+          "count": 4,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Spark",
+          "activeSkills": [
+            "Spark"
+          ],
+          "supports": [
+            "Efficiency II",
+            "Execute III",
+            "Pierce III",
+            "Vilenta's Propulsion",
+            "Zenith II"
+          ],
+          "count": 5,
+          "share": 63,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Her Declaration",
+            "Lightning Mastery"
+          ],
+          "count": 4,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Elemental Focus",
+            "Embitter",
+            "Execute III",
+            "Zenith II"
+          ],
+          "count": 4,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 4,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 38931176,
+        "maximum": 63139587
+      },
+      "passiveSummary": {
+        "normalMedian": 124,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "07456a1cc86cbbd24e83",
+        "0e7244efc0805dbec2be",
+        "1b6057148ce9146ddc57",
+        "37cbcd5d42bb5ef039d7",
+        "49b52cfc1651ae4c5be9",
+        "6a0e3995484454d00ace",
+        "e2ad902ac0b20f459cb9",
+        "f36fba7fb5adceec5635"
+      ]
+    },
+    {
+      "packageId": "4362bcf51ab2b0b7b666",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "ascendancy": "Oracle",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 7,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Rakiata's Flow",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Execute III",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 5,
+          "share": 71
+        },
+        {
+          "name": "Considered Casting",
+          "count": 4,
+          "share": 57
+        },
+        {
+          "name": "Zenith II",
+          "count": 3,
+          "share": 43
+        },
+        {
+          "name": "Efficiency II",
+          "count": 2,
+          "share": 29
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 3,
+          "share": 43
+        },
+        {
+          "name": "Blink",
+          "count": 3,
+          "share": 43
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Spark",
+          "activeSkills": [
+            "Spark"
+          ],
+          "supports": [
+            "Efficiency II",
+            "Execute III",
+            "Pierce III",
+            "Vilenta's Propulsion",
+            "Zenith II"
+          ],
+          "count": 5,
+          "share": 71,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Her Declaration",
+            "Lightning Mastery"
+          ],
+          "count": 4,
+          "share": 57,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 57,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Elemental Focus",
+            "Embitter",
+            "Execute III",
+            "Zenith II"
+          ],
+          "count": 3,
+          "share": 43,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 3,
+          "share": 43,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 44110755,
+        "maximum": 63139587
+      },
+      "passiveSummary": {
+        "normalMedian": 124,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "07456a1cc86cbbd24e83",
+        "0e7244efc0805dbec2be",
+        "37cbcd5d42bb5ef039d7",
+        "49b52cfc1651ae4c5be9",
+        "6a0e3995484454d00ace",
+        "e2ad902ac0b20f459cb9",
+        "f36fba7fb5adceec5635"
+      ]
+    },
+    {
+      "packageId": "192690751a4888c24cfe",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "ascendancy": "Shaman",
+      "mainSkill": "Detonate Dead",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Elemental Focus",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Lightning Penetration",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Magnified Area II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rapid Casting II",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Blasphemy",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Entangle",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Frost Darts",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Time of Need",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Dialla's Desire",
+            "Lightning Mastery",
+            "Warm Blooded"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Execute III",
+            "Magnified Area II",
+            "Mana Flare",
+            "Pinpoint Critical"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Blasphemy",
+          "activeSkills": [
+            "Blasphemy",
+            "Temporal Chains"
+          ],
+          "supports": [
+            "Hex Bloom",
+            "Magnified Area II",
+            "Ritualistic Curse",
+            "Slow Potency"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Conflux",
+          "activeSkills": [
+            "Elemental Conflux"
+          ],
+          "supports": [
+            "Uhtred's Exodus"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Entangle",
+          "activeSkills": [
+            "Entangle"
+          ],
+          "supports": [
+            "Branching Fissures II",
+            "Eonyr's Thunder",
+            "Magnified Area II",
+            "Mana Flare",
+            "Pinpoint Critical"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Frost Darts",
+          "activeSkills": [
+            "Frost Darts"
+          ],
+          "supports": [
+            "Concentrated Area",
+            "Elemental Focus",
+            "Execute III",
+            "Mana Flare",
+            "Rakiata's Flow"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Clarity I",
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency III"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Time of Need",
+          "activeSkills": [
+            "Time of Need"
+          ],
+          "supports": [
+            "Cooldown Recovery II"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 42684494,
+        "maximum": 55997956
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "5162f7c066cc1ef523e7",
+        "ced626ccad756f7c48fb"
+      ]
+    },
+    {
+      "packageId": "b9bcff1529192f53f874",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "ascendancy": "Amazon",
+      "mainSkill": "Lightning Spear",
+      "weapon": "spear",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ],
+      "supports": [
+        {
+          "name": "Fork",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Deliberation",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Minion Pact II",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Herald of Thunder",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Elemental Surge",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Purity of Fire",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Berserk",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Combat Frenzy",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Explosive Spear",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Herald of Ash",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Storm Lance",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Trinity",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 4274979,
+        "maximum": 4952099
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "236947bfa7bcd209d740",
+        "2ae573c114dc6d45f0d3",
+        "30a1f1c411527432f031",
+        "80cc99db2924e9c6b4a1"
+      ]
+    },
+    {
+      "packageId": "29e63034ce0cd4d33e73",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "ascendancy": "Amazon",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ],
+      "supports": [
+        {
+          "name": "Deliberation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cold Attunement",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Ice Bite II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Rapid Attacks II",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Freezing Mark",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Tornado Shot",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 3841472,
+        "maximum": 5496631
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "23ad163b9bd1ca23975f",
+        "42d21e047d3fb2a20c48"
+      ]
+    },
+    {
+      "packageId": "af1c6254bdc1d6465971",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "ascendancy": "Amazon",
+      "mainSkill": "Oil Barrage",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Fork",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Nova Projectiles I",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rageforged II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Ricochet II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Salvo",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Charge Regulation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Devour",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Pounce",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Purity of Lightning",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Refutation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rend",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rite of Restoration",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Whirling Slash",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Whirling Slash",
+          "activeSkills": [
+            "Whirling Slash"
+          ],
+          "supports": [
+            "Ailith's Chimes",
+            "Culmination II",
+            "Living Lightning II",
+            "Medved's Felling",
+            "Rapid Attacks III"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 3985316,
+        "maximum": 8249668
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "63da395922bc42b9b0bf",
+        "fe971ca5a8d1b4f3817b"
+      ]
+    },
+    {
+      "packageId": "9140ca2834e192d89231",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "ascendancy": "Amazon",
+      "mainSkill": "Oil Barrage",
+      "weapon": "spear",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Fork",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Nova Projectiles I",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rageforged II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Ricochet II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Salvo",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Charge Regulation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Devour",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Pounce",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Purity of Lightning",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Refutation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rend",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rite of Restoration",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Whirling Slash",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Whirling Slash",
+          "activeSkills": [
+            "Whirling Slash"
+          ],
+          "supports": [
+            "Ailith's Chimes",
+            "Culmination II",
+            "Living Lightning II",
+            "Medved's Felling",
+            "Rapid Attacks III"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 3985316,
+        "maximum": 8249668
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "63da395922bc42b9b0bf",
+        "fe971ca5a8d1b4f3817b"
+      ]
+    },
     {
       "packageId": "7c1fc00deb887f477e8d",
       "ascendancyId": "ascendancy-official-Huntress2",
       "ascendancy": "Spirit Walker",
       "mainSkill": "Twister",
       "weapon": "spear",
-      "profileCount": 2,
+      "profileCount": 6,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ],
+      "supports": [
+        {
+          "name": "Garukhan's Resolve",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Rageforged II",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Barrage",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Berserk",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Primal Bounty",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Purity of Fire",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Trinity",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Vivid Stampede",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Whirling Slash",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Wild Protector",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Combat Frenzy",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 3,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 6,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Vivid Stampede",
+          "activeSkills": [
+            "Vivid Stampede"
+          ],
+          "supports": [
+            "Ailith's Chimes",
+            "Charge Profusion II",
+            "Culmination II",
+            "Living Lightning II",
+            "Magnified Area II"
+          ],
+          "count": 5,
+          "share": 83,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Primal Bounty",
+          "activeSkills": [
+            "Primal Bounty"
+          ],
+          "supports": [
+            "Olroth's Conviction"
+          ],
+          "count": 4,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Whirling Slash",
+          "activeSkills": [
+            "Whirling Slash"
+          ],
+          "supports": [
+            "Blazing Critical",
+            "Knockback",
+            "Rage III",
+            "Rapid Attacks III",
+            "Rigwald's Ferocity"
+          ],
+          "count": 4,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Barrage",
+          "activeSkills": [
+            "Barrage"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Heightened Charges",
+            "Perpetual Charge",
+            "Rapid Casting II",
+            "Uhtred's Constellation"
+          ],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Conflux",
+          "activeSkills": [
+            "Elemental Conflux"
+          ],
+          "supports": [
+            "Uhtred's Exodus"
+          ],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [
+            "Armour Demolisher II",
+            "Atziri's Communion"
+          ],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Wild Protector",
+          "activeSkills": [
+            "Wild Protector"
+          ],
+          "supports": [
+            "Catha's Brilliance",
+            "Hulking Minions",
+            "Magnified Area II",
+            "Minion Mastery",
+            "Romira's Requital"
+          ],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 20781071,
+        "maximum": 23619699
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 5,
+        "profilesWithWeaponSet2": 5
+      },
+      "profileEvidenceIds": [
+        "314693b7bcf23bf17670",
+        "35d25b6267b4317e7d4d",
+        "8e1f93fe973030ca3869",
+        "aaef34c6a97a41119b16",
+        "d22bc9418390e7443aa6",
+        "e774c5f1da90fa1be1a4"
+      ]
+    },
+    {
+      "packageId": "d564a9fa61cc110992ed",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "ascendancy": "Ritualist",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ],
       "supports": [
         {
           "name": "Execute III",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Ice Bite II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Multishot II",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Nova Projectiles I",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Barrage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Berserk",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Blood Boil",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Tornado Shot",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 2,
+          "share": 67
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Barrage",
+          "activeSkills": [
+            "Barrage"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Heightened Charges",
+            "Olroth's Conviction",
+            "Perpetual Charge",
+            "Uhtred's Constellation"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Herald of Ice",
+          "activeSkills": [
+            "Herald of Ice"
+          ],
+          "supports": [
+            "Blind II",
+            "Bounty II",
+            "Elemental Armament II",
+            "Execute III",
+            "Maim"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 24800160,
+        "maximum": 32417358
+      },
+      "passiveSummary": {
+        "normalMedian": 119,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "8c0653b950dfe2bb75d1",
+        "c64c87bea468adff47fa",
+        "cfc1032bc7e53baf1973"
+      ]
+    },
+    {
+      "packageId": "1ce0922badefd10e16e4",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "ascendancy": "Ritualist",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Considered Casting",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Efficiency II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 20796525,
+        "maximum": 26448775
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "43b19efa6ed8b77ae8f2",
+        "f1b2731143230802d9bc"
+      ]
+    },
+    {
+      "packageId": "ed6a5d73189a5f3904a1",
+      "ascendancyId": "ascendancy-official-Mercenary2",
+      "ascendancy": "Witchhunter",
+      "mainSkill": "Shockburst Rounds",
+      "weapon": "crossbow",
+      "profileCount": 6,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ],
+      "supports": [
+        {
+          "name": "Fresh Clip II",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Defy II",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Rapid Attacks II",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 33
+        },
+        {
+          "name": "Elemental Armament III",
+          "count": 1,
+          "share": 17
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Eternal Rage",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Galvanic Shards",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Sorcery Ward",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Crossbow Shot",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Emergency Reload",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Herald of Ash",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 5,
+          "share": 83
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Emergency Reload",
+          "activeSkills": [
+            "Emergency Reload"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Efficiency II",
+            "Lifetap",
+            "Prolonged Duration II"
+          ],
+          "count": 3,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 3799963,
+        "maximum": 4894672
+      },
+      "passiveSummary": {
+        "normalMedian": 118,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "2f1dd7b56681bb59a22c",
+        "505304ed3c669b220407",
+        "74d043c4f9a537e20cef",
+        "8e0c2f2ed02e31cc42b2",
+        "ca5e5ba2b35225df4495",
+        "f95dfe45e565b5b96607"
+      ]
+    },
+    {
+      "packageId": "bfdeea274087e8ac5490",
+      "ascendancyId": "ascendancy-official-Mercenary2",
+      "ascendancy": "Witchhunter",
+      "mainSkill": "Armour Piercing Rounds",
+      "weapon": "crossbow",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ],
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Fresh Clip II",
           "count": 2,
           "share": 100
         },
@@ -46,45 +1957,1077 @@
           "share": 100
         },
         {
-          "name": "Rageforged II",
-          "count": 2,
-          "share": 100
-        },
-        {
           "name": "Rakiata's Flow",
           "count": 2,
           "share": 100
         },
         {
-          "name": "Elemental Armament II",
-          "count": 1,
-          "share": 50
-        },
-        {
-          "name": "Projectile Acceleration III",
-          "count": 1,
-          "share": 50
+          "name": "Rapid Attacks II",
+          "count": 2,
+          "share": 100
         }
       ],
-      "linkedActiveSkills": [],
+      "linkedActiveSkills": [
+        {
+          "name": "Herald of Thunder",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Sorcery Ward",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 30930053,
-        "maximum": 31173458
+        "median": 4539148,
+        "maximum": 9166124
+      },
+      "passiveSummary": {
+        "normalMedian": 119,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "7bb2bdb35d14744d9050",
+        "d5b10436e520f03e5fbb"
+      ]
+    },
+    {
+      "packageId": "32f1681eec87ad42a1fa",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "ascendancy": "Gemling Legionnaire",
+      "mainSkill": "Arc",
+      "weapon": "wand",
+      "profileCount": 5,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Dialla's Desire",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Dominus' Grasp",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Urgent Totems III",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 20
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Virtuous Barrier",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Voltaic Mark",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Cast on Block",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Frostbolt",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Ice Nova",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Lightning Warp",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Magma Barrier",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Powered by Verisium",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Raise Shield",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Spell Totem",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Wolf Pack",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Bloodhound's Mark",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Entangle",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Orb of Storms",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Remnants of Kalguur",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Skeletal Warrior",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Snap",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Soul Offering",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Spark",
+          "count": 2,
+          "share": 40
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Virtuous Barrier",
+          "activeSkills": [
+            "Virtuous Barrier"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 80,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [
+            "Armour Demolisher II",
+            "Uhtred's Omen"
+          ],
+          "count": 3,
+          "share": 60,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arc",
+          "activeSkills": [
+            "Arc",
+            "Cast on Critical",
+            "Powered by Verisium"
+          ],
+          "supports": [
+            "Efficiency II",
+            "Sione's Temper",
+            "Zenith II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Armour Demolisher II",
+            "Atziri's Communion",
+            "Clarity II",
+            "Lightning Mastery"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Cool Headed",
+            "Her Declaration",
+            "Lightning Mastery"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Clarity I",
+            "Cold Mastery",
+            "Knockback"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Bloodhound's Mark",
+          "activeSkills": [
+            "Bloodhound's Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Conflux",
+          "activeSkills": [
+            "Elemental Conflux"
+          ],
+          "supports": [
+            "Fire Mastery",
+            "Prolonged Duration I",
+            "Uhtred's Augury"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Frostbolt",
+          "activeSkills": [
+            "Frostbolt"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Ice Nova",
+          "activeSkills": [
+            "Ice Nova"
+          ],
+          "supports": [
+            "Blindside",
+            "Corrosion",
+            "Escalating Poison",
+            "Lightning Attunement",
+            "Shock"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Magma Barrier",
+          "activeSkills": [
+            "Magma Barrier"
+          ],
+          "supports": [
+            "Blind II",
+            "Charge Profusion II",
+            "Magnified Area II",
+            "Maim"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency III"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Orb of Storms",
+          "activeSkills": [
+            "Orb of Storms"
+          ],
+          "supports": [
+            "Chain III",
+            "Lightning Exposure",
+            "Neural Overload",
+            "Overabundance I",
+            "Swift Affliction I"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Raise Shield",
+          "activeSkills": [
+            "Raise Shield"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Remnants of Kalguur",
+          "activeSkills": [
+            "Remnants of Kalguur"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Skeletal Warrior",
+          "activeSkills": [
+            "Skeletal Warrior"
+          ],
+          "supports": [
+            "Essence Harvest",
+            "Hulking Minions",
+            "Last Gasp",
+            "Meat Shield II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Snap",
+          "activeSkills": [
+            "Snap"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sniper's Mark",
+          "activeSkills": [
+            "Sniper's Mark"
+          ],
+          "supports": [
+            "Charge Profusion II",
+            "Uhtred's Omen"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sniper's Mark",
+          "activeSkills": [
+            "Sniper's Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Brutus' Brain",
+            "Charge Profusion II",
+            "Danse Macabre",
+            "Guatelitzi's Ablation",
+            "Prolonged Duration II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spark",
+          "activeSkills": [
+            "Spark"
+          ],
+          "supports": [
+            "Considered Casting",
+            "Efficiency II",
+            "Pierce III",
+            "Vilenta's Propulsion",
+            "Zenith II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [
+            "Deliberation",
+            "Escalating Poison",
+            "Lightning Attunement"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Voltaic Mark",
+          "activeSkills": [
+            "Voltaic Mark"
+          ],
+          "supports": [
+            "Lightning Mastery"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Voltaic Mark",
+          "activeSkills": [
+            "Voltaic Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Wolf Pack",
+          "activeSkills": [
+            "Wolf Pack"
+          ],
+          "supports": [
+            "Amanamu's Tithe",
+            "Essence Harvest",
+            "Hulking Minions",
+            "Minion Instability",
+            "Romira's Requital"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 62086156,
+        "maximum": 94639932
+      },
+      "passiveSummary": {
+        "normalMedian": 124,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "1fe10fc680361d2118a9",
+        "5f18ecbd6486525cddb6",
+        "8e703d0465da1d960a74",
+        "d29a4232f6bd34e5a59d",
+        "f2636686a45efbf37931"
+      ]
+    },
+    {
+      "packageId": "f4f07fe5f660773e7060",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "ascendancy": "Gemling Legionnaire",
+      "mainSkill": "Arc",
+      "weapon": "sceptre",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Dialla's Desire",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Dominus' Grasp",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Urgent Totems III",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Cast on Block",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Lightning Warp",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Magma Barrier",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Raise Shield",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Spell Totem",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Virtuous Barrier",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Voltaic Mark",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Wolf Pack",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Bloodhound's Mark",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Entangle",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Skeletal Warrior",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Soul Offering",
+          "count": 2,
+          "share": 67
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [
+            "Armour Demolisher II",
+            "Uhtred's Omen"
+          ],
+          "count": 3,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Cool Headed",
+            "Her Declaration",
+            "Lightning Mastery"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Bloodhound's Mark",
+          "activeSkills": [
+            "Bloodhound's Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Magma Barrier",
+          "activeSkills": [
+            "Magma Barrier"
+          ],
+          "supports": [
+            "Blind II",
+            "Charge Profusion II",
+            "Magnified Area II",
+            "Maim"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency III"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Raise Shield",
+          "activeSkills": [
+            "Raise Shield"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Skeletal Warrior",
+          "activeSkills": [
+            "Skeletal Warrior"
+          ],
+          "supports": [
+            "Essence Harvest",
+            "Hulking Minions",
+            "Last Gasp",
+            "Meat Shield II"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sniper's Mark",
+          "activeSkills": [
+            "Sniper's Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Brutus' Brain",
+            "Charge Profusion II",
+            "Danse Macabre",
+            "Guatelitzi's Ablation",
+            "Prolonged Duration II"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Virtuous Barrier",
+          "activeSkills": [
+            "Virtuous Barrier"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Voltaic Mark",
+          "activeSkills": [
+            "Voltaic Mark"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Wolf Pack",
+          "activeSkills": [
+            "Wolf Pack"
+          ],
+          "supports": [
+            "Amanamu's Tithe",
+            "Essence Harvest",
+            "Hulking Minions",
+            "Minion Instability",
+            "Romira's Requital"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 62086156,
+        "maximum": 66825892
+      },
+      "passiveSummary": {
+        "normalMedian": 124,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "5f18ecbd6486525cddb6",
+        "8e703d0465da1d960a74",
+        "f2636686a45efbf37931"
+      ]
+    },
+    {
+      "packageId": "afc99ddcc46b62505813",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "ascendancy": "Gemling Legionnaire",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Zenith II",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Considered Casting",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Efficiency II",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Virtuous Barrier",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Freezing Mark",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Powered by Verisium",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Voltaic Mark",
+          "count": 2,
+          "share": 67
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Voltaic Mark",
+          "activeSkills": [
+            "Voltaic Mark"
+          ],
+          "supports": [
+            "Charged Mark",
+            "Cooldown Recovery II",
+            "Deliberation",
+            "Efficiency II",
+            "Second Wind I"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 102561714,
+        "maximum": 218206759
       },
       "passiveSummary": {
         "normalMedian": 122,
-        "ascendancyMedian": 9,
-        "profilesWithWeaponSet1": 2,
-        "profilesWithWeaponSet2": 2
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
       },
       "profileEvidenceIds": [
-        "00cb2b8c52fd6606779a",
-        "4a4927c2cc6166da559e"
-      ],
-      "localCompatibilityStatus": "structured-exact-compatible",
-      "localRequiredWeaponTypes": [
-        "spear"
+        "1791b8329779475a1eb8",
+        "73ef676ef2aa268c6a60",
+        "b08958b13b4b2ea1390c"
       ]
     },
     {
@@ -93,67 +3036,196 @@
       "ascendancy": "Martial Artist",
       "mainSkill": "Flicker Strike",
       "weapon": "quarterstaff",
-      "profileCount": 4,
+      "profileCount": 10,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ],
       "supports": [
         {
-          "name": "Execute III",
-          "count": 4,
-          "share": 100
-        },
-        {
-          "name": "Minion Pact II",
-          "count": 4,
-          "share": 100
-        },
-        {
           "name": "Rakiata's Flow",
-          "count": 4,
+          "count": 10,
           "share": 100
         },
         {
           "name": "Hit and Run",
-          "count": 3,
-          "share": 75
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Execute III",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Minion Pact II",
+          "count": 8,
+          "share": 80
         },
         {
           "name": "Rageforged II",
-          "count": 3,
-          "share": 75
+          "count": 6,
+          "share": 60
         },
         {
           "name": "Concentrated Area",
-          "count": 1,
-          "share": 25
+          "count": 4,
+          "share": 40
         },
         {
           "name": "Elemental Armament II",
+          "count": 4,
+          "share": 40
+        },
+        {
+          "name": "Elemental Focus",
           "count": 1,
-          "share": 25
+          "share": 10
         }
       ],
-      "linkedActiveSkills": [],
+      "linkedActiveSkills": [
+        {
+          "name": "Elemental Conflux",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Whirling Assault",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Charged Staff",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Quarterstaff Strike",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Freezing Mark",
+          "count": 6,
+          "share": 60
+        },
+        {
+          "name": "Hand of Chayula",
+          "count": 6,
+          "share": 60
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 6,
+          "share": 60
+        },
+        {
+          "name": "Voltaic Mark",
+          "count": 5,
+          "share": 50
+        },
+        {
+          "name": "Hollow Focus",
+          "count": 4,
+          "share": 40
+        },
+        {
+          "name": "Killing Palm",
+          "count": 4,
+          "share": 40
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 4,
+          "share": 40
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [
+            "Uhtred's Exodus"
+          ],
+          "count": 5,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Ghost Dance",
+          "activeSkills": [
+            "Ghost Dance"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Cannibalism II",
+            "Cooldown Recovery II",
+            "Direstrike II",
+            "Vitality II"
+          ],
+          "count": 5,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 388615842,
+        "median": 192027640,
         "maximum": 533538258
       },
       "passiveSummary": {
-        "normalMedian": 121,
+        "normalMedian": 120,
         "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 1,
-        "profilesWithWeaponSet2": 1
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
       },
       "profileEvidenceIds": [
-        "2ed5f5ffa561da35d993",
-        "5aeb26f9abf3b16ee7dc",
-        "8525565790aece52d138",
-        "a0aca0c7050d9318c018"
-      ],
-      "localCompatibilityStatus": "structured-exact-compatible",
-      "localRequiredWeaponTypes": [
-        "quarterstaff"
+        "39740252fadf422759f1",
+        "530279b47363c27419e9",
+        "6dbf289b0aa49e42b283",
+        "8081523d818edd5fa533",
+        "91c69748b4fcd290f31e",
+        "9485b341936e8f0da076",
+        "e473127de7ddcb53e9ba",
+        "ecb7ea055eb761c59f6b",
+        "efdec234c805679e7a50",
+        "f3057a5fc8cd2c06370f"
       ]
     },
     {
@@ -162,9 +3234,1186 @@
       "ascendancy": "Invoker",
       "mainSkill": "Flicker Strike",
       "weapon": "quarterstaff",
-      "profileCount": 3,
+      "profileCount": 9,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ],
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 7,
+          "share": 78
+        },
+        {
+          "name": "Hit and Run",
+          "count": 6,
+          "share": 67
+        },
+        {
+          "name": "Perpetual Charge",
+          "count": 6,
+          "share": 67
+        },
+        {
+          "name": "Close Combat II",
+          "count": 5,
+          "share": 56
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 4,
+          "share": 44
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 3,
+          "share": 33
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 22
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 22
+        },
+        {
+          "name": "Ancestral Call II",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Blindside",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Culmination II",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Dialla's Desire",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Heightened Charges",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Inexorable Critical I",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Lightning Attunement",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Momentum",
+          "count": 1,
+          "share": 11
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 11
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Charged Staff",
+          "count": 9,
+          "share": 100
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 9,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 8,
+          "share": 89
+        },
+        {
+          "name": "Profane Ritual",
+          "count": 8,
+          "share": 89
+        },
+        {
+          "name": "Whirling Assault",
+          "count": 7,
+          "share": 78
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 6,
+          "share": 67
+        },
+        {
+          "name": "Quarterstaff Strike",
+          "count": 6,
+          "share": 67
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 6,
+          "share": 67
+        },
+        {
+          "name": "Falling Thunder",
+          "count": 5,
+          "share": 56
+        },
+        {
+          "name": "Mantra of Destruction",
+          "count": 5,
+          "share": 56
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 4,
+          "share": 44
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 4,
+          "share": 44
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 4,
+          "share": 44
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 8168646,
+        "maximum": 12375867
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 1,
+        "profilesWithWeaponSet2": 1
+      },
+      "profileEvidenceIds": [
+        "20b99ab8bd11bc2c31ca",
+        "5a3d3e461599db5dda54",
+        "6d1e210c831419e6da23",
+        "8e38588ca03108c30110",
+        "98956b05a75b05984c50",
+        "9dc451f29e7498652d1b",
+        "aae388a8cf66da07fed6",
+        "c4182da1232fcc47a7d6",
+        "ccc31a7c2ef2eada0408"
+      ]
+    },
+    {
+      "packageId": "03995867922a7f99e230",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "ascendancy": "Acolyte of Chayula",
+      "mainSkill": "Flicker Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 6,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ],
+      "supports": [
+        {
+          "name": "Close Combat II",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Hit and Run",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Ancestral Call II",
+          "count": 2,
+          "share": 33
+        },
+        {
+          "name": "Rageforged II",
+          "count": 2,
+          "share": 33
+        },
+        {
+          "name": "Blindside",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Esh's Radiance",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Excise",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Inexorable Critical I",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Momentum",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Perpetual Charge",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Pinpoint Critical",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Supercritical",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Vorana's Siege",
+          "count": 1,
+          "share": 17
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Charged Staff",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Into the Breach",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Whirling Assault",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Profane Ritual",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Archon of Chayula",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Despair",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Mantra of Destruction",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Hand of Chayula",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Sacrifice",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Skeletal Warrior",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 3,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 7908100,
+        "maximum": 13226998
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "0b1f05e65a1986c30342",
+        "123be4f6cf67b978c7bb",
+        "aa03c51313c334621a1f",
+        "abe01ac26078753c226a",
+        "cf32042b61dae71c7eb7",
+        "d2dd0c1f12d99541affd"
+      ]
+    },
+    {
+      "packageId": "77a7735458b98ebd538d",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "ascendancy": "Deadeye",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 10,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ],
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 4,
+          "share": 40
+        },
+        {
+          "name": "Fork",
+          "count": 2,
+          "share": 20
+        },
+        {
+          "name": "Rageforged II",
+          "count": 2,
+          "share": 20
+        },
+        {
+          "name": "Rapid Attacks II",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 10
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Freezing Mark",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Mirage Deadeye",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Tornado Shot",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Bow Shot",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Called Shots",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Sniper's Mark",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Voltaic Mark",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Berserk",
+          "count": 6,
+          "share": 60
+        },
+        {
+          "name": "Pinnacle of Power",
+          "count": 5,
+          "share": 50
+        },
+        {
+          "name": "Power Siphon",
+          "count": 5,
+          "share": 50
+        },
+        {
+          "name": "Barrage",
+          "count": 4,
+          "share": 40
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 4,
+          "share": 40
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Mirage Deadeye",
+          "activeSkills": [
+            "Ice Shot",
+            "Mirage Deadeye"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Deliberation",
+            "Elemental Armament II",
+            "Rapid Attacks II"
+          ],
+          "count": 5,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Called Shots",
+          "activeSkills": [
+            "Called Shots",
+            "Freezing Mark",
+            "Sniper's Mark",
+            "Voltaic Mark"
+          ],
+          "supports": [
+            "Charge Profusion II",
+            "Cooldown Recovery II"
+          ],
+          "count": 4,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency III"
+          ],
+          "count": 4,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 30114296,
+        "maximum": 72832478
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "3ea311bcefd28d9da984",
+        "4dc7bca79f26685c273f",
+        "663ffe5e2e401565ac9d",
+        "6dbc4abd47376bfea329",
+        "7c17e76efe90cee4d9c6",
+        "94adf5cbbddf8fcfdda9",
+        "a515a4cbba6365041c5b",
+        "b2839c009584a1a56caf",
+        "bdaf46c08d9ec0b420ab",
+        "c6f08b086f544895419a"
+      ]
+    },
+    {
+      "packageId": "dbc37101ee0fb61e464e",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "ascendancy": "Pathfinder",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 11,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ],
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 11,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 11,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 11,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 10,
+          "share": 91
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 8,
+          "share": 73
+        },
+        {
+          "name": "Nova Projectiles I",
+          "count": 2,
+          "share": 18
+        },
+        {
+          "name": "Fork",
+          "count": 1,
+          "share": 9
+        },
+        {
+          "name": "Tul's Stillness",
+          "count": 1,
+          "share": 9
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Eternal Rage",
+          "count": 11,
+          "share": 100
+        },
+        {
+          "name": "Bow Shot",
+          "count": 10,
+          "share": 91
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 10,
+          "share": 91
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 10,
+          "share": 91
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 10,
+          "share": 91
+        },
+        {
+          "name": "Tornado Shot",
+          "count": 9,
+          "share": 82
+        },
+        {
+          "name": "Freezing Mark",
+          "count": 8,
+          "share": 73
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 8,
+          "share": 73
+        },
+        {
+          "name": "Barrage",
+          "count": 5,
+          "share": 45
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 5,
+          "share": 45
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 5,
+          "share": 45
+        },
+        {
+          "name": "Trinity",
+          "count": 5,
+          "share": 45
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 34315715,
+        "maximum": 47411500
+      },
+      "passiveSummary": {
+        "normalMedian": 130,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 8,
+        "profilesWithWeaponSet2": 8
+      },
+      "profileEvidenceIds": [
+        "13e5f5f794034be65923",
+        "21fa958076f478b63ea5",
+        "5790251ef73dc0bb5c24",
+        "6aee5c45ab896f9fce4a",
+        "9c41b49b250371ad161e",
+        "a1470b675fa93beda6b7",
+        "ab1e27dabb9c2d29f850",
+        "d8b924aa32b3fbdb6815",
+        "e8ac9993f98c6ed3d5f5",
+        "f5d609fe6846c5d03b23",
+        "f5dc9c2609507e41511f"
+      ]
+    },
+    {
+      "packageId": "edbeac2dc59505cbc43e",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "ascendancy": "Stormweaver",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Zarokh's Refrain",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Storm",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Living Bomb",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Uhtred's Augury"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Storm",
+          "activeSkills": [
+            "Elemental Storm"
+          ],
+          "supports": [
+            "Arbiter's Ignition",
+            "Commiserate",
+            "Knockback",
+            "Lightning Exposure",
+            "Living Lightning II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sigil of Power",
+          "activeSkills": [
+            "Sigil of Power"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Magnified Area II",
+            "Prolonged Duration II",
+            "Rapid Casting II",
+            "Second Wind II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 23830448,
+        "maximum": 27024133
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 4,
+        "profilesWithWeaponSet2": 4
+      },
+      "profileEvidenceIds": [
+        "297541a877b55e08fbd5",
+        "3fa3c90e5877123878e2",
+        "4d5735a6882f99f765ee",
+        "d86f02b06d66416eb5e7"
+      ]
+    },
+    {
+      "packageId": "152887f2e2c9ca327bbf",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "ascendancy": "Stormweaver",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Considered Casting",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Zarokh's Refrain",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Elemental Storm",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Living Bomb",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity II",
+            "Uhtred's Augury"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Storm",
+          "activeSkills": [
+            "Elemental Storm"
+          ],
+          "supports": [
+            "Arbiter's Ignition",
+            "Commiserate",
+            "Knockback",
+            "Lightning Exposure",
+            "Living Lightning II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sigil of Power",
+          "activeSkills": [
+            "Sigil of Power"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Magnified Area II",
+            "Prolonged Duration II",
+            "Rapid Casting II",
+            "Second Wind II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 23830448,
+        "maximum": 27024133
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 4,
+        "profilesWithWeaponSet2": 4
+      },
+      "profileEvidenceIds": [
+        "297541a877b55e08fbd5",
+        "3fa3c90e5877123878e2",
+        "4d5735a6882f99f765ee",
+        "d86f02b06d66416eb5e7"
+      ]
+    },
+    {
+      "packageId": "62051a8f827f1983c641",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "ascendancy": "Chronomancer",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
       "supports": [
         {
           "name": "Concentrated Area",
@@ -172,27 +4421,185 @@
           "share": 67
         },
         {
-          "name": "Elemental Armament II",
+          "name": "Uhtred's Augury",
           "count": 2,
           "share": 67
         },
         {
-          "name": "Ambrosia II",
+          "name": "Boundless Energy II",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Blindside",
+          "name": "Cold Mastery",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Close Combat II",
+          "name": "Efficiency II",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Culmination II",
+          "name": "Elemental Focus",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Spell Cascade",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Zenith II",
+          "count": 1,
+          "share": 33
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Frost Wall",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Powered by Verisium",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Remnants of Kalguur",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Frostbolt",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Ice Nova",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 2,
+          "share": 67
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Remnants of Kalguur",
+          "activeSkills": [
+            "Remnants of Kalguur"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 4081941,
+        "maximum": 10627124
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "21e57b9be76b64c00ca0",
+        "b5dd8640189c3b0906ae",
+        "d3f08f2a0601bb7de95e"
+      ]
+    },
+    {
+      "packageId": "9c6d5a535e0742b3d602",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "ascendancy": "Chronomancer",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 3,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Considered Casting",
+          "count": 1,
+          "share": 33
+        },
+        {
+          "name": "Efficiency II",
           "count": 1,
           "share": 33
         },
@@ -207,36 +4614,828 @@
           "share": 33
         },
         {
-          "name": "Heft",
+          "name": "Uhtred's Augury",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Hit and Run",
+          "name": "Zarokh's Refrain",
           "count": 1,
           "share": 33
         },
         {
-          "name": "Minion Pact II",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Rageforged II",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Rigwald's Ferocity",
+          "name": "Zarokh's Revolt",
           "count": 1,
           "share": 33
         }
       ],
-      "linkedActiveSkills": [],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Frostbolt",
+          "count": 3,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Frost Wall",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Powered by Verisium",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Remnants of Kalguur",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 2,
+          "share": 67
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 2,
+          "share": 67
+        }
+      ],
+      "linkedSkillGroups": [],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 20566325,
-        "maximum": 79968834
+        "median": 7392202,
+        "maximum": 10627124
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "21e57b9be76b64c00ca0",
+        "4c9e857322568a08b32b",
+        "b5dd8640189c3b0906ae"
+      ]
+    },
+    {
+      "packageId": "10b9b7f3316e6b53d5f9",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "ascendancy": "Disciple of Varashta",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 5,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Concentrated Area",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Cold Mastery",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Considered Casting",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Elemental Focus",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Zarokh's Refrain",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Dialla's Desire",
+          "count": 1,
+          "share": 20
+        },
+        {
+          "name": "Efficiency II",
+          "count": 1,
+          "share": 20
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 20
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Cast on Critical",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Frostbolt",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Frost Wall",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Convalescence",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Freezing Shards",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Frost Bomb",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Blasphemy",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 2,
+          "share": 40
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Elemental Weakness",
+          "activeSkills": [
+            "Elemental Weakness"
+          ],
+          "supports": [
+            "Doedre's Undoing",
+            "Efficiency II",
+            "Focused Curse",
+            "Heightened Curse",
+            "Magnified Area II"
+          ],
+          "count": 3,
+          "share": 60,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Convalescence",
+          "activeSkills": [
+            "Convalescence"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Efficiency II",
+            "Prolonged Duration II",
+            "Rapid Casting II",
+            "Second Wind III"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Elemental Conflux",
+          "activeSkills": [
+            "Elemental Conflux"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Uhtred's Omen"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Freezing Shards",
+          "activeSkills": [
+            "Freezing Shards"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Frostbolt",
+          "activeSkills": [
+            "Frostbolt"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Efficiency II",
+            "Sione's Temper",
+            "Tul's Stillness",
+            "Vilenta's Propulsion"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency I"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sigil of Power",
+          "activeSkills": [
+            "Sigil of Power"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Magnified Area II",
+            "Prolonged Duration II",
+            "Rapid Casting II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 6961943,
+        "maximum": 9263106
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 3,
+        "profilesWithWeaponSet2": 3
+      },
+      "profileEvidenceIds": [
+        "101044dc071328b8d29b",
+        "8ce0ddbb9ce3905fdc27",
+        "b37947769b8dbbc7ae19",
+        "e0377268e3a19a288078",
+        "febc0049bf498d84c2c2"
+      ]
+    },
+    {
+      "packageId": "556215b6a96d72d1c4f1",
+      "ascendancyId": "ascendancy-official-Warrior2",
+      "ascendancy": "Smith of Kitava",
+      "mainSkill": "Shield Wall",
+      "weapon": "mace",
+      "profileCount": 10,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ],
+      "supports": [
+        {
+          "name": "Atalui's Bloodletting",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Poison III",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Bleed III",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Heft",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 6,
+          "share": 60
+        },
+        {
+          "name": "Rapid Attacks II",
+          "count": 2,
+          "share": 20
+        },
+        {
+          "name": "Uul-Netol's Embrace",
+          "count": 2,
+          "share": 20
+        },
+        {
+          "name": "Ahn's Citadel",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Kaom's Madness",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 10
+        },
+        {
+          "name": "Vorana's Siege",
+          "count": 1,
+          "share": 10
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Magma Barrier",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Raise Shield",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Resonating Shield",
+          "count": 10,
+          "share": 100
+        },
+        {
+          "name": "Herald of Blood",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Herald of Plague",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Infernal Cry",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Scavenged Plating",
+          "count": 9,
+          "share": 90
+        },
+        {
+          "name": "Fortifying Cry",
+          "count": 8,
+          "share": 80
+        },
+        {
+          "name": "Berserk",
+          "count": 7,
+          "share": 70
+        },
+        {
+          "name": "Mace Strike",
+          "count": 7,
+          "share": 70
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Raise Shield",
+          "activeSkills": [
+            "Raise Shield"
+          ],
+          "supports": [],
+          "count": 8,
+          "share": 80,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Herald of Blood",
+          "activeSkills": [
+            "Herald of Blood"
+          ],
+          "supports": [
+            "Bleed III",
+            "Bursting Plague",
+            "Escalating Poison",
+            "Magnified Area II",
+            "Poison III"
+          ],
+          "count": 7,
+          "share": 70,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Magma Barrier",
+          "activeSkills": [
+            "Magma Barrier"
+          ],
+          "supports": [
+            "Charge Profusion II",
+            "Enduring Impact II",
+            "Fire Mastery",
+            "Rage III",
+            "Stun III"
+          ],
+          "count": 6,
+          "share": 60,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Infernal Cry",
+          "activeSkills": [
+            "Infernal Cry"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Corrupting Cry II",
+            "Efficiency II",
+            "Raging Cry",
+            "Tireless"
+          ],
+          "count": 5,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 288286,
+        "maximum": 1747528
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "0eeb3b89f04e8141d286",
+        "2b35957f45809a3c6a45",
+        "380b3f458f255238d309",
+        "4e4228cc32f8dbe58d30",
+        "57e3f88280876000b924",
+        "86e7c54be4a530340bbd",
+        "9078890b753ac9daac09",
+        "a741f9236b7eae908479",
+        "b0d29de6486b9aeb4461",
+        "daff273e451d87351e55"
+      ]
+    },
+    {
+      "packageId": "8fce0d714ce257d7548d",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "ascendancy": "Warbringer",
+      "mainSkill": "Shield Wall",
+      "weapon": "mace",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ],
+      "supports": [
+        {
+          "name": "Atalui's Bloodletting",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Heft",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Rapid Attacks II",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Ahn's Citadel",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Brutality III",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Dialla's Desire",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Execute III",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Heavy Swing",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Hit and Run",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Physical Mastery",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Fortifying Cry",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Infernal Cry",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Raise Shield",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Berserk",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Encase in Jade",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Magma Barrier",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Herald of Ash",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Mace Strike",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Refutation",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Resonating Shield",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Scavenged Plating",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Raise Shield",
+          "activeSkills": [
+            "Raise Shield"
+          ],
+          "supports": [],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Berserk",
+          "activeSkills": [
+            "Berserk"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 384972,
+        "maximum": 516113
+      },
+      "passiveSummary": {
+        "normalMedian": 120,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "04929994d5ad70ffbd4f",
+        "2b8e12979d923b363d8d",
+        "51b735b026b5572f485b",
+        "ac076052477b80e596d9"
+      ]
+    },
+    {
+      "packageId": "9ff4424c6eda4c6371d9",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "ascendancy": "Warbringer",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Pinpoint Critical",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Boundless Energy II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Efficiency II",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Tul's Avalanche",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cast on Block",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Living Bomb",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Raise Shield",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spellslinger",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 480659,
+        "maximum": 546172
       },
       "passiveSummary": {
         "normalMedian": 120,
@@ -245,149 +5444,228 @@
         "profilesWithWeaponSet2": 0
       },
       "profileEvidenceIds": [
-        "b729f106ce91e9dd7bad",
-        "c0cb136d61983044dc4a",
-        "ffb73f4a7cd49f3ae0e4"
-      ],
-      "localCompatibilityStatus": "structured-exact-compatible",
-      "localRequiredWeaponTypes": [
-        "quarterstaff"
+        "23fca877435aa8774e27",
+        "a4f2272b06f883e48eda"
       ]
     },
     {
-      "packageId": "77a7735458b98ebd538d",
-      "ascendancyId": "ascendancy-official-Ranger1",
-      "ascendancy": "Deadeye",
-      "mainSkill": "Ice Shot",
-      "weapon": "bow",
-      "profileCount": 3,
+      "packageId": "deb4dfbd6ef1bc2d1b90",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "ascendancy": "Warbringer",
+      "mainSkill": "Sunder",
+      "weapon": "mace",
+      "profileCount": 2,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
-      "supports": [
-        {
-          "name": "Elemental Armament II",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Execute III",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Garukhan's Resolve",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Projectile Acceleration III",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Rageforged II",
-          "count": 1,
-          "share": 33
-        },
-        {
-          "name": "Rigwald's Ferocity",
-          "count": 1,
-          "share": 33
-        }
-      ],
-      "linkedActiveSkills": [],
-      "modeledDpsSummary": {
-        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 31194220,
-        "maximum": 73505666
-      },
-      "passiveSummary": {
-        "normalMedian": 122,
-        "ascendancyMedian": 8,
-        "profilesWithWeaponSet1": 1,
-        "profilesWithWeaponSet2": 1
-      },
-      "profileEvidenceIds": [
-        "1c28b1a07d97213dc121",
-        "3e7ce88ce1cfa693e81e",
-        "885780150aa0e3711b59"
-      ],
       "localCompatibilityStatus": "structured-exact-compatible",
       "localRequiredWeaponTypes": [
-        "bow"
-      ]
-    },
-    {
-      "packageId": "dbc37101ee0fb61e464e",
-      "ascendancyId": "ascendancy-official-Ranger3",
-      "ascendancy": "Pathfinder",
-      "mainSkill": "Ice Shot",
-      "weapon": "bow",
-      "profileCount": 3,
-      "evidenceClass": "multi-profile-correlated-exact",
-      "productive": true,
+        "mace"
+      ],
       "supports": [
         {
-          "name": "Elemental Armament II",
-          "count": 3,
+          "name": "Atalui's Bloodletting",
+          "count": 2,
           "share": 100
         },
         {
-          "name": "Execute III",
-          "count": 3,
+          "name": "Branching Fissures II",
+          "count": 2,
           "share": 100
         },
         {
-          "name": "Garukhan's Resolve",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Rakiata's Flow",
-          "count": 3,
-          "share": 100
-        },
-        {
-          "name": "Fork",
+          "name": "Impale",
           "count": 1,
-          "share": 33
+          "share": 50
         },
         {
-          "name": "Projectile Acceleration III",
+          "name": "Perpetual Charge",
           "count": 1,
-          "share": 33
+          "share": 50
         },
         {
-          "name": "Rigwald's Ferocity",
+          "name": "Rapid Attacks II",
           "count": 1,
-          "share": 33
+          "share": 50
+        },
+        {
+          "name": "Vorana's Siege",
+          "count": 1,
+          "share": 50
         }
       ],
-      "linkedActiveSkills": [],
+      "linkedActiveSkills": [
+        {
+          "name": "Ancestral Spirits",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Ancestral Warrior Totem",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Encase in Jade",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Magma Barrier",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Overwhelming Presence",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Raise Shield",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Shockwave Totem",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 46035273,
-        "maximum": 94881365
+        "median": 448533,
+        "maximum": 597542
       },
       "passiveSummary": {
-        "normalMedian": 129,
+        "normalMedian": 121,
         "ascendancyMedian": 8,
         "profilesWithWeaponSet1": 2,
         "profilesWithWeaponSet2": 2
       },
       "profileEvidenceIds": [
-        "49f5d35a7e02bcb50e35",
-        "b5043fe24f263cfd8b9d",
-        "db71bd25050c481770ef"
+        "20ed5bbe33e6c16edca3",
+        "70f2ec6e9c799037d9bb"
+      ]
+    },
+    {
+      "packageId": "4b2362cf42c615a87e9c",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "ascendancy": "Infernalist",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Efficiency II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 100
+        }
       ],
-      "localCompatibilityStatus": "structured-exact-compatible",
-      "localRequiredWeaponTypes": [
-        "bow"
+      "linkedActiveSkills": [
+        {
+          "name": "Arc",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Cast on Elemental Ailment",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 32763118,
+        "maximum": 69171011
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "31e7b2356c201d625961",
+        "4ed5dcc503d5bdc85a46"
       ]
     },
     {
@@ -396,41 +5674,135 @@
       "ascendancy": "Blood Mage",
       "mainSkill": "Plasma Blast",
       "weapon": "crossbow",
-      "profileCount": 2,
+      "profileCount": 6,
       "evidenceClass": "multi-profile-correlated-exact",
       "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ],
       "supports": [
         {
           "name": "Bleed III",
-          "count": 2,
+          "count": 6,
           "share": 100
         },
         {
           "name": "Concoct II",
-          "count": 2,
+          "count": 6,
           "share": 100
         },
         {
           "name": "Deep Cuts II",
-          "count": 2,
-          "share": 100
-        },
-        {
-          "name": "Elemental Armament II",
-          "count": 2,
+          "count": 6,
           "share": 100
         },
         {
           "name": "Pinpoint Critical",
-          "count": 2,
+          "count": 6,
           "share": 100
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Burgeon II",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Inexorable Critical II",
+          "count": 1,
+          "share": 17
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 1,
+          "share": 17
         }
       ],
-      "linkedActiveSkills": [],
+      "linkedActiveSkills": [
+        {
+          "name": "Blasphemy",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Galvanic Shards",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Life Remnants",
+          "count": 6,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Herald of Blood",
+          "count": 5,
+          "share": 83
+        },
+        {
+          "name": "Mirage Archer",
+          "count": 4,
+          "share": 67
+        },
+        {
+          "name": "Elemental Weakness",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Herald of Ash",
+          "count": 3,
+          "share": 50
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 3,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Herald of Blood",
+          "activeSkills": [
+            "Herald of Blood"
+          ],
+          "supports": [
+            "Armour Break III",
+            "Bleed III",
+            "Magnified Area II",
+            "Physical Mastery",
+            "Uruk's Smelting"
+          ],
+          "count": 4,
+          "share": 67,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
       "modeledDpsSummary": {
         "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
-        "median": 724098,
-        "maximum": 935757
+        "median": 469932,
+        "maximum": 1093639
       },
       "passiveSummary": {
         "normalMedian": 120,
@@ -439,12 +5811,1622 @@
         "profilesWithWeaponSet2": 0
       },
       "profileEvidenceIds": [
-        "48162f321fe3c4510a2e",
-        "c28cda273c184836eaf7"
+        "05c62cdb62a9d0e7a901",
+        "0ef0e76c25f92cf5c6ad",
+        "d05131d2d5c34352dfb4",
+        "d566d1c910ba072e25ff",
+        "e971fe001639da6eadae",
+        "edda387b802f82943be6"
+      ]
+    },
+    {
+      "packageId": "21b98b543a3053b617e4",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "ascendancy": "Blood Mage",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Dialla's Desire",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Efficiency II",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Zenith II",
+          "count": 1,
+          "share": 25
+        }
       ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Life Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Explosive Transmutation",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Orb of Storms",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Remnants of Kalguur",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Frost Bomb",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity I",
+            "Uhtred's Augury"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Embitter",
+            "Execute III",
+            "Freeze",
+            "Zenith II"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Remnants of Kalguur",
+          "activeSkills": [
+            "Remnants of Kalguur"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spark",
+          "activeSkills": [
+            "Spark"
+          ],
+          "supports": [
+            "Efficiency II",
+            "Execute III",
+            "Pierce III",
+            "Vilenta's Propulsion",
+            "Zenith II"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Explosive Transmutation",
+          "activeSkills": [
+            "Explosive Transmutation"
+          ],
+          "supports": [
+            "Arbiter's Ignition",
+            "Efficiency II",
+            "Runic Extraction",
+            "Vorana's Siege",
+            "Zenith II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Life Remnants",
+          "activeSkills": [
+            "Life Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency III"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Uhtred's Omen"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Siphon Elements",
+          "activeSkills": [
+            "Siphon Elements"
+          ],
+          "supports": [
+            "Fire Mastery",
+            "Harmonic Remnants II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 21159181,
+        "maximum": 26424314
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "9647d69f32ac767cadd2",
+        "9d18fa5e761be391215a",
+        "edcf70b0604303af195f",
+        "f2cda80cc48f50be7d93"
+      ]
+    },
+    {
+      "packageId": "62abf2703dc27e628c79",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "ascendancy": "Blood Mage",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Dialla's Desire",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Efficiency II",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Zenith II",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Archmage",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Life Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Siphon Elements",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Spark",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Arctic Armour",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Explosive Transmutation",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Orb of Storms",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Remnants of Kalguur",
+          "count": 3,
+          "share": 75
+        },
+        {
+          "name": "Frost Bomb",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Archmage",
+          "activeSkills": [
+            "Archmage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity I",
+            "Uhtred's Augury"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Arctic Armour",
+          "activeSkills": [
+            "Arctic Armour"
+          ],
+          "supports": [
+            "Cold Mastery",
+            "Embitter",
+            "Execute III",
+            "Freeze",
+            "Zenith II"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Remnants of Kalguur",
+          "activeSkills": [
+            "Remnants of Kalguur"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Remnant Potency I"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spark",
+          "activeSkills": [
+            "Spark"
+          ],
+          "supports": [
+            "Efficiency II",
+            "Execute III",
+            "Pierce III",
+            "Vilenta's Propulsion",
+            "Zenith II"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Explosive Transmutation",
+          "activeSkills": [
+            "Explosive Transmutation"
+          ],
+          "supports": [
+            "Arbiter's Ignition",
+            "Efficiency II",
+            "Runic Extraction",
+            "Vorana's Siege",
+            "Zenith II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Life Remnants",
+          "activeSkills": [
+            "Life Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Khatal's Rejuvenation",
+            "Remnant Potency III"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Mana Remnants",
+          "activeSkills": [
+            "Mana Remnants"
+          ],
+          "supports": [
+            "Harmonic Remnants II",
+            "Uhtred's Omen"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Siphon Elements",
+          "activeSkills": [
+            "Siphon Elements"
+          ],
+          "supports": [
+            "Fire Mastery",
+            "Harmonic Remnants II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 21159181,
+        "maximum": 26424314
+      },
+      "passiveSummary": {
+        "normalMedian": 121,
+        "ascendancyMedian": 9,
+        "profilesWithWeaponSet1": 2,
+        "profilesWithWeaponSet2": 2
+      },
+      "profileEvidenceIds": [
+        "9647d69f32ac767cadd2",
+        "9d18fa5e761be391215a",
+        "edcf70b0604303af195f",
+        "f2cda80cc48f50be7d93"
+      ]
+    },
+    {
+      "packageId": "d15087f5a59c002022ac",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "ascendancy": "Lich",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 5,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
       "localCompatibilityStatus": "structured-exact-compatible",
       "localRequiredWeaponTypes": [
-        "crossbow"
+        "bow"
+      ],
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Fork",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Nova Projectiles I",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 20
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Berserk",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Herald of Ice",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Tornado Shot",
+          "count": 5,
+          "share": 100
+        },
+        {
+          "name": "Bow Shot",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Ghost Dance",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 4,
+          "share": 80
+        },
+        {
+          "name": "Herald of Ash",
+          "count": 3,
+          "share": 60
+        },
+        {
+          "name": "Barrage",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 2,
+          "share": 40
+        },
+        {
+          "name": "Rhoa Mount",
+          "count": 2,
+          "share": 40
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Herald of Ice",
+          "activeSkills": [
+            "Herald of Ice"
+          ],
+          "supports": [
+            "Armour Explosion",
+            "Breachlord's Rift",
+            "Execute III",
+            "Magnified Area II",
+            "Uruk's Smelting"
+          ],
+          "count": 4,
+          "share": 80,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Herald of Thunder",
+          "activeSkills": [
+            "Herald of Thunder"
+          ],
+          "supports": [
+            "Armour Explosion",
+            "Eonyr's Thunder",
+            "Esh's Prowess",
+            "Esh's Radiance",
+            "Execute III"
+          ],
+          "count": 3,
+          "share": 60,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [
+            "Atziri's Communion",
+            "Clarity I",
+            "Direstrike II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Herald of Ash",
+          "activeSkills": [
+            "Herald of Ash"
+          ],
+          "supports": [
+            "Acrimony",
+            "Compressed Duration II",
+            "Fire Mastery",
+            "Magnified Area II",
+            "Swift Affliction III"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Tornado Shot",
+          "activeSkills": [
+            "Tornado Shot"
+          ],
+          "supports": [
+            "Blind II",
+            "Concentrated Area",
+            "Durability",
+            "Overabundance II",
+            "Rapid Attacks II"
+          ],
+          "count": 2,
+          "share": 40,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 4374709,
+        "maximum": 7378743
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "364740f4060ad6b23232",
+        "5e032a3c05f3e3cc28ba",
+        "5e169f28ef16b8130f17",
+        "7969d55273633d41713d",
+        "f570d8c64be3ab847bc5"
+      ]
+    },
+    {
+      "packageId": "6fcc78eb7bfd41963d0a",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "ascendancy": "Lich",
+      "mainSkill": "Lightning Spear",
+      "weapon": "spear",
+      "profileCount": 2,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ],
+      "supports": [
+        {
+          "name": "Elemental Armament II",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Fork",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Garukhan's Resolve",
+          "count": 1,
+          "share": 50
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 1,
+          "share": 50
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Berserk",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Combat Frenzy",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Purity of Fire",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Trinity",
+          "count": 2,
+          "share": 100
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 2,
+          "share": 100
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Berserk",
+          "activeSkills": [
+            "Berserk"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Combat Frenzy",
+          "activeSkills": [
+            "Combat Frenzy"
+          ],
+          "supports": [
+            "Charge Profusion II"
+          ],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 2,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 4805874,
+        "maximum": 5138643
+      },
+      "passiveSummary": {
+        "normalMedian": 119,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 0,
+        "profilesWithWeaponSet2": 0
+      },
+      "profileEvidenceIds": [
+        "05c8871cfb6685c9571e",
+        "1522bb84ab6f24b47c11"
+      ]
+    },
+    {
+      "packageId": "f4b2e63f1c99a47e177d",
+      "ascendancyId": "ascendancy-official-Witch3b",
+      "ascendancy": "Abyssal Lich",
+      "mainSkill": "Twister",
+      "weapon": "spear",
+      "profileCount": 7,
+      "evidenceClass": "multi-profile-correlated-exact",
+      "productive": true,
+      "localCompatibilityStatus": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ],
+      "supports": [
+        {
+          "name": "Garukhan's Resolve",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Projectile Acceleration III",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Rakiata's Flow",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Armour Break III",
+          "count": 2,
+          "share": 29
+        },
+        {
+          "name": "Concentrated Area",
+          "count": 2,
+          "share": 29
+        },
+        {
+          "name": "Elemental Armament II",
+          "count": 1,
+          "share": 14
+        },
+        {
+          "name": "Rageforged II",
+          "count": 1,
+          "share": 14
+        },
+        {
+          "name": "Rigwald's Ferocity",
+          "count": 1,
+          "share": 14
+        },
+        {
+          "name": "Salvo",
+          "count": 1,
+          "share": 14
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Purity of Fire",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Skeletal Sniper",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Spear Throw",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Whirling Slash",
+          "count": 7,
+          "share": 100
+        },
+        {
+          "name": "Barrage",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Elemental Conflux",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Eternal Rage",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Skeletal Reaver",
+          "count": 6,
+          "share": 86
+        },
+        {
+          "name": "Charge Regulation",
+          "count": 4,
+          "share": 57
+        },
+        {
+          "name": "Herald of Thunder",
+          "count": 4,
+          "share": 57
+        },
+        {
+          "name": "Malice",
+          "count": 4,
+          "share": 57
+        },
+        {
+          "name": "Trinity",
+          "count": 4,
+          "share": 57
+        },
+        {
+          "name": "Berserk",
+          "count": 3,
+          "share": 43
+        },
+        {
+          "name": "Combat Frenzy",
+          "count": 3,
+          "share": 43
+        },
+        {
+          "name": "Wind Dancer",
+          "count": 3,
+          "share": 43
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Spear Throw",
+          "activeSkills": [
+            "Spear Throw"
+          ],
+          "supports": [],
+          "count": 7,
+          "share": 100,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Eternal Rage",
+          "activeSkills": [
+            "Eternal Rage"
+          ],
+          "supports": [],
+          "count": 4,
+          "share": 57,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Barrage",
+          "activeSkills": [
+            "Barrage"
+          ],
+          "supports": [
+            "Heightened Charges",
+            "Olroth's Conviction",
+            "Perpetual Charge",
+            "Uhtred's Constellation",
+            "Uhtred's Rite"
+          ],
+          "count": 3,
+          "share": 43,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Charge Regulation",
+          "activeSkills": [
+            "Charge Regulation"
+          ],
+          "supports": [],
+          "count": 3,
+          "share": 43,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Malice",
+          "activeSkills": [
+            "Malice"
+          ],
+          "supports": [
+            "Prolonged Duration II"
+          ],
+          "count": 3,
+          "share": 43,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 5379187,
+        "maximum": 7668406
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 6,
+        "profilesWithWeaponSet2": 6
+      },
+      "profileEvidenceIds": [
+        "2e1b81411edd043c153c",
+        "3195b94fd6a4ff2da11e",
+        "4bdac75a5fbc9888ba88",
+        "958084c60f75650b01a4",
+        "b017ecd7d547fc070dfe",
+        "c62c842b5cbc0871c32b",
+        "f3682d60c1a93657612c"
+      ]
+    },
+    {
+      "packageId": "af745712e23b6f9467cf",
+      "ascendancyId": "ascendancy-official-Witch3b",
+      "ascendancy": "Abyssal Lich",
+      "mainSkill": "Detonate Dead",
+      "weapon": "staff",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Efficiency II",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Dialla's Desire",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Boundless Energy II",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Deliberation",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Energy Retention",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Magnified Area II",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Blasphemy",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Convalescence",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Entangle",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Soul Offering",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Thrashing Vines",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Thunderstorm",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Bonestorm",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Blasphemy",
+          "activeSkills": [
+            "Blasphemy",
+            "Temporal Chains"
+          ],
+          "supports": [
+            "Hex Bloom",
+            "Magnified Area II",
+            "Ritualistic Curse",
+            "Slow Potency"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Convalescence",
+          "activeSkills": [
+            "Convalescence"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Prolonged Duration II",
+            "Rapid Casting II",
+            "Uhtred's Constellation",
+            "Uhtred's Rite"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Entangle",
+          "activeSkills": [
+            "Entangle"
+          ],
+          "supports": [
+            "Accelerated Growth II",
+            "Branching Fissures II",
+            "Execute III",
+            "Extraction",
+            "Uul-Netol's Embrace"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sigil of Power",
+          "activeSkills": [
+            "Sigil of Power"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Magnified Area II",
+            "Prolonged Duration II",
+            "Rapid Casting II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Danse Macabre",
+            "Sacrificial Offering"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Danse Macabre",
+            "Efficiency II",
+            "Minion Mastery",
+            "Prolonged Duration II",
+            "Sacrificial Offering"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 5448877,
+        "maximum": 6157736
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 4,
+        "profilesWithWeaponSet2": 4
+      },
+      "profileEvidenceIds": [
+        "161ab54ef8dd0ed0cb8b",
+        "21d155c594b70e6ce486",
+        "4ef31aa01771bb7fd10d",
+        "5147cb2d33fa8844a2b0"
+      ]
+    },
+    {
+      "packageId": "bed260ebe3b9e2782e42",
+      "ascendancyId": "ascendancy-official-Witch3b",
+      "ascendancy": "Abyssal Lich",
+      "mainSkill": "Detonate Dead",
+      "weapon": "wand",
+      "profileCount": 4,
+      "evidenceClass": "multi-profile-correlated-unrestricted-compatible",
+      "productive": true,
+      "localCompatibilityStatus": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": [],
+      "supports": [
+        {
+          "name": "Efficiency II",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Execute III",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Dialla's Desire",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Zenith II",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Boundless Energy II",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Deliberation",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Energy Retention",
+          "count": 1,
+          "share": 25
+        },
+        {
+          "name": "Magnified Area II",
+          "count": 1,
+          "share": 25
+        }
+      ],
+      "linkedActiveSkills": [
+        {
+          "name": "Blasphemy",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Cast on Critical",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Convalescence",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Entangle",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Mana Remnants",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Sigil of Power",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Soul Offering",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Temporal Chains",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "The Stars Answer",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Thrashing Vines",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Thunderstorm",
+          "count": 4,
+          "share": 100
+        },
+        {
+          "name": "Archmage",
+          "count": 2,
+          "share": 50
+        },
+        {
+          "name": "Bonestorm",
+          "count": 2,
+          "share": 50
+        }
+      ],
+      "linkedSkillGroups": [
+        {
+          "primarySkill": "Blasphemy",
+          "activeSkills": [
+            "Blasphemy",
+            "Temporal Chains"
+          ],
+          "supports": [
+            "Hex Bloom",
+            "Magnified Area II",
+            "Ritualistic Curse",
+            "Slow Potency"
+          ],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "The Stars Answer",
+          "activeSkills": [
+            "The Stars Answer"
+          ],
+          "supports": [],
+          "count": 3,
+          "share": 75,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Convalescence",
+          "activeSkills": [
+            "Convalescence"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Prolonged Duration II",
+            "Rapid Casting II",
+            "Uhtred's Constellation",
+            "Uhtred's Rite"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Entangle",
+          "activeSkills": [
+            "Entangle"
+          ],
+          "supports": [
+            "Accelerated Growth II",
+            "Branching Fissures II",
+            "Execute III",
+            "Extraction",
+            "Uul-Netol's Embrace"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Sigil of Power",
+          "activeSkills": [
+            "Sigil of Power"
+          ],
+          "supports": [
+            "Cooldown Recovery II",
+            "Magnified Area II",
+            "Prolonged Duration II",
+            "Rapid Casting II"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Danse Macabre",
+            "Sacrificial Offering"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        },
+        {
+          "primarySkill": "Soul Offering",
+          "activeSkills": [
+            "Soul Offering"
+          ],
+          "supports": [
+            "Danse Macabre",
+            "Efficiency II",
+            "Minion Mastery",
+            "Prolonged Duration II",
+            "Sacrificial Offering"
+          ],
+          "count": 2,
+          "share": 50,
+          "evidenceClass": "multi-profile-same-build-loadout",
+          "weaponSet": "unknown"
+        }
+      ],
+      "modeledDpsSummary": {
+        "caveat": "poe.ninja/PoB-Modellwert; nicht als App-DPS oder Spielgarantie verwenden",
+        "median": 5448877,
+        "maximum": 6157736
+      },
+      "passiveSummary": {
+        "normalMedian": 122,
+        "ascendancyMedian": 8,
+        "profilesWithWeaponSet1": 4,
+        "profilesWithWeaponSet2": 4
+      },
+      "profileEvidenceIds": [
+        "161ab54ef8dd0ed0cb8b",
+        "21d155c594b70e6ce486",
+        "4ef31aa01771bb7fd10d",
+        "5147cb2d33fa8844a2b0"
       ]
     }
   ]

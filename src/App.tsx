@@ -11,6 +11,10 @@ import { createEmptySkillSetups } from './features/skills/initial-state'
 import { removeDuplicateSupportFamilies } from './features/skills/support-selection'
 import { assignRecommendedWeaponSets } from './features/skills/automatic-weapon-sets'
 import { planSynergisticSkills } from './features/skills/synergy-planner'
+import {
+  correlatedMetaSupportNames,
+  correlatedMetaSupportNamesForLinkedSkill,
+} from './features/skills/meta-reference'
 import { fillRecommendedSupportSlots, rankedSupportsForSkill } from './features/skills/automatic-supports'
 import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
@@ -99,8 +103,10 @@ export default function App() {
           setupsToFill:typeof setups,
           characterForAnalysis:CharacterConfiguration,
           preferredSupportsBySkill = new Map<string, string[]>(),
-        ) =>
-          setupsToFill.reduce<typeof setups>((filled, value) => {
+        ) => {
+          const mainSetup = setupsToFill.find(value => value.role === 'main' && value.skillId)
+          const mainDefinition = buildAssistantCandidates.skills.find(value => value.id === mainSetup?.skillId)
+          return setupsToFill.reduce<typeof setups>((filled, value) => {
             const currentSetups = [...filled, ...setupsToFill.slice(filled.length)]
             if (!value.skillId) return [...filled, value]
             const preparedValue = prepareMetaSetup(value, currentSetups)
@@ -112,9 +118,35 @@ export default function App() {
             })
             const preferred = (preferredSupportsBySkill.get(value.skillId) ?? [])
               .map(supportId => ({ skillId: value.skillId, supportId }))
+            const skillDefinition = buildAssistantCandidates.skills.find(item => item.id === value.skillId)
+            const observedSupportNames = skillDefinition
+              ? value.id === mainSetup?.id
+                ? correlatedMetaSupportNames(skillDefinition, characterForAnalysis.ascendancyId)
+                    .map(item => item.name)
+                : mainDefinition
+                  ? correlatedMetaSupportNamesForLinkedSkill(
+                      mainDefinition,
+                      skillDefinition.nameEn ?? skillDefinition.displayNameDe,
+                      characterForAnalysis.ascendancyId,
+                    ).map(item => item.name)
+                  : []
+              : []
+            const observedOrder = new Map(observedSupportNames.map((name, index) => [name, index]))
+            const metaPreferred = skillResult.supportAnalysis.eligibleCandidates
+              .filter(candidate => {
+                const support = buildAssistantCandidates.supports.find(item => item.id === candidate.supportId)
+                return support?.nameEn && observedOrder.has(support.nameEn)
+              })
+              .sort((left, right) => {
+                const leftName = buildAssistantCandidates.supports.find(item => item.id === left.supportId)?.nameEn ?? ''
+                const rightName = buildAssistantCandidates.supports.find(item => item.id === right.supportId)?.nameEn ?? ''
+                return (observedOrder.get(leftName) ?? Number.MAX_SAFE_INTEGER)
+                  - (observedOrder.get(rightName) ?? Number.MAX_SAFE_INTEGER)
+              })
             const ranked = rankedSupportsForSkill(
               value.skillId,
               preferred,
+              metaPreferred,
               skillResult.supportAnalysis.topCandidates,
               skillResult.supportAnalysis.eligibleCandidates,
             )
@@ -132,13 +164,26 @@ export default function App() {
               false,
             )]
           }, [])
+        }
         const evaluatePackage = (
           candidate: NonNullable<BuildVariantOptimization['selected']>,
           characterForAnalysis: CharacterConfiguration,
           baseSetups: typeof setups,
           characterAttributes: BuildAnalysis['characterAttributes'],
         ) => {
-          let setupAssigned = false
+          const plannedQueue = [...(candidate.plannedSkillSetups ?? [])]
+          if (!plannedQueue.length && candidate.setupSkillId) plannedQueue.push({
+            skillId: candidate.setupSkillId,
+            skillName: candidate.setupSkillName ?? candidate.setupSkillId,
+            role: 'utility',
+            weaponSet: candidate.setupWeaponSet
+              ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1'),
+            weaponType: candidate.setupWeaponType ?? candidate.weaponType,
+            reason: candidate.setupReason ?? 'Belegte Ergänzung des Hauptskills.',
+            score: 0,
+            evidence: 'structured-derived',
+            ruleId: 'optimizer.setup-fallback',
+          })
           const packageSetups = baseSetups.map((setup, index) => {
             if (index === 0) return {
               ...setup,
@@ -148,17 +193,16 @@ export default function App() {
               supportGemIds: candidate.compatibleSupportIds,
               origin: 'recommended' as const,
             }
-            if (!setupAssigned && candidate.setupSkillId && !setup.skillId) {
-              setupAssigned = true
+            const planned = !setup.skillId ? plannedQueue.shift() : undefined
+            if (planned) {
               return {
                 ...setup,
-                skillId: candidate.setupSkillId,
-                role: 'utility' as const,
-                weaponSet: candidate.setupWeaponSet
-                  ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
+                skillId: planned.skillId,
+                role: planned.role,
+                weaponSet: planned.weaponSet,
                 supportGemIds: [],
                 origin: 'recommended' as const,
-                synergyReason: candidate.setupReason,
+                synergyReason: planned.reason,
               }
             }
             return setup
@@ -227,33 +271,33 @@ export default function App() {
               ...provisionalResult.skillAnalysis.allCandidates.filter(value => value.valid),
             ].filter((value, index, all) => all.findIndex(candidate => candidate.skillId === value.skillId) === index)
             const mainDefinition = buildAssistantCandidates.skills.find(value => value.id === recommendation.skillId)
-            const skillQueue = mainDefinition ? planSynergisticSkills(
-              mainDefinition,
-              buildAssistantCandidates.skills.filter(definition => {
-                if (definition.requiredClassId && definition.requiredClassId !== character.classId) return false
-                if (definition.excludedClassIds?.includes(character.classId)) return false
-                if (definition.allowedAscendancyIds?.length && !definition.allowedAscendancyIds.includes(character.ascendancyId)) return false
-                return !definition.excludedAscendancyIds?.includes(character.ascendancyId)
-              }),
-              rankedSkills,
-              provisionalSetups.length - 1,
-              { ascendancyId: character.ascendancyId, mainWeaponSet: preferredWeaponSet === 'both' ? 'set-1' : preferredWeaponSet },
-            ) : []
-            if (optimization.selected?.setupSkillId) {
-              const selectedSetupIndex = skillQueue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
-              if (selectedSetupIndex > 0) skillQueue.unshift(...skillQueue.splice(selectedSetupIndex, 1))
-            }
+            const optimizedSkillPackage = optimization.selected?.plannedSkillSetups ?? []
+            const skillQueue = optimizedSkillPackage.length
+              ? optimizedSkillPackage.slice(0, provisionalSetups.length - 1)
+              : mainDefinition ? planSynergisticSkills(
+                  mainDefinition,
+                  buildAssistantCandidates.skills.filter(definition => {
+                    if (definition.requiredClassId && definition.requiredClassId !== character.classId) return false
+                    if (definition.excludedClassIds?.includes(character.classId)) return false
+                    if (definition.allowedAscendancyIds?.length && !definition.allowedAscendancyIds.includes(character.ascendancyId)) return false
+                    return !definition.excludedAscendancyIds?.includes(character.ascendancyId)
+                  }),
+                  rankedSkills,
+                  provisionalSetups.length - 1,
+                  { ascendancyId: character.ascendancyId, mainWeaponSet: preferredWeaponSet === 'both' ? 'set-1' : preferredWeaponSet },
+                ) : []
             const populatedSetups = assignRecommendedWeaponSets(provisionalSetups.map(value => {
               if (value.skillId) return value
               const candidate = skillQueue.shift()
               if (!candidate) return value
+              const planned = optimization.selected?.plannedSkillSetups?.find(item => item.skillId === candidate.skillId)
               return {
                 ...value,
                 skillId: candidate.skillId,
-                role: candidate.role,
-                weaponSet: candidate.skillId === optimization.selected?.setupSkillId
+                role: planned?.role ?? candidate.role,
+                weaponSet: planned?.weaponSet ?? (candidate.skillId === optimization.selected?.setupSkillId
                   ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
-                  : candidate.weaponSet,
+                  : candidate.weaponSet),
                 origin: 'recommended' as const,
                 supportGemIds: [],
                 synergyReason: candidate.reason,
@@ -293,25 +337,27 @@ export default function App() {
             effectiveOptimization = optimization
             setVariantOptimization(optimization)
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
-            const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {
-              ascendancyId: character.ascendancyId,
-              mainWeaponSet: mainSetup.weaponSet === 'both' ? 'set-1' : mainSetup.weaponSet,
-            })
+            const optimizedSkillPackage = optimization.selected?.plannedSkillSetups ?? []
+            const queue = (optimizedSkillPackage.length
+              ? optimizedSkillPackage
+              : planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {
+                  ascendancyId: character.ascendancyId,
+                  mainWeaponSet: mainSetup.weaponSet === 'both' ? 'set-1' : mainSetup.weaponSet,
+                }))
               .filter(value => !existingIds.has(value.skillId))
-            if (optimization.selected?.setupSkillId) {
-              const selectedSetupIndex = queue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
-              if (selectedSetupIndex > 0) queue.unshift(...queue.splice(selectedSetupIndex, 1))
-            }
             const populated = preparedSetups.map(value => {
               if (value.skillId) return value
               const candidate = queue.shift()
+              const planned = candidate
+                ? optimization.selected?.plannedSkillSetups?.find(item => item.skillId === candidate.skillId)
+                : undefined
               return candidate ? {
                 ...value,
                 skillId: candidate.skillId,
-                role: candidate.role,
-                weaponSet: candidate.skillId === optimization.selected?.setupSkillId
+                role: planned?.role ?? candidate.role,
+                weaponSet: planned?.weaponSet ?? (candidate.skillId === optimization.selected?.setupSkillId
                   ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
-                  : candidate.weaponSet,
+                  : candidate.weaponSet),
                 origin: 'recommended' as const,
                 supportGemIds: [],
                 synergyReason: candidate.reason,

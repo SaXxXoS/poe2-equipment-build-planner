@@ -52,6 +52,30 @@ describe('gemeinsamer PoE2-Wirkungsgraph', () => {
     expect(graph.blockers.length).toBe(2)
   })
 
+  it('akzeptiert eine gepinnte Mehrprofil-Beziehung als Paketbeleg, ohne eine freie Wirkungsregel zu erfinden', () => {
+    const graph = buildEffectGraph({
+      mainSkill: skill('twister', ['attack', 'projectile'], {
+        nameEn: 'Twister',
+        requiredWeaponTypes: ['spear'],
+      }),
+      mainWeapon: 'spear',
+      supports: [],
+      setupSkill: skill('spear-throw', ['attack', 'projectile'], { nameEn: 'Spear Throw' }),
+      setupRelationship: {
+        evidence: 'multi-profile-correlated-exact',
+        reason: 'Vier gepinnte Profile belegen beide Fertigkeiten im selben Build.',
+        ruleId: 'meta-package:test',
+      },
+      ascendancyId: 'ascendancy-official-Huntress2',
+    })
+    expect(graph.blockers).toEqual([])
+    expect(graph.edges.find(edge => edge.kind === 'main-setup')).toMatchObject({
+      productive: true,
+      evidence: 'multi-profile-correlated-exact',
+      ruleId: 'meta-package:test',
+    })
+  })
+
   it('blockiert eine Meta-Fertigkeit ohne eingebettete Nutzlast', () => {
     const graph = buildEffectGraph({
       mainSkill: skill('meta', ['spell'], { nameEn: 'Cast on Critical', metaSocketRule: 'spell' }),

@@ -7,12 +7,12 @@ import {
 
 const skill: SkillGemDefinition = {
   id: 'skill-main',
-  nameEn: 'Ancestral Cry',
-  displayNameDe: 'Ahnenschrei',
+  nameEn: 'Spark',
+  displayNameDe: 'Funke',
   dataVersion: 'test',
   source: 'local-placeholder',
   status: 'placeholder',
-  tags: ['buff'],
+  tags: ['spell', 'projectile', 'lightning'],
   enabled: true,
 }
 const support = (id: string, multiplier: number): SupportGemDefinition => ({

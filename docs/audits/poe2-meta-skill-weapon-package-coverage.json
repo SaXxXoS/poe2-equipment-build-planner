@@ -1,18 +1,221 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceVersion": "1959-20260808-19780",
-  "inputPackageCount": 15,
-  "productivePackageCount": 6,
-  "blockedPackageCount": 9,
+  "sourceVersion": "1044-20260809-12563",
+  "inputPackageCount": 150,
+  "productivePackageCount": 38,
+  "blockedPackageCount": 112,
   "blockedPackages": [
+    {
+      "packageId": "0924a295cf340209f436",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "0f25653b01e5ef7fe92f",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Primal Strikes",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "10f846c20c214608f0f7",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "mainSkill": "Skyfall",
+      "weapon": "staff",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "13980b4c12d4971a4981",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "149cab86d77450fee068",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "mainSkill": "Rain of Arrows",
+      "weapon": "bow",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "16fa95d7ed1e49424bfa",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "His Scattering Calamity",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
     {
       "packageId": "17409b6a5589077313ca",
       "ascendancyId": "ascendancy-official-Sorceress2",
       "mainSkill": "Skyfall",
       "weapon": "wand",
+      "profileCount": 4,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "18e22c797aacf4114ad0",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "1933cd1f4fa99dd0bcf3",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "mainSkill": "Skyfall",
+      "weapon": "sceptre",
       "profileCount": 2,
       "status": "unresolved-skill",
       "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "1a7cbc806ea03e6b21fe",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "1d0559292a8b861e1a02",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "1e136bde5880ea70c16b",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "mainSkill": "Wild Protector",
+      "weapon": "sceptre",
+      "profileCount": 3,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "223aab443468dcc79532",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Arc",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "23a7bfff84a73902997d",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "mainSkill": "Skyfall",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "256ff32fc374a84e0169",
+      "ascendancyId": "ascendancy-official-Sorceress1",
+      "mainSkill": "Skyfall",
+      "weapon": "staff",
+      "profileCount": 4,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "278c7176f4c327215f74",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "mainSkill": "Hammer of the Gods",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "27c917eaecd39f8fe4b0",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "mainSkill": "Ice Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "287ccb90809dc0e99764",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Spark",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "2968608e0a30489563b1",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Lightning Spear",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "2b26bf534817ded1d497",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "mainSkill": "Comet",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "2c53205947e4036c7da9",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Crossbow Shot",
+      "weapon": "crossbow",
+      "profileCount": 3,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "2de33fbfe80e6450706b",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "mainSkill": "Glacial Lance",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
     },
     {
       "packageId": "2f6341ad1ef3ddda9d85",
@@ -24,32 +227,399 @@
       "localRequiredWeaponTypes": []
     },
     {
+      "packageId": "31ebf7b875c9ae453896",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "34453113fb5004219a22",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "36869a7c6eb01f674bff",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "mainSkill": "Flicker Strike",
+      "weapon": "wand",
+      "profileCount": 4,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "39687da53d507714ebef",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Skyfall",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "39cab82c08c47e2ce387",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "His Scattering Calamity",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "3bf615cbdd068a196028",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "mainSkill": "Lightning Spear",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "42f7dd7ecdcb7e4c465d",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "mainSkill": "Oil Barrage",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
       "packageId": "44398baf0f2394200137",
       "ascendancyId": "ascendancy-official-Ranger3",
       "mainSkill": "Ice Shot",
       "weapon": "wand",
-      "profileCount": 2,
+      "profileCount": 4,
       "status": "blocked-incompatible-weapon",
       "localRequiredWeaponTypes": [
         "bow"
       ]
     },
     {
+      "packageId": "46ace9489e891a81a704",
+      "ascendancyId": "ascendancy-official-Witch1",
+      "mainSkill": "Comet",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "4c59e89ede62a4373392",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "4f5c82e1f96cb2f9ca5a",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "mainSkill": "Sunder",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "4f99ca1f298a6257aaab",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Chaos Bolt",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "52fd71de48551eddec96",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Arc",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
       "packageId": "553fd8a0da0e34f56d1e",
       "ascendancyId": "ascendancy-official-Witch1",
       "mainSkill": "Skyfall",
       "weapon": "wand",
+      "profileCount": 7,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "5711d7e7245de5c0f4e2",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Supporting Fire",
+      "weapon": "mace",
       "profileCount": 3,
       "status": "unresolved-skill",
       "localRequiredWeaponTypes": []
     },
     {
-      "packageId": "64aea602647eebb9fc8e",
-      "ascendancyId": "ascendancy-official-Witch3",
-      "mainSkill": "Comet",
+      "packageId": "591b5cd42a2362858932",
+      "ascendancyId": "ascendancy-official-Warrior2",
+      "mainSkill": "Supercharged Slam",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "59f0b22f250c955eb74d",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "mainSkill": "Lightning Spear",
+      "weapon": "sceptre",
+      "profileCount": 4,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "5b1c134f163acae8f285",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "mainSkill": "Lightning Spear",
       "weapon": "wand",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "5f1010f0e912db20d451",
+      "ascendancyId": "ascendancy-official-Witch3b",
+      "mainSkill": "Twister",
+      "weapon": "sceptre",
+      "profileCount": 7,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "5f8f807c3c7b7f24a6dc",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Primal Strikes",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "6038f182498331c3ff72",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "mainSkill": "Wild Protector",
+      "weapon": "mace",
+      "profileCount": 3,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "61a37296586b40706d1b",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Flicker Strike",
+      "weapon": "sceptre",
+      "profileCount": 3,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "654602ed9e213aaac2f6",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "66e182407b543ac427e5",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Skyfall",
+      "weapon": "staff",
       "profileCount": 2,
-      "status": "unresolved-no-exact-weapon-requirement",
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "751d4f2cc0d3af90e0e2",
+      "ascendancyId": "ascendancy-official-Mercenary2",
+      "mainSkill": "Ice Shot",
+      "weapon": "bow",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "75a5a5fb0a586fb25e60",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "mainSkill": "Lightning Spear",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "78c7ef8a7045d6bc9015",
+      "ascendancyId": "ascendancy-official-Ranger1",
+      "mainSkill": "Ice Shot",
+      "weapon": "sceptre",
+      "profileCount": 5,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "7a6ee80729987ef96c3d",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Navira, the Last Mirage",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "7bf941a0b3638f1116ad",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Glacial Lance",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "854035f02e05b8b994eb",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Living Bomb",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "8812653695989fb629f3",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Lightning Spear",
+      "weapon": "crossbow",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "88594e090db5c823cf45",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "mainSkill": "Plasma Blast",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ]
+    },
+    {
+      "packageId": "88976cb510b8fa4ed65b",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "mainSkill": "Hammer of the Gods",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "8a6e620eac632ea105b3",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "mainSkill": "Flicker Strike",
+      "weapon": "sceptre",
+      "profileCount": 3,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "8c7d96696b4a7e20e441",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "8fdf5668f9fbf8e278df",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "mainSkill": "Skyfall",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "946d19e49c34571015c0",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Supporting Fire",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "95c7e4e64c962fd70310",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Hexblast",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "9e1882f87b0780ef0692",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "mainSkill": "Detonate Dead",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "a1292ea56a102b7f7eb1",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Requiem",
+      "weapon": "crossbow",
+      "profileCount": 1,
+      "status": "unresolved-skill",
       "localRequiredWeaponTypes": []
     },
     {
@@ -57,7 +627,7 @@
       "ascendancyId": "ascendancy-official-Druid2",
       "mainSkill": "Skyfall",
       "weapon": "wand",
-      "profileCount": 3,
+      "profileCount": 4,
       "status": "unresolved-skill",
       "localRequiredWeaponTypes": []
     },
@@ -66,31 +636,490 @@
       "ascendancyId": "ascendancy-official-Ranger1",
       "mainSkill": "Ice Shot",
       "weapon": "wand",
-      "profileCount": 3,
+      "profileCount": 5,
       "status": "blocked-incompatible-weapon",
       "localRequiredWeaponTypes": [
         "bow"
       ]
     },
     {
-      "packageId": "c1d28d78a72aae3a040f",
-      "ascendancyId": "ascendancy-official-Druid1",
-      "mainSkill": "Comet",
+      "packageId": "ac8364c6effb8209ba90",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Twister",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "af9c5b793553f00c25bb",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Twister",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "b062b9a75d793cd59848",
+      "ascendancyId": "ascendancy-official-Huntress1",
+      "mainSkill": "Ice Shot",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "b09937f4da1a64a6f79c",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Hexblast",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "b1bfb02f0757ad754258",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "b1f0d43c533e24f6b8d1",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "mainSkill": "Plasma Blast",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ]
+    },
+    {
+      "packageId": "b3d123deaea72a867321",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Storm Wave",
+      "weapon": "quarterstaff",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "b592bcd0becf10da5d99",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Glacial Lance",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "b6184c13a16790976a6a",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "mainSkill": "Ice Shot",
+      "weapon": "spear",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "b6454e2726c29919ae1a",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Supporting Fire",
+      "weapon": "sceptre",
+      "profileCount": 5,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "b66a966395df56fa2656",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Ice Shot",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "b680d42cc1e71f100c59",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Flicker Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "b8566e3978ce35f3b92a",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Chaos Bolt",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "b88cbcb8b66ded84b6d2",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Arc",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "c1bfd29f79d3955521f3",
+      "ascendancyId": "ascendancy-official-Warrior1",
+      "mainSkill": "His Scattering Calamity",
+      "weapon": "staff",
+      "profileCount": 9,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "c33cee43fef727c4af12",
+      "ascendancyId": "ascendancy-official-Ranger3",
+      "mainSkill": "Ice Shot",
+      "weapon": "sceptre",
+      "profileCount": 6,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "c3b9d49ae3150eaae88c",
+      "ascendancyId": "ascendancy-official-Monk1",
+      "mainSkill": "Flicker Strike",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "c43a0fcc425417f630d1",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Flicker Strike",
       "weapon": "wand",
       "profileCount": 2,
-      "status": "unresolved-no-exact-weapon-requirement",
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "c9e3985ed304c4e2419f",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Flicker Strike",
+      "weapon": "quarterstaff",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "ca1cc46b2cd151106d9d",
+      "ascendancyId": "ascendancy-official-Sorceress3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
       "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "ca853850b60b10e70007",
+      "ascendancyId": "ascendancy-official-Witch2",
+      "mainSkill": "Plasma Blast",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ]
+    },
+    {
+      "packageId": "cb6b78a8b07efa0e245e",
+      "ascendancyId": "ascendancy-official-Huntress2",
+      "mainSkill": "Twister",
+      "weapon": "sceptre",
+      "profileCount": 6,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "cc70b7a87dfa492f104e",
+      "ascendancyId": "ascendancy-official-Warrior3",
+      "mainSkill": "Hammer of the Gods",
+      "weapon": "mace",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "ce3c334d83212f634295",
+      "ascendancyId": "ascendancy-official-Monk1",
+      "mainSkill": "Flicker Strike",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "cf6a9c771a215b585334",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Spark",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "d0d2a16e7afcc3b4f96f",
+      "ascendancyId": "ascendancy-official-Druid1",
+      "mainSkill": "Skyfall",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "d43bd1c6e799178527b5",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Primal Strikes",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "d47b7eaa49c206a47454",
+      "ascendancyId": "ascendancy-official-Warrior2",
+      "mainSkill": "Supercharged Slam",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "mace"
+      ]
+    },
+    {
+      "packageId": "d54b828f5e206e2d806e",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Comet",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "d861262fafefcfc013ce",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "mainSkill": "Skyfall",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "d9662b574f1d38546034",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Glacial Lance",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "df741716e43a87c57e4f",
+      "ascendancyId": "ascendancy-official-Sorceress2",
+      "mainSkill": "Skyfall",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "status": "unresolved-skill",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "dfe0cfbd2925958f977a",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Spark",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "e3ea4d07a4891558401c",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Ice Shot",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
     },
     {
       "packageId": "e71a44f9a9796c42b17f",
       "ascendancyId": "ascendancy-official-Sorceress1",
       "mainSkill": "Skyfall",
       "weapon": "wand",
-      "profileCount": 2,
+      "profileCount": 7,
       "status": "unresolved-skill",
       "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "ea4d7eb2fbea80d04cef",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Comet",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "ea96b0d9af61b1741e43",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "ee90df0c107ea8d15aa7",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Hexblast",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "ef01bfe5831e0e8829e6",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "mainSkill": "Falling Thunder",
+      "weapon": "claw",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "f48f58ddccd47e5242af",
+      "ascendancyId": "ascendancy-official-Mercenary2",
+      "mainSkill": "Explosive Grenade",
+      "weapon": "crossbow",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "crossbow"
+      ]
+    },
+    {
+      "packageId": "f4ee3c392a2bcb8308c2",
+      "ascendancyId": "ascendancy-official-Monk2",
+      "mainSkill": "Falling Thunder",
+      "weapon": "quarterstaff",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "quarterstaff"
+      ]
+    },
+    {
+      "packageId": "f503f38731d3abb078a3",
+      "ascendancyId": "ascendancy-official-Mercenary1",
+      "mainSkill": "Lightning Arrow",
+      "weapon": "bow",
+      "profileCount": 1,
+      "status": "structured-exact-compatible",
+      "localRequiredWeaponTypes": [
+        "bow"
+      ]
+    },
+    {
+      "packageId": "f559e78d25972d5ff979",
+      "ascendancyId": "ascendancy-official-Druid2",
+      "mainSkill": "Spark",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "f895531a6081271d2f07",
+      "ascendancyId": "ascendancy-official-Mercenary3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "wand",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "f8d1b25a2554a8ddcb2d",
+      "ascendancyId": "ascendancy-official-Witch3",
+      "mainSkill": "Lightning Spear",
+      "weapon": "sceptre",
+      "profileCount": 2,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
+    },
+    {
+      "packageId": "fe79f8a1a6066bd9d73b",
+      "ascendancyId": "ascendancy-official-Huntress3",
+      "mainSkill": "Lightning Warp",
+      "weapon": "staff",
+      "profileCount": 1,
+      "status": "structured-unrestricted-compatible",
+      "localRequiredWeaponTypes": []
+    },
+    {
+      "packageId": "fff2319fe45bd6e62166",
+      "ascendancyId": "ascendancy-official-Monk3",
+      "mainSkill": "Glacial Lance",
+      "weapon": "sceptre",
+      "profileCount": 1,
+      "status": "blocked-incompatible-weapon",
+      "localRequiredWeaponTypes": [
+        "spear"
+      ]
     }
   ],
-  "decision": "only-exact-local-skill-weapon-links-are-productive",
+  "decision": "only-locally-structured-compatible-skill-weapon-pairs-are-productive",
   "limitation": "The source profile exposes character-wide weapons, not a proven weapon-set link for each gem group."
 }

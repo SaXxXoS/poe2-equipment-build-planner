@@ -86,6 +86,29 @@ describe('zusammenhängende Skillplanung', () => {
     })).toEqual([])
   })
 
+  it('ordnet eine korrelierte aktuelle Skillgruppe vor einer nur allgemein gültigen Kombination ein', () => {
+    const main = skill('main', 'Main', ['attack', 'physical'])
+    const cry = skill('cry', 'Infernal Cry', ['buff', 'fire'], { sourceTags: ['warcry'] })
+    const observed = skill('observed', 'Observed Setup', ['buff'], {
+      sourceTags: ['buff'],
+      affectsPlayer: true,
+      persistsAfterWeaponSwap: true,
+      rotationRoles: ['buff'],
+    })
+    const plan = planSynergisticSkills(main, [main, cry, observed], [], 8, {
+      correlatedSkillRelations: new Map([['Observed Setup', {
+        profileCount: 3,
+        share: 75,
+        packageIds: ['fixture-package'],
+      }]]),
+    })
+    expect(plan[0]).toMatchObject({
+      skillId: 'observed',
+      evidence: 'multi-profile-correlated-exact',
+    })
+    expect(plan.some(value => value.skillId === 'cry')).toBe(true)
+  })
+
   it('legt ein belegtes korreliertes Setup in das Gegen-Set des Hauptskills', () => {
     const main = skill('main', 'Main', ['spell', 'lightning'])
     const trigger = skill('trigger', 'Trigger', ['spell'], {

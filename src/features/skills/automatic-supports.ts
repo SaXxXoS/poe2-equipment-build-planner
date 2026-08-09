@@ -48,7 +48,17 @@ export function supportResourceRisk(
   supportIds: string[],
   definitions: SupportGemDefinition[],
   context: ResourceAwareSupportContext,
+  mode: 'candidate-delta' | 'absolute' = 'candidate-delta',
 ): SupportResourceRisk {
+  const baselineModel = resolveResourceSpiritModel({
+    equipment: context.equipment,
+    setups: context.setups,
+    skills: context.skills,
+    supports: definitions,
+    characterLevel: context.characterLevel,
+    passiveTree: context.passiveTree,
+    realPassivePlanning: context.realPassivePlanning,
+  })
   const trialSetups = context.setups.map(value =>
     value.id === setup.id ? { ...value, supportGemIds: supportIds } : value,
   )
@@ -62,12 +72,28 @@ export function supportResourceRisk(
     realPassivePlanning: context.realPassivePlanning,
   })
   const chain = model.skillCostChains.find(value => value.setupId === setup.id)
+  const baselineChain = baselineModel.skillCostChains.find(value => value.setupId === setup.id)
   const relevantSets = setup.weaponSet === 'both' ? ['set-1', 'set-2'] : [setup.weaponSet]
   const capacityStates = model.spiritCapacityByWeaponSet.filter(value =>
     relevantSets.includes(value.weaponSet),
   )
-  const hardBlocked = chain?.sustainStatus === 'unusable-confirmed-zero-mana'
-    || capacityStates.some(value => value.status === 'exceeds-level-derived-quest-estimate')
+  const baselineCapacityBySet = new Map(
+    baselineModel.spiritCapacityByWeaponSet.map(value => [value.weaponSet, value.status]),
+  )
+  // Ein bereits vorhandener Engpass gehört zur Gesamtplanung und darf nicht
+  // fälschlich jeden danach geprüften Support als dessen Ursache blockieren.
+  // Hart blockiert wird nur eine durch genau diesen Kandidaten neu erzeugte
+  // bestätigte Unbenutzbarkeit oder Kapazitätsüberschreitung.
+  const hardBlocked = mode === 'absolute'
+    ? chain?.sustainStatus === 'unusable-confirmed-zero-mana'
+      || capacityStates.some(value => value.status === 'exceeds-level-derived-quest-estimate')
+    : (
+        chain?.sustainStatus === 'unusable-confirmed-zero-mana'
+        && baselineChain?.sustainStatus !== 'unusable-confirmed-zero-mana'
+      ) || capacityStates.some(value =>
+        value.status === 'exceeds-level-derived-quest-estimate'
+        && baselineCapacityBySet.get(value.weaponSet) !== 'exceeds-level-derived-quest-estimate',
+      )
   const effectiveManaPool = chain?.effectiveManaPool
   const manaRatio = effectiveManaPool && chain.baseCosts.length
     ? Math.max(...chain.baseCosts.map(value =>

@@ -119,6 +119,23 @@ describe('zentrale PoE2-Interaktionsregeln', () => {
     )).toMatchObject({ status: 'blocked' })
   })
 
+  it('belegt Infernal Cry als Vorbereitung für einen folgenden Angriff', () => {
+    const cry = skill('cry', 'Infernal Cry', ['buff', 'fire'], { sourceTags: ['warcry'] })
+    expect(evaluateSkillInteraction(
+      skill('earthshatter', 'Earthshatter', ['attack', 'melee', 'area', 'physical']),
+      cry,
+    )).toMatchObject({
+      status: 'productive',
+      evidence: 'explicit-rule',
+      weaponSet: 'set-2',
+      ruleId: 'interaction.infernal-cry.next-attack',
+    })
+    expect(evaluateSkillInteraction(
+      skill('spell', 'Spell', ['spell', 'fire']),
+      cry,
+    )).toMatchObject({ status: 'blocked' })
+  })
+
   it('belegt Elementarschwäche für Feuer, Kälte und Blitz', () => {
     const weakness = skill('weakness', 'Elemental Weakness', ['spell', 'debuff'])
     for (const damageType of ['fire', 'cold', 'lightning'] as const) {

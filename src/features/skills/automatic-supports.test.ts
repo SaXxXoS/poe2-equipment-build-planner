@@ -87,4 +87,25 @@ describe('automatische Supportbefüllung',()=>{
     expect(result.supportGemIds).toEqual(['efficient'])
   })
 
+  it('lastet einen bereits bestehenden Geistengpass nicht einem neuen Support an',()=>{
+    const persistentSkill:SkillGemDefinition = {
+      id:'skill-main',nameEn:'Persistent Skill',displayNameDe:'Anhaltende Fertigkeit',
+      dataVersion:'test',source:'local-placeholder',status:'placeholder',
+      tags:['buff'],sourceTags:['persistent'],enabled:true,spiritReservation:200,
+    }
+    const result=fillRecommendedSupportSlots(
+      {...setup,supportGemIds:[]},
+      [{skillId:'skill-main',supportId:'neutral-support'}],
+      [support('neutral-support')],
+      1,
+      {
+        equipment:[],
+        setups:[{...setup,supportGemIds:[]}],
+        skills:[persistentSkill],
+        characterLevel:1,
+      },
+    )
+    expect(result.supportGemIds).toEqual(['neutral-support'])
+  })
+
 })

@@ -32,6 +32,15 @@ type CorrelatedPackage = {
   productive: boolean
   supports: CorrelatedPackageChoice[]
   linkedActiveSkills: CorrelatedPackageChoice[]
+  linkedSkillGroups?: Array<{
+    primarySkill: string
+    activeSkills: string[]
+    supports: string[]
+    count: number
+    share: number
+    evidenceClass: 'multi-profile-same-build-loadout'
+    weaponSet: 'unknown'
+  }>
 }
 
 const metaPackages = correlatedPackages.packages as unknown as CorrelatedPackage[]
@@ -180,8 +189,8 @@ const weaponName: Partial<Record<SyntheticWeaponType, string>> = {
 }
 
 const exactWeaponTypes = new Set<SyntheticWeaponType>([
-  'bow', 'crossbow', 'wand', 'focus', 'claw', 'dagger', 'flail', 'mace',
-  'quarterstaff', 'spear', 'sword', 'axe',
+  'bow', 'crossbow', 'wand', 'staff', 'sceptre', 'focus', 'claw', 'dagger',
+  'flail', 'mace', 'quarterstaff', 'spear', 'sword', 'axe',
 ])
 
 /**
@@ -199,6 +208,20 @@ export function hasExactLocalMetaWeaponLink(
     && weaponTypeMatches(required, weapon as SyntheticWeaponType)
 }
 
+/**
+ * Ein Skill ohne Waffenpflicht darf mit einer wiederholt beobachteten,
+ * lokal bekannten Waffenart korreliert werden. Das belegt keine Pflicht und
+ * keine Set-Zuordnung; harte Waffenregeln bleiben vorrangig.
+ */
+export function hasProductiveLocalMetaWeaponLink(
+  skill: SkillGemDefinition,
+  weapon: string,
+) {
+  const required = skill.requiredWeaponTypes?.filter(type => exactWeaponTypes.has(type)) ?? []
+  if (required.length > 0) return hasExactLocalMetaWeaponLink(skill, weapon)
+  return exactWeaponTypes.has(weapon as SyntheticWeaponType)
+}
+
 export function scoreMetaReference(
   skill: SkillGemDefinition,
   weapon: SyntheticWeaponType,
@@ -211,7 +234,7 @@ export function scoreMetaReference(
     item.ascendancyId === ascendancyId
     && item.mainSkill === skill.nameEn
     && item.weapon === weapon
-    && hasExactLocalMetaWeaponLink(skill, item.weapon),
+    && hasProductiveLocalMetaWeaponLink(skill, item.weapon),
   )
   /*
    * Die getrennten Übersichtsanteile bleiben nur ein schwaches Signal.
@@ -224,9 +247,14 @@ export function scoreMetaReference(
     + (observedWeapon?.share ?? 0) * 0.08,
   )
   const correlatedPackageScore = correlatedPackage
-    ? Math.min(30, correlatedPackage.profileCount * 3)
+    ? Math.min(
+        55,
+        20
+        + correlatedPackage.profileCount * 5
+        + Math.min(10, correlatedPackage.linkedActiveSkills.length),
+      )
     : 0
-  const score = Math.min(70, overviewScore + correlatedPackageScore)
+  const score = Math.min(100, overviewScore + correlatedPackageScore)
   return {
     score,
     overviewScore,
@@ -250,7 +278,7 @@ export function correlatedMetaSkillRelations(
     item.productive
     && item.ascendancyId === ascendancyId
     && item.mainSkill === mainSkill.nameEn
-    && hasExactLocalMetaWeaponLink(mainSkill, item.weapon)
+    && hasProductiveLocalMetaWeaponLink(mainSkill, item.weapon)
     && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
   )
   const relations = new Map<string, { profileCount: number; share: number; packageIds: string[] }>()
@@ -274,7 +302,7 @@ export function correlatedMetaSupportNames(
       item.productive
       && item.ascendancyId === ascendancyId
       && item.mainSkill === mainSkill.nameEn
-      && hasExactLocalMetaWeaponLink(mainSkill, item.weapon)
+      && hasProductiveLocalMetaWeaponLink(mainSkill, item.weapon)
       && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
     )
     .flatMap(item => item.supports.map(support => ({
@@ -282,6 +310,49 @@ export function correlatedMetaSupportNames(
       packageId: item.packageId,
       profileCount: item.profileCount,
     })))
+    .sort((left, right) =>
+      right.share - left.share
+      || right.count - left.count
+      || left.name.localeCompare(right.name),
+    )
+}
+
+/**
+ * Liefert nur Supports, die in derselben reduzierten Gemmengruppe wie der
+ * verknuepfte Skill vorkamen. Die spaetere Supportanalyse muss weiterhin die
+ * harten lokalen Kompatibilitaetsregeln anwenden.
+ */
+export function correlatedMetaSupportNamesForLinkedSkill(
+  mainSkill: SkillGemDefinition,
+  linkedSkillName: string,
+  ascendancyId: string,
+) {
+  const counts = new Map<string, { count: number; maximumShare: number; packageIds: Set<string> }>()
+  metaPackages
+    .filter(item =>
+      item.productive
+      && item.ascendancyId === ascendancyId
+      && item.mainSkill === mainSkill.nameEn
+      && hasProductiveLocalMetaWeaponLink(mainSkill, item.weapon)
+      && item.profileCount >= correlatedPackages.policy.minimumProductiveProfiles,
+    )
+    .forEach(item => (item.linkedSkillGroups ?? [])
+      .filter(group => group.activeSkills.includes(linkedSkillName))
+      .forEach(group => group.supports.forEach(name => {
+        const current = counts.get(name)
+        counts.set(name, {
+          count: (current?.count ?? 0) + group.count,
+          maximumShare: Math.max(current?.maximumShare ?? 0, group.share),
+          packageIds: new Set([...(current?.packageIds ?? []), item.packageId]),
+        })
+      })))
+  return [...counts.entries()]
+    .map(([name, evidence]) => ({
+      name,
+      count: evidence.count,
+      share: evidence.maximumShare,
+      packageIds: [...evidence.packageIds].sort(),
+    }))
     .sort((left, right) =>
       right.share - left.share
       || right.count - left.count

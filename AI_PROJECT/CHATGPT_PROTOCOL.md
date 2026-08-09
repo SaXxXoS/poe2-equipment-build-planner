@@ -1,5 +1,33 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Meta-orientierte Paketoptimierung – 9. August 2026
+
+- Der aktive Saisonpin ist `1044-20260809-12563` für `Runes of Aldur`.
+- Von 460 DPS-sortierten Referenzprofilen wurden 237 reduziert validiert; 223
+  bleiben blockiert. Aus 150 geprüften Paketen sind 38 mehrfach korrelierte,
+  lokal kompatible Produktpakete entstanden.
+- Die feste Optimierermatrix erzeugt für 23/23 produktive Aszendenzen ein
+  kohärentes Paket mit Hauptskill, fünf Supports, Setup-Fertigkeit,
+  Skillgruppe und passender Waffe. 21/23 verwenden ein korreliertes aktuelles
+  Paket; Titan und Tactician bleiben lokal validierte Fallbacks.
+- Ohne Ausrüstung gewinnt die aktuelle korrelierte Paketbeobachtung vor bloßer
+  Häufigkeit. Mit Ausrüstung bleibt Equipment-first vorrangig.
+- Eine technisch unterschiedliche Set-2-Fertigkeit wird nur bei belegter
+  Wirkungskette erzeugt. 22/23 Matrixprofile besitzen sie; Spirit Walker wird
+  nicht mit einer erfundenen Set-2-Rolle versehen.
+- Passive Normalpunkte, bis zu 24 umschaltbare normale Waffensetpunkte und bis
+  zu acht getrennte Aszendenzpunkte bleiben fachlich getrennt. Juwelensockel
+  und Keystones werden nicht set-spezifisch vergeben.
+- Unique-Details zeigen die tatsächlichen Varianten-, Implicit- und Modzeilen;
+  rohe `source-line`-Referenzen sind kein sichtbarer Nutzen- oder Nachteiltext.
+- 25 fokussierte Dateien mit 147 Tests bestanden. Die Gesamtsuite bestand mit
+  1.973 Tests; zwei parallele Vollbaum-Timeouts bestanden seriell mit 197/197.
+  Typecheck, Lint und Produktions-Build bestanden.
+- Der belegte Status lautet **meta-orientiert und kohärent**, nicht garantierter
+  weltweiter Meta-Sieger und nicht vollständiger Path-of-Building-Ersatz.
+- Hauptdokument:
+  `docs/BUILD_ASSISTANT_META_ORIENTED_COMPLETION_2026_08_09.md`.
+
 ## Vollständigere lokale Caster-Waffenoptimierung – Schritt 170 (2026-08-08)
 
 - Der gemeinsame Skill-/Waffenoptimierer bewertet freie Zauber nicht mehr ausschließlich mit Zauberstäben, sondern auch mit den lokal gepinnten Stab- und Zepterbasen.

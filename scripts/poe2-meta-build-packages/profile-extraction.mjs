@@ -33,8 +33,8 @@ export function extractWeapons(items = []) {
   return sortedUnique(result)
 }
 
-export function extractMainGroup(skills = []) {
-  const candidates = skills.map((group, index) => {
+export function extractSkillGroups(skills = []) {
+  return skills.map((group, index) => {
     const damaging = [...(group?.dps ?? [])]
       .filter(entry => Number.isFinite(entry?.dps))
       .sort((left, right) => right.dps - left.dps || String(left.name).localeCompare(String(right.name)))
@@ -54,9 +54,39 @@ export function extractMainGroup(skills = []) {
         .map(gem => gem.name)),
     }
   }).filter(candidate => candidate.name)
-  return candidates.sort((left, right) =>
+}
+
+export function extractMainGroup(skills = []) {
+  return extractSkillGroups(skills).sort((left, right) =>
     right.dps - left.dps
     || right.supports.length - left.supports.length
     || left.index - right.index,
   )[0] ?? null
+}
+
+/**
+ * Reduziert das vollstaendige sichtbare Gemmen-Setup eines Profils. Die
+ * Gruppenreihenfolge bleibt erhalten; Account-, Charakter- und PoB-Daten
+ * werden nicht uebernommen. Eine Gruppe beweist gemeinsame Verwendung im
+ * Profil, aber ohne explizites Quellfeld noch keine Waffenset-Zuordnung.
+ */
+export function extractProfileSkillLoadout(skills = []) {
+  const groups = extractSkillGroups(skills)
+  const main = [...groups].sort((left, right) =>
+    right.dps - left.dps
+    || right.supports.length - left.supports.length
+    || left.index - right.index,
+  )[0] ?? null
+  return {
+    main,
+    groups: groups.map(group => ({
+      groupIndex: group.index,
+      primarySkill: group.name,
+      activeSkills: group.activeSkills,
+      supports: group.supports,
+      modeledDps: group.dps,
+      relationship: group.index === main?.index ? 'main-group' : 'same-profile-group',
+      weaponSet: 'unknown',
+    })),
+  }
 }

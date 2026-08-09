@@ -43,6 +43,19 @@ export function buildEffectGraph(input: {
   mainWeapon: SyntheticWeaponType
   supports: SupportGemDefinition[]
   setupSkill?: SkillGemDefinition
+  setupRelationship?: {
+    evidence: SkillInteractionEvidence
+    reason: string
+    ruleId: string
+  }
+  setupSkills?: Array<{
+    skill: SkillGemDefinition
+    relationship?: {
+      evidence: SkillInteractionEvidence
+      reason: string
+      ruleId: string
+    }
+  }>
   embeddedSkills?: SkillGemDefinition[]
   ascendancyId: string
   role?: SkillRole
@@ -84,10 +97,21 @@ export function buildEffectGraph(input: {
     })
   }
 
-  if (input.setupSkill) {
-    const relation = evaluateSkillInteraction(input.mainSkill, input.setupSkill)
+  const setupSkills = [
+    ...(input.setupSkill ? [{ skill: input.setupSkill, relationship: input.setupRelationship }] : []),
+    ...(input.setupSkills ?? []),
+  ].filter((value, index, all) => all.findIndex(candidate => candidate.skill.id === value.skill.id) === index)
+  for (const setup of setupSkills) {
+    const relation = setup.relationship?.evidence === 'multi-profile-correlated-exact'
+      ? {
+          status: 'productive' as const,
+          evidence: setup.relationship.evidence,
+          reason: setup.relationship.reason,
+          ruleId: setup.relationship.ruleId,
+        }
+      : evaluateSkillInteraction(input.mainSkill, setup.skill)
     append({
-      fromId: input.setupSkill.id,
+      fromId: setup.skill.id,
       toId: input.mainSkill.id,
       kind: 'main-setup',
       evidence: relation.evidence,

@@ -16,6 +16,7 @@ import {
   rankedSupportsForSkill,
 } from '../../src/features/skills/automatic-supports'
 import { supportCapacityFor } from '../../src/features/skills/meta-skills'
+import { planSynergisticSkills } from '../../src/features/skills/synergy-planner'
 import {
   ascendancyMetaReferences,
   metaReferenceSnapshot,
@@ -54,15 +55,40 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       characterLevel: character.level,
       characterAttributes: analysis.characterAttributes,
       evaluatePackage: candidate => {
-        const packageSetups = setups.map((setup, index) => index === 0
-          ? {
+        const plannedQueue = [...(candidate.plannedSkillSetups ?? [])]
+        if (!plannedQueue.length && candidate.setupSkillId) plannedQueue.push({
+          skillId: candidate.setupSkillId,
+          skillName: candidate.setupSkillName ?? candidate.setupSkillId,
+          role: 'utility',
+          weaponSet: candidate.setupWeaponSet
+            ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
+          weaponType: candidate.setupWeaponType ?? candidate.weaponType,
+          reason: candidate.setupReason ?? 'Belegte Ergänzung des Hauptskills.',
+          score: 0,
+          evidence: 'structured-derived',
+          ruleId: 'optimizer.setup-fallback',
+        })
+        const packageSetups = setups.map((setup, index) => {
+          if (index === 0) return {
               ...setup,
               skillId: candidate.skillId,
               role: 'main' as const,
               weaponSet: candidate.mainWeaponSet,
               supportGemIds: candidate.compatibleSupportIds,
             }
-          : setup)
+          const planned = plannedQueue.shift()
+          return planned
+            ? {
+                ...setup,
+                skillId: planned.skillId,
+                role: planned.role,
+                weaponSet: planned.weaponSet,
+                supportGemIds: [],
+                origin: 'recommended' as const,
+                synergyReason: planned.reason,
+              }
+            : setup
+        })
         const equipment = plannedEquipmentForVariant(
           initialEquipment,
           candidate,
@@ -89,7 +115,44 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
         )
       : initialEquipment
     const plannedWeaponTypes = deriveWeaponContext(plannedEquipment).availableWeaponTypes
-    let setupAssigned = false
+    const plannedQueue = [...(result.selected?.plannedSkillSetups ?? [])]
+    if (!plannedQueue.length && result.selected?.setupSkillId) plannedQueue.push({
+      skillId: result.selected.setupSkillId,
+      skillName: result.selected.setupSkillName ?? result.selected.setupSkillId,
+      role: 'utility',
+      weaponSet: result.selected.setupWeaponSet
+        ?? (result.selected.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
+      weaponType: result.selected.setupWeaponType ?? result.selected.weaponType,
+      reason: result.selected.setupReason ?? 'Belegte Ergänzung des Hauptskills.',
+      score: 0,
+      evidence: 'structured-derived',
+      ruleId: 'optimizer.setup-fallback',
+    })
+    if (!plannedQueue.length && result.selected && selectedSkill) {
+      const allowedDefinitions = buildAssistantCandidates.skills.filter(definition => {
+        if (definition.requiredClassId && definition.requiredClassId !== character.classId) return false
+        if (definition.excludedClassIds?.includes(character.classId)) return false
+        if (definition.allowedAscendancyIds?.length
+          && !definition.allowedAscendancyIds.includes(character.ascendancyId)) return false
+        return !definition.excludedAscendancyIds?.includes(character.ascendancyId)
+      })
+      plannedQueue.push(...planSynergisticSkills(
+        selectedSkill,
+        allowedDefinitions,
+        skillScores,
+        setups.length - 1,
+        {
+          ascendancyId: character.ascendancyId,
+          mainWeaponSet: result.selected.mainWeaponSet === 'set-2' ? 'set-2' : 'set-1',
+        },
+      ).map(planned => ({
+        ...planned,
+        skillName: allowedDefinitions.find(value => value.id === planned.skillId)?.displayNameDe
+          ?? planned.skillId,
+        weaponType: result.selected!.weaponType,
+      })))
+    }
+    const effectivePlannedSkills = [...plannedQueue]
     const packageSetups = result.selected
       ? setups.map((setup, index) => {
           if (index === 0) return {
@@ -100,17 +163,16 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
             origin: 'recommended' as const,
             supportGemIds: [],
           }
-          if (!setupAssigned && result.selected!.setupSkillId) {
-            setupAssigned = true
+          const planned = plannedQueue.shift()
+          if (planned) {
             return {
               ...setup,
-              skillId: result.selected!.setupSkillId,
-              role: 'utility' as const,
-              weaponSet: result.selected!.setupWeaponSet
-                ?? (result.selected!.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const),
+              skillId: planned.skillId,
+              role: planned.role,
+              weaponSet: planned.weaponSet,
               origin: 'recommended' as const,
               supportGemIds: [],
-              synergyReason: result.selected!.setupReason,
+              synergyReason: planned.reason,
             }
           }
           return setup
@@ -159,7 +221,8 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       selectedSkill: result.selected?.skillName ?? null,
       selectedSkillEn: selectedSkill?.nameEn ?? null,
       weapon: result.selected?.weaponType ?? null,
-      setupSkill: result.selected?.setupSkillName ?? null,
+      setupSkill: result.selected?.setupSkillName ?? effectivePlannedSkills[0]?.skillName ?? null,
+      plannedSkillCount: effectivePlannedSkills.length,
       setupWeapon: result.selected?.setupWeaponType ?? null,
       supportCount: result.selected?.compatibleSupportIds.length ?? 0,
       visibleSkillCount: populatedSetups.length,
@@ -172,6 +235,8 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       packageStatus: result.selected?.packageStatus ?? null,
       packageScore: result.selected?.packageScore ?? null,
       metaScore: result.selected?.metaReferenceScore ?? null,
+      correlatedProfileCount: result.selected?.metaReferenceProfileCount ?? 0,
+      correlatedEvidenceClass: result.selected?.metaReferenceEvidenceClass ?? null,
       plannedWeaponTypes,
       plannedWeaponContextMatches: result.selected
         ? plannedWeaponTypes.includes(result.selected.weaponType)
@@ -197,10 +262,12 @@ const totals = {
   plannedWeaponContextMatches: rows.filter(row => row.plannedWeaponContextMatches).length,
   observedSkillIntersections: rows.filter(row => row.selectionIntersectsObservedSkill).length,
   observedWeaponIntersections: rows.filter(row => row.selectionIntersectsObservedWeapon).length,
+  profilesWithCorrelatedCurrentPackage: rows.filter(row => row.correlatedProfileCount > 0).length,
   distinctSkills: new Set(rows.map(row => row.selectedSkillEn).filter(Boolean)).size,
   distinctWeapons: new Set(rows.map(row => row.weapon).filter(Boolean)).size,
   profilesWithFilledMainSupports: rows.filter(row => row.mainSupportCount > 0).length,
   profilesWithSetupSkill: rows.filter(row => row.setupSkill).length,
+  profilesWithPlannedSkillGroup: rows.filter(row => row.plannedSkillCount > 0).length,
   profilesWithSet1Skill: rows.filter(row => row.set1SkillCount > 0).length,
   profilesWithSet2Skill: rows.filter(row => row.set2SkillCount > 0).length,
 }
@@ -234,6 +301,7 @@ const report = {
   interpretation: {
     coherent: 'Der gemeinsame Paketvalidator akzeptiert Skill, Waffe, Supports und Anforderungen als zusammenhängendes lokales Paket.',
     observedIntersection: 'Sekundärer Plausibilitätsbeleg gegen marginale poe.ninja-Häufigkeiten; kein Beweis für globale Optimalität und keine DPS-Garantie.',
+    correlatedCurrentPackage: 'Saisonaler PlausibilitÃ¤tsbeleg: Aszendenz, Hauptskill, Waffe, Supports und weitere Fertigkeiten wurden gemeinsam in einem lokal gepinnten Profil beobachtet.',
     plannedWeaponContextMatches: 'Die technisch geplante Waffenklasse erreicht nach Normalisierung wieder denselben Analyzer-Waffentyp.',
   },
   limitations: [
@@ -244,12 +312,20 @@ const report = {
   ],
 }
 
+await writeFile(OUTPUT, `${JSON.stringify(report, null, 2)}\n`)
+
 if (totals.selected !== totals.profiles
   || totals.coherent !== totals.profiles
   || totals.plannedWeaponContextMatches !== totals.profiles
   || totals.profilesWithFilledMainSupports !== totals.profiles) {
-  throw new Error(`Produktive Paketmatrix unvollständig: ${JSON.stringify(totals)}`)
+  const failures = {
+    notSelected: rows.filter(row => row.status !== 'selected'),
+    notCoherent: rows.filter(row => row.packageStatus !== 'coherent'),
+    weaponContextMismatch: rows.filter(row => !row.plannedWeaponContextMatches),
+    missingMainSupports: rows.filter(row => row.mainSupportCount === 0),
+    missingPlannedSkillGroup: rows.filter(row => row.plannedSkillCount === 0),
+  }
+  throw new Error(`Produktive Paketmatrix unvollständig: ${JSON.stringify({ totals, failures })}`)
 }
 
-await writeFile(OUTPUT, `${JSON.stringify(report, null, 2)}\n`)
 console.log(JSON.stringify(totals, null, 2))

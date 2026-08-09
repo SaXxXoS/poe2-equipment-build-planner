@@ -43,7 +43,7 @@ export function summarizePostPassiveResourceRisk(input: {
   }
   const risks = input.setups
     .filter(setup => Boolean(setup.skillId))
-    .map(setup => ({ setup, risk: supportResourceRisk(setup, setup.supportGemIds, input.supports, context) }))
+    .map(setup => ({ setup, risk: supportResourceRisk(setup, setup.supportGemIds, input.supports, context, 'absolute') }))
   return {
     hardConflictSetupIds: risks.filter(value => value.risk.hardBlocked).map(value => value.setup.id),
     totalPenalty: risks.reduce((sum, value) => sum + value.risk.penalty, 0),
@@ -75,7 +75,7 @@ export function rebalanceSupportsAfterPassivePlanning(input: {
       passiveTree: input.passiveTree,
       realPassivePlanning: input.realPassivePlanning,
     }
-    const current = supportResourceRisk(original, original.supportGemIds, input.supports, context)
+    const current = supportResourceRisk(original, original.supportGemIds, input.supports, context, 'absolute')
     if (original.origin !== 'recommended') {
       if (current.hardBlocked) manualConflictSetupIds.push(original.id)
       continue
@@ -94,6 +94,7 @@ export function rebalanceSupportsAfterPassivePlanning(input: {
       alternative.supportGemIds,
       input.supports,
       { ...context, setups: nextSetups.map(value => value.id === original.id ? alternative : value) },
+      'absolute',
     )
     const improves = alternative.supportGemIds.length > 0
       && (current.hardBlocked

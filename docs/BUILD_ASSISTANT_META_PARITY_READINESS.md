@@ -1,5 +1,13 @@
 # Build-Assistent: Optimierungs- und Meta-Paritätsstatus
 
+> **Aktualisierung 9. August 2026:** Die aktuelle reduzierte Referenz umfasst
+> 237 validierte Profile und 38 produktive korrelierte Pakete. Die Matrix ist
+> für 23/23 produktive Aszendenzen kohärent; 21/23 verwenden ein aktuelles
+> Mehrprofilpaket. Dadurch ist der Assistent meta-orientiert nutzbar. Die
+> unten dokumentierte Grenze bleibt bestehen: vollständige PoB-Parität und
+> globale Meta-Überlegenheit sind ohne vollständig reproduzierbare
+> Referenzbuilds weiterhin nicht nachgewiesen.
+
 ## Ergebnis
 
 Der Build-Assistent vergleicht berechenbare Skill-Waffen-Pakete jetzt innerhalb

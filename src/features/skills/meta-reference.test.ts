@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition } from '../../domain'
-import { ascendancyMetaReferences, metaReferenceSnapshot, scoreMetaReference } from './meta-reference'
+import {
+  ascendancyMetaReferences,
+  correlatedMetaSupportNamesForLinkedSkill,
+  metaReferenceSnapshot,
+  scoreMetaReference,
+} from './meta-reference'
 import profileReferences from '../../../docs/audits/poe2-current-meta-reference-profiles.json'
 import profileValidation from '../../../docs/audits/poe2-current-meta-build-profile-validation.json'
 import correlatedPackages from '../../../generated/meta/poe2-build-packages.json'
@@ -28,7 +33,7 @@ describe('seasonal meta reference', () => {
     expect(metaReferenceSnapshot).toMatchObject({
       league: 'Runes of Aldur',
       patchFamily: '0.5.x',
-      exactVersion: '1959-20260808-19780',
+      exactVersion: correlatedPackages.source.version,
       snapshotDate: '2026-07-28',
       overviewExactVersion: '1924-20260728-10654',
       correlatedPackageSnapshotDate: correlatedPackages.source.snapshotDate,
@@ -73,6 +78,7 @@ describe('seasonal meta reference', () => {
     )
     expect(result.correlatedProfileCount).toBe(first.profileCount)
     expect(result.correlatedPackageScore).toBeGreaterThan(0)
+    expect(result.correlatedPackageScore).toBeGreaterThan(result.overviewScore)
   })
 
   it('does not treat a profile-wide secondary weapon as a main-skill correlation', () => {
@@ -97,9 +103,11 @@ describe('seasonal meta reference', () => {
   it('keeps correlated profile evidence anonymized and reduced', () => {
     expect(profileValidation).toMatchObject({
       requestedProfiles: 460,
-      validatedProfiles: 53,
-      blockedProfiles: 407,
     })
+    expect(profileValidation.validatedProfiles).toBeGreaterThan(100)
+    expect(profileValidation.blockedProfiles).toBe(
+      profileValidation.requestedProfiles - profileValidation.validatedProfiles,
+    )
     expect(profileValidation.policy).toMatchObject({
       rawProfilesStored: false,
       accountNamesStored: false,
@@ -108,11 +116,29 @@ describe('seasonal meta reference', () => {
     })
     for (const observation of profileValidation.observations) {
       expect(observation.profileId).toMatch(/^[a-f0-9]{20}$/)
+      expect(observation.observationSchemaVersion).toBe(2)
+      expect(observation.skillGroups).toBeInstanceOf(Array)
       expect(observation).not.toHaveProperty('account')
       expect(observation).not.toHaveProperty('name')
       expect(observation).not.toHaveProperty('url')
       expect(observation).not.toHaveProperty('pathOfBuildingExport')
     }
+  })
+
+  it('keeps full-loadout group evidence bounded and exposes only same-group supports', () => {
+    const packageWithGroup = correlatedPackages.packages.find(item =>
+      item.linkedSkillGroups?.some(group => group.supports.length > 0),
+    )
+    expect(packageWithGroup).toBeDefined()
+    expect(correlatedPackages.packages.flatMap(item => item.linkedSkillGroups ?? [])
+      .every(group => group.share >= 0 && group.share <= 100)).toBe(true)
+    const group = packageWithGroup!.linkedSkillGroups.find(item => item.supports.length > 0)!
+    const linkedSupports = correlatedMetaSupportNamesForLinkedSkill(
+      skill(packageWithGroup!.mainSkill, packageWithGroup!.localRequiredWeaponTypes as never),
+      group.activeSkills[0],
+      packageWithGroup!.ascendancyId,
+    )
+    expect(linkedSupports.map(item => item.name)).toEqual(expect.arrayContaining(group.supports))
   })
 
   it('does not create a package bonus for an uncorrelated pair', () => {

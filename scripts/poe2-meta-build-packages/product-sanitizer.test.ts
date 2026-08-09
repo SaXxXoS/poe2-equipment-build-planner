@@ -18,20 +18,20 @@ const base = {
 describe('meta product sanitizer', () => {
   it('retains exact local pairs and reports unproven profile-wide pairs', () => {
     const result = sanitizeMetaProduct(base, catalog.skills)
-    expect(result.product.packages.map(value => value.packageId)).toEqual(['bow'])
+    expect(result.product.packages.map(value => value.packageId)).toEqual(['bow', 'spell'])
     expect(result.product).toMatchObject({
-      packageCount: 1,
+      packageCount: 2,
       policy: {
-        localSkillWeaponGate: 'exact-pinned-gem-weapon-requirement',
+        localSkillWeaponGate: 'structured-pinned-gem-weapon-compatibility',
         profileWideWeaponListIsSetProof: false,
       },
     })
     expect(result.report).toMatchObject({
       inputPackageCount: 3,
-      productivePackageCount: 1,
-      blockedPackageCount: 2,
+      productivePackageCount: 2,
+      blockedPackageCount: 1,
     })
-    expect(result.report.blockedPackages.map(value => value.packageId)).toEqual(['spell', 'wand'])
+    expect(result.report.blockedPackages.map(value => value.packageId)).toEqual(['wand'])
   })
 
   it('preserves the complete rejection audit on repeated product sanitization', () => {
@@ -42,8 +42,8 @@ describe('meta product sanitizer', () => {
     expect(second.report).toEqual(first.report)
     expect(second.report).toMatchObject({
       inputPackageCount: 3,
-      productivePackageCount: 1,
-      blockedPackageCount: 2,
+      productivePackageCount: 2,
+      blockedPackageCount: 1,
     })
   })
 })

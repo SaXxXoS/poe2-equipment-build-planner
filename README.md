@@ -294,3 +294,18 @@ Runtime-Netzwerk.
 
 Details und belegte Grenzen:
 [`docs/BUILD_ASSISTANT_PRODUCT_DATA_HARDENING_2026_08_09.md`](docs/BUILD_ASSISTANT_PRODUCT_DATA_HARDENING_2026_08_09.md).
+
+## Aktuelle meta-orientierte Optimierung
+
+Der aktive, offline ausgelieferte Saisonstand `1044-20260809-12563` enthält
+38 mehrfach korrelierte Build-Pakete aus 237 reduziert validierten aktuellen
+Profilen. Die Optimierermatrix liefert für alle 23 produktiven Aszendenzen ein
+kohärentes Paket aus Hauptskill, eindeutigen Supports, Skillgruppe,
+Setup-Fertigkeit und kompatibler Waffe. 21 Profile verwenden direkt ein
+korreliertes Saisonpaket; Titan und Tactician verwenden mangels ausreichender
+Mehrprofilabdeckung einen ausdrücklich lokalen technischen Fallback.
+
+Das ist eine aktuelle, regelkonforme und meta-orientierte Empfehlung, aber
+keine Garantie auf den weltweit stärksten Build und kein vollständiger
+Path-of-Building-Ersatz. Messwerte, Auswahlregeln und Grenzen stehen in
+[`docs/BUILD_ASSISTANT_META_ORIENTED_COMPLETION_2026_08_09.md`](docs/BUILD_ASSISTANT_META_ORIENTED_COMPLETION_2026_08_09.md).

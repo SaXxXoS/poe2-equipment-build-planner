@@ -41,10 +41,13 @@ export function planSynergisticSkills(
     const interaction = evaluateSkillInteraction(main, candidate)
     if (interaction.status !== 'productive' || !interaction.role || !interaction.weaponSet) return []
     const recommendation = scores.get(candidate.id)
+    const weaponSet = interaction.weaponSet !== 'both' && context?.mainWeaponSet
+      ? (context.mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const)
+      : interaction.weaponSet
     return [{
       skillId: candidate.id,
       role: interaction.role,
-      weaponSet: interaction.weaponSet,
+      weaponSet,
       reason: interaction.reason,
       score: interaction.score + Math.max(0, recommendation?.totalScore ?? 0) * 0.05,
       evidence: interaction.evidence,
@@ -79,7 +82,14 @@ export function planSynergisticSkills(
         ? (mainWeaponSet === 'set-1' ? 'set-2' : 'set-1')
         : 'both',
       reason: `${evidence.profileCount} lokal gepinnte Profile derselben Aszendenz belegen diese Fertigkeit gemeinsam mit dem Hauptskill.`,
-      score: 35 + Math.min(25, evidence.profileCount * 2) + Math.max(0, recommendation?.totalScore ?? 0) * 0.02,
+      // Eine innerhalb desselben aktuellen Profils beobachtete Skillgruppe
+      // ist für die Paketwahl spezifischer als eine allgemein gültige
+      // mechanische Kombination. Die mechanische Regel bleibt der Fallback,
+      // wenn für die konkrete Aszendenz kein korreliertes Paket vorliegt.
+      score: 1_500
+        + Math.min(250, evidence.profileCount * 20)
+        + Math.min(100, evidence.share)
+        + Math.max(0, recommendation?.totalScore ?? 0) * 0.02,
       evidence: 'multi-profile-correlated-exact',
       ruleId: `meta-package:${evidence.packageIds.join('+')}`,
     }]

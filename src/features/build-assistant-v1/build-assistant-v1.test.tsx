@@ -216,6 +216,7 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
       evaluatedSkillCount: 2,
       evaluatedCombinationCount: 2,
       blockedCombinationCount: 0,
+      blockedReasonCounts: {},
       equipmentFirst: false,
       numericallyComparableCombinationCount: 1,
       optimizationStatus: 'mixed-evidence',
@@ -224,6 +225,11 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
       selected: {
         skillId: spark.id, skillName: spark.displayNameDe, weaponType: 'wand', weaponLabel: 'Zauberstab', mainWeaponSet: 'set-1',
         setupSkillId: orb.id, setupSkillName: orb.displayNameDe, setupWeaponType: 'wand', setupReason: 'Gewittersphäre bereitet Funken in Waffenset 2 vor.',
+        plannedSkillSetups: [{
+          skillId: orb.id, skillName: orb.displayNameDe, weaponType: 'wand', role: 'utility', weaponSet: 'set-2',
+          reason: 'Gewittersphäre bereitet Funken in Waffenset 2 vor.', score: 80,
+          evidence: 'explicit-rule', ruleId: 'test.orb-setup',
+        }],
         compatibleSupportIds: [support.id], affinityScore: 1, passiveAffinityScore: 1, analyzerScore: 1, modeledDps: null,
         damageObjectiveScore: 0, numericCoverageStatus: 'partial', totalScore: 1, reasons: ['Gemeinsam geprüft.'],
       },
@@ -233,6 +239,8 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(html).toContain('Geprüfte Hauptskill-Unterstützungen')
     expect(html).toContain(support.displayNameDe)
     expect(html).toContain('Zusammenhang der Waffensets')
+    expect(html).toContain('Zusammenhängende Skillgruppe')
+    expect(html).toContain('Waffenset 2')
     expect(html).toContain('Gewittersphäre bereitet Funken')
   })
 })

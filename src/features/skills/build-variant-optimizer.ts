@@ -9,10 +9,14 @@ import {
 import { estimateHitDamage } from '../../engine'
 import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import { technicalItemClasses } from '../../affixes/registry'
-import { planSynergisticSkills, type SkillSynergyScore } from './synergy-planner'
+import {
+  planSynergisticSkills,
+  type PlannedSynergySkill,
+  type SkillSynergyScore,
+} from './synergy-planner'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
 import { fillRecommendedSupportSlots } from './automatic-supports'
-import { scoreMetaReference } from './meta-reference'
+import { correlatedMetaSupportNames, scoreMetaReference } from './meta-reference'
 import {
   evaluateSkillWeaponCompatibility,
   evaluateSupportInteraction,
@@ -68,6 +72,10 @@ export interface BuildVariantCandidate {
   setupWeaponType?: SyntheticWeaponType
   setupWeaponSet?: 'set-1' | 'set-2'
   setupReason?: string
+  plannedSkillSetups?: Array<PlannedSynergySkill & {
+    skillName: string
+    weaponType: SyntheticWeaponType
+  }>
   compatibleSupportIds: string[]
   affinityScore: number
   passiveAffinityScore: number
@@ -79,6 +87,8 @@ export interface BuildVariantCandidate {
   resourcePenalty?: number
   totalScore: number
   metaReferenceScore?: number
+  metaReferenceProfileCount?: number
+  metaReferenceEvidenceClass?: string
   packageScore?: number
   packageStatus?: 'coherent' | 'limited' | 'blocked'
   packageComponents?: {
@@ -102,6 +112,7 @@ export interface BuildVariantOptimization {
   evaluatedSkillCount: number
   evaluatedCombinationCount: number
   blockedCombinationCount: number
+  blockedReasonCounts?: Record<string, number>
   equipmentFirst: boolean
   selected: BuildVariantCandidate | null
   alternatives: BuildVariantCandidate[]
@@ -297,6 +308,46 @@ function setupWeapon(
   return candidateWeapons(skill, { 'set-1': new Set(), 'set-2': new Set() })[0]
 }
 
+function planCompatibleSkillPackage(
+  mainSkill: SkillGemDefinition,
+  definitions: SkillGemDefinition[],
+  recommendationScores: SkillSynergyScore[],
+  ascendancyId: string,
+  mainWeapon: SyntheticWeaponType,
+  mainWeaponSet: 'set-1' | 'set-2',
+  equipped: ReturnType<typeof equipmentWeaponSets>,
+) {
+  const oppositeSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
+  let oppositeWeapon: SyntheticWeaponType | undefined
+  const result: NonNullable<BuildVariantCandidate['plannedSkillSetups']> = []
+  for (const planned of planSynergisticSkills(
+    mainSkill,
+    definitions,
+    recommendationScores,
+    8,
+    { ascendancyId, mainWeaponSet },
+  )) {
+    const definition = definitions.find(value => value.id === planned.skillId)
+    if (!definition) continue
+    const targetSet = planned.weaponSet === 'both' ? mainWeaponSet : planned.weaponSet
+    let weaponType = mainWeapon
+    if (targetSet === oppositeSet) {
+      const candidate = oppositeWeapon ?? setupWeapon(definition, mainWeapon, equipped, oppositeSet)
+      if (!candidate || evaluateSkillWeaponCompatibility(definition, candidate).status !== 'productive') continue
+      oppositeWeapon ??= candidate
+      weaponType = candidate
+    } else if (evaluateSkillWeaponCompatibility(definition, mainWeapon).status !== 'productive') {
+      continue
+    }
+    result.push({
+      ...planned,
+      skillName: definition.displayNameDe || definition.nameEn || definition.id,
+      weaponType,
+    })
+  }
+  return result
+}
+
 export function normalizeDamageObjective(
   variants: BuildVariantCandidate[],
 ): BuildVariantCandidate[] {
@@ -388,6 +439,11 @@ export function optimizeBuildVariants(input: {
       skill,
       affinity: scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId),
     }))
+    const correlatedPackageAligned = scoredAffinity
+      .filter(({ skill }) => candidateWeapons(skill, equipped).some(weapon =>
+        scoreMetaReference(skill, weapon, input.ascendancyId).correlatedProfileCount > 0,
+      ))
+      .map(value => value.skill)
     const metaAligned = scoredAffinity
       .filter(({ skill }) => candidateWeapons(skill, equipped).some(weapon =>
         scoreMetaReference(skill, weapon, input.ascendancyId).observedSkillShare !== undefined,
@@ -397,28 +453,34 @@ export function optimizeBuildVariants(input: {
     const ascendancyAligned = scoredAffinity
       .filter(value => value.affinity.ascendancyMatches.length > 0 && value.affinity.score === maximumAffinity)
       .map(value => value.skill)
-    // Ohne reale Ausrüstung ist eine saisonale Beobachtung der gewählten
-    // Aszendenz belastbarer als das bloße Maximum grober Tags. Sie darf
-    // weiterhin weder Rollen- noch Waffenregeln umgehen: metaAligned enthält
-    // nur produktive Hauptskillkandidaten mit mindestens einer technisch
-    // kompatiblen Waffe. Die Baum-/Tag-Affinität bleibt der deterministische
-    // Fallback, wenn kein solcher Kandidat lokal vorhanden ist.
-    if (metaAligned.length) eligibleSkills = metaAligned
+    // Ein validiertes, korreliertes Build-Paket ist belastbarer als getrennte
+    // Skill- und Waffen-Randstatistiken. Deshalb darf ein loses Top-Skill-
+    // Vorkommen keinen Kandidaten mit gemeinsam beobachteter Aszendenz,
+    // Hauptskill, Waffe, Supports und verknüpften Skills verdrängen. Rollen-
+    // und Waffenregeln bleiben erhalten, weil beide Listen ausschließlich aus
+    // den bereits technisch zulässigen Hauptskillkandidaten entstehen.
+    if (correlatedPackageAligned.length) eligibleSkills = correlatedPackageAligned
+    else if (metaAligned.length) eligibleSkills = metaAligned
     else if (ascendancyAligned.length) eligibleSkills = ascendancyAligned
   }
   const characterSkills = input.skills.filter(skill =>
     skill.enabled !== false && characterAllowsSkill(skill, input.classId, input.ascendancyId),
   )
   let blockedCombinationCount = 0
+  const blockedReasonCounts: Record<string, number> = {}
+  const block = (reason: string) => {
+    blockedCombinationCount += 1
+    blockedReasonCounts[reason] = (blockedReasonCounts[reason] ?? 0) + 1
+  }
   let variants = eligibleSkills.flatMap((skill): BuildVariantCandidate[] => {
     const weapons = candidateWeapons(skill, equipped)
     if (!weapons.length) {
-      blockedCombinationCount += 1
+      block('no-compatible-weapon-candidate')
       return []
     }
     return weapons.flatMap(weapon => {
       if (evaluateSkillWeaponCompatibility(skill, weapon).status !== 'productive') {
-        blockedCombinationCount += 1
+        block('skill-weapon-incompatible')
         return []
       }
       const score = scores.get(skill.id) ?? {
@@ -431,6 +493,10 @@ export function optimizeBuildVariants(input: {
       const affinity = scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId)
       const mainSetup = input.setups.find(value => value.role === 'main') ?? input.setups[0]
       if (!mainSetup) return []
+      const observedSupportOrder = new Map(
+        correlatedMetaSupportNames(skill, input.ascendancyId)
+          .map((support, index) => [support.name, index]),
+      )
       const compatibleSupports = input.supports
         .filter(support =>
           supportCompatible(skill, support, weapon)
@@ -438,6 +504,9 @@ export function optimizeBuildVariants(input: {
           && !support.excludedAscendancyIds?.includes(input.ascendancyId),
         )
         .sort((left, right) => {
+          const metaDifference = (observedSupportOrder.get(left.nameEn ?? '') ?? Number.MAX_SAFE_INTEGER)
+            - (observedSupportOrder.get(right.nameEn ?? '') ?? Number.MAX_SAFE_INTEGER)
+          if (metaDifference !== 0) return metaDifference
           const overlap = (support: SupportGemDefinition) =>
             [...(support.ownTags ?? []), ...(support.supportedDamageTypes ?? []), ...(support.supportedMechanics ?? [])]
               .filter(tag => skill.tags.includes(tag)).length
@@ -457,16 +526,18 @@ export function optimizeBuildVariants(input: {
       ).supportGemIds
       const mainWeaponSet = preferredSet(weapon, equipped)
       const setupWeaponSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
-      const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1, {
-        ascendancyId: input.ascendancyId,
+      const plannedSkillSetups = planCompatibleSkillPackage(
+        skill,
+        characterSkills,
+        input.skillScores,
+        input.ascendancyId,
+        weapon,
         mainWeaponSet,
-      })[0]
-      const setupDefinition = characterSkills.find(value => value.id === setup?.skillId)
-      const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped, setupWeaponSet)
-      const usableSetup = setup && setupDefinition && setupWeaponType
-        && evaluateSkillWeaponCompatibility(setupDefinition, setupWeaponType).status === 'productive'
-        ? setup
-        : undefined
+        equipped,
+      )
+      const usableSetup = plannedSkillSetups.find(value => value.weaponSet === setupWeaponSet)
+      const setupDefinition = characterSkills.find(value => value.id === usableSetup?.skillId)
+      const setupWeaponType = usableSetup?.weaponType
       const estimateEquipment = equipmentForEstimate(
         input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
         input.characterAttributes?.[mainWeaponSet].total,
@@ -486,7 +557,9 @@ export function optimizeBuildVariants(input: {
       const resourceBlocked = costChain?.sustainStatus === 'unusable-confirmed-zero-mana'
         || capacityState?.status === 'exceeds-level-derived-quest-estimate'
       if (resourceBlocked) {
-        blockedCombinationCount += 1
+        block(costChain?.sustainStatus === 'unusable-confirmed-zero-mana'
+          ? 'confirmed-zero-mana'
+          : 'spirit-capacity-exceeded')
         return []
       }
       const resourcePenalty = (costChain?.sustainStatus === 'burst-affordable-on-confirmed-minimum' ? 20 : 0)
@@ -506,19 +579,29 @@ export function optimizeBuildVariants(input: {
         : skill.tags.includes('spell') && ['wand', 'staff', 'sceptre'].includes(weapon)
           ? 25
           : 0
-      const setupScore = usableSetup ? 35 : 0
+      const setupScore = Math.min(70, plannedSkillSetups.length * 10 + (usableSetup ? 20 : 0))
       const ruleGraph = buildEffectGraph({
         mainSkill: skill,
         mainWeapon: weapon,
         supports: supportIds
           .map(id => input.supports.find(value => value.id === id))
           .filter((value): value is SupportGemDefinition => Boolean(value)),
-        setupSkill: usableSetup ? setupDefinition : undefined,
+        setupSkills: plannedSkillSetups.flatMap(planned => {
+          const definition = characterSkills.find(value => value.id === planned.skillId)
+          return definition ? [{
+            skill: definition,
+            relationship: {
+              evidence: planned.evidence,
+              reason: planned.reason,
+              ruleId: planned.ruleId,
+            },
+          }] : []
+        }),
         ascendancyId: input.ascendancyId,
         role: 'main',
       })
       if (ruleGraph.status === 'blocked') {
-        blockedCombinationCount += 1
+        block('effect-graph-blocked')
         return []
       }
       /*
@@ -579,6 +662,7 @@ export function optimizeBuildVariants(input: {
         setupWeaponType: usableSetup ? setupWeaponType : undefined,
         setupWeaponSet: usableSetup ? setupWeaponSet : undefined,
         setupReason: usableSetup?.reason,
+        plannedSkillSetups,
         compatibleSupportIds: supportIds,
         affinityScore: affinity.score,
         passiveAffinityScore,
@@ -590,6 +674,8 @@ export function optimizeBuildVariants(input: {
         resourcePenalty,
         totalScore,
         metaReferenceScore: metaReference.score,
+        metaReferenceProfileCount: metaReference.correlatedProfileCount,
+        metaReferenceEvidenceClass: metaReference.correlatedEvidenceClass,
         ruleGraphStatus: ruleGraph.status,
         ruleGraphEvidence: [
           ...ruleGraph.edges.filter(edge => edge.productive).map(edge => edge.reason),
@@ -644,6 +730,7 @@ export function optimizeBuildVariants(input: {
     evaluatedSkillCount,
     evaluatedCombinationCount: variants.length,
     blockedCombinationCount,
+    blockedReasonCounts,
     equipmentFirst,
     selected: selectable[0] ?? null,
     alternatives: selectable.slice(1, 6),
