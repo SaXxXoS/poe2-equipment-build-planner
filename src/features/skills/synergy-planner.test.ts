@@ -86,6 +86,24 @@ describe('zusammenhängende Skillplanung', () => {
     })).toEqual([])
   })
 
+  it('legt ein belegtes korreliertes Setup in das Gegen-Set des Hauptskills', () => {
+    const main = skill('main', 'Main', ['spell', 'lightning'])
+    const trigger = skill('trigger', 'Trigger', ['spell'], {
+      sourceTags: ['meta', 'trigger'],
+      rotationRoles: ['setup'],
+      persistsAfterWeaponSwap: true,
+    })
+    const correlatedSkillRelations = new Map([['Trigger', {
+      profileCount: 3,
+      share: 75,
+      packageIds: ['fixture-package'],
+    }]])
+    expect(planSynergisticSkills(main, [main, trigger], [], 8, {
+      mainWeaponSet: 'set-2',
+      correlatedSkillRelations,
+    })[0]).toMatchObject({ skillId: 'trigger', weaponSet: 'set-1' })
+  })
+
   it('findet im produktiven Katalog für Blitz und Feuer jeweils eine verbundene Set-2-Vorbereitung', () => {
     const spark = buildAssistantCandidates.skills.find(value => value.nameEn === 'Spark')!
     const flameblast = buildAssistantCandidates.skills.find(value => value.nameEn === 'Flameblast')!

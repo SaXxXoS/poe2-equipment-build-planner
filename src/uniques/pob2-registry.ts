@@ -11,8 +11,8 @@ export interface Pob2UniquePlannerRecord {
   itemCategory: string
   requiredLevel: number | null
   variants: Array<{ sourceVariantId: string; currentOrLegacy: string; modifierSet: string[] }>
-  visibleModifiers: Array<{ sourceLineId: string; normalizedPlannerLine: string; variantScope?: string[] }>
-  implicits: Array<{ sourceLineId: string; normalizedPlannerLine: string; variantScope?: string[] }>
+  visibleModifiers: Array<{ sourceLineId: string; normalizedPlannerLine: string; variantScope?: string[]; rollRanges?: Array<{ minimum: number; maximum: number }> }>
+  implicits: Array<{ sourceLineId: string; normalizedPlannerLine: string; variantScope?: string[]; rollRanges?: Array<{ minimum: number; maximum: number }> }>
   provenance: {
     sourceKind: 'pob2-planner-data'
     sourceRepository: string

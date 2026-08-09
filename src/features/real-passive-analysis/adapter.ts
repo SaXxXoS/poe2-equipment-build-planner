@@ -1,7 +1,8 @@
 import type { CharacterConfiguration,EquipmentEntry,SkillSetup } from '../../domain'
 import type { EngineRequest } from '../../engine/common/types'
 import type { AnalyzePayload,InitializePayload } from '../../runtime/real-passive-worker'
-import { clusterJewelDefinitions,jewelDefinitions,modifierDefinitions as allModifierDefinitions,skillDefinitions,supportDefinitions,treeClassRegistry,uniqueClusterJewelDefinitions } from '../../data'
+import { modifierDefinitions as allModifierDefinitions,treeClassRegistry } from '../../data'
+import { buildAssistantCandidates } from '../build-assistant-v1'
 
 export const REAL_PASSIVE_UI_SOURCE_VERSION='0.5.2'
 export const REAL_PASSIVE_UI_TREE_IDENTITY='fnv1a32-bedf8404'
@@ -27,6 +28,12 @@ export function buildRealPassiveWorkerRequest(input:PassiveAnalysisUiInput,reque
  const referencedModifierIds=new Set(input.equipment.flatMap(entry=>entry.modifierValues.map(value=>value.modifierId)))
  const modifierDefinitions=allModifierDefinitions.filter(value=>referencedModifierIds.has(value.id))
  const selectedJewels=input.equipment.filter(entry=>entry.itemClassId==='Jewels'&&entry.itemDefinitionId).map(entry=>({slotId:entry.slotId,jewelId:entry.id,baseItemId:entry.itemDefinitionId,itemClassId:entry.itemClassId,itemLevel:entry.itemLevel,sourceVersion:'4.5.4.4.4',dataStatus:'partially-supported',modifiers:entry.modifierValues.map(value=>({modifierId:value.modifierId,tierId:value.tierId,statValues:value.statValues??[]}))}))
- const request:EngineRequest={input:{character:{...input.character},equipment:structuredClone(input.equipment),skillSetups:structuredClone(input.setups),selectedJewels,goalProfile:input.character.goalProfile},candidates:{skills:structuredClone(skillDefinitions),supports:structuredClone(supportDefinitions),passives:[],jewels:structuredClone([...jewelDefinitions,...clusterJewelDefinitions,...uniqueClusterJewelDefinitions]),uniques:[]}}
+ const referencedSkillIds=new Set(input.setups.flatMap(setup=>[setup.skillId,...(setup.embeddedSkillIds??[])].filter(Boolean)))
+ const referencedSupportIds=new Set(input.setups.flatMap(setup=>setup.supportGemIds))
+ // Die Passivplanung muss exakt denselben produktiven Kandidatenbestand wie
+ // die sichtbare Build-Auswertung verwenden. Der frühere Import aus data.ts
+ // enthielt nur den historischen Mini-/Fixture-Bestand und führte deshalb zu
+ // Baumplänen, die nicht zur tatsächlich empfohlenen Fertigkeit passten.
+ const request:EngineRequest={input:{character:{...input.character},equipment:structuredClone(input.equipment),skillSetups:structuredClone(input.setups),selectedJewels,goalProfile:input.character.goalProfile},candidates:{skills:structuredClone(buildAssistantCandidates.skills.filter(value=>referencedSkillIds.has(value.id))),supports:structuredClone(buildAssistantCandidates.supports.filter(value=>referencedSupportIds.has(value.id))),passives:[],jewels:[],uniques:[]}}
  return{signature,errors,classStartNodeId:registry.classStartNodeId,payload:{request,modifiers:structuredClone(modifierDefinitions),planning:{requestId,sourceVersion:REAL_PASSIVE_UI_SOURCE_VERSION,pointBudget:input.pointBudget,weaponSetPointBudget:input.weaponSetPointBudget,ascendancyPointBudget,characterContext:{classId:String(registry.officialClassIndex),ascendancyId:registry.ascendancies.find(value=>value.ascendancyId===input.character.ascendancyId)?.officialExportId,characterLevel:input.character.level},planningMode:input.planningMode,targetProfile:input.character.goalProfile,resourcePriority:input.resourcePriority??'normal',requiredTargetNodeIds:[],blockedNodeIds:[],excludedTargetNodeIds:[],candidatePoolLimit:50,maximumSelectedTargets:50,minimumTargetScore:0,minimumConfidence:'low',allowKeystoneReoptimization:true}}}
 }

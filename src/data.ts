@@ -22,11 +22,25 @@ import { allTechnicalAffixes } from './affixes/registry'
 import { classifyTechnicalAffix } from './affixes/analyzer-semantics'
 export { pob2UniqueAnalyzerCandidates, pob2UniquePlannerRegistry } from './uniques'
 
-export interface TreeAscendancyRegistryEntry { ascendancyId:string; officialExportId:string; displayName:string; selectableInCurrentUi:boolean }
+export interface TreeAscendancyRegistryEntry {
+  ascendancyId:string
+  officialExportId:string
+  displayName:string
+  selectableInCurrentUi:boolean
+  availableInTreeExport?:boolean
+  startNodeId?:string|null
+  nodeIds?:string[]
+}
 export interface TreeClassRegistryEntry { classId:string; officialClassIndex:number; displayName:string; selectableInCurrentUi:boolean; classStartNodeId?:string|null; ascendancies:TreeAscendancyRegistryEntry[] }
 
 export const treeClassRegistry = classRegistry.classes as unknown as TreeClassRegistryEntry[]
 export const findTreeAscendancy=(id:string)=>{for(const item of treeClassRegistry){const found=item.ascendancies.find(value=>value.ascendancyId===id);if(found)return found}return undefined}
+export const isPlannableTreeAscendancy=(entry:TreeAscendancyRegistryEntry|undefined):entry is TreeAscendancyRegistryEntry=>Boolean(
+  entry?.selectableInCurrentUi
+  && entry.availableInTreeExport!==false
+  && entry.startNodeId
+  && entry.nodeIds?.length,
+)
 export const classDefinitions: ClassDefinition[] = treeClassRegistry.map(item => placeholderMetadata(item.classId, item.displayName))
 export const ascendancyDefinitions: AscendancyDefinition[] = treeClassRegistry.flatMap(item => item.ascendancies.map(ascendancy => ({ ...placeholderMetadata(ascendancy.ascendancyId, ascendancy.displayName), classId: item.classId })))
 

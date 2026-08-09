@@ -4439,3 +4439,48 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Die lokale Produktionsprüfung bestand auf Desktop und bei 390 × 844. Automatische Skill-/Supportbefüllung war sichtbar, die Skillkarten blieben einspaltig, horizontaler Überlauf trat nicht auf und die Browserkonsole blieb leer.
 - Details: `docs/BUILD_ASSISTANT_COHERENCE_HARDENING_2026_08_09.md` und `docs/audits/build-assistant-current-meta-matrix.json`.
 - Produktpins, Datenquellen und die bestehende Enginearchitektur bleiben unverändert. Globale höchste DPS, vollständige Path-of-Building-Gleichwertigkeit und Meta-Überlegenheit bleiben ausdrücklich unbewiesen.
+
+## Produktdaten- und Planerhärtung – Abschluss 2026-08-09
+
+- Historische Demo-Passiv- und Demo-Juwelkandidaten wurden aus dem produktiven
+  Analyzerbestand entfernt. Sichtbare Passive-Empfehlungen und nächste
+  Passivschritte stammen ausschließlich aus dem real berechneten offiziellen
+  Baumplan; normale Juwelkandidaten stammen aus exakt klassifizierbaren,
+  gepinnten technischen RePoE-Juwelmods.
+- Der Passive-Worker verwendet exakt die produktiven, tatsächlich ausgewählten
+  Skill- und Supportdefinitionen. Dadurch bewerten Baum und sichtbarer
+  Build-Assistent nicht länger zwei unterschiedliche Kandidatenbestände.
+- 53 durch den offiziellen Aszendenzbaum ausdrücklich gewährte Fertigkeiten
+  wurden als eigener quellgebundener Kandidatenbestand ergänzt. Sie werden nur
+  nach tatsächlicher Belegung ihres Knotens automatisch eingetragen und bei
+  einem Aszendenzwechsel wieder entfernt.
+- Nur 22 Aszendenzen besitzen im gepinnten Export einen planbaren Start und
+  Teilbaum. Der zuvor sichtbare, aber nicht planbare Eintrag `Witch3b` wird aus
+  der Produktauswahl entfernt und vom Eingabeguard blockiert.
+- Der Vollbaumtest belegt 121/121 normale Punkte, 24/24 Waffensetpunkte je Set
+  sowie 8/8 Punkte für jede der 22 planbaren Aszendenzen. Der Test läuft im
+  stabilen seriellen Thread-Pool mit 64/64 erfolgreichen Fällen.
+- Setup-, Debuff- und Trigger-Fertigkeiten erhalten bei belegter Beziehung das
+  Gegen-Set des Hauptskills. Ohne technische oder korrelierte Evidenz wird kein
+  künstlicher Waffensetwechsel erzeugt.
+- Unique-Empfehlungen benötigen eine positive buildbezogene Wirkung. Die UI
+  zeigt die aktuelle Variante und ihre sichtbaren Eigenschaften; interne
+  `source-line:`-Referenzen werden nicht mehr roh angezeigt. Negative
+  strukturierte Rollbereiche bleiben als Trade-off sichtbar.
+- Fokussierte Abschlussprüfung: 105/105 Tests; offizieller Vollbaumtest:
+  64/64. Der vollständige stabile serielle Gesamtlauf bestand mit 171 Dateien
+  und 1.964/1.964 Tests. Nach der abschließenden sichtbaren
+  Zeichensatzkorrektur bestanden die betroffenen Baum-, Synergie- und
+  Attributdarstellungstests erneut mit 74/74 Fällen.
+- Typecheck, Lint, Produktions-/Pages-Build, 253 JSON-Dateien,
+  `git diff --check` und Git-Sicherheitsprüfung bestanden.
+- Die lokale Produktionsprüfung bestand auf Desktop und bei 390 × 844. Das
+  feste Profil Zauberin/Sturmweberin ohne Ausrüstung erzeugte drei automatisch
+  belegte Fertigkeitskarten, fünf eindeutige Hauptsupports, eine belegte
+  Set-2-Vorbereitung, 8/8 Aszendenzpunkte und unterschiedliche Setpfade.
+  Unique-Details zeigten sichtbare Varianteneigenschaften ohne interne
+  `source-line:`-Pfade. Es gab keinen horizontalen Überlauf und keine
+  Browserkonsolenfehler oder -warnungen.
+- Produktpins und Runtime-Offlinegrenze bleiben unverändert. Globale
+  DPS-Optimalität, vollständige Path-of-Building-Parität und Meta-Überlegenheit
+  bleiben nicht belegt und werden nicht behauptet.

@@ -10,7 +10,7 @@ import type { BuildVariantOptimization } from '../skills/build-variant-optimizer
 
 const character = (goalProfile: CharacterConfiguration['goalProfile'] = 'balanced', desiredMainSkillId = 'skill-lightning-arrow'): CharacterConfiguration => ({
   classId: 'class-official-6',
-  ascendancyId: 'ascendancy-official-6-1',
+  ascendancyId: 'ascendancy-official-Warrior1',
   level: 80,
   goalProfile,
   desiredMainSkillId,
@@ -43,7 +43,7 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
     expect(result.moduleTrace).toEqual(['equipment', 'skills', 'supports', 'passives', 'jewels', 'uniques', 'rotations', 'explanations'])
     expect(result.equipmentAnalysis).toBeDefined()
     expect(result.supportAnalysis.allCandidates.length).toBeGreaterThan(0)
-    expect(result.passiveAnalysis.allCandidates.length).toBeGreaterThan(0)
+    expect(result.passiveAnalysis.allCandidates).toEqual([])
     expect(result.jewelAnalysis.allCandidates.length).toBeGreaterThan(0)
     expect(result.uniqueAnalysis.allCandidates).toHaveLength(435)
   })
@@ -167,7 +167,7 @@ describe('Build-Assistent V1 End-to-End-Integration', () => {
   })
 
   it('verwendet im Produkt nur den gepinnten aktuellen Gemmenbestand mit lokaler deutscher Anzeige', () => {
-    expect(buildAssistantCandidates.skills).toHaveLength(235)
+    expect(buildAssistantCandidates.skills).toHaveLength(288)
     expect(buildAssistantCandidates.supports).toHaveLength(451)
     expect(buildAssistantCandidates.skills.find(item => item.nameEn === 'Spark')?.displayNameDe).toBe('Funken')
     expect(buildAssistantCandidates.skills.some(item => item.id.startsWith('skill-'))).toBe(false)

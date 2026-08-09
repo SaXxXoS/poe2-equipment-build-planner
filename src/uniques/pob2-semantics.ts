@@ -1,7 +1,11 @@
 import type { MechanicTag, SyntheticWeaponType } from '../domain'
 
 export type Pob2SemanticEvidence = 'structured-exact' | 'structured-derived' | 'text-pattern-exact' | 'text-pattern-ambiguous' | 'unresolved'
-export interface Pob2SemanticLine { sourceLineId: string; normalizedPlannerLine: string }
+export interface Pob2SemanticLine {
+  sourceLineId: string
+  normalizedPlannerLine: string
+  rollRanges?: Array<{ minimum: number; maximum: number }>
+}
 export interface Pob2SemanticVariant { modifierSet: string[] }
 export interface Pob2SemanticRecord { slot: string; itemCategory: string; requiredLevel: number | null; variants: Pob2SemanticVariant[]; visibleModifiers: Pob2SemanticLine[] }
 export interface Pob2UniqueSemantics {
@@ -73,10 +77,11 @@ export function classifyPob2Unique(record: Pob2SemanticRecord): Pob2UniqueSemant
       tags.add('defensive')
       matched = true
     }
-    if (negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine)) tradeOffs.add(`source-line:${line.sourceLineId}`)
+    const canRollNegative = line.rollRanges?.some(range => range.minimum < 0) ?? false
+    if (negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine) || canRollNegative) tradeOffs.add(`source-line:${line.sourceLineId}`)
     if (enablerPattern.test(line.normalizedPlannerLine)) buildEnabler = true
     if (!matched && ambiguousPattern.test(line.normalizedPlannerLine)) ambiguous = true
-    if (matched || negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine) || enablerPattern.test(line.normalizedPlannerLine)) evidenceLineIds.add(line.sourceLineId)
+    if (matched || negativePattern.test(line.normalizedPlannerLine) || increasedAttributeRequirementPattern.test(line.normalizedPlannerLine) || canRollNegative || enablerPattern.test(line.normalizedPlannerLine)) evidenceLineIds.add(line.sourceLineId)
   }
   const productive = tags.size > 0 || tradeOffs.size > 0 || buildEnabler
   const exactWeaponType = uniqueWeaponTypeByCategory[record.itemCategory]

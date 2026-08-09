@@ -459,6 +459,7 @@ export function optimizeBuildVariants(input: {
       const setupWeaponSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
       const setup = planSynergisticSkills(skill, characterSkills, input.skillScores, 1, {
         ascendancyId: input.ascendancyId,
+        mainWeaponSet,
       })[0]
       const setupDefinition = characterSkills.find(value => value.id === setup?.skillId)
       const setupWeaponType = setupWeapon(setupDefinition, weapon, equipped, setupWeaponSet)

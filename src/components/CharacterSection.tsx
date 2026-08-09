@@ -1,5 +1,5 @@
 import type { CharacterConfiguration, GoalProfile } from '../domain'
-import { ascendancyDefinitions, findTreeAscendancy } from '../data'
+import { ascendancyDefinitions, findTreeAscendancy, isPlannableTreeAscendancy } from '../data'
 import { availablePassivePoints } from '../features/character/passive-points'
 import { applyClassSelection, ascendancyLabels, parseUnsignedIntegerDraft, supportedClassOptions } from '../features/character/ui-options'
 
@@ -12,7 +12,7 @@ export function CharacterSection({ value, onChange }: { value: CharacterConfigur
   const storyValid = /^\d+$/.test(storyInput) && Number(storyInput) >= 0 && Number(storyInput) <= 50
   const ascendancyValid = /^\d+$/.test(ascendancyInput) && Number(ascendancyInput) >= 0 && Number(ascendancyInput) <= 8
   const availableAscendancies = ascendancyDefinitions.filter(ascendancy =>
-    ascendancy.classId === value.classId && findTreeAscendancy(ascendancy.id)?.selectableInCurrentUi,
+    ascendancy.classId === value.classId && isPlannableTreeAscendancy(findTreeAscendancy(ascendancy.id)),
   )
   const levelPoints = levelValid ? availablePassivePoints(Number(levelInput), 0) : null
   const totalPoints = levelValid && storyValid ? availablePassivePoints(Number(levelInput), Number(storyInput)) : null

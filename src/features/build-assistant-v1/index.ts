@@ -1,14 +1,16 @@
 import type { BuildInput, CharacterConfiguration, EquipmentEntry, MechanicTag, SkillGemDefinition, SkillSetup, SupportGemDefinition } from '../../domain'
-import { clusterJewelDefinitions, jewelDefinitions, modifierDefinitions, passiveNodeDefinitions, skillDefinitions, supportDefinitions, uniqueClusterJewelDefinitions } from '../../data'
-import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type EngineRequest, type PassiveCandidate, type RealPassivePlanningIntegrationResult } from '../../engine'
+import { findTreeAscendancy, isPlannableTreeAscendancy, modifierDefinitions, skillDefinitions, supportDefinitions, treeClassRegistry } from '../../data'
+import { analyzeBuild, type BuildAnalysis, type EngineCandidates, type EngineRequest, type RealPassivePlanningIntegrationResult } from '../../engine'
 import { localizedPob2UniquesDe } from '../../localization/pob2-uniques-de'
 import { pob2UniqueAnalyzerCandidates } from '../../uniques'
-import { expandedJewelCandidates, expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
+import { expandedSkillCandidates, expandedSupportCandidates } from './semantic-candidates'
+import { technicalJewelCandidates } from './technical-jewel-candidates'
 import { technicalItemClasses } from '../../affixes/registry'
 import { repoeSkillCatalog, repoeSupportCatalog } from '../../gems/repoe-catalog'
 import type { SyntheticWeaponType } from '../../domain'
 import { migrateEquipmentEntry } from '../equipment-editor/model'
 import { syntheticWeaponTypeFromTechnicalName } from '../skills/poe2-interaction-rules'
+import { officialAscendancyGrantedSkills } from '../skills/ascendancy-granted-skills'
 import officialPassiveTree from '../../../generated/poe2-tree/tree.json'
 
 export const BUILD_ASSISTANT_V1_VERSION = '1.0.0'
@@ -18,7 +20,7 @@ const damageTags = new Set<MechanicTag>(['physical', 'fire', 'cold', 'lightning'
 
 const curatedSkills = [...skillDefinitions, ...expandedSkillCandidates]
 const curatedSkillByEnglishName = new Map(curatedSkills.filter(item => item.nameEn).map(item => [item.nameEn!.toLocaleLowerCase('en'), item]))
-const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
+const importedSkills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
   const curated = curatedSkillByEnglishName.get(imported.nameEn?.toLocaleLowerCase('en') ?? '')
   return {
     ...curated,
@@ -61,6 +63,7 @@ const skills: SkillGemDefinition[] = repoeSkillCatalog.map(imported => {
   }
   return skill
 })
+const skills: SkillGemDefinition[] = [...importedSkills, ...officialAscendancyGrantedSkills]
 
 const curatedSupports = [...supportDefinitions, ...expandedSupportCandidates]
 const curatedSupportByEnglishName = new Map(curatedSupports.filter(item => item.nameEn).map(item => [item.nameEn!.toLocaleLowerCase('en'), item]))
@@ -86,22 +89,13 @@ const supports: SupportGemDefinition[] = repoeSupportCatalog.map(imported => {
   enabled: true,
 }))
 
-const passives: PassiveCandidate[] = passiveNodeDefinitions.map(node => ({
-  id: `candidate:${node.id}`,
-  candidateType: 'node',
-  nodeId: node.id,
-  nodes: [node],
-  connections: [],
-  tags: node.tags,
-  reachable: true,
-  availablePointBudget: 20,
-}))
-
 export const buildAssistantCandidates: EngineCandidates = {
   skills,
   supports,
-  passives,
-  jewels: [...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions, ...expandedJewelCandidates],
+  // Konkrete Passive-Pfade stammen ausschließlich aus der offiziellen
+  // gepinnten Baum-Pipeline. Die frühere Sieben-Knoten-Demo ist kein Produktdatensatz.
+  passives: [],
+  jewels: technicalJewelCandidates,
   uniques: pob2UniqueAnalyzerCandidates.map(candidate => ({
     ...candidate,
     displayNameDe: localizedUniqueNames.get(candidate.id) ?? candidate.nameEn ?? 'Unbekanntes Unique',
@@ -185,6 +179,8 @@ export function runBuildAssistantV1(input: BuildAssistantInput, precomputedRealP
 
 export function validateBuildAssistantInput(input: BuildAssistantInput): string[] {
   const errors: string[] = []
+  const registeredClass=treeClassRegistry.find(value=>value.classId===input.character.classId)
+  if (registeredClass && input.character.ascendancyId && !isPlannableTreeAscendancy(findTreeAscendancy(input.character.ascendancyId))) errors.push('Die gewählte Aszendenz besitzt im aktuellen, gepinnten Passivbaum keinen planbaren Teilbaum.')
   if (!input.character.classId) errors.push('Bitte wähle eine Klasse.')
   if (!Number.isInteger(input.character.level) || input.character.level < 1 || input.character.level > 100) errors.push('Bitte gib ein gültiges Charakterlevel ein.')
   if (input.character.additionalPassivePoints != null && (!Number.isInteger(input.character.additionalPassivePoints) || input.character.additionalPassivePoints < 0)) errors.push('Bitte gib gültige Story-Passivpunkte ein.')

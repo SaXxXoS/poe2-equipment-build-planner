@@ -1,5 +1,6 @@
 import { describe,expect,it } from 'vitest'
 import officialTree from '../../../generated/poe2-tree/tree.json'
+import classRegistry from '../../../generated/poe2-tree/class-registry.json'
 import { buildPassiveGraph } from '../passive-pathfinding/graph'
 import type { PassivePathSource } from '../passive-pathfinding/types'
 import { evaluatePassiveTargets } from '../passive-targeting/evaluator'
@@ -8,6 +9,18 @@ import { REAL_PASSIVE_FIXTURE_GRAPH,REAL_PASSIVE_FIXTURE_TREE,REAL_PASSIVE_PIPEL
 import { runRealPassivePipeline } from './pipeline'
 import { resolveRealPassiveStartNode } from './start-node-resolver'
 import type { RealPassiveTree } from './types'
+
+type TestAscendancyRegistryEntry = {
+ officialExportId:string
+ selectableInCurrentUi:boolean
+ startNodeId:string|null
+ nodeIds:string[]
+}
+
+type TestClassRegistryEntry = {
+ selectableInCurrentUi:boolean
+ ascendancies:TestAscendancyRegistryEntry[]
+}
 
 describe('Pipeline-Eingabe und Startknoten',()=>{
  it('blockiert fehlendes BuildProfile',()=>expect(runRealPassivePipeline(realPassivePipelineInput({buildProfile:undefined as never})).status).toBe('invalid-input'))
@@ -56,6 +69,10 @@ describe('offizieller Baum Release 0.5.2',()=>{
  const tree=officialTree as unknown as RealPassiveTree
  const graph=buildPassiveGraph(officialTree as unknown as PassivePathSource)
  const input=realPassivePipelineInput({requestId:'official-pipeline',sourceVersion:'0.5.2',passiveTree:tree,passiveGraph:graph,characterClassId:'0',buildProfile:REAL_PASSIVE_PIPELINE_PROFILES.lightningProjectileBalanced,pointBudget:10,candidatePoolLimit:10,maximumSelectedTargets:1,maximumTargetingResults:10})
+ const plannableAscendancies=(classRegistry.classes as unknown as TestClassRegistryEntry[])
+  .filter(value=>value.selectableInCurrentUi)
+  .flatMap(value=>value.ascendancies)
+  .filter((value):value is TestAscendancyRegistryEntry&{startNodeId:string}=>Boolean(value.selectableInCurrentUi&&value.startNodeId&&value.nodeIds.length>0))
  it('verarbeitet 5.150 Knoten und 6.067 Verbindungen mit offiziellem Klassenstart',()=>{const result=runRealPassivePipeline(input);expect(result.graphDiagnostics).toMatchObject({graphNodeCount:5150,graphConnectionCount:6067,graphBuildCount:0});expect(result.resolvedStartNodeId).toBe('47175');expect(result.targetingDiagnostics.evaluatedNodeCount).toBe(5150);expect(result.usedPointBudget).toBeLessThanOrEqual(10)},30000)
  it('vergibt ein vollständiges normales Endgame-Budget, wenn genügend belegte Ziele erreichbar sind',()=>{const result=runRealPassivePipeline({...input,requestId:'official-full-budget',pointBudget:121,candidatePoolLimit:150,maximumSelectedTargets:121,maximumTargetingResults:500});expect(result.usedPointBudget).toBe(121);expect(result.remainingPointBudget).toBe(0);expect(result.allocatedNodeIds.length).toBeGreaterThan(100)},60000)
  it('vergibt bis zu 24 Waffenset-Punkte nur an zulässige normale Knoten',()=>{const result=runRealPassivePipeline({...input,requestId:'official-weapon-set-budget',planningScope:'weapon-set',pointBudget:24,candidatePoolLimit:80,maximumSelectedTargets:24,maximumTargetingResults:300});expect(result.violations).toEqual([]);expect(result.usedPointBudget).toBe(24);expect(result.remainingPointBudget).toBe(0);expect(result.allocatedNodeIds.every(id=>!['jewel-socket','keystone','ascendancy','ascendancy-start'].includes(graph.nodes.get(id)?.nodeType??''))).toBe(true)},60000)
@@ -63,4 +80,11 @@ describe('offizieller Baum Release 0.5.2',()=>{
  it('plant alle acht Stormweaver-Aszendenzpunkte sichtbar und ausschließlich im Stormweaver-Baum',()=>{const result=runRealPassivePipeline({...input,requestId:'official-stormweaver',planningScope:'ascendancy',ascendancyId:'Sorceress1',pointBudget:8,candidatePoolLimit:24,maximumSelectedTargets:8,maximumTargetingResults:100});expect(result.planningScope).toBe('ascendancy');expect(result.usedPointBudget).toBe(8);expect(result.remainingPointBudget).toBe(0);expect(result.allocatedConnectionIds.length).toBeGreaterThan(0);expect(result.allocatedNodeIds.every(id=>{const node=graph.nodes.get(id);return node?.ascendancyId==='Sorceress1'&&['ascendancy-start','ascendancy'].includes(node.nodeType)})).toBe(true)},30000)
  it('plant alle acht Spirit-Walker-Aszendenzpunkte sichtbar und ausschließlich im Spirit-Walker-Baum',()=>{const result=runRealPassivePipeline({...input,requestId:'official-spirit-walker',planningScope:'ascendancy',ascendancyId:'Huntress2',pointBudget:8,candidatePoolLimit:24,maximumSelectedTargets:8,maximumTargetingResults:100});expect(result.planningScope).toBe('ascendancy');expect(result.usedPointBudget).toBe(8);expect(result.remainingPointBudget).toBe(0);expect(result.allocatedConnectionIds.length).toBeGreaterThan(0);expect(result.allocatedNodeIds.every(id=>{const node=graph.nodes.get(id);return node?.ascendancyId==='Huntress2'&&['ascendancy-start','ascendancy'].includes(node.nodeType)})).toBe(true)},30000)
  it('wertet die passende Aszendenz auch bei einem ansonsten schwachen Profil als produktives Ziel',()=>{const weakProfile=structuredClone(input.buildProfile);for(const section of [weakProfile.damageTypes,weakProfile.mechanics,weakProfile.speed,weakProfile.defence,weakProfile.requirements])for(const key of Object.keys(section))(section as unknown as Record<string,number>)[key]=0;const result=runRealPassivePipeline({...input,buildProfile:weakProfile,requestId:'official-stormweaver-weak-profile',planningScope:'ascendancy',ascendancyId:'Sorceress1',pointBudget:8,candidatePoolLimit:24,maximumSelectedTargets:8,maximumTargetingResults:100});expect(result.usedPointBudget).toBeGreaterThan(0);expect(result.allocatedConnectionIds.length).toBeGreaterThan(0)},30000)
+ it('enthält produktiv planbare Aszendenzen',()=>expect(plannableAscendancies.length).toBeGreaterThan(0))
+ it.each(plannableAscendancies)('vergibt $officialExportId alle acht Punkte strikt im eigenen Teilbaum',ascendancy=>{
+  const result=runRealPassivePipeline({...input,requestId:`official-all-${ascendancy.officialExportId}`,planningScope:'ascendancy',ascendancyId:ascendancy.officialExportId,pointBudget:8,candidatePoolLimit:24,maximumSelectedTargets:8,maximumTargetingResults:100})
+  expect(result.usedPointBudget,ascendancy.officialExportId).toBe(8)
+  expect(result.remainingPointBudget,ascendancy.officialExportId).toBe(0)
+  expect(result.allocatedNodeIds.every(id=>{const node=graph.nodes.get(id);return node?.ascendancyId===ascendancy.officialExportId&&['ascendancy-start','ascendancy'].includes(node.nodeType)}),ascendancy.officialExportId).toBe(true)
+ },30000)
 })

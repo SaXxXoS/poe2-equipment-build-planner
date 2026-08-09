@@ -24,6 +24,7 @@ import { buildAssistantCandidates, runBuildAssistantV1, validateBuildAssistantIn
 import { clearStoredBuild, loadStoredBuild, saveStoredBuild } from './features/build-storage'
 import { createEquipmentSlotSuggestions } from './features/equipment-editor/recommendations'
 import { rebalanceSupportsAfterPassivePlanning, summarizePostPassiveResourceRisk, type PostPassiveResourceRebalanceResult } from './features/skills/post-passive-resource-rebalance'
+import { addAllocatedAscendancyGrantedSkills, clearAutomaticallyGrantedAscendancySkills } from './features/skills/ascendancy-granted-skills'
 import officialPassiveTree from '../generated/poe2-tree/tree.json'
 
 export default function App() {
@@ -86,7 +87,7 @@ export default function App() {
     setTimeout(() => document.querySelector('.tree-viewport')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 0)
   }, [])
   async function calculate() {
-    const preparedSetups = assignRecommendedWeaponSets(setups)
+    const preparedSetups = assignRecommendedWeaponSets(clearAutomaticallyGrantedAscendancySkills(setups))
     const input = { character, equipment, setups: preparedSetups }
     const errors = validateBuildAssistantInput(input)
     setCalculationErrors(errors)
@@ -236,7 +237,7 @@ export default function App() {
               }),
               rankedSkills,
               provisionalSetups.length - 1,
-              { ascendancyId: character.ascendancyId },
+              { ascendancyId: character.ascendancyId, mainWeaponSet: preferredWeaponSet === 'both' ? 'set-1' : preferredWeaponSet },
             ) : []
             if (optimization.selected?.setupSkillId) {
               const selectedSetupIndex = skillQueue.findIndex(value => value.skillId === optimization.selected?.setupSkillId)
@@ -294,6 +295,7 @@ export default function App() {
             const existingIds = new Set(preparedSetups.flatMap(value => value.skillId ? [value.skillId] : []))
             const queue = planSynergisticSkills(mainDefinition, buildAssistantCandidates.skills, scores, preparedSetups.filter(value => !value.skillId).length, {
               ascendancyId: character.ascendancyId,
+              mainWeaponSet: mainSetup.weaponSet === 'both' ? 'set-1' : mainSetup.weaponSet,
             })
               .filter(value => !existingIds.has(value.skillId))
             if (optimization.selected?.setupSkillId) {
@@ -345,6 +347,14 @@ export default function App() {
         await passiveController.analyze(passiveInput)
         let passiveAwareResult = passiveController.getState().result
         if (passiveAwareResult?.realPassivePlanning) {
+          const setupsWithGrantedAscendancySkills = addAllocatedAscendancyGrantedSkills(
+            effectiveSetups,
+            passiveAwareResult.realPassivePlanning,
+          )
+          if (setupsWithGrantedAscendancySkills.some((value, index) => value !== effectiveSetups[index])) {
+            effectiveSetups = addRecommendedSupports(setupsWithGrantedAscendancySkills, effectiveCharacter)
+            setSetups(effectiveSetups)
+          }
           let passivePlanAdjustedForResources = false
           const initialResourceRisk = summarizePostPassiveResourceRisk({
             equipment,
@@ -520,7 +530,13 @@ export default function App() {
     </header>
     <main>
       <section className="build-storage"><div><b>Lokaler Buildspeicher</b><p className="muted">{saveStatus}. Die Daten bleiben ausschließlich in diesem Browser.</p></div><div className="row"><button className="secondary" onClick={() => { saveStoredBuild({ character, equipment, setups }); setSaveStatus('Manuell gespeichert') }}>Jetzt speichern</button><button className="danger" onClick={resetBuild}>Alles zurücksetzen</button></div></section>
-      <CharacterSection value={character} onChange={value => { setCharacter(value); invalidateResult() }}/>
+      <CharacterSection value={character} onChange={value => {
+        if (value.ascendancyId !== character.ascendancyId) {
+          setSetups(current => clearAutomaticallyGrantedAscendancySkills(current))
+        }
+        setCharacter(value)
+        invalidateResult()
+      }}/>
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }} suggestions={equipmentSuggestions}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResults={passivePlan.results} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>

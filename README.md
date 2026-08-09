@@ -276,3 +276,21 @@ speicherbar; unbekannte Mechaniken werden nicht geschätzt.
 
 Details und belegte Grenzen:
 [`docs/BUILD_ASSISTANT_AUTONOMOUS_COMPLETION_2026_07_29.md`](docs/BUILD_ASSISTANT_AUTONOMOUS_COMPLETION_2026_07_29.md).
+
+## Aktueller produktiver Planerstand – 9. August 2026
+
+Der sichtbare Assistent verwendet heute den gepinnten produktiven Bestand von
+235 Gemmenfertigkeiten, 451 Supports, 435 PoB2-Uniques und zusätzlich 53
+Fertigkeiten, die der offizielle Aszendenzbaum ausdrücklich gewährt. Konkrete
+Passivpfade stammen nur aus dem offiziellen Baum; die historischen Demo-Knoten
+und Demo-Juwelen sind aus dem Produktfluss entfernt.
+
+Normale Punkte, bis zu 24 umschaltbare Waffensetbelegungen und bis zu acht
+Aszendenzpunkte werden getrennt geplant. Nur Aszendenzen mit belegtem Start und
+Teilbaum sind auswählbar. Unique-Empfehlungen benötigen eine positive belegte
+Buildwirkung und zeigen die Eigenschaften der aktuellen Variante. Alle
+Eingaben bleiben lokal gespeichert; die Berechnung benötigt kein
+Runtime-Netzwerk.
+
+Details und belegte Grenzen:
+[`docs/BUILD_ASSISTANT_PRODUCT_DATA_HARDENING_2026_08_09.md`](docs/BUILD_ASSISTANT_PRODUCT_DATA_HARDENING_2026_08_09.md).

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0.0",
+  "scope": "build-assistant-product-data-hardening",
+  "date": "2026-08-09",
+  "architectureChanged": false,
+  "dataPinsChanged": false,
+  "runtimeNetworkAdded": false,
+  "productCandidates": {
+    "pinnedGemSkills": 235,
+    "officialAscendancyGrantedSkills": 53,
+    "supports": 451,
+    "pob2Uniques": 435,
+    "historicalPassiveFixturesRemovedFromProduct": true,
+    "historicalJewelFixturesRemovedFromProduct": true
+  },
+  "passivePlanning": {
+    "normalBudgetVerified": 121,
+    "weaponSetBudgetVerifiedPerSet": 24,
+    "ascendancyBudgetVerified": 8,
+    "plannableAscendanciesVerified": 22,
+    "unplannableAscendanciesHidden": true
+  },
+  "guards": {
+    "exactProductSkillSupportTransport": true,
+    "ascendancySkillRequiresAllocatedNode": true,
+    "setupSkillOppositeSetRequiresEvidence": true,
+    "uniqueRequiresPositiveBuildEffect": true,
+    "currentUniqueVariantPropertiesVisible": true,
+    "rawSourceLineReferencesHidden": true,
+    "unresolvedJewelSemanticsBlocked": true
+  },
+  "focusedTests": 105,
+  "officialTreeTests": 64,
+  "verification": {
+    "fullSerialTestFiles": 171,
+    "fullSerialTests": 1964,
+    "finalFocusedRetest": 74,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 253,
+    "gitDiffCheck": "passed",
+    "gitSecurityCheck": "passed",
+    "desktopBrowser": "passed",
+    "mobile390x844": "passed",
+    "horizontalOverflow": false,
+    "browserConsoleIssues": 0,
+    "automaticRecommendedSkills": 3,
+    "mainSkillSupportsVisible": 5,
+    "ascendancyPointsVisible": "8/8",
+    "distinctWeaponSetPathsVisible": true,
+    "uniqueVariantPropertiesVisible": true,
+    "rawSourceLineReferencesVisible": false
+  },
+  "limitations": [
+    "no-proof-of-global-dps-optimality",
+    "no-proof-of-complete-path-of-building-parity",
+    "no-unproven-meta-superiority",
+    "large-production-chunks-remain-a-cold-start-performance-risk"
+  ]
+}

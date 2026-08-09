@@ -1,7 +1,7 @@
 import type { BuildAnalysis, Confidence, ConstraintViolation, RotationPlan } from '../engine'
 import type { EquipmentEntry } from '../domain'
-import { equipmentSlotDefinitions, jewelDefinitions, clusterJewelDefinitions, uniqueClusterJewelDefinitions, passiveNodeDefinitions, skillDefinitions, supportDefinitions } from '../data'
-import { localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
+import { equipmentSlotDefinitions } from '../data'
+import { localizedPob2LinesForVariant, localizedPob2UniquesDe } from '../localization/pob2-uniques-de'
 import { buildAssistantCandidates } from '../features/build-assistant-v1'
 import type { PassivePlanPresentation } from '../features/real-passive-analysis'
 import { technicalAffixById } from '../affixes/registry'
@@ -19,10 +19,26 @@ const mechanicText: Record<string, string> = { attack: 'Angriff', spell: 'Zauber
 const verdictText: Record<string, string> = { 'clear-upgrade': 'Klare Verbesserung', 'situational-upgrade': 'Situative Verbesserung', sidegrade: 'Seitentausch', downgrade: 'Voraussichtlich schwächer', unknown: 'Unbekannt' }
 const definitionName = (id: string) => {
   const resolvedId = id.startsWith('candidate:') ? id.slice('candidate:'.length) : id
-  return [...buildAssistantCandidates.skills, ...buildAssistantCandidates.supports, ...buildAssistantCandidates.jewels, ...skillDefinitions, ...supportDefinitions, ...passiveNodeDefinitions, ...jewelDefinitions, ...clusterJewelDefinitions, ...uniqueClusterJewelDefinitions].find(item => item.id === resolvedId)?.displayNameDe ?? 'Unbekannte Empfehlung'
+  return [...buildAssistantCandidates.skills, ...buildAssistantCandidates.supports, ...buildAssistantCandidates.jewels].find(item => item.id === resolvedId)?.displayNameDe ?? 'Unbekannte Empfehlung'
 }
 const uniqueById = new Map(localizedPob2UniquesDe.map(item => [item.id, item]))
 const uniqueCandidateById = new Map(buildAssistantCandidates.uniques.map(item => [item.id, item]))
+
+function preferredUniqueVariant(item: (typeof localizedPob2UniquesDe)[number] | undefined) {
+  return item?.variants.find(variant => variant.currentOrLegacy === 'current')
+    ?? (item?.variants.length === 1 ? item.variants[0] : undefined)
+}
+
+function visibleUniqueTradeOffs(
+  item: (typeof localizedPob2UniquesDe)[number] | undefined,
+  values: string[],
+) {
+  if (!item) return values.filter(value => !value.startsWith('source-line:'))
+  const lines = new Map([...item.implicits, ...item.modifiers].map(line => [line.id, line.text]))
+  return values
+    .map(value => value.startsWith('source-line:') ? lines.get(value.slice('source-line:'.length)) : value)
+    .filter((value): value is string => Boolean(value))
+}
 const evidenceText: Record<string, string> = {
   'structured-exact': 'Direkt aus strukturierten Daten',
   'structured-derived': 'Sicher aus strukturierten Daten abgeleitet',
@@ -46,15 +62,15 @@ export function CharacterDefencePanel({ model }: { model: NonNullable<NonNullabl
     <p className="muted">{model.limitations.join(' ')}</p>
   </div>
 }
-const attributeLabel = { strength: 'StÃ¤rke', dexterity: 'Geschicklichkeit', intelligence: 'Intelligenz' } as const
+const attributeLabel = { strength: 'Stärke', dexterity: 'Geschicklichkeit', intelligence: 'Intelligenz' } as const
 export function CharacterAttributePanel({ models }: { models: NonNullable<BuildAnalysis['characterAttributes']> }) {
   return <div className="character-attribute-model"><b>Belegte Charakterattribute</b>
     <dl className="summary-grid">{(['set-1', 'set-2'] as const).flatMap(set => (Object.keys(models[set].total) as Array<keyof typeof attributeLabel>).map(attribute => <div key={`${set}:${attribute}`}>
-      <dt>{attributeLabel[attribute]} Â· {set === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dt>
+      <dt>{attributeLabel[attribute]} · {set === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dt>
       <dd>{models[set].total[attribute]}</dd>
-      <small>Basis {models[set].base[attribute]} Â· AusrÃ¼stung {models[set].equipment[attribute]} Â· Passive/Aszendenz {models[set].passives[attribute]}</small>
+      <small>Basis {models[set].base[attribute]} · Ausrüstung {models[set].equipment[attribute]} · Passive/Aszendenz {models[set].passives[attribute]}</small>
     </div>))}</dl>
-    {models['set-1'].status !== 'exact-confirmed-sources' ? <p className="warning">Die Klassen-Grundattribute konnten nicht sicher aufgelÃ¶st werden.</p> : null}
+    {models['set-1'].status !== 'exact-confirmed-sources' ? <p className="warning">Die Klassen-Grundattribute konnten nicht sicher aufgelöst werden.</p> : null}
     {[...new Set([...models['set-1'].blockedPassiveLines, ...models['set-2'].blockedPassiveLines])].length ? <p className="warning">Bedingte oder nicht exakt strukturierte Attributzeilen bleiben unangewandt.</p> : null}
   </div>
 }
@@ -67,10 +83,10 @@ const issueText = (issue: ConstraintViolation) => {
     'equipment-conflict': 'Ausrüstungsschwerpunkte stehen teilweise im Konflikt.',
     'level-requirement': 'Die Levelanforderung ist noch nicht erfüllt.',
     'synthetic-attribute-deficit': 'Mindestens eine Attributanforderung ist noch nicht ausreichend gedeckt.',
-    'skill-attribute-deficit': 'Die konkrete Attributanforderung der Fertigkeit ist noch nicht erfÃ¼llt.',
-    'attribute-requirement-strength': 'Die StÃ¤rkeanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
-    'attribute-requirement-dexterity': 'Die Geschicklichkeitsanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
-    'attribute-requirement-intelligence': 'Die Intelligenzanforderung des Gegenstands ist noch nicht erfÃ¼llt.',
+    'skill-attribute-deficit': 'Die konkrete Attributanforderung der Fertigkeit ist noch nicht erfüllt.',
+    'attribute-requirement-strength': 'Die Stärkeanforderung des Gegenstands ist noch nicht erfüllt.',
+    'attribute-requirement-dexterity': 'Die Geschicklichkeitsanforderung des Gegenstands ist noch nicht erfüllt.',
+    'attribute-requirement-intelligence': 'Die Intelligenzanforderung des Gegenstands ist noch nicht erfüllt.',
     redundant: 'Dieser Wert überschneidet sich mit einer anderen Empfehlung.',
     'required-skill-tag-missing': 'Dem Hauptangriff fehlt die erforderliche Mechanik.',
     'required-mechanic-missing': 'Die benötigte Mechanik ist nicht vorhanden.',
@@ -169,7 +185,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
     ...(analysis.buildProfile.defence.resistanceNeed > 0 ? ['Widerstände als defensive Grundlage priorisieren.'] : []),
     ...(analysis.buildProfile.defence.generalDefenceNeed > 0 ? ['Mindestens eine belastbare Verteidigungsschicht ergänzen.'] : []),
     ...(analysis.supportAnalysis.topCandidates[0] ? [`${definitionName(analysis.supportAnalysis.topCandidates[0].supportId)} als nächsten Support testen.`] : []),
-    ...(analysis.passiveAnalysis.topPathEfficiencyCandidates[0] ? [`${definitionName(analysis.passiveAnalysis.topPathEfficiencyCandidates[0].targetId)} als nächsten passiven Schwerpunkt prüfen.`] : []),
+    ...(passivePlan?.results.shared?.plan?.selectedTargets[0] ? [`${passivePlan.results.shared.plan.selectedTargets[0].displayName || passivePlan.results.shared.plan.selectedTargets[0].nodeId} als nächsten passiven Schwerpunkt prüfen.`] : []),
     ...(uniques[0] ? [`${uniqueById.get(uniques[0].uniqueId)?.name ?? 'Empfohlenes Unique'} im passenden Slot vergleichen.`] : []),
     ...(emptySlots.length ? [`${emptySlots.length} leere Ausrüstungsslots schrittweise ergänzen.`] : []),
   ].slice(0, 5)
@@ -350,11 +366,27 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
       <h4>Empfohlene Supports</h4><RecommendationList values={analysis.supportAnalysis.topCandidates} name={definitionName}/>
       <h4>Ausgeschlossene Supports</h4>{analysis.supportAnalysis.blockedCandidates.length ? <ul>{analysis.supportAnalysis.blockedCandidates.slice(0, 4).map(item => <li key={item.supportId}>{definitionName(item.supportId)}: {item.violations.map(issueText).join(' ') || 'Nicht kompatibel'}</li>)}</ul> : <p>Keine Supports durch harte Regeln ausgeschlossen.</p>}
     </div></details>
-    <details open><summary>Passive Schwerpunkte und konkrete Pfade</summary><div className="result-panel"><RecommendationList values={analysis.passiveAnalysis.eligibleCandidates} name={definitionName}/>{analysis.passiveAnalysis.topKeystoneCandidates.length ? <p><b>Keystone-Hinweis:</b> Nachteile vor Auswahl prüfen; Trade-offs bleiben sichtbar.</p> : <p>Kein belastbarer Keystone-Vorschlag verfügbar.</p>}
+    <details open><summary>Passive Schwerpunkte und konkrete Pfade</summary><div className="result-panel">
       {passivePlan?.results.shared?.plan ? <div className="concrete-passive-plan"><h4>Berechneter Passive-Pfad</h4><p>{passivePlan.status === 'stale' ? 'Der Pfad gehört zu älteren Eingaben und muss neu berechnet werden.' : `${passivePlan.results.shared.usedPointBudget} von ${passivePlan.results.shared.pointBudget} Punkten verwendet · ${passivePlan.results.shared.allocatedNodeIds.length} Knoten im gemeinsamen Pfad.`}</p><ol>{passivePlan.results.shared.plan.selectedTargets.slice(0, 8).map((target, index) => <li key={target.nodeId}><b>{index + 1}. {target.displayName || target.nodeId}</b> · {target.incrementalPointCost} Punkte · {target.pathNodeIds.length} Pfadknoten · {confidenceText[target.confidence]}</li>)}</ol>{onShowPassivePlan && <button className="secondary" onClick={onShowPassivePlan}>Alle Pfade im Baum anzeigen</button>}</div> : <p>Konkreter Pfad noch nicht berechnet. Die vorhandene Passive-Analyse in Abschnitt 6 kann ihn mit Punktbudget und Klassenstart erzeugen.</p>}
     </div></details>
-    <details><summary>Juwelen und Cluster</summary><div className="result-panel"><RecommendationList values={[...analysis.jewelAnalysis.topNormalJewels, ...analysis.jewelAnalysis.topClusterJewels, ...analysis.jewelAnalysis.topUniqueClusterJewels]} name={definitionName}/></div></details>
-    <details open><summary>Passende Uniques</summary><div className="result-panel">{uniques.length ? <ol>{uniques.map(item => { const unique = uniqueById.get(item.uniqueId), candidate = uniqueCandidateById.get(item.uniqueId); return <li key={item.uniqueId}><b>{unique?.name ?? item.uniqueId}</b> · {unique?.baseDisplayName ?? item.itemSlot} · {verdictText[item.replacementVerdict]}<br/><span>Slot {item.itemSlot} · {confidenceText[item.confidence]} · {evidenceText[candidate?.semanticEvidence ?? 'unresolved']} · {item.requiresReoptimization ? 'Neuberechnung erforderlich' : 'Keine Neuberechnung erkannt'}{item.tradeOffs.length ? ` · Belegte Einschränkungen: ${item.tradeOffs.length}` : ''}</span></li> })}</ol> : <p>Keine fachlich begrenzte Unique-Empfehlung verfügbar.</p>}<p className="muted">PoB2-Uniques ohne technische GGG-Stat-Verknüpfung erhalten nur die von vorhandenen Regeln belegbare Bewertung.</p></div></details>
+    <details><summary>Juwelen und Cluster</summary><div className="result-panel"><RecommendationList values={analysis.jewelAnalysis.topNormalJewels} name={definitionName}/><p className="muted">Normale Juwel-Empfehlungen stammen aus gepinnten technischen Juwel-Moddaten. Eigenständige Cluster- und besondere Juweldefinitionen sind im aktuellen freigegebenen Datenbestand nicht ausreichend belegt und werden daher nicht erfunden.</p></div></details>
+    <details open><summary>Passende Uniques</summary><div className="result-panel">{uniques.length ? <ol className="unique-recommendation-list">{uniques.map(item => {
+      const unique = uniqueById.get(item.uniqueId)
+      const candidate = uniqueCandidateById.get(item.uniqueId)
+      const variant = preferredUniqueVariant(unique)
+      const lines = unique ? localizedPob2LinesForVariant(unique, variant?.id) : undefined
+      const tradeOffs = visibleUniqueTradeOffs(unique, item.tradeOffs)
+      return <li key={item.uniqueId}>
+        <b>{unique?.name ?? item.uniqueId}</b> · {unique?.baseDisplayName ?? item.itemSlot} · {verdictText[item.replacementVerdict]}
+        <br/><span>Slot {item.itemSlot} · {confidenceText[item.confidence]} · {evidenceText[candidate?.semanticEvidence ?? 'unresolved']} · {item.requiresReoptimization ? 'Neuberechnung erforderlich' : 'Keine Neuberechnung erkannt'}</span>
+        <details open><summary>{variant ? `${variant.text}${variant.currentOrLegacy === 'legacy' ? ' · Legacy' : ' · Aktuell'}` : 'Belegte Eigenschaften'}</summary>
+          {lines && (lines.implicits.length || lines.modifiers.length)
+            ? <ul>{[...lines.implicits, ...lines.modifiers].map(line => <li key={line.id}>{line.text}</li>)}</ul>
+            : <p className="muted">Für diese Variante sind keine sichtbaren Eigenschaften aufgelöst.</p>}
+        </details>
+        {tradeOffs.length ? <><b>Nachteile und Einschränkungen</b><ul>{tradeOffs.map(value => <li key={value}>{value}</li>)}</ul></> : null}
+      </li>
+    })}</ol> : <p>Keine fachlich begrenzte Unique-Empfehlung verfügbar.</p>}<p className="muted">PoB2-Uniques ohne technische GGG-Stat-Verknüpfung erhalten nur die von vorhandenen Regeln belegbare Bewertung.</p></div></details>
     <div className="rotation-grid"><article><h3>Mapping</h3><p>Priorität: Flächenwirkung, Projektilabdeckung und Bewegung, soweit vom Skill unterstützt.</p><ProfileRecommendations title="Mapping-Ranglisten" supports={analysis.supportAnalysis.topMappingSupports} passives={analysis.passiveAnalysis.topMappingCandidates} jewels={analysis.jewelAnalysis.topMappingJewels} uniques={analysis.uniqueAnalysis.topMappingUniques}/><Rotation plan={analysis.mappingRotation}/></article><article><h3>Boss</h3><p>Priorität: Einzelzielwirkung, Schwächungen und stabile Schadensfenster, soweit belegt.</p><ProfileRecommendations title="Boss-Ranglisten" supports={analysis.supportAnalysis.topBossSupports} passives={analysis.passiveAnalysis.topBossCandidates} jewels={analysis.jewelAnalysis.topBossJewels} uniques={analysis.uniqueAnalysis.topBossUniques}/><Rotation plan={analysis.bossRotation}/></article></div>
     <details open><summary>Nächste Verbesserungen</summary><div className="result-panel">{nextSteps.length ? <ol>{nextSteps.map(step => <li key={step}>{step}</li>)}</ol> : <p>Keine konkrete Verbesserung aus den vorhandenen Daten ableitbar.</p>}</div></details>
   </section>

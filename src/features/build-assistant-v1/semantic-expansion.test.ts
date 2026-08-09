@@ -8,14 +8,17 @@ import { buildAssistantCandidates, deriveWeaponContext, runBuildAssistantV1 } fr
 import type { CharacterConfiguration } from '../../domain'
 import { initialEquipment, skillSetups } from '../../data'
 
-const initialCharacter: CharacterConfiguration = { classId: 'class-official-6', ascendancyId: 'ascendancy-official-6-1', level: 80, goalProfile: 'balanced', desiredMainSkillId: 'skill-lightning-arrow' }
+const initialCharacter: CharacterConfiguration = { classId: 'class-official-6', ascendancyId: 'ascendancy-official-Warrior1', level: 80, goalProfile: 'balanced', desiredMainSkillId: 'skill-lightning-arrow' }
 
 describe('Build Assistant V1.1 semantic expansion', () => {
   it('expands productive candidate breadth without fixtures', () => {
-    expect(buildAssistantCandidates.skills.length).toBe(235)
+    expect(buildAssistantCandidates.skills.length).toBe(288)
     expect(buildAssistantCandidates.supports.length).toBe(451)
-    expect(buildAssistantCandidates.jewels.length).toBe(13)
+    expect(buildAssistantCandidates.jewels.length).toBeGreaterThan(100)
     expect(buildAssistantCandidates.skills.some(item => item.id.startsWith('fixture:'))).toBe(false)
+    expect(buildAssistantCandidates.passives).toEqual([])
+    expect(buildAssistantCandidates.jewels.every(item => item.source === 'repoe-poe2' && item.status === 'imported')).toBe(true)
+    expect(buildAssistantCandidates.jewels.some(item => item.source === 'local-placeholder' || item.source === 'manual')).toBe(false)
   })
 
   it('keeps hard support compatibility rules', () => {

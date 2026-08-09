@@ -34,6 +34,13 @@ describe('PoB2-Unique-Semantik', () => {
     expect(result.tradeOffs).toEqual(['source-line:line-1'])
   })
 
+  it('markiert einen möglichen negativen Roll als belegte Abwägung', () => {
+    const input = record('+{value1}% to Lightning Resistance')
+    input.visibleModifiers[0].rollRanges = [{ minimum: -40, maximum: 40 }]
+    const result = classifyPob2Unique(input)
+    expect(result.tradeOffs).toEqual(['source-line:line-1'])
+  })
+
   it.each([
     ['bow', 'bow'],
     ['crossbow', 'crossbow'],

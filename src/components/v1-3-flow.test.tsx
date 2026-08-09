@@ -8,7 +8,7 @@ import { activeWeaponSlotIds, canRemoveJewelEntry, createNextJewelEntry, jewelEn
 import { createEmptySkillSetups } from '../features/skills/initial-state'
 import { createInitialCharacterConfiguration } from '../features/character/initial-state'
 import { availablePassivePoints } from '../features/character/passive-points'
-import { initialEquipment } from '../data'
+import { findTreeAscendancy, initialEquipment, isPlannableTreeAscendancy, treeClassRegistry } from '../data'
 import { AffixDialog, WeaponStatsFields, affixConflictGroupsBlockObservedEquipment } from './AffixDialog'
 import { itemSupportsDefenceValues, weaponStatsAreValid } from '../features/equipment-editor/item-stat-fields'
 import { automaticallySelectedOcrIds } from '../features/item-ocr/selection'
@@ -45,6 +45,15 @@ describe('V1.3.1 korrigierter Equipment-first-Flow', () => {
     expect(supportedClassOptions.map(value => value.label)).toEqual(['Hexe','Waldläuferin','Krieger','Zauberin','Jägerin','Söldner','Mönch','Druide'])
     expect(html).not.toContain('Marauder')
     expect(applyClassSelection({ classId:'old', ascendancyId:'old-asc', level:1, goalProfile:'balanced' }, 'new')).toMatchObject({ classId:'new', ascendancyId:'' })
+  })
+  it('bietet keine Aszendenz ohne belegten Start und Teilbaum produktiv an',()=>{
+    const abyssalLich=findTreeAscendancy('ascendancy-official-Witch3b')
+    expect(abyssalLich).toMatchObject({startNodeId:null,nodeIds:[]})
+    expect(isPlannableTreeAscendancy(abyssalLich)).toBe(false)
+    const witchClass=treeClassRegistry.find(value=>value.displayName==='Witch')!
+    const html=renderToStaticMarkup(<CharacterSection value={{classId:witchClass.classId,ascendancyId:'',level:1,goalProfile:'balanced'}} onChange={()=>undefined}/>)
+    expect(html).not.toContain('Abgrund-Lich')
+    expect(witchClass.ascendancies.filter(isPlannableTreeAscendancy).length).toBe(3)
   })
   it('behält leere Zahlenentwürfe sichtbar leer und berechnet gültige Punkte', () => {
     expect(parseUnsignedIntegerDraft('')).toBeUndefined()
