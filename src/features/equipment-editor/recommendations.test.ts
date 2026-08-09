@@ -1,6 +1,7 @@
 import { describe,expect,it } from 'vitest'
 import type { EquipmentEntry } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
+import type { Pob2UniqueAnalyzerCandidate } from '../../uniques/pob2-registry'
 import { createEquipmentSlotSuggestions } from './recommendations'
 import type { CharacterAttributeModel } from '../../engine/character-attributes/model'
 
@@ -109,6 +110,24 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       uniqueNames:new Map([['unique-bow','Peripherie']]),
     })
     expect(suggestions.some(value=>value.uniqueItemId==='unique-bow')).toBe(true)
+  })
+
+  it('zeigt bei einem exakt aufgelösten Unique die belegten Basisanforderungen',()=>{
+    const unique={valid:true,totalScore:10,itemSlot:'body-armour',uniqueId:'unique-armour',buildEnabler:false,damageScore:10,matchedSkillTags:['lightning'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation
+    const candidate={
+      id:'unique-armour',displayNameDe:'Unique',dataVersion:'test',source:'test',status:'verified',tags:['lightning'],
+      itemType:'Body Armours',itemSlot:'body-armour',modifiers:[],ascendancyIds:[],levelRequirement:65,
+      technicalBaseIdentity:{resolution:'exact-local-base',baseId:'base-armour',itemClassId:'Body Armours',kind:'defence',nameEn:'Sacrificial Regalia',displayNameDe:'Opfergewand',requirements:{strength:72,dexterity:72,intelligence:72}},
+    } as unknown as Pob2UniqueAnalyzerCandidate
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment:[...equipment,{id:'body',slotId:'slot-body-armour',modifierValues:[]}],
+      optimization:null,uniqueRecommendations:[unique],uniqueNames:new Map([['unique-armour','Unique']]),
+      uniqueCandidates:new Map([[candidate.id,candidate]]),
+    })
+    expect(suggestions[0]).toMatchObject({
+      baseDisplayName:'Opfergewand',itemClassId:'Body Armours',itemDefinitionId:'base-armour',
+      requirements:{requiredLevel:65,strength:72,dexterity:72,intelligence:72},
+    })
   })
 
   it('liefert für belegte Waffenarten eine konkrete gepinnte Basis mit Grundwerten',()=>{

@@ -3,7 +3,7 @@ import './styles.css'
 import './domain.css'
 import type { CharacterConfiguration } from './domain'
 import type { BuildAnalysis } from './engine'
-import { initialEquipment } from './data'
+import { initialEquipment, pob2UniqueAnalyzerCandidates } from './data'
 import { CharacterSection } from './components/CharacterSection'
 import { EquipmentSection } from './components/EquipmentSection'
 import { SkillsSection } from './components/SkillsSection'
@@ -55,6 +55,7 @@ export default function App() {
       ...analysis.uniqueAnalysis.topDefensiveUniques,
     ],
     uniqueNames:new Map(buildAssistantCandidates.uniques.map(item=>[item.id,item.displayNameDe])),
+    uniqueCandidates:new Map(pob2UniqueAnalyzerCandidates.map(item=>[item.id,item])),
     characterLevel:character.level,
     characterAttributes:analysis.characterAttributes,
   }):[]

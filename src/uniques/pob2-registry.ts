@@ -1,7 +1,21 @@
 import product from '../../generated/pob2/uniques.json'
 import type { UniqueItemSlot } from '../domain'
 import type { UniqueCandidate } from '../engine/common/types'
+import { resolveExactBaseIdentity } from '../features/equipment-editor/base-identity-resolution'
 import { classifyPob2Unique } from './pob2-semantics'
+
+export type Pob2UniqueAnalyzerCandidate = UniqueCandidate & {
+  technicalBaseIdentity?: {
+    resolution: 'exact-local-base'
+    baseId: string
+    itemClassId: string
+    kind: 'weapon' | 'defence' | 'utility'
+    nameEn: string
+    displayNameDe?: string
+    requiredLevel?: number
+    requirements: Partial<Record<'strength' | 'dexterity' | 'intelligence', number>>
+  }
+}
 
 export interface Pob2UniquePlannerRecord {
   sourceId: string
@@ -27,7 +41,11 @@ const records = product.items as Pob2UniquePlannerRecord[]
 
 export const pob2UniquePlannerRegistry = Object.freeze(records)
 
-export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item => {
+export const pob2UniqueAnalyzerCandidates: Pob2UniqueAnalyzerCandidate[] = records.map(item => {
+  const baseIdentity = resolveExactBaseIdentity(item.baseDisplayName)
+  const technicalRequirements = baseIdentity
+    ? Object.fromEntries(Object.entries(baseIdentity.base.requirements).filter(([, value]) => (value ?? 0) > 0))
+    : undefined
   const semanticRecord = { ...item, visibleModifiers: [...item.visibleModifiers, ...item.implicits] }
   const semantics = classifyPob2Unique(semanticRecord)
   const variantSemantics = item.variants.map(variant => {
@@ -62,7 +80,18 @@ export const pob2UniqueAnalyzerCandidates: UniqueCandidate[] = records.map(item 
   },
   itemType: item.itemCategory,
   itemSlot: item.slot,
-  levelRequirement: item.requiredLevel ?? undefined,
+  levelRequirement: Math.max(item.requiredLevel ?? 0, baseIdentity?.base.requiredLevel ?? 0) || undefined,
+  attributeRequirements: technicalRequirements,
+  technicalBaseIdentity: baseIdentity ? {
+    resolution: 'exact-local-base',
+    baseId: baseIdentity.base.id,
+    itemClassId: baseIdentity.base.itemClassId,
+    kind: baseIdentity.kind,
+    nameEn: baseIdentity.base.nameEn,
+    displayNameDe: baseIdentity.base.displayNameDe ?? undefined,
+    requiredLevel: baseIdentity.base.requiredLevel ?? undefined,
+    requirements: technicalRequirements ?? {},
+  } : undefined,
   modifiers: [],
   ascendancyIds: [],
   enabled: true,

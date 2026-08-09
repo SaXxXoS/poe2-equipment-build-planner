@@ -426,17 +426,32 @@ describe('vollständige Build-Variantenoptimierung', () => {
     {
       classId: 'class-official-8',
       ascendancyId: 'ascendancy-official-Huntress1',
-      expectedSkills: ['Lightning Spear', 'Ice Shot', 'Oil Barrage'],
+      expectedSkill: 'Lightning Spear',
+    },
+    {
+      classId: 'class-official-1',
+      ascendancyId: 'ascendancy-official-Witch2',
+      expectedSkill: 'Plasma Blast',
+    },
+    {
+      classId: 'class-official-1',
+      ascendancyId: 'ascendancy-official-Witch3b',
+      expectedSkill: 'Twister',
+    },
+    {
+      classId: 'class-official-9',
+      ascendancyId: 'ascendancy-official-Mercenary2',
+      expectedSkill: 'Shockburst Rounds',
     },
     {
       classId: 'class-official-9',
       ascendancyId: 'ascendancy-official-Mercenary3',
-      expectedSkills: ['Arc', 'Comet'],
+      expectedSkill: 'Arc',
     },
-  ])('bevorzugt für $ascendancyId korrelierte Build-Pakete mit Skillgruppe', ({
+  ])('bevorzugt für $ascendancyId das am stärksten gemeinsam belegte Build-Paket', ({
     classId,
     ascendancyId,
-    expectedSkills,
+    expectedSkill,
   }) => {
     const setups = createEmptySkillSetups()
     const analysis = runBuildAssistantV1({
@@ -467,7 +482,7 @@ describe('vollständige Build-Variantenoptimierung', () => {
     })
 
     const selected = buildAssistantCandidates.skills.find(value => value.id === result.selected?.skillId)
-    expect(expectedSkills).toContain(selected?.nameEn)
+    expect(selected?.nameEn).toBe(expectedSkill)
     expect(result.selected?.reasons.some(reason => reason.startsWith('Validiertes Build-Paket:'))).toBe(true)
     expect(result.selected?.plannedSkillSetups?.length).toBeGreaterThan(0)
   }, 15_000)

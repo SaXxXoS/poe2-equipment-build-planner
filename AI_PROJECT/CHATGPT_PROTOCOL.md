@@ -10,19 +10,32 @@
   kohärentes Paket mit Hauptskill, fünf Supports, Setup-Fertigkeit,
   Skillgruppe und passender Waffe. 21/23 verwenden ein korreliertes aktuelles
   Paket; Titan und Tactician bleiben lokal validierte Fallbacks.
-- Ohne Ausrüstung gewinnt die aktuelle korrelierte Paketbeobachtung vor bloßer
-  Häufigkeit. Mit Ausrüstung bleibt Equipment-first vorrangig.
+- Ohne Ausrüstung gewinnt innerhalb kohärenter aktueller Saisonpakete zuerst
+  die höhere Zahl gemeinsam beobachteter Profile; erst danach entscheiden
+  Paketwert und partielle Schadensschätzung. Mit Ausrüstung bleibt
+  Equipment-first vorrangig.
 - Eine technisch unterschiedliche Set-2-Fertigkeit wird nur bei belegter
-  Wirkungskette erzeugt. 22/23 Matrixprofile besitzen sie; Spirit Walker wird
-  nicht mit einer erfundenen Set-2-Rolle versehen.
+  Wirkungskette erzeugt. 21/23 Matrixprofile besitzen sie; Abyssal Lich und
+  Spirit Walker werden in ihren stärksten korrelierten Paketen nicht mit einer
+  erfundenen Set-2-Rolle versehen.
 - Passive Normalpunkte, bis zu 24 umschaltbare normale Waffensetpunkte und bis
   zu acht getrennte Aszendenzpunkte bleiben fachlich getrennt. Juwelensockel
   und Keystones werden nicht set-spezifisch vergeben.
 - Unique-Details zeigen die tatsächlichen Varianten-, Implicit- und Modzeilen;
   rohe `source-line`-Referenzen sind kein sichtbarer Nutzen- oder Nachteiltext.
-- 25 fokussierte Dateien mit 147 Tests bestanden. Die Gesamtsuite bestand mit
-  1.973 Tests; zwei parallele Vollbaum-Timeouts bestanden seriell mit 197/197.
-  Typecheck, Lint und Produktions-Build bestanden.
+- `376/435` Unique-Basen sind über einen eindeutigen exakten lokalen Basisnamen
+  verknüpft; `234` erhalten dadurch belegte Attributanforderungen. Untragbare
+  Empfehlungen werden blockiert und die Anforderungen sichtbar angezeigt.
+  `47` mehrdeutige und `12` fehlende Basistreffer bleiben unbekannt.
+- Die finale fokussierte Abschlussprüfung bestand mit 69/69 Tests; der
+  parallele Gesamtlauf bestand unmittelbar mit 1.977/1.980 Tests. Der danach
+  korrigierte Approval-Guard und die zwei lastbedingten Vollbaum-Timeouts
+  bestanden fokussiert beziehungsweise seriell, die Vollbaumdateien mit
+  197/197 Tests. Es bleibt keine fachlich fehlschlagende Assertion.
+- Typecheck, Lint, Produktions-/Pages-Build, 252 versionierte JSON-Dateien und
+  `git diff --check` bestanden. Die lokale Browserprüfung war bei 1280×720
+  und 390×844 ohne horizontalen Seitenüberlauf erfolgreich; die neun
+  Fertigkeitskarten sind mobil einspaltig.
 - Der belegte Status lautet **meta-orientiert und kohärent**, nicht garantierter
   weltweiter Meta-Sieger und nicht vollständiger Path-of-Building-Ersatz.
 - Hauptdokument:

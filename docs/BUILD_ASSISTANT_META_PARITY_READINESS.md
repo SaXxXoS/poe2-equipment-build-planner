@@ -40,14 +40,17 @@ Pakets werden vor der Auswahl geprüft.
 5. Berechenbare Schadenswerte werden logarithmisch auf 30 bis 100 relativ
    innerhalb desselben Laufs normalisiert.
 6. Eine gemischte Shortlist berücksichtigt strukturelle Paketqualität,
-   berechneten Schaden und korrelierte Meta-Evidenz.
+   berechneten Schaden und korrelierte Meta-Evidenz. Ohne eingetragene
+   Ausrüstung hat innerhalb kohärenter aktueller Pakete die Zahl gemeinsam
+   beobachteter Profile Vorrang vor der noch unvollständigen DPS-Schätzung.
 7. Blockierte Pakete können nicht gewinnen; nicht numerisch belegbare Pakete
    erhalten keinen Schadensbonus.
 
 ## Meta-Referenz
 
-Der lokale Snapshot enthält 53 anonymisierte Profile und 10 korrelierte
-Build-Pakete. Er belegt Hauptskill, Waffenart und häufige Support- bzw.
+Der aktuelle reduzierte Snapshot enthält 237 validierte anonymisierte Profile
+und 38 produktive korrelierte Build-Pakete. Er belegt Hauptskill, Waffenart
+und häufige Support- bzw.
 Skillbeziehungen. Er enthält absichtlich keine vollständigen Rohprofile,
 keine exakten Ausrüstungen und keine vollständigen Passive-Knotenlisten.
 

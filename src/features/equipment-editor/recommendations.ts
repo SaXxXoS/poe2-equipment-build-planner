@@ -1,5 +1,6 @@
 import type { EquipmentEntry, EquipmentWeaponStats, SyntheticWeaponType } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
+import type { Pob2UniqueAnalyzerCandidate } from '../../uniques/pob2-registry'
 import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import {
   utilityBaseDisplayName,
@@ -187,6 +188,7 @@ export function createEquipmentSlotSuggestions(input:{
   optimization?:BuildVariantOptimization|null
   uniqueRecommendations:UniqueRecommendation[]
   uniqueNames:Map<string,string>
+  uniqueCandidates?:Map<string,Pob2UniqueAnalyzerCandidate>
   characterLevel?:number
   characterAttributes?:Record<'set-1'|'set-2',CharacterAttributeModel>
 }):EquipmentSlotSuggestion[]{
@@ -221,6 +223,7 @@ export function createEquipmentSlotSuggestions(input:{
   const occupied=new Set(suggestions.map(item=>item.slotId))
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
+    const candidate=input.uniqueCandidates?.get(recommendation.uniqueId)
     const hasMatchedBuildTags=(recommendation.matchedSkillTags?.length??0)>0
     const hasProductiveEvidence=recommendation.buildEnabler
       || (recommendation.supportsCurrentBuild&&hasMatchedBuildTags)
@@ -248,12 +251,29 @@ export function createEquipmentSlotSuggestions(input:{
       suggestions.splice(optimizerIndex,1)
       occupied.delete(slotId)
     }
+    const uniqueBaseDetails=candidate?.technicalBaseIdentity?{
+      itemClassId:candidate.technicalBaseIdentity.itemClassId,
+      itemDefinitionId:candidate.technicalBaseIdentity.baseId,
+      baseDisplayName:candidate.technicalBaseIdentity.displayNameDe??candidate.technicalBaseIdentity.nameEn,
+      requirements:{
+        requiredLevel:candidate.levelRequirement??null,
+        strength:candidate.technicalBaseIdentity.requirements.strength??null,
+        dexterity:candidate.technicalBaseIdentity.requirements.dexterity??null,
+        intelligence:candidate.technicalBaseIdentity.requirements.intelligence??null,
+      },
+    }:candidate?.levelRequirement?{
+      requirements:{
+        requiredLevel:candidate.levelRequirement,
+        strength:null,dexterity:null,intelligence:null,
+      },
+    }:{}
     suggestions.push({
       slotId,
       title:input.uniqueNames.get(recommendation.uniqueId)??recommendation.uniqueId,
       detail:recommendation.buildEnabler?'Build-Enabler':'Passender Unique-Kandidat',
       source:'unique-analyzer',
       uniqueItemId:recommendation.uniqueId,
+      ...uniqueBaseDetails,
       reasons:visibleReasons(recommendation),
       tradeOffs:(recommendation.tradeOffs??[]).slice(0,4),
     })

@@ -70,6 +70,23 @@ describe('Build Assistant V1.1 semantic expansion', () => {
     expect(pob2UniqueAnalyzerCandidates.flatMap(item => item.variantSemantics ?? [])).toHaveLength(product.variantCount)
   })
 
+  it('links only uniquely exact local bases and exposes their real attribute requirements', () => {
+    const exact = pob2UniqueAnalyzerCandidates.filter(item => item.technicalBaseIdentity)
+    const withRequirements = exact.filter(item => Object.values(item.attributeRequirements ?? {}).some(value => (value ?? 0) > 0))
+    const splendour = pob2UniqueAnalyzerCandidates.find(item => item.nameEn === "Atziri's Splendour")
+
+    expect(exact).toHaveLength(376)
+    expect(withRequirements).toHaveLength(234)
+    expect(exact.every(item => item.technicalBaseIdentity?.resolution === 'exact-local-base')).toBe(true)
+    expect(splendour?.technicalBaseIdentity).toMatchObject({
+      itemClassId: 'Body Armours',
+      nameEn: 'Sacrificial Regalia',
+      displayNameDe: 'Opfergewand',
+      requirements: { strength: 72, dexterity: 72, intelligence: 72 },
+    })
+    expect(splendour?.attributeRequirements).toEqual({ strength: 72, dexterity: 72, intelligence: 72 })
+  })
+
   it('recognizes pinned caster utility weapon classes in equipped weapon sets', () => {
     const equipment = initialEquipment.map(entry => {
       if (entry.slotId === 'slot-weapon-set-1-left') return { ...entry, itemClassId: 'Staves' }

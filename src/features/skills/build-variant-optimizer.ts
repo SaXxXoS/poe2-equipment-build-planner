@@ -378,6 +378,30 @@ export function normalizeDamageObjective(
   })
 }
 
+function compareVariantPriority(
+  left: BuildVariantCandidate,
+  right: BuildVariantCandidate,
+  equipmentFirst: boolean,
+) {
+  /*
+   * Ohne eingegebene Ausrüstung ist die lokale Schadensmodellierung noch
+   * nicht vollständig genug, um einen kleineren beobachteten Build allein
+   * wegen eines höheren Teil-DPS-Werts zum Saisonpaket zu erklären. In
+   * diesem Bootstrap-Fall ist die Anzahl gemeinsam beobachteter Profile das
+   * stärkste verfügbare Paket-Signal. Mit realer Ausrüstung bleibt dagegen
+   * weiterhin deren fachliche Auswertung maßgeblich.
+   */
+  if (!equipmentFirst) {
+    const profileDifference = (right.metaReferenceProfileCount ?? 0)
+      - (left.metaReferenceProfileCount ?? 0)
+    if (profileDifference !== 0) return profileDifference
+  }
+  return right.totalScore - left.totalScore
+    || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
+    || left.skillId.localeCompare(right.skillId)
+    || left.weaponType.localeCompare(right.weaponType)
+}
+
 function packageEvaluationShortlist(
   variants: BuildVariantCandidate[],
   limit: number,
@@ -394,7 +418,9 @@ function packageEvaluationShortlist(
     (right.modeledDps ?? -1) - (left.modeledDps ?? -1) || left.skillId.localeCompare(right.skillId),
   ), groupSize)
   take([...variants].sort((left, right) =>
-    (right.metaReferenceScore ?? 0) - (left.metaReferenceScore ?? 0) || left.skillId.localeCompare(right.skillId),
+    (right.metaReferenceProfileCount ?? 0) - (left.metaReferenceProfileCount ?? 0)
+    || (right.metaReferenceScore ?? 0) - (left.metaReferenceScore ?? 0)
+    || left.skillId.localeCompare(right.skillId),
   ), groupSize)
   for (const value of variants) {
     if (selected.size >= limit) break
@@ -686,10 +712,7 @@ export function optimizeBuildVariants(input: {
     })
   })
   variants = normalizeDamageObjective(variants).sort((left, right) =>
-    right.totalScore - left.totalScore
-    || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
-    || left.skillId.localeCompare(right.skillId)
-    || left.weaponType.localeCompare(right.weaponType),
+    compareVariantPriority(left, right, equipmentFirst),
   )
   if (input.evaluatePackage) {
     const limit = Math.max(1, input.maximumPackageEvaluations ?? 8)
@@ -712,10 +735,7 @@ export function optimizeBuildVariants(input: {
     }).sort((left, right) =>
       (left.packageStatus === 'blocked' ? 1 : 0) - (right.packageStatus === 'blocked' ? 1 : 0)
       || (left.packageStatus === 'coherent' ? 0 : 1) - (right.packageStatus === 'coherent' ? 0 : 1)
-      || right.totalScore - left.totalScore
-      || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
-      || left.skillId.localeCompare(right.skillId)
-      || left.weaponType.localeCompare(right.weaponType),
+      || compareVariantPriority(left, right, equipmentFirst),
     )
   }
   const selectable = variants.filter(candidate =>

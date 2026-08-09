@@ -29,8 +29,11 @@ Netzwerkzugriff statt.
 1. Harte Gemmen-, Waffen-, Rollen- und Supportregeln werden zuerst geprüft.
 2. Vom Nutzer eingetragene Ausrüstung und die gewählte Hauptfertigkeit haben
    Vorrang und werden nicht heimlich ersetzt.
-3. Ohne Ausrüstung gewinnt ein exakt korreliertes aktuelles Saisonpaket vor
-   bloßen Häufigkeiten oder allgemeinen Tag-Affinitäten.
+3. Ohne Ausrüstung gewinnt innerhalb der technisch kohärenten aktuellen
+   Saisonpakete zuerst die höhere Zahl gemeinsam beobachteter Profile. Erst
+   danach entscheiden Paketwert und die teilweise numerische Schadensschätzung.
+   Damit kann eine unvollständige DPS-Modellierung kein deutlich stärker
+   belegtes aktuelles Paket verdrängen.
 4. Hauptskill, verwendbare Waffenart, Supports und zusammen beobachtete
    Fertigkeitsgruppen bleiben ein gemeinsames Paket.
 5. Eine Setup- oder Set-2-Fertigkeit wird nur dann set-spezifisch markiert,
@@ -52,16 +55,24 @@ Die feste Matrix umfasst alle `23` produktiven Klassen-/Aszendenzprofile:
 - `23/23` besitzen eine Setup-Fertigkeit;
 - `23/23` besitzen eine geplante zusammenhängende Fertigkeitsgruppe;
 - `23/23` besitzen eine Fertigkeit für Waffenset 1;
-- `22/23` besitzen eine technisch belegte Set-2-Fertigkeit;
+- `21/23` besitzen eine technisch belegte Set-2-Fertigkeit;
 - `21/23` verwenden ein mehrfach korreliertes aktuelles Saisonpaket;
-- `11/23` schneiden einen beobachteten Referenzskill;
-- `20/23` schneiden eine beobachtete Referenzwaffenart.
+- `10/23` schneiden zusätzlich den älteren getrennten
+  Referenzskill-Überblick;
+- `19/23` schneiden zusätzlich den älteren getrennten
+  Referenzwaffen-Überblick;
+- die ausgewählten Pakete verwenden `12` unterschiedliche Hauptskills und
+  `7` unterschiedliche Waffenarten.
 
-Für `Titan` und `Tactician` reicht der aktuelle reduzierte Snapshot nicht für
+Der neuere korrelierte Paketsnapshot ist fachlich stärker als der ältere
+Überblick aus voneinander getrennten Skill- und Waffenverteilungen, weil er
+die Bestandteile desselben Profils zusammenhält. Für `Titan` und `Tactician`
+reicht der aktuelle reduzierte Snapshot nicht für
 ein promoviertes Mehrprofilpaket. Sie verwenden deshalb einen lokal
-kompatibilitätsgeprüften deterministischen Fallback. `Spirit Walker` besitzt
-keine belegte unterschiedliche Set-2-Skalierung; die App erzeugt dafür keinen
-falschen zweiten Waffenweg.
+kompatibilitätsgeprüften deterministischen Fallback. `Abyssal Lich` und
+`Spirit Walker` besitzen in ihren jeweils am häufigsten gemeinsam beobachteten
+Paketen keine technisch belegte unterschiedliche Set-2-Skalierung; die App
+erzeugt dafür keinen falschen zweiten Waffenweg.
 
 ## Passive-, Waffen- und Aszendenzplanung
 
@@ -89,15 +100,29 @@ werden die tatsächlichen Implicit- und Modzeilen der jeweiligen Variante
 gezeigt. Interne `source-line`-Referenzen und Engine-Schlüssel sind keine
 primären sichtbaren Texte mehr.
 
+Zusätzlich werden `376/435` Unique-Basen über einen eindeutigen exakten
+deutschen oder englischen lokalen Basisnamen technisch aufgelöst. `234`
+davon besitzen belegte Stärke-, Geschick- oder Intelligenzanforderungen. Diese
+Anforderungen blockieren untragbare Empfehlungen und erscheinen zusammen mit
+den Varianteneigenschaften in der Detailansicht. `47` mehrdeutige und `12`
+nicht gefundene Basen bleiben fail-closed ohne erfundene technische Identität.
+
 ## Prüfstatus
 
-- fokussiert: `25` Dateien, `147` Tests bestanden;
-- Gesamtsuite: `170` Dateien und `1.973` Tests bestanden;
-- zwei Vollbaumdateien überschritten nur unter paralleler Gesamtlast das feste
-  Zeitlimit und bestanden anschließend seriell mit `197/197` Tests;
+- fokussierte Abschlussprüfung: `69/69` Guard-, Registry-, Empfehlungs- und
+  Semantiktests bestanden; die Optimierermatrix wurde zusätzlich separat
+  validiert;
+- paralleler Gesamtlauf: `1.977/1.980` Tests bestanden unmittelbar. Der danach
+  korrigierte unveränderliche Approval-Guard und die zwei nur unter
+  paralleler Gesamtlast zeitüberschrittenen Vollbaumtests bestanden in der
+  finalen Fassung fokussiert beziehungsweise seriell; die beiden
+  Vollbaumdateien bestanden mit `197/197` Tests;
 - Typecheck: bestanden;
 - Lint: bestanden;
-- Produktions-Build: bestanden;
+- Produktions- und Pages-Build: bestanden;
+- JSON-Validierung: `252` versionierte JSON-Dateien bestanden;
+- Browser: Desktop `1280 × 720` und Mobil `390 × 844` ohne horizontalen
+  Seitenüberlauf; alle neun Fertigkeitskarten stehen mobil einspaltig;
 - `git diff --check`: bestanden.
 
 ## Ehrliche Meta-Eignungsentscheidung
