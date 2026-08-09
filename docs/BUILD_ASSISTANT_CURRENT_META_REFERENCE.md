@@ -222,3 +222,6 @@ Waffenliste genügt ausdrücklich nicht.
 - Desktop und 390×844 laden die lokale Produktionsausgabe ohne horizontalen
   Überlauf oder neue Browserkonsolenmeldungen. Die neun Skillkarten sind bei
   390×844 einspaltig.
+- GitHub-Actions-Lauf `31300870197` bestand mit erfolgreichem Build und Deploy.
+  Die öffentliche Pages-Seite antwortet mit HTTP 200 und liefert dasselbe
+  Produktionsskript `index-DQWtU2C2.js` wie der lokale Pages-Build.

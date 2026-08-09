@@ -4423,4 +4423,6 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Produktions-/Pages-Build, 252 JSON-Dateien und `git diff --check` bestanden.
 - Die lokale Browserprüfung bestand auf Desktop und bei 390×844 ohne
   horizontalen Überlauf oder neue Konsolenmeldungen; alle neun Skillkarten
-  blieben mobil einspaltig. Die öffentliche Pages-Prüfung folgt nach dem Push.
+  blieben mobil einspaltig. GitHub-Actions-Lauf `31300870197` schloss Build
+  und Deploy erfolgreich ab; die öffentliche Pages-Seite liefert mit HTTP 200
+  das lokal geprüfte Produktionsskript `index-DQWtU2C2.js` aus.
