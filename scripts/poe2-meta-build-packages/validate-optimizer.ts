@@ -1,4 +1,5 @@
 import { writeFile } from 'node:fs/promises'
+import { supportExclusiveKeys } from '../../src/domain'
 import { initialEquipment, treeClassRegistry } from '../../src/data'
 import {
   buildAssistantCandidates,
@@ -7,6 +8,7 @@ import {
 } from '../../src/features/build-assistant-v1'
 import { evaluateAnalyzedBuildPackage } from '../../src/features/skills/build-package-evaluation'
 import {
+  hasCoherentWeaponSetSpecialization,
   optimizeBuildVariants,
   plannedEquipmentForVariant,
 } from '../../src/features/skills/build-variant-optimizer'
@@ -210,6 +212,30 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
     const populatedSetups = visibleSetups.filter(setup => setup.skillId)
     const mainSetup = populatedSetups.find(setup => setup.role === 'main')
     const secondarySetups = populatedSetups.filter(setup => setup.role !== 'main')
+    const selectedSupportDefinitions = (result.selected?.compatibleSupportIds ?? [])
+      .map(id => buildAssistantCandidates.supports.find(value => value.id === id))
+      .filter((value): value is (typeof buildAssistantCandidates.supports)[number] => Boolean(value))
+    const supportKeys = selectedSupportDefinitions.flatMap(supportExclusiveKeys)
+    const duplicateSupportFamilies = [...new Set(supportKeys.filter(
+      (key, index) => supportKeys.indexOf(key) !== index,
+    ))]
+    const coherentWeaponSetPackage = result.selected?.corePackageStatus === 'coherent-two-set'
+    const oppositeSet = result.selected?.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1'
+    const oppositeSetSkillCount = oppositeSet === 'set-1'
+      ? populatedSetups.filter(setup => setup.weaponSet === 'set-1').length
+      : populatedSetups.filter(setup => setup.weaponSet === 'set-2').length
+    const phantomWeaponSetPackage = coherentWeaponSetPackage && (
+      !result.selected?.setupSkillId
+      || !result.selected.setupWeaponType
+      || result.selected.setupWeaponSet !== oppositeSet
+      || oppositeSetSkillCount === 0
+      || !hasCoherentWeaponSetSpecialization(
+        initialEquipment,
+        result.selected,
+        character.level,
+        analysis.characterAttributes,
+      )
+    )
 
     rows.push({
       classId: entry.classId,
@@ -222,6 +248,7 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       selectedSkillEn: selectedSkill?.nameEn ?? null,
       weapon: result.selected?.weaponType ?? null,
       setupSkill: result.selected?.setupSkillName ?? effectivePlannedSkills[0]?.skillName ?? null,
+      actualSetupSkill: result.selected?.setupSkillName ?? null,
       plannedSkillCount: effectivePlannedSkills.length,
       setupWeapon: result.selected?.setupWeaponType ?? null,
       supportCount: result.selected?.compatibleSupportIds.length ?? 0,
@@ -233,6 +260,10 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       set2SkillCount: populatedSetups.filter(setup => setup.weaponSet === 'set-2').length,
       bothSkillCount: populatedSetups.filter(setup => setup.weaponSet === 'both').length,
       packageStatus: result.selected?.packageStatus ?? null,
+      corePackageStatus: result.selected?.corePackageStatus ?? null,
+      coherentWeaponSetPackage,
+      phantomWeaponSetPackage,
+      duplicateSupportFamilies,
       packageScore: result.selected?.packageScore ?? null,
       metaScore: result.selected?.metaReferenceScore ?? null,
       correlatedProfileCount: result.selected?.metaReferenceProfileCount ?? 0,
@@ -267,6 +298,11 @@ const totals = {
   distinctWeapons: new Set(rows.map(row => row.weapon).filter(Boolean)).size,
   profilesWithFilledMainSupports: rows.filter(row => row.mainSupportCount > 0).length,
   profilesWithSetupSkill: rows.filter(row => row.setupSkill).length,
+  profilesWithActualSetupSkill: rows.filter(row => row.actualSetupSkill).length,
+  coherentSingleSetPackages: rows.filter(row => row.corePackageStatus === 'coherent-single-set').length,
+  coherentTwoSetPackages: rows.filter(row => row.corePackageStatus === 'coherent-two-set').length,
+  phantomWeaponSetPackages: rows.filter(row => row.phantomWeaponSetPackage).length,
+  profilesWithDuplicateMainSupportFamilies: rows.filter(row => row.duplicateSupportFamilies.length > 0).length,
   profilesWithPlannedSkillGroup: rows.filter(row => row.plannedSkillCount > 0).length,
   profilesWithSet1Skill: rows.filter(row => row.set1SkillCount > 0).length,
   profilesWithSet2Skill: rows.filter(row => row.set2SkillCount > 0).length,
@@ -303,6 +339,8 @@ const report = {
     observedIntersection: 'Sekundärer Plausibilitätsbeleg gegen marginale poe.ninja-Häufigkeiten; kein Beweis für globale Optimalität und keine DPS-Garantie.',
     correlatedCurrentPackage: 'Saisonaler PlausibilitÃ¤tsbeleg: Aszendenz, Hauptskill, Waffe, Supports und weitere Fertigkeiten wurden gemeinsam in einem lokal gepinnten Profil beobachtet.',
     plannedWeaponContextMatches: 'Die technisch geplante Waffenklasse erreicht nach Normalisierung wieder denselben Analyzer-Waffentyp.',
+    coherentSingleSetPackage: 'Ein technisch vollständiges Ein-Set-Paket erzeugt absichtlich keine Waffenset-Punkte.',
+    coherentTwoSetPackage: 'Ein Zwei-Set-Paket besitzt eine belegte Setup-Fertigkeit, eine konkrete kompatible zweite Waffe und einen Skill im gegenüberliegenden Set.',
   },
   limitations: [
     'Die poe.ninja-Statistik Main Skills kann Utility-, Herald- und Setup-Fertigkeiten enthalten.',
@@ -317,13 +355,19 @@ await writeFile(OUTPUT, `${JSON.stringify(report, null, 2)}\n`)
 if (totals.selected !== totals.profiles
   || totals.coherent !== totals.profiles
   || totals.plannedWeaponContextMatches !== totals.profiles
-  || totals.profilesWithFilledMainSupports !== totals.profiles) {
+  || totals.profilesWithFilledMainSupports !== totals.profiles
+  || totals.coherentSingleSetPackages + totals.coherentTwoSetPackages !== totals.profiles
+  || totals.phantomWeaponSetPackages !== 0
+  || totals.profilesWithDuplicateMainSupportFamilies !== 0) {
   const failures = {
     notSelected: rows.filter(row => row.status !== 'selected'),
     notCoherent: rows.filter(row => row.packageStatus !== 'coherent'),
     weaponContextMismatch: rows.filter(row => !row.plannedWeaponContextMatches),
     missingMainSupports: rows.filter(row => row.mainSupportCount === 0),
     missingPlannedSkillGroup: rows.filter(row => row.plannedSkillCount === 0),
+    missingCoreStatus: rows.filter(row => !['coherent-single-set', 'coherent-two-set'].includes(row.corePackageStatus ?? '')),
+    phantomWeaponSetPackages: rows.filter(row => row.phantomWeaponSetPackage),
+    duplicateMainSupportFamilies: rows.filter(row => row.duplicateSupportFamilies.length > 0),
   }
   throw new Error(`Produktive Paketmatrix unvollständig: ${JSON.stringify({ totals, failures })}`)
 }

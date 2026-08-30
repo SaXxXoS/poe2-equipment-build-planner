@@ -148,26 +148,28 @@ export function evaluateAnalyzedBuildPackage(
     + components.resources * 0.1
     + components.rotation * 0.06,
   )
-  const missingSections = [
+  const missingCoreSections = [
     components.supports === 0 && 'Supports',
-    components.passives === 0 && 'Passive',
+    analysis.realPassivePlanning?.enabled && components.passives === 0 && 'Passive',
+  ].filter((value): value is string => Boolean(value))
+  const missingOptionalSections = [
     components.jewels === 0 && 'Juwelen',
     components.uniques === 0 && 'Uniques',
   ].filter((value): value is string => Boolean(value))
   const status = blockers.length
     ? 'blocked'
-    : missingSections.length >= 3 || (
-        candidate.resourceStatus === 'resource-chain-unknown'
-        && !candidate.metaReferenceProfileCount
-      )
+    : missingCoreSections.length > 0
       ? 'limited'
       : 'coherent'
   const evidence = [
     `Gemeinsame Paketprüfung: ${weightedScore}/100.`,
     `Teilwerte – Ausrüstung ${components.equipment}, Skill ${components.skill}, Supports ${components.supports}, Passive ${components.passives}, Juwelen ${components.jewels}, Uniques ${components.uniques}, Ressourcen ${components.resources}, Rotation ${components.rotation}.`,
-    ...(missingSections.length
-      ? [`Eingeschränkte Beleglage: ${missingSections.join(', ')} liefern für dieses Paket noch keinen positiven Fachbeleg.`]
-      : ['Alle sechs Analyzer liefern mindestens einen positiven Beitrag zum Gesamtpaket.']),
+    ...(missingCoreSections.length
+      ? [`Unvollständige Kernkette: ${missingCoreSections.join(', ')} liefern für dieses Paket noch keinen positiven Fachbeleg.`]
+      : ['Hauptskill, Supports und Passive-Plan liefern gemeinsam positive Fachbelege.']),
+    ...(missingOptionalSections.length
+      ? [`Optionale Ausbaukandidaten fehlen noch in: ${missingOptionalSections.join(', ')}. Das erzeugt keinen unbelegten Ersatzvorschlag.`]
+      : ['Juwel- und Unique-Analyzer liefern belegte optionale Ausbaukandidaten.']),
     ...(candidate.resourceStatus === 'resource-chain-unknown' && candidate.metaReferenceProfileCount
       ? [`Die lokale Ressourcenkette ist unvollständig modelliert; das vollständige Paket ist jedoch in ${candidate.metaReferenceProfileCount} gepinnten aktuellen Profilen gemeinsam belegt.`]
       : []),

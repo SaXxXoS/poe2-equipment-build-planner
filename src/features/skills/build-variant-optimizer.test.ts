@@ -13,6 +13,7 @@ import {
   normalizeDamageObjective,
   optimizeBuildVariants,
   plannedEquipmentForVariant,
+  validateBuildVariantCore,
   type BuildVariantCandidate,
   type VariantSkillScore,
 } from './build-variant-optimizer'
@@ -29,6 +30,75 @@ describe('kohärente Waffenset-Spezialisierung', () => {
       weaponType: 'wand', mainWeaponSet: 'set-1',
       setupSkillId: 'orb', setupWeaponType: 'sceptre', setupWeaponSet: 'set-2',
     })).toBe(true)
+  })
+})
+
+describe('harter Build-Paket-Kernvertrag', () => {
+  const main = skill('spark-core', ['spell', 'projectile', 'lightning'])
+  const setup = skill('orb-core', ['spell', 'area', 'lightning'], {
+    possibleRoles: ['utility'],
+  })
+  const spellSupport = support('spell-core', ['spell'], {
+    supportCategoryIds: ['spell-damage'],
+  })
+  const candidate = (): BuildVariantCandidate => ({
+    ...damageCandidate('spark-core', null),
+    compatibleSupportIds: ['spell-core'],
+    setupSkillId: 'orb-core',
+    setupSkillName: 'orb-core',
+    setupWeaponType: 'wand',
+    setupWeaponSet: 'set-2',
+    setupReason: 'Die Gewittersphäre verstärkt den belegten Blitzzauber.',
+    plannedSkillSetups: [{
+      skillId: 'orb-core',
+      skillName: 'orb-core',
+      role: 'utility',
+      weaponSet: 'set-2',
+      weaponType: 'wand',
+      reason: 'Belegte Blitz-Setup-Wirkung.',
+      score: 10,
+      evidence: 'structured-exact',
+      ruleId: 'test.orb-core',
+    }],
+  })
+
+  it('akzeptiert nur ein vollständig belegtes Zwei-Set-Paket', () => {
+    expect(validateBuildVariantCore({
+      candidate: candidate(),
+      equipment: initialEquipment,
+      skills: [main, setup],
+      supports: [spellSupport],
+    })).toMatchObject({ status: 'coherent-two-set', blockers: [] })
+  })
+
+  it('blockiert eine bloße zweite Waffe ohne geplante Skillbeziehung', () => {
+    expect(validateBuildVariantCore({
+      candidate: { ...candidate(), plannedSkillSetups: [] },
+      equipment: initialEquipment,
+      skills: [main, setup],
+      supports: [spellSupport],
+    })).toMatchObject({
+      status: 'blocked',
+      blockers: expect.arrayContaining([expect.stringContaining('belegte produktive Beziehung')]),
+    })
+  })
+
+  it('blockiert doppelte Supportfamilien im Hauptskill', () => {
+    const duplicate = support('spell-core-duplicate', ['spell'], {
+      supportCategoryIds: ['spell-damage'],
+    })
+    expect(validateBuildVariantCore({
+      candidate: {
+        ...candidate(),
+        compatibleSupportIds: ['spell-core', 'spell-core-duplicate'],
+      },
+      equipment: initialEquipment,
+      skills: [main, setup],
+      supports: [spellSupport, duplicate],
+    })).toMatchObject({
+      status: 'blocked',
+      blockers: expect.arrayContaining([expect.stringContaining('Supportfamilie')]),
+    })
   })
 })
 

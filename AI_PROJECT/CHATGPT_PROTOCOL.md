@@ -1,5 +1,37 @@
 # CHATGPT-Protokoll – PoE2 Equipment Build Planner
 
+## Fail-closed Build-Paket-Kern – 30. August 2026
+
+- Automatische Empfehlungen besitzen jetzt vor jeder gewichteten
+  Analyzerwertung einen harten Paketvertrag: produktive Hauptskill-Waffen-Kette,
+  konkrete lokal auflösbare Hauptwaffe, mindestens ein produktiver Support und
+  keine doppelte Supportfamilie.
+- Ein Zwei-Waffenset-Paket benötigt zusätzlich eine produktive Setup-Fertigkeit
+  im gegenüberliegenden Set, eine konkrete kompatible Setup-Waffe und eine
+  explizit geplante Wirkungskette. Eine bloße zweite Waffe erzeugt keine
+  Set-Punkte.
+- Die Produktmatrix unterscheidet belegte Ein-Set- und Zwei-Set-Pakete. Von
+  23 produktiven Klassen-/Aszendenzprofilen sind 21 belegte Zwei-Set-Pakete und
+  zwei ehrliche Ein-Set-Pakete; Phantom-Setups und doppelte Hauptsupportfamilien
+  stehen jeweils bei null.
+- Die Ergebnisansicht benennt die gewählte Paketform und zeigt die harten
+  Belege. Bei einem Ein-Set-Paket erklärt sie ausdrücklich, warum keine zweite
+  Waffe und keine Waffenset-Punkte erfunden werden.
+- Die bestehende Equipment-first-Priorität, Produktpins, Offline-Grenzen und
+  die getrennten Budgets für normale, Waffenset- und Aszendenzpunkte bleiben
+  unverändert.
+- Der aktuelle Matrixlauf bestand für 23/23 Profile: 21 echte Zwei-Set-Pakete,
+  zwei belegte Ein-Set-Pakete, null Phantom-Setups und null doppelte
+  Hauptsupportfamilien. Beide Ein-Set-Pakete erzeugen keine erfundene
+  Set-2-Waffe und keine Waffenset-Punkte.
+- Der Gesamttestlauf bestand mit 1.987 Tests; zwei ausschließlich unter
+  paralleler Vollbaumlast zeitüberschrittene Dateien bestanden im seriellen
+  Kontrolllauf mit 197/197 Tests. Typecheck, Lint, Produktions- und
+  Pages-Build, 252 JSON-Dateien sowie `git diff --check` bestanden.
+- Die lokale Browserprüfung bestand bei Desktopbreite und 390×844 ohne
+  horizontalen Seitenüberlauf. Alle neun Fertigkeitsplätze stehen mobil
+  einspaltig; die Browserkonsole enthielt keine App-Fehler oder -Warnungen.
+
 ## Meta-orientierte Paketoptimierung – 9. August 2026
 
 - Der aktive Saisonpin ist `1044-20260809-12563` für `Runes of Aldur`.

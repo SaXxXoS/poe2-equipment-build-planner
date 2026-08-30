@@ -97,3 +97,22 @@ der belegten lokalen Daten.
 Eine vollständige globale PoE2-Optimierung ist weiterhin nicht behauptet.
 Insbesondere begrenzen unvollständige Skill-, Support-, Passive- und
 Meta-Profilbelege die erreichbare Qualität.
+
+## Harter Paketkern
+
+Vor der gewichteten Analyzerbewertung gilt zusätzlich ein fail-closed
+Kernvertrag. Eine Empfehlung benötigt eine produktive Hauptskill-Waffen-Kette,
+mindestens einen produktiven Support, eindeutige Supportfamilien und eine
+konkret lokal auflösbare Hauptwaffe.
+
+Ein Zwei-Waffenset-Paket wird nur akzeptiert, wenn außerdem eine produktive
+Setup-Fertigkeit im gegenüberliegenden Set, eine konkrete kompatible
+Setup-Waffe und eine explizit geplante Skillbeziehung vorhanden sind. Fehlt
+einer dieser Belege, bleibt das Ergebnis ein Ein-Set-Paket und erhält keine
+Waffenset-Punkte. Eine bloß leere oder zufällige zweite Waffe erzeugt somit
+keine scheinbare Optimierung.
+
+Die Produktmatrix unterscheidet jetzt ausdrücklich `coherent-single-set` und
+`coherent-two-set`. Sie blockiert Phantom-Setups und doppelte
+Supportfamilien. Die Ergebnisansicht erklärt sichtbar, welche der beiden
+Formen gewählt wurde und nennt die harten Paketbelege.

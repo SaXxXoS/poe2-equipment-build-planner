@@ -206,6 +206,11 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
     <details open><summary>Optimierte Waffen- und Fertigkeitskombination</summary><div className="result-panel">
       {variantOptimization?.selected ? <>
         <h3>Beste belegte Kombination im lokalen Datenbestand</h3>
+        <p className="analysis-note"><b>Waffenset-Plan:</b>{' '}
+          {variantOptimization.selected.corePackageStatus === 'coherent-two-set'
+            ? 'Belegtes Zwei-Set-Paket. Das zweite Set besitzt eine eigene kompatible Waffe, eine zugeordnete Fertigkeit und eine nachgewiesene Wirkung auf den Hauptplan.'
+            : 'Belegtes Ein-Set-Paket. Es werden absichtlich keine Waffenset-Punkte oder eine zweite Waffe erfunden.'}
+        </p>
         <dl className="summary-grid">
           <div><dt>Hauptfertigkeit</dt><dd>{definitionName(variantOptimization.selected.skillId)}</dd></div>
           <div><dt>Waffe</dt><dd>{variantOptimization.selected.weaponLabel}</dd></div>
@@ -229,6 +234,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           </li>)}</ol>
         </> : null}
         {variantOptimization.selected.setupSkillId && <p><b>Zusammenhang der Waffensets:</b> {variantOptimization.selected.setupReason ?? 'Der Setup-Skill ist als belegte Ergänzung des Hauptskills eingeplant.'}</p>}
+        {variantOptimization.selected.corePackageEvidence?.length ? <><h4>Harte Paketbelege</h4><ul>{variantOptimization.selected.corePackageEvidence.map(value => <li key={value}>{value}</li>)}</ul></> : null}
         <p>{variantOptimization.equipmentFirst ? 'Vorhandene Waffen wurden zuerst berücksichtigt.' : 'Ohne Ausrüstung wurde die fachlich passendste belegte Waffenart mitgeprüft.'} Geprüft: {variantOptimization.evaluatedSkillCount} Hauptfertigkeiten und {variantOptimization.evaluatedCombinationCount} kompatible Skill-Waffen-Kombinationen.</p>
         {variantOptimization.selected.packageComponents && <>
           <h4>Gemeinsame Build-Paketprüfung</h4>

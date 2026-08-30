@@ -1,4 +1,5 @@
 import {
+  supportExclusiveKeys,
   type EquipmentEntry,
   type MechanicTag,
   type SkillGemDefinition,
@@ -105,6 +106,9 @@ export interface BuildVariantCandidate {
   packageBlockers?: string[]
   ruleGraphStatus?: 'coherent' | 'limited' | 'blocked'
   ruleGraphEvidence?: string[]
+  corePackageStatus?: 'coherent-single-set' | 'coherent-two-set' | 'blocked'
+  corePackageEvidence?: string[]
+  corePackageBlockers?: string[]
   reasons: string[]
 }
 
@@ -226,11 +230,19 @@ function referenceWeapon(
   }
 }
 
-const hasWeaponInSet = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2') =>
-  equipment.some(entry => {
-    if (entry.slotId !== `slot-weapon-${set}-left` || !entry.itemClassId) return false
-    return technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)?.slotType === 'weapon'
+const weaponTypesInSet = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2') =>
+  equipment.flatMap(entry => {
+    if (!entry.slotId.includes(`weapon-${set}`) || !entry.itemClassId) return []
+    const itemClass = technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)
+    const type = syntheticWeaponTypeFromTechnicalName(itemClass?.weaponType)
+    return type ? [type] : []
   })
+
+const hasWeaponTypeInSet = (
+  equipment: EquipmentEntry[],
+  set: 'set-1' | 'set-2',
+  weapon: SyntheticWeaponType,
+) => weaponTypesInSet(equipment, set).some(type => type === weapon)
 
 /** Evaluation-only weapon context built from pinned local base data. */
 export function plannedEquipmentForVariant(
@@ -242,7 +254,7 @@ export function plannedEquipmentForVariant(
 ): EquipmentEntry[] {
   const planned = [...equipment]
   const add = (weapon: SyntheticWeaponType | undefined, set: 'set-1' | 'set-2') => {
-    if (!weapon || hasWeaponInSet(planned, set)) return
+    if (!weapon || hasWeaponTypeInSet(planned, set, weapon)) return
     const reference = referenceWeapon(weapon, characterLevel, characterAttributes?.[set].total, set)
     if (!reference) return
     const emptySlotIndex = planned.findIndex(entry => entry.slotId === reference.slotId)
@@ -278,8 +290,113 @@ export function hasCoherentWeaponSetSpecialization(
     characterLevel,
     characterAttributes,
   )
-  return hasWeaponInSet(planned, candidate.mainWeaponSet)
-    && hasWeaponInSet(planned, setupSet)
+  return hasWeaponTypeInSet(planned, candidate.mainWeaponSet, candidate.weaponType)
+    && hasWeaponTypeInSet(planned, setupSet, candidate.setupWeaponType)
+}
+
+export interface BuildVariantCoreValidation {
+  status: 'coherent-single-set' | 'coherent-two-set' | 'blocked'
+  evidence: string[]
+  blockers: string[]
+}
+
+/** Fail-closed Kernvertrag eines automatisch vorgeschlagenen Build-Pakets. */
+export function validateBuildVariantCore(input: {
+  candidate: BuildVariantCandidate
+  equipment: EquipmentEntry[]
+  skills: SkillGemDefinition[]
+  supports: SupportGemDefinition[]
+  characterLevel?: number
+  characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>
+}): BuildVariantCoreValidation {
+  const { candidate } = input
+  const blockers: string[] = []
+  const evidence: string[] = []
+  const mainSkill = input.skills.find(value => value.id === candidate.skillId)
+  if (!mainSkill) blockers.push('Die Hauptfertigkeit ist nicht im produktiven Skillbestand vorhanden.')
+  else if (evaluateSkillWeaponCompatibility(mainSkill, candidate.weaponType).status !== 'productive') {
+    blockers.push('Die Hauptfertigkeit ist mit der geplanten Hauptwaffe nicht technisch kompatibel.')
+  } else {
+    evidence.push(`${candidate.skillName} ist mit ${candidate.weaponLabel} technisch kompatibel.`)
+  }
+
+  const selectedSupports = candidate.compatibleSupportIds
+    .map(id => input.supports.find(value => value.id === id))
+  if (input.supports.length > 0 && !candidate.compatibleSupportIds.length) {
+    blockers.push('Für die Hauptfertigkeit ist kein produktiver Support belegt.')
+  }
+  if (selectedSupports.some(value => !value || value.enabled === false)) {
+    blockers.push('Mindestens ein vorgeschlagener Support fehlt im produktiven Supportbestand.')
+  }
+  const usedSupportKeys = new Set<string>()
+  for (const support of selectedSupports.filter((value): value is SupportGemDefinition => Boolean(value))) {
+    if (!mainSkill || evaluateSupportInteraction(mainSkill, support, candidate.weaponType, 'main').status !== 'productive') {
+      blockers.push(`${support.displayNameDe || support.nameEn || support.id} besitzt keine produktive Wirkung auf die Hauptfertigkeit.`)
+    }
+    const keys = supportExclusiveKeys(support)
+    if (keys.some(key => usedSupportKeys.has(key))) {
+      blockers.push(`${support.displayNameDe || support.nameEn || support.id} dupliziert eine bereits belegte Supportfamilie.`)
+    }
+    keys.forEach(key => usedSupportKeys.add(key))
+  }
+  if (candidate.compatibleSupportIds.length && !blockers.some(value => value.includes('Support'))) {
+    evidence.push(`${candidate.compatibleSupportIds.length} eindeutige Supportfamilien sind produktiv verknüpft.`)
+  }
+
+  const planned = plannedEquipmentForVariant(
+    input.equipment,
+    candidate,
+    input.characterLevel,
+    input.characterAttributes,
+  )
+  if (!hasWeaponTypeInSet(planned, candidate.mainWeaponSet, candidate.weaponType)) {
+    blockers.push('Für das Hauptwaffenset ist keine konkrete lokal gepinnte kompatible Waffe auflösbar.')
+  }
+
+  if (!candidate.setupSkillId) {
+    if (candidate.setupWeaponType || candidate.setupWeaponSet || candidate.setupReason) {
+      blockers.push('Ein Set-2-Kontext ist ohne belegte Setup-Fertigkeit unvollständig.')
+    }
+    return {
+      status: blockers.length ? 'blocked' : 'coherent-single-set',
+      evidence: blockers.length ? evidence : [...evidence, 'Das Paket ist vollständig als Ein-Waffenset-Build belegt; es erzeugt keine Waffenset-Punkte.'],
+      blockers: [...new Set(blockers)],
+    }
+  }
+
+  const setupSkill = input.skills.find(value => value.id === candidate.setupSkillId)
+  const setupSet = candidate.setupWeaponSet
+    ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1')
+  const plannedRelation = candidate.plannedSkillSetups?.find(value =>
+    value.skillId === candidate.setupSkillId && value.weaponSet === setupSet,
+  )
+  if (!setupSkill || setupSkill.enabled === false) {
+    blockers.push('Die Setup-Fertigkeit ist nicht im produktiven Skillbestand vorhanden.')
+  }
+  if (setupSet === candidate.mainWeaponSet) {
+    blockers.push('Haupt- und Setup-Fertigkeit dürfen für eine Set-Spezialisierung nicht dasselbe Waffenset belegen.')
+  }
+  if (!plannedRelation) {
+    blockers.push('Zwischen Haupt- und Setup-Fertigkeit fehlt eine belegte produktive Beziehung im Ziel-Waffenset.')
+  }
+  if (!candidate.setupWeaponType) {
+    blockers.push('Für die Setup-Fertigkeit ist keine kompatible zweite Waffe aufgelöst.')
+  } else {
+    if (setupSkill && evaluateSkillWeaponCompatibility(setupSkill, candidate.setupWeaponType).status !== 'productive') {
+      blockers.push('Die Setup-Fertigkeit ist mit der geplanten zweiten Waffe nicht technisch kompatibel.')
+    }
+    if (!hasWeaponTypeInSet(planned, setupSet, candidate.setupWeaponType)) {
+      blockers.push('Für das Setup-Waffenset ist keine konkrete lokal gepinnte kompatible Waffe auflösbar.')
+    }
+  }
+  if (!blockers.length) {
+    evidence.push(`Waffenset ${setupSet === 'set-1' ? '1' : '2'} besitzt ${candidate.setupSkillName ?? candidate.setupSkillId}, eine passende konkrete Waffe und eine belegte Wirkung auf den Hauptskill.`)
+  }
+  return {
+    status: blockers.length ? 'blocked' : 'coherent-two-set',
+    evidence,
+    blockers: [...new Set(blockers)],
+  }
 }
 
 function equipmentForEstimate(
@@ -698,7 +815,7 @@ export function optimizeBuildVariants(input: {
             ? 'Die Kombination ist einsetzbar; dauerhafte Ressourcendeckung ist noch nicht belegt.'
             : 'Die Ressourcenwirkung ist unvollständig belegt und erzeugt keinen positiven Bonus.',
       ]
-      return [{
+      const candidate: BuildVariantCandidate = {
         skillId: skill.id,
         skillName: skill.displayNameDe || skill.nameEn || skill.id,
         skillTags: [...skill.tags],
@@ -733,6 +850,25 @@ export function optimizeBuildVariants(input: {
           ...ruleGraph.unresolved,
         ],
         reasons,
+      }
+      const coreValidation = validateBuildVariantCore({
+        candidate,
+        equipment: input.equipment,
+        skills: input.skills,
+        supports: input.supports,
+        characterLevel: input.characterLevel,
+        characterAttributes: input.characterAttributes,
+      })
+      if (coreValidation.status === 'blocked') {
+        coreValidation.blockers.forEach(reason => block(`core:${reason}`))
+        return []
+      }
+      return [{
+        ...candidate,
+        corePackageStatus: coreValidation.status,
+        corePackageEvidence: coreValidation.evidence,
+        corePackageBlockers: [],
+        reasons: [...candidate.reasons, ...coreValidation.evidence],
       }]
     })
   })
@@ -763,11 +899,15 @@ export function optimizeBuildVariants(input: {
       || compareVariantPriority(left, right, equipmentFirst),
     )
   }
-  const selectable = variants.filter(candidate =>
+  const evaluatedSelectable = variants.filter(candidate =>
     input.evaluatePackage
       ? candidate.packageStatus !== undefined && candidate.packageStatus !== 'blocked'
       : true,
   )
+  const coherentSelectable = input.evaluatePackage
+    ? evaluatedSelectable.filter(candidate => candidate.packageStatus === 'coherent')
+    : evaluatedSelectable
+  const selectable = coherentSelectable.length ? coherentSelectable : evaluatedSelectable
   const numericallyComparableCombinationCount = variants.filter(
     candidate => candidate.numericCoverageStatus === 'comparable',
   ).length
