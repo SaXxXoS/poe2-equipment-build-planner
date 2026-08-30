@@ -2,9 +2,11 @@ import product from '../../generated/pob2/uniques.json'
 import type { UniqueItemSlot } from '../domain'
 import type { UniqueCandidate } from '../engine/common/types'
 import { resolveExactBaseIdentity } from '../features/equipment-editor/base-identity-resolution'
-import { classifyPob2Unique } from './pob2-semantics'
+import { classifyPob2Unique, type Pob2SemanticEvidence } from './pob2-semantics'
 
 export type Pob2UniqueAnalyzerCandidate = UniqueCandidate & {
+  semanticEvidence: Pob2SemanticEvidence
+  evidenceLineIds: string[]
   technicalBaseIdentity?: {
     resolution: 'exact-local-base'
     baseId: string
@@ -97,6 +99,7 @@ export const pob2UniqueAnalyzerCandidates: Pob2UniqueAnalyzerCandidate[] = recor
   enabled: true,
   experimental: true,
   semanticEvidence: semantics.evidence,
+  evidenceLineIds: semantics.evidenceLineIds,
   tradeOffs: semantics.tradeOffs,
   buildEnabler: semantics.buildEnabler,
   requiredWeaponTypes: semantics.requiredWeaponTypes,

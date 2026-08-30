@@ -4717,3 +4717,36 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   belegtes Set-2-Setup und die sichtbare Auswahlgrundlage „Breit beobachtetes
   Saisonprofil“. Desktop und 390 × 844 blieben ohne horizontalen Überlauf;
   die Browserkonsole blieb ohne Fehler oder Warnungen.
+
+## Abschlussprüfung Buildspeicher und Unique-Evidenz – 2026-08-31
+
+- Ausgangscommit der Abschlussrunde: `84f860a`.
+- Der lokale Buildspeicher verwendet Schema Version 2 und migriert bestehende
+  Version-1-/Version-2-Zustände deterministisch in die aktuelle
+  Equipment-first-Struktur. Aktuelle Ausrüstungsslots, dynamische Juwelenslots,
+  Mehrfachaffixe, neun Fertigkeitskarten, Rollen, Herkunft und Waffensets
+  werden normalisiert; unbekannte Schemata und Slots bleiben fail-closed.
+- Ein neuer Produktzustand startet weiterhin vollständig leer. Vorhandene
+  Nutzereingaben bleiben über ein Neuladen erhalten; „Alles zurücksetzen“
+  entfernt ausschließlich den lokalen Buildzustand dieser App.
+- Die PoB2-Unique-Registry transportiert die belegte Semantik-Evidenz und ihre
+  exakten Zeilenreferenzen bis zum Vorschlagsdialog. Unsichere
+  `ambiguous`-/`unresolved`-Semantik bleibt vom Ranking ausgeschlossen.
+  Empfohlene Uniques zeigen nun neben allen Variantenzeilen ausdrücklich die
+  deutschen beziehungsweise englischen Fallback-Eigenschaften, die den
+  Vorschlag belegen.
+- Die gepinnten Approval- und Engine-Dateien, Produktpins, normale Affixdaten
+  sowie `generated/pob2/uniques.json` blieben unverändert.
+- Verifikation: 2.009/2.009 fachliche Tests, Typecheck, Lint, Produktions- und
+  Pages-Build, 253/253 JSON-Dateien und `git diff --check` erfolgreich. Die
+  große Passivbaum-Matrix bestand in seriellen Gruppen mit 64/64 Fällen; der
+  isolierte Performancefall bestand ebenfalls.
+- Browserprüfung des realen Pages-Unterpfads: Speicher-/Reload-/Reset-Fluss
+  erfolgreich; Desktop 1280 × 720 und Mobil 390 × 844 ohne horizontale
+  Überbreite. Mobil standen alle neun Skillkarten in einer Spalte. Keine neuen
+  Browserkonsolenfehler oder -warnungen.
+- Fachliche Grenze unverändert: deterministischer und evidenzgebundener
+  Offline-Planer. Globale Live-Meta-Optimalität und vollständige
+  Path-of-Building-Parität sind mit den lokal modellierten Mechaniken nicht
+  belegt und werden nicht behauptet.
+- Details: `docs/BUILD_ASSISTANT_FINAL_RELIABILITY_AUDIT.md`.

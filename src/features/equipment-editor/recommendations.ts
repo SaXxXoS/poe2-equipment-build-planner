@@ -1,6 +1,7 @@
 import type { EquipmentEntry, EquipmentWeaponStats, SyntheticWeaponType } from '../../domain'
 import type { UniqueRecommendation } from '../../engine'
 import type { Pob2UniqueAnalyzerCandidate } from '../../uniques/pob2-registry'
+import type { Pob2SemanticEvidence } from '../../uniques/pob2-semantics'
 import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import {
   utilityBaseDisplayName,
@@ -32,6 +33,8 @@ export interface EquipmentSlotSuggestion {
     intelligence: number | null
   }
   properties?: string[]
+  semanticEvidence?: Pob2SemanticEvidence
+  evidenceLineIds?: string[]
   reasons?: string[]
   tradeOffs?: string[]
   requirementStatus?: 'met'
@@ -249,7 +252,9 @@ export function createEquipmentSlotSuggestions(input:{
       || (recommendation.replacementVerdict==='clear-upgrade'
         && (recommendation.tradeOffs?.length??0)===0
         && (recommendation.defenceScore>0||recommendation.resourceScore>0))
-    if(!recommendation.valid||recommendation.totalScore<=0||!hasProductiveEvidence
+    const semanticEvidence=candidate?.semanticEvidence
+    const evidenceIsProductive=semanticEvidence!=='text-pattern-ambiguous'&&semanticEvidence!=='unresolved'
+    if(!recommendation.valid||recommendation.totalScore<=0||!hasProductiveEvidence||!evidenceIsProductive
       || recommendation.replacementVerdict==='downgrade'
       || seenUniqueIds.has(recommendation.uniqueId))continue
     if(recommendation.itemSlot==='weapon'
@@ -298,6 +303,8 @@ export function createEquipmentSlotSuggestions(input:{
       source:'unique-analyzer',
       uniqueItemId:recommendation.uniqueId,
       ...uniqueBaseDetails,
+      ...(semanticEvidence?{semanticEvidence}:{}),
+      ...(candidate?.evidenceLineIds?.length?{evidenceLineIds:candidate.evidenceLineIds}:{}),
       reasons:visibleReasons(recommendation),
       tradeOffs:(recommendation.tradeOffs??[]).slice(0,4),
     })

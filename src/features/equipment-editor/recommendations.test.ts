@@ -288,4 +288,33 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
       uniqueNames:new Map([['nightfall','Einbruch der Nacht']]),
     })).toEqual([])
   })
+
+  it.each(['text-pattern-ambiguous','unresolved'] as const)('blockiert PoB2-Semantik mit Evidenzklasse %s',semanticEvidence=>{
+    const ambiguous={
+      valid:true,totalScore:80,itemSlot:'helmet',uniqueId:'ambiguous',buildEnabler:true,
+      damageScore:80,matchedSkillTags:['lightning'],replacementVerdict:'clear-upgrade',
+    } as unknown as UniqueRecommendation
+    expect(createEquipmentSlotSuggestions({
+      equipment:[...equipment,{id:'helmet',slotId:'slot-helmet',modifierValues:[]}],
+      optimization:null,uniqueRecommendations:[ambiguous],uniqueNames:new Map([['ambiguous','Mehrdeutig']]),
+      uniqueCandidates:new Map([['ambiguous',{semanticEvidence,evidenceLineIds:[]} as unknown as Pob2UniqueAnalyzerCandidate]]),
+    })).toEqual([])
+  })
+
+  it('transportiert produktive Evidenz und ihre exakten Quellzeilen in den sichtbaren Vorschlag',()=>{
+    const exact={
+      valid:true,totalScore:40,itemSlot:'helmet',uniqueId:'exact',buildEnabler:false,
+      damageScore:40,matchedSkillTags:['lightning'],replacementVerdict:'clear-upgrade',
+    } as unknown as UniqueRecommendation
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment:[...equipment,{id:'helmet',slotId:'slot-helmet',modifierValues:[]}],
+      optimization:null,uniqueRecommendations:[exact],uniqueNames:new Map([['exact','Belegt']]),
+      uniqueCandidates:new Map([['exact',{
+        semanticEvidence:'text-pattern-exact',evidenceLineIds:['line-lightning'],
+      } as unknown as Pob2UniqueAnalyzerCandidate]]),
+    })
+    expect(suggestions[0]).toMatchObject({
+      uniqueItemId:'exact',semanticEvidence:'text-pattern-exact',evidenceLineIds:['line-lightning'],
+    })
+  })
 })
