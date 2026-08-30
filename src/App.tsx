@@ -245,6 +245,7 @@ export default function App() {
             skills: buildAssistantCandidates.skills,
             supports: buildAssistantCandidates.supports,
             skillScores: mainCandidates,
+            goalProfile: character.goalProfile,
             characterLevel: character.level || undefined,
             characterAttributes: result.characterAttributes,
             evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),
@@ -258,6 +259,7 @@ export default function App() {
             setups: preparedSetups,
             classId: character.classId,
             ascendancyId: character.ascendancyId,
+            goalProfile: character.goalProfile,
             characterLevel: character.level || undefined,
           })
           if (recommendation) {
@@ -331,6 +333,7 @@ export default function App() {
               skillScores: scores.map(value => value.skillId === mainDefinition.id
                 ? value
                 : { ...value, valid: false }),
+              goalProfile: character.goalProfile,
               characterLevel: character.level || undefined,
               characterAttributes: result.characterAttributes,
               evaluatePackage: candidate => evaluatePackage(candidate, character, preparedSetups, result.characterAttributes),

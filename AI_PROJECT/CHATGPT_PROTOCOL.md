@@ -4570,3 +4570,38 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
 - Der sichtbare Passive-, Waffenset- und Aszendenzplan gehört dadurch zum
   tatsächlich ausgegebenen Buildpaket und wird nicht mehr als veralteter Plan
   der vorherigen Gemmenbelegung dargestellt.
+
+## Einheitliche Varianten-Wirkungsbasis – 2026-08-30
+
+- Hauptskill-, Waffen-, Support- und Waffensetkandidaten verwenden nun die
+  gemeinsame Vergleichsbasis `sustained-after-mitigation-v1`.
+- Die Messbasis umfasst erwarteten Treffer- und belegten Trigger-Schaden,
+  eigenständigen Schaden über Zeit und schädigende Zustände jeweils nach
+  Gegnerabwehr. Unbelegte Mehrfachtreffer, Uptime, Minion-Schaden und
+  unbekannte Sonderfälle erzeugen keinen Schätzwert.
+- Mit realer Ausrüstung hat die numerisch belegte Wirkung Vorrang. Ohne
+  Ausrüstung bleibt zuerst das gepinnte klassen-/aszendenzspezifische
+  Paketbeobachtungssignal maßgeblich, damit Angriffe ohne konkrete Waffenwerte
+  nicht fälschlich gegen Zauber mit bekannten Gemmenwerten verlieren.
+- Bei echter Ausrüstung darf eine begrenzte deterministische Support-
+  Austauschprüfung die fachliche Ausgangskombination nur messbar verbessern.
+  Harte Kompatibilität, eindeutige Supportfamilien sowie Mana- und
+  Geistgrenzen bleiben erhalten.
+- Die feste Matrix bleibt bei 23/23 kohärenten Profilen. 36/57 geprüfte
+  Kombinationen sind numerisch vergleichbar; 7/23 der ohne Ausrüstung
+  ausgewählten Startpakete besitzen bereits einen positiven vollständigen
+  Vergleichswert. Fehlende Abdeckung bleibt sichtbar und wird nicht erfunden.
+- Details: `docs/BUILD_ASSISTANT_UNIFIED_VARIANT_OBJECTIVE.md` und
+  `docs/audits/build-assistant-current-meta-matrix.json`.
+- Eine vollständige Path-of-Building-Parität oder globale Meta-Optimalität ist
+  weiterhin nicht belegt. Die nächsten Rechenschritte müssen die verbleibenden
+  strukturiert belegbaren Mehrfachtreffer-, Uptime-, Minion- und
+  Sondermechanik-Lücken schließen.
+- Abschlussprüfung: 34/34 fokussierte Tests und 1.992/1.992 Tests in 172
+  Dateien im vollständigen seriellen Lauf; Typecheck, Lint, Produktions- und
+  Pages-Build, 252 JSON-Dateien und `git diff --check` erfolgreich. Die lokale
+  Produktionsprüfung erzeugte für Zauberin/Sturmweberin ohne Ausrüstung ein
+  vollständiges Paket mit Komet, fünf Hauptsupports, Set-2-Setup, 24/24
+  Waffensetpunkten und 8/8 Aszendenzpunkten. Die gemeinsame Schadensbasis war
+  sichtbar. Desktop und 390 × 844 blieben ohne horizontalen Überlauf oder
+  Browserkonsolenmeldungen.

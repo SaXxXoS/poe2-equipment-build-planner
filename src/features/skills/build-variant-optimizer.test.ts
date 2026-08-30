@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SkillGemDefinition, SupportGemDefinition } from '../../domain'
+import type { DamageEstimate } from '../../engine'
 import { initialEquipment, treeClassRegistry } from '../../data'
 import { createEmptySkillSetups } from './initial-state'
 import {
@@ -13,6 +14,7 @@ import {
   normalizeDamageObjective,
   optimizeBuildVariants,
   plannedEquipmentForVariant,
+  sustainedDamageObjective,
   validateBuildVariantCore,
   type BuildVariantCandidate,
   type VariantSkillScore,
@@ -573,6 +575,49 @@ describe('vollständige Build-Variantenoptimierung', () => {
     expect(result.selected?.plannedSkillSetups?.length).toBeGreaterThan(0)
   }, 15_000)
 
+  it('verwendet bei realer Ausrüstung die gemeinsame Schadensbasis vor bloßer Paketpopularität', () => {
+    const classId = 'class-official-1'
+    const ascendancyId = 'ascendancy-official-Witch2'
+    const equipment = plannedEquipmentForVariant(initialEquipment, {
+      weaponType: 'wand', mainWeaponSet: 'set-1',
+      setupSkillId: 'setup', setupWeaponType: 'wand', setupWeaponSet: 'set-2',
+    }, 90)
+    const setups = createEmptySkillSetups()
+    const analysis = runBuildAssistantV1({
+      character: { classId, ascendancyId, level: 90, goalProfile: 'balanced' },
+      equipment,
+      setups,
+    })
+    const result = optimizeBuildVariants({
+      classId,
+      ascendancyId,
+      equipment,
+      setups,
+      skills: buildAssistantCandidates.skills,
+      supports: buildAssistantCandidates.supports,
+      skillScores: [
+        ...analysis.skillAnalysis.topMainCandidates,
+        ...analysis.skillAnalysis.eligibleCandidates,
+        ...analysis.skillAnalysis.allCandidates,
+      ].filter((value, index, all) =>
+        all.findIndex(candidate => candidate.skillId === value.skillId) === index),
+      goalProfile: 'balanced',
+      characterLevel: 90,
+      characterAttributes: analysis.characterAttributes,
+    })
+
+    expect(result.equipmentFirst).toBe(true)
+    expect(result.numericallyComparableCombinationCount).toBeGreaterThan(0)
+    expect(result.selected).toMatchObject({
+      numericCoverageStatus: 'comparable',
+      modeledDpsBasis: 'sustained-after-mitigation-v1',
+    })
+    expect(result.selected?.modeledDps).toBeGreaterThan(0)
+    expect(result.selected?.modeledDps).toBeGreaterThanOrEqual(
+      result.selected?.supportBaselineModeledDps ?? 0,
+    )
+  }, 15_000)
+
   it('wählt das zusammenhängende Gesamtpaket statt des höchsten isolierten Skillwerts', () => {
     const isolated = skill('isolated', ['spell', 'fire'])
     const coherent = skill('coherent', ['spell', 'lightning'])
@@ -635,6 +680,38 @@ describe('vollständige Build-Variantenoptimierung', () => {
 })
 
 describe('relatives Schadensziel', () => {
+  it('vergleicht Treffer, belegte Trigger, nativen DoT und Zustände nach Gegnerabwehr gemeinsam', () => {
+    expect(sustainedDamageObjective({
+      status: 'partial',
+      weaponSet: 'set-1',
+      combinedDamagePerSecondAfterMitigation: 1_000,
+      damageOverTime: {
+        modelVersion: 'test', effects: [], blockedEffects: [], limitations: [],
+        totalSingleApplicationDamagePerSecondAfterMitigation: 250,
+      },
+      damagingAilments: {
+        modelVersion: 'test', effects: [], blockedEffects: [], limitations: [],
+        totalSustainedDamagePerSecondAfterMitigation: 125,
+      },
+      included: [], excluded: [], warnings: [],
+    } as unknown as DamageEstimate)).toEqual({
+      value: 1_375,
+      basis: 'sustained-after-mitigation-v1',
+      components: {
+        hitAndConfirmedTriggers: 1_000,
+        nativeDamageOverTime: 250,
+        damagingAilments: 125,
+      },
+    })
+  })
+
+  it('erfindet ohne numerisch belegte Wirkung keinen Vergleichswert', () => {
+    expect(sustainedDamageObjective({
+      status: 'blocked-missing-skill', weaponSet: 'both',
+      included: [], excluded: [], warnings: [],
+    } as unknown as DamageEstimate).value).toBeNull()
+  })
+
   it('unterscheidet 500 und 50.000 DPS statt beide Werte bei 250 zu sättigen', () => {
     const [low, high, unknown] = normalizeDamageObjective([
       damageCandidate('low', 500),

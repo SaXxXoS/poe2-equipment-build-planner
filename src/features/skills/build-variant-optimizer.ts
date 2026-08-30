@@ -1,13 +1,14 @@
 import {
   supportExclusiveKeys,
   type EquipmentEntry,
+  type GoalProfile,
   type MechanicTag,
   type SkillGemDefinition,
   type SkillSetup,
   type SupportGemDefinition,
   type SyntheticWeaponType,
 } from '../../domain'
-import { estimateHitDamage } from '../../engine'
+import { automaticEnemyProfile, estimateHitDamage, type DamageEstimate } from '../../engine'
 import type { CharacterAttributeModel, CharacterAttributeValues } from '../../engine/character-attributes/model'
 import { technicalItemClasses } from '../../affixes/registry'
 import {
@@ -78,10 +79,18 @@ export interface BuildVariantCandidate {
     weaponType: SyntheticWeaponType
   }>
   compatibleSupportIds: string[]
+  supportSelectionBasis?: 'semantic-meta' | 'equipment-damage-objective'
+  supportBaselineModeledDps?: number | null
   affinityScore: number
   passiveAffinityScore: number
   analyzerScore: number
   modeledDps: number | null
+  modeledDpsBasis?: 'sustained-after-mitigation-v1'
+  modeledDpsComponents?: {
+    hitAndConfirmedTriggers: number
+    nativeDamageOverTime: number
+    damagingAilments: number
+  }
   damageObjectiveScore: number
   numericCoverageStatus: 'comparable' | 'partial' | 'unavailable'
   resourceStatus?: 'confirmed-usable' | 'usable-with-limited-sustain' | 'resource-chain-unknown'
@@ -110,6 +119,35 @@ export interface BuildVariantCandidate {
   corePackageEvidence?: string[]
   corePackageBlockers?: string[]
   reasons: string[]
+}
+
+/**
+ * Einheitliche numerische Vergleichsbasis für alle Optimierer-Kandidaten.
+ *
+ * Der Trefferanteil enthält bereits Trefferchance, kritische Erwartung,
+ * Gegnerabwehr und vollständig belegte Trigger. Native DoT-Effekte und
+ * schädigende Zustände liegen in der Damage-Engine bewusst getrennt vor und
+ * werden hier genau einmal addiert. Unbelegte Mehrfachtreffer, Uptime oder
+ * Minions erzeugen weiterhin keinen erfundenen Schaden.
+ */
+export function sustainedDamageObjective(estimate: DamageEstimate): {
+  value: number | null
+  basis: 'sustained-after-mitigation-v1'
+  components: NonNullable<BuildVariantCandidate['modeledDpsComponents']>
+} {
+  const components = {
+    hitAndConfirmedTriggers: estimate.combinedDamagePerSecondAfterMitigation ?? 0,
+    nativeDamageOverTime: estimate.damageOverTime?.totalSingleApplicationDamagePerSecondAfterMitigation ?? 0,
+    damagingAilments: estimate.damagingAilments?.totalSustainedDamagePerSecondAfterMitigation ?? 0,
+  }
+  const hasComparableValue = estimate.combinedDamagePerSecondAfterMitigation != null
+    || estimate.damageOverTime?.totalSingleApplicationDamagePerSecondAfterMitigation != null
+    || estimate.damagingAilments?.totalSustainedDamagePerSecondAfterMitigation != null
+  return {
+    value: hasComparableValue ? Object.values(components).reduce((sum, value) => sum + value, 0) : null,
+    basis: 'sustained-after-mitigation-v1',
+    components,
+  }
 }
 
 export interface BuildVariantOptimization {
@@ -526,20 +564,28 @@ function compareVariantPriority(
   equipmentFirst: boolean,
 ) {
   /*
-   * Ohne eingegebene Ausrüstung ist die lokale Schadensmodellierung noch
-   * nicht vollständig genug, um einen kleineren beobachteten Build allein
-   * wegen eines höheren Teil-DPS-Werts zum Saisonpaket zu erklären. In
-   * diesem Bootstrap-Fall ist die Anzahl gemeinsam beobachteter Profile das
-   * stärkste verfügbare Paket-Signal. Mit realer Ausrüstung bleibt dagegen
-   * weiterhin deren fachliche Auswertung maßgeblich.
+   * Ein Kandidat ohne positive, gemeinsam berechnete Schadenswirkung darf
+   * keinen ansonsten gleichwertigen Kandidaten mit belegter Wirkung
+   * verdrängen. Bei real eingegebener Ausrüstung ist deshalb die gemeinsame
+   * Wirkungsbasis vorrangig. Ohne Ausrüstung schützt die gepinnte
+   * Paketbeobachtung dagegen vor dem falschen Vergleich eines Zaubers mit
+   * numerischen Basiswerten gegen einen Angriff, dessen konkrete Waffe noch
+   * fehlt. Harte Kompatibilität und Paketkohärenz wurden vor diesem
+   * Vergleich bereits geprüft.
    */
   if (!equipmentFirst) {
     const profileDifference = (right.metaReferenceProfileCount ?? 0)
       - (left.metaReferenceProfileCount ?? 0)
     if (profileDifference !== 0) return profileDifference
   }
-  return right.totalScore - left.totalScore
+
+  const comparableDifference = Number(right.numericCoverageStatus === 'comparable')
+    - Number(left.numericCoverageStatus === 'comparable')
+  if (comparableDifference !== 0) return comparableDifference
+
+  return right.damageObjectiveScore - left.damageObjectiveScore
     || (right.modeledDps ?? -1) - (left.modeledDps ?? -1)
+    || right.totalScore - left.totalScore
     || left.skillId.localeCompare(right.skillId)
     || left.weaponType.localeCompare(right.weaponType)
 }
@@ -579,6 +625,7 @@ export function optimizeBuildVariants(input: {
   skills: SkillGemDefinition[]
   supports: SupportGemDefinition[]
   skillScores: VariantSkillScore[]
+  goalProfile?: GoalProfile
   characterLevel?: number
   characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>
   evaluatePackage?: (candidate: BuildVariantCandidate) => BuildPackageEvaluation
@@ -680,7 +727,12 @@ export function optimizeBuildVariants(input: {
               .filter(tag => skill.tags.includes(tag)).length
           return overlap(right) - overlap(left) || left.id.localeCompare(right.id)
         })
-      const supportIds = fillRecommendedSupportSlots(
+      const mainWeaponSet = preferredSet(weapon, equipped)
+      const estimateEquipment = equipmentForEstimate(
+        input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
+        input.characterAttributes?.[mainWeaponSet].total,
+      )
+      const semanticSupportIds = fillRecommendedSupportSlots(
         { ...mainSetup, skillId: skill.id, role: 'main', supportGemIds: [] },
         compatibleSupports.map(support => ({ skillId: skill.id, supportId: support.id })),
         input.supports,
@@ -692,7 +744,78 @@ export function optimizeBuildVariants(input: {
           characterLevel: input.characterLevel,
         },
       ).supportGemIds
-      const mainWeaponSet = preferredSet(weapon, equipped)
+      let supportIds = [...semanticSupportIds]
+      let supportBaselineModeledDps: number | null = null
+      let supportSelectionBasis: BuildVariantCandidate['supportSelectionBasis'] = 'semantic-meta'
+      if (equipmentFirst && supportIds.length) {
+        const supportDefinitions = new Map(input.supports.map(value => [value.id, value]))
+        const hasUniqueFamilies = (ids: string[]) => {
+          const used = new Set<string>()
+          for (const id of ids) {
+            const definition = supportDefinitions.get(id)
+            if (!definition) return false
+            const keys = supportExclusiveKeys(definition)
+            if (keys.some(key => used.has(key))) return false
+            keys.forEach(key => used.add(key))
+          }
+          return true
+        }
+        const supportObjective = (ids: string[]) => {
+          const trialSetup = {
+            ...mainSetup,
+            skillId: skill.id,
+            role: 'main' as const,
+            weaponSet: mainWeaponSet,
+            supportGemIds: ids,
+          }
+          const trial = estimateHitDamage({
+            equipment: estimateEquipment,
+            setups: [trialSetup],
+            skills: input.skills,
+            supports: input.supports,
+            fallbackSkillId: skill.id,
+            characterLevel: input.characterLevel,
+            enemyProfile: automaticEnemyProfile(input.goalProfile ?? 'balanced', input.characterLevel),
+          })
+          const chain = trial.resourceSpiritModel?.skillCostChains.find(value => value.setupId === trialSetup.id)
+          const capacity = trial.resourceSpiritModel?.spiritCapacityByWeaponSet.find(
+            value => value.weaponSet === mainWeaponSet,
+          )
+          if (chain?.sustainStatus === 'unusable-confirmed-zero-mana'
+            || capacity?.status === 'exceeds-level-derived-quest-estimate') return null
+          return sustainedDamageObjective(trial).value
+        }
+        let bestObjective = supportObjective(supportIds)
+        supportBaselineModeledDps = bestObjective
+        const candidates = compatibleSupports.slice(0, 8)
+        // Eine deterministische Einzelaustausch-Runde erfasst den größten
+        // messbaren Supportgewinn aus der fachlichen Vorauswahl, ohne im
+        // Browser eine kombinatorische Suche über den Gemmenbestand zu starten.
+        for (let pass = 0; pass < 1 && bestObjective !== null && bestObjective > 0; pass += 1) {
+          let bestIds = supportIds
+          let improvedObjective = bestObjective
+          const positions = supportIds.length < 5
+            ? [...supportIds.keys(), supportIds.length]
+            : [...supportIds.keys()]
+          for (const position of positions) {
+            for (const candidate of candidates) {
+              if (supportIds.includes(candidate.id)) continue
+              const trialIds = position === supportIds.length
+                ? [...supportIds, candidate.id]
+                : supportIds.map((id, index) => index === position ? candidate.id : id)
+              if (!hasUniqueFamilies(trialIds)) continue
+              const objective = supportObjective(trialIds)
+              if (objective === null || objective <= improvedObjective + 0.000_001) continue
+              improvedObjective = objective
+              bestIds = trialIds
+            }
+          }
+          if (bestIds === supportIds) break
+          supportIds = bestIds
+          bestObjective = improvedObjective
+          supportSelectionBasis = 'equipment-damage-objective'
+        }
+      }
       const setupWeaponSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
       const plannedSkillSetups = planCompatibleSkillPackage(
         skill,
@@ -706,19 +829,29 @@ export function optimizeBuildVariants(input: {
       const usableSetup = plannedSkillSetups.find(value => value.weaponSet === setupWeaponSet)
       const setupDefinition = characterSkills.find(value => value.id === usableSetup?.skillId)
       const setupWeaponType = usableSetup?.weaponType
-      const estimateEquipment = equipmentForEstimate(
-        input.equipment, skill, weapon, mainWeaponSet, input.characterLevel,
-        input.characterAttributes?.[mainWeaponSet].total,
-      )
+      const estimateSetups: SkillSetup[] = [
+        { ...mainSetup, skillId: skill.id, role: 'main', weaponSet: mainWeaponSet, supportGemIds: supportIds },
+        ...(usableSetup ? [{
+          id: `${mainSetup.id}:planned:${usableSetup.skillId}`,
+          skillId: usableSetup.skillId,
+          role: usableSetup.role,
+          weaponSet: usableSetup.weaponSet,
+          supportGemIds: [],
+          origin: 'recommended' as const,
+          synergyReason: usableSetup.reason,
+        }] : []),
+      ]
       const estimate = estimateHitDamage({
         equipment: estimateEquipment,
-        setups: [{ ...mainSetup, skillId: skill.id, role: 'main', weaponSet: mainWeaponSet, supportGemIds: supportIds }],
+        setups: estimateSetups,
         skills: input.skills,
         supports: input.supports,
         fallbackSkillId: skill.id,
         characterLevel: input.characterLevel,
+        enemyProfile: automaticEnemyProfile(input.goalProfile ?? 'balanced', input.characterLevel),
       })
-      const modeledDps = estimate.hitDamagePerSecond ?? null
+      const damageObjective = sustainedDamageObjective(estimate)
+      const modeledDps = damageObjective.value
       const resourceModel = estimate.resourceSpiritModel
       const costChain = resourceModel?.skillCostChains.find(value => value.setupId === mainSetup.id)
       const capacityState = resourceModel?.spiritCapacityByWeaponSet.find(value => value.weaponSet === mainWeaponSet)
@@ -809,6 +942,9 @@ export function optimizeBuildVariants(input: {
         ...(metaReference.correlatedProfileCount > 0
           ? [`Validiertes Build-Paket: ${skill.nameEn ?? skill.displayNameDe} und ${weaponLabels[weapon]} sind in ${metaReference.correlatedProfileCount} Profilen derselben Aszendenz gemeinsam belegt.`]
           : []),
+        ...(supportSelectionBasis === 'equipment-damage-objective'
+          ? ['Die Supportkombination wurde innerhalb der belegten Rechenbasis gegen die tatsächliche Ausrüstung verbessert.']
+          : []),
         resourceStatus === 'confirmed-usable'
           ? 'Die belegte Ressourcenbilanz deckt die Kombination dauerhaft.'
           : resourceStatus === 'usable-with-limited-sustain'
@@ -832,10 +968,14 @@ export function optimizeBuildVariants(input: {
         setupReason: usableSetup?.reason,
         plannedSkillSetups,
         compatibleSupportIds: supportIds,
+        supportSelectionBasis,
+        supportBaselineModeledDps,
         affinityScore: affinity.score,
         passiveAffinityScore,
         analyzerScore: score.totalScore,
         modeledDps,
+        modeledDpsBasis: damageObjective.basis,
+        modeledDpsComponents: damageObjective.components,
         damageObjectiveScore: 0,
         numericCoverageStatus: modeledDps === null ? 'unavailable' : 'partial',
         resourceStatus,

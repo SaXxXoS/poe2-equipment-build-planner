@@ -54,6 +54,7 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       skills: buildAssistantCandidates.skills,
       supports: buildAssistantCandidates.supports,
       skillScores,
+      goalProfile: character.goalProfile,
       characterLevel: character.level,
       characterAttributes: analysis.characterAttributes,
       evaluatePackage: candidate => {
@@ -252,6 +253,8 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       plannedSkillCount: effectivePlannedSkills.length,
       setupWeapon: result.selected?.setupWeaponType ?? null,
       supportCount: result.selected?.compatibleSupportIds.length ?? 0,
+      supportSelectionBasis: result.selected?.supportSelectionBasis ?? null,
+      supportBaselineModeledDps: result.selected?.supportBaselineModeledDps ?? null,
       visibleSkillCount: populatedSetups.length,
       visibleSupportCount: populatedSetups.reduce((sum, setup) => sum + setup.supportGemIds.length, 0),
       mainSupportCount: mainSetup?.supportGemIds.length ?? 0,
@@ -265,6 +268,13 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       phantomWeaponSetPackage,
       duplicateSupportFamilies,
       packageScore: result.selected?.packageScore ?? null,
+      modeledDamagePerSecond: result.selected?.modeledDps ?? null,
+      modeledDamageBasis: result.selected?.modeledDpsBasis ?? null,
+      modeledDamageComponents: result.selected?.modeledDpsComponents ?? null,
+      damageObjectiveScore: result.selected?.damageObjectiveScore ?? null,
+      numericCoverageStatus: result.selected?.numericCoverageStatus ?? 'unavailable',
+      numericallyComparableCombinationCount: result.numericallyComparableCombinationCount,
+      evaluatedCombinationCount: result.evaluatedCombinationCount,
       metaScore: result.selected?.metaReferenceScore ?? null,
       correlatedProfileCount: result.selected?.metaReferenceProfileCount ?? 0,
       correlatedEvidenceClass: result.selected?.metaReferenceEvidenceClass ?? null,
@@ -306,6 +316,12 @@ const totals = {
   profilesWithPlannedSkillGroup: rows.filter(row => row.plannedSkillCount > 0).length,
   profilesWithSet1Skill: rows.filter(row => row.set1SkillCount > 0).length,
   profilesWithSet2Skill: rows.filter(row => row.set2SkillCount > 0).length,
+  profilesUsingSemanticMetaSupportSelection: rows.filter(row => row.supportSelectionBasis === 'semantic-meta').length,
+  profilesUsingEquipmentDamageSupportSelection: rows.filter(row => row.supportSelectionBasis === 'equipment-damage-objective').length,
+  profilesWithComparableDamageObjective: rows.filter(row => row.numericCoverageStatus === 'comparable').length,
+  profilesUsingUnifiedDamageBasis: rows.filter(row => row.modeledDamageBasis === 'sustained-after-mitigation-v1').length,
+  comparableCombinations: rows.reduce((sum, row) => sum + row.numericallyComparableCombinationCount, 0),
+  evaluatedCombinations: rows.reduce((sum, row) => sum + row.evaluatedCombinationCount, 0),
 }
 
 const report = {

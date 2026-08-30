@@ -1,6 +1,7 @@
-import type { EquipmentEntry, SkillGemDefinition, SkillSetup } from '../../domain'
-import { estimateHitDamage } from '../../engine'
+import type { EquipmentEntry, GoalProfile, SkillGemDefinition, SkillSetup } from '../../domain'
+import { automaticEnemyProfile, estimateHitDamage } from '../../engine'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
+import { sustainedDamageObjective } from './build-variant-optimizer'
 
 export interface AutomaticMainCandidate {
   skillId: string
@@ -19,6 +20,7 @@ export function selectAutomaticMainSkill<T extends AutomaticMainCandidate>(input
   setups: SkillSetup[]
   classId: string
   ascendancyId: string
+  goalProfile?: GoalProfile
   characterLevel?: number
 }): T | undefined {
   const equipmentFirst = hasEquipment(input.equipment)
@@ -36,6 +38,7 @@ export function selectAutomaticMainSkill<T extends AutomaticMainCandidate>(input
       skills: input.definitions,
       fallbackSkillId: candidate.skillId,
       characterLevel: input.characterLevel,
+      enemyProfile: automaticEnemyProfile(input.goalProfile ?? 'balanced', input.characterLevel),
     })
     const affinityScore = definition
       ? scoreCharacterSkillAffinity(definition, input.classId, input.ascendancyId).score
@@ -48,7 +51,7 @@ export function selectAutomaticMainSkill<T extends AutomaticMainCandidate>(input
       || spiritStates.some(value => value.status === 'exceeds-level-derived-quest-estimate')
     const resourcePenalty = (chain?.sustainStatus === 'burst-affordable-on-confirmed-minimum' ? 20 : 0)
       + (spiritStates.some(value => value.status === 'exceeds-confirmed-minimum') ? 12 : 0)
-    return { candidate, modeledDps: estimate.hitDamagePerSecond ?? -1, affinityScore, resourceBlocked, resourcePenalty }
+    return { candidate, modeledDps: sustainedDamageObjective(estimate).value ?? -1, affinityScore, resourceBlocked, resourcePenalty }
   }).sort((left, right) => {
     const blocked = Number(left.resourceBlocked) - Number(right.resourceBlocked)
     const primary = equipmentFirst

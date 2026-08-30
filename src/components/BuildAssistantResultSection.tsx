@@ -216,10 +216,18 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           <div><dt>Waffe</dt><dd>{variantOptimization.selected.weaponLabel}</dd></div>
           <div><dt>Haupt-Waffenset</dt><dd>{variantOptimization.selected.mainWeaponSet === 'set-1' ? 'Waffenset 1' : 'Waffenset 2'}</dd></div>
           <div><dt>Schadensziel</dt><dd>{variantOptimization.selected.numericCoverageStatus === 'comparable' ? `${variantOptimization.selected.damageObjectiveScore}/100 relativ vergleichbar` : 'Nur strukturell belegbar'}</dd></div>
+          {variantOptimization.selected.modeledDps != null && <div><dt>Vergleichsschaden/s</dt><dd>{formatDamage(variantOptimization.selected.modeledDps)}</dd></div>}
           <div><dt>Vergleichsabdeckung</dt><dd>{variantOptimization.numericallyComparableCombinationCount}/{variantOptimization.evaluatedCombinationCount}</dd></div>
+          <div><dt>Supportauswahl</dt><dd>{variantOptimization.selected.supportSelectionBasis === 'equipment-damage-objective' ? 'An Ausrüstung und Schadenswirkung verbessert' : 'Fachlich und durch Paketbelege gewählt'}</dd></div>
           <div><dt>{variantOptimization.selected.setupWeaponSet === 'set-1' ? 'Set-1-Setup' : 'Set-2-Setup'}</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
           <div><dt>Setup-Waffe</dt><dd>{variantOptimization.selected.setupWeaponType ? variantOptimization.selected.setupWeaponType === variantOptimization.selected.weaponType ? `${variantOptimization.selected.weaponLabel} (gleiches Waffenkonzept)` : weaponLabelFor(variantOptimization.selected.setupWeaponType) : 'Keine zweite Waffe erforderlich'}</dd></div>
         </dl>
+        {variantOptimization.selected.modeledDpsComponents && <p className="muted">
+          Gemeinsame Messbasis nach Gegnerabwehr: Treffer und belegte Trigger {formatDamage(variantOptimization.selected.modeledDpsComponents.hitAndConfirmedTriggers)},
+          {' '}eigenständiger Schaden über Zeit {formatDamage(variantOptimization.selected.modeledDpsComponents.nativeDamageOverTime)},
+          {' '}schädigende Zustände {formatDamage(variantOptimization.selected.modeledDpsComponents.damagingAilments)} Schaden/s.
+          Unbelegte Mehrfachtreffer, Uptime oder Minion-Schaden werden nicht geschätzt.
+        </p>}
         <h4>Geprüfte Hauptskill-Unterstützungen</h4>
         {variantOptimization.selected.compatibleSupportIds.length
           ? <ol>{variantOptimization.selected.compatibleSupportIds.map(id => <li key={id}>{definitionName(id)}</li>)}</ol>
@@ -259,7 +267,7 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
         </>}
         <ul>{variantOptimization.selected.reasons.map(reason => <li key={reason}>{reason}</li>)}</ul>
         {variantOptimization.alternatives.length > 0 && <><h4>Belegte Alternativen</h4><ol>{variantOptimization.alternatives.slice(0, 3).map(candidate => <li key={`${candidate.skillId}-${candidate.weaponType}`}><b>{definitionName(candidate.skillId)}</b> mit {candidate.weaponLabel} · Variantenwert {candidate.totalScore}</li>)}</ol></>}
-        <p className="muted">Die Auswahl ist eine deterministische Optimierung aus vorhandenen Skill-, Waffen-, Support-, Aszendenz- und Tree-Signalen. Sie behauptet keine vollständige Path-of-Building-DPS-Simulation; der tatsächlich berechnete Passive-Pfad bleibt die abschließende Pfadprüfung.</p>
+        <p className="muted">Die Auswahl ist eine deterministische Optimierung aus vorhandenen Skill-, Waffen-, Support-, Aszendenz- und Tree-Signalen. Numerisch vergleichbare Kandidaten verwenden dieselbe Messbasis aus Trefferchance, kritischer Erwartung, Gegnerabwehr, belegten Triggern, eigenständigem Schaden über Zeit und schädigenden Zuständen. Unbelegte Sonderfälle bleiben ausgeschlossen; der tatsächlich berechnete Passive-Pfad bleibt die abschließende Pfadprüfung.</p>
       </> : <p>Keine vollständig kompatible und belegte Skill-Waffen-Kombination gefunden. Unbekannte Zusammenhänge wurden nicht erfunden.</p>}
     </div></details>
     <details open><summary>Schaden und Build-Vergleich</summary><div className="result-panel damage-estimate">
