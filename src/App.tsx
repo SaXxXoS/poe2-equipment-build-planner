@@ -166,6 +166,14 @@ export default function App() {
             )]
           }, [])
         }
+        const preferredSupportsForCandidate = (
+          candidate: NonNullable<BuildVariantOptimization['selected']> | null | undefined,
+        ) => new Map<string, string[]>(candidate ? [
+          [candidate.skillId, candidate.compatibleSupportIds],
+          ...(candidate.plannedSkillSetups ?? [])
+            .filter(planned => (planned.supportGemIds?.length ?? 0) > 0)
+            .map(planned => [planned.skillId, planned.supportGemIds ?? []] as [string, string[]]),
+        ] : [])
         const evaluatePackage = (
           candidate: NonNullable<BuildVariantOptimization['selected']>,
           characterForAnalysis: CharacterConfiguration,
@@ -201,7 +209,8 @@ export default function App() {
                 skillId: planned.skillId,
                 role: planned.role,
                 weaponSet: planned.weaponSet,
-                supportGemIds: [],
+                supportGemIds: planned.supportGemIds ?? [],
+                embeddedSkillIds: planned.embeddedSkillIds,
                 origin: 'recommended' as const,
                 synergyReason: planned.reason,
               }
@@ -302,13 +311,12 @@ export default function App() {
                   ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
                   : candidate.weaponSet),
                 origin: 'recommended' as const,
-                supportGemIds: [],
+                supportGemIds: planned?.supportGemIds ?? [],
+                embeddedSkillIds: planned?.embeddedSkillIds,
                 synergyReason: candidate.reason,
               }
             }))
-            const preferredSupports = new Map<string, string[]>(optimization.selected
-              ? [[optimization.selected.skillId, optimization.selected.compatibleSupportIds]]
-              : [])
+            const preferredSupports = preferredSupportsForCandidate(optimization.selected)
             const nextSetups = addRecommendedSupports(populatedSetups, effectiveCharacter, preferredSupports)
             effectiveSetups = nextSetups
             setSetups(nextSetups)
@@ -363,13 +371,12 @@ export default function App() {
                   ? optimization.selected.setupWeaponSet ?? candidate.weaponSet
                   : candidate.weaponSet),
                 origin: 'recommended' as const,
-                supportGemIds: [],
+                supportGemIds: planned?.supportGemIds ?? [],
+                embeddedSkillIds: planned?.embeddedSkillIds,
                 synergyReason: candidate.reason,
               } : value
             })
-            const preferredSupports = new Map<string, string[]>(optimization.selected
-              ? [[optimization.selected.skillId, optimization.selected.compatibleSupportIds]]
-              : [])
+            const preferredSupports = preferredSupportsForCandidate(optimization.selected)
             const populatedWithSupports = addRecommendedSupports(populated, effectiveCharacter, preferredSupports)
             if (populatedWithSupports.some((value, index) => value !== preparedSetups[index])) {
               effectiveSetups = populatedWithSupports

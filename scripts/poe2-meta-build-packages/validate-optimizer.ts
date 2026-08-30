@@ -86,7 +86,8 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
                 skillId: planned.skillId,
                 role: planned.role,
                 weaponSet: planned.weaponSet,
-                supportGemIds: [],
+                supportGemIds: planned.supportGemIds ?? [],
+                embeddedSkillIds: planned.embeddedSkillIds,
                 origin: 'recommended' as const,
                 synergyReason: planned.reason,
               }
@@ -174,7 +175,8 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
               role: planned.role,
               weaponSet: planned.weaponSet,
               origin: 'recommended' as const,
-              supportGemIds: [],
+              supportGemIds: planned.supportGemIds ?? [],
+              embeddedSkillIds: planned.embeddedSkillIds,
               synergyReason: planned.reason,
             }
           }
@@ -189,9 +191,10 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
         equipment: plannedEquipment,
         setups: currentSetups,
       }).supportAnalysis
-      const preferred = setup.skillId === result.selected?.skillId
-        ? result.selected.compatibleSupportIds.map(supportId => ({ skillId: setup.skillId, supportId }))
-        : []
+      const preferredSupportIds = setup.skillId === result.selected?.skillId
+        ? result.selected.compatibleSupportIds
+        : result.selected?.plannedSkillSetups?.find(planned => planned.skillId === setup.skillId)?.supportGemIds ?? []
+      const preferred = preferredSupportIds.map(supportId => ({ skillId: setup.skillId, supportId }))
       return [...filled, fillRecommendedSupportSlots(
         setup,
         rankedSupportsForSkill(
@@ -253,6 +256,12 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       plannedSkillCount: effectivePlannedSkills.length,
       setupWeapon: result.selected?.setupWeaponType ?? null,
       supportCount: result.selected?.compatibleSupportIds.length ?? 0,
+      plannedSupportCount: result.selected?.plannedSkillSetups?.reduce(
+        (sum, planned) => sum + (planned.supportGemIds?.length ?? 0), 0,
+      ) ?? 0,
+      embeddedSkillCount: result.selected?.plannedSkillSetups?.reduce(
+        (sum, planned) => sum + (planned.embeddedSkillIds?.length ?? 0), 0,
+      ) ?? 0,
       supportSelectionBasis: result.selected?.supportSelectionBasis ?? null,
       supportBaselineModeledDps: result.selected?.supportBaselineModeledDps ?? null,
       visibleSkillCount: populatedSetups.length,
@@ -307,6 +316,9 @@ const totals = {
   distinctSkills: new Set(rows.map(row => row.selectedSkillEn).filter(Boolean)).size,
   distinctWeapons: new Set(rows.map(row => row.weapon).filter(Boolean)).size,
   profilesWithFilledMainSupports: rows.filter(row => row.mainSupportCount > 0).length,
+  profilesWithOptimizerFilledSetupSupports: rows.filter(row => row.plannedSupportCount > 0).length,
+  optimizerPlannedSupportCount: rows.reduce((sum, row) => sum + row.plannedSupportCount, 0),
+  optimizerEmbeddedSkillCount: rows.reduce((sum, row) => sum + row.embeddedSkillCount, 0),
   profilesWithSetupSkill: rows.filter(row => row.setupSkill).length,
   profilesWithActualSetupSkill: rows.filter(row => row.actualSetupSkill).length,
   coherentSingleSetPackages: rows.filter(row => row.corePackageStatus === 'coherent-single-set').length,

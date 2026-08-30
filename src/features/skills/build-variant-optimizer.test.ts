@@ -102,6 +102,26 @@ describe('harter Build-Paket-Kernvertrag', () => {
       blockers: expect.arrayContaining([expect.stringContaining('Supportfamilie')]),
     })
   })
+
+  it('blockiert doppelte Supportfamilien auch innerhalb der Setup-Fertigkeit', () => {
+    const duplicate = support('spell-core-duplicate', ['spell'], {
+      supportCategoryIds: ['spell-damage'],
+    })
+    const value = candidate()
+    value.plannedSkillSetups = value.plannedSkillSetups?.map(planned => ({
+      ...planned,
+      supportGemIds: ['spell-core', 'spell-core-duplicate'],
+    }))
+    expect(validateBuildVariantCore({
+      candidate: value,
+      equipment: initialEquipment,
+      skills: [main, setup],
+      supports: [spellSupport, duplicate],
+    })).toMatchObject({
+      status: 'blocked',
+      blockers: expect.arrayContaining([expect.stringContaining('innerhalb der Setup-Fertigkeit')]),
+    })
+  })
 })
 
 const skill = (
@@ -324,6 +344,7 @@ describe('vollständige Build-Variantenoptimierung', () => {
         skillId: 'orb',
         weaponSet: 'set-2',
         weaponType: result.selected?.setupWeaponType,
+        supportGemIds: ['spell-support'],
       }),
     ])
     expect(result.evaluatedSkillCount).toBe(2)

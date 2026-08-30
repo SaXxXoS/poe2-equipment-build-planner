@@ -18,7 +18,17 @@ import {
 } from './synergy-planner'
 import { scoreCharacterSkillAffinity } from './character-skill-affinity'
 import { fillRecommendedSupportSlots } from './automatic-supports'
-import { correlatedMetaSupportNames, scoreMetaReference } from './meta-reference'
+import {
+  correlatedMetaSupportNames,
+  correlatedMetaSupportNamesForLinkedSkill,
+  scoreMetaReference,
+} from './meta-reference'
+import {
+  ensureRequiredEmbeddedSkill,
+  isCompatibleEmbeddedSkill,
+  resolvedMetaSocketRule,
+  supportCapacityFor,
+} from './meta-skills'
 import {
   evaluateSkillWeaponCompatibility,
   evaluateSupportInteraction,
@@ -77,6 +87,8 @@ export interface BuildVariantCandidate {
   plannedSkillSetups?: Array<PlannedSynergySkill & {
     skillName: string
     weaponType: SyntheticWeaponType
+    supportGemIds?: string[]
+    embeddedSkillIds?: string[]
   }>
   compatibleSupportIds: string[]
   supportSelectionBasis?: 'semantic-meta' | 'equipment-damage-objective'
@@ -427,6 +439,35 @@ export function validateBuildVariantCore(input: {
       blockers.push('Für das Setup-Waffenset ist keine konkrete lokal gepinnte kompatible Waffe auflösbar.')
     }
   }
+  if (setupSkill && candidate.setupWeaponType && plannedRelation) {
+    const setupSupports = (plannedRelation.supportGemIds ?? [])
+      .map(id => input.supports.find(value => value.id === id))
+    if (setupSupports.some(value => !value || value.enabled === false)) {
+      blockers.push('Mindestens ein Support der Setup-Fertigkeit fehlt im produktiven Supportbestand.')
+    }
+    const setupSupportKeys = new Set<string>()
+    for (const support of setupSupports.filter((value): value is SupportGemDefinition => Boolean(value))) {
+      if (evaluateSupportInteraction(setupSkill, support, candidate.setupWeaponType, plannedRelation.role).status !== 'productive') {
+        blockers.push(`${support.displayNameDe || support.nameEn || support.id} besitzt keine produktive Wirkung auf die Setup-Fertigkeit.`)
+      }
+      const keys = supportExclusiveKeys(support)
+      if (keys.some(key => setupSupportKeys.has(key))) {
+        blockers.push(`${support.displayNameDe || support.nameEn || support.id} dupliziert eine Supportfamilie innerhalb der Setup-Fertigkeit.`)
+      }
+      keys.forEach(key => setupSupportKeys.add(key))
+    }
+    const embeddedSkills = (plannedRelation.embeddedSkillIds ?? [])
+      .map(id => input.skills.find(value => value.id === id))
+    if (resolvedMetaSocketRule(setupSkill) && embeddedSkills.length === 0) {
+      blockers.push('Der geplante auslösende Meta-Skill besitzt keine eingebettete Fertigkeit.')
+    }
+    if (embeddedSkills.some(value => !value || !isCompatibleEmbeddedSkill(setupSkill, value))) {
+      blockers.push('Mindestens eine eingebettete Fertigkeit ist mit dem auslösenden Meta-Skill nicht kompatibel.')
+    }
+    if (plannedRelation.supportGemIds?.length) {
+      evidence.push(`${plannedRelation.supportGemIds.length} Supportfamilien sind der Setup-Fertigkeit konkret und produktiv zugeordnet.`)
+    }
+  }
   if (!blockers.length) {
     evidence.push(`Waffenset ${setupSet === 'set-1' ? '1' : '2'} besitzt ${candidate.setupSkillName ?? candidate.setupSkillId}, eine passende konkrete Waffe und eine belegte Wirkung auf den Hauptskill.`)
   }
@@ -457,8 +498,13 @@ function equipmentForEstimate(
   return reference ? [...equipment, reference] : equipment
 }
 
-function supportCompatible(skill: SkillGemDefinition, support: SupportGemDefinition, weapon: SyntheticWeaponType) {
-  return evaluateSupportInteraction(skill, support, weapon, 'main').status === 'productive'
+function supportCompatible(
+  skill: SkillGemDefinition,
+  support: SupportGemDefinition,
+  weapon: SyntheticWeaponType,
+  role: SkillSetup['role'] = 'main',
+) {
+  return evaluateSupportInteraction(skill, support, weapon, role).status === 'productive'
 }
 
 function preferredSet(weapon: SyntheticWeaponType, equipped: ReturnType<typeof equipmentWeaponSets>) {
@@ -523,6 +569,99 @@ function planCompatibleSkillPackage(
       ...planned,
       skillName: definition.displayNameDe || definition.nameEn || definition.id,
       weaponType,
+    })
+  }
+  return result
+}
+
+function supportsForPlannedSkillPackage(
+  mainSkill: SkillGemDefinition,
+  planned: NonNullable<BuildVariantCandidate['plannedSkillSetups']>,
+  input: {
+    classId: string
+    ascendancyId: string
+    equipment: EquipmentEntry[]
+    setups: SkillSetup[]
+    skills: SkillGemDefinition[]
+    supports: SupportGemDefinition[]
+    characterLevel?: number
+  },
+  mainSetup: SkillSetup,
+  mainWeaponSet: 'set-1' | 'set-2',
+  mainSupportIds: string[],
+  estimateEquipment: EquipmentEntry[],
+): NonNullable<BuildVariantCandidate['plannedSkillSetups']> {
+  const occupiedSkillIds = [mainSkill.id, ...planned.map(value => value.skillId)]
+  const preparedSetups = planned.map((value, index) => {
+    const setup: SkillSetup = {
+      id: `${mainSetup.id}:planned:${index}:${value.skillId}`,
+      skillId: value.skillId,
+      role: value.role,
+      weaponSet: value.weaponSet,
+      supportGemIds: [],
+      origin: 'recommended',
+      synergyReason: value.reason,
+    }
+    return ensureRequiredEmbeddedSkill(setup, input.skills, mainSkill.tags, occupiedSkillIds)
+  })
+  const filledSetups: SkillSetup[] = [{
+    ...mainSetup,
+    skillId: mainSkill.id,
+    role: 'main',
+    weaponSet: mainWeaponSet,
+    supportGemIds: mainSupportIds,
+  }]
+  const result: NonNullable<BuildVariantCandidate['plannedSkillSetups']> = []
+  for (const [index, value] of planned.entries()) {
+    const definition = input.skills.find(skill => skill.id === value.skillId)
+    const setup = preparedSetups[index]
+    if (!definition || !setup) {
+      result.push({ ...value, supportGemIds: [] })
+      continue
+    }
+    const linkedMetaOrder = new Map(
+      correlatedMetaSupportNamesForLinkedSkill(
+        mainSkill,
+        definition.nameEn ?? definition.displayNameDe,
+        input.ascendancyId,
+      ).map((support, order) => [support.name, order]),
+    )
+    const compatible = input.supports
+      .filter(support =>
+        supportCompatible(definition, support, value.weaponType, value.role)
+        && !support.excludedClassIds?.includes(input.classId)
+        && !support.excludedAscendancyIds?.includes(input.ascendancyId),
+      )
+      .sort((left, right) => {
+        const observedDifference = (linkedMetaOrder.get(left.nameEn ?? '') ?? Number.MAX_SAFE_INTEGER)
+          - (linkedMetaOrder.get(right.nameEn ?? '') ?? Number.MAX_SAFE_INTEGER)
+        if (observedDifference !== 0) return observedDifference
+        const overlap = (support: SupportGemDefinition) =>
+          [...(support.ownTags ?? []), ...(support.supportedDamageTypes ?? []), ...(support.supportedMechanics ?? [])]
+            .filter(tag => definition.tags.includes(tag)).length
+        return overlap(right) - overlap(left) || left.id.localeCompare(right.id)
+      })
+    const filled = fillRecommendedSupportSlots(
+      setup,
+      compatible.map(support => ({ skillId: definition.id, supportId: support.id })),
+      input.supports,
+      supportCapacityFor(setup),
+      {
+        equipment: estimateEquipment,
+        setups: [
+          ...filledSetups,
+          setup,
+          ...preparedSetups.slice(index + 1),
+        ],
+        skills: input.skills,
+        characterLevel: input.characterLevel,
+      },
+    )
+    filledSetups.push(filled)
+    result.push({
+      ...value,
+      supportGemIds: filled.supportGemIds,
+      embeddedSkillIds: filled.embeddedSkillIds,
     })
   }
   return result
@@ -817,14 +956,22 @@ export function optimizeBuildVariants(input: {
         }
       }
       const setupWeaponSet = mainWeaponSet === 'set-1' ? 'set-2' as const : 'set-1' as const
-      const plannedSkillSetups = planCompatibleSkillPackage(
+      const plannedSkillSetups = supportsForPlannedSkillPackage(
         skill,
-        characterSkills,
-        input.skillScores,
-        input.ascendancyId,
-        weapon,
+        planCompatibleSkillPackage(
+          skill,
+          characterSkills,
+          input.skillScores,
+          input.ascendancyId,
+          weapon,
+          mainWeaponSet,
+          equipped,
+        ),
+        input,
+        mainSetup,
         mainWeaponSet,
-        equipped,
+        supportIds,
+        estimateEquipment,
       )
       const usableSetup = plannedSkillSetups.find(value => value.weaponSet === setupWeaponSet)
       const setupDefinition = characterSkills.find(value => value.id === usableSetup?.skillId)
@@ -836,7 +983,8 @@ export function optimizeBuildVariants(input: {
           skillId: usableSetup.skillId,
           role: usableSetup.role,
           weaponSet: usableSetup.weaponSet,
-          supportGemIds: [],
+          supportGemIds: usableSetup.supportGemIds ?? [],
+          embeddedSkillIds: usableSetup.embeddedSkillIds,
           origin: 'recommended' as const,
           synergyReason: usableSetup.reason,
         }] : []),

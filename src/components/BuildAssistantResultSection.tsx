@@ -239,6 +239,12 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
             {' · '}{planned.weaponSet === 'set-1' ? 'Waffenset 1' : planned.weaponSet === 'set-2' ? 'Waffenset 2' : 'beide Waffensets'}
             {' · '}{weaponLabelFor(planned.weaponType)}
             <br/><span className="muted">{planned.reason}</span>
+            {planned.embeddedSkillIds?.length
+              ? <><br/><span className="muted">Eingebettet: {planned.embeddedSkillIds.map(definitionName).join(', ')}</span></>
+              : null}
+            {planned.supportGemIds?.length
+              ? <><br/><span className="muted">Unterstützungen: {planned.supportGemIds.map(definitionName).join(', ')}</span></>
+              : null}
           </li>)}</ol>
         </> : null}
         {variantOptimization.selected.setupSkillId && <p><b>Zusammenhang der Waffensets:</b> {variantOptimization.selected.setupReason ?? 'Der Setup-Skill ist als belegte Ergänzung des Hauptskills eingeplant.'}</p>}

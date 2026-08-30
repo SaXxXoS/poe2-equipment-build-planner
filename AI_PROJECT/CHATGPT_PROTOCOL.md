@@ -4605,3 +4605,38 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Waffensetpunkten und 8/8 Aszendenzpunkten. Die gemeinsame Schadensbasis war
   sichtbar. Desktop und 390 × 844 blieben ohne horizontalen Überlauf oder
   Browserkonsolenmeldungen.
+
+## Zusammenhängende Supportplanung der gesamten Skillgruppe – 2026-08-30
+
+- Eine verbliebene Abweichung zwischen Auswahl und Anzeige wurde geschlossen:
+  Zusatz-, Setup-, Trigger- und Waffenset-Fertigkeiten werden nun bereits im
+  Variantenoptimierer mit ihren konkreten Supports bewertet und nicht erst
+  nachträglich in der UI befüllt.
+- Dieselben Support-IDs fließen in Ressourcenprüfung, Paketprüfung,
+  Schadensvergleich, automatische Skillkarten und sichtbare Ergebnisdetails.
+- Auslösende Meta-Skills erhalten vor den Supports eine kompatible
+  eingebettete Fertigkeit; deren Platz reduziert die verfügbare
+  Supportkapazität. Doppelte Supportfamilien innerhalb einer Skillkarte und
+  technisch unproduktive Zuordnungen blockiert der Kernvertrag fail-closed.
+- Die erneuerte Vollmatrix bleibt bei 23/23 kohärenten Paketen. Alle 23 Profile
+  besitzen Optimierer-Supports für geplante Zusatzskills; über sämtliche
+  geprüften Skillgruppen wurden 671 Supportzuordnungen und 8 regelgebundene
+  Embedded-Skills erfasst. 21 Pakete besitzen ein belegtes zweites Waffenset,
+  2 bleiben mangels belegter Gegen-Set-Beziehung korrekt Ein-Set-Pakete.
+- Details: `docs/BUILD_ASSISTANT_COHERENT_SETUP_SUPPORTS.md` und
+  `docs/audits/build-assistant-current-meta-matrix.json`.
+- Die nächste belegbare Rechenlücke bleibt die strukturierte Erweiterung von
+  Mehrfachtreffer-, Uptime-, Minion- und Sondermechanikmodellen. Globale
+  Meta-Optimalität oder vollständige Path-of-Building-Parität wird weiterhin
+  nicht behauptet.
+- Verifikation: 28/28 fokussierte Optimierertests; fachlich 1.993/1.993 Fälle
+  in 172 Dateien im seriellen Gesamtlauf. Zwei zeitintensive Vollbaumtests
+  bestanden nach dem gemeinsamen Fünf-Sekunden-Zeitlimit isoliert mit
+  197/197 Fällen. Typecheck, Lint, Produktions-/Pages-Build, 252 JSON-Dateien
+  und `git diff --check` waren erfolgreich.
+- Browserprüfung: Das leere Profil Zauberin/Sturmweberin (Stufe 90, 24
+  Story-Punkte, 8 Aszendenzpunkte) erzeugte ein zusammenhängendes Skillpaket
+  samt belegtem Set-2-Trigger, eingebettetem „Auge des Winters“ und sichtbaren
+  Supports je Zusatzfertigkeit. Desktop 1280 × 720 und Mobil 390 × 844 hatten
+  keinen horizontalen Überlauf; die Browserkonsole blieb ohne Fehler und
+  Warnungen.
