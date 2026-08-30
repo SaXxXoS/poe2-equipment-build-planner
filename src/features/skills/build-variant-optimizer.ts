@@ -149,11 +149,11 @@ export function sustainedDamageObjective(estimate: DamageEstimate): {
 } {
   const components = {
     hitAndConfirmedTriggers: estimate.combinedDamagePerSecondAfterMitigation ?? 0,
-    nativeDamageOverTime: estimate.damageOverTime?.totalSingleApplicationDamagePerSecondAfterMitigation ?? 0,
+    nativeDamageOverTime: estimate.damageOverTime?.totalSustainedDamagePerSecondAfterMitigation ?? 0,
     damagingAilments: estimate.damagingAilments?.totalSustainedDamagePerSecondAfterMitigation ?? 0,
   }
   const hasComparableValue = estimate.combinedDamagePerSecondAfterMitigation != null
-    || estimate.damageOverTime?.totalSingleApplicationDamagePerSecondAfterMitigation != null
+    || estimate.damageOverTime?.totalSustainedDamagePerSecondAfterMitigation != null
     || estimate.damagingAilments?.totalSustainedDamagePerSecondAfterMitigation != null
   return {
     value: hasComparableValue ? Object.values(components).reduce((sum, value) => sum + value, 0) : null,
@@ -914,6 +914,7 @@ export function optimizeBuildVariants(input: {
             supports: input.supports,
             fallbackSkillId: skill.id,
             characterLevel: input.characterLevel,
+            characterClassId: input.classId,
             enemyProfile: automaticEnemyProfile(input.goalProfile ?? 'balanced', input.characterLevel),
           })
           const chain = trial.resourceSpiritModel?.skillCostChains.find(value => value.setupId === trialSetup.id)
@@ -996,6 +997,7 @@ export function optimizeBuildVariants(input: {
         supports: input.supports,
         fallbackSkillId: skill.id,
         characterLevel: input.characterLevel,
+        characterClassId: input.classId,
         enemyProfile: automaticEnemyProfile(input.goalProfile ?? 'balanced', input.characterLevel),
       })
       const damageObjective = sustainedDamageObjective(estimate)

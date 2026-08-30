@@ -2,7 +2,7 @@ import reference from '../../../generated/pob2/damage-reference.json'
 import type { EnemyMitigationProfile } from './types'
 import { enemyDamageTakenMultiplier } from './enemy-damage-taken'
 
-export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.4.0'
+export const DAMAGE_OVER_TIME_MODEL_VERSION = '3.5.0'
 
 type NumericSkill = (typeof reference.skills)[number]
 type DamageType = 'physical' | 'fire' | 'cold' | 'lightning' | 'chaos'
@@ -15,6 +15,10 @@ export interface ResolvedDamageOverTimeEffect {
   status: 'single-application-window'
   damagePerSecond: number
   damagePerSecondAfterMitigation?: number
+  applicationRatePerSecond?: number
+  sustainedUptime?: number
+  sustainedDamagePerSecond?: number
+  sustainedDamagePerSecondAfterMitigation?: number
   durationMs: number
   totalDamagePerApplication: number
   totalDamagePerApplicationAfterMitigation?: number
@@ -40,6 +44,8 @@ export interface DamageOverTimeResult {
   blockedEffects: UnresolvedDamageOverTimeEffect[]
   totalSingleApplicationDamagePerSecond?: number
   totalSingleApplicationDamagePerSecondAfterMitigation?: number
+  totalSustainedDamagePerSecond?: number
+  totalSustainedDamagePerSecondAfterMitigation?: number
   limitations: string[]
 }
 
@@ -66,6 +72,7 @@ export function collectDamageOverTime(
   enemyProfile?: EnemyMitigationProfile,
   duration?: { multiplier: number; sourceReferences: string[] },
   damage?: { multiplier: number; sourceReferences: string[]; typeMultipliers?: Partial<Record<DamageType, number>> },
+  application?: { actionsPerSecond: number; sourceReferences: string[] },
 ): DamageOverTimeResult {
   const stats = skill.numericStats as Record<string, number>
   const baseDurationMs = stats.base_skill_effect_duration
@@ -93,6 +100,11 @@ export function collectDamageOverTime(
     const damagePerSecond = perMinute / 60 * damageMultiplier
     const resistance = resistanceAfterReduction(definition.type, enemyProfile)
     const damagePerSecondAfterMitigation = damagePerSecond * (1 - resistance / 100) * enemyDamageTakenMultiplier(definition.type, enemyProfile)
+    const hasApplicationRate = Number.isFinite(application?.actionsPerSecond) && (application?.actionsPerSecond ?? 0) > 0
+    const applicationRatePerSecond = hasApplicationRate ? application!.actionsPerSecond : undefined
+    const sustainedUptime = applicationRatePerSecond == null
+      ? undefined
+      : Math.min(1, applicationRatePerSecond * durationMs / 1000)
     effects.push({
       sourceRecordId: skill.sourceRecordId,
       sourceLabel: skill.name,
@@ -101,6 +113,14 @@ export function collectDamageOverTime(
       status: 'single-application-window',
       damagePerSecond: round(damagePerSecond),
       ...(enemyProfile ? { damagePerSecondAfterMitigation: round(damagePerSecondAfterMitigation) } : {}),
+      ...(applicationRatePerSecond == null ? {} : {
+        applicationRatePerSecond: round(applicationRatePerSecond),
+        sustainedUptime: round(sustainedUptime!),
+        sustainedDamagePerSecond: round(damagePerSecond * sustainedUptime!),
+        ...(enemyProfile ? {
+          sustainedDamagePerSecondAfterMitigation: round(damagePerSecondAfterMitigation * sustainedUptime!),
+        } : {}),
+      }),
       durationMs,
       totalDamagePerApplication: round(damagePerSecond * durationMs / 1000),
       ...(enemyProfile ? {
@@ -108,8 +128,8 @@ export function collectDamageOverTime(
       } : {}),
       stackCount: 1,
       evidence: 'structured-exact',
-      sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? []), ...(damage?.sourceReferences ?? [])],
-      detail: `Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung${damageMultiplier === 1 ? '' : ` mit gemeinsam belegtem finalem Support-Schadensfaktor ${damageMultiplier}`}. Wiederholungsrate, Überlappung und zusätzliche Stapel werden nicht behauptet.`,
+      sourceReferences: [definition.stat, 'base_skill_effect_duration', ...(duration?.sourceReferences ?? []), ...(damage?.sourceReferences ?? []), ...(application?.sourceReferences ?? [])],
+      detail: `Eigenständiger strukturierter Schaden über Zeit für genau eine Anwendung${damageMultiplier === 1 ? '' : ` mit gemeinsam belegtem finalem Support-Schadensfaktor ${damageMultiplier}`}.${sustainedUptime == null ? ' Ohne belegte Anwendungsrate wird kein aufrechterhaltener DPS behauptet.' : ` Die belegte Anwendungsrate ergibt eine aufrechterhaltbare Uptime von ${round(sustainedUptime * 100)}%.`} Zusätzliche Stapel oder Überlappung werden nicht behauptet.`,
     })
   }
 
@@ -125,9 +145,19 @@ export function collectDamageOverTime(
         effects.reduce((sum, effect) => sum + (effect.damagePerSecondAfterMitigation ?? effect.damagePerSecond), 0),
       ),
     } : {}),
+    ...(effects.some(effect => effect.sustainedDamagePerSecond != null) ? {
+      totalSustainedDamagePerSecond: round(
+        effects.reduce((sum, effect) => sum + (effect.sustainedDamagePerSecond ?? 0), 0),
+      ),
+    } : {}),
+    ...(effects.some(effect => effect.sustainedDamagePerSecondAfterMitigation != null) ? {
+      totalSustainedDamagePerSecondAfterMitigation: round(
+        effects.reduce((sum, effect) => sum + (effect.sustainedDamagePerSecondAfterMitigation ?? 0), 0),
+      ),
+    } : {}),
     limitations: [
       'Entzünden, Gift und Blutung werden erst angewandt, wenn Basiswert, Auslösung, Dauer und Stapelregel gemeinsam belegt sind.',
-      'Der Einzelanwendungswert ist kein aufrechterhaltener Gesamt-DPS und wird nicht zum Trefferschaden pro Sekunde addiert.',
+      'Der Einzelanwendungswert ist kein aufrechterhaltener Gesamt-DPS. Nur eine belegte Anwendungsrate erzeugt einen getrennten, auf Uptime begrenzten Dauerwert.',
       'Nicht eindeutig zugeordnete Support-, Passive-, Aszendenz- und Gegnerwirkungen verändern diesen DoT-Teilwert nicht.',
     ],
   }

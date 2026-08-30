@@ -229,6 +229,10 @@ describe('vollständige Build-Variantenoptimierung', () => {
           `${character.classId}/${character.ascendancyId}: ${JSON.stringify(optimization)}`,
         ).not.toBeNull()
         expect(optimization.selected?.compatibleSupportIds.length, character.ascendancyId).toBeGreaterThan(0)
+        expect(
+          optimization.selected?.modeledDps,
+          `${character.ascendancyId}/${optimization.selected?.skillName}`,
+        ).toBeGreaterThan(0)
         expect(optimization.selected?.ruleGraphStatus, character.ascendancyId).not.toBe('blocked')
         const planned = plannedEquipmentForVariant(
           initialEquipment,
@@ -708,7 +712,8 @@ describe('relatives Schadensziel', () => {
       combinedDamagePerSecondAfterMitigation: 1_000,
       damageOverTime: {
         modelVersion: 'test', effects: [], blockedEffects: [], limitations: [],
-        totalSingleApplicationDamagePerSecondAfterMitigation: 250,
+        totalSingleApplicationDamagePerSecondAfterMitigation: 400,
+        totalSustainedDamagePerSecondAfterMitigation: 250,
       },
       damagingAilments: {
         modelVersion: 'test', effects: [], blockedEffects: [], limitations: [],

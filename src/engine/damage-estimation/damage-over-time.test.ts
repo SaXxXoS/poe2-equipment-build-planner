@@ -11,7 +11,7 @@ const byName = (name: string) => {
 describe('getrennter Schaden über Zeit', () => {
   it('berechnet Flammenwand nur als belegtes Einzelanwendungsfenster', () => {
     const result = collectDamageOverTime(byName('Flame Wall'))
-    expect(result.modelVersion).toBe('3.4.0')
+    expect(result.modelVersion).toBe('3.5.0')
     expect(result.effects).toEqual([expect.objectContaining({
       damageType: 'fire',
       damagePerSecond: 59.58,
@@ -92,5 +92,41 @@ describe('getrennter Schaden über Zeit', () => {
       damagePerSecondAfterMitigation: 112.7,
       totalDamagePerApplicationAfterMitigation: 563.5,
     })
+  })
+  it('berechnet aufrechterhaltenen nativen DoT nur mit belegter Anwendungsrate', () => {
+    const result = collectDamageOverTime(byName('Contagion'), {
+      id: 'dot-target', label: 'DoT-Ziel', source: 'manual-comparison-profile',
+      resistances: { chaos: 25 },
+    }, undefined, undefined, {
+      actionsPerSecond: 0.1,
+      sourceReferences: ['skill-cast-time'],
+    })
+    expect(result.effects[0]).toMatchObject({
+      durationMs: 5000,
+      applicationRatePerSecond: 0.1,
+      sustainedUptime: 0.5,
+      sustainedDamagePerSecondAfterMitigation: 35.22,
+    })
+    expect(result.totalSustainedDamagePerSecondAfterMitigation).toBe(35.22)
+  })
+
+  it('begrenzt die Uptime auf 100 Prozent und erfindet keine Stapel', () => {
+    const result = collectDamageOverTime(byName('Contagion'), undefined, undefined, undefined, {
+      actionsPerSecond: 2,
+      sourceReferences: ['skill-cast-time'],
+    })
+    expect(result.effects[0]).toMatchObject({
+      applicationRatePerSecond: 2,
+      sustainedUptime: 1,
+      sustainedDamagePerSecond: 93.92,
+      stackCount: 1,
+    })
+    expect(result.totalSustainedDamagePerSecond).toBe(93.92)
+  })
+
+  it('liefert ohne Anwendungsrate weiterhin keinen aufrechterhaltenen DPS', () => {
+    const result = collectDamageOverTime(byName('Contagion'))
+    expect(result.effects[0].sustainedUptime).toBeUndefined()
+    expect(result.totalSustainedDamagePerSecond).toBeUndefined()
   })
 })

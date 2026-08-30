@@ -80,7 +80,7 @@ export interface BlockedLuckyHitEffect { sourceNodeId:string;sourceText:string;c
 export interface AppliedQuantitativeEffect { source:'equipment'|'passive'|'ascendancy'|'support';sourceId:string;label:string;value:number }
 export interface AppliedTemporalOffensiveEffect { sourceId:string;label:string;kind:'more-damage'|'increased-action-speed'|'gain-as-lightning'|'blocked';percent?:number;activationTimeMs?:number;durationMs?:number;status:'active-window'|'blocked';detail:string }
 export interface AppliedNextSkillEffect { sourceId:string;sourceLabel:string;targetSkillId?:string;targetSkillLabel?:string;kind:'more-damage'|'gain-as-fire'|'gain-as-chaos'|'repeated-projectile-sequence'|'repeated-spell-sequence'|'charge-dependent-repeats'|'blocked';percent?:number;repeatCount?:number;sequenceDamageMultiplier?:number;status:'prepared-next-hit'|'prepared-next-sequence'|'blocked';detail:string }
-export interface AppliedDamageOverTimeEffect { sourceRecordId:string;sourceLabel:string;damageType:DamageComponent['type'];kind:'native-damage-over-time';status:'single-application-window';damagePerSecond:number;damagePerSecondAfterMitigation?:number;durationMs:number;totalDamagePerApplication:number;totalDamagePerApplicationAfterMitigation?:number;stackCount:1;detail:string }
+export interface AppliedDamageOverTimeEffect { sourceRecordId:string;sourceLabel:string;damageType:DamageComponent['type'];kind:'native-damage-over-time';status:'single-application-window';damagePerSecond:number;damagePerSecondAfterMitigation?:number;applicationRatePerSecond?:number;sustainedUptime?:number;sustainedDamagePerSecond?:number;sustainedDamagePerSecondAfterMitigation?:number;durationMs:number;totalDamagePerApplication:number;totalDamagePerApplicationAfterMitigation?:number;stackCount:1;detail:string }
 export interface BlockedDamageOverTimeEffect { sourceRecordId:string;sourceLabel:string;kind:'native-damage-over-time'|'ignite'|'poison'|'bleeding';status:'blocked';detail:string }
 export interface AppliedDamagingAilmentEffect { sourceRecordId:string;sourceLabel:string;kind:'bleeding'|'poison'|'ignite';damageType:'physical'|'chaos'|'fire';status:'sustained-exact-input-chain';chancePercent:number;durationMs:number;maximumStacks:number;expectedActiveStacks:number;damagePerSecond:number;damagePerSecondAfterMitigation?:number;totalDamagePerApplication:number;effectMultiplier:number;rateMultiplier:number;chanceOnHitPercent?:number;chanceOnCriticalHitPercent?:number;ailmentCriticalChancePercent?:number;weightedSourceDamage?:number;detail:string }
 export interface BlockedDamagingAilmentEffect { sourceRecordId:string;sourceLabel:string;kind:'ignite'|'poison'|'bleeding';status:'blocked';detail:string }
@@ -108,6 +108,7 @@ export interface DamageEstimate {
   weaponSet:'set-1'|'set-2'|'both'
   hitDamage?:{minimum:number;maximum:number;average:number}
   actionsPerSecond?:number
+  damageEventsPerSecond?:number
   hitDamagePerSecond?:number
   accuracyAdjustedDamagePerSecond?:number
   accuracyAdjustedExpectedCriticalDamagePerSecond?:number
@@ -238,7 +239,7 @@ export interface DamageEstimate {
   appliedSupportEffects?:AppliedQuantitativeEffect[]
   temporalOffensiveEffects?:AppliedTemporalOffensiveEffect[]
   nextSkillEffects?:{modelVersion:string;effects:AppliedNextSkillEffect[]}
-  damageOverTime?:{modelVersion:string;effects:AppliedDamageOverTimeEffect[];blockedEffects:BlockedDamageOverTimeEffect[];totalSingleApplicationDamagePerSecond?:number;totalSingleApplicationDamagePerSecondAfterMitigation?:number;limitations:string[]}
+  damageOverTime?:{modelVersion:string;effects:AppliedDamageOverTimeEffect[];blockedEffects:BlockedDamageOverTimeEffect[];totalSingleApplicationDamagePerSecond?:number;totalSingleApplicationDamagePerSecondAfterMitigation?:number;totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   skillEffectDurationSupportModel?:{
     modelVersion:string
     status:'not-applicable'|'applied'|'blocked-incompatible-skill'|'blocked-duplicate-family'
@@ -442,6 +443,7 @@ export interface DamageEstimate {
   }
   damagingAilments?:{modelVersion:string;effects:AppliedDamagingAilmentEffect[];blockedEffects:BlockedDamagingAilmentEffect[];totalSustainedDamagePerSecond?:number;totalSustainedDamagePerSecondAfterMitigation?:number;limitations:string[]}
   projectileHitModel?:{modelVersion:string;isProjectileSkill:boolean;projectilesPerAction:number;singleTargetHitMultiplier:1;mappingPotentialTargetContacts:number;supportPierceChancePercent:number;postPierceDamageMultiplier:number;forkEnabled:boolean;forkedProjectileDamageMultiplier:number;terrainChainChancePercent:number;mechanics:ProjectileHitMechanic[];bossScenario:{hitMultiplier:1;status:'single-hit-only';detail:string};mappingScenario:{potentialTargetContacts:number;status:'coverage-estimate';detail:string};limitations:string[]}
+  sustainedHitFrequencyModel?:{modelVersion:string;skillName:string;status:'applied-periodic-single-target';activationRatePerSecond:number;baseDurationMs:number;effectiveDurationMs:number;pulseIntervalMs:number;pulseRatePerSecond:number;uptime:number;hitsPerInstance:number;effectiveHitRatePerSecond:number;maximumHitsPerInstance?:number;singleTargetHitPreventionMs?:number;sourceReferences:string[];detail:string}
   triggerRepeatModel?:{modelVersion:string;primarySkillTriggered:boolean;productive:boolean;triggeredDamagePerSecond?:number;triggeredDamagePerSecondAfterMitigation?:number;sources:TriggerRepeatSource[];limitations:string[]}
   minionCompanionModel?:{modelVersion:string;primarySkillMinion:boolean;productive:false;sources:MinionCompanionSource[];limitations:string[]}
   resourceSpiritModel?:{modelVersion:string;productive:boolean;manaPoolKnown:false;lifePoolKnown:false;spiritCapacityKnown:false;exactSkillCostsKnown:boolean;questSpiritEstimate?:{characterLevel:number;amount:number;eligibleRewards:Array<{act:number;area:string;info:string;amount:number;areaLevel:number}>;status:'level-derived-upper-bound-not-completion-proof'};confirmedMinimumPools?:{characterLevel:number;baseLife:number;baseMana:number;life:number;mana:number;manaRegenerationPerSecond:number;status:'confirmed-minimum-only'};sources:ResourceSpiritSource[];equipmentContributions:EquipmentResourceContribution[];skillCostChains:SkillResourceCostChain[];spiritReservations:SpiritReservationEntry[];spiritCapacityByWeaponSet:SpiritCapacityState[];semanticSupportCostHints:Array<{supportId:string;value:number}>;limitations:string[]}

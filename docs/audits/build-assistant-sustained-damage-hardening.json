@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "scopeId": "build-assistant-sustained-damage-hardening",
+  "sourceRepository": "PathOfBuildingCommunity/PathOfBuilding-PoE2",
+  "sourceCommit": "c5300ccdc5ef0ec384d4db263f09dcadac4ab7d0",
+  "damageReference": "generated/pob2/damage-reference.json",
+  "calculatorVersion": "3.84.0",
+  "damageOverTimeModelVersion": "3.5.0",
+  "sustainedHitFrequencyModelVersion": "1.0.0",
+  "sourceCoverage": {
+    "skillRecords": 337,
+    "structuredHitCandidates": 184,
+    "damageOverTimeCandidates": 15,
+    "minionOrCompanionCandidates": 28,
+    "productivePeriodicSingleTargetSkills": 3
+  },
+  "productivePeriodicSkills": [
+    {
+      "name": "Orb of Storms",
+      "requiredFields": [
+        "base_skill_effect_duration",
+        "orb_of_storms_base_bolt_frequency_ms",
+        "orb_of_storms_maximum_number_of_hits"
+      ]
+    },
+    {
+      "name": "Solar Orb",
+      "requiredFields": [
+        "base_skill_effect_duration",
+        "solar_orb_base_pulse_frequency_ms"
+      ]
+    },
+    {
+      "name": "Thunderstorm",
+      "requiredFields": [
+        "base_skill_effect_duration",
+        "lightning_storm_hit_frequency_ms",
+        "lightning_storm_hit_prevention_duration_ms"
+      ]
+    }
+  ],
+  "blockedPeriodicSkills": [
+    {
+      "name": "Ball Lightning",
+      "reason": "missing-confirmed-lifetime-and-total-hit-chain"
+    },
+    {
+      "name": "Firestorm",
+      "reason": "missing-single-target-spatial-hit-probability"
+    },
+    {
+      "name": "Storm Lance",
+      "reason": "missing-complete-contact-detonation-overlap-chain"
+    },
+    {
+      "name": "Twister",
+      "reason": "missing-contact-and-movement-uptime"
+    }
+  ],
+  "optimizerMatrix": {
+    "profiles": 23,
+    "selected": 23,
+    "coherent": 23,
+    "plannedWeaponContextMatches": 23,
+    "profilesWithComparableDamageObjective": 23,
+    "evaluatedCombinations": 57,
+    "comparableCombinations": 57,
+    "profilesWithFilledMainSupports": 23,
+    "profilesWithFilledSetupSupports": 23,
+    "coherentTwoSetPackages": 21,
+    "coherentSingleSetPackages": 2,
+    "phantomWeaponSetPackages": 0,
+    "duplicateMainSupportFamilies": 0
+  },
+  "fixedDefects": [
+    "pinned-weapon-base-action-speed-false-fallback",
+    "missing-character-class-in-optimizer-hit-chance",
+    "native-dot-single-application-used-as-sustained-objective",
+    "activation-rate-used-as-periodic-damage-event-rate"
+  ],
+  "guardedUnknowns": [
+    "unproven-projectile-overlap",
+    "unproven-spatial-multi-hit",
+    "unproven-additional-orb-of-storms-trigger-bolts",
+    "minion-creature-base-offence",
+    "minion-active-count-frequency-and-uptime",
+    "unconfirmed-live-season-differences-beyond-source-pin"
+  ],
+  "verification": {
+    "testFiles": 173,
+    "tests": 2004,
+    "testsPassedInFullSerialRun": 2000,
+    "timeoutOnlyCasesPassedUnchangedInIsolation": 4,
+    "functionalAssertionsPassed": 2004,
+    "typecheck": "passed",
+    "lint": "passed",
+    "productionBuild": "passed",
+    "pagesBuild": "passed",
+    "jsonFilesValidated": 253,
+    "desktopViewport": "1280x720",
+    "mobileViewport": "390x844",
+    "horizontalOverflow": false,
+    "directProductionConsoleErrors": 0,
+    "directProductionConsoleWarnings": 0
+  },
+  "decisionStatus": "productive-with-fail-closed-unknowns",
+  "globalMetaOptimalityClaimed": false,
+  "pathOfBuildingParityClaimed": false
+}

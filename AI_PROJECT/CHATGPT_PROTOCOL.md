@@ -4640,3 +4640,46 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   Supports je Zusatzfertigkeit. Desktop 1280 × 720 und Mobil 390 × 844 hatten
   keinen horizontalen Überlauf; die Browserkonsole blieb ohne Fehler und
   Warnungen.
+
+## Nachhaltige Schadens- und Trefferfrequenz-Härtung – 2026-08-30
+
+- Ein Fehler im Fallback der gepinnten Waffenbasis ist behoben: Angriffe ohne
+  manuell beobachteten finalen APS-Wert verwenden wieder die belegte
+  Basisgeschwindigkeit statt eines booleschen Nullwerts. Der Optimierer
+  transportiert außerdem die Charakterklasse in die Trefferchanceberechnung.
+- Das neue Modell `sustained-hit-frequency` trennt Aktivierungen von
+  periodischen Schadensereignissen. Orb of Storms, Solar Orb und Thunderstorm
+  verwenden Dauer, Pulsintervall, Uptime sowie vorhandene Treffergrenzen oder
+  Einzelziel-Treffersperren.
+- Eigenständiger Schaden über Zeit besitzt nun eine belegte Anwendungsrate,
+  aufrechterhaltbare Uptime und einen getrennten nachhaltigen Wert vor und
+  nach Gegnerabwehr. Der Optimierer addiert keinen bloßen
+  Einzelanwendungswert mehr als dauerhaften DPS.
+- Ressourcenverbrauch bleibt an der Aktivierungsrate; Treffer, Zustände und
+  bestätigte Trigger verwenden die tatsächliche Ereignisrate. Dadurch werden
+  anhaltende Fertigkeiten weder als normale Zauberrate unterschätzt noch durch
+  wiederholtes Wirken künstlich vervielfacht.
+- Die Produktmatrix bestätigt 23/23 kohärente Profile mit passendem
+  Waffenplan, gefüllten Haupt- und Setup-Supports sowie positiver gemeinsamer
+  Schadensbasis. 21 Pakete verwenden belegt zwei Waffensets, 2 bleiben bewusst
+  Ein-Set-Pakete; Phantom-Sets und doppelte Supportfamilien sind null.
+- Ball Lightning, Firestorm, Storm Lance, Twister sowie Minion-/Begleiter-DPS
+  bleiben ohne vollständige Lebensdauer-, Kontakt-, räumliche Treffer- oder
+  Kreaturenbasis fail-closed. Sie erhalten keinen erfundenen Rankingbonus.
+- Details: `docs/BUILD_ASSISTANT_SUSTAINED_DAMAGE_HARDENING.md` und
+  `docs/audits/build-assistant-sustained-damage-hardening.json`.
+- Produktpins und Runtime-Offlinegrenze bleiben unverändert. Globale
+  Meta-Optimalität und vollständige Path-of-Building-Parität werden weiterhin
+  nicht behauptet.
+- Abschlussprüfung: 2.000/2.004 Tests bestanden im vollständigen seriellen
+  Lauf unmittelbar. Die vier ausschließlich am gemeinsamen Laufzeitfenster
+  gescheiterten Vollbaum-, Optimierer- und Performancefälle bestanden
+  anschließend unverändert isoliert; damit sind 2.004/2.004 fachliche
+  Assertions erfolgreich. Typecheck, Lint, Produktions-/Pages-Build und 253
+  JSON-Dateien sind erfolgreich.
+- Browserprüfung des realen Pages-Builds: Zauberin/Sturmweberin ohne
+  Ausrüstung erzeugte Komet, ein belegtes Set-1-/Set-2-Skillpaket, konkrete
+  Supports, 24/24 Set-Punkte je Waffenset und 8/8 Aszendenzpunkte. Desktop
+  1280 × 720 und Mobil 390 × 844 blieben ohne horizontalen Überlauf; die
+  mobile Fertigkeitsdarstellung ist einspaltig. Die direkte Produktionsseite
+  meldete keine Konsolenfehler oder -warnungen.

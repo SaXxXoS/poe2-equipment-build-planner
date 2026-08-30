@@ -12,6 +12,55 @@ const supportDef=(id:string,nameEn:string):SupportGemDefinition=>({id,nameEn,dis
 const weapon=(baseDisplayName:string,slotId='slot-weapon-set-1-left'):EquipmentEntry=>({id:'weapon',slotId,baseDisplayName,itemClassId:'Bows',rarity:'normal',modifierValues:[]})
 
 describe('begrenzte Trefferschadenberechnung',()=>{
+  it('verwendet bei autonomen Dauerfertigkeiten die belegte Pulsrate statt der erneuten Wirkgeschwindigkeit',()=>{
+    const solarOrb=skill('solar-orb','Solar Orb')
+    const result=estimateHitDamage({equipment:[],setups:[setup(solarOrb.id)],skills:[solarOrb]})
+    expect(result.status).not.toBe('unavailable')
+    expect(result.actionsPerSecond).toBeGreaterThan(result.damageEventsPerSecond!)
+    expect(result.damageEventsPerSecond).toBe(.71)
+    expect(result.sustainedHitFrequencyModel).toMatchObject({
+      skillName:'Solar Orb',
+      pulseIntervalMs:1400,
+      uptime:1,
+      effectiveHitRatePerSecond:0.714286,
+    })
+  })
+
+  it('begrenzt Gewittersphaere auf den belegten autonomen Vier-Sekunden-Takt',()=>{
+    const orb=skill('orb-of-storms','Orb of Storms')
+    const result=estimateHitDamage({equipment:[],setups:[setup(orb.id)],skills:[orb]})
+    expect(result.status).not.toBe('unavailable')
+    expect(result.damageEventsPerSecond).toBe(.25)
+    expect(result.sustainedHitFrequencyModel).toMatchObject({
+      skillName:'Orb of Storms',
+      pulseIntervalMs:4000,
+      hitsPerInstance:3,
+      effectiveHitRatePerSecond:.25,
+    })
+  })
+
+  it('wendet bei Thunderstorm die strukturierte Einzelziel-Treffersperre an',()=>{
+    const thunderstorm=skill('thunderstorm','Thunderstorm')
+    const result=estimateHitDamage({equipment:[],setups:[setup(thunderstorm.id)],skills:[thunderstorm]})
+    expect(result.status).not.toBe('unavailable')
+    expect(result.damageEventsPerSecond).toBe(2)
+    expect(result.sustainedHitFrequencyModel).toMatchObject({
+      skillName:'Thunderstorm',
+      pulseIntervalMs:500,
+      singleTargetHitPreventionMs:500,
+      effectiveHitRatePerSecond:2,
+    })
+  })
+
+  it('verwendet bei gepinnten Waffenbasen deren Angriffsgeschwindigkeit statt false als null Aktionen zu interpretieren',()=>{
+    const iceShot:SkillGemDefinition={...skill('ice-shot','Ice Shot'),tags:['attack','projectile','cold'],requiredWeaponTypes:['bow']}
+    const pinned={...weapon('Composite Bow'),weaponStatsSource:'pinned-base' as const}
+    const result=estimateHitDamage({equipment:[pinned],setups:[setup(iceShot.id)],skills:[iceShot]})
+    expect(result.status).not.toBe('unavailable')
+    expect(result.actionsPerSecond).toBeGreaterThan(0)
+    expect(result.hitDamagePerSecond).toBeGreaterThan(0)
+  })
+
   it('integriert Hinterhalt nur gegen ein bestätigt auf vollem Leben befindliches Ziel in die Krit-Erwartung',()=>{
     const ambush=supportDef('ambush','Ambush')
     const attack:SkillGemDefinition={...skill('galvanic','Load Galvanic Shards'),tags:['attack'],requiredWeaponTypes:['crossbow']}
