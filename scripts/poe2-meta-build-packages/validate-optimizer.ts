@@ -287,6 +287,7 @@ for (const entry of treeClassRegistry.filter(value => value.selectableInCurrentU
       metaScore: result.selected?.metaReferenceScore ?? null,
       correlatedProfileCount: result.selected?.metaReferenceProfileCount ?? 0,
       correlatedEvidenceClass: result.selected?.metaReferenceEvidenceClass ?? null,
+      selectionEvidenceMode: result.selected?.selectionEvidenceMode ?? null,
       plannedWeaponTypes,
       plannedWeaponContextMatches: result.selected
         ? plannedWeaponTypes.includes(result.selected.weaponType)
@@ -313,6 +314,10 @@ const totals = {
   observedSkillIntersections: rows.filter(row => row.selectionIntersectsObservedSkill).length,
   observedWeaponIntersections: rows.filter(row => row.selectionIntersectsObservedWeapon).length,
   profilesWithCorrelatedCurrentPackage: rows.filter(row => row.correlatedProfileCount > 0).length,
+  profilesUsingBroadAscendancyOverview: rows.filter(row => row.selectionEvidenceMode === 'broad-ascendancy-overview').length,
+  profilesUsingCorrelatedPackageFallback: rows.filter(row => row.selectionEvidenceMode === 'correlated-package-fallback').length,
+  profilesUsingAscendancyAffinityFallback: rows.filter(row => row.selectionEvidenceMode === 'ascendancy-affinity-fallback').length,
+  profilesUsingStructuralFallback: rows.filter(row => row.selectionEvidenceMode === 'structural-fallback').length,
   distinctSkills: new Set(rows.map(row => row.selectedSkillEn).filter(Boolean)).size,
   distinctWeapons: new Set(rows.map(row => row.weapon).filter(Boolean)).size,
   profilesWithFilledMainSupports: rows.filter(row => row.mainSupportCount > 0).length,
@@ -367,6 +372,7 @@ const report = {
     observedIntersection: 'Sekundärer Plausibilitätsbeleg gegen marginale poe.ninja-Häufigkeiten; kein Beweis für globale Optimalität und keine DPS-Garantie.',
     correlatedCurrentPackage: 'Saisonaler PlausibilitÃ¤tsbeleg: Aszendenz, Hauptskill, Waffe, Supports und weitere Fertigkeiten wurden gemeinsam in einem lokal gepinnten Profil beobachtet.',
     plannedWeaponContextMatches: 'Die technisch geplante Waffenklasse erreicht nach Normalisierung wieder denselben Analyzer-Waffentyp.',
+    selectionEvidenceMode: 'Kennzeichnet explizit, ob die Auswahl aus realer Ausrüstung, der breiten Aszendenz-Saisonübersicht oder nur aus einem engeren, offen ausgewiesenen Fallback stammt.',
     coherentSingleSetPackage: 'Ein technisch vollständiges Ein-Set-Paket erzeugt absichtlich keine Waffenset-Punkte.',
     coherentTwoSetPackage: 'Ein Zwei-Set-Paket besitzt eine belegte Setup-Fertigkeit, eine konkrete kompatible zweite Waffe und einen Skill im gegenüberliegenden Set.',
   },

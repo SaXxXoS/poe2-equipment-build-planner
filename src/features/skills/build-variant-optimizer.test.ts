@@ -9,6 +9,7 @@ import {
   runBuildAssistantV1,
 } from '../build-assistant-v1'
 import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
+import { ascendancyMetaReferences } from './meta-reference'
 import {
   hasCoherentWeaponSetSpecialization,
   normalizeDamageObjective,
@@ -539,32 +540,26 @@ describe('vollständige Build-Variantenoptimierung', () => {
     {
       classId: 'class-official-8',
       ascendancyId: 'ascendancy-official-Huntress1',
-      expectedSkill: 'Lightning Spear',
     },
     {
       classId: 'class-official-1',
       ascendancyId: 'ascendancy-official-Witch2',
-      expectedSkill: 'Plasma Blast',
     },
     {
       classId: 'class-official-1',
       ascendancyId: 'ascendancy-official-Witch3b',
-      expectedSkill: 'Twister',
     },
     {
       classId: 'class-official-9',
       ascendancyId: 'ascendancy-official-Mercenary2',
-      expectedSkill: 'Shockburst Rounds',
     },
     {
       classId: 'class-official-9',
       ascendancyId: 'ascendancy-official-Mercenary3',
-      expectedSkill: 'Arc',
     },
-  ])('bevorzugt für $ascendancyId das am stärksten gemeinsam belegte Build-Paket', ({
+  ])('bevorzugt für $ascendancyId ein breit beobachtetes Skill-/Waffenpaar', ({
     classId,
     ascendancyId,
-    expectedSkill,
   }) => {
     const setups = createEmptySkillSetups()
     const analysis = runBuildAssistantV1({
@@ -595,8 +590,11 @@ describe('vollständige Build-Variantenoptimierung', () => {
     })
 
     const selected = buildAssistantCandidates.skills.find(value => value.id === result.selected?.skillId)
-    expect(selected?.nameEn).toBe(expectedSkill)
-    expect(result.selected?.reasons.some(reason => reason.startsWith('Validiertes Build-Paket:'))).toBe(true)
+    const reference = ascendancyMetaReferences[ascendancyId]
+    expect(reference.mainSkills.map(value => value.name)).toContain(selected?.nameEn)
+    expect(reference.weapons.map(value => value.name.toLowerCase())).toContain(result.selected?.weaponType)
+    expect(result.selected?.selectionEvidenceMode).toBe('broad-ascendancy-overview')
+    expect(result.selected?.reasons.some(reason => reason.startsWith('Aktuelle Meta-Referenz:'))).toBe(true)
     expect(result.selected?.plannedSkillSetups?.length).toBeGreaterThan(0)
   }, 15_000)
 
@@ -632,6 +630,7 @@ describe('vollständige Build-Variantenoptimierung', () => {
     })
 
     expect(result.equipmentFirst).toBe(true)
+    expect(result.selected?.selectionEvidenceMode).toBe('equipment-first')
     expect(result.numericallyComparableCombinationCount).toBeGreaterThan(0)
     expect(result.selected).toMatchObject({
       numericCoverageStatus: 'comparable',

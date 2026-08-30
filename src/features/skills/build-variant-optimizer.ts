@@ -111,6 +111,12 @@ export interface BuildVariantCandidate {
   metaReferenceScore?: number
   metaReferenceProfileCount?: number
   metaReferenceEvidenceClass?: string
+  selectionEvidenceMode?:
+    | 'equipment-first'
+    | 'broad-ascendancy-overview'
+    | 'correlated-package-fallback'
+    | 'ascendancy-affinity-fallback'
+    | 'structural-fallback'
   packageScore?: number
   packageStatus?: 'coherent' | 'limited' | 'blocked'
   packageComponents?: {
@@ -788,11 +794,19 @@ export function optimizeBuildVariants(input: {
     return characterAllowsSkill(skill, input.classId, input.ascendancyId)
   })
   const evaluatedSkillCount = eligibleSkills.length
+  let overviewPairGuard = false
   if (!equipmentFirst) {
     const scoredAffinity = eligibleSkills.map(skill => ({
       skill,
       affinity: scoreCharacterSkillAffinity(skill, input.classId, input.ascendancyId),
     }))
+    const overviewPairAligned = scoredAffinity
+      .filter(({ skill }) => candidateWeapons(skill, equipped).some(weapon => {
+        const reference = scoreMetaReference(skill, weapon, input.ascendancyId)
+        return reference.observedSkillShare !== undefined
+          && reference.observedWeaponShare !== undefined
+      }))
+      .map(value => value.skill)
     const correlatedPackageAligned = scoredAffinity
       .filter(({ skill }) => candidateWeapons(skill, equipped).some(weapon =>
         scoreMetaReference(skill, weapon, input.ascendancyId).correlatedProfileCount > 0,
@@ -807,13 +821,14 @@ export function optimizeBuildVariants(input: {
     const ascendancyAligned = scoredAffinity
       .filter(value => value.affinity.ascendancyMatches.length > 0 && value.affinity.score === maximumAffinity)
       .map(value => value.skill)
-    // Ein validiertes, korreliertes Build-Paket ist belastbarer als getrennte
-    // Skill- und Waffen-Randstatistiken. Deshalb darf ein loses Top-Skill-
-    // Vorkommen keinen Kandidaten mit gemeinsam beobachteter Aszendenz,
-    // Hauptskill, Waffe, Supports und verknüpften Skills verdrängen. Rollen-
-    // und Waffenregeln bleiben erhalten, weil beide Listen ausschließlich aus
-    // den bereits technisch zulässigen Hauptskillkandidaten entstehen.
-    if (correlatedPackageAligned.length) eligibleSkills = correlatedPackageAligned
+    // Prefer the broad, pinned ascendancy overview when it contains a locally
+    // valid main-skill/weapon pair. Correlated package rows remain the fallback
+    // and still provide setup/support evidence for overview-aligned variants.
+    if (overviewPairAligned.length) {
+      eligibleSkills = overviewPairAligned
+      overviewPairGuard = true
+    }
+    else if (correlatedPackageAligned.length) eligibleSkills = correlatedPackageAligned
     else if (metaAligned.length) eligibleSkills = metaAligned
     else if (ascendancyAligned.length) eligibleSkills = ascendancyAligned
   }
@@ -827,7 +842,15 @@ export function optimizeBuildVariants(input: {
     blockedReasonCounts[reason] = (blockedReasonCounts[reason] ?? 0) + 1
   }
   let variants = eligibleSkills.flatMap((skill): BuildVariantCandidate[] => {
-    const weapons = candidateWeapons(skill, equipped)
+    const weaponCandidates = candidateWeapons(skill, equipped)
+    const overviewWeapons = overviewPairGuard
+      ? weaponCandidates.filter(weapon => {
+          const reference = scoreMetaReference(skill, weapon, input.ascendancyId)
+          return reference.observedSkillShare !== undefined
+            && reference.observedWeaponShare !== undefined
+        })
+      : []
+    const weapons = overviewWeapons.length ? overviewWeapons : weaponCandidates
     if (!weapons.length) {
       block('no-compatible-weapon-candidate')
       return []
@@ -1025,6 +1048,15 @@ export function optimizeBuildVariants(input: {
           : 'resource-chain-unknown' as const
       const passiveAffinityScore = affinity.score
       const metaReference = scoreMetaReference(skill, weapon, input.ascendancyId)
+      const selectionEvidenceMode: NonNullable<BuildVariantCandidate['selectionEvidenceMode']> = equipmentFirst
+        ? 'equipment-first'
+        : overviewPairGuard
+          ? 'broad-ascendancy-overview'
+          : metaReference.correlatedProfileCount > 0
+            ? 'correlated-package-fallback'
+            : affinity.ascendancyMatches.length > 0
+              ? 'ascendancy-affinity-fallback'
+              : 'structural-fallback'
       const weaponEvidenceScore = skill.requiredWeaponTypes?.length
         ? 80
         : skill.tags.includes('spell') && ['wand', 'staff', 'sceptre'].includes(weapon)
@@ -1081,6 +1113,15 @@ export function optimizeBuildVariants(input: {
       )
       const reasons = [
         `${weaponLabels[weapon]} ist mit der Fertigkeit technisch kompatibel.`,
+        selectionEvidenceMode === 'equipment-first'
+          ? 'Auswahlgrundlage: Die eingetragene Ausrüstung besitzt Vorrang vor Saisonbeobachtungen.'
+          : selectionEvidenceMode === 'broad-ascendancy-overview'
+            ? 'Auswahlgrundlage: breit beobachtetes Skill-/Waffenpaar der gepinnten Aszendenz-Saisonübersicht.'
+            : selectionEvidenceMode === 'correlated-package-fallback'
+              ? 'Auswahlgrundlage: kein lokal modellierbares breites Saisonpaar; deshalb wird ein gemeinsam beobachtetes, validiertes Build-Paket als Fallback verwendet.'
+              : selectionEvidenceMode === 'ascendancy-affinity-fallback'
+                ? 'Auswahlgrundlage: kein lokal modellierbarer Saisonbeleg; deshalb nur strukturell belegte Aszendenz-Synergie.'
+                : 'Auswahlgrundlage: nur harte Skill-/Waffenkompatibilität; saisonale Einordnung ist unbekannt.',
         ...(affinity.classMatches.length ? [`Klassenbezug: ${affinity.classMatches.join(', ')}.`] : []),
         ...(affinity.ascendancyMatches.length ? [`Aszendenzbezug: ${affinity.ascendancyMatches.join(', ')}.`] : []),
         ...(usableSetup
@@ -1134,6 +1175,7 @@ export function optimizeBuildVariants(input: {
         metaReferenceScore: metaReference.score,
         metaReferenceProfileCount: metaReference.correlatedProfileCount,
         metaReferenceEvidenceClass: metaReference.correlatedEvidenceClass,
+        selectionEvidenceMode,
         ruleGraphStatus: ruleGraph.status,
         ruleGraphEvidence: [
           ...ruleGraph.edges.filter(edge => edge.productive).map(edge => edge.reason),

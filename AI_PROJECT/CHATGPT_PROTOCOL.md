@@ -4683,3 +4683,37 @@ Zuerst Quellcode und dieses Protokoll vergleichen; der Code gewinnt. Danach `dat
   1280 × 720 und Mobil 390 × 844 blieben ohne horizontalen Überlauf; die
   mobile Fertigkeitsdarstellung ist einspaltig. Die direkte Produktionsseite
   meldete keine Konsolenfehler oder -warnungen.
+
+## Saisonale Skill-/Waffenpaar-Härtung – 2026-08-30
+
+- Ein Auswahlfehler ohne eingetragene Ausrüstung ist behoben: Ein kleines
+  korreliertes Nischenpaket darf die breite, gepinnte
+  Aszendenz-Saisonübersicht nicht mehr allein über seine Profilzahl
+  überstimmen.
+- Existiert ein lokal modellierbares, breit beobachtetes Hauptskill-/Waffenpaar,
+  wird die Optimierung fail-closed auf solche Paare begrenzt. Reale
+  Ausrüstung besitzt weiterhin Vorrang; harte Skill-, Waffen-, Ressourcen-,
+  Support- und Paketregeln bleiben unverändert maßgeblich.
+- Die Auswahlgrundlage wird als `equipment-first`,
+  `broad-ascendancy-overview`, `correlated-package-fallback`,
+  `ascendancy-affinity-fallback` oder `structural-fallback` transportiert und
+  in der deutschen Ergebnisansicht erklärt.
+- Die erneuerte Vollmatrix bleibt bei 23/23 kohärenten Paketen, 23/23
+  passenden Waffenplänen, 23/23 gefüllten Hauptsupports, null
+  Phantom-Waffensets und null doppelten Hauptsupportfamilien. 19/23 Profile
+  verwenden direkt ein breites Saisonpaar; vier nicht lokal als Hauptskill
+  modellierbare Saisonprofile sind offen als korrelierter Paket-Fallback
+  markiert.
+- Details: `docs/BUILD_ASSISTANT_SEASON_PAIR_SELECTION_HARDENING.md` und
+  `docs/audits/build-assistant-current-meta-matrix.json`.
+- Verifikation: 28/28 fokussierte Optimierertests. Der serielle Gesamtlauf
+  bestand fachlich mit 2.004/2.004 Assertions; zwei unveränderte
+  Vollbaumdateien überschritten nur das gemeinsame feste
+  Fünf-Sekunden-Zeitlimit und bestanden unverändert mit 197/197 Assertions bei
+  realistischem 20-Sekunden-Limit. Typecheck, Lint, Produktions- und
+  Pages-Build waren erfolgreich.
+- Browserprüfung der echten Pages-Ausgabe: Zauberin/Sturmweberin erzeugte nach
+  „Build vollständig analysieren“ Komet mit Stab, konkrete Supports, ein
+  belegtes Set-2-Setup und die sichtbare Auswahlgrundlage „Breit beobachtetes
+  Saisonprofil“. Desktop und 390 × 844 blieben ohne horizontalen Überlauf;
+  die Browserkonsole blieb ohne Fehler oder Warnungen.

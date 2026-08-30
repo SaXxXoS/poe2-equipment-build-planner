@@ -219,6 +219,15 @@ export function BuildAssistantResultSection({ analysis, equipment, passivePlan, 
           {variantOptimization.selected.modeledDps != null && <div><dt>Vergleichsschaden/s</dt><dd>{formatDamage(variantOptimization.selected.modeledDps)}</dd></div>}
           <div><dt>Vergleichsabdeckung</dt><dd>{variantOptimization.numericallyComparableCombinationCount}/{variantOptimization.evaluatedCombinationCount}</dd></div>
           <div><dt>Supportauswahl</dt><dd>{variantOptimization.selected.supportSelectionBasis === 'equipment-damage-objective' ? 'An Ausrüstung und Schadenswirkung verbessert' : 'Fachlich und durch Paketbelege gewählt'}</dd></div>
+          <div><dt>Auswahlgrundlage</dt><dd>{variantOptimization.selected.selectionEvidenceMode === 'equipment-first'
+            ? 'Deine eingetragene Ausrüstung'
+            : variantOptimization.selected.selectionEvidenceMode === 'broad-ascendancy-overview'
+              ? 'Breit beobachtetes Saisonprofil'
+              : variantOptimization.selected.selectionEvidenceMode === 'correlated-package-fallback'
+                ? 'Validiertes Saisonpaket (Fallback)'
+                : variantOptimization.selected.selectionEvidenceMode === 'ascendancy-affinity-fallback'
+                  ? 'Strukturierte Aszendenz-Synergie (Fallback)'
+                  : 'Harte Kompatibilität; Saisonbeleg unbekannt'}</dd></div>
           <div><dt>{variantOptimization.selected.setupWeaponSet === 'set-1' ? 'Set-1-Setup' : 'Set-2-Setup'}</dt><dd>{variantOptimization.selected.setupSkillId ? definitionName(variantOptimization.selected.setupSkillId) : 'Keine belegte Ergänzung'}</dd></div>
           <div><dt>Setup-Waffe</dt><dd>{variantOptimization.selected.setupWeaponType ? variantOptimization.selected.setupWeaponType === variantOptimization.selected.weaponType ? `${variantOptimization.selected.weaponLabel} (gleiches Waffenkonzept)` : weaponLabelFor(variantOptimization.selected.setupWeaponType) : 'Keine zweite Waffe erforderlich'}</dd></div>
         </dl>
