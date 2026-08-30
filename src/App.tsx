@@ -18,7 +18,7 @@ import {
 import { fillRecommendedSupportSlots, rankedSupportsForSkill } from './features/skills/automatic-supports'
 import { ensureRequiredEmbeddedSkill, supportCapacityFor } from './features/skills/meta-skills'
 import { selectAutomaticMainSkill } from './features/skills/automatic-main-skill'
-import { optimizeBuildVariants, plannedEquipmentForVariant, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
+import { hasCoherentWeaponSetSpecialization, optimizeBuildVariants, plannedEquipmentForVariant, type BuildVariantOptimization } from './features/skills/build-variant-optimizer'
 import { evaluateAnalyzedBuildPackage } from './features/skills/build-package-evaluation'
 import { createInitialCharacterConfiguration } from './features/character/initial-state'
 import { PassiveTree } from './components/PassiveTree'
@@ -381,12 +381,18 @@ export default function App() {
           await new Promise<void>(resolve => window.setTimeout(resolve, 0))
         }
         const pointBudget = Math.max(1, Math.min(REAL_PASSIVE_UI_MAXIMUM_POINT_BUDGET, Math.trunc(effectiveCharacter.level) - 1 + Math.max(0, Math.trunc(effectiveCharacter.additionalPassivePoints ?? 0))))
+        const weaponSetPlanningEnabled = hasCoherentWeaponSetSpecialization(
+          equipment,
+          effectiveOptimization?.selected,
+          effectiveCharacter.level || undefined,
+          result.characterAttributes,
+        )
         const passiveInput: PassiveAnalysisUiInput = {
           character: effectiveCharacter,
           equipment,
           setups: effectiveSetups,
           pointBudget,
-          weaponSetPointBudget: Math.min(24, pointBudget),
+          weaponSetPointBudget: weaponSetPlanningEnabled ? Math.min(24, pointBudget) : 0,
           ascendancyPointBudget: effectiveCharacter.ascendancyPassivePoints ?? 0,
           planningMode: 'damage-first',
         }
@@ -604,7 +610,7 @@ export default function App() {
       <EquipmentSection entries={equipment} setEntries={value => { setEquipment(value); invalidateResult() }} suggestions={equipmentSuggestions}/>
       <SkillsSection setups={setups} onChange={value => { setSetups(value); const selectedMain = value.find(setup => setup.role === 'main' && setup.skillId); setCharacter(current => ({ ...current, desiredMainSkillId: selectedMain?.skillId || undefined })); invalidateResult() }} onRecommendSupports={recommendSupports}/>
       <PassiveTree characterClassId={character.classId} characterAscendancyId={character.ascendancyId} planResults={passivePlan.results} planStatus={passivePlan.status} planVisible={planVisible} focusPlanRequest={focusPlanRequest}/>
-      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} controller={passiveController} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan} onBuildAnalyze={calculate}/>
+      <RealPassiveAnalysis character={character} equipment={equipment} setups={setups} controller={passiveController} weaponSetPlanningEnabled={hasCoherentWeaponSetSpecialization(equipment,variantOptimization?.selected,character.level||undefined,analysis?.characterAttributes)} onPlanPresentation={receivePassivePlan} planVisible={planVisible} onTogglePlan={() => setPlanVisible(value => !value)} onShowPlan={showPassivePlan} onBuildAnalyze={calculate}/>
       <section className="calculate">
         <h2>7. Build auswerten</h2>
         <p>Leere optionale Ausrüstungsslots sind erlaubt. Sie senken lediglich die Sicherheit der Empfehlung.</p>

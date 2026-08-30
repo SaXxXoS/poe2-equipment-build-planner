@@ -10,10 +10,10 @@ import {
   weaponStatsFromBase,
 } from './weapon-base-values'
 import {
-  weaponLabelFor,
   type BuildVariantOptimization,
 } from '../skills/build-variant-optimizer'
 import { baseRequirementsMet } from './base-requirements'
+import { canEquipOffhandWithMainWeapon } from '../../domain/equipment-rules'
 
 export interface EquipmentSlotSuggestion {
   slotId: string
@@ -183,6 +183,24 @@ function uniqueTargetSlots(itemSlot:string, mainSet:'set-1'|'set-2'):string[] {
   return[]
 }
 
+function itemClassMatchesWeaponType(itemClassId:string|undefined,weaponType:SyntheticWeaponType|undefined){
+  if(!itemClassId||!weaponType)return false
+  if(weaponType==='wand')return itemClassId==='Wands'
+  if(weaponType==='staff')return itemClassId==='Staves'
+  if(weaponType==='sceptre')return itemClassId==='Sceptres'
+  return (weaponItemClasses[weaponType]??[]).includes(itemClassId)
+}
+
+function suggestedMainHandClass(
+  set:'set-1'|'set-2',
+  equipment:EquipmentEntry[],
+  suggestions:EquipmentSlotSuggestion[],
+){
+  const slotId=weaponSlot(set)
+  return suggestions.find(value=>value.slotId===slotId)?.itemClassId
+    ?? equipment.find(value=>value.slotId===slotId)?.itemClassId
+}
+
 export function createEquipmentSlotSuggestions(input:{
   equipment:EquipmentEntry[]
   optimization?:BuildVariantOptimization|null
@@ -199,9 +217,8 @@ export function createEquipmentSlotSuggestions(input:{
   if(selected){
     const slotId=firstEmptySlot([weaponSlot(mainSet)],input.equipment)
     const concrete=concreteWeaponSuggestion(selected.weaponType,input.characterLevel,input.characterAttributes?.[mainSet].total,selected.skillTags)
-    if(slotId)suggestions.push({
+    if(slotId&&concrete)suggestions.push({
       slotId,
-      title:concrete?.title??selected.weaponLabel,
       detail:`Waffenset ${mainSet==='set-1'?'1':'2'} · Hauptwaffe für ${selected.skillName}`,
       source:'weapon-optimizer',
       ...concrete,
@@ -210,9 +227,8 @@ export function createEquipmentSlotSuggestions(input:{
       const setupSet=selected.setupWeaponSet??(mainSet==='set-1'?'set-2':'set-1')
       const setupSlot=firstEmptySlot([weaponSlot(setupSet)],input.equipment)
       const setupConcrete=concreteWeaponSuggestion(selected.setupWeaponType,input.characterLevel,input.characterAttributes?.[setupSet].total,selected.setupSkillTags)
-      if(setupSlot)suggestions.push({
+      if(setupSlot&&setupConcrete)suggestions.push({
         slotId:setupSlot,
-        title:setupConcrete?.title??weaponLabelFor(selected.setupWeaponType),
         detail:`Waffenset ${setupSet==='set-1'?'1':'2'} · Setup-Waffe für ${selected.setupSkillName??selected.setupSkillId}`,
         source:'weapon-optimizer',
         ...setupConcrete,
@@ -224,6 +240,7 @@ export function createEquipmentSlotSuggestions(input:{
   const seenUniqueIds=new Set<string>()
   for(const recommendation of input.uniqueRecommendations){
     const candidate=input.uniqueCandidates?.get(recommendation.uniqueId)
+    const candidateItemClassId=candidate?.technicalBaseIdentity?.itemClassId
     const hasMatchedBuildTags=(recommendation.matchedSkillTags?.length??0)>0
     const hasProductiveEvidence=recommendation.buildEnabler
       || (recommendation.supportsCurrentBuild&&hasMatchedBuildTags)
@@ -235,6 +252,13 @@ export function createEquipmentSlotSuggestions(input:{
     if(!recommendation.valid||recommendation.totalScore<=0||!hasProductiveEvidence
       || recommendation.replacementVerdict==='downgrade'
       || seenUniqueIds.has(recommendation.uniqueId))continue
+    if(recommendation.itemSlot==='weapon'
+      && !itemClassMatchesWeaponType(candidateItemClassId,selected?.weaponType))continue
+    if(recommendation.itemSlot==='offhand'
+      && !canEquipOffhandWithMainWeapon(
+        suggestedMainHandClass(mainSet,input.equipment,suggestions),
+        candidateItemClassId,
+      ))continue
     seenUniqueIds.add(recommendation.uniqueId)
     const replaceableOptimizerSlots=new Set(suggestions
       .filter(value=>value.source==='weapon-optimizer')
@@ -279,5 +303,12 @@ export function createEquipmentSlotSuggestions(input:{
     })
     occupied.add(slotId)
   }
-  return suggestions
+  return suggestions.filter(suggestion=>{
+    if(!suggestion.slotId.endsWith('-right')||suggestion.source!=='unique-analyzer')return true
+    const set=suggestion.slotId.includes('set-2')?'set-2':'set-1'
+    return canEquipOffhandWithMainWeapon(
+      suggestedMainHandClass(set,input.equipment,suggestions),
+      suggestion.itemClassId,
+    )
+  })
 }

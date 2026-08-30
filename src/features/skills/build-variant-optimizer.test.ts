@@ -9,12 +9,28 @@ import {
 } from '../build-assistant-v1'
 import { evaluateAnalyzedBuildPackage } from './build-package-evaluation'
 import {
+  hasCoherentWeaponSetSpecialization,
   normalizeDamageObjective,
   optimizeBuildVariants,
   plannedEquipmentForVariant,
   type BuildVariantCandidate,
   type VariantSkillScore,
 } from './build-variant-optimizer'
+
+describe('kohärente Waffenset-Spezialisierung', () => {
+  it('blockiert Set-Punkte ohne Setup-Fertigkeit und konkrete zweite Waffe', () => {
+    expect(hasCoherentWeaponSetSpecialization(initialEquipment, {
+      weaponType: 'wand', mainWeaponSet: 'set-1',
+    })).toBe(false)
+  })
+
+  it('erlaubt Set-Punkte erst für ein getrenntes, vollständig auflösbares Setup', () => {
+    expect(hasCoherentWeaponSetSpecialization(initialEquipment, {
+      weaponType: 'wand', mainWeaponSet: 'set-1',
+      setupSkillId: 'orb', setupWeaponType: 'sceptre', setupWeaponSet: 'set-2',
+    })).toBe(true)
+  })
+})
 
 const skill = (
   id: string,

@@ -92,8 +92,13 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
     }])
   })
 
-  it('behält ein vom Unique Analyzer als gültig bewertetes Waffen-Unique bei',()=>{
+  it('behält nur ein zur geplanten Waffenart passendes Waffen-Unique bei',()=>{
     const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false,damageScore:10,matchedSkillTags:['attack'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation
+    const candidate={
+      id:'unique-bow',displayNameDe:'Peripherie',dataVersion:'test',source:'test',status:'verified',tags:['attack'],
+      itemType:'Bows',itemSlot:'weapon',modifiers:[],ascendancyIds:[],levelRequirement:1,
+      technicalBaseIdentity:{resolution:'exact-local-base',baseId:'base-bow',itemClassId:'Bows',kind:'weapon',nameEn:'Bow',displayNameDe:'Bogen',requirements:{strength:0,dexterity:0,intelligence:0}},
+    } as unknown as Pob2UniqueAnalyzerCandidate
     const suggestions=createEquipmentSlotSuggestions({
       equipment,
       optimization:{
@@ -101,15 +106,60 @@ describe('sichtbare Ausrüstungsvorschläge',()=>{
         numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',
         equipmentFirst:true,status:'selected',alternatives:[],
         selected:{
-          skillId:'snap',skillName:'Zerschlagen',weaponType:'wand',weaponLabel:'Zauberstab',
+          skillId:'bow-skill',skillName:'Bogenfertigkeit',weaponType:'bow',weaponLabel:'Bogen',
           mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,
           passiveAffinityScore:1,analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[],
         },
       },
       uniqueRecommendations:[bow],
       uniqueNames:new Map([['unique-bow','Peripherie']]),
+      uniqueCandidates:new Map([[candidate.id,candidate]]),
     })
     expect(suggestions.some(value=>value.uniqueItemId==='unique-bow')).toBe(true)
+  })
+
+  it('blockiert eine Waffen-Unique-Empfehlung mit falscher Waffenart',()=>{
+    const bow={valid:true,totalScore:10,itemSlot:'weapon',uniqueId:'unique-bow',buildEnabler:false,damageScore:10,matchedSkillTags:['attack'],replacementVerdict:'clear-upgrade'} as UniqueRecommendation
+    const candidate={
+      id:'unique-bow',displayNameDe:'Bogen',dataVersion:'test',source:'test',status:'verified',tags:['attack'],
+      itemType:'Bows',itemSlot:'weapon',modifiers:[],ascendancyIds:[],levelRequirement:1,
+      technicalBaseIdentity:{resolution:'exact-local-base',baseId:'base-bow',itemClassId:'Bows',kind:'weapon',nameEn:'Bow',requirements:{strength:0,dexterity:0,intelligence:0}},
+    } as unknown as Pob2UniqueAnalyzerCandidate
+    expect(createEquipmentSlotSuggestions({
+      equipment,
+      optimization:{evaluatedSkillCount:1,evaluatedCombinationCount:1,blockedCombinationCount:0,numericallyComparableCombinationCount:0,optimizationStatus:'structural-only',equipmentFirst:false,status:'selected',alternatives:[],selected:{skillId:'spell',skillName:'Zauber',weaponType:'wand',weaponLabel:'Zauberstab',mainWeaponSet:'set-1',compatibleSupportIds:[],affinityScore:1,passiveAffinityScore:1,analyzerScore:1,modeledDps:null,damageObjectiveScore:0,numericCoverageStatus:'unavailable',totalScore:1,reasons:[]}},
+      uniqueRecommendations:[bow],uniqueNames:new Map([['unique-bow','Bogen']]),
+      uniqueCandidates:new Map([[candidate.id,candidate]]),characterLevel:100,characterAttributes,
+    }).some(value=>value.uniqueItemId==='unique-bow')).toBe(false)
+  })
+
+  it('blockiert eine untragbare Nebenhand zu einer Zweihandwaffe',()=>{
+    const shield={valid:true,totalScore:10,itemSlot:'offhand',uniqueId:'unique-shield',buildEnabler:true,damageScore:0,matchedSkillTags:[],replacementVerdict:'clear-upgrade'} as unknown as UniqueRecommendation
+    const candidate={
+      id:'unique-shield',displayNameDe:'Schild',dataVersion:'test',source:'test',status:'verified',tags:[],
+      itemType:'Shields',itemSlot:'offhand',modifiers:[],ascendancyIds:[],levelRequirement:1,
+      technicalBaseIdentity:{resolution:'exact-local-base',baseId:'base-shield',itemClassId:'Shields',kind:'defence',nameEn:'Shield',requirements:{strength:0,dexterity:0,intelligence:0}},
+    } as unknown as Pob2UniqueAnalyzerCandidate
+    const bowEquipment=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'?{...item,itemClassId:'Bows'}:item)
+    expect(createEquipmentSlotSuggestions({
+      equipment:bowEquipment,optimization:null,uniqueRecommendations:[shield],
+      uniqueNames:new Map([['unique-shield','Schild']]),uniqueCandidates:new Map([[candidate.id,candidate]]),
+    })).toEqual([])
+  })
+
+  it('erlaubt einen Köcher ausschließlich zusammen mit einem Bogen',()=>{
+    const quiver={valid:true,totalScore:10,itemSlot:'offhand',uniqueId:'unique-quiver',buildEnabler:true,damageScore:1,matchedSkillTags:['attack'],replacementVerdict:'clear-upgrade'} as unknown as UniqueRecommendation
+    const candidate={
+      id:'unique-quiver',displayNameDe:'Köcher',dataVersion:'test',source:'test',status:'verified',tags:['attack'],
+      itemType:'Quivers',itemSlot:'offhand',modifiers:[],ascendancyIds:[],levelRequirement:1,
+      technicalBaseIdentity:{resolution:'exact-local-base',baseId:'base-quiver',itemClassId:'Quivers',kind:'offhand',nameEn:'Quiver',requirements:{strength:0,dexterity:0,intelligence:0}},
+    } as unknown as Pob2UniqueAnalyzerCandidate
+    const bowEquipment=equipment.map(item=>item.slotId==='slot-weapon-set-1-left'?{...item,itemClassId:'Bows'}:item)
+    const suggestions=createEquipmentSlotSuggestions({
+      equipment:bowEquipment,optimization:null,uniqueRecommendations:[quiver],
+      uniqueNames:new Map([['unique-quiver','Köcher']]),uniqueCandidates:new Map([[candidate.id,candidate]]),
+    })
+    expect(suggestions).toMatchObject([{slotId:'slot-weapon-set-1-right',itemClassId:'Quivers'}])
   })
 
   it('zeigt bei einem exakt aufgelösten Unique die belegten Basisanforderungen',()=>{

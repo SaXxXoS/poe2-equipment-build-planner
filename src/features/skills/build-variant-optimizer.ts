@@ -227,8 +227,10 @@ function referenceWeapon(
 }
 
 const hasWeaponInSet = (equipment: EquipmentEntry[], set: 'set-1' | 'set-2') =>
-  equipment.some(entry => entry.slotId.includes(`weapon-${set}`)
-    && Boolean(entry.itemClassId || entry.itemDefinitionId || entry.uniqueItemId))
+  equipment.some(entry => {
+    if (entry.slotId !== `slot-weapon-${set}-left` || !entry.itemClassId) return false
+    return technicalItemClasses.find(value => value.itemClassId === entry.itemClassId)?.slotType === 'weapon'
+  })
 
 /** Evaluation-only weapon context built from pinned local base data. */
 export function plannedEquipmentForVariant(
@@ -255,6 +257,29 @@ export function plannedEquipmentForVariant(
     )
   }
   return planned
+}
+
+/** A second passive profile requires a distinct setup skill and a concrete
+ * locally resolvable main weapon in both weapon sets. */
+export function hasCoherentWeaponSetSpecialization(
+  equipment: EquipmentEntry[],
+  candidate: Pick<BuildVariantCandidate,
+    'weaponType' | 'mainWeaponSet' | 'setupSkillId' | 'setupWeaponType' | 'setupWeaponSet'> | null | undefined,
+  characterLevel?: number,
+  characterAttributes?: Record<'set-1' | 'set-2', CharacterAttributeModel>,
+): boolean {
+  if (!candidate?.setupSkillId || !candidate.setupWeaponType) return false
+  const setupSet = candidate.setupWeaponSet
+    ?? (candidate.mainWeaponSet === 'set-1' ? 'set-2' : 'set-1')
+  if (setupSet === candidate.mainWeaponSet) return false
+  const planned = plannedEquipmentForVariant(
+    equipment,
+    { ...candidate, setupWeaponSet: setupSet },
+    characterLevel,
+    characterAttributes,
+  )
+  return hasWeaponInSet(planned, candidate.mainWeaponSet)
+    && hasWeaponInSet(planned, setupSet)
 }
 
 function equipmentForEstimate(
